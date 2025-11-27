@@ -468,7 +468,7 @@ the `kotlin` block of the module's `build.gradle.kts` file (e.g., `composeApp/bu
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.google.fhir:fhir-model:1.0.0-beta01")
+            implementation("com.google.fhir:fhir-model:1.0.0-beta02")
         }
     }
 }
@@ -482,7 +482,7 @@ For Android projects, add the dependency to the `dependency` block in the module
 ```
 // e.g., app/build.gradle.kts
 dependencies {
-    implementation("com.google.fhir:fhir-model:1.0.0-beta01")
+    implementation("com.google.fhir:fhir-model:1.0.0-beta02")
 }
 ```
 

@@ -1582,36 +1582,6 @@ public data class AdverseEvent(
       )
   }
 
-  public companion object {
-    public val ACTUALITY: TokenSearchParam = TokenSearchParam("actuality")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val RECORDER: ReferenceSearchParam = ReferenceSearchParam("recorder")
-
-    public val RESULTINGEFFECT: ReferenceSearchParam = ReferenceSearchParam("resultingeffect")
-
-    public val SERIOUSNESS: TokenSearchParam = TokenSearchParam("seriousness")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val STUDY: ReferenceSearchParam = ReferenceSearchParam("study")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val SUBSTANCE: ReferenceSearchParam = ReferenceSearchParam("substance")
-  }
-
   /** Codes identifying the lifecycle stage of an adverse event. */
   public enum class AdverseEventStatus(
     private val code: String,

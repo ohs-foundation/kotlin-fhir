@@ -763,28 +763,6 @@ public data class Provenance(
       )
   }
 
-  public companion object {
-    public val AGENT: ReferenceSearchParam = ReferenceSearchParam("agent")
-
-    public val AGENT_ROLE: TokenSearchParam = TokenSearchParam("agent-role")
-
-    public val AGENT_TYPE: TokenSearchParam = TokenSearchParam("agent-type")
-
-    public val ENTITY: ReferenceSearchParam = ReferenceSearchParam("entity")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val RECORDED: DateSearchParam = DateSearchParam("recorded")
-
-    public val SIGNATURE_TYPE: TokenSearchParam = TokenSearchParam("signature-type")
-
-    public val TARGET: ReferenceSearchParam = ReferenceSearchParam("target")
-
-    public val `WHEN`: DateSearchParam = DateSearchParam("when")
-  }
-
   /** How an entity was used in an activity. */
   public enum class ProvenanceEntityRole(
     private val code: String,

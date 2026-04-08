@@ -832,30 +832,6 @@ public data class VerificationResult(
       )
   }
 
-  public companion object {
-    public val ATTESTATION_METHOD: TokenSearchParam = TokenSearchParam("attestation-method")
-
-    public val ATTESTATION_ONBEHALFOF: ReferenceSearchParam =
-      ReferenceSearchParam("attestation-onbehalfof")
-
-    public val ATTESTATION_WHO: ReferenceSearchParam = ReferenceSearchParam("attestation-who")
-
-    public val PRIMARYSOURCE_DATE: DateSearchParam = DateSearchParam("primarysource-date")
-
-    public val PRIMARYSOURCE_TYPE: TokenSearchParam = TokenSearchParam("primarysource-type")
-
-    public val PRIMARYSOURCE_WHO: ReferenceSearchParam = ReferenceSearchParam("primarysource-who")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val STATUS_DATE: DateSearchParam = DateSearchParam("status-date")
-
-    public val TARGET: ReferenceSearchParam = ReferenceSearchParam("target")
-
-    public val VALIDATOR_ORGANIZATION: ReferenceSearchParam =
-      ReferenceSearchParam("validator-organization")
-  }
-
   /** The validation status of the target */
   public enum class VerificationResultStatus(
     private val code: kotlin.String,

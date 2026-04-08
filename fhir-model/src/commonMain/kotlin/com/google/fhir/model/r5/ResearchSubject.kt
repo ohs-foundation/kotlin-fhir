@@ -522,20 +522,4 @@ public data class ResearchSubject(
         consent = consent.map { it.build() },
       )
   }
-
-  public companion object {
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val STUDY: ReferenceSearchParam = ReferenceSearchParam("study")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val SUBJECT_STATE: TokenSearchParam = TokenSearchParam("subject_state")
-  }
 }

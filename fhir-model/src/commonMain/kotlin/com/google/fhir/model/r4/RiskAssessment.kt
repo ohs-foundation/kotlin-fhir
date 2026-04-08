@@ -652,28 +652,6 @@ public data class RiskAssessment(
       )
   }
 
-  public companion object {
-    public val CONDITION: ReferenceSearchParam = ReferenceSearchParam("condition")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val METHOD: TokenSearchParam = TokenSearchParam("method")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERFORMER: ReferenceSearchParam = ReferenceSearchParam("performer")
-
-    public val PROBABILITY: NumberSearchParam = NumberSearchParam("probability")
-
-    public val RISK: TokenSearchParam = TokenSearchParam("risk")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** Codes providing the status of an observation. */
   public enum class ObservationStatus(
     private val code: kotlin.String,

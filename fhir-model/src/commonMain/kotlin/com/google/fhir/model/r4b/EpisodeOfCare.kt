@@ -645,26 +645,6 @@ public data class EpisodeOfCare(
       )
   }
 
-  public companion object {
-    public val CARE_MANAGER: ReferenceSearchParam = ReferenceSearchParam("care-manager")
-
-    public val CONDITION: ReferenceSearchParam = ReferenceSearchParam("condition")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INCOMING_REFERRAL: ReferenceSearchParam = ReferenceSearchParam("incoming-referral")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** The status of the episode of care. */
   public enum class EpisodeOfCareStatus(
     private val code: String,

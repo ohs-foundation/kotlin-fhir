@@ -366,22 +366,6 @@ public data class PaymentNotice(
       )
   }
 
-  public companion object {
-    public val CREATED: DateSearchParam = DateSearchParam("created")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PAYMENT_STATUS: TokenSearchParam = TokenSearchParam("payment-status")
-
-    public val REPORTER: ReferenceSearchParam = ReferenceSearchParam("reporter")
-
-    public val REQUEST: ReferenceSearchParam = ReferenceSearchParam("request")
-
-    public val RESPONSE: ReferenceSearchParam = ReferenceSearchParam("response")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
     private val code: String,

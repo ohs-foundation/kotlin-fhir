@@ -1223,14 +1223,6 @@ public data class DeviceDefinition(
       )
   }
 
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PARENT: ReferenceSearchParam = ReferenceSearchParam("parent")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** The type of name the device is referred by. */
   public enum class DeviceNameType(
     private val code: kotlin.String,

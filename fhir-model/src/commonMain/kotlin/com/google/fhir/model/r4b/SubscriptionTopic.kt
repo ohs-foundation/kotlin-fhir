@@ -1535,26 +1535,6 @@ public data class SubscriptionTopic(
       )
   }
 
-  public companion object {
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DERIVED_OR_SELF: UriSearchParam = UriSearchParam("derived-or-self")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val RESOURCE: UriSearchParam = UriSearchParam("resource")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val TRIGGER_DESCRIPTION: StringSearchParam = StringSearchParam("trigger-description")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-
-    public val VERSION: TokenSearchParam = TokenSearchParam("version")
-  }
-
   /** FHIR RESTful interaction codes used for SubscriptionTopic trigger. */
   public enum class InteractionTrigger(
     private val code: kotlin.String,

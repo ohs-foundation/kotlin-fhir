@@ -759,24 +759,6 @@ public data class Goal(
       )
   }
 
-  public companion object {
-    public val ACHIEVEMENT_STATUS: TokenSearchParam = TokenSearchParam("achievement-status")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LIFECYCLE_STATUS: TokenSearchParam = TokenSearchParam("lifecycle-status")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val START_DATE: DateSearchParam = DateSearchParam("start-date")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val TARGET_DATE: DateSearchParam = DateSearchParam("target-date")
-  }
-
   /**
    * Codes that reflect the current state of a goal and whether the goal is still being targeted.
    */

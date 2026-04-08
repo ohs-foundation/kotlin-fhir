@@ -755,16 +755,4 @@ public data class BodyStructure(
         patient = patient.build(),
       )
   }
-
-  public companion object {
-    public val EXCLUDED_STRUCTURE: TokenSearchParam = TokenSearchParam("excluded_structure")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INCLUDED_STRUCTURE: TokenSearchParam = TokenSearchParam("included_structure")
-
-    public val MORPHOLOGY: TokenSearchParam = TokenSearchParam("morphology")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-  }
 }

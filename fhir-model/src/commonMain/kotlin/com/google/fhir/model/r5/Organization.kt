@@ -584,32 +584,4 @@ public data class Organization(
         qualification = qualification.map { it.build() },
       )
   }
-
-  public companion object {
-    public val ACTIVE: TokenSearchParam = TokenSearchParam("active")
-
-    public val ADDRESS: StringSearchParam = StringSearchParam("address")
-
-    public val ADDRESS_CITY: StringSearchParam = StringSearchParam("address-city")
-
-    public val ADDRESS_COUNTRY: StringSearchParam = StringSearchParam("address-country")
-
-    public val ADDRESS_POSTALCODE: StringSearchParam = StringSearchParam("address-postalcode")
-
-    public val ADDRESS_STATE: StringSearchParam = StringSearchParam("address-state")
-
-    public val ADDRESS_USE: TokenSearchParam = TokenSearchParam("address-use")
-
-    public val ENDPOINT: ReferenceSearchParam = ReferenceSearchParam("endpoint")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val PARTOF: ReferenceSearchParam = ReferenceSearchParam("partof")
-
-    public val PHONETIC: StringSearchParam = StringSearchParam("phonetic")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
 }

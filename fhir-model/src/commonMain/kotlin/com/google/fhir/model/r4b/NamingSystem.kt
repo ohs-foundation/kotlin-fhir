@@ -681,47 +681,6 @@ public data class NamingSystem(
       )
   }
 
-  public companion object {
-    public val CONTACT: StringSearchParam = StringSearchParam("contact")
-
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val ID_TYPE: TokenSearchParam = TokenSearchParam("id-type")
-
-    public val JURISDICTION: TokenSearchParam = TokenSearchParam("jurisdiction")
-
-    public val KIND: TokenSearchParam = TokenSearchParam("kind")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val PERIOD: DateSearchParam = DateSearchParam("period")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val RESPONSIBLE: StringSearchParam = StringSearchParam("responsible")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val TELECOM: TokenSearchParam = TokenSearchParam("telecom")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-
-    public val VALUE: StringSearchParam = StringSearchParam("value")
-  }
-
   /** Identifies the style of unique identifier used to identify a namespace. */
   public enum class NamingSystemIdentifierType(
     private val code: kotlin.String,

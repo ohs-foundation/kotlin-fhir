@@ -696,22 +696,4 @@ public data class ImmunizationRecommendation(
         recommendation = recommendation.map { it.build() },
       )
   }
-
-  public companion object {
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INFORMATION: ReferenceSearchParam = ReferenceSearchParam("information")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUPPORT: ReferenceSearchParam = ReferenceSearchParam("support")
-
-    public val TARGET_DISEASE: TokenSearchParam = TokenSearchParam("target-disease")
-
-    public val VACCINE_TYPE: TokenSearchParam = TokenSearchParam("vaccine-type")
-  }
 }

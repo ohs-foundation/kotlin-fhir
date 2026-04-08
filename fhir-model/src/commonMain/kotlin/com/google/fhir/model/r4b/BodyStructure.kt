@@ -354,14 +354,4 @@ public data class BodyStructure(
         patient = patient.build(),
       )
   }
-
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LOCATION: TokenSearchParam = TokenSearchParam("location")
-
-    public val MORPHOLOGY: TokenSearchParam = TokenSearchParam("morphology")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-  }
 }

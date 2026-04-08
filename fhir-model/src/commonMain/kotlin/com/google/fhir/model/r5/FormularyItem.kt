@@ -313,12 +313,6 @@ public data class FormularyItem(
       )
   }
 
-  public companion object {
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-  }
-
   /** FormularyItem Status Codes */
   public enum class FormularyItemStatusCodes(
     private val code: String,

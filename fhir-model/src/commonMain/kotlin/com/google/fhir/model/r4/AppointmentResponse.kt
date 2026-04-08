@@ -389,22 +389,6 @@ public data class AppointmentResponse(
       )
   }
 
-  public companion object {
-    public val ACTOR: ReferenceSearchParam = ReferenceSearchParam("actor")
-
-    public val APPOINTMENT: ReferenceSearchParam = ReferenceSearchParam("appointment")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val PART_STATUS: TokenSearchParam = TokenSearchParam("part-status")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PRACTITIONER: ReferenceSearchParam = ReferenceSearchParam("practitioner")
-  }
-
   /** The Participation status of an appointment. */
   public enum class ParticipationStatus(
     private val code: kotlin.String,

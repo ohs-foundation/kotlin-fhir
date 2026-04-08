@@ -895,42 +895,6 @@ public data class MedicationDispense(
       )
   }
 
-  public companion object {
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DESTINATION: ReferenceSearchParam = ReferenceSearchParam("destination")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val MEDICATION: ReferenceSearchParam = ReferenceSearchParam("medication")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERFORMER: ReferenceSearchParam = ReferenceSearchParam("performer")
-
-    public val PRESCRIPTION: ReferenceSearchParam = ReferenceSearchParam("prescription")
-
-    public val RECEIVER: ReferenceSearchParam = ReferenceSearchParam("receiver")
-
-    public val RECORDED: DateSearchParam = DateSearchParam("recorded")
-
-    public val RESPONSIBLEPARTY: ReferenceSearchParam = ReferenceSearchParam("responsibleparty")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-
-    public val WHENHANDEDOVER: DateSearchParam = DateSearchParam("whenhandedover")
-
-    public val WHENPREPARED: DateSearchParam = DateSearchParam("whenprepared")
-  }
-
   /** MedicationDispense Status Codes */
   public enum class MedicationDispenseStatusCodes(
     private val code: String,

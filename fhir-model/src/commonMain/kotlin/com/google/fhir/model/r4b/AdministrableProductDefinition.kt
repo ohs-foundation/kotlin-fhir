@@ -995,22 +995,4 @@ public data class AdministrableProductDefinition(
         routeOfAdministration = routeOfAdministration.map { it.build() },
       )
   }
-
-  public companion object {
-    public val DEVICE: ReferenceSearchParam = ReferenceSearchParam("device")
-
-    public val DOSE_FORM: TokenSearchParam = TokenSearchParam("dose-form")
-
-    public val FORM_OF: ReferenceSearchParam = ReferenceSearchParam("form-of")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INGREDIENT: TokenSearchParam = TokenSearchParam("ingredient")
-
-    public val MANUFACTURED_ITEM: ReferenceSearchParam = ReferenceSearchParam("manufactured-item")
-
-    public val ROUTE: TokenSearchParam = TokenSearchParam("route")
-
-    public val TARGET_SPECIES: TokenSearchParam = TokenSearchParam("target-species")
-  }
 }

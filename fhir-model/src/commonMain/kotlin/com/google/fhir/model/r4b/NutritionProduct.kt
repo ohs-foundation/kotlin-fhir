@@ -944,12 +944,6 @@ public data class NutritionProduct(
       )
   }
 
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** Codes identifying the lifecycle stage of a product. */
   public enum class NutritionProductStatus(
     private val code: kotlin.String,

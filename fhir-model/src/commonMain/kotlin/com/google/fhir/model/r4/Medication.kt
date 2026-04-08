@@ -691,26 +691,6 @@ public data class Medication(
       )
   }
 
-  public companion object {
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val EXPIRATION_DATE: DateSearchParam = DateSearchParam("expiration-date")
-
-    public val FORM: TokenSearchParam = TokenSearchParam("form")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INGREDIENT: ReferenceSearchParam = ReferenceSearchParam("ingredient")
-
-    public val INGREDIENT_CODE: TokenSearchParam = TokenSearchParam("ingredient-code")
-
-    public val LOT_NUMBER: TokenSearchParam = TokenSearchParam("lot-number")
-
-    public val MANUFACTURER: ReferenceSearchParam = ReferenceSearchParam("manufacturer")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** Medication Status Codes */
   public enum class MedicationStatusCodes(
     private val code: kotlin.String,

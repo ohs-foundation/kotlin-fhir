@@ -368,27 +368,6 @@ public data class Slot(
       )
   }
 
-  public companion object {
-    public val APPOINTMENT_TYPE: TokenSearchParam = TokenSearchParam("appointment-type")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val SCHEDULE: ReferenceSearchParam = ReferenceSearchParam("schedule")
-
-    public val SERVICE_CATEGORY: TokenSearchParam = TokenSearchParam("service-category")
-
-    public val SERVICE_TYPE: TokenSearchParam = TokenSearchParam("service-type")
-
-    public val SERVICE_TYPE_REFERENCE: ReferenceSearchParam =
-      ReferenceSearchParam("service-type-reference")
-
-    public val SPECIALTY: TokenSearchParam = TokenSearchParam("specialty")
-
-    public val START: DateSearchParam = DateSearchParam("start")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** The free/busy status of the slot. */
   public enum class SlotStatus(
     private val code: kotlin.String,

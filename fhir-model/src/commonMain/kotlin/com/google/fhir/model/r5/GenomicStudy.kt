@@ -1128,18 +1128,6 @@ public data class GenomicStudy(
       )
   }
 
-  public companion object {
-    public val FOCUS: ReferenceSearchParam = ReferenceSearchParam("focus")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** The status of the GenomicStudy. */
   public enum class GenomicStudyStatus(
     private val code: kotlin.String,

@@ -952,30 +952,6 @@ public data class MessageHeader(
       )
   }
 
-  public companion object {
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DESTINATION: StringSearchParam = StringSearchParam("destination")
-
-    public val EVENT: TokenSearchParam = TokenSearchParam("event")
-
-    public val FOCUS: ReferenceSearchParam = ReferenceSearchParam("focus")
-
-    public val RECEIVER: ReferenceSearchParam = ReferenceSearchParam("receiver")
-
-    public val RESPONSE_ID: TokenSearchParam = TokenSearchParam("response-id")
-
-    public val RESPONSIBLE: ReferenceSearchParam = ReferenceSearchParam("responsible")
-
-    public val SENDER: ReferenceSearchParam = ReferenceSearchParam("sender")
-
-    public val SOURCE: StringSearchParam = StringSearchParam("source")
-
-    public val TARGET: ReferenceSearchParam = ReferenceSearchParam("target")
-  }
-
   /** The kind of response to a message. */
   public enum class ResponseType(
     private val code: kotlin.String,

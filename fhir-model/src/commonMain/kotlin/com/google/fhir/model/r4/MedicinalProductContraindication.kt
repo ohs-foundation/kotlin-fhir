@@ -477,8 +477,4 @@ public data class MedicinalProductContraindication(
         population = population.map { it.build() },
       )
   }
-
-  public companion object {
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
 }

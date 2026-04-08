@@ -754,35 +754,6 @@ public data class ResearchStudy(
       )
   }
 
-  public companion object {
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val FOCUS: TokenSearchParam = TokenSearchParam("focus")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val KEYWORD: TokenSearchParam = TokenSearchParam("keyword")
-
-    public val LOCATION: TokenSearchParam = TokenSearchParam("location")
-
-    public val PARTOF: ReferenceSearchParam = ReferenceSearchParam("partof")
-
-    public val PRINCIPALINVESTIGATOR: ReferenceSearchParam =
-      ReferenceSearchParam("principalinvestigator")
-
-    public val PROTOCOL: ReferenceSearchParam = ReferenceSearchParam("protocol")
-
-    public val SITE: ReferenceSearchParam = ReferenceSearchParam("site")
-
-    public val SPONSOR: ReferenceSearchParam = ReferenceSearchParam("sponsor")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-  }
-
   /** Codes that convey the current status of the research study. */
   public enum class ResearchStudyStatus(
     private val code: kotlin.String,

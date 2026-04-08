@@ -2000,8 +2000,4 @@ public data class SubstanceSpecification(
         sourceMaterial = sourceMaterial?.build(),
       )
   }
-
-  public companion object {
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-  }
 }

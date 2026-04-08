@@ -1347,27 +1347,6 @@ public data class EvidenceReport(
       )
   }
 
-  public companion object {
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-  }
-
   /** The type of relationship between reports. */
   public enum class ReportRelationshipType(
     private val code: kotlin.String,

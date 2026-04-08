@@ -1268,34 +1268,6 @@ public data class Device(
       )
   }
 
-  public companion object {
-    public val DEVICE_NAME: StringSearchParam = StringSearchParam("device-name")
-
-    public val DIN: TokenSearchParam = TokenSearchParam("din")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val MANUFACTURER: StringSearchParam = StringSearchParam("manufacturer")
-
-    public val MODEL: StringSearchParam = StringSearchParam("model")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-
-    public val UDI_CARRIER: StringSearchParam = StringSearchParam("udi-carrier")
-
-    public val UDI_DI: StringSearchParam = StringSearchParam("udi-di")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-  }
-
   /** Codes to identify how UDI data was entered. */
   public enum class UDIEntryType(
     private val code: kotlin.String,

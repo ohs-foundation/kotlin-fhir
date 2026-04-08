@@ -682,16 +682,4 @@ public data class MedicinalProductAuthorization(
         procedure = procedure?.build(),
       )
   }
-
-  public companion object {
-    public val COUNTRY: TokenSearchParam = TokenSearchParam("country")
-
-    public val HOLDER: ReferenceSearchParam = ReferenceSearchParam("holder")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
 }

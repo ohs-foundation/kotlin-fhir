@@ -595,32 +595,4 @@ public data class DocumentManifest(
         related = related.map { it.build() },
       )
   }
-
-  public companion object {
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val CREATED: DateSearchParam = DateSearchParam("created")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val ITEM: ReferenceSearchParam = ReferenceSearchParam("item")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val RECIPIENT: ReferenceSearchParam = ReferenceSearchParam("recipient")
-
-    public val RELATED_ID: TokenSearchParam = TokenSearchParam("related-id")
-
-    public val RELATED_REF: ReferenceSearchParam = ReferenceSearchParam("related-ref")
-
-    public val SOURCE: UriSearchParam = UriSearchParam("source")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
 }

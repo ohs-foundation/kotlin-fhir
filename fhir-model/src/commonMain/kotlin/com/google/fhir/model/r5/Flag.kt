@@ -389,24 +389,6 @@ public data class Flag(
       )
   }
 
-  public companion object {
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /**
    * Indicates whether this flag is active and needs to be displayed to a user, or whether it is no
    * longer needed or was entered in error.

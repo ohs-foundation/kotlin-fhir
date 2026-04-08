@@ -2032,16 +2032,4 @@ public data class SubstanceDefinition(
         sourceMaterial = sourceMaterial?.build(),
       )
   }
-
-  public companion object {
-    public val CLASSIFICATION: TokenSearchParam = TokenSearchParam("classification")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DOMAIN: TokenSearchParam = TokenSearchParam("domain")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-  }
 }

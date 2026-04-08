@@ -767,26 +767,6 @@ public data class DetectedIssue(
       )
   }
 
-  public companion object {
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val IDENTIFIED: DateSearchParam = DateSearchParam("identified")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val IMPLICATED: ReferenceSearchParam = ReferenceSearchParam("implicated")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** Indicates the status of a detected issue */
   public enum class DetectedIssueStatus(
     private val code: String,

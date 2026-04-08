@@ -459,20 +459,6 @@ public data class Endpoint(
       )
   }
 
-  public companion object {
-    public val CONNECTION_TYPE: TokenSearchParam = TokenSearchParam("connection-type")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val PAYLOAD_TYPE: TokenSearchParam = TokenSearchParam("payload-type")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** The status of the endpoint. */
   public enum class EndpointStatus(
     private val code: kotlin.String,

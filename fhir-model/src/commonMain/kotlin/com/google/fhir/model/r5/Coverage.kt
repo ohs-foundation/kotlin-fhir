@@ -1140,34 +1140,6 @@ public data class Coverage(
       )
   }
 
-  public companion object {
-    public val BENEFICIARY: ReferenceSearchParam = ReferenceSearchParam("beneficiary")
-
-    public val CLASS_TYPE: TokenSearchParam = TokenSearchParam("class-type")
-
-    public val CLASS_VALUE: TokenSearchParam = TokenSearchParam("class-value")
-
-    public val DEPENDENT: StringSearchParam = StringSearchParam("dependent")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INSURER: ReferenceSearchParam = ReferenceSearchParam("insurer")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PAYMENTBY_PARTY: ReferenceSearchParam = ReferenceSearchParam("paymentby-party")
-
-    public val POLICY_HOLDER: ReferenceSearchParam = ReferenceSearchParam("policy-holder")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBSCRIBER: ReferenceSearchParam = ReferenceSearchParam("subscriber")
-
-    public val SUBSCRIBERID: TokenSearchParam = TokenSearchParam("subscriberid")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
     private val code: kotlin.String,

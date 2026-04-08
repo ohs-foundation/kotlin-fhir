@@ -596,16 +596,6 @@ public data class InventoryReport(
       )
   }
 
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val ITEM: TokenSearchParam = TokenSearchParam("item")
-
-    public val ITEM_REFERENCE: ReferenceSearchParam = ReferenceSearchParam("item-reference")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** The status of the InventoryReport. */
   public enum class InventoryReportStatus(
     private val code: String,

@@ -521,20 +521,6 @@ public data class Subscription(
       )
   }
 
-  public companion object {
-    public val CONTACT: TokenSearchParam = TokenSearchParam("contact")
-
-    public val CRITERIA: StringSearchParam = StringSearchParam("criteria")
-
-    public val PAYLOAD: TokenSearchParam = TokenSearchParam("payload")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-  }
-
   /** The type of method used to execute a subscription. */
   public enum class SubscriptionChannelType(
     private val code: kotlin.String,

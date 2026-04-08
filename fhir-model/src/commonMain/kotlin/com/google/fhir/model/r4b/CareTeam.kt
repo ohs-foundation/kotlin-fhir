@@ -597,24 +597,6 @@ public data class CareTeam(
       )
   }
 
-  public companion object {
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PARTICIPANT: ReferenceSearchParam = ReferenceSearchParam("participant")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** Indicates the status of the care team. */
   public enum class CareTeamStatus(
     private val code: kotlin.String,

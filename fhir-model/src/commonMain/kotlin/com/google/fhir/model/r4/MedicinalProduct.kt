@@ -1085,12 +1085,4 @@ public data class MedicinalProduct(
         specialDesignation = specialDesignation.map { it.build() },
       )
   }
-
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val NAME_LANGUAGE: TokenSearchParam = TokenSearchParam("name-language")
-  }
 }

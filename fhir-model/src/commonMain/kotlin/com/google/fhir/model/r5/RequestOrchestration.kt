@@ -1890,39 +1890,6 @@ public data class RequestOrchestration(
       )
   }
 
-  public companion object {
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val AUTHORED: DateSearchParam = DateSearchParam("authored")
-
-    public val BASED_ON: ReferenceSearchParam = ReferenceSearchParam("based-on")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val GROUP_IDENTIFIER: TokenSearchParam = TokenSearchParam("group-identifier")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INSTANTIATES_CANONICAL: ReferenceSearchParam =
-      ReferenceSearchParam("instantiates-canonical")
-
-    public val INSTANTIATES_URI: UriSearchParam = UriSearchParam("instantiates-uri")
-
-    public val INTENT: TokenSearchParam = TokenSearchParam("intent")
-
-    public val PARTICIPANT: ReferenceSearchParam = ReferenceSearchParam("participant")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PRIORITY: TokenSearchParam = TokenSearchParam("priority")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** Identifies the level of importance to be assigned to actioning the request. */
   public enum class RequestPriority(
     private val code: kotlin.String,

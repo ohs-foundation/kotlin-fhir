@@ -1992,51 +1992,6 @@ public data class Questionnaire(
       )
   }
 
-  public companion object {
-    public val COMBO_CODE: TokenSearchParam = TokenSearchParam("combo-code")
-
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DEFINITION: UriSearchParam = UriSearchParam("definition")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val EFFECTIVE: DateSearchParam = DateSearchParam("effective")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val ITEM_CODE: TokenSearchParam = TokenSearchParam("item-code")
-
-    public val JURISDICTION: TokenSearchParam = TokenSearchParam("jurisdiction")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val QUESTIONNAIRE_CODE: TokenSearchParam = TokenSearchParam("questionnaire-code")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT_TYPE: TokenSearchParam = TokenSearchParam("subject-type")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-
-    public val VERSION: TokenSearchParam = TokenSearchParam("version")
-  }
-
   /** Distinguishes groups from questions and display text and indicates data type for questions. */
   public enum class QuestionnaireItemType(
     private val code: kotlin.String,

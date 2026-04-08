@@ -2999,55 +2999,6 @@ public data class CapabilityStatement(
       )
   }
 
-  public companion object {
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val FHIRVERSION: TokenSearchParam = TokenSearchParam("fhirversion")
-
-    public val FORMAT: TokenSearchParam = TokenSearchParam("format")
-
-    public val GUIDE: ReferenceSearchParam = ReferenceSearchParam("guide")
-
-    public val JURISDICTION: TokenSearchParam = TokenSearchParam("jurisdiction")
-
-    public val MODE: TokenSearchParam = TokenSearchParam("mode")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val RESOURCE: TokenSearchParam = TokenSearchParam("resource")
-
-    public val RESOURCE_PROFILE: ReferenceSearchParam = ReferenceSearchParam("resource-profile")
-
-    public val SECURITY_SERVICE: TokenSearchParam = TokenSearchParam("security-service")
-
-    public val SOFTWARE: StringSearchParam = StringSearchParam("software")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUPPORTED_PROFILE: ReferenceSearchParam = ReferenceSearchParam("supported-profile")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-
-    public val VERSION: TokenSearchParam = TokenSearchParam("version")
-  }
-
   /** The mode of a RESTful capability statement. */
   public enum class RestfulCapabilityMode(
     private val code: kotlin.String,

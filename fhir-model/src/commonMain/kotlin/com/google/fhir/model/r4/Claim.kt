@@ -3000,42 +3000,6 @@ public data class Claim(
       )
   }
 
-  public companion object {
-    public val CARE_TEAM: ReferenceSearchParam = ReferenceSearchParam("care-team")
-
-    public val CREATED: DateSearchParam = DateSearchParam("created")
-
-    public val DETAIL_UDI: ReferenceSearchParam = ReferenceSearchParam("detail-udi")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val ENTERER: ReferenceSearchParam = ReferenceSearchParam("enterer")
-
-    public val FACILITY: ReferenceSearchParam = ReferenceSearchParam("facility")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INSURER: ReferenceSearchParam = ReferenceSearchParam("insurer")
-
-    public val ITEM_UDI: ReferenceSearchParam = ReferenceSearchParam("item-udi")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PAYEE: ReferenceSearchParam = ReferenceSearchParam("payee")
-
-    public val PRIORITY: TokenSearchParam = TokenSearchParam("priority")
-
-    public val PROCEDURE_UDI: ReferenceSearchParam = ReferenceSearchParam("procedure-udi")
-
-    public val PROVIDER: ReferenceSearchParam = ReferenceSearchParam("provider")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBDETAIL_UDI: ReferenceSearchParam = ReferenceSearchParam("subdetail-udi")
-
-    public val USE: TokenSearchParam = TokenSearchParam("use")
-  }
-
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
     private val code: kotlin.String,

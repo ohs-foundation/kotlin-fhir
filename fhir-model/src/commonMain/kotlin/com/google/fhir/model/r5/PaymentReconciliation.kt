@@ -914,29 +914,6 @@ public data class PaymentReconciliation(
       )
   }
 
-  public companion object {
-    public val ALLOCATION_ACCOUNT: ReferenceSearchParam = ReferenceSearchParam("allocation-account")
-
-    public val ALLOCATION_ENCOUNTER: ReferenceSearchParam =
-      ReferenceSearchParam("allocation-encounter")
-
-    public val CREATED: DateSearchParam = DateSearchParam("created")
-
-    public val DISPOSITION: StringSearchParam = StringSearchParam("disposition")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val OUTCOME: TokenSearchParam = TokenSearchParam("outcome")
-
-    public val PAYMENT_ISSUER: ReferenceSearchParam = ReferenceSearchParam("payment-issuer")
-
-    public val REQUEST: ReferenceSearchParam = ReferenceSearchParam("request")
-
-    public val REQUESTOR: ReferenceSearchParam = ReferenceSearchParam("requestor")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
     private val code: kotlin.String,

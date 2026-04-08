@@ -1658,55 +1658,6 @@ public data class ActivityDefinition(
       )
   }
 
-  public companion object {
-    public val COMPOSED_OF: ReferenceSearchParam = ReferenceSearchParam("composed-of")
-
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DEPENDS_ON: ReferenceSearchParam = ReferenceSearchParam("depends-on")
-
-    public val DERIVED_FROM: ReferenceSearchParam = ReferenceSearchParam("derived-from")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val EFFECTIVE: DateSearchParam = DateSearchParam("effective")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val JURISDICTION: TokenSearchParam = TokenSearchParam("jurisdiction")
-
-    public val KIND: TokenSearchParam = TokenSearchParam("kind")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val PREDECESSOR: ReferenceSearchParam = ReferenceSearchParam("predecessor")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUCCESSOR: ReferenceSearchParam = ReferenceSearchParam("successor")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val TOPIC: TokenSearchParam = TokenSearchParam("topic")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-
-    public val VERSION: TokenSearchParam = TokenSearchParam("version")
-  }
-
   /** The type of participant for the action. */
   public enum class ActionParticipantType(
     private val code: kotlin.String,

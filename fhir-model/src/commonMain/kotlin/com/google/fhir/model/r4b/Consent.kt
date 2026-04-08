@@ -1258,38 +1258,6 @@ public data class Consent(
       )
   }
 
-  public companion object {
-    public val ACTION: TokenSearchParam = TokenSearchParam("action")
-
-    public val ACTOR: ReferenceSearchParam = ReferenceSearchParam("actor")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CONSENTOR: ReferenceSearchParam = ReferenceSearchParam("consentor")
-
-    public val DATA: ReferenceSearchParam = ReferenceSearchParam("data")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERIOD: DateSearchParam = DateSearchParam("period")
-
-    public val PURPOSE: TokenSearchParam = TokenSearchParam("purpose")
-
-    public val SCOPE: TokenSearchParam = TokenSearchParam("scope")
-
-    public val SECURITY_LABEL: TokenSearchParam = TokenSearchParam("security-label")
-
-    public val SOURCE_REFERENCE: ReferenceSearchParam = ReferenceSearchParam("source-reference")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** How a rule statement is applied, such as adding additional consent or removing consent. */
   public enum class ConsentProvisionType(
     private val code: String,

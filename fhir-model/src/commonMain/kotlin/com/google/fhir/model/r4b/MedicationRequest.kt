@@ -1330,40 +1330,6 @@ public data class MedicationRequest(
       )
   }
 
-  public companion object {
-    public val AUTHOREDON: DateSearchParam = DateSearchParam("authoredon")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INTENDED_DISPENSER: ReferenceSearchParam = ReferenceSearchParam("intended-dispenser")
-
-    public val INTENDED_PERFORMER: ReferenceSearchParam = ReferenceSearchParam("intended-performer")
-
-    public val INTENDED_PERFORMERTYPE: TokenSearchParam = TokenSearchParam("intended-performertype")
-
-    public val INTENT: TokenSearchParam = TokenSearchParam("intent")
-
-    public val MEDICATION: ReferenceSearchParam = ReferenceSearchParam("medication")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PRIORITY: TokenSearchParam = TokenSearchParam("priority")
-
-    public val REQUESTER: ReferenceSearchParam = ReferenceSearchParam("requester")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** MedicationRequest Status Codes */
   public enum class MedicationrequestStatus(
     private val code: String,

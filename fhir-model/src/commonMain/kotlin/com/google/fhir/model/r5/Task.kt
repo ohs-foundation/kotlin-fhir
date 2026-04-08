@@ -1975,53 +1975,6 @@ public data class Task(
       )
   }
 
-  public companion object {
-    public val ACTOR: ReferenceSearchParam = ReferenceSearchParam("actor")
-
-    public val AUTHORED_ON: DateSearchParam = DateSearchParam("authored-on")
-
-    public val BASED_ON: ReferenceSearchParam = ReferenceSearchParam("based-on")
-
-    public val BUSINESS_STATUS: TokenSearchParam = TokenSearchParam("business-status")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val FOCUS: ReferenceSearchParam = ReferenceSearchParam("focus")
-
-    public val GROUP_IDENTIFIER: TokenSearchParam = TokenSearchParam("group-identifier")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INTENT: TokenSearchParam = TokenSearchParam("intent")
-
-    public val MODIFIED: DateSearchParam = DateSearchParam("modified")
-
-    public val OUTPUT: ReferenceSearchParam = ReferenceSearchParam("output")
-
-    public val OWNER: ReferenceSearchParam = ReferenceSearchParam("owner")
-
-    public val PART_OF: ReferenceSearchParam = ReferenceSearchParam("part-of")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERFORMER: TokenSearchParam = TokenSearchParam("performer")
-
-    public val PERIOD: DateSearchParam = DateSearchParam("period")
-
-    public val PRIORITY: TokenSearchParam = TokenSearchParam("priority")
-
-    public val REQUESTEDPERFORMER_REFERENCE: ReferenceSearchParam =
-      ReferenceSearchParam("requestedperformer-reference")
-
-    public val REQUESTER: ReferenceSearchParam = ReferenceSearchParam("requester")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** The current status of the task. */
   public enum class TaskStatus(
     private val code: kotlin.String,

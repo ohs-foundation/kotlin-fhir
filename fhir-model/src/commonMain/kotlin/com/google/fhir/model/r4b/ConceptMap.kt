@@ -1548,61 +1548,6 @@ public data class ConceptMap(
       )
   }
 
-  public companion object {
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DEPENDSON: UriSearchParam = UriSearchParam("dependson")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val JURISDICTION: TokenSearchParam = TokenSearchParam("jurisdiction")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val OTHER: ReferenceSearchParam = ReferenceSearchParam("other")
-
-    public val PRODUCT: UriSearchParam = UriSearchParam("product")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val SOURCE: ReferenceSearchParam = ReferenceSearchParam("source")
-
-    public val SOURCE_CODE: TokenSearchParam = TokenSearchParam("source-code")
-
-    public val SOURCE_SYSTEM: UriSearchParam = UriSearchParam("source-system")
-
-    public val SOURCE_URI: ReferenceSearchParam = ReferenceSearchParam("source-uri")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val TARGET: ReferenceSearchParam = ReferenceSearchParam("target")
-
-    public val TARGET_CODE: TokenSearchParam = TokenSearchParam("target-code")
-
-    public val TARGET_SYSTEM: UriSearchParam = UriSearchParam("target-system")
-
-    public val TARGET_URI: ReferenceSearchParam = ReferenceSearchParam("target-uri")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-
-    public val VERSION: TokenSearchParam = TokenSearchParam("version")
-  }
-
   /** Defines which action to take if there is no match in the group. */
   public enum class ConceptMapGroupUnmappedMode(
     private val code: kotlin.String,

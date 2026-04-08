@@ -172,5 +172,11 @@ abstract class FhirCodegenTask : DefaultTask() {
     FhirJsonTransformerFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
     SearchParamFileSpecGenerator.generate(packageName).writeTo(outputDir)
+
+    // Generate per-resource search parameter sealed classes
+    searchParamsByResource.forEach { (resourceName, params) ->
+      ResourceSearchParamFileSpecGenerator.generate(packageName, resourceName, params)
+        .writeTo(outputDir)
+    }
   }
 }

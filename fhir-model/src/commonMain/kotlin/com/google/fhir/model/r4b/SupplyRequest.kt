@@ -612,22 +612,6 @@ public data class SupplyRequest(
       )
   }
 
-  public companion object {
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val REQUESTER: ReferenceSearchParam = ReferenceSearchParam("requester")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val SUPPLIER: ReferenceSearchParam = ReferenceSearchParam("supplier")
-  }
-
   /** Status of the supply request. */
   public enum class SupplyRequestStatus(
     private val code: String,

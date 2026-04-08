@@ -1014,42 +1014,6 @@ public data class ImagingStudy(
       )
   }
 
-  public companion object {
-    public val BASEDON: ReferenceSearchParam = ReferenceSearchParam("basedon")
-
-    public val BODYSITE: TokenSearchParam = TokenSearchParam("bodysite")
-
-    public val DICOM_CLASS: TokenSearchParam = TokenSearchParam("dicom-class")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val ENDPOINT: ReferenceSearchParam = ReferenceSearchParam("endpoint")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INSTANCE: TokenSearchParam = TokenSearchParam("instance")
-
-    public val INTERPRETER: ReferenceSearchParam = ReferenceSearchParam("interpreter")
-
-    public val MODALITY: TokenSearchParam = TokenSearchParam("modality")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERFORMER: ReferenceSearchParam = ReferenceSearchParam("performer")
-
-    public val REASON: TokenSearchParam = TokenSearchParam("reason")
-
-    public val REFERRER: ReferenceSearchParam = ReferenceSearchParam("referrer")
-
-    public val SERIES: TokenSearchParam = TokenSearchParam("series")
-
-    public val STARTED: DateSearchParam = DateSearchParam("started")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** The status of the ImagingStudy. */
   public enum class ImagingStudyStatus(
     private val code: kotlin.String,

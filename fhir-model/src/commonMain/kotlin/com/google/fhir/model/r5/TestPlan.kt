@@ -1680,14 +1680,4 @@ public data class TestPlan(
         testCase = testCase.map { it.build() },
       )
   }
-
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val SCOPE: ReferenceSearchParam = ReferenceSearchParam("scope")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-  }
 }

@@ -683,20 +683,6 @@ public data class VisionPrescription(
       )
   }
 
-  public companion object {
-    public val DATEWRITTEN: DateSearchParam = DateSearchParam("datewritten")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PRESCRIBER: ReferenceSearchParam = ReferenceSearchParam("prescriber")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** A coded concept listing the eye codes. */
   public enum class VisionEyes(
     private val code: kotlin.String,

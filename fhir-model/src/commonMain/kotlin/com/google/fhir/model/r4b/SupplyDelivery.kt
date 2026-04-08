@@ -568,18 +568,6 @@ public data class SupplyDelivery(
       )
   }
 
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val RECEIVER: ReferenceSearchParam = ReferenceSearchParam("receiver")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUPPLIER: ReferenceSearchParam = ReferenceSearchParam("supplier")
-  }
-
   /** Status of the supply delivery. */
   public enum class SupplyDeliveryStatus(
     private val code: String,

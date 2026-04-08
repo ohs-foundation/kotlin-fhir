@@ -444,18 +444,4 @@ public data class DeviceAssociation(
         operation = operation.map { it.build() },
       )
   }
-
-  public companion object {
-    public val DEVICE: ReferenceSearchParam = ReferenceSearchParam("device")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val OPERATOR: ReferenceSearchParam = ReferenceSearchParam("operator")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
 }

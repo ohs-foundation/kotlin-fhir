@@ -1093,37 +1093,4 @@ public data class Ingredient(
         substance = substance.build(),
       )
   }
-
-  public companion object {
-    public val `FOR`: ReferenceSearchParam = ReferenceSearchParam("for")
-
-    public val FUNCTION: TokenSearchParam = TokenSearchParam("function")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MANUFACTURER: ReferenceSearchParam = ReferenceSearchParam("manufacturer")
-
-    public val ROLE: TokenSearchParam = TokenSearchParam("role")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val STRENGTH_CONCENTRATION_QUANTITY: QuantitySearchParam =
-      QuantitySearchParam("strength-concentration-quantity")
-
-    public val STRENGTH_CONCENTRATION_RATIO: CompositeSearchParam =
-      CompositeSearchParam("strength-concentration-ratio")
-
-    public val STRENGTH_PRESENTATION_QUANTITY: QuantitySearchParam =
-      QuantitySearchParam("strength-presentation-quantity")
-
-    public val STRENGTH_PRESENTATION_RATIO: CompositeSearchParam =
-      CompositeSearchParam("strength-presentation-ratio")
-
-    public val SUBSTANCE: ReferenceSearchParam = ReferenceSearchParam("substance")
-
-    public val SUBSTANCE_CODE: TokenSearchParam = TokenSearchParam("substance-code")
-
-    public val SUBSTANCE_DEFINITION: ReferenceSearchParam =
-      ReferenceSearchParam("substance-definition")
-  }
 }

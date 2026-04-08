@@ -2754,30 +2754,6 @@ public data class ClaimResponse(
       )
   }
 
-  public companion object {
-    public val CREATED: DateSearchParam = DateSearchParam("created")
-
-    public val DISPOSITION: StringSearchParam = StringSearchParam("disposition")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INSURER: ReferenceSearchParam = ReferenceSearchParam("insurer")
-
-    public val OUTCOME: TokenSearchParam = TokenSearchParam("outcome")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PAYMENT_DATE: DateSearchParam = DateSearchParam("payment-date")
-
-    public val REQUEST: ReferenceSearchParam = ReferenceSearchParam("request")
-
-    public val REQUESTOR: ReferenceSearchParam = ReferenceSearchParam("requestor")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val USE: TokenSearchParam = TokenSearchParam("use")
-  }
-
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
     private val code: kotlin.String,

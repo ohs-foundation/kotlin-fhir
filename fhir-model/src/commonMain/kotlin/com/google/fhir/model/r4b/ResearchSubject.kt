@@ -313,20 +313,6 @@ public data class ResearchSubject(
       )
   }
 
-  public companion object {
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INDIVIDUAL: ReferenceSearchParam = ReferenceSearchParam("individual")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val STUDY: ReferenceSearchParam = ReferenceSearchParam("study")
-  }
-
   /** Indicates the progression of a study subject through a study. */
   public enum class ResearchSubjectStatus(
     private val code: kotlin.String,

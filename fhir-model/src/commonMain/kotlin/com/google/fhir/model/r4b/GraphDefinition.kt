@@ -1003,37 +1003,6 @@ public data class GraphDefinition(
       )
   }
 
-  public companion object {
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val JURISDICTION: TokenSearchParam = TokenSearchParam("jurisdiction")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val START: TokenSearchParam = TokenSearchParam("start")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-
-    public val VERSION: TokenSearchParam = TokenSearchParam("version")
-  }
-
   /** Defines how a compartment rule is used. */
   public enum class GraphCompartmentUse(
     private val code: kotlin.String,

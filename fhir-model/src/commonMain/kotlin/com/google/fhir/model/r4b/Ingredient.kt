@@ -1016,25 +1016,6 @@ public data class Ingredient(
       )
   }
 
-  public companion object {
-    public val `FOR`: ReferenceSearchParam = ReferenceSearchParam("for")
-
-    public val FUNCTION: TokenSearchParam = TokenSearchParam("function")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MANUFACTURER: ReferenceSearchParam = ReferenceSearchParam("manufacturer")
-
-    public val ROLE: TokenSearchParam = TokenSearchParam("role")
-
-    public val SUBSTANCE: ReferenceSearchParam = ReferenceSearchParam("substance")
-
-    public val SUBSTANCE_CODE: TokenSearchParam = TokenSearchParam("substance-code")
-
-    public val SUBSTANCE_DEFINITION: ReferenceSearchParam =
-      ReferenceSearchParam("substance-definition")
-  }
-
   /**
    * The way in which this manufacturer is associated with the ingredient. For example whether it is
    * a possible one (others allowed), or an exclusive authorized one for this ingredient. Note that

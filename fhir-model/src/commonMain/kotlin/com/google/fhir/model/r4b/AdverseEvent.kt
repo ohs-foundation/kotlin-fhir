@@ -748,32 +748,6 @@ public data class AdverseEvent(
       )
   }
 
-  public companion object {
-    public val ACTUALITY: TokenSearchParam = TokenSearchParam("actuality")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val EVENT: TokenSearchParam = TokenSearchParam("event")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val RECORDER: ReferenceSearchParam = ReferenceSearchParam("recorder")
-
-    public val RESULTINGCONDITION: ReferenceSearchParam = ReferenceSearchParam("resultingcondition")
-
-    public val SERIOUSNESS: TokenSearchParam = TokenSearchParam("seriousness")
-
-    public val SEVERITY: TokenSearchParam = TokenSearchParam("severity")
-
-    public val STUDY: ReferenceSearchParam = ReferenceSearchParam("study")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val SUBSTANCE: ReferenceSearchParam = ReferenceSearchParam("substance")
-  }
-
   /** Overall nature of the adverse event, e.g. real or potential. */
   public enum class AdverseEventActuality(
     private val code: kotlin.String,

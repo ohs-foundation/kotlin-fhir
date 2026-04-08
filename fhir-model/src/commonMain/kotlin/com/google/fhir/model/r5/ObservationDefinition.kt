@@ -1369,24 +1369,6 @@ public data class ObservationDefinition(
       )
   }
 
-  public companion object {
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val EXPERIMENTAL: TokenSearchParam = TokenSearchParam("experimental")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val METHOD: TokenSearchParam = TokenSearchParam("method")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-  }
-
   /** Codes identifying the category of observation range. */
   public enum class ObservationRangeCategory(
     private val code: kotlin.String,

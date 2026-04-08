@@ -996,32 +996,6 @@ public data class HealthcareService(
       )
   }
 
-  public companion object {
-    public val ACTIVE: TokenSearchParam = TokenSearchParam("active")
-
-    public val CHARACTERISTIC: TokenSearchParam = TokenSearchParam("characteristic")
-
-    public val COVERAGE_AREA: ReferenceSearchParam = ReferenceSearchParam("coverage-area")
-
-    public val ENDPOINT: ReferenceSearchParam = ReferenceSearchParam("endpoint")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val PROGRAM: TokenSearchParam = TokenSearchParam("program")
-
-    public val SERVICE_CATEGORY: TokenSearchParam = TokenSearchParam("service-category")
-
-    public val SERVICE_TYPE: TokenSearchParam = TokenSearchParam("service-type")
-
-    public val SPECIALTY: TokenSearchParam = TokenSearchParam("specialty")
-  }
-
   /** The days of the week. */
   public enum class DaysOfWeek(
     private val code: kotlin.String,

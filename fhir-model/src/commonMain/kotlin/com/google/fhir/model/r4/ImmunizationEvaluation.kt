@@ -433,22 +433,6 @@ public data class ImmunizationEvaluation(
       )
   }
 
-  public companion object {
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DOSE_STATUS: TokenSearchParam = TokenSearchParam("dose-status")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val IMMUNIZATION_EVENT: ReferenceSearchParam = ReferenceSearchParam("immunization-event")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val TARGET_DISEASE: TokenSearchParam = TokenSearchParam("target-disease")
-  }
-
   /**
    * The value set to instantiate this attribute should be drawn from a terminologically robust code
    * system that consists of or contains concepts to support describing the current status of the

@@ -943,14 +943,6 @@ public data class SpecimenDefinition(
       )
   }
 
-  public companion object {
-    public val CONTAINER: TokenSearchParam = TokenSearchParam("container")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** Degree of preference of a type of conditioned specimen. */
   public enum class SpecimenContainedPreference(
     private val code: kotlin.String,

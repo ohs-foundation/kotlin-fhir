@@ -481,8 +481,4 @@ public data class MedicinalProductIndication(
         population = population.map { it.build() },
       )
   }
-
-  public companion object {
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
 }

@@ -2730,23 +2730,6 @@ public data class DeviceDefinition(
       )
   }
 
-  public companion object {
-    public val DEVICE_NAME: StringSearchParam = StringSearchParam("device-name")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MANUFACTURER: ReferenceSearchParam = ReferenceSearchParam("manufacturer")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val SPECIFICATION: TokenSearchParam = TokenSearchParam("specification")
-
-    public val SPECIFICATION_VERSION: CompositeSearchParam =
-      CompositeSearchParam("specification-version")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** Regulatory Identifier type */
   public enum class DeviceDefinitionRegulatoryIdentifierType(
     private val code: kotlin.String,

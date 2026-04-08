@@ -684,34 +684,6 @@ public data class PractitionerRole(
       )
   }
 
-  public companion object {
-    public val ACTIVE: TokenSearchParam = TokenSearchParam("active")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val EMAIL: TokenSearchParam = TokenSearchParam("email")
-
-    public val ENDPOINT: ReferenceSearchParam = ReferenceSearchParam("endpoint")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val PHONE: TokenSearchParam = TokenSearchParam("phone")
-
-    public val PRACTITIONER: ReferenceSearchParam = ReferenceSearchParam("practitioner")
-
-    public val ROLE: TokenSearchParam = TokenSearchParam("role")
-
-    public val SERVICE: ReferenceSearchParam = ReferenceSearchParam("service")
-
-    public val SPECIALTY: TokenSearchParam = TokenSearchParam("specialty")
-
-    public val TELECOM: TokenSearchParam = TokenSearchParam("telecom")
-  }
-
   /** The days of the week. */
   public enum class DaysOfWeek(
     private val code: kotlin.String,

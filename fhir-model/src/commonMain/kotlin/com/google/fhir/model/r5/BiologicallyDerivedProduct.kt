@@ -801,23 +801,4 @@ public data class BiologicallyDerivedProduct(
         `property` = `property`.map { it.build() },
       )
   }
-
-  public companion object {
-    public val BIOLOGICAL_SOURCE_EVENT: TokenSearchParam =
-      TokenSearchParam("biological-source-event")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val COLLECTOR: ReferenceSearchParam = ReferenceSearchParam("collector")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PRODUCT_CATEGORY: TokenSearchParam = TokenSearchParam("product-category")
-
-    public val PRODUCT_STATUS: TokenSearchParam = TokenSearchParam("product-status")
-
-    public val REQUEST: ReferenceSearchParam = ReferenceSearchParam("request")
-
-    public val SERIAL_NUMBER: TokenSearchParam = TokenSearchParam("serial-number")
-  }
 }

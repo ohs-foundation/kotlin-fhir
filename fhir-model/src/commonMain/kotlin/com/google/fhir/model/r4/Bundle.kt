@@ -1184,18 +1184,6 @@ public data class Bundle(
       )
   }
 
-  public companion object {
-    public val COMPOSITION: ReferenceSearchParam = ReferenceSearchParam("composition")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MESSAGE: ReferenceSearchParam = ReferenceSearchParam("message")
-
-    public val TIMESTAMP: DateSearchParam = DateSearchParam("timestamp")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /**
    * Why an entry is in the result set - whether it's included as a match or because of an _include
    * requirement, or to convey information or warning information about the search process.

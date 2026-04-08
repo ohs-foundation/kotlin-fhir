@@ -718,29 +718,6 @@ public data class Group(
       )
   }
 
-  public companion object {
-    public val ACTUAL: TokenSearchParam = TokenSearchParam("actual")
-
-    public val CHARACTERISTIC: TokenSearchParam = TokenSearchParam("characteristic")
-
-    public val CHARACTERISTIC_VALUE: CompositeSearchParam =
-      CompositeSearchParam("characteristic-value")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val EXCLUDE: TokenSearchParam = TokenSearchParam("exclude")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MANAGING_ENTITY: ReferenceSearchParam = ReferenceSearchParam("managing-entity")
-
-    public val MEMBER: ReferenceSearchParam = ReferenceSearchParam("member")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-
-    public val VALUE: TokenSearchParam = TokenSearchParam("value")
-  }
-
   /** Types of resources that are part of group. */
   public enum class GroupType(
     private val code: kotlin.String,

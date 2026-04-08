@@ -590,20 +590,4 @@ public data class RegulatedAuthorization(
         case = case?.build(),
       )
   }
-
-  public companion object {
-    public val CASE: TokenSearchParam = TokenSearchParam("case")
-
-    public val CASE_TYPE: TokenSearchParam = TokenSearchParam("case-type")
-
-    public val HOLDER: ReferenceSearchParam = ReferenceSearchParam("holder")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val REGION: TokenSearchParam = TokenSearchParam("region")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
 }

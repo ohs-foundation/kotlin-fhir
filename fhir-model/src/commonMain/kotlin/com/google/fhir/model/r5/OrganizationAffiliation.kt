@@ -410,36 +410,4 @@ public data class OrganizationAffiliation(
         endpoint = endpoint.map { it.build() },
       )
   }
-
-  public companion object {
-    public val ACTIVE: TokenSearchParam = TokenSearchParam("active")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val EMAIL: TokenSearchParam = TokenSearchParam("email")
-
-    public val ENDPOINT: ReferenceSearchParam = ReferenceSearchParam("endpoint")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val NETWORK: ReferenceSearchParam = ReferenceSearchParam("network")
-
-    public val PARTICIPATING_ORGANIZATION: ReferenceSearchParam =
-      ReferenceSearchParam("participating-organization")
-
-    public val PHONE: TokenSearchParam = TokenSearchParam("phone")
-
-    public val PRIMARY_ORGANIZATION: ReferenceSearchParam =
-      ReferenceSearchParam("primary-organization")
-
-    public val ROLE: TokenSearchParam = TokenSearchParam("role")
-
-    public val SERVICE: ReferenceSearchParam = ReferenceSearchParam("service")
-
-    public val SPECIALTY: TokenSearchParam = TokenSearchParam("specialty")
-
-    public val TELECOM: TokenSearchParam = TokenSearchParam("telecom")
-  }
 }

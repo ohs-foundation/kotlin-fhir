@@ -2356,45 +2356,6 @@ public data class ImplementationGuide(
       )
   }
 
-  public companion object {
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DEPENDS_ON: ReferenceSearchParam = ReferenceSearchParam("depends-on")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val EXPERIMENTAL: TokenSearchParam = TokenSearchParam("experimental")
-
-    public val GLOBAL: ReferenceSearchParam = ReferenceSearchParam("global")
-
-    public val JURISDICTION: TokenSearchParam = TokenSearchParam("jurisdiction")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val RESOURCE: ReferenceSearchParam = ReferenceSearchParam("resource")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-
-    public val VERSION: TokenSearchParam = TokenSearchParam("version")
-  }
-
   /** A code that indicates how the page is generated. */
   public enum class GuidePageGeneration(
     private val code: kotlin.String,

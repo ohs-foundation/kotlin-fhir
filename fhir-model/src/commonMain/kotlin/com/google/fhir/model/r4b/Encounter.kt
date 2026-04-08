@@ -1467,54 +1467,6 @@ public data class Encounter(
       )
   }
 
-  public companion object {
-    public val ACCOUNT: ReferenceSearchParam = ReferenceSearchParam("account")
-
-    public val APPOINTMENT: ReferenceSearchParam = ReferenceSearchParam("appointment")
-
-    public val BASED_ON: ReferenceSearchParam = ReferenceSearchParam("based-on")
-
-    public val `CLASS`: TokenSearchParam = TokenSearchParam("class")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DIAGNOSIS: ReferenceSearchParam = ReferenceSearchParam("diagnosis")
-
-    public val EPISODE_OF_CARE: ReferenceSearchParam = ReferenceSearchParam("episode-of-care")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LENGTH: QuantitySearchParam = QuantitySearchParam("length")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val LOCATION_PERIOD: DateSearchParam = DateSearchParam("location-period")
-
-    public val PART_OF: ReferenceSearchParam = ReferenceSearchParam("part-of")
-
-    public val PARTICIPANT: ReferenceSearchParam = ReferenceSearchParam("participant")
-
-    public val PARTICIPANT_TYPE: TokenSearchParam = TokenSearchParam("participant-type")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PRACTITIONER: ReferenceSearchParam = ReferenceSearchParam("practitioner")
-
-    public val REASON_CODE: TokenSearchParam = TokenSearchParam("reason-code")
-
-    public val REASON_REFERENCE: ReferenceSearchParam = ReferenceSearchParam("reason-reference")
-
-    public val SERVICE_PROVIDER: ReferenceSearchParam = ReferenceSearchParam("service-provider")
-
-    public val SPECIAL_ARRANGEMENT: TokenSearchParam = TokenSearchParam("special-arrangement")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** Current state of the encounter. */
   public enum class EncounterStatus(
     private val code: String,

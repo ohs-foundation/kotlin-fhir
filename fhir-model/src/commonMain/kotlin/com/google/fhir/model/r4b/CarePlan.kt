@@ -1254,49 +1254,6 @@ public data class CarePlan(
       )
   }
 
-  public companion object {
-    public val ACTIVITY_CODE: TokenSearchParam = TokenSearchParam("activity-code")
-
-    public val ACTIVITY_DATE: DateSearchParam = DateSearchParam("activity-date")
-
-    public val ACTIVITY_REFERENCE: ReferenceSearchParam = ReferenceSearchParam("activity-reference")
-
-    public val BASED_ON: ReferenceSearchParam = ReferenceSearchParam("based-on")
-
-    public val CARE_TEAM: ReferenceSearchParam = ReferenceSearchParam("care-team")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CONDITION: ReferenceSearchParam = ReferenceSearchParam("condition")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val GOAL: ReferenceSearchParam = ReferenceSearchParam("goal")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INSTANTIATES_CANONICAL: ReferenceSearchParam =
-      ReferenceSearchParam("instantiates-canonical")
-
-    public val INSTANTIATES_URI: UriSearchParam = UriSearchParam("instantiates-uri")
-
-    public val INTENT: TokenSearchParam = TokenSearchParam("intent")
-
-    public val PART_OF: ReferenceSearchParam = ReferenceSearchParam("part-of")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERFORMER: ReferenceSearchParam = ReferenceSearchParam("performer")
-
-    public val REPLACES: ReferenceSearchParam = ReferenceSearchParam("replaces")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /**
    * Resource types defined as part of FHIR that can be represented as in-line definitions of a care
    * plan activity.

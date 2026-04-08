@@ -1316,44 +1316,6 @@ public data class AuditEvent(
       )
   }
 
-  public companion object {
-    public val ACTION: TokenSearchParam = TokenSearchParam("action")
-
-    public val ADDRESS: StringSearchParam = StringSearchParam("address")
-
-    public val AGENT: ReferenceSearchParam = ReferenceSearchParam("agent")
-
-    public val AGENT_NAME: StringSearchParam = StringSearchParam("agent-name")
-
-    public val AGENT_ROLE: TokenSearchParam = TokenSearchParam("agent-role")
-
-    public val ALTID: TokenSearchParam = TokenSearchParam("altid")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val ENTITY: ReferenceSearchParam = ReferenceSearchParam("entity")
-
-    public val ENTITY_NAME: StringSearchParam = StringSearchParam("entity-name")
-
-    public val ENTITY_ROLE: TokenSearchParam = TokenSearchParam("entity-role")
-
-    public val ENTITY_TYPE: TokenSearchParam = TokenSearchParam("entity-type")
-
-    public val OUTCOME: TokenSearchParam = TokenSearchParam("outcome")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val POLICY: UriSearchParam = UriSearchParam("policy")
-
-    public val SITE: TokenSearchParam = TokenSearchParam("site")
-
-    public val SOURCE: ReferenceSearchParam = ReferenceSearchParam("source")
-
-    public val SUBTYPE: TokenSearchParam = TokenSearchParam("subtype")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** The type of network access point of this agent in the audit event. */
   public enum class AuditEventAgentNetworkType(
     private val code: kotlin.String,

@@ -476,16 +476,6 @@ public data class GuidanceResponse(
       )
   }
 
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val REQUEST: TokenSearchParam = TokenSearchParam("request")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** The status of a guidance response. */
   public enum class GuidanceResponseStatus(
     private val code: String,

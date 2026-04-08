@@ -1553,33 +1553,6 @@ public data class NutritionOrder(
       )
   }
 
-  public companion object {
-    public val ADDITIVE: TokenSearchParam = TokenSearchParam("additive")
-
-    public val DATETIME: DateSearchParam = DateSearchParam("datetime")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val FORMULA: TokenSearchParam = TokenSearchParam("formula")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INSTANTIATES_CANONICAL: ReferenceSearchParam =
-      ReferenceSearchParam("instantiates-canonical")
-
-    public val INSTANTIATES_URI: UriSearchParam = UriSearchParam("instantiates-uri")
-
-    public val ORALDIET: TokenSearchParam = TokenSearchParam("oraldiet")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PROVIDER: ReferenceSearchParam = ReferenceSearchParam("provider")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUPPLEMENT: TokenSearchParam = TokenSearchParam("supplement")
-  }
-
   /** Codes identifying the lifecycle stage of a request. */
   public enum class RequestStatus(
     private val code: kotlin.String,

@@ -487,12 +487,4 @@ public data class ManufacturedItemDefinition(
         `property` = `property`.map { it.build() },
       )
   }
-
-  public companion object {
-    public val DOSE_FORM: TokenSearchParam = TokenSearchParam("dose-form")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INGREDIENT: TokenSearchParam = TokenSearchParam("ingredient")
-  }
 }

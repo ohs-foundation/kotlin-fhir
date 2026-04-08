@@ -18,6 +18,7 @@ package com.google.fhir.model.test
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import java.io.File
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.companionObjectInstance
@@ -30,10 +31,11 @@ private data class SearchParameterDef(
   val code: String,
   val base: List<String> = emptyList(),
   val type: String,
+  val expression: String? = null,
+  val target: List<String> = emptyList(),
 )
 
 private val json = Json { ignoreUnknownKeys = true }
-
 
 private data class SearchParamTestSuite(
   val fhirVersion: String,
@@ -42,7 +44,7 @@ private data class SearchParamTestSuite(
 )
 
 private fun loadSearchParams(
-  corePackageSubdirectory: String
+  corePackageSubdirectory: String,
 ): Map<String, List<SearchParameterDef>> {
   val rootDir = System.getProperty("projectRootDir")
   return File("$rootDir/third_party/$corePackageSubdirectory")
@@ -55,7 +57,19 @@ private fun loadSearchParams(
     .groupBy({ it.first }, { it.second })
 }
 
-private fun codeToConstantName(code: String): String = code.replace("-", "_").uppercase()
+private fun codeToDataObjectName(code: String): String =
+  code.split("-").joinToString("") { it.replaceFirstChar(Char::uppercaseChar) }
+
+/**
+ * Extracts the expression portion relevant to a specific resource from a multi-resource expression.
+ */
+private fun extractExpressionForResource(expression: String?, resourceName: String): String {
+  if (expression == null) return ""
+  val parts = expression.split("|").map { it.trim() }
+  val resourcePart =
+    parts.firstOrNull { it.startsWith("$resourceName.") || it.startsWith("($resourceName.") }
+  return resourcePart ?: expression
+}
 
 class SearchParamTest :
   FunSpec({
@@ -70,60 +84,87 @@ class SearchParamTest :
 
         context("${testSuite.fhirVersion} search params should match definitions") {
           searchParamsByResource.forEach { (resourceName, expectedParams) ->
+            // Check if the resource class exists and is concrete
             val resourceClass =
               try {
                 Class.forName("${testSuite.modelPackage}.$resourceName").kotlin
               } catch (_: ClassNotFoundException) {
                 null
               }
-
-            // Skip resources that don't have generated classes or are abstract
             if (resourceClass == null) return@forEach
             if (java.lang.reflect.Modifier.isAbstract(resourceClass.java.modifiers)) return@forEach
 
-            val companion = resourceClass.companionObjectInstance ?: return@forEach
+            // Load the per-resource search param sealed class
+            val searchParamClass =
+              try {
+                Class.forName("${testSuite.modelPackage}.${resourceName}SearchParam").kotlin
+              } catch (_: ClassNotFoundException) {
+                null
+              }
+            if (searchParamClass == null) return@forEach
+
+            val companion = searchParamClass.companionObjectInstance ?: return@forEach
 
             @Suppress("UNCHECKED_CAST")
             val companionProperties =
               companion::class.memberProperties as Collection<KProperty1<Any, *>>
 
-            val searchParamProperties =
-              companionProperties
-                .filter { prop ->
-                  try {
-                    searchParamInterface.isInstance(prop.get(companion))
-                  } catch (_: Exception) {
-                    false
-                  }
-                }
-                .associate { prop ->
-                  val value = prop.get(companion)!!
-                  prop.name to value
-                }
+            // Get the ALL list from the companion
+            val allProperty = companionProperties.firstOrNull { it.name == "ALL" }
+            if (allProperty == null) return@forEach
+
+            @Suppress("UNCHECKED_CAST")
+            val allSearchParams = allProperty.get(companion) as List<Any>
+
+            // Build a map from data object name to search param instance
+            val searchParamsByName =
+              allSearchParams.associateBy { it::class.simpleName!! }
 
             val dedupedExpected = expectedParams.distinctBy { it.code }.sortedBy { it.code }
 
             test("$resourceName should have ${dedupedExpected.size} search params") {
-              searchParamProperties.size.shouldBe(dedupedExpected.size)
+              searchParamsByName.size.shouldBe(dedupedExpected.size)
             }
 
             dedupedExpected.forEach { expected ->
-              val constantName = codeToConstantName(expected.code)
+              val dataObjectName = codeToDataObjectName(expected.code)
               test(
-                "$resourceName.$constantName should be ${expected.type} with paramName '${expected.code}'"
+                "$resourceName.$dataObjectName should have paramName '${expected.code}' and type '${expected.type}'"
               ) {
                 val actual =
-                  searchParamProperties[constantName]
+                  searchParamsByName[dataObjectName]
                     ?: error(
-                      "Missing search param constant $constantName on $resourceName. Available: ${searchParamProperties.keys}"
+                      "Missing search param $dataObjectName on ${resourceName}SearchParam. Available: ${searchParamsByName.keys}"
                     )
+
+                // Verify it implements SearchParam
+                searchParamInterface.isInstance(actual).shouldBe(true)
+
+                // Verify paramName
                 val paramName =
                   actual::class.memberProperties.first { it.name == "paramName" }.call(actual)
                     as String
                 paramName.shouldBe(expected.code)
-                val expectedClassName =
-                  "${expected.type.replaceFirstChar(Char::uppercaseChar)}SearchParam"
-                actual::class.simpleName.shouldBe(expectedClassName)
+
+                // Verify type
+                val type = actual::class.memberProperties.first { it.name == "type" }.call(actual)
+                type.shouldNotBe(null)
+                type.toString().shouldBe(expected.type)
+
+                // Verify expression
+                val expression =
+                  actual::class.memberProperties.first { it.name == "expression" }.call(actual)
+                    as String
+                val expectedExpression =
+                  extractExpressionForResource(expected.expression, resourceName)
+                expression.shouldBe(expectedExpression)
+
+                // Verify target
+                @Suppress("UNCHECKED_CAST")
+                val target =
+                  actual::class.memberProperties.first { it.name == "target" }.call(actual)
+                    as List<String>
+                target.shouldBe(expected.target)
               }
             }
           }

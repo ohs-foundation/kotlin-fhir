@@ -658,12 +658,6 @@ public data class ArtifactAssessment(
       )
   }
 
-  public companion object {
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-  }
-
   /** The type of information contained in a component of an artifact assessment. */
   public enum class ArtifactAssessmentInformationType(
     private val code: kotlin.String,

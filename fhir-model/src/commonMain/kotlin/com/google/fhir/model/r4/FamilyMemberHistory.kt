@@ -817,27 +817,6 @@ public data class FamilyMemberHistory(
       )
   }
 
-  public companion object {
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INSTANTIATES_CANONICAL: ReferenceSearchParam =
-      ReferenceSearchParam("instantiates-canonical")
-
-    public val INSTANTIATES_URI: UriSearchParam = UriSearchParam("instantiates-uri")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val RELATIONSHIP: TokenSearchParam = TokenSearchParam("relationship")
-
-    public val SEX: TokenSearchParam = TokenSearchParam("sex")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** A code that identifies the status of the family history record. */
   public enum class FamilyHistoryStatus(
     private val code: kotlin.String,

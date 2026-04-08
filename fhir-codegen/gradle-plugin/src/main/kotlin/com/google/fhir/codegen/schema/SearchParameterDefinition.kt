@@ -30,4 +30,8 @@ data class SearchParameterDefinition(
   val base: List<String> = emptyList(),
   /** The search parameter type (e.g., "string", "token", "date", "reference"). */
   val type: String,
+  /** The FHIRPath expression that extracts values for this search parameter. */
+  val expression: String? = null,
+  /** The target resource types for reference search parameters. */
+  val target: List<String> = emptyList(),
 )

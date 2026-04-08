@@ -625,10 +625,4 @@ public data class MedicinalProductPackaged(
         packageItem = packageItem.map { it.build() },
       )
   }
-
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
 }

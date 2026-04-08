@@ -717,30 +717,6 @@ public data class MedicationStatement(
       )
   }
 
-  public companion object {
-    public val ADHERENCE: TokenSearchParam = TokenSearchParam("adherence")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val EFFECTIVE: DateSearchParam = DateSearchParam("effective")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MEDICATION: ReferenceSearchParam = ReferenceSearchParam("medication")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val SOURCE: ReferenceSearchParam = ReferenceSearchParam("source")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** MedicationStatement Status Codes */
   public enum class MedicationStatementStatusCodes(
     private val code: String,

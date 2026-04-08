@@ -16,37 +16,21 @@
 
 package com.google.fhir.model.r4
 
+import com.google.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
+import kotlin.collections.List
 
 /** Base type for typed FHIR search parameters. */
 public sealed interface SearchParam {
   /** The name of the search parameter as used in search URLs. */
   public val paramName: String
+
+  /** The search parameter type (e.g., date, token, reference). */
+  public val type: SearchParamType
+
+  /** The FHIRPath expression that extracts values for this search parameter. */
+  public val expression: String
+
+  /** The target resource types for reference search parameters. */
+  public val target: List<String>
 }
-
-/** A search parameter of type `number`. */
-public class NumberSearchParam(public override val paramName: String) : SearchParam
-
-/** A search parameter of type `date`. */
-public class DateSearchParam(public override val paramName: String) : SearchParam
-
-/** A search parameter of type `string`. */
-public class StringSearchParam(public override val paramName: String) : SearchParam
-
-/** A search parameter of type `token`. */
-public class TokenSearchParam(public override val paramName: String) : SearchParam
-
-/** A search parameter of type `reference`. */
-public class ReferenceSearchParam(public override val paramName: String) : SearchParam
-
-/** A search parameter of type `composite`. */
-public class CompositeSearchParam(public override val paramName: String) : SearchParam
-
-/** A search parameter of type `quantity`. */
-public class QuantitySearchParam(public override val paramName: String) : SearchParam
-
-/** A search parameter of type `uri`. */
-public class UriSearchParam(public override val paramName: String) : SearchParam
-
-/** A search parameter of type `special`. */
-public class SpecialSearchParam(public override val paramName: String) : SearchParam

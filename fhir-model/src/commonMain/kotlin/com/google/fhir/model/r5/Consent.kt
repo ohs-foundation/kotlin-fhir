@@ -1312,44 +1312,6 @@ public data class Consent(
       )
   }
 
-  public companion object {
-    public val ACTION: TokenSearchParam = TokenSearchParam("action")
-
-    public val ACTOR: ReferenceSearchParam = ReferenceSearchParam("actor")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CONTROLLER: ReferenceSearchParam = ReferenceSearchParam("controller")
-
-    public val DATA: ReferenceSearchParam = ReferenceSearchParam("data")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val GRANTEE: ReferenceSearchParam = ReferenceSearchParam("grantee")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MANAGER: ReferenceSearchParam = ReferenceSearchParam("manager")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERIOD: DateSearchParam = DateSearchParam("period")
-
-    public val PURPOSE: TokenSearchParam = TokenSearchParam("purpose")
-
-    public val SECURITY_LABEL: TokenSearchParam = TokenSearchParam("security-label")
-
-    public val SOURCE_REFERENCE: ReferenceSearchParam = ReferenceSearchParam("source-reference")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val VERIFIED: TokenSearchParam = TokenSearchParam("verified")
-
-    public val VERIFIED_DATE: DateSearchParam = DateSearchParam("verified-date")
-  }
-
   /** How a resource reference is interpreted when testing consent restrictions. */
   public enum class ConsentDataMeaning(
     private val code: String,

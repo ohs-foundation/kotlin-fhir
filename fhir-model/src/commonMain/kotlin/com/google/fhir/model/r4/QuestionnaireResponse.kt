@@ -862,32 +862,6 @@ public data class QuestionnaireResponse(
       )
   }
 
-  public companion object {
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val AUTHORED: DateSearchParam = DateSearchParam("authored")
-
-    public val BASED_ON: ReferenceSearchParam = ReferenceSearchParam("based-on")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val ITEM_SUBJECT: ReferenceSearchParam = ReferenceSearchParam("item-subject")
-
-    public val PART_OF: ReferenceSearchParam = ReferenceSearchParam("part-of")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val QUESTIONNAIRE: ReferenceSearchParam = ReferenceSearchParam("questionnaire")
-
-    public val SOURCE: ReferenceSearchParam = ReferenceSearchParam("source")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** Lifecycle status of the questionnaire response. */
   public enum class QuestionnaireResponseStatus(
     private val code: kotlin.String,

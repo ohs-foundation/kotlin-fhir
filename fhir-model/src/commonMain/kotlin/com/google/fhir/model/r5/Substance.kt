@@ -505,25 +505,6 @@ public data class Substance(
       )
   }
 
-  public companion object {
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val CODE_REFERENCE: ReferenceSearchParam = ReferenceSearchParam("code-reference")
-
-    public val EXPIRY: DateSearchParam = DateSearchParam("expiry")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val QUANTITY: QuantitySearchParam = QuantitySearchParam("quantity")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBSTANCE_REFERENCE: ReferenceSearchParam =
-      ReferenceSearchParam("substance-reference")
-  }
-
   /** A code to indicate if the substance is actively used. */
   public enum class FHIRSubstanceStatus(
     private val code: String,

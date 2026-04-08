@@ -3845,47 +3845,6 @@ public data class Citation(
       )
   }
 
-  public companion object {
-    public val CLASSIFICATION: CompositeSearchParam = CompositeSearchParam("classification")
-
-    public val CLASSIFICATION_TYPE: TokenSearchParam = TokenSearchParam("classification-type")
-
-    public val CLASSIFIER: TokenSearchParam = TokenSearchParam("classifier")
-
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val EFFECTIVE: DateSearchParam = DateSearchParam("effective")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val JURISDICTION: TokenSearchParam = TokenSearchParam("jurisdiction")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-
-    public val VERSION: TokenSearchParam = TokenSearchParam("version")
-  }
-
   /** The type of relationship to the cited artifact. */
   public enum class RelatedArtifactTypeExpanded(
     private val code: kotlin.String,

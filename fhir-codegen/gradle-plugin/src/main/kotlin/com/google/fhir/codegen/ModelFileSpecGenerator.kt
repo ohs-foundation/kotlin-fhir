@@ -17,7 +17,6 @@
 package com.google.fhir.codegen
 
 import com.google.fhir.codegen.schema.Element
-import com.google.fhir.codegen.schema.SearchParameterDefinition
 import com.google.fhir.codegen.schema.StructureDefinition
 import com.google.fhir.codegen.schema.Type
 import com.google.fhir.codegen.schema.backboneElements
@@ -48,9 +47,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** Generates a [FileSpec] for a model class. */
-class ModelFileSpecGenerator(
-  val codegenContext: CodegenContext,
-) {
+class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
 
   fun generate(structureDefinition: StructureDefinition): FileSpec {
     // Nested enums are all created inside the enclosing parent class for reusability
@@ -167,36 +164,8 @@ class ModelFileSpecGenerator(
             },
           )
 
-          // Add companion object with search parameter constants for concrete resource types
-          if (
-            structureDefinition.kind == StructureDefinition.Kind.RESOURCE &&
-              !structureDefinition.abstract
-          ) {
-            val searchParams = codegenContext.searchParamsByResource[structureDefinitionName].orEmpty()
-            if (searchParams.isNotEmpty()) {
-              addType(
-                TypeSpec.companionObjectBuilder()
-                  .apply {
-                    searchParams
-                      .sortedBy { it.code }
-                      .distinctBy { it.code }
-                      .forEach { searchParam ->
-                        val className =
-                          searchParam.toSearchParamClassName(codegenContext.packageName)
-                        addProperty(
-                          PropertySpec.builder(
-                              searchParam.code.toSearchParamConstantName(),
-                              className,
-                            )
-                            .initializer("%T(%S)", className, searchParam.code)
-                            .build()
-                        )
-                      }
-                  }
-                  .build()
-              )
-            }
-          }
+          // Search parameters are now generated as separate per-resource sealed classes
+          // (e.g., PatientSearchParam) by ResourceSearchParamFileSpecGenerator.
 
           if (structureDefinition.kind == StructureDefinition.Kind.PRIMITIVE_TYPE) {
             addToElementFunction(
@@ -732,24 +701,3 @@ private fun TypeSpec.Builder.addDataTypeFunction(type: Type, sealedInterfaceClas
       )
       .build()
   )
-
-/**
- * Converts a search parameter code (e.g., "general-practitioner") to a Kotlin constant name (e.g.,
- * "GENERAL_PRACTITIONER").
- */
-private fun String.toSearchParamConstantName(): String = replace("-", "_").uppercase()
-
-/** Maps a [SearchParameterDefinition] type string to the corresponding [SearchParam] class name. */
-private fun SearchParameterDefinition.toSearchParamClassName(packageName: String): ClassName =
-  when (type) {
-    "number" -> ClassName(packageName, "NumberSearchParam")
-    "date" -> ClassName(packageName, "DateSearchParam")
-    "string" -> ClassName(packageName, "StringSearchParam")
-    "token" -> ClassName(packageName, "TokenSearchParam")
-    "reference" -> ClassName(packageName, "ReferenceSearchParam")
-    "composite" -> ClassName(packageName, "CompositeSearchParam")
-    "quantity" -> ClassName(packageName, "QuantitySearchParam")
-    "uri" -> ClassName(packageName, "UriSearchParam")
-    "special" -> ClassName(packageName, "SpecialSearchParam")
-    else -> ClassName(packageName, "SpecialSearchParam")
-  }

@@ -850,12 +850,4 @@ public data class MedicinalProductPharmaceutical(
         routeOfAdministration = routeOfAdministration.map { it.build() },
       )
   }
-
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val ROUTE: TokenSearchParam = TokenSearchParam("route")
-
-    public val TARGET_SPECIES: TokenSearchParam = TokenSearchParam("target-species")
-  }
 }

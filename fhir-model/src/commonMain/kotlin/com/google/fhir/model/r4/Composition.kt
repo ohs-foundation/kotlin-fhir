@@ -1284,44 +1284,6 @@ public data class Composition(
       )
   }
 
-  public companion object {
-    public val ATTESTER: ReferenceSearchParam = ReferenceSearchParam("attester")
-
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CONFIDENTIALITY: TokenSearchParam = TokenSearchParam("confidentiality")
-
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val ENTRY: ReferenceSearchParam = ReferenceSearchParam("entry")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERIOD: DateSearchParam = DateSearchParam("period")
-
-    public val RELATED_ID: TokenSearchParam = TokenSearchParam("related-id")
-
-    public val RELATED_REF: ReferenceSearchParam = ReferenceSearchParam("related-ref")
-
-    public val SECTION: TokenSearchParam = TokenSearchParam("section")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** The way in which a person authenticated a composition. */
   public enum class CompositionAttestationMode(
     private val code: kotlin.String,

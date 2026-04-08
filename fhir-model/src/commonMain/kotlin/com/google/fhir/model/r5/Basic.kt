@@ -331,18 +331,4 @@ public data class Basic(
         author = author?.build(),
       )
   }
-
-  public companion object {
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val CREATED: DateSearchParam = DateSearchParam("created")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
 }

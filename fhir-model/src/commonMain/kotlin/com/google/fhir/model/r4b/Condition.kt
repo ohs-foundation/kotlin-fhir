@@ -860,48 +860,4 @@ public data class Condition(
         note = note.map { it.build() },
       )
   }
-
-  public companion object {
-    public val ABATEMENT_AGE: QuantitySearchParam = QuantitySearchParam("abatement-age")
-
-    public val ABATEMENT_DATE: DateSearchParam = DateSearchParam("abatement-date")
-
-    public val ABATEMENT_STRING: StringSearchParam = StringSearchParam("abatement-string")
-
-    public val ASSERTER: ReferenceSearchParam = ReferenceSearchParam("asserter")
-
-    public val BODY_SITE: TokenSearchParam = TokenSearchParam("body-site")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CLINICAL_STATUS: TokenSearchParam = TokenSearchParam("clinical-status")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val EVIDENCE: TokenSearchParam = TokenSearchParam("evidence")
-
-    public val EVIDENCE_DETAIL: ReferenceSearchParam = ReferenceSearchParam("evidence-detail")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val ONSET_AGE: QuantitySearchParam = QuantitySearchParam("onset-age")
-
-    public val ONSET_DATE: DateSearchParam = DateSearchParam("onset-date")
-
-    public val ONSET_INFO: StringSearchParam = StringSearchParam("onset-info")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val RECORDED_DATE: DateSearchParam = DateSearchParam("recorded-date")
-
-    public val SEVERITY: TokenSearchParam = TokenSearchParam("severity")
-
-    public val STAGE: TokenSearchParam = TokenSearchParam("stage")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val VERIFICATION_STATUS: TokenSearchParam = TokenSearchParam("verification-status")
-  }
 }

@@ -1119,30 +1119,6 @@ public data class ImagingSelection(
       )
   }
 
-  public companion object {
-    public val BASED_ON: ReferenceSearchParam = ReferenceSearchParam("based-on")
-
-    public val BODY_SITE: TokenSearchParam = TokenSearchParam("body-site")
-
-    public val BODY_STRUCTURE: ReferenceSearchParam = ReferenceSearchParam("body-structure")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DERIVED_FROM: ReferenceSearchParam = ReferenceSearchParam("derived-from")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val ISSUED: DateSearchParam = DateSearchParam("issued")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val STUDY_UID: TokenSearchParam = TokenSearchParam("study-uid")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** The type of 2D coordinates describing a 2D image region. */
   public enum class ImagingSelection2DGraphicType(
     private val code: kotlin.String,

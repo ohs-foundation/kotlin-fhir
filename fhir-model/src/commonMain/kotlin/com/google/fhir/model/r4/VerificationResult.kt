@@ -828,10 +828,6 @@ public data class VerificationResult(
       )
   }
 
-  public companion object {
-    public val TARGET: ReferenceSearchParam = ReferenceSearchParam("target")
-  }
-
   /** The validation status of the target */
   public enum class Status(
     private val code: kotlin.String,

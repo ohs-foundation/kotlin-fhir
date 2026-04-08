@@ -1474,20 +1474,6 @@ public data class TestReport(
       )
   }
 
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val ISSUED: DateSearchParam = DateSearchParam("issued")
-
-    public val PARTICIPANT: UriSearchParam = UriSearchParam("participant")
-
-    public val RESULT: TokenSearchParam = TokenSearchParam("result")
-
-    public val TESTER: StringSearchParam = StringSearchParam("tester")
-
-    public val TESTSCRIPT: ReferenceSearchParam = ReferenceSearchParam("testscript")
-  }
-
   /** The type of participant. */
   public enum class TestReportParticipantType(
     private val code: kotlin.String,

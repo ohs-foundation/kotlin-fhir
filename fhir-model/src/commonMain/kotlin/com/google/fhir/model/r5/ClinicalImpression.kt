@@ -670,32 +670,6 @@ public data class ClinicalImpression(
       )
   }
 
-  public companion object {
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val FINDING_CODE: TokenSearchParam = TokenSearchParam("finding-code")
-
-    public val FINDING_REF: ReferenceSearchParam = ReferenceSearchParam("finding-ref")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERFORMER: ReferenceSearchParam = ReferenceSearchParam("performer")
-
-    public val PREVIOUS: ReferenceSearchParam = ReferenceSearchParam("previous")
-
-    public val PROBLEM: ReferenceSearchParam = ReferenceSearchParam("problem")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val SUPPORTING_INFO: ReferenceSearchParam = ReferenceSearchParam("supporting-info")
-  }
-
   /** Codes identifying the lifecycle stage of an event. */
   public enum class EventStatus(
     private val code: kotlin.String,

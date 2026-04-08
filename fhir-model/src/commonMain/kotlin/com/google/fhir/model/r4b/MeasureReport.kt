@@ -1197,26 +1197,6 @@ public data class MeasureReport(
       )
   }
 
-  public companion object {
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val EVALUATED_RESOURCE: ReferenceSearchParam = ReferenceSearchParam("evaluated-resource")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MEASURE: ReferenceSearchParam = ReferenceSearchParam("measure")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERIOD: DateSearchParam = DateSearchParam("period")
-
-    public val REPORTER: ReferenceSearchParam = ReferenceSearchParam("reporter")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** The status of the measure report. */
   public enum class MeasureReportStatus(
     private val code: String,

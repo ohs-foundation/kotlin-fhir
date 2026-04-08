@@ -16,54 +16,59 @@
 
 package com.google.fhir.codegen
 
-import com.google.fhir.codegen.schema.capitalized
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asClassName
 
-/** Generates a `SearchParam.kt` file with the sealed interface and concrete search param types. */
+/**
+ * Generates a `SearchParam.kt` file with the sealed interface for search parameter metadata.
+ *
+ * The `SearchParam` interface provides metadata about FHIR search parameters (name, type,
+ * expression, target). Per-resource sealed classes (e.g., `PatientSearchParam`) extend this
+ * interface and add typed extraction functions.
+ */
 object SearchParamFileSpecGenerator {
-  private val searchParamTypes =
-    listOf("number", "date", "string", "token", "reference", "composite", "quantity", "uri", "special")
-
   fun generate(packageName: String): FileSpec {
+    val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
+
     return FileSpec.builder(packageName, "SearchParam")
       .addType(
         TypeSpec.interfaceBuilder("SearchParam")
           .addModifiers(KModifier.PUBLIC, KModifier.SEALED)
           .addKdoc("Base type for typed FHIR search parameters.")
           .addProperty(
-            PropertySpec.builder("paramName", kotlin.String::class)
+            PropertySpec.builder("paramName", String::class)
               .addModifiers(KModifier.PUBLIC)
               .addKdoc("The name of the search parameter as used in search URLs.")
               .build()
           )
-          .build()
-      )
-      .apply {
-        for (fhirType in searchParamTypes) {
-          val name = fhirType.capitalized()
-          addType(
-            TypeSpec.classBuilder("${name}SearchParam")
+          .addProperty(
+            PropertySpec.builder("type", searchParamTypeClassName)
               .addModifiers(KModifier.PUBLIC)
-              .addSuperinterface(ClassName(packageName, "SearchParam"))
-              .addKdoc("A search parameter of type `$fhirType`.")
-              .primaryConstructor(
-                FunSpec.constructorBuilder().addParameter("paramName", kotlin.String::class).build()
-              )
-              .addProperty(
-                PropertySpec.builder("paramName", kotlin.String::class)
-                  .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
-                  .initializer("paramName")
-                  .build()
-              )
+              .addKdoc("The search parameter type (e.g., date, token, reference).")
               .build()
           )
-        }
-      }
+          .addProperty(
+            PropertySpec.builder("expression", String::class)
+              .addModifiers(KModifier.PUBLIC)
+              .addKdoc("The FHIRPath expression that extracts values for this search parameter.")
+              .build()
+          )
+          .addProperty(
+            PropertySpec.builder(
+                "target",
+                List::class.asClassName().parameterizedBy(String::class.asClassName()),
+              )
+              .addModifiers(KModifier.PUBLIC)
+              .addKdoc("The target resource types for reference search parameters.")
+              .build()
+          )
+          .build()
+      )
       .build()
   }
 }

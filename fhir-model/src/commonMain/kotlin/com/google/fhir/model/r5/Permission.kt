@@ -989,10 +989,6 @@ public data class Permission(
       )
   }
 
-  public companion object {
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** How a rule statement is applied, such as adding additional consent or removing consent. */
   public enum class ConsentProvisionType(
     private val code: String,

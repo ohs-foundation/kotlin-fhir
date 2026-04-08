@@ -510,18 +510,6 @@ public data class BiologicallyDerivedProductDispense(
       )
   }
 
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERFORMER: ReferenceSearchParam = ReferenceSearchParam("performer")
-
-    public val PRODUCT: ReferenceSearchParam = ReferenceSearchParam("product")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** BiologicallyDerivedProductDispense Status Codes */
   public enum class BiologicallyDerivedProductDispenseCodes(
     private val code: kotlin.String,

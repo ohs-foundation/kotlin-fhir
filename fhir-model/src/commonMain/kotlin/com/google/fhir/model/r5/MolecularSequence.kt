@@ -908,18 +908,6 @@ public data class MolecularSequence(
       )
   }
 
-  public companion object {
-    public val FOCUS: ReferenceSearchParam = ReferenceSearchParam("focus")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** Type for orientation. */
   public enum class OrientationType(
     private val code: kotlin.String,

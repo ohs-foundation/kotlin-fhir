@@ -1452,38 +1452,6 @@ public data class AuditEvent(
       )
   }
 
-  public companion object {
-    public val ACTION: TokenSearchParam = TokenSearchParam("action")
-
-    public val AGENT: ReferenceSearchParam = ReferenceSearchParam("agent")
-
-    public val AGENT_ROLE: TokenSearchParam = TokenSearchParam("agent-role")
-
-    public val BASED_ON: ReferenceSearchParam = ReferenceSearchParam("based-on")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val ENTITY: ReferenceSearchParam = ReferenceSearchParam("entity")
-
-    public val ENTITY_ROLE: TokenSearchParam = TokenSearchParam("entity-role")
-
-    public val OUTCOME: TokenSearchParam = TokenSearchParam("outcome")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val POLICY: UriSearchParam = UriSearchParam("policy")
-
-    public val PURPOSE: TokenSearchParam = TokenSearchParam("purpose")
-
-    public val SOURCE: ReferenceSearchParam = ReferenceSearchParam("source")
-  }
-
   /** Indicator for type of action performed during the event that generated the event. */
   public enum class AuditEventAction(
     private val code: String,

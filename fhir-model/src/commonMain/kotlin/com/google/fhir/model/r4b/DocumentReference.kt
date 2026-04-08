@@ -1021,58 +1021,6 @@ public data class DocumentReference(
       )
   }
 
-  public companion object {
-    public val AUTHENTICATOR: ReferenceSearchParam = ReferenceSearchParam("authenticator")
-
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CONTENTTYPE: TokenSearchParam = TokenSearchParam("contenttype")
-
-    public val CUSTODIAN: ReferenceSearchParam = ReferenceSearchParam("custodian")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val EVENT: TokenSearchParam = TokenSearchParam("event")
-
-    public val FACILITY: TokenSearchParam = TokenSearchParam("facility")
-
-    public val FORMAT: TokenSearchParam = TokenSearchParam("format")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LANGUAGE: TokenSearchParam = TokenSearchParam("language")
-
-    public val LOCATION: UriSearchParam = UriSearchParam("location")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERIOD: DateSearchParam = DateSearchParam("period")
-
-    public val RELATED: ReferenceSearchParam = ReferenceSearchParam("related")
-
-    public val RELATESTO: ReferenceSearchParam = ReferenceSearchParam("relatesto")
-
-    public val RELATION: TokenSearchParam = TokenSearchParam("relation")
-
-    public val RELATIONSHIP: CompositeSearchParam = CompositeSearchParam("relationship")
-
-    public val SECURITY_LABEL: TokenSearchParam = TokenSearchParam("security-label")
-
-    public val SETTING: TokenSearchParam = TokenSearchParam("setting")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** The type of relationship between documents. */
   public enum class DocumentRelationshipType(
     private val code: kotlin.String,

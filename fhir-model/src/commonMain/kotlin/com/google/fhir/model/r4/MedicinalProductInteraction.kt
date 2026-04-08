@@ -453,8 +453,4 @@ public data class MedicinalProductInteraction(
         management = management?.build(),
       )
   }
-
-  public companion object {
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
 }

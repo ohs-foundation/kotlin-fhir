@@ -601,16 +601,6 @@ public data class DeviceUsage(
       )
   }
 
-  public companion object {
-    public val DEVICE: TokenSearchParam = TokenSearchParam("device")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** A coded concept indicating the current status of the Device Usage. */
   public enum class DeviceUsageStatus(
     private val code: String,

@@ -3013,42 +3013,6 @@ public data class MedicationKnowledge(
       )
   }
 
-  public companion object {
-    public val CLASSIFICATION: TokenSearchParam = TokenSearchParam("classification")
-
-    public val CLASSIFICATION_TYPE: TokenSearchParam = TokenSearchParam("classification-type")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DOSEFORM: TokenSearchParam = TokenSearchParam("doseform")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INGREDIENT: ReferenceSearchParam = ReferenceSearchParam("ingredient")
-
-    public val INGREDIENT_CODE: TokenSearchParam = TokenSearchParam("ingredient-code")
-
-    public val MONITORING_PROGRAM_NAME: TokenSearchParam =
-      TokenSearchParam("monitoring-program-name")
-
-    public val MONITORING_PROGRAM_TYPE: TokenSearchParam =
-      TokenSearchParam("monitoring-program-type")
-
-    public val MONOGRAPH: ReferenceSearchParam = ReferenceSearchParam("monograph")
-
-    public val MONOGRAPH_TYPE: TokenSearchParam = TokenSearchParam("monograph-type")
-
-    public val PACKAGING_COST: QuantitySearchParam = QuantitySearchParam("packaging-cost")
-
-    public val PACKAGING_COST_CONCEPT: TokenSearchParam = TokenSearchParam("packaging-cost-concept")
-
-    public val PRODUCT_TYPE: TokenSearchParam = TokenSearchParam("product-type")
-
-    public val SOURCE_COST: TokenSearchParam = TokenSearchParam("source-cost")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** MedicationKnowledge Status Codes */
   public enum class MedicationKnowledgeStatusCodes(
     private val code: kotlin.String,

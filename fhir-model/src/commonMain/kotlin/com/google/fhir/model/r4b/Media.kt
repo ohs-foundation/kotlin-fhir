@@ -600,34 +600,6 @@ public data class Media(
       )
   }
 
-  public companion object {
-    public val BASED_ON: ReferenceSearchParam = ReferenceSearchParam("based-on")
-
-    public val CREATED: DateSearchParam = DateSearchParam("created")
-
-    public val DEVICE: ReferenceSearchParam = ReferenceSearchParam("device")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MODALITY: TokenSearchParam = TokenSearchParam("modality")
-
-    public val OPERATOR: ReferenceSearchParam = ReferenceSearchParam("operator")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val SITE: TokenSearchParam = TokenSearchParam("site")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-
-    public val VIEW: TokenSearchParam = TokenSearchParam("view")
-  }
-
   /** Codes identifying the lifecycle stage of an event. */
   public enum class EventStatus(
     private val code: kotlin.String,

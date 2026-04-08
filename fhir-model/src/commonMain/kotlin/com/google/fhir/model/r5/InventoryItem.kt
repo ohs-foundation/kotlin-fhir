@@ -1209,16 +1209,6 @@ public data class InventoryItem(
       )
   }
 
-  public companion object {
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** This value set includes common codes from BCP-47 (see http://tools.ietf.org/html/bcp47) */
   public enum class CommonLanguages(
     private val code: kotlin.String,

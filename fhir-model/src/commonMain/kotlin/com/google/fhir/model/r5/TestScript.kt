@@ -4253,49 +4253,6 @@ public data class TestScript(
       )
   }
 
-  public companion object {
-    public val CONTEXT: TokenSearchParam = TokenSearchParam("context")
-
-    public val CONTEXT_QUANTITY: QuantitySearchParam = QuantitySearchParam("context-quantity")
-
-    public val CONTEXT_TYPE: TokenSearchParam = TokenSearchParam("context-type")
-
-    public val CONTEXT_TYPE_QUANTITY: CompositeSearchParam =
-      CompositeSearchParam("context-type-quantity")
-
-    public val CONTEXT_TYPE_VALUE: CompositeSearchParam = CompositeSearchParam("context-type-value")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DESCRIPTION: StringSearchParam = StringSearchParam("description")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val JURISDICTION: TokenSearchParam = TokenSearchParam("jurisdiction")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val PUBLISHER: StringSearchParam = StringSearchParam("publisher")
-
-    public val SCOPE_ARTIFACT: ReferenceSearchParam = ReferenceSearchParam("scope-artifact")
-
-    public val SCOPE_ARTIFACT_CONFORMANCE: CompositeSearchParam =
-      CompositeSearchParam("scope-artifact-conformance")
-
-    public val SCOPE_ARTIFACT_PHASE: CompositeSearchParam =
-      CompositeSearchParam("scope-artifact-phase")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val TESTSCRIPT_CAPABILITY: StringSearchParam = StringSearchParam("testscript-capability")
-
-    public val TITLE: StringSearchParam = StringSearchParam("title")
-
-    public val URL: UriSearchParam = UriSearchParam("url")
-
-    public val VERSION: TokenSearchParam = TokenSearchParam("version")
-  }
-
   /** The allowable request method or HTTP operation codes. */
   public enum class TestScriptRequestMethodCode(
     private val code: kotlin.String,

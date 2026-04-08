@@ -754,38 +754,6 @@ public data class Location(
       )
   }
 
-  public companion object {
-    public val ADDRESS: StringSearchParam = StringSearchParam("address")
-
-    public val ADDRESS_CITY: StringSearchParam = StringSearchParam("address-city")
-
-    public val ADDRESS_COUNTRY: StringSearchParam = StringSearchParam("address-country")
-
-    public val ADDRESS_POSTALCODE: StringSearchParam = StringSearchParam("address-postalcode")
-
-    public val ADDRESS_STATE: StringSearchParam = StringSearchParam("address-state")
-
-    public val ADDRESS_USE: TokenSearchParam = TokenSearchParam("address-use")
-
-    public val ENDPOINT: ReferenceSearchParam = ReferenceSearchParam("endpoint")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val NEAR: SpecialSearchParam = SpecialSearchParam("near")
-
-    public val OPERATIONAL_STATUS: TokenSearchParam = TokenSearchParam("operational-status")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val PARTOF: ReferenceSearchParam = ReferenceSearchParam("partof")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** The days of the week. */
   public enum class DaysOfWeek(
     private val code: kotlin.String,

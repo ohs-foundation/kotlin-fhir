@@ -429,14 +429,6 @@ public data class Linkage(
       )
   }
 
-  public companion object {
-    public val AUTHOR: ReferenceSearchParam = ReferenceSearchParam("author")
-
-    public val ITEM: ReferenceSearchParam = ReferenceSearchParam("item")
-
-    public val SOURCE: ReferenceSearchParam = ReferenceSearchParam("source")
-  }
-
   /** Used to distinguish different roles a resource can play within a set of linked resources. */
   public enum class LinkageType(
     private val code: String,

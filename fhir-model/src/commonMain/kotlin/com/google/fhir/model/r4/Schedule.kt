@@ -363,20 +363,4 @@ public data class Schedule(
         comment = comment?.build(),
       )
   }
-
-  public companion object {
-    public val ACTIVE: TokenSearchParam = TokenSearchParam("active")
-
-    public val ACTOR: ReferenceSearchParam = ReferenceSearchParam("actor")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val SERVICE_CATEGORY: TokenSearchParam = TokenSearchParam("service-category")
-
-    public val SERVICE_TYPE: TokenSearchParam = TokenSearchParam("service-type")
-
-    public val SPECIALTY: TokenSearchParam = TokenSearchParam("specialty")
-  }
 }

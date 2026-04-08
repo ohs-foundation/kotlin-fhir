@@ -1745,12 +1745,6 @@ public data class Transport(
       )
   }
 
-  public companion object {
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** Status of the transport */
   public enum class TransportStatus(
     private val code: kotlin.String,

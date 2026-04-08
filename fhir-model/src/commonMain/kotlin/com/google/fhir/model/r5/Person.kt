@@ -738,54 +738,6 @@ public data class Person(
       )
   }
 
-  public companion object {
-    public val ADDRESS: StringSearchParam = StringSearchParam("address")
-
-    public val ADDRESS_CITY: StringSearchParam = StringSearchParam("address-city")
-
-    public val ADDRESS_COUNTRY: StringSearchParam = StringSearchParam("address-country")
-
-    public val ADDRESS_POSTALCODE: StringSearchParam = StringSearchParam("address-postalcode")
-
-    public val ADDRESS_STATE: StringSearchParam = StringSearchParam("address-state")
-
-    public val ADDRESS_USE: TokenSearchParam = TokenSearchParam("address-use")
-
-    public val BIRTHDATE: DateSearchParam = DateSearchParam("birthdate")
-
-    public val DEATH_DATE: DateSearchParam = DateSearchParam("death-date")
-
-    public val DECEASED: TokenSearchParam = TokenSearchParam("deceased")
-
-    public val EMAIL: TokenSearchParam = TokenSearchParam("email")
-
-    public val FAMILY: StringSearchParam = StringSearchParam("family")
-
-    public val GENDER: TokenSearchParam = TokenSearchParam("gender")
-
-    public val GIVEN: StringSearchParam = StringSearchParam("given")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LINK: ReferenceSearchParam = ReferenceSearchParam("link")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PHONE: TokenSearchParam = TokenSearchParam("phone")
-
-    public val PHONETIC: StringSearchParam = StringSearchParam("phonetic")
-
-    public val PRACTITIONER: ReferenceSearchParam = ReferenceSearchParam("practitioner")
-
-    public val RELATEDPERSON: ReferenceSearchParam = ReferenceSearchParam("relatedperson")
-
-    public val TELECOM: TokenSearchParam = TokenSearchParam("telecom")
-  }
-
   /**
    * The level of confidence that this link represents the same actual person, based on NIST
    * Authentication Levels.

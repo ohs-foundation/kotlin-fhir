@@ -1103,28 +1103,4 @@ public data class PackagedProductDefinition(
         characteristic = characteristic.map { it.build() },
       )
   }
-
-  public companion object {
-    public val BIOLOGICAL: ReferenceSearchParam = ReferenceSearchParam("biological")
-
-    public val CONTAINED_ITEM: ReferenceSearchParam = ReferenceSearchParam("contained-item")
-
-    public val DEVICE: ReferenceSearchParam = ReferenceSearchParam("device")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MANUFACTURED_ITEM: ReferenceSearchParam = ReferenceSearchParam("manufactured-item")
-
-    public val MEDICATION: ReferenceSearchParam = ReferenceSearchParam("medication")
-
-    public val NAME: TokenSearchParam = TokenSearchParam("name")
-
-    public val NUTRITION: ReferenceSearchParam = ReferenceSearchParam("nutrition")
-
-    public val PACKAGE: ReferenceSearchParam = ReferenceSearchParam("package")
-
-    public val PACKAGE_FOR: ReferenceSearchParam = ReferenceSearchParam("package-for")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
 }

@@ -1358,32 +1358,6 @@ public data class ClinicalUseDefinition(
       )
   }
 
-  public companion object {
-    public val CONTRAINDICATION: TokenSearchParam = TokenSearchParam("contraindication")
-
-    public val CONTRAINDICATION_REFERENCE: ReferenceSearchParam =
-      ReferenceSearchParam("contraindication-reference")
-
-    public val EFFECT: TokenSearchParam = TokenSearchParam("effect")
-
-    public val EFFECT_REFERENCE: ReferenceSearchParam = ReferenceSearchParam("effect-reference")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val INDICATION: TokenSearchParam = TokenSearchParam("indication")
-
-    public val INDICATION_REFERENCE: ReferenceSearchParam =
-      ReferenceSearchParam("indication-reference")
-
-    public val INTERACTION: TokenSearchParam = TokenSearchParam("interaction")
-
-    public val PRODUCT: ReferenceSearchParam = ReferenceSearchParam("product")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** Overall defining type of this clinical use definition. */
   public enum class ClinicalUseDefinitionType(
     private val code: String,

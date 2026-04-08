@@ -1070,39 +1070,6 @@ public data class AllergyIntolerance(
       )
   }
 
-  public companion object {
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val CLINICAL_STATUS: TokenSearchParam = TokenSearchParam("clinical-status")
-
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val CRITICALITY: TokenSearchParam = TokenSearchParam("criticality")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LAST_DATE: DateSearchParam = DateSearchParam("last-date")
-
-    public val MANIFESTATION_CODE: TokenSearchParam = TokenSearchParam("manifestation-code")
-
-    public val MANIFESTATION_REFERENCE: ReferenceSearchParam =
-      ReferenceSearchParam("manifestation-reference")
-
-    public val PARTICIPANT: ReferenceSearchParam = ReferenceSearchParam("participant")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val ROUTE: TokenSearchParam = TokenSearchParam("route")
-
-    public val SEVERITY: TokenSearchParam = TokenSearchParam("severity")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-
-    public val VERIFICATION_STATUS: TokenSearchParam = TokenSearchParam("verification-status")
-  }
-
   /**
    * Clinical assessment of the severity of a reaction event as a whole, potentially considering
    * multiple different manifestations.

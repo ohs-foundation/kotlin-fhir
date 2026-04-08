@@ -433,16 +433,6 @@ public data class DeviceUseStatement(
       )
   }
 
-  public companion object {
-    public val DEVICE: ReferenceSearchParam = ReferenceSearchParam("device")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** A coded concept indicating the current status of the Device Usage. */
   public enum class DeviceUseStatementStatus(
     private val code: String,

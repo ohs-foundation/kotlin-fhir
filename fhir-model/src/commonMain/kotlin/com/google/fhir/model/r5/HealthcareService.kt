@@ -773,36 +773,4 @@ public data class HealthcareService(
         endpoint = endpoint.map { it.build() },
       )
   }
-
-  public companion object {
-    public val ACTIVE: TokenSearchParam = TokenSearchParam("active")
-
-    public val CHARACTERISTIC: TokenSearchParam = TokenSearchParam("characteristic")
-
-    public val COMMUNICATION: TokenSearchParam = TokenSearchParam("communication")
-
-    public val COVERAGE_AREA: ReferenceSearchParam = ReferenceSearchParam("coverage-area")
-
-    public val ELIGIBILITY: TokenSearchParam = TokenSearchParam("eligibility")
-
-    public val ENDPOINT: ReferenceSearchParam = ReferenceSearchParam("endpoint")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val LOCATION: ReferenceSearchParam = ReferenceSearchParam("location")
-
-    public val NAME: StringSearchParam = StringSearchParam("name")
-
-    public val OFFERED_IN: ReferenceSearchParam = ReferenceSearchParam("offered-in")
-
-    public val ORGANIZATION: ReferenceSearchParam = ReferenceSearchParam("organization")
-
-    public val PROGRAM: TokenSearchParam = TokenSearchParam("program")
-
-    public val SERVICE_CATEGORY: TokenSearchParam = TokenSearchParam("service-category")
-
-    public val SERVICE_TYPE: TokenSearchParam = TokenSearchParam("service-type")
-
-    public val SPECIALTY: TokenSearchParam = TokenSearchParam("specialty")
-  }
 }

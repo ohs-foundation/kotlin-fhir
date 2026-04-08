@@ -964,38 +964,6 @@ public data class MedicationAdministration(
       )
   }
 
-  public companion object {
-    public val CODE: TokenSearchParam = TokenSearchParam("code")
-
-    public val DATE: DateSearchParam = DateSearchParam("date")
-
-    public val DEVICE: ReferenceSearchParam = ReferenceSearchParam("device")
-
-    public val ENCOUNTER: ReferenceSearchParam = ReferenceSearchParam("encounter")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val MEDICATION: ReferenceSearchParam = ReferenceSearchParam("medication")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PERFORMER: ReferenceSearchParam = ReferenceSearchParam("performer")
-
-    public val PERFORMER_DEVICE_CODE: TokenSearchParam = TokenSearchParam("performer-device-code")
-
-    public val REASON_GIVEN: ReferenceSearchParam = ReferenceSearchParam("reason-given")
-
-    public val REASON_GIVEN_CODE: TokenSearchParam = TokenSearchParam("reason-given-code")
-
-    public val REASON_NOT_GIVEN: TokenSearchParam = TokenSearchParam("reason-not-given")
-
-    public val REQUEST: ReferenceSearchParam = ReferenceSearchParam("request")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-
-    public val SUBJECT: ReferenceSearchParam = ReferenceSearchParam("subject")
-  }
-
   /** MedicationAdministration Status Codes */
   public enum class MedicationAdministrationStatusCodes(
     private val code: kotlin.String,

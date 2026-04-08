@@ -1110,22 +1110,6 @@ public data class CoverageEligibilityRequest(
       )
   }
 
-  public companion object {
-    public val CREATED: DateSearchParam = DateSearchParam("created")
-
-    public val ENTERER: ReferenceSearchParam = ReferenceSearchParam("enterer")
-
-    public val FACILITY: ReferenceSearchParam = ReferenceSearchParam("facility")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val PATIENT: ReferenceSearchParam = ReferenceSearchParam("patient")
-
-    public val PROVIDER: ReferenceSearchParam = ReferenceSearchParam("provider")
-
-    public val STATUS: TokenSearchParam = TokenSearchParam("status")
-  }
-
   /** This value set includes Status codes. */
   public enum class FinancialResourceStatusCodes(
     private val code: kotlin.String,

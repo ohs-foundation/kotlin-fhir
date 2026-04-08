@@ -518,16 +518,6 @@ public data class DeviceMetric(
       )
   }
 
-  public companion object {
-    public val CATEGORY: TokenSearchParam = TokenSearchParam("category")
-
-    public val DEVICE: ReferenceSearchParam = ReferenceSearchParam("device")
-
-    public val IDENTIFIER: TokenSearchParam = TokenSearchParam("identifier")
-
-    public val `TYPE`: TokenSearchParam = TokenSearchParam("type")
-  }
-
   /** Describes the type of a metric calibration. */
   public enum class DeviceMetricCalibrationType(
     private val code: String,

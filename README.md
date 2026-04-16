@@ -176,7 +176,7 @@ value sets that are not bound to elements are excluded from code generation.
 
 #### Shared vs. Local Enums
 
-- If the `StructureDefinition` defines an element with a [**common binding**](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html), a **shared enum** is generated and placed in the `com.google.fhir.model.<r4|r4b|r5>.terminologies` package.  
+- If the `StructureDefinition` defines an element with a [**common binding**](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html), a **shared enum** is generated and placed in the `dev.ohs.fhir.model.<r4|r4b|r5>.terminologies` package.  
   **Example:** `AdministrativeGender`
 - If the element uses a **non-common binding**, a **local enum** is created inside the associated parent class.  
   **Example:** `NameUse` inside the `HumanName` class
@@ -417,12 +417,12 @@ To put all this together, the
 [FHIR codegen](fhir-codegen/gradle-plugin/src/main/kotlin/com/google/fhir/codegen) in the Gradle
 binary plugin generates, for each FHIR resource type:
 
-- the model class (the primary class) in the root package e.g. `com.google.fhir.model.r4`,
+- the model class (the primary class) in the root package e.g. `dev.ohs.fhir.model.r4`,
 - the surrogate classes (one for basic primitive type
   mapping to JSON properties, plus extras for each multi-choice/polymorphic property and backbone element)
-  in the surrogate package e.g. `com.google.fhir.model.r4.surrogates`, and
+  in the surrogate package e.g. `dev.ohs.fhir.model.r4.surrogates`, and
 - the serializer classes (to delegate serialization/deserialization to the corresponding surrogate classes) in the
-  serializer package e.g. `com.google.fhir.model.r4.serializers`,
+  serializer package e.g. `dev.ohs.fhir.model.r4.serializers`,
 
 using
 [`ModelTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/com/google/fhir/codegen/ModelTypeSpecGenerator.kt),
@@ -468,7 +468,7 @@ the `kotlin` block of the module's `build.gradle.kts` file (e.g., `composeApp/bu
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.google.fhir:fhir-model:1.0.0-beta02")
+            implementation("dev.ohs.fhir:fhir-model:1.0.0-beta02")
         }
     }
 }
@@ -482,32 +482,32 @@ For Android projects, add the dependency to the `dependency` block in the module
 ```
 // e.g., app/build.gradle.kts
 dependencies {
-    implementation("com.google.fhir:fhir-model:1.0.0-beta02")
+    implementation("dev.ohs.fhir:fhir-model:1.0.0-beta02")
 }
 ```
 
 ### Working with FHIR resources
 
 The generated Kotlin classes for FHIR resources are organized in version-specific packages:
-`com.google.fhir.model.<FHIR_VERSION>` where `<FHIR_VERSION>`∈ {`r4`, `r4b`, `r5`}.
+`dev.ohs.fhir.model.<FHIR_VERSION>` where `<FHIR_VERSION>`∈ {`r4`, `r4b`, `r5`}.
 
 For example:
 
-- `com.google.fhir.model.r4`
-- `com.google.fhir.model.r4b`
-- `com.google.fhir.model.r5`
+- `dev.ohs.fhir.model.r4`
+- `dev.ohs.fhir.model.r4b`
+- `dev.ohs.fhir.model.r5`
 
 Within each package, you'll find the corresponding Kotlin classes for all FHIR resources of that
 version. For example, the `Patient` class generated for FHIR R4 can be found in the
-`com.google.fhir.model.r4` package.
+`dev.ohs.fhir.model.r4` package.
 
 To create a new instance of a FHIR resource, use the provided builder class. For example:
 
 ```kotlin
-import com.google.fhir.model.r4.Date
-import com.google.fhir.model.r4.FhirDate
-import com.google.fhir.model.r4.HumanName
-import com.google.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.Date
+import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.HumanName
+import dev.ohs.fhir.model.r4.Patient
 
 fun main() {
     val patient =
@@ -516,7 +516,7 @@ fun main() {
                 id = "patient-01"
                 name.add(
                     HumanName.Builder().apply {
-                        given.add(com.google.fhir.model.r4.String.Builder().apply { value = "John" })
+                        given.add(dev.ohs.fhir.model.r4.String.Builder().apply { value = "John" })
                     }
                 )
                 birthDate = Date.Builder().apply { value = FhirDate.fromString("2000-01-01") }
@@ -531,7 +531,7 @@ To serialize and deserialize FHIR resources, use the provided `Fhir<FHIR_VERSION
 corresponding version-specific package:
 
 ```kotlin
-import com.google.fhir.model.r4.FhirR4Json  // or com.google.fhir.model.r4b.FhirR4bJson or com.google.fhir.model.r5.FhirR5Json
+import dev.ohs.fhir.model.r4.FhirR4Json  // or dev.ohs.fhir.model.r4b.FhirR4bJson or dev.ohs.fhir.model.r5.FhirR5Json
 
 fun main() {
     val jsonR4 = FhirR4Json()
@@ -548,8 +548,8 @@ Once this is correctly configured, use `encodeToString` and `decodeFromString` f
 serialize and deserialize:
 
 ```kotlin
-import com.google.fhir.model.r4.Patient
-import com.google.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.Resource
 
 fun main() {
     val jsonString = jsonR4.encodeToString(patient)  // Serialization

@@ -1,3 +1,6 @@
+import dev.ohs.fhir.codegen.ANDROID_NAMESPACE
+import dev.ohs.fhir.codegen.BASE_PACKAGE
+import dev.ohs.fhir.codegen.MAVEN_GROUP_ID
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -12,7 +15,7 @@ plugins {
     `maven-publish`
 }
 
-group = "com.google.fhir"
+group = MAVEN_GROUP_ID
 version = "1.0.0-beta02"
 
 // Run `./gradlew r4` to generate FHIR models for R4 in `fhir-model/build/generated/r4`
@@ -24,7 +27,7 @@ val codegenTaskR4 = fhirCodegenExtension.newTask("r4") {
     this.expansionPackageFiles.from(
         File(project.rootDir, "third_party/hl7.fhir.r4.expansions/package").listFiles()
     )
-    this.packageName.set("com.google.fhir.model.r4")
+    this.packageName.set("$BASE_PACKAGE.r4")
 }
 
 // Run `./gradlew r4b` to generate FHIR models for R4B in `fhir-model/build/generated/r4b`
@@ -36,7 +39,7 @@ val codegenTaskR4B = fhirCodegenExtension.newTask("r4b") {
     this.expansionPackageFiles.from(
         File(project.rootDir, "third_party/hl7.fhir.r4b.expansions/package").listFiles()
     )
-    this.packageName.set("com.google.fhir.model.r4b")
+    this.packageName.set("$BASE_PACKAGE.r4b")
 }
 
 // Run `./gradlew r5` to generate FHIR models for R5 in `fhir-model/build/generated/r5`
@@ -48,7 +51,7 @@ val codegenTaskR5 = fhirCodegenExtension.newTask("r5") {
     this.expansionPackageFiles.from(
         File(project.rootDir, "third_party/hl7.fhir.r5.expansions/package").listFiles()
     )
-    this.packageName.set("com.google.fhir.model.r5")
+    this.packageName.set("$BASE_PACKAGE.r5")
 }
 
 // Run `./gradlew codegen` to generate all FHIR models in the main source set
@@ -148,7 +151,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.google.fhir"
+    namespace = ANDROID_NAMESPACE
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()

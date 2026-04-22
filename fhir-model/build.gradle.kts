@@ -16,7 +16,7 @@ plugins {
 }
 
 group = MAVEN_GROUP_ID
-version = "1.0.0-beta02"
+version = "1.0.0-beta03"
 
 // Run `./gradlew r4` to generate FHIR models for R4 in `fhir-model/build/generated/r4`
 val codegenTaskR4 = fhirCodegenExtension.newTask("r4") {

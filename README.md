@@ -626,22 +626,55 @@ These tests are set up to run on JVM and as Android unit tests. To run them loca
 
 ### Publishing
 
-To create a maven repository from the generated FHIR model, run:
+For a comprehensive understanding of publishing KMP libraries to Maven Central, see the
+[Kotlin Multiplatform Publishing Guide](https://kotlinlang.org/docs/multiplatform-publish-lib.html)
+and the
+[Maven Central Publishing Guide](https://central.sonatype.org/publish/publish-portal-guide/).
 
+> **Note:** The project has already been set up to be released to Maven using the
+> [`gradle-maven-publish-plugin`](https://github.com/vanniktech/gradle-maven-publish-plugin). The
+> following sections outline the additional setup required for a developer to publish to Maven Local
+> and Maven Central.
+
+#### Maven Local
+To publish artifacts to your local Maven repository (`~/.m2/repository`) for local development and
+testing, run:
+
+```bash
+./gradlew :fhir-model:publishToMavenLocal
 ```
-./gradlew :fhir-model:publish
+
+#### Maven Central
+To publish a new release to Maven Central, first set up your GPG signing key and repository
+credentials to Gradle following the aforementioned official guides.
+
+**Best Practice**: Store these sensitive details in your **Global Gradle Properties** file at
+`~/.gradle/gradle.properties` (User Home directory). This ensures they are available to all your
+projects but are never accidentally committed to the Git repository.
+
+Your `~/.gradle/gradle.properties` should contain:
+
+```properties
+# Maven Central Credentials
+mavenCentralUsername=YOUR_USERNAME
+mavenCentralPassword=YOUR_PASSWORD
+
+# GPG Key Details
+signing.keyId=YOUR_KEY_ID
+signing.password=YOUR_KEY_PASSWORD
+signing.secretKeyRingFile=/path/to/secring.gpg
 ```
 
-This will create a maven repository in the `fhir-model/build/repo` directory with artifacts for all
-supported platforms.
-
-To zip the repository, run:
-
-```
-./gradlew :fhir-model:zipRepo
+You can verify your signing setup by running:
+```bash
+./gradlew :fhir-model:checkSigningConfiguration
 ```
 
-This will generate a `.zip` file in the `fhir-model/build/repoZip` directory.
+To publish to Maven Central, run:
+
+```bash
+./gradlew :fhir-model:publishToMavenCentral
+```
 
 ## Acknowledgements
 

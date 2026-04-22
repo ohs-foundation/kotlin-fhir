@@ -7,6 +7,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotest)
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
@@ -14,9 +15,6 @@ plugins {
     id("fhir-codegen")
     `maven-publish`
 }
-
-group = MAVEN_GROUP_ID
-version = "1.0.0-beta03"
 
 // Run `./gradlew r4` to generate FHIR models for R4 in `fhir-model/build/generated/r4`
 val codegenTaskR4 = fhirCodegenExtension.newTask("r4") {
@@ -174,43 +172,34 @@ tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
 }
 
-// publishing prep
-val localRepo: Directory = project.layout.buildDirectory.get().dir("repo")
-publishing {
-    repositories {
-        maven {
-            url = localRepo.asFile.toURI()
-        }
-    }
-    publications {
-        withType<MavenPublication> {
-            pom {
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
+version = "1.0.0-beta03"
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+    coordinates(MAVEN_GROUP_ID, "fhir-model", version.toString())
+    pom {
+        name = "Kotlin FHIR"
+        description = "A Kotlin Multiplatform library for FHIR data model"
+        inceptionYear = "2025"
+        url = "https://github.com/ohs-foundation/kotlin-fhir"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
             }
         }
+        developers {
+            developer {
+                id = "ohs-foundation"
+                name = "Open Heath Stack Foundation"
+                url = "https://ohs.dev/"
+            }
+        }
+        scm {
+            url = "https://github.com/ohs-foundation/kotlin-fhir/"
+            connection = "scm:git:git://github.com/ohs-foundation/kotlin-fhir.git"
+            developerConnection = "scm:git:ssh://git@github.com/ohs-foundation/kotlin-fhir.git"
+        }
     }
-}
-val deleteRepoTask = tasks.register<Delete>("deleteLocalRepo") {
-    description =
-        "Deletes the local repository to get rid of stale artifacts before local publishing"
-    this.delete(localRepo)
-}
-tasks.named("publishAllPublicationsToMavenRepository").configure {
-    dependsOn(deleteRepoTask)
-}
-tasks.register("zipRepo", Zip::class) {
-    description = "Create a zip of the maven repository"
-    this.destinationDirectory.set(project.layout.buildDirectory.dir("repoZip"))
-    archiveBaseName.set("kotlin-fhir")
-
-    // Hint to gradle that the repo files are produced by the publish task. This establishes a
-    // dependency from the zipRepo task to the publish task.
-    this.from(tasks.named("publish").map { _ ->
-        localRepo
-    })
 }

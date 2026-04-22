@@ -1,14 +1,15 @@
 [versions]
-android-gradle-plugin = "8.10.0"
+android-gradle-plugin = "8.13.0"
 android-compileSdk = "35"
 android-minSdk = "24"
 bignum = "0.3.10"
-kotest = "5.9.1"
-kotlin = "2.2.0"
+kotest = "6.1.11"
+kotlin = "2.3.20"
+ksp = "2.3.6"
 kotlin-poet = "2.0.0"
 kotlinx-datetime = "0.7.1"
 kotlinx-serialization-json = "1.8.1"
-maven-publish = "0.29.0"
+maven-publish = "0.36.0"
 spotless = "7.0.1"
 
 [libraries]
@@ -16,6 +17,7 @@ bignum = { group = "com.ionspin.kotlin", name = "bignum", version.ref = "bignum"
 kotest-assertions-json = { module = "io.kotest:kotest-assertions-json", version.ref = "kotest" }
 kotest-framework-engine = {module = "io.kotest:kotest-framework-engine", version.ref = "kotest"}
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
+ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 kotlin-poet = { module = "com.squareup:kotlinpoet", version.ref = "kotlin-poet" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -23,9 +25,10 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
-kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }
+kotest = { id = "io.kotest", version.ref = "kotest" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

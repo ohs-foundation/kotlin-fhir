@@ -15,8 +15,6 @@ Kotlin FHIR is a lean and fast implementation of the
 [HL7® FHIR®](https://www.hl7.org/fhir/overview.html) data model on
 [Kotlin Multiplatform](https://kotlinlang.org/docs/multiplatform.html).
 
-**Warning:** The library is in alpha and subject to change. Use at your own risk.
-
 ## Key features
 
 * Lightweight & fast with a minimal footprint and zero bloat[^1]

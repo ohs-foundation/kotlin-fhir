@@ -1,9 +1,11 @@
-import dev.ohs.fhir.codegen.ANDROID_NAMESPACE
-import dev.ohs.fhir.codegen.BASE_PACKAGE
-import dev.ohs.fhir.codegen.MAVEN_GROUP_ID
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+
+val basePackage: String by project
+val mavenGroupId: String by project
+val mavenArtifactId: String by project
+val androidNamespace: String by project
 
 plugins {
     alias(libs.plugins.android.library)
@@ -25,7 +27,7 @@ val codegenTaskR4 = fhirCodegenExtension.newTask("r4") {
     this.expansionPackageFiles.from(
         File(project.rootDir, "third_party/hl7.fhir.r4.expansions/package").listFiles()
     )
-    this.packageName.set("$BASE_PACKAGE.r4")
+    this.packageName.set("$basePackage.r4")
 }
 
 // Run `./gradlew r4b` to generate FHIR models for R4B in `fhir-model/build/generated/r4b`
@@ -37,7 +39,7 @@ val codegenTaskR4B = fhirCodegenExtension.newTask("r4b") {
     this.expansionPackageFiles.from(
         File(project.rootDir, "third_party/hl7.fhir.r4b.expansions/package").listFiles()
     )
-    this.packageName.set("$BASE_PACKAGE.r4b")
+    this.packageName.set("$basePackage.r4b")
 }
 
 // Run `./gradlew r5` to generate FHIR models for R5 in `fhir-model/build/generated/r5`
@@ -49,7 +51,7 @@ val codegenTaskR5 = fhirCodegenExtension.newTask("r5") {
     this.expansionPackageFiles.from(
         File(project.rootDir, "third_party/hl7.fhir.r5.expansions/package").listFiles()
     )
-    this.packageName.set("$BASE_PACKAGE.r5")
+    this.packageName.set("$basePackage.r5")
 }
 
 // Run `./gradlew codegen` to generate all FHIR models in the main source set
@@ -149,7 +151,7 @@ kotlin {
 }
 
 android {
-    namespace = ANDROID_NAMESPACE
+    namespace = androidNamespace
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -176,7 +178,7 @@ version = "1.0.0-beta03"
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
-    coordinates(MAVEN_GROUP_ID, "fhir-model", version.toString())
+    coordinates(mavenGroupId, mavenArtifactId, version.toString())
     pom {
         name = "Kotlin FHIR"
         description = "A Kotlin Multiplatform library for FHIR data model"

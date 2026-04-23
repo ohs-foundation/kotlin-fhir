@@ -18,27 +18,112 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
+import dev.ohs.fhir.model.r4b.Extension
+import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.RatioRange
-import dev.ohs.fhir.model.r4b.surrogates.RatioRangeSurrogate
+import kotlin.String
 import kotlin.Suppress
+import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object RatioRangeSerializer : KSerializer<RatioRange> {
-  internal val surrogateSerializer: KSerializer<RatioRangeSurrogate> by lazy {
-    RatioRangeSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("RatioRange", surrogateSerializer.descriptor)
-  }
+internal object RatioRangeSerializer : KSerializer<RatioRange> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("RatioRange") {
+      element("id", String.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
+        isOptional = true,
+      )
+      element(
+        "lowNumerator",
+        lazyDescriptor { Quantity.serializer().descriptor },
+        isOptional = true,
+      )
+      element(
+        "highNumerator",
+        lazyDescriptor { Quantity.serializer().descriptor },
+        isOptional = true,
+      )
+      element("denominator", lazyDescriptor { Quantity.serializer().descriptor }, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): RatioRange =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: RatioRange) {
-    surrogateSerializer.serialize(encoder, RatioRangeSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): RatioRange {
+    val __desc = descriptor
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var lowNumerator: Quantity? = null
+    var highNumerator: Quantity? = null
+    var denominator: Quantity? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          lowNumerator =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.lowNumeratorSer, null)
+        3 ->
+          highNumerator =
+            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.lowNumeratorSer, null)
+        4 ->
+          denominator =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.lowNumeratorSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding RatioRange: " + __i)
+      }
+    }
+    return RatioRange(
+      id = id,
+      extension = extension ?: listOf(),
+      lowNumerator = lowNumerator,
+      highNumerator = highNumerator,
+      denominator = denominator,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: RatioRange) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    (value.lowNumerator)?.let {
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.lowNumeratorSer, it)
+    }
+    (value.highNumerator)?.let {
+      encoder.encodeSerializableElement(__desc, 3, Hoisted.lowNumeratorSer, it)
+    }
+    (value.denominator)?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.lowNumeratorSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val lowNumeratorSer: KSerializer<Quantity> = Quantity.serializer()
   }
 }

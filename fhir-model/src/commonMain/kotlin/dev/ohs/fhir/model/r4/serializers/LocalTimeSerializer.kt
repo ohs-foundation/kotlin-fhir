@@ -28,7 +28,7 @@ import kotlinx.serialization.encoding.Encoder
  * A Serializer for `LocalTime` that always include seconds, even if they are zero. Fractional parts
  * of the second are included if non-zero.
  */
-public object LocalTimeSerializer : KSerializer<LocalTime> {
+internal object LocalTimeSerializer : KSerializer<LocalTime> {
   override val descriptor: SerialDescriptor =
     PrimitiveSerialDescriptor("FormattedLocalTime", PrimitiveKind.STRING)
 

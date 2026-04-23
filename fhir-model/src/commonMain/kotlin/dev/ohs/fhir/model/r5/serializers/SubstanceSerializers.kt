@@ -18,88 +18,467 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
-import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.Boolean as R5Boolean
+import dev.ohs.fhir.model.r5.Code
+import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.CodeableReference
+import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Element
+import dev.ohs.fhir.model.r5.Enumeration
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Meta
+import dev.ohs.fhir.model.r5.Narrative
+import dev.ohs.fhir.model.r5.Quantity
+import dev.ohs.fhir.model.r5.Ratio
+import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Substance
-import dev.ohs.fhir.model.r5.surrogates.SubstanceIngredientSubstanceSurrogate
-import dev.ohs.fhir.model.r5.surrogates.SubstanceIngredientSurrogate
-import dev.ohs.fhir.model.r5.surrogates.SubstanceSurrogate
+import dev.ohs.fhir.model.r5.Uri
+import kotlin.Boolean as KotlinBoolean
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonEncoder
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object SubstanceIngredientSerializer : KSerializer<Substance.Ingredient> {
-  internal val surrogateSerializer: KSerializer<SubstanceIngredientSurrogate> by lazy {
-    SubstanceIngredientSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("substance")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Ingredient", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): Substance.Ingredient {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object SubstanceIngredientSerializer : KSerializer<Substance.Ingredient> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Ingredient") {
+      element("id", String.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("quantity", Ratio.serializer().descriptor, isOptional = true)
+      element(
+        "substanceCodeableConcept",
+        CodeableConcept.serializer().descriptor,
+        isOptional = true,
+      )
+      element("substanceReference", Reference.serializer().descriptor, isOptional = true)
+    }
+
+  override fun deserialize(decoder: Decoder): Substance.Ingredient =
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Substance.Ingredient) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = SubstanceIngredientSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Substance.Ingredient {
+    val __desc = descriptor
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var quantity: Ratio? = null
+    var substanceCodeableConcept: CodeableConcept? = null
+    var substanceReference: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 ->
+          quantity = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.quantitySer, null)
+        4 ->
+          substanceCodeableConcept =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              4,
+              Hoisted.substanceCodeableConceptSer,
+              null,
+            )
+        5 ->
+          substanceReference =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              5,
+              Hoisted.substanceReferenceSer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Ingredient: " + __i)
+      }
+    }
+    return Substance.Ingredient(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      quantity = quantity,
+      substance =
+        Substance.Ingredient.Substance.from(substanceCodeableConcept, substanceReference)!!,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Substance.Ingredient) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.quantitySer, it) }
+    when (val __d = value.substance) {
+      null -> {}
+      is Substance.Ingredient.Substance.CodeableConcept -> {
+        encoder.encodeSerializableElement(__desc, 4, Hoisted.substanceCodeableConceptSer, __d.value)
+      }
+      is Substance.Ingredient.Substance.Reference -> {
+        encoder.encodeSerializableElement(__desc, 5, Hoisted.substanceReferenceSer, __d.value)
+      }
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val quantitySer: KSerializer<Ratio> = Ratio.serializer()
+
+    public val substanceCodeableConceptSer: KSerializer<CodeableConcept> =
+      CodeableConcept.serializer()
+
+    public val substanceReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object SubstanceIngredientSubstanceSerializer : KSerializer<Substance.Ingredient.Substance> {
-  internal val surrogateSerializer: KSerializer<SubstanceIngredientSubstanceSurrogate> by lazy {
-    SubstanceIngredientSubstanceSurrogate.serializer()
-  }
+internal object SubstanceIngredientSubstanceSerializer :
+  KSerializer<Substance.Ingredient.Substance> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Substance.Ingredient.Substance") {
+      element(
+        "substanceCodeableConcept",
+        CodeableConcept.serializer().descriptor,
+        isOptional = true,
+      )
+      element("substanceReference", Reference.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Substance", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: Substance.Ingredient.Substance) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is Substance.Ingredient.Substance.CodeableConcept -> {
+          encodeSerializableElement(__desc, 0, Hoisted.substanceCodeableConceptSer, __d.value)
+        }
+        is Substance.Ingredient.Substance.Reference -> {
+          encodeSerializableElement(__desc, 1, Hoisted.substanceReferenceSer, __d.value)
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): Substance.Ingredient.Substance =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: Substance.Ingredient.Substance) {
-    surrogateSerializer.serialize(encoder, SubstanceIngredientSubstanceSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): Substance.Ingredient.Substance {
+    val __desc = descriptor
+    var substanceCodeableConcept: CodeableConcept? = null
+    var substanceReference: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 ->
+          substanceCodeableConcept =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              0,
+              Hoisted.substanceCodeableConceptSer,
+              null,
+            )
+        1 ->
+          substanceReference =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              1,
+              Hoisted.substanceReferenceSer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException(
+            "Unexpected index decoding Substance.Ingredient.Substance: " + __i
+          )
+      }
+    }
+    return Substance.Ingredient.Substance.from(substanceCodeableConcept, substanceReference)!!
+  }
+
+  private object Hoisted {
+    public val substanceCodeableConceptSer: KSerializer<CodeableConcept> =
+      CodeableConcept.serializer()
+
+    public val substanceReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object SubstanceSerializer : KSerializer<Substance> {
-  internal val surrogateSerializer: KSerializer<SubstanceSurrogate> by lazy {
-    SubstanceSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Substance", surrogateSerializer.descriptor)
-  }
+internal object SubstanceSerializer : KSerializer<Substance> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Substance") {
+      element("resourceType", String.serializer().descriptor, isOptional = false)
+      element("id", String.serializer().descriptor, isOptional = true)
+      element("meta", Meta.serializer().descriptor, isOptional = true)
+      element("implicitRules", String.serializer().descriptor, isOptional = true)
+      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+      element("language", String.serializer().descriptor, isOptional = true)
+      element("_language", Element.serializer().descriptor, isOptional = true)
+      element("text", Narrative.serializer().descriptor, isOptional = true)
+      element(
+        "contained",
+        listSerialDescriptor(Resource.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "identifier",
+        listSerialDescriptor(Identifier.serializer().descriptor),
+        isOptional = true,
+      )
+      element("instance", KotlinBoolean.serializer().descriptor, isOptional = true)
+      element("_instance", Element.serializer().descriptor, isOptional = true)
+      element("status", String.serializer().descriptor, isOptional = true)
+      element("_status", Element.serializer().descriptor, isOptional = true)
+      element(
+        "category",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("code", CodeableReference.serializer().descriptor, isOptional = true)
+      element("description", String.serializer().descriptor, isOptional = true)
+      element("_description", Element.serializer().descriptor, isOptional = true)
+      element("expiry", String.serializer().descriptor, isOptional = true)
+      element("_expiry", Element.serializer().descriptor, isOptional = true)
+      element("quantity", Quantity.serializer().descriptor, isOptional = true)
+      element(
+        "ingredient",
+        listSerialDescriptor(lazyDescriptor { Substance.Ingredient.serializer().descriptor }),
+        isOptional = true,
+      )
+    }
 
   override fun deserialize(decoder: Decoder): Substance =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Substance) {
-    surrogateSerializer.serialize(encoder, SubstanceSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  internal fun deserializeJson(decoder: CompositeDecoder): Substance {
+    val __desc = descriptor
+    var id: String? = null
+    var meta: Meta? = null
+    var implicitRules: String? = null
+    var _implicitRules: Element? = null
+    var language: String? = null
+    var _language: Element? = null
+    var text: Narrative? = null
+    var contained: List<Resource>? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var identifier: List<Identifier>? = null
+    var instance: KotlinBoolean? = null
+    var _instance: Element? = null
+    var status: String? = null
+    var _status: Element? = null
+    var category: List<CodeableConcept>? = null
+    var code: CodeableReference? = null
+    var description: String? = null
+    var _description: Element? = null
+    var expiry: String? = null
+    var _expiry: Element? = null
+    var quantity: Quantity? = null
+    var ingredient: List<Substance.Ingredient>? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> decoder.decodeStringElement(__desc, 0)
+        1 -> id = decoder.decodeStringElement(__desc, 1)
+        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
+        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
+        4 ->
+          _implicitRules =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
+        5 -> language = decoder.decodeStringElement(__desc, 5)
+        6 ->
+          _language =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
+        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
+        8 ->
+          contained =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
+        9 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
+        10 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
+        11 ->
+          identifier =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
+        12 -> instance = decoder.decodeBooleanElement(__desc, 12)
+        13 ->
+          _instance =
+            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
+        14 -> status = decoder.decodeStringElement(__desc, 14)
+        15 ->
+          _status =
+            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.implicitRulesSer, null)
+        16 ->
+          category =
+            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.categorySer, null)
+        17 -> code = decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.codeSer, null)
+        18 -> description = decoder.decodeStringElement(__desc, 18)
+        19 ->
+          _description =
+            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.implicitRulesSer, null)
+        20 -> expiry = decoder.decodeStringElement(__desc, 20)
+        21 ->
+          _expiry =
+            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.implicitRulesSer, null)
+        22 ->
+          quantity =
+            decoder.decodeNullableSerializableElement(__desc, 22, Hoisted.quantitySer, null)
+        23 ->
+          ingredient =
+            decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.ingredientSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Substance: " + __i)
+      }
+    }
+    return Substance(
+      id = id,
+      meta = meta,
+      implicitRules = Uri.of(implicitRules, _implicitRules),
+      language = Code.of(language, _language),
+      text = text,
+      contained = contained ?: listOf(),
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      identifier = identifier ?: listOf(),
+      instance = R5Boolean.of(instance, _instance)!!,
+      status = status?.let { Enumeration.of(Substance.FHIRSubstanceStatus.fromCode(it), _status) },
+      category = category ?: listOf(),
+      code = code!!,
+      description = Markdown.of(description, _description),
+      expiry = DateTime.of(FhirDateTime.fromString(expiry), _expiry),
+      quantity = quantity,
+      ingredient = ingredient ?: listOf(),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Substance) {
+    val __desc = descriptor
+    encoder.encodeStringElement(__desc, 0, "Substance")
+    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+    (value.implicitRules?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+    }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    (value.language?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+    }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    if (value.contained.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+    if (value.identifier.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
+    ((value.instance.value))?.let { encoder.encodeBooleanElement(__desc, 12, it) }
+    (value.instance.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+    }
+    ((value.status?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 14, it) }
+    (value.status?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 15, Hoisted.implicitRulesSer, it)
+    }
+    if (value.category.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 16, Hoisted.categorySer, value.category)
+    (value.code)?.let { encoder.encodeSerializableElement(__desc, 17, Hoisted.codeSer, it) }
+    ((value.description?.value))?.let { encoder.encodeStringElement(__desc, 18, it) }
+    (value.description?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 19, Hoisted.implicitRulesSer, it)
+    }
+    ((value.expiry?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 20, it) }
+    (value.expiry?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 21, Hoisted.implicitRulesSer, it)
+    }
+    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 22, Hoisted.quantitySer, it) }
+    if (value.ingredient.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 23, Hoisted.ingredientSer, value.ingredient)
+  }
+
+  private object Hoisted {
+    public val metaSer: KSerializer<Meta> = Meta.serializer()
+
+    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
+
+    public val textSer: KSerializer<Narrative> = Narrative.serializer()
+
+    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
+
+    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
+
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
+
+    public val identifierSer: KSerializer<List<Identifier>> =
+      ListSerializer(Hoisted.identifierSerInner)
+
+    public val categorySerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val categorySer: KSerializer<List<CodeableConcept>> =
+      ListSerializer(Hoisted.categorySerInner)
+
+    public val codeSer: KSerializer<CodeableReference> = CodeableReference.serializer()
+
+    public val quantitySer: KSerializer<Quantity> = Quantity.serializer()
+
+    public val ingredientSerInner: KSerializer<Substance.Ingredient> =
+      Substance.Ingredient.serializer()
+
+    public val ingredientSer: KSerializer<List<Substance.Ingredient>> =
+      ListSerializer(Hoisted.ingredientSerInner)
   }
 }

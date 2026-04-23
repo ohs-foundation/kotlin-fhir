@@ -18,14 +18,17 @@
 
 package dev.ohs.fhir.model.r5
 
+import dev.ohs.fhir.model.r5.serializers.StringSerializer
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** string Type: A sequence of Unicode characters */
+@Serializable(with = StringSerializer::class)
 public open class String(
   /** unique id for the element within a resource (for internal references) */
   open override val id: kotlin.String? = null,

@@ -18,6 +18,7 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.ElementSerializer
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
@@ -27,7 +28,7 @@ import kotlin.collections.List
 import kotlinx.serialization.Serializable
 
 /** Base StructureDefinition for Element Type: Base definition for all elements in a resource. */
-@Serializable
+@Serializable(with = ElementSerializer::class)
 public open class Element(
   /**
    * Unique id for the element within a resource (for internal references). This may be any string

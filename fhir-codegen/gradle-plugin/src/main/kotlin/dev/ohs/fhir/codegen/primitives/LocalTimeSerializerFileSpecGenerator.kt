@@ -36,6 +36,7 @@ object LocalTimeSerializerFileSpecGenerator {
     return FileSpec.builder(packageName, "LocalTimeSerializer")
       .addType(
         TypeSpec.objectBuilder("LocalTimeSerializer")
+          .addModifiers(KModifier.INTERNAL)
           .addKdoc(
             "A Serializer for `LocalTime` that always include seconds, even if they are zero.\n"
           )

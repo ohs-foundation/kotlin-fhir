@@ -18,14 +18,17 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.MarkdownSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /**
  * Base StructureDefinition for markdown type: A string that may contain Github Flavored Markdown
  * syntax for optional processing by a mark down presentation engine
  */
+@Serializable(with = MarkdownSerializer::class)
 public data class Markdown(
   /** unique id for the element within a resource (for internal references) */
   override val id: kotlin.String? = null,

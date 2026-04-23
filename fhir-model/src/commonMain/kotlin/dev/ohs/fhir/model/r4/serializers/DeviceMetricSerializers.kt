@@ -18,45 +18,388 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
+import dev.ohs.fhir.model.r4.Code
+import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DeviceMetric
-import dev.ohs.fhir.model.r4.surrogates.DeviceMetricCalibrationSurrogate
-import dev.ohs.fhir.model.r4.surrogates.DeviceMetricSurrogate
+import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Instant
+import dev.ohs.fhir.model.r4.Meta
+import dev.ohs.fhir.model.r4.Narrative
+import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.Timing
+import dev.ohs.fhir.model.r4.Uri
+import kotlin.String
 import kotlin.Suppress
+import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Calibration> {
-  internal val surrogateSerializer: KSerializer<DeviceMetricCalibrationSurrogate> by lazy {
-    DeviceMetricCalibrationSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Calibration", surrogateSerializer.descriptor)
-  }
+internal object DeviceMetricCalibrationSerializer : KSerializer<DeviceMetric.Calibration> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Calibration") {
+      element("id", String.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("type", String.serializer().descriptor, isOptional = true)
+      element("_type", Element.serializer().descriptor, isOptional = true)
+      element("state", String.serializer().descriptor, isOptional = true)
+      element("_state", Element.serializer().descriptor, isOptional = true)
+      element("time", String.serializer().descriptor, isOptional = true)
+      element("_time", Element.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): DeviceMetric.Calibration =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceMetric.Calibration) {
-    surrogateSerializer.serialize(encoder, DeviceMetricCalibrationSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): DeviceMetric.Calibration {
+    val __desc = descriptor
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var type: String? = null
+    var _type: Element? = null
+    var state: String? = null
+    var _state: Element? = null
+    var time: String? = null
+    var _time: Element? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeStringElement(__desc, 3)
+        4 -> _type = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.typeSer, null)
+        5 -> state = decoder.decodeStringElement(__desc, 5)
+        6 -> _state = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.typeSer, null)
+        7 -> time = decoder.decodeStringElement(__desc, 7)
+        8 -> _time = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.typeSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Calibration: " + __i)
+      }
+    }
+    return DeviceMetric.Calibration(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      type =
+        type?.let { Enumeration.of(DeviceMetric.DeviceMetricCalibrationType.fromCode(it), _type) },
+      state =
+        state?.let {
+          Enumeration.of(DeviceMetric.DeviceMetricCalibrationState.fromCode(it), _state)
+        },
+      time = Instant.of(FhirDateTime.fromString(time), _time),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceMetric.Calibration) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 3, it) }
+    (value.type?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.typeSer, it)
+    }
+    ((value.state?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    (value.state?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.typeSer, it)
+    }
+    ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    (value.time?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.typeSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val typeSer: KSerializer<Element> = Element.serializer()
   }
 }
 
-public object DeviceMetricSerializer : KSerializer<DeviceMetric> {
-  internal val surrogateSerializer: KSerializer<DeviceMetricSurrogate> by lazy {
-    DeviceMetricSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("DeviceMetric", surrogateSerializer.descriptor)
-  }
+internal object DeviceMetricSerializer : KSerializer<DeviceMetric> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("DeviceMetric") {
+      element("resourceType", String.serializer().descriptor, isOptional = false)
+      element("id", String.serializer().descriptor, isOptional = true)
+      element("meta", Meta.serializer().descriptor, isOptional = true)
+      element("implicitRules", String.serializer().descriptor, isOptional = true)
+      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+      element("language", String.serializer().descriptor, isOptional = true)
+      element("_language", Element.serializer().descriptor, isOptional = true)
+      element("text", Narrative.serializer().descriptor, isOptional = true)
+      element(
+        "contained",
+        listSerialDescriptor(Resource.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "identifier",
+        listSerialDescriptor(Identifier.serializer().descriptor),
+        isOptional = true,
+      )
+      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("unit", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("source", Reference.serializer().descriptor, isOptional = true)
+      element("parent", Reference.serializer().descriptor, isOptional = true)
+      element("operationalStatus", String.serializer().descriptor, isOptional = true)
+      element("_operationalStatus", Element.serializer().descriptor, isOptional = true)
+      element("color", String.serializer().descriptor, isOptional = true)
+      element("_color", Element.serializer().descriptor, isOptional = true)
+      element("category", String.serializer().descriptor, isOptional = true)
+      element("_category", Element.serializer().descriptor, isOptional = true)
+      element("measurementPeriod", Timing.serializer().descriptor, isOptional = true)
+      element(
+        "calibration",
+        listSerialDescriptor(lazyDescriptor { DeviceMetric.Calibration.serializer().descriptor }),
+        isOptional = true,
+      )
+    }
 
   override fun deserialize(decoder: Decoder): DeviceMetric =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceMetric) {
-    surrogateSerializer.serialize(encoder, DeviceMetricSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  internal fun deserializeJson(decoder: CompositeDecoder): DeviceMetric {
+    val __desc = descriptor
+    var id: String? = null
+    var meta: Meta? = null
+    var implicitRules: String? = null
+    var _implicitRules: Element? = null
+    var language: String? = null
+    var _language: Element? = null
+    var text: Narrative? = null
+    var contained: List<Resource>? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var identifier: List<Identifier>? = null
+    var type: CodeableConcept? = null
+    var unit: CodeableConcept? = null
+    var source: Reference? = null
+    var parent: Reference? = null
+    var operationalStatus: String? = null
+    var _operationalStatus: Element? = null
+    var color: String? = null
+    var _color: Element? = null
+    var category: String? = null
+    var _category: Element? = null
+    var measurementPeriod: Timing? = null
+    var calibration: List<DeviceMetric.Calibration>? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> decoder.decodeStringElement(__desc, 0)
+        1 -> id = decoder.decodeStringElement(__desc, 1)
+        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
+        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
+        4 ->
+          _implicitRules =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
+        5 -> language = decoder.decodeStringElement(__desc, 5)
+        6 ->
+          _language =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
+        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
+        8 ->
+          contained =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
+        9 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
+        10 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
+        11 ->
+          identifier =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
+        12 -> type = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.typeSer, null)
+        13 -> unit = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.typeSer, null)
+        14 ->
+          source = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.sourceSer, null)
+        15 ->
+          parent = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.sourceSer, null)
+        16 -> operationalStatus = decoder.decodeStringElement(__desc, 16)
+        17 ->
+          _operationalStatus =
+            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.implicitRulesSer, null)
+        18 -> color = decoder.decodeStringElement(__desc, 18)
+        19 ->
+          _color =
+            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.implicitRulesSer, null)
+        20 -> category = decoder.decodeStringElement(__desc, 20)
+        21 ->
+          _category =
+            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.implicitRulesSer, null)
+        22 ->
+          measurementPeriod =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              22,
+              Hoisted.measurementPeriodSer,
+              null,
+            )
+        23 ->
+          calibration =
+            decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.calibrationSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding DeviceMetric: " + __i)
+      }
+    }
+    return DeviceMetric(
+      id = id,
+      meta = meta,
+      implicitRules = Uri.of(implicitRules, _implicitRules),
+      language = Code.of(language, _language),
+      text = text,
+      contained = contained ?: listOf(),
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      identifier = identifier ?: listOf(),
+      type = type!!,
+      unit = unit,
+      source = source,
+      parent = parent,
+      operationalStatus =
+        operationalStatus?.let {
+          Enumeration.of(
+            DeviceMetric.DeviceMetricOperationalStatus.fromCode(it),
+            _operationalStatus,
+          )
+        },
+      color = color?.let { Enumeration.of(DeviceMetric.DeviceMetricColor.fromCode(it), _color) },
+      category = Enumeration.of(DeviceMetric.DeviceMetricCategory.fromCode(category!!), _category),
+      measurementPeriod = measurementPeriod,
+      calibration = calibration ?: listOf(),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceMetric) {
+    val __desc = descriptor
+    encoder.encodeStringElement(__desc, 0, "DeviceMetric")
+    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+    (value.implicitRules?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+    }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    (value.language?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+    }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    if (value.contained.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+    if (value.identifier.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
+    (value.type)?.let { encoder.encodeSerializableElement(__desc, 12, Hoisted.typeSer, it) }
+    (value.unit)?.let { encoder.encodeSerializableElement(__desc, 13, Hoisted.typeSer, it) }
+    (value.source)?.let { encoder.encodeSerializableElement(__desc, 14, Hoisted.sourceSer, it) }
+    (value.parent)?.let { encoder.encodeSerializableElement(__desc, 15, Hoisted.sourceSer, it) }
+    ((value.operationalStatus?.value?.getCode()))?.let {
+      encoder.encodeStringElement(__desc, 16, it)
+    }
+    (value.operationalStatus?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 17, Hoisted.implicitRulesSer, it)
+    }
+    ((value.color?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 18, it) }
+    (value.color?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 19, Hoisted.implicitRulesSer, it)
+    }
+    ((value.category.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 20, it) }
+    (value.category.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 21, Hoisted.implicitRulesSer, it)
+    }
+    (value.measurementPeriod)?.let {
+      encoder.encodeSerializableElement(__desc, 22, Hoisted.measurementPeriodSer, it)
+    }
+    if (value.calibration.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 23, Hoisted.calibrationSer, value.calibration)
+  }
+
+  private object Hoisted {
+    public val metaSer: KSerializer<Meta> = Meta.serializer()
+
+    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
+
+    public val textSer: KSerializer<Narrative> = Narrative.serializer()
+
+    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
+
+    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
+
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
+
+    public val identifierSer: KSerializer<List<Identifier>> =
+      ListSerializer(Hoisted.identifierSerInner)
+
+    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val sourceSer: KSerializer<Reference> = Reference.serializer()
+
+    public val measurementPeriodSer: KSerializer<Timing> = Timing.serializer()
+
+    public val calibrationSerInner: KSerializer<DeviceMetric.Calibration> =
+      DeviceMetric.Calibration.serializer()
+
+    public val calibrationSer: KSerializer<List<DeviceMetric.Calibration>> =
+      ListSerializer(Hoisted.calibrationSerInner)
   }
 }

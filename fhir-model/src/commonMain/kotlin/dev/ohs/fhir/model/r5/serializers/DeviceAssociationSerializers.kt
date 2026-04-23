@@ -18,45 +18,358 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
+import dev.ohs.fhir.model.r5.Code
+import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceAssociation
-import dev.ohs.fhir.model.r5.surrogates.DeviceAssociationOperationSurrogate
-import dev.ohs.fhir.model.r5.surrogates.DeviceAssociationSurrogate
+import dev.ohs.fhir.model.r5.Element
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Meta
+import dev.ohs.fhir.model.r5.Narrative
+import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.Uri
+import kotlin.String
 import kotlin.Suppress
+import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object DeviceAssociationOperationSerializer : KSerializer<DeviceAssociation.Operation> {
-  internal val surrogateSerializer: KSerializer<DeviceAssociationOperationSurrogate> by lazy {
-    DeviceAssociationOperationSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Operation", surrogateSerializer.descriptor)
-  }
+internal object DeviceAssociationOperationSerializer : KSerializer<DeviceAssociation.Operation> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Operation") {
+      element("id", String.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("status", CodeableConcept.serializer().descriptor, isOptional = true)
+      element(
+        "operator",
+        listSerialDescriptor(Reference.serializer().descriptor),
+        isOptional = true,
+      )
+      element("period", Period.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): DeviceAssociation.Operation =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceAssociation.Operation) {
-    surrogateSerializer.serialize(encoder, DeviceAssociationOperationSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): DeviceAssociation.Operation {
+    val __desc = descriptor
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var status: CodeableConcept? = null
+    var `operator`: List<Reference>? = null
+    var period: Period? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> status = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.statusSer, null)
+        4 ->
+          `operator` =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.operatorSer, null)
+        5 -> period = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.periodSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Operation: " + __i)
+      }
+    }
+    return DeviceAssociation.Operation(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      status = status!!,
+      `operator` = `operator` ?: listOf(),
+      period = period,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceAssociation.Operation) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    (value.status)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.statusSer, it) }
+    if (value.`operator`.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.operatorSer, value.`operator`)
+    (value.period)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.periodSer, it) }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val statusSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val operatorSerInner: KSerializer<Reference> = Reference.serializer()
+
+    public val operatorSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.operatorSerInner)
+
+    public val periodSer: KSerializer<Period> = Period.serializer()
   }
 }
 
-public object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
-  internal val surrogateSerializer: KSerializer<DeviceAssociationSurrogate> by lazy {
-    DeviceAssociationSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("DeviceAssociation", surrogateSerializer.descriptor)
-  }
+internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("DeviceAssociation") {
+      element("resourceType", String.serializer().descriptor, isOptional = false)
+      element("id", String.serializer().descriptor, isOptional = true)
+      element("meta", Meta.serializer().descriptor, isOptional = true)
+      element("implicitRules", String.serializer().descriptor, isOptional = true)
+      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+      element("language", String.serializer().descriptor, isOptional = true)
+      element("_language", Element.serializer().descriptor, isOptional = true)
+      element("text", Narrative.serializer().descriptor, isOptional = true)
+      element(
+        "contained",
+        listSerialDescriptor(Resource.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "identifier",
+        listSerialDescriptor(Identifier.serializer().descriptor),
+        isOptional = true,
+      )
+      element("device", Reference.serializer().descriptor, isOptional = true)
+      element(
+        "category",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("status", CodeableConcept.serializer().descriptor, isOptional = true)
+      element(
+        "statusReason",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("subject", Reference.serializer().descriptor, isOptional = true)
+      element("bodyStructure", Reference.serializer().descriptor, isOptional = true)
+      element("period", Period.serializer().descriptor, isOptional = true)
+      element(
+        "operation",
+        listSerialDescriptor(
+          lazyDescriptor { DeviceAssociation.Operation.serializer().descriptor }
+        ),
+        isOptional = true,
+      )
+    }
 
   override fun deserialize(decoder: Decoder): DeviceAssociation =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceAssociation) {
-    surrogateSerializer.serialize(encoder, DeviceAssociationSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  internal fun deserializeJson(decoder: CompositeDecoder): DeviceAssociation {
+    val __desc = descriptor
+    var id: String? = null
+    var meta: Meta? = null
+    var implicitRules: String? = null
+    var _implicitRules: Element? = null
+    var language: String? = null
+    var _language: Element? = null
+    var text: Narrative? = null
+    var contained: List<Resource>? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var identifier: List<Identifier>? = null
+    var device: Reference? = null
+    var category: List<CodeableConcept>? = null
+    var status: CodeableConcept? = null
+    var statusReason: List<CodeableConcept>? = null
+    var subject: Reference? = null
+    var bodyStructure: Reference? = null
+    var period: Period? = null
+    var operation: List<DeviceAssociation.Operation>? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> decoder.decodeStringElement(__desc, 0)
+        1 -> id = decoder.decodeStringElement(__desc, 1)
+        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
+        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
+        4 ->
+          _implicitRules =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
+        5 -> language = decoder.decodeStringElement(__desc, 5)
+        6 ->
+          _language =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
+        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
+        8 ->
+          contained =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
+        9 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
+        10 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
+        11 ->
+          identifier =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
+        12 ->
+          device = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.deviceSer, null)
+        13 ->
+          category =
+            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.categorySer, null)
+        14 ->
+          status =
+            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.categorySerInner, null)
+        15 ->
+          statusReason =
+            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.categorySer, null)
+        16 ->
+          subject = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.deviceSer, null)
+        17 ->
+          bodyStructure =
+            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.deviceSer, null)
+        18 ->
+          period = decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.periodSer, null)
+        19 ->
+          operation =
+            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.operationSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding DeviceAssociation: " + __i)
+      }
+    }
+    return DeviceAssociation(
+      id = id,
+      meta = meta,
+      implicitRules = Uri.of(implicitRules, _implicitRules),
+      language = Code.of(language, _language),
+      text = text,
+      contained = contained ?: listOf(),
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      identifier = identifier ?: listOf(),
+      device = device!!,
+      category = category ?: listOf(),
+      status = status!!,
+      statusReason = statusReason ?: listOf(),
+      subject = subject,
+      bodyStructure = bodyStructure,
+      period = period,
+      operation = operation ?: listOf(),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceAssociation) {
+    val __desc = descriptor
+    encoder.encodeStringElement(__desc, 0, "DeviceAssociation")
+    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+    (value.implicitRules?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+    }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    (value.language?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+    }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    if (value.contained.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+    if (value.identifier.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
+    (value.device)?.let { encoder.encodeSerializableElement(__desc, 12, Hoisted.deviceSer, it) }
+    if (value.category.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 13, Hoisted.categorySer, value.category)
+    (value.status)?.let {
+      encoder.encodeSerializableElement(__desc, 14, Hoisted.categorySerInner, it)
+    }
+    if (value.statusReason.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 15, Hoisted.categorySer, value.statusReason)
+    (value.subject)?.let { encoder.encodeSerializableElement(__desc, 16, Hoisted.deviceSer, it) }
+    (value.bodyStructure)?.let {
+      encoder.encodeSerializableElement(__desc, 17, Hoisted.deviceSer, it)
+    }
+    (value.period)?.let { encoder.encodeSerializableElement(__desc, 18, Hoisted.periodSer, it) }
+    if (value.operation.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 19, Hoisted.operationSer, value.operation)
+  }
+
+  private object Hoisted {
+    public val metaSer: KSerializer<Meta> = Meta.serializer()
+
+    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
+
+    public val textSer: KSerializer<Narrative> = Narrative.serializer()
+
+    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
+
+    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
+
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
+
+    public val identifierSer: KSerializer<List<Identifier>> =
+      ListSerializer(Hoisted.identifierSerInner)
+
+    public val deviceSer: KSerializer<Reference> = Reference.serializer()
+
+    public val categorySerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val categorySer: KSerializer<List<CodeableConcept>> =
+      ListSerializer(Hoisted.categorySerInner)
+
+    public val periodSer: KSerializer<Period> = Period.serializer()
+
+    public val operationSerInner: KSerializer<DeviceAssociation.Operation> =
+      DeviceAssociation.Operation.serializer()
+
+    public val operationSer: KSerializer<List<DeviceAssociation.Operation>> =
+      ListSerializer(Hoisted.operationSerInner)
   }
 }

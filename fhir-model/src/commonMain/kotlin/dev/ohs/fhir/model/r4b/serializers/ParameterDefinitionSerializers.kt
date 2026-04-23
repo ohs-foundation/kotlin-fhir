@@ -18,27 +18,169 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
+import dev.ohs.fhir.model.r4b.Canonical
+import dev.ohs.fhir.model.r4b.Code
+import dev.ohs.fhir.model.r4b.Element
+import dev.ohs.fhir.model.r4b.Enumeration
+import dev.ohs.fhir.model.r4b.Extension
+import dev.ohs.fhir.model.r4b.Integer
 import dev.ohs.fhir.model.r4b.ParameterDefinition
-import dev.ohs.fhir.model.r4b.surrogates.ParameterDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.terminologies.FHIRAllTypes
+import kotlin.Int
+import kotlin.String as KotlinString
 import kotlin.Suppress
+import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object ParameterDefinitionSerializer : KSerializer<ParameterDefinition> {
-  internal val surrogateSerializer: KSerializer<ParameterDefinitionSurrogate> by lazy {
-    ParameterDefinitionSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("ParameterDefinition", surrogateSerializer.descriptor)
-  }
+internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("ParameterDefinition") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
+        isOptional = true,
+      )
+      element("name", KotlinString.serializer().descriptor, isOptional = true)
+      element("_name", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      element("use", KotlinString.serializer().descriptor, isOptional = true)
+      element("_use", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      element("min", Int.serializer().descriptor, isOptional = true)
+      element("_min", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      element("max", KotlinString.serializer().descriptor, isOptional = true)
+      element("_max", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      element("documentation", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "_documentation",
+        lazyDescriptor { Element.serializer().descriptor },
+        isOptional = true,
+      )
+      element("type", KotlinString.serializer().descriptor, isOptional = true)
+      element("_type", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      element("profile", KotlinString.serializer().descriptor, isOptional = true)
+      element("_profile", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): ParameterDefinition =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: ParameterDefinition) {
-    surrogateSerializer.serialize(encoder, ParameterDefinitionSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): ParameterDefinition {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var use: KotlinString? = null
+    var _use: Element? = null
+    var min: Int? = null
+    var _min: Element? = null
+    var max: KotlinString? = null
+    var _max: Element? = null
+    var documentation: KotlinString? = null
+    var _documentation: Element? = null
+    var type: KotlinString? = null
+    var _type: Element? = null
+    var profile: KotlinString? = null
+    var _profile: Element? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 -> name = decoder.decodeStringElement(__desc, 2)
+        3 -> _name = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.nameSer, null)
+        4 -> use = decoder.decodeStringElement(__desc, 4)
+        5 -> _use = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.nameSer, null)
+        6 -> min = decoder.decodeIntElement(__desc, 6)
+        7 -> _min = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.nameSer, null)
+        8 -> max = decoder.decodeStringElement(__desc, 8)
+        9 -> _max = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.nameSer, null)
+        10 -> documentation = decoder.decodeStringElement(__desc, 10)
+        11 ->
+          _documentation =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.nameSer, null)
+        12 -> type = decoder.decodeStringElement(__desc, 12)
+        13 -> _type = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.nameSer, null)
+        14 -> profile = decoder.decodeStringElement(__desc, 14)
+        15 ->
+          _profile = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.nameSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException("Unexpected index decoding ParameterDefinition: " + __i)
+      }
+    }
+    return ParameterDefinition(
+      id = id,
+      extension = extension ?: listOf(),
+      name = Code.of(name, _name),
+      use = Enumeration.of(ParameterDefinition.OperationParameterUse.fromCode(use!!), _use),
+      min = Integer.of(min, _min),
+      max = R4bString.of(max, _max),
+      documentation = R4bString.of(documentation, _documentation),
+      type = Enumeration.of(FHIRAllTypes.fromCode(type!!), _type),
+      profile = Canonical.of(profile, _profile),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: ParameterDefinition) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    ((value.name?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+    (value.name?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 3, Hoisted.nameSer, it)
+    }
+    ((value.use.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    (value.use.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 5, Hoisted.nameSer, it)
+    }
+    ((value.min?.value))?.let { encoder.encodeIntElement(__desc, 6, it) }
+    (value.min?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 7, Hoisted.nameSer, it)
+    }
+    ((value.max?.value))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    (value.max?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.nameSer, it)
+    }
+    ((value.documentation?.value))?.let { encoder.encodeStringElement(__desc, 10, it) }
+    (value.documentation?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.nameSer, it)
+    }
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 12, it) }
+    (value.type.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 13, Hoisted.nameSer, it)
+    }
+    ((value.profile?.value))?.let { encoder.encodeStringElement(__desc, 14, it) }
+    (value.profile?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 15, Hoisted.nameSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val nameSer: KSerializer<Element> = Element.serializer()
   }
 }

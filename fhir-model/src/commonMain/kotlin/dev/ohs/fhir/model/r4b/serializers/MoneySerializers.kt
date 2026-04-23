@@ -18,27 +18,107 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
+import com.ionspin.kotlin.bignum.decimal.BigDecimal
+import dev.ohs.fhir.model.r4b.Decimal
+import dev.ohs.fhir.model.r4b.Element
+import dev.ohs.fhir.model.r4b.Enumeration
+import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.Money
-import dev.ohs.fhir.model.r4b.surrogates.MoneySurrogate
+import dev.ohs.fhir.model.r4b.terminologies.Currencies
+import kotlin.String
 import kotlin.Suppress
+import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object MoneySerializer : KSerializer<Money> {
-  internal val surrogateSerializer: KSerializer<MoneySurrogate> by lazy {
-    MoneySurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Money", surrogateSerializer.descriptor)
-  }
+internal object MoneySerializer : KSerializer<Money> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Money") {
+      element("id", String.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
+        isOptional = true,
+      )
+      element("value", BigDecimalSerializer.descriptor, isOptional = true)
+      element("_value", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      element("currency", String.serializer().descriptor, isOptional = true)
+      element("_currency", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Money =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Money) {
-    surrogateSerializer.serialize(encoder, MoneySurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Money {
+    val __desc = descriptor
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var `value`: BigDecimal? = null
+    var _value: Element? = null
+    var currency: String? = null
+    var _currency: Element? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          `value` = decoder.decodeNullableSerializableElement(__desc, 2, BigDecimalSerializer, null)
+        3 -> _value = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.valueSer, null)
+        4 -> currency = decoder.decodeStringElement(__desc, 4)
+        5 ->
+          _currency = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.valueSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Money: " + __i)
+      }
+    }
+    return Money(
+      id = id,
+      extension = extension ?: listOf(),
+      `value` = Decimal.of(`value`, _value),
+      currency = currency?.let { Enumeration.of(Currencies.fromCode(it), _currency) },
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Money) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    ((value.`value`?.value))?.let {
+      encoder.encodeSerializableElement(__desc, 2, BigDecimalSerializer, it)
+    }
+    (value.`value`?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 3, Hoisted.valueSer, it)
+    }
+    ((value.currency?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    (value.currency?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 5, Hoisted.valueSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val valueSer: KSerializer<Element> = Element.serializer()
   }
 }

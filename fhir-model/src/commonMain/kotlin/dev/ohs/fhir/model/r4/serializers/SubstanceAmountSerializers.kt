@@ -18,89 +18,316 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
-import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Range
+import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.SubstanceAmount
-import dev.ohs.fhir.model.r4.surrogates.SubstanceAmountAmountSurrogate
-import dev.ohs.fhir.model.r4.surrogates.SubstanceAmountReferenceRangeSurrogate
-import dev.ohs.fhir.model.r4.surrogates.SubstanceAmountSurrogate
-import kotlin.String
+import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonEncoder
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object SubstanceAmountReferenceRangeSerializer :
+internal object SubstanceAmountReferenceRangeSerializer :
   KSerializer<SubstanceAmount.ReferenceRange> {
-  internal val surrogateSerializer: KSerializer<SubstanceAmountReferenceRangeSurrogate> by lazy {
-    SubstanceAmountReferenceRangeSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("ReferenceRange", surrogateSerializer.descriptor)
-  }
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("ReferenceRange") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("lowLimit", Quantity.serializer().descriptor, isOptional = true)
+      element("highLimit", Quantity.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): SubstanceAmount.ReferenceRange =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceAmount.ReferenceRange) {
-    surrogateSerializer.serialize(encoder, SubstanceAmountReferenceRangeSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): SubstanceAmount.ReferenceRange {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var lowLimit: Quantity? = null
+    var highLimit: Quantity? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          lowLimit = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.lowLimitSer, null)
+        3 ->
+          highLimit =
+            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.lowLimitSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding ReferenceRange: " + __i)
+      }
+    }
+    return SubstanceAmount.ReferenceRange(
+      id = id,
+      extension = extension ?: listOf(),
+      lowLimit = lowLimit,
+      highLimit = highLimit,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceAmount.ReferenceRange) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    (value.lowLimit)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.lowLimitSer, it) }
+    (value.highLimit)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.lowLimitSer, it) }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val lowLimitSer: KSerializer<Quantity> = Quantity.serializer()
   }
 }
 
-public object SubstanceAmountAmountSerializer : KSerializer<SubstanceAmount.Amount> {
-  internal val surrogateSerializer: KSerializer<SubstanceAmountAmountSurrogate> by lazy {
-    SubstanceAmountAmountSurrogate.serializer()
-  }
+internal object SubstanceAmountAmountSerializer : KSerializer<SubstanceAmount.Amount> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SubstanceAmount.Amount") {
+      element("amountQuantity", Quantity.serializer().descriptor, isOptional = true)
+      element("amountRange", Range.serializer().descriptor, isOptional = true)
+      element("amountString", KotlinString.serializer().descriptor, isOptional = true)
+      element("_amountString", Element.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Amount", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: SubstanceAmount.Amount) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is SubstanceAmount.Amount.Quantity -> {
+          encodeSerializableElement(__desc, 0, Hoisted.amountQuantitySer, __d.value)
+        }
+        is SubstanceAmount.Amount.Range -> {
+          encodeSerializableElement(__desc, 1, Hoisted.amountRangeSer, __d.value)
+        }
+        is SubstanceAmount.Amount.String -> {
+          ((__d.value.value))?.let { encodeStringElement(__desc, 2, it) }
+          (__d.value.toElement())?.let {
+            encodeSerializableElement(__desc, 3, Hoisted.elementSer, it)
+          }
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): SubstanceAmount.Amount =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: SubstanceAmount.Amount) {
-    surrogateSerializer.serialize(encoder, SubstanceAmountAmountSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): SubstanceAmount.Amount {
+    val __desc = descriptor
+    var amountQuantity: Quantity? = null
+    var amountRange: Range? = null
+    var amountString: KotlinString? = null
+    var _amountString: Element? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 ->
+          amountQuantity =
+            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.amountQuantitySer, null)
+        1 ->
+          amountRange =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.amountRangeSer, null)
+        2 -> amountString = decoder.decodeStringElement(__desc, 2)
+        3 ->
+          _amountString =
+            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.elementSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException("Unexpected index decoding SubstanceAmount.Amount: " + __i)
+      }
+    }
+    return SubstanceAmount.Amount.from(
+      amountQuantity,
+      amountRange,
+      R4String.of(amountString, _amountString),
+    )!!
+  }
+
+  private object Hoisted {
+    public val amountQuantitySer: KSerializer<Quantity> = Quantity.serializer()
+
+    public val amountRangeSer: KSerializer<Range> = Range.serializer()
+
+    public val elementSer: KSerializer<Element> = Element.serializer()
   }
 }
 
-public object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
-  internal val surrogateSerializer: KSerializer<SubstanceAmountSurrogate> by lazy {
-    SubstanceAmountSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("amount")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("SubstanceAmount", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): SubstanceAmount {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SubstanceAmount") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("amountQuantity", Quantity.serializer().descriptor, isOptional = true)
+      element("amountRange", Range.serializer().descriptor, isOptional = true)
+      element("amountString", KotlinString.serializer().descriptor, isOptional = true)
+      element("_amountString", Element.serializer().descriptor, isOptional = true)
+      element("amountType", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("amountText", KotlinString.serializer().descriptor, isOptional = true)
+      element("_amountText", Element.serializer().descriptor, isOptional = true)
+      element(
+        "referenceRange",
+        lazyDescriptor { SubstanceAmount.ReferenceRange.serializer().descriptor },
+        isOptional = true,
+      )
+    }
+
+  override fun deserialize(decoder: Decoder): SubstanceAmount =
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceAmount) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = SubstanceAmountSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): SubstanceAmount {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var amountQuantity: Quantity? = null
+    var amountRange: Range? = null
+    var amountString: KotlinString? = null
+    var _amountString: Element? = null
+    var amountType: CodeableConcept? = null
+    var amountText: KotlinString? = null
+    var _amountText: Element? = null
+    var referenceRange: SubstanceAmount.ReferenceRange? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 ->
+          amountQuantity =
+            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.amountQuantitySer, null)
+        4 ->
+          amountRange =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.amountRangeSer, null)
+        5 -> amountString = decoder.decodeStringElement(__desc, 5)
+        6 ->
+          _amountString =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.amountStringSer, null)
+        7 ->
+          amountType =
+            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.amountTypeSer, null)
+        8 -> amountText = decoder.decodeStringElement(__desc, 8)
+        9 ->
+          _amountText =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.amountStringSer, null)
+        10 ->
+          referenceRange =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.referenceRangeSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding SubstanceAmount: " + __i)
+      }
+    }
+    return SubstanceAmount(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      amount =
+        SubstanceAmount.Amount.from(
+          amountQuantity,
+          amountRange,
+          R4String.of(amountString, _amountString),
+        ),
+      amountType = amountType,
+      amountText = R4String.of(amountText, _amountText),
+      referenceRange = referenceRange,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceAmount) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    when (val __d = value.amount) {
+      null -> {}
+      is SubstanceAmount.Amount.Quantity -> {
+        encoder.encodeSerializableElement(__desc, 3, Hoisted.amountQuantitySer, __d.value)
+      }
+      is SubstanceAmount.Amount.Range -> {
+        encoder.encodeSerializableElement(__desc, 4, Hoisted.amountRangeSer, __d.value)
+      }
+      is SubstanceAmount.Amount.String -> {
+        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+        (__d.value.toElement())?.let {
+          encoder.encodeSerializableElement(__desc, 6, Hoisted.amountStringSer, it)
+        }
+      }
+    }
+    (value.amountType)?.let {
+      encoder.encodeSerializableElement(__desc, 7, Hoisted.amountTypeSer, it)
+    }
+    ((value.amountText?.value))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    (value.amountText?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.amountStringSer, it)
+    }
+    (value.referenceRange)?.let {
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.referenceRangeSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val amountQuantitySer: KSerializer<Quantity> = Quantity.serializer()
+
+    public val amountRangeSer: KSerializer<Range> = Range.serializer()
+
+    public val amountStringSer: KSerializer<Element> = Element.serializer()
+
+    public val amountTypeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val referenceRangeSer: KSerializer<SubstanceAmount.ReferenceRange> =
+      SubstanceAmount.ReferenceRange.serializer()
   }
 }

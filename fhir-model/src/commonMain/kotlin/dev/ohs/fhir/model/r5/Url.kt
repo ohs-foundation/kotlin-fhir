@@ -18,12 +18,15 @@
 
 package dev.ohs.fhir.model.r5
 
+import dev.ohs.fhir.model.r5.serializers.UrlSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** url type: A URI that is a literal reference */
+@Serializable(with = UrlSerializer::class)
 public data class Url(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,

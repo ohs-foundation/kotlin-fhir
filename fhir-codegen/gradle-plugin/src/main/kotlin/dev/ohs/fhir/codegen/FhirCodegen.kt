@@ -16,8 +16,12 @@
 
 package dev.ohs.fhir.codegen
 
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
+import dev.ohs.fhir.codegen.primitives.PrimitiveClassSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.schema.StructureDefinition
+import dev.ohs.fhir.codegen.schema.getElementName
+import dev.ohs.fhir.codegen.schema.rootElements
 import dev.ohs.fhir.codegen.schema.serializableWithCustomSerializer
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
@@ -44,6 +48,7 @@ class FhirCodegen(
   packageName: String,
   valueSetMap: Map<String, ValueSet>,
   baseClassesSet: HashSet<String>,
+  typeGraph: TypeGraphAnalyzer,
 ) {
 
   private val codegenContext =
@@ -51,22 +56,57 @@ class FhirCodegen(
       packageName = packageName,
       valueSetMap = valueSetMap,
       baseClassNameSet = baseClassesSet,
+      typeGraph = typeGraph,
     )
 
   private val modelFileSpecGenerator = ModelFileSpecGenerator(codegenContext)
-  private val surrogateFileSpecGenerator = SurrogateFileSpecGenerator(codegenContext)
   private val serializerFileSpecGenerator = SerializerFileSpecGenerator(codegenContext)
   private val enumFileSpecGenerator = EnumFileSpecGenerator(codegenContext)
 
   fun generateFileSpecs(structureDefinition: StructureDefinition): List<FileSpec> {
     val fileSpecs = mutableListOf(modelFileSpecGenerator.generate(structureDefinition))
-    if (structureDefinition.serializableWithCustomSerializer) {
-      // TODO: Handle cases where the class does not need the surrogate class and the
-      //  custom serializer since it does not have any primitive fields.
-      fileSpecs += surrogateFileSpecGenerator.generate(structureDefinition)
+    if (
+      structureDefinition.serializableWithCustomSerializer || structureDefinition.name == "Element"
+    ) {
       fileSpecs += serializerFileSpecGenerator.generate(structureDefinition)
+    }
+    if (structureDefinition.kind == StructureDefinition.Kind.PRIMITIVE_TYPE) {
+      generatePrimitiveClassSerializer(structureDefinition)?.let { fileSpecs += it }
     }
     fileSpecs += enumFileSpecGenerator.generate(structureDefinition)
     return fileSpecs
+  }
+
+  /**
+   * Emits a hand-rolled `KSerializer` for a FHIR primitive wrapper (e.g. `BooleanSerializer`).
+   * Needed because the compiler plugin can't synthesize one — `Element` is `@Serializable` and the
+   * primitive redeclares `id`/`extension` via `override val`, which would trip the "duplicate
+   * serial name" check. A hand-rolled serializer bypasses the plugin entirely.
+   */
+  private fun generatePrimitiveClassSerializer(
+    structureDefinition: StructureDefinition
+  ): FileSpec? {
+    val primitiveClassName = codegenContext.getModelClassName(structureDefinition)
+    val valueElement =
+      structureDefinition.rootElements.firstOrNull { it.getElementName() == "value" } ?: return null
+    val propertyMapper =
+      PropertyMapper(PropertyMapper.MappingContext.MODEL, primitiveClassName, emptyMap())
+    val valuePropertyInfo = propertyMapper.mapToProperty(valueElement)
+    val valueTypeName = valuePropertyInfo.typeName
+    val valueNullable = valueTypeName.isNullable
+    val nonNullValueType =
+      if (valueNullable) {
+        when (valueTypeName) {
+          is ClassName -> valueTypeName.copy(nullable = false)
+          else -> valueTypeName
+        }
+      } else {
+        valueTypeName
+      }
+    return PrimitiveClassSerializerFileSpecGenerator.generate(
+      primitiveClassName = primitiveClassName,
+      valueType = nonNullValueType,
+      valueNullable = valueNullable,
+    )
   }
 }

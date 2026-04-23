@@ -23,7 +23,7 @@ import kotlin.Suppress
 import kotlinx.serialization.Serializable
 
 /** This is the base resource type for everything. */
-@Serializable
+@Serializable(with = ResourcePolymorphicSerializer::class)
 public abstract class Resource {
   /**
    * The logical id of the resource, as used in the URL for the resource. Once assigned, this value

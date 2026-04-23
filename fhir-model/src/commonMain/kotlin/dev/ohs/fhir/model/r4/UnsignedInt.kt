@@ -18,16 +18,19 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.UnsignedIntSerializer
 import kotlin.Int
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /**
  * Base StructureDefinition for unsignedInt type: An integer with a value that is not negative
  * (e.g. >= 0)
  */
+@Serializable(with = UnsignedIntSerializer::class)
 public data class UnsignedInt(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,

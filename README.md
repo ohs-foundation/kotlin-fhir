@@ -231,30 +231,32 @@ types are represented by two JSON properties (e.g.
 in [R4](https://hl7.org/fhir/R4/json.html#primitive)). As a result, the Kotlin data class of any
 FHIR resource or element containing primitive data types cannot be directly mapped to JSON.
 
-To address this issue, the library generates
-[surrogate](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serializers.md#composite-serializer-via-surrogate)
-classes (e.g. `PatientSurrogate`) to map each primitive data type to two JSON properties (e.g.
-`gender` and `_gender`) . It also generates custom serializers (e.g. `PatientSerializer`) that
-delegate the serialization/deserialization process to the corresponding surrogate classes and
-translate between the data classes and surrogate classes (via the `toModel` and `fromModel`
-functions). This process is repeated for backbone elements.
+To address this, the library generates one hand-rolled `KSerializer` per FHIR type (e.g.
+`PatientSerializer`). Each serializer describes the flat FHIR JSON wire shape via
+`buildClassSerialDescriptor` — one descriptor slot per wire key, including the `_field` sidecar
+keys for primitive extensions (e.g. `gender` + `_gender`). Encode and decode stream field-by-field
+through kotlinx's `CompositeEncoder` / `CompositeDecoder`: no intermediate surrogate instance, no
+`JsonObject` materialization, no flatten/unflatten pass. The same body services both
+`StreamingJsonDecoder` and `JsonTreeDecoder` — kotlinx picks the decoder, the generated serializer
+just walks its composite.
 
-Serialization and deserialization for choice types (e.g. `Patient.multipleBirth`) follow a similar
-surrogate-based approach. For example, for `Patient.multipleBirth`, the library generates a custom
-serializer `PatientMultipleBirthSerializer` that delegates serialization / deserialization to
-`PatientMultipleBirthSurrogate`.
-
-This process has an additional step to flatten and unflatten the JSON properties for the choice type
-elements using the FhirJsonTransformer (in
-[R4](https://github.com/ohs-foundation/kotlin-fhir/blob/main/fhir-model/src/commonMain/kotlin/dev/ohs/fhir/model/r4/FhirJsonTransformer.kt),
-[R4B](https://github.com/ohs-foundation/kotlin-fhir/blob/main/fhir-model/src/commonMain/kotlin/dev/ohs/fhir/model/r4b/FhirJsonTransformer.kt),
-[R5](https://github.com/ohs-foundation/kotlin-fhir/blob/main/fhir-model/src/commonMain/kotlin/dev/ohs/fhir/model/r5/FhirJsonTransformer.kt)),
-so the choice type can be handled independently by a surrogate. This also avoids hitting the
+Choice types (e.g. `Patient.multipleBirth`) are expanded into per-arm keys on the same flat
+descriptor (`multipleBirthBoolean`, `_multipleBirthBoolean`, `multipleBirthInteger`,
+`_multipleBirthInteger`, …). On encode, the parent serializer dispatches on the sealed subclass
+via a `when` over the arm types and writes the matched arm's keys directly into the parent's
+composite encoder. On decode, each arm key is read into a local and the sealed value is
+synthesized via the companion `from(…)` factory during model construction. This sidesteps the
 [JVM constructor argument limit](https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-4.html#jvms-4.3.3)
-caused by FHIR fields with many possible types (e.g.,
-[ElementDefinition.pattern](https://www.hl7.org/fhir/R4B/elementdefinition-definitions.html#ElementDefinition.pattern_x_)).
-Instead of expanding all types in the model's surrogate class — which would exceed the limit —
-choice type fields are handled by their own serializers and surrogate classes.
+that would otherwise be hit on FHIR fields with many possible types (e.g.,
+[ElementDefinition.pattern](https://www.hl7.org/fhir/R4B/elementdefinition-definitions.html#ElementDefinition.pattern_x_))
+because each arm is an individual descriptor slot rather than a constructor parameter.
+
+Polymorphic `Resource` dispatch (choosing `Patient` vs `Observation` vs … based on the
+`resourceType` discriminator) is handled by `ResourcePolymorphicSerializer`. It peeks the
+discriminator via kotlinx's internal `StreamingJsonDecoder.lexer.peekLeadingMatchingValue` when
+the decoder supports it (the common case, no tree allocation) and falls back to
+`json.decodeFromJsonElement(ConcreteSerializer, tree)` when `resourceType` isn't the leading key
+or the decoder isn't streaming.
 
 The following diagram illustrates the deserialization of a Patient JSON. The serialization process
 is simply the reverse.
@@ -281,82 +283,33 @@ graph LR
     #nbsp;#nbsp;]
     }
     "]
-    B["**Patient JSON (transformed)**
-    {
-    #nbsp;#nbsp;gender: ...
-    #nbsp;#nbsp;_gender: ...
-    #nbsp;#nbsp;multipleBirth:{
-    #nbsp;#nbsp;#nbsp;#nbsp;multipleBirthBoolean: ...
-    #nbsp;#nbsp;#nbsp;#nbsp;_multipleBirthBoolean: ...
-    #nbsp;#nbsp;#nbsp;#nbsp;multipleBirthInteger: ...
-    #nbsp;#nbsp;#nbsp;#nbsp;_multipleBirthInteger: ...
-    #nbsp;#nbsp;}
-     #nbsp;#nbsp;contact: [
-    #nbsp;#nbsp;#nbsp;#nbsp;{
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;name: {
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;family: ...
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;_family: ...
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;given: ...
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;}
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;telecom: [...]
-    #nbsp;#nbsp;#nbsp;#nbsp;}
-    #nbsp;#nbsp;]
-    }
-    "]
-    C["**PatientSurrogate object**
-    gender
-    _gender
-    multipleBirth (Sealed Interface)
-    contact (MutableList&lt;Patient.Contact&gt;)
-    "]
-    D["**PatientMultipleBirthSurrogate object**
-    multipleBirthBoolean: ...
-    _multipleBirthBoolean: ...
-    multipleBirthInteger: ...
-    _multipleBirthInteger: ...
-    "]
     E["**Patient object**
-    gender
-    multipleBirth
-    contact
-    "]
-    F["**PatientMultipleBirth** sealed interface
-    "]
-    G["**PatientContactSurrogate object**
-    name: HumanName
-    telecom: MutableList&lt;ContactPoint&gt;
-    "]
-    H["**Patient.Contact** backbone element
+    gender: Code
+    multipleBirth: Patient.MultipleBirth sealed interface
+    #nbsp;#nbsp;↳ .Boolean(value: Boolean) | .Integer(value: Integer)
+    contact: List&lt;Patient.Contact&gt;
     "]
 
-    A-->Transformer[FhirJsonTransformer]@{ shape: pill }
-    subgraph S1[PatientSerializer]
-      Transformer --> B
-      B -- deserialize fields --> C
-      B -- deserialize sealed interfaces (via surrogate) --> D
-      subgraph S2[PatientMultipleBirthSerializer]
-        D -- convert to model --> F
-      end
-      F --> C
-      B -- deserialize backbone elements (via surrogate) --> G
-      subgraph S3[PatientContactSerializer]
-        G -- convert to model --> H
-      end
-      H --> C
+    subgraph Poly[ResourcePolymorphicSerializer]
+      direction LR
+      A -- peek &quot;resourceType&quot; --> Dispatch{dispatch}
     end
-    C -- convert to model --> E
+    subgraph PS[PatientSerializer]
+      direction TB
+      Stream[&quot;decodeStructure(descriptor)<br>streaming loop over flat wire keys&quot;]
+      Stream -- read gender, _gender, arm locals, ... --> Locals[per-key locals]
+      Locals -- &quot;MultipleBirth.from(boolean, _boolean, integer, _integer)&quot; --> Seal[sealed value synthesized]
+      Locals -- &quot;PatientContactSerializer.deserialize&quot; --> BB[Patient.Contact backbone]
+    end
+    Dispatch --> PS
+    Seal --> E
+    BB --> E
+    Locals --> E
 
     style A text-align:left
-    style B text-align:left
-    style C text-align:left
-    style D text-align:left
     style E text-align:left
-    style F text-align:left
-    style G text-align:left
-    style H text-align:left
-    style S1 stroke-dasharray: 5 5
-    style S2 stroke-dasharray: 5 5
-    style S3 stroke-dasharray: 5 5
+    style Poly stroke-dasharray: 5 5
+    style PS stroke-dasharray: 5 5
 ```
 
 *Figure 1: Deserialization of a Patient JSON*

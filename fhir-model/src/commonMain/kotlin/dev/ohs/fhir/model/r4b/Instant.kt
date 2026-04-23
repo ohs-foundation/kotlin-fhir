@@ -18,12 +18,16 @@
 
 package dev.ohs.fhir.model.r4b
 
+import dev.ohs.fhir.model.r4b.serializers.FhirDateTimeSerializer
+import dev.ohs.fhir.model.r4b.serializers.InstantSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** Base StructureDefinition for instant Type: An instant in time - known at least to the second */
+@Serializable(with = InstantSerializer::class)
 public data class Instant(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,
@@ -41,7 +45,7 @@ public data class Instant(
    */
   override val extension: List<Extension> = listOf(),
   /** The actual value */
-  public val `value`: FhirDateTime? = null,
+  @Serializable(with = FhirDateTimeSerializer::class) public val `value`: FhirDateTime? = null,
 ) : Element(id, extension) {
   public open fun toBuilder(): Builder =
     with(this) {

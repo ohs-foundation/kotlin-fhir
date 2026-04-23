@@ -18,27 +18,95 @@
 
 package dev.ohs.fhir.model.r4b.serializers
 
+import dev.ohs.fhir.model.r4b.Extension
+import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.Ratio
-import dev.ohs.fhir.model.r4b.surrogates.RatioSurrogate
+import kotlin.String
 import kotlin.Suppress
+import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object RatioSerializer : KSerializer<Ratio> {
-  internal val surrogateSerializer: KSerializer<RatioSurrogate> by lazy {
-    RatioSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Ratio", surrogateSerializer.descriptor)
-  }
+internal object RatioSerializer : KSerializer<Ratio> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Ratio") {
+      element("id", String.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
+        isOptional = true,
+      )
+      element("numerator", lazyDescriptor { Quantity.serializer().descriptor }, isOptional = true)
+      element("denominator", lazyDescriptor { Quantity.serializer().descriptor }, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Ratio =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Ratio) {
-    surrogateSerializer.serialize(encoder, RatioSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Ratio {
+    val __desc = descriptor
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var numerator: Quantity? = null
+    var denominator: Quantity? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          numerator =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.numeratorSer, null)
+        3 ->
+          denominator =
+            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.numeratorSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Ratio: " + __i)
+      }
+    }
+    return Ratio(
+      id = id,
+      extension = extension ?: listOf(),
+      numerator = numerator,
+      denominator = denominator,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Ratio) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    (value.numerator)?.let {
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.numeratorSer, it)
+    }
+    (value.denominator)?.let {
+      encoder.encodeSerializableElement(__desc, 3, Hoisted.numeratorSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val numeratorSer: KSerializer<Quantity> = Quantity.serializer()
   }
 }

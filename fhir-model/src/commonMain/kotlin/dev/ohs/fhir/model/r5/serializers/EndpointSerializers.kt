@@ -18,45 +18,462 @@
 
 package dev.ohs.fhir.model.r5.serializers
 
+import dev.ohs.fhir.model.r5.Code
+import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.ContactPoint
+import dev.ohs.fhir.model.r5.Element
 import dev.ohs.fhir.model.r5.Endpoint
-import dev.ohs.fhir.model.r5.surrogates.EndpointPayloadSurrogate
-import dev.ohs.fhir.model.r5.surrogates.EndpointSurrogate
+import dev.ohs.fhir.model.r5.Enumeration
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Meta
+import dev.ohs.fhir.model.r5.Narrative
+import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.Url
+import kotlin.String as KotlinString
 import kotlin.Suppress
+import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object EndpointPayloadSerializer : KSerializer<Endpoint.Payload> {
-  internal val surrogateSerializer: KSerializer<EndpointPayloadSurrogate> by lazy {
-    EndpointPayloadSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Payload", surrogateSerializer.descriptor)
-  }
+internal object EndpointPayloadSerializer : KSerializer<Endpoint.Payload> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Payload") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "type",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "mimeType",
+        listSerialDescriptor(KotlinString.serializer().descriptor),
+        isOptional = true,
+      )
+      element("_mimeType", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Endpoint.Payload =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Endpoint.Payload) {
-    surrogateSerializer.serialize(encoder, EndpointPayloadSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Endpoint.Payload {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var type: List<CodeableConcept>? = null
+    var mimeType: List<KotlinString?>? = null
+    var _mimeType: List<Element?>? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
+        4 ->
+          mimeType = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.mimeTypeSer, null)
+        5 ->
+          _mimeType =
+            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.mimeTypeSer2, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Payload: " + __i)
+      }
+    }
+    return Endpoint.Payload(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      type = type ?: listOf(),
+      mimeType =
+        (kotlin.collections.List(maxOf(mimeType?.size ?: 0, _mimeType?.size ?: 0)) { __i ->
+          Code.of(mimeType?.getOrNull(__i)?.let { it }, _mimeType?.getOrNull(__i))!!
+        }),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Endpoint.Payload) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    if (value.type.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, value.type)
+    (value.mimeType.map { it.value }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.mimeTypeSer, it)
+    }
+    (value.mimeType.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 5, Hoisted.mimeTypeSer2, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val typeSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val typeSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.typeSerInner)
+
+    public val mimeTypeSerInner: KSerializer<KotlinString> = KotlinString.serializer()
+
+    public val mimeTypeSer: KSerializer<List<KotlinString?>> =
+      ListSerializer((Hoisted.mimeTypeSerInner).nullable)
+
+    public val mimeTypeSerInner2: KSerializer<Element> = Element.serializer()
+
+    public val mimeTypeSer2: KSerializer<List<Element?>> =
+      ListSerializer((Hoisted.mimeTypeSerInner2).nullable)
   }
 }
 
-public object EndpointSerializer : KSerializer<Endpoint> {
-  internal val surrogateSerializer: KSerializer<EndpointSurrogate> by lazy {
-    EndpointSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Endpoint", surrogateSerializer.descriptor)
-  }
+internal object EndpointSerializer : KSerializer<Endpoint> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Endpoint") {
+      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element("meta", Meta.serializer().descriptor, isOptional = true)
+      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+      element("language", KotlinString.serializer().descriptor, isOptional = true)
+      element("_language", Element.serializer().descriptor, isOptional = true)
+      element("text", Narrative.serializer().descriptor, isOptional = true)
+      element(
+        "contained",
+        listSerialDescriptor(Resource.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "identifier",
+        listSerialDescriptor(Identifier.serializer().descriptor),
+        isOptional = true,
+      )
+      element("status", KotlinString.serializer().descriptor, isOptional = true)
+      element("_status", Element.serializer().descriptor, isOptional = true)
+      element(
+        "connectionType",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("name", KotlinString.serializer().descriptor, isOptional = true)
+      element("_name", Element.serializer().descriptor, isOptional = true)
+      element("description", KotlinString.serializer().descriptor, isOptional = true)
+      element("_description", Element.serializer().descriptor, isOptional = true)
+      element(
+        "environmentType",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("managingOrganization", Reference.serializer().descriptor, isOptional = true)
+      element(
+        "contact",
+        listSerialDescriptor(ContactPoint.serializer().descriptor),
+        isOptional = true,
+      )
+      element("period", Period.serializer().descriptor, isOptional = true)
+      element(
+        "payload",
+        listSerialDescriptor(lazyDescriptor { Endpoint.Payload.serializer().descriptor }),
+        isOptional = true,
+      )
+      element("address", KotlinString.serializer().descriptor, isOptional = true)
+      element("_address", Element.serializer().descriptor, isOptional = true)
+      element(
+        "header",
+        listSerialDescriptor(KotlinString.serializer().descriptor),
+        isOptional = true,
+      )
+      element("_header", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Endpoint =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Endpoint) {
-    surrogateSerializer.serialize(encoder, EndpointSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  internal fun deserializeJson(decoder: CompositeDecoder): Endpoint {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var meta: Meta? = null
+    var implicitRules: KotlinString? = null
+    var _implicitRules: Element? = null
+    var language: KotlinString? = null
+    var _language: Element? = null
+    var text: Narrative? = null
+    var contained: List<Resource>? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var identifier: List<Identifier>? = null
+    var status: KotlinString? = null
+    var _status: Element? = null
+    var connectionType: List<CodeableConcept>? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var description: KotlinString? = null
+    var _description: Element? = null
+    var environmentType: List<CodeableConcept>? = null
+    var managingOrganization: Reference? = null
+    var contact: List<ContactPoint>? = null
+    var period: Period? = null
+    var payload: List<Endpoint.Payload>? = null
+    var address: KotlinString? = null
+    var _address: Element? = null
+    var `header`: List<KotlinString?>? = null
+    var _header: List<Element?>? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> decoder.decodeStringElement(__desc, 0)
+        1 -> id = decoder.decodeStringElement(__desc, 1)
+        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
+        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
+        4 ->
+          _implicitRules =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
+        5 -> language = decoder.decodeStringElement(__desc, 5)
+        6 ->
+          _language =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
+        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
+        8 ->
+          contained =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
+        9 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
+        10 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
+        11 ->
+          identifier =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
+        12 -> status = decoder.decodeStringElement(__desc, 12)
+        13 ->
+          _status =
+            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
+        14 ->
+          connectionType =
+            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.connectionTypeSer, null)
+        15 -> name = decoder.decodeStringElement(__desc, 15)
+        16 ->
+          _name =
+            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.implicitRulesSer, null)
+        17 -> description = decoder.decodeStringElement(__desc, 17)
+        18 ->
+          _description =
+            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.implicitRulesSer, null)
+        19 ->
+          environmentType =
+            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.connectionTypeSer, null)
+        20 ->
+          managingOrganization =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              20,
+              Hoisted.managingOrganizationSer,
+              null,
+            )
+        21 ->
+          contact = decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.contactSer, null)
+        22 ->
+          period = decoder.decodeNullableSerializableElement(__desc, 22, Hoisted.periodSer, null)
+        23 ->
+          payload = decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.payloadSer, null)
+        24 -> address = decoder.decodeStringElement(__desc, 24)
+        25 ->
+          _address =
+            decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.implicitRulesSer, null)
+        26 ->
+          `header` = decoder.decodeNullableSerializableElement(__desc, 26, Hoisted.headerSer, null)
+        27 ->
+          _header = decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.headerSer2, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Endpoint: " + __i)
+      }
+    }
+    return Endpoint(
+      id = id,
+      meta = meta,
+      implicitRules = Uri.of(implicitRules, _implicitRules),
+      language = Code.of(language, _language),
+      text = text,
+      contained = contained ?: listOf(),
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      identifier = identifier ?: listOf(),
+      status = Enumeration.of(Endpoint.EndpointStatus.fromCode(status!!), _status),
+      connectionType = connectionType ?: listOf(),
+      name = R5String.of(name, _name),
+      description = R5String.of(description, _description),
+      environmentType = environmentType ?: listOf(),
+      managingOrganization = managingOrganization,
+      contact = contact ?: listOf(),
+      period = period,
+      payload = payload ?: listOf(),
+      address = Url.of(address, _address)!!,
+      `header` =
+        (kotlin.collections.List(maxOf(`header`?.size ?: 0, _header?.size ?: 0)) { __i ->
+          R5String.of(`header`?.getOrNull(__i)?.let { it }, _header?.getOrNull(__i))!!
+        }),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Endpoint) {
+    val __desc = descriptor
+    encoder.encodeStringElement(__desc, 0, "Endpoint")
+    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+    (value.implicitRules?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+    }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    (value.language?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+    }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    if (value.contained.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+    if (value.identifier.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
+    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 12, it) }
+    (value.status.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+    }
+    if (value.connectionType.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 14, Hoisted.connectionTypeSer, value.connectionType)
+    ((value.name?.value))?.let { encoder.encodeStringElement(__desc, 15, it) }
+    (value.name?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 16, Hoisted.implicitRulesSer, it)
+    }
+    ((value.description?.value))?.let { encoder.encodeStringElement(__desc, 17, it) }
+    (value.description?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 18, Hoisted.implicitRulesSer, it)
+    }
+    if (value.environmentType.isNotEmpty())
+      encoder.encodeSerializableElement(
+        __desc,
+        19,
+        Hoisted.connectionTypeSer,
+        value.environmentType,
+      )
+    (value.managingOrganization)?.let {
+      encoder.encodeSerializableElement(__desc, 20, Hoisted.managingOrganizationSer, it)
+    }
+    if (value.contact.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 21, Hoisted.contactSer, value.contact)
+    (value.period)?.let { encoder.encodeSerializableElement(__desc, 22, Hoisted.periodSer, it) }
+    if (value.payload.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 23, Hoisted.payloadSer, value.payload)
+    ((value.address.value))?.let { encoder.encodeStringElement(__desc, 24, it) }
+    (value.address.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 25, Hoisted.implicitRulesSer, it)
+    }
+    (value.`header`.map { it.value }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 26, Hoisted.headerSer, it)
+    }
+    (value.`header`.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 27, Hoisted.headerSer2, it)
+    }
+  }
+
+  private object Hoisted {
+    public val metaSer: KSerializer<Meta> = Meta.serializer()
+
+    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
+
+    public val textSer: KSerializer<Narrative> = Narrative.serializer()
+
+    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
+
+    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
+
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
+
+    public val identifierSer: KSerializer<List<Identifier>> =
+      ListSerializer(Hoisted.identifierSerInner)
+
+    public val connectionTypeSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val connectionTypeSer: KSerializer<List<CodeableConcept>> =
+      ListSerializer(Hoisted.connectionTypeSerInner)
+
+    public val managingOrganizationSer: KSerializer<Reference> = Reference.serializer()
+
+    public val contactSerInner: KSerializer<ContactPoint> = ContactPoint.serializer()
+
+    public val contactSer: KSerializer<List<ContactPoint>> = ListSerializer(Hoisted.contactSerInner)
+
+    public val periodSer: KSerializer<Period> = Period.serializer()
+
+    public val payloadSerInner: KSerializer<Endpoint.Payload> = Endpoint.Payload.serializer()
+
+    public val payloadSer: KSerializer<List<Endpoint.Payload>> =
+      ListSerializer(Hoisted.payloadSerInner)
+
+    public val headerSerInner: KSerializer<KotlinString> = KotlinString.serializer()
+
+    public val headerSer: KSerializer<List<KotlinString?>> =
+      ListSerializer((Hoisted.headerSerInner).nullable)
+
+    public val headerSer2: KSerializer<List<Element?>> =
+      ListSerializer((Hoisted.implicitRulesSer).nullable)
   }
 }

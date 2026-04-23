@@ -18,12 +18,15 @@
 
 package dev.ohs.fhir.model.r4b
 
+import dev.ohs.fhir.model.r4b.serializers.XhtmlSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** Base StructureDefinition for xhtml Type */
+@Serializable(with = XhtmlSerializer::class)
 public data class Xhtml(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,

@@ -17,10 +17,12 @@
 package dev.ohs.fhir.codegen
 
 import com.squareup.kotlinpoet.ClassName
-import dev.ohs.fhir.codegen.primitives.DoubleSerializerFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.BigDecimalSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.EnumerationFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirDateSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirDateTimeSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.LocalTimeSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.schema.StructureDefinition
 import dev.ohs.fhir.codegen.schema.capitalized
@@ -127,7 +129,8 @@ abstract class FhirCodegenTask : DefaultTask() {
 
     val packageName = this.packageName.get()
 
-    val fhirCodegen = FhirCodegen(packageName, valueSetMap, baseClasses)
+    val typeGraph = TypeGraphAnalyzer(structureDefinitions)
+    val fhirCodegen = FhirCodegen(packageName, valueSetMap, baseClasses, typeGraph)
 
     structureDefinitions
       .flatMap { fhirCodegen.generateFileSpecs(it) }
@@ -142,7 +145,9 @@ abstract class FhirCodegenTask : DefaultTask() {
         }
         .toList()
 
-    FhirJsonFileSpecGenerator.generate(packageName, subclasses).writeTo(outputDir)
+    FhirResourcePolymorphicSerializerFileSpecGenerator.generate(packageName, subclasses)
+      .writeTo(outputDir)
+    FhirJsonFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
     FhirDateTimeFileSpecGenerator.generate(packageName).writeTo(outputDir)
     FhirDateFileSpecGenerator.generate(packageName).writeTo(outputDir)
@@ -152,9 +157,11 @@ abstract class FhirCodegenTask : DefaultTask() {
 
     // Generate custom serializers
     val serializersPackageName = "$packageName.serializers"
-    DoubleSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
     LocalTimeSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
+    BigDecimalSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
+    FhirDateSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
+    FhirDateTimeSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
 
-    FhirJsonTransformerFileSpecGenerator.generate(packageName).writeTo(outputDir)
+    LazySerialDescriptorFileSpecGenerator.writeTo(outputDir, serializersPackageName)
   }
 }

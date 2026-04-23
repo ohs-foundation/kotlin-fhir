@@ -18,12 +18,15 @@
 
 package dev.ohs.fhir.model.r5
 
+import dev.ohs.fhir.model.r5.serializers.OidSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** oid type: An OID represented as a URI */
+@Serializable(with = OidSerializer::class)
 public data class Oid(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,

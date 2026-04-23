@@ -18,16 +18,20 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.DateSerializer
+import dev.ohs.fhir.model.r4.serializers.FhirDateSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /**
  * Base StructureDefinition for date Type: A date or partial date (e.g. just year or year + month).
  * There is no time zone. The format is a union of the schema types gYear, gYearMonth and date.
  * Dates SHALL be valid dates.
  */
+@Serializable(with = DateSerializer::class)
 public data class Date(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,
@@ -45,7 +49,7 @@ public data class Date(
    */
   override val extension: List<Extension> = listOf(),
   /** The actual value */
-  public val `value`: FhirDate? = null,
+  @Serializable(with = FhirDateSerializer::class) public val `value`: FhirDate? = null,
 ) : Element(id, extension) {
   public open fun toBuilder(): Builder =
     with(this) {

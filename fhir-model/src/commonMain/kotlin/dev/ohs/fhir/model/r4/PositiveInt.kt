@@ -18,15 +18,18 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.PositiveIntSerializer
 import kotlin.Int
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /**
  * Base StructureDefinition for positiveInt type: An integer with a value that is positive (e.g. >0)
  */
+@Serializable(with = PositiveIntSerializer::class)
 public data class PositiveInt(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,

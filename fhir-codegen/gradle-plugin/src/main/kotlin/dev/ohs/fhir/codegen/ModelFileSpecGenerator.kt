@@ -22,7 +22,6 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
@@ -107,11 +106,40 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
                 .build()
             )
           } else if (structureDefinition.kind == StructureDefinition.Kind.RESOURCE) {
-            // All resources (Resource class and its subclasses) are serializable
-            addAnnotation(Serializable::class)
+            // The abstract `Resource` root uses a hand-rolled content-polymorphic serializer that
+            // reads the `resourceType` discriminator from the JSON body itself (rather than relying
+            // on kotlinx's auto-injected class-discriminator, which would double-write the key
+            // because our concrete subclass serializers emit `resourceType` as a regular field).
+            if (structureDefinitionName == "Resource") {
+              addAnnotation(
+                AnnotationSpec.builder(Serializable::class)
+                  .addMember(
+                    "with = %T::class",
+                    ClassName(modelClassName.packageName, "ResourcePolymorphicSerializer"),
+                  )
+                  .build()
+              )
+            } else {
+              // All other resources (DomainResource, concrete subclasses) are serializable
+              addAnnotation(Serializable::class)
+            }
           } else if (structureDefinitionName == "Element") {
-            // Element is serializable for fields prefixed with '_'
-            addAnnotation(Serializable::class)
+            // Element gets a hand-rolled custom serializer
+            addAnnotation(
+              AnnotationSpec.builder(Serializable::class)
+                .addMember("with = %T::class", modelClassName.toSerializerClassName())
+                .build()
+            )
+          } else if (structureDefinition.kind == StructureDefinition.Kind.PRIMITIVE_TYPE) {
+            // FHIR primitive wrapper classes get a hand-rolled custom serializer. A custom
+            // serializer (vs compiler-synthesized) sidesteps the duplicate-serial-name error that
+            // would otherwise occur from inherited + overridden `@Serializable` properties
+            // across Element → Primitive (and Primitive → refined primitives like Code/Canonical).
+            addAnnotation(
+              AnnotationSpec.builder(Serializable::class)
+                .addMember("with = %T::class", modelClassName.toSerializerClassName())
+                .build()
+            )
           }
 
           // Serial name annotations for resources
@@ -330,6 +358,27 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
   }
 }
 
+/**
+ * Returns the class name of the custom `@Serializable(with = X::class)` serializer the compiler
+ * plugin should use for a property of the given [typeName], or null if the default synthesized
+ * serializer is fine. The serializer lives in the model's `<packageName>.serializers` sub-package.
+ */
+private fun customValueSerializerFor(typeName: TypeName, modelPackageName: String): ClassName? {
+  val raw = typeName as? ClassName ?: return null
+  val serializersPackage = "$modelPackageName.serializers"
+  return when {
+    raw.packageName == "com.ionspin.kotlin.bignum.decimal" && raw.simpleName == "BigDecimal" ->
+      ClassName(serializersPackage, "BigDecimalSerializer")
+    raw.packageName == modelPackageName && raw.simpleName == "FhirDate" ->
+      ClassName(serializersPackage, "FhirDateSerializer")
+    raw.packageName == modelPackageName && raw.simpleName == "FhirDateTime" ->
+      ClassName(serializersPackage, "FhirDateTimeSerializer")
+    raw.packageName == "kotlinx.datetime" && raw.simpleName == "LocalTime" ->
+      ClassName(serializersPackage, "LocalTimeSerializer")
+    else -> null
+  }
+}
+
 private fun TypeSpec.Builder.buildProperties(
   modelClassName: ClassName,
   elements: List<Element>,
@@ -364,6 +413,18 @@ private fun TypeSpec.Builder.buildProperties(
               }
             } else if (isBaseClass) {
               addModifiers(KModifier.OPEN)
+            }
+
+            // Attach an explicit `@Serializable(with = X::class)` for value types the compiler
+            // plugin can't find a serializer for on its own (BigDecimal, FhirDate, FhirDateTime,
+            // LocalTime). Typically applies only to primitive wrappers' `value` property.
+            customValueSerializerFor(propertyInfo.typeName, modelClassName.packageName)?.let {
+              customSerializer ->
+              addAnnotation(
+                AnnotationSpec.builder(Serializable::class)
+                  .addMember("with = %T::class", customSerializer)
+                  .build()
+              )
             }
 
             addKdoc("%L", element.definition.sanitizeKDoc())
@@ -422,8 +483,8 @@ private fun TypeSpec.Builder.addSealedInterfaces(
     PropertyMapper(PropertyMapper.MappingContext.MODEL, enclosingModelClassName, emptyMap())
 
   for (element in elements.filter { it.path.endsWith("[x]") }) {
-    val sealedInterfaceClassName =
-      enclosingModelClassName.nestedClass(element.getElementName().capitalized())
+    val fieldName = element.getElementName()
+    val sealedInterfaceClassName = enclosingModelClassName.nestedClass(fieldName.capitalized())
     addType(
       TypeSpec.interfaceBuilder(sealedInterfaceClassName)
         .addModifiers(KModifier.SEALED)
@@ -434,8 +495,9 @@ private fun TypeSpec.Builder.addSealedInterfaces(
         )
         .apply {
           for (type in element.type!!) {
+            val armName = sealedChoiceArmName(type)
             addType(
-              TypeSpec.classBuilder(type.code.capitalized())
+              TypeSpec.classBuilder(armName)
                 .addModifiers(KModifier.DATA)
                 .primaryConstructor(
                   FunSpec.constructorBuilder()
@@ -613,14 +675,14 @@ private fun TypeSpec.Builder.addOfFunctionForXhtml(
  * `Decimal` class has type `BigDecimal` in the model but `Double` in the surrogate class.
  */
 private fun TypeSpec.Builder.addOfFunctionForDecimal(className: ClassName): TypeSpec.Builder {
+  val bigDecimal = ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal")
   addFunction(
     FunSpec.builder("of")
-      .addParameter("value", Double::class.asTypeName().copy(nullable = true))
+      .addParameter("value", bigDecimal.copy(nullable = true))
       .addParameter("element", ClassName(className.packageName, "Element").copy(nullable = true))
       .addCode(
-        "return if (value != null || element?.id != null || element?.extension?.isEmpty() == false) { %T(element?.id, element?.extension ?: mutableListOf(), value?.%M()) } else { null }",
+        "return if (value != null || element?.id != null || element?.extension?.isEmpty() == false) { %T(element?.id, element?.extension ?: mutableListOf(), value) } else { null }",
         className,
-        MemberName("com.ionspin.kotlin.bignum.decimal", "toBigDecimal"),
       )
       .returns(className.copy(nullable = true))
       .build()
@@ -675,7 +737,7 @@ private fun TypeSpec.Builder.addFromFunction(
               .add(
                 "if(%N != null) return %T(%N) \n",
                 "${type.code.replaceFirstChar { it.lowercase() }}Value",
-                sealedInterfaceClassName.nestedClass(type.code.capitalized()),
+                sealedInterfaceClassName.nestedClass(sealedChoiceArmName(type)),
                 "${type.code.replaceFirstChar { it.lowercase() }}Value",
               )
               .build()
@@ -690,11 +752,24 @@ private fun TypeSpec.Builder.addFromFunction(
 private fun TypeSpec.Builder.addDataTypeFunction(type: Type, sealedInterfaceClassName: ClassName) =
   addFunction(
     FunSpec.builder("as${type.code.capitalized()}")
-      .returns(sealedInterfaceClassName.nestedClass(type.code.capitalized()).copy(nullable = true))
+      .returns(
+        sealedInterfaceClassName.nestedClass(sealedChoiceArmName(type)).copy(nullable = true)
+      )
       .addCode(
         CodeBlock.builder()
-          .add("return this as? %T", sealedInterfaceClassName.nestedClass(type.code.capitalized()))
+          .add(
+            "return this as? %T",
+            sealedInterfaceClassName.nestedClass(sealedChoiceArmName(type)),
+          )
           .build()
       )
       .build()
   )
+
+/**
+ * Returns the nested-class name used for a sealed choice-type arm — e.g. `Patient.Deceased.Boolean`
+ * for the `boolean` arm. The subclass is NOT `@Serializable`; the enclosing sealed interface's
+ * hand-rolled custom serializer handles all encode/decode, so there is no synthesized `$serializer`
+ * that could trip over the lexical name clash (`value: Boolean` resolving to the subclass).
+ */
+internal fun sealedChoiceArmName(type: Type): String = type.code.capitalized()

@@ -19,69 +19,203 @@
 package dev.ohs.fhir.model.r5.serializers
 
 import dev.ohs.fhir.model.r5.Annotation
-import dev.ohs.fhir.model.r5.FhirJsonTransformer
-import dev.ohs.fhir.model.r5.surrogates.AnnotationAuthorSurrogate
-import dev.ohs.fhir.model.r5.surrogates.AnnotationSurrogate
-import kotlin.String
+import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Element
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.String as R5String
+import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonEncoder
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object AnnotationAuthorSerializer : KSerializer<Annotation.Author> {
-  internal val surrogateSerializer: KSerializer<AnnotationAuthorSurrogate> by lazy {
-    AnnotationAuthorSurrogate.serializer()
-  }
+internal object AnnotationAuthorSerializer : KSerializer<Annotation.Author> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Annotation.Author") {
+      element(
+        "authorReference",
+        lazyDescriptor { Reference.serializer().descriptor },
+        isOptional = true,
+      )
+      element("authorString", KotlinString.serializer().descriptor, isOptional = true)
+      element("_authorString", Element.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Author", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: Annotation.Author) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is Annotation.Author.Reference -> {
+          encodeSerializableElement(__desc, 0, Hoisted.authorReferenceSer, __d.value)
+        }
+        is Annotation.Author.String -> {
+          ((__d.value.value))?.let { encodeStringElement(__desc, 1, it) }
+          (__d.value.toElement())?.let {
+            encodeSerializableElement(__desc, 2, Hoisted.elementSer, it)
+          }
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): Annotation.Author =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: Annotation.Author) {
-    surrogateSerializer.serialize(encoder, AnnotationAuthorSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): Annotation.Author {
+    val __desc = descriptor
+    var authorReference: Reference? = null
+    var authorString: KotlinString? = null
+    var _authorString: Element? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 ->
+          authorReference =
+            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.authorReferenceSer, null)
+        1 -> authorString = decoder.decodeStringElement(__desc, 1)
+        2 ->
+          _authorString =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.elementSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Annotation.Author: " + __i)
+      }
+    }
+    return Annotation.Author.from(authorReference, R5String.of(authorString, _authorString))!!
+  }
+
+  private object Hoisted {
+    public val authorReferenceSer: KSerializer<Reference> = Reference.serializer()
+
+    public val elementSer: KSerializer<Element> = Element.serializer()
   }
 }
 
-public object AnnotationSerializer : KSerializer<Annotation> {
-  internal val surrogateSerializer: KSerializer<AnnotationSurrogate> by lazy {
-    AnnotationSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("author")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Annotation", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): Annotation {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object AnnotationSerializer : KSerializer<Annotation> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Annotation") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element(
+        "authorReference",
+        lazyDescriptor { Reference.serializer().descriptor },
+        isOptional = true,
+      )
+      element("authorString", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "_authorString",
+        lazyDescriptor { Element.serializer().descriptor },
+        isOptional = true,
+      )
+      element("time", KotlinString.serializer().descriptor, isOptional = true)
+      element("_time", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+      element("text", KotlinString.serializer().descriptor, isOptional = true)
+      element("_text", lazyDescriptor { Element.serializer().descriptor }, isOptional = true)
+    }
+
+  override fun deserialize(decoder: Decoder): Annotation =
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Annotation) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = AnnotationSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Annotation {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var authorReference: Reference? = null
+    var authorString: KotlinString? = null
+    var _authorString: Element? = null
+    var time: KotlinString? = null
+    var _time: Element? = null
+    var text: KotlinString? = null
+    var _text: Element? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          authorReference =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.authorReferenceSer, null)
+        3 -> authorString = decoder.decodeStringElement(__desc, 3)
+        4 ->
+          _authorString =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.authorStringSer, null)
+        5 -> time = decoder.decodeStringElement(__desc, 5)
+        6 ->
+          _time =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.authorStringSer, null)
+        7 -> text = decoder.decodeStringElement(__desc, 7)
+        8 ->
+          _text =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.authorStringSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Annotation: " + __i)
+      }
+    }
+    return Annotation(
+      id = id,
+      extension = extension ?: listOf(),
+      author = Annotation.Author.from(authorReference, R5String.of(authorString, _authorString)),
+      time = DateTime.of(FhirDateTime.fromString(time), _time),
+      text = Markdown.of(text, _text)!!,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Annotation) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    when (val __d = value.author) {
+      null -> {}
+      is Annotation.Author.Reference -> {
+        encoder.encodeSerializableElement(__desc, 2, Hoisted.authorReferenceSer, __d.value)
+      }
+      is Annotation.Author.String -> {
+        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+        (__d.value.toElement())?.let {
+          encoder.encodeSerializableElement(__desc, 4, Hoisted.authorStringSer, it)
+        }
+      }
+    }
+    ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    (value.time?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.authorStringSer, it)
+    }
+    ((value.text.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    (value.text.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.authorStringSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val authorReferenceSer: KSerializer<Reference> = Reference.serializer()
+
+    public val authorStringSer: KSerializer<Element> = Element.serializer()
   }
 }

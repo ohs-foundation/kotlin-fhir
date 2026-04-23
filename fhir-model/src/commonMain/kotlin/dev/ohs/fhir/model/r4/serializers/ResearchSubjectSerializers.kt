@@ -18,27 +18,241 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
+import dev.ohs.fhir.model.r4.Code
+import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Meta
+import dev.ohs.fhir.model.r4.Narrative
+import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.ResearchSubject
-import dev.ohs.fhir.model.r4.surrogates.ResearchSubjectSurrogate
+import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.Uri
+import kotlin.String as KotlinString
 import kotlin.Suppress
+import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
-  internal val surrogateSerializer: KSerializer<ResearchSubjectSurrogate> by lazy {
-    ResearchSubjectSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("ResearchSubject", surrogateSerializer.descriptor)
-  }
+internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("ResearchSubject") {
+      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element("meta", Meta.serializer().descriptor, isOptional = true)
+      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+      element("language", KotlinString.serializer().descriptor, isOptional = true)
+      element("_language", Element.serializer().descriptor, isOptional = true)
+      element("text", Narrative.serializer().descriptor, isOptional = true)
+      element(
+        "contained",
+        listSerialDescriptor(Resource.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "identifier",
+        listSerialDescriptor(Identifier.serializer().descriptor),
+        isOptional = true,
+      )
+      element("status", KotlinString.serializer().descriptor, isOptional = true)
+      element("_status", Element.serializer().descriptor, isOptional = true)
+      element("period", Period.serializer().descriptor, isOptional = true)
+      element("study", Reference.serializer().descriptor, isOptional = true)
+      element("individual", Reference.serializer().descriptor, isOptional = true)
+      element("assignedArm", KotlinString.serializer().descriptor, isOptional = true)
+      element("_assignedArm", Element.serializer().descriptor, isOptional = true)
+      element("actualArm", KotlinString.serializer().descriptor, isOptional = true)
+      element("_actualArm", Element.serializer().descriptor, isOptional = true)
+      element("consent", Reference.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): ResearchSubject =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: ResearchSubject) {
-    surrogateSerializer.serialize(encoder, ResearchSubjectSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  internal fun deserializeJson(decoder: CompositeDecoder): ResearchSubject {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var meta: Meta? = null
+    var implicitRules: KotlinString? = null
+    var _implicitRules: Element? = null
+    var language: KotlinString? = null
+    var _language: Element? = null
+    var text: Narrative? = null
+    var contained: List<Resource>? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var identifier: List<Identifier>? = null
+    var status: KotlinString? = null
+    var _status: Element? = null
+    var period: Period? = null
+    var study: Reference? = null
+    var individual: Reference? = null
+    var assignedArm: KotlinString? = null
+    var _assignedArm: Element? = null
+    var actualArm: KotlinString? = null
+    var _actualArm: Element? = null
+    var consent: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> decoder.decodeStringElement(__desc, 0)
+        1 -> id = decoder.decodeStringElement(__desc, 1)
+        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
+        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
+        4 ->
+          _implicitRules =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
+        5 -> language = decoder.decodeStringElement(__desc, 5)
+        6 ->
+          _language =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
+        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
+        8 ->
+          contained =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
+        9 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
+        10 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
+        11 ->
+          identifier =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
+        12 -> status = decoder.decodeStringElement(__desc, 12)
+        13 ->
+          _status =
+            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
+        14 ->
+          period = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.periodSer, null)
+        15 -> study = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.studySer, null)
+        16 ->
+          individual = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.studySer, null)
+        17 -> assignedArm = decoder.decodeStringElement(__desc, 17)
+        18 ->
+          _assignedArm =
+            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.implicitRulesSer, null)
+        19 -> actualArm = decoder.decodeStringElement(__desc, 19)
+        20 ->
+          _actualArm =
+            decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.implicitRulesSer, null)
+        21 ->
+          consent = decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.studySer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding ResearchSubject: " + __i)
+      }
+    }
+    return ResearchSubject(
+      id = id,
+      meta = meta,
+      implicitRules = Uri.of(implicitRules, _implicitRules),
+      language = Code.of(language, _language),
+      text = text,
+      contained = contained ?: listOf(),
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      identifier = identifier ?: listOf(),
+      status = Enumeration.of(ResearchSubject.ResearchSubjectStatus.fromCode(status!!), _status),
+      period = period,
+      study = study!!,
+      individual = individual!!,
+      assignedArm = R4String.of(assignedArm, _assignedArm),
+      actualArm = R4String.of(actualArm, _actualArm),
+      consent = consent,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: ResearchSubject) {
+    val __desc = descriptor
+    encoder.encodeStringElement(__desc, 0, "ResearchSubject")
+    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+    (value.implicitRules?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+    }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    (value.language?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+    }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    if (value.contained.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+    if (value.identifier.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
+    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 12, it) }
+    (value.status.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+    }
+    (value.period)?.let { encoder.encodeSerializableElement(__desc, 14, Hoisted.periodSer, it) }
+    (value.study)?.let { encoder.encodeSerializableElement(__desc, 15, Hoisted.studySer, it) }
+    (value.individual)?.let { encoder.encodeSerializableElement(__desc, 16, Hoisted.studySer, it) }
+    ((value.assignedArm?.value))?.let { encoder.encodeStringElement(__desc, 17, it) }
+    (value.assignedArm?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 18, Hoisted.implicitRulesSer, it)
+    }
+    ((value.actualArm?.value))?.let { encoder.encodeStringElement(__desc, 19, it) }
+    (value.actualArm?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 20, Hoisted.implicitRulesSer, it)
+    }
+    (value.consent)?.let { encoder.encodeSerializableElement(__desc, 21, Hoisted.studySer, it) }
+  }
+
+  private object Hoisted {
+    public val metaSer: KSerializer<Meta> = Meta.serializer()
+
+    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
+
+    public val textSer: KSerializer<Narrative> = Narrative.serializer()
+
+    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
+
+    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
+
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
+
+    public val identifierSer: KSerializer<List<Identifier>> =
+      ListSerializer(Hoisted.identifierSerInner)
+
+    public val periodSer: KSerializer<Period> = Period.serializer()
+
+    public val studySer: KSerializer<Reference> = Reference.serializer()
   }
 }

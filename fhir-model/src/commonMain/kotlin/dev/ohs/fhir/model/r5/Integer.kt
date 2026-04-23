@@ -18,6 +18,7 @@
 
 package dev.ohs.fhir.model.r5
 
+import dev.ohs.fhir.model.r5.serializers.IntegerSerializer
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
@@ -25,8 +26,10 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** integer Type: A whole number */
+@Serializable(with = IntegerSerializer::class)
 public open class Integer(
   /** unique id for the element within a resource (for internal references) */
   open override val id: String? = null,

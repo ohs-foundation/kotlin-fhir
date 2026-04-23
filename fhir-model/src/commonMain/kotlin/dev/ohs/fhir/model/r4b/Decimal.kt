@@ -19,14 +19,16 @@
 package dev.ohs.fhir.model.r4b
 
 import com.ionspin.kotlin.bignum.decimal.BigDecimal
-import com.ionspin.kotlin.bignum.decimal.toBigDecimal
-import kotlin.Double
+import dev.ohs.fhir.model.r4b.serializers.BigDecimalSerializer
+import dev.ohs.fhir.model.r4b.serializers.DecimalSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** Base StructureDefinition for decimal Type: A rational number with implicit precision */
+@Serializable(with = DecimalSerializer::class)
 public data class Decimal(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,
@@ -44,7 +46,7 @@ public data class Decimal(
    */
   override val extension: List<Extension> = listOf(),
   /** The actual value */
-  public val `value`: BigDecimal? = null,
+  @Serializable(with = BigDecimalSerializer::class) public val `value`: BigDecimal? = null,
 ) : Element(id, extension) {
   public open fun toBuilder(): Builder =
     with(this) {
@@ -88,9 +90,9 @@ public data class Decimal(
   }
 
   public companion object {
-    public fun of(`value`: Double?, element: Element?): Decimal? =
+    public fun of(`value`: BigDecimal?, element: Element?): Decimal? =
       if (value != null || element?.id != null || element?.extension?.isEmpty() == false) {
-        Decimal(element?.id, element?.extension ?: mutableListOf(), value?.toBigDecimal())
+        Decimal(element?.id, element?.extension ?: mutableListOf(), value)
       } else {
         null
       }

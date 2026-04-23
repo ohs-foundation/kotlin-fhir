@@ -18,13 +18,16 @@
 
 package dev.ohs.fhir.model.r5
 
+import dev.ohs.fhir.model.r5.serializers.Integer64Serializer
 import kotlin.Long
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** integer64 Type: A very large whole number */
+@Serializable(with = Integer64Serializer::class)
 public data class Integer64(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,

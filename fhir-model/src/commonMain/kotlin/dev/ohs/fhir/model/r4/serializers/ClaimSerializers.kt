@@ -18,448 +18,2830 @@
 
 package dev.ohs.fhir.model.r4.serializers
 
+import com.ionspin.kotlin.bignum.decimal.BigDecimal
+import dev.ohs.fhir.model.r4.Address
+import dev.ohs.fhir.model.r4.Attachment
+import dev.ohs.fhir.model.r4.Boolean as R4Boolean
 import dev.ohs.fhir.model.r4.Claim
-import dev.ohs.fhir.model.r4.FhirJsonTransformer
-import dev.ohs.fhir.model.r4.surrogates.ClaimAccidentLocationSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimAccidentSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimCareTeamSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimDiagnosisDiagnosisSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimDiagnosisSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimInsuranceSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimItemDetailSubDetailSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimItemDetailSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimItemLocationSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimItemServicedSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimItemSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimPayeeSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimProcedureProcedureSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimProcedureSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimRelatedSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimSupportingInfoSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimSupportingInfoTimingSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimSupportingInfoValueSurrogate
-import dev.ohs.fhir.model.r4.surrogates.ClaimSurrogate
-import kotlin.String
+import dev.ohs.fhir.model.r4.Code
+import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Date
+import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Decimal
+import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Meta
+import dev.ohs.fhir.model.r4.Money
+import dev.ohs.fhir.model.r4.Narrative
+import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.PositiveInt
+import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.Uri
+import kotlin.Boolean as KotlinBoolean
+import kotlin.Int
+import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonEncoder
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object ClaimRelatedSerializer : KSerializer<Claim.Related> {
-  internal val surrogateSerializer: KSerializer<ClaimRelatedSurrogate> by lazy {
-    ClaimRelatedSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Related", surrogateSerializer.descriptor)
-  }
+internal object ClaimRelatedSerializer : KSerializer<Claim.Related> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Related") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("claim", Reference.serializer().descriptor, isOptional = true)
+      element("relationship", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("reference", Identifier.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Claim.Related =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Related) {
-    surrogateSerializer.serialize(encoder, ClaimRelatedSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.Related {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var claim: Reference? = null
+    var relationship: CodeableConcept? = null
+    var reference: Identifier? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> claim = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.claimSer, null)
+        4 ->
+          relationship =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.relationshipSer, null)
+        5 ->
+          reference =
+            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.referenceSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Related: " + __i)
+      }
+    }
+    return Claim.Related(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      claim = claim,
+      relationship = relationship,
+      reference = reference,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.Related) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    (value.claim)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.claimSer, it) }
+    (value.relationship)?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.relationshipSer, it)
+    }
+    (value.reference)?.let {
+      encoder.encodeSerializableElement(__desc, 5, Hoisted.referenceSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val claimSer: KSerializer<Reference> = Reference.serializer()
+
+    public val relationshipSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val referenceSer: KSerializer<Identifier> = Identifier.serializer()
   }
 }
 
-public object ClaimPayeeSerializer : KSerializer<Claim.Payee> {
-  internal val surrogateSerializer: KSerializer<ClaimPayeeSurrogate> by lazy {
-    ClaimPayeeSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Payee", surrogateSerializer.descriptor)
-  }
+internal object ClaimPayeeSerializer : KSerializer<Claim.Payee> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Payee") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("party", Reference.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Claim.Payee =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Payee) {
-    surrogateSerializer.serialize(encoder, ClaimPayeeSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.Payee {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var type: CodeableConcept? = null
+    var party: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
+        4 -> party = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.partySer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Payee: " + __i)
+      }
+    }
+    return Claim.Payee(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      type = type!!,
+      party = party,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.Payee) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
+    (value.party)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.partySer, it) }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val partySer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object ClaimCareTeamSerializer : KSerializer<Claim.CareTeam> {
-  internal val surrogateSerializer: KSerializer<ClaimCareTeamSurrogate> by lazy {
-    ClaimCareTeamSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("CareTeam", surrogateSerializer.descriptor)
-  }
+internal object ClaimCareTeamSerializer : KSerializer<Claim.CareTeam> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("CareTeam") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("sequence", Int.serializer().descriptor, isOptional = true)
+      element("_sequence", Element.serializer().descriptor, isOptional = true)
+      element("provider", Reference.serializer().descriptor, isOptional = true)
+      element("responsible", KotlinBoolean.serializer().descriptor, isOptional = true)
+      element("_responsible", Element.serializer().descriptor, isOptional = true)
+      element("role", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("qualification", CodeableConcept.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Claim.CareTeam =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.CareTeam) {
-    surrogateSerializer.serialize(encoder, ClaimCareTeamSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.CareTeam {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var provider: Reference? = null
+    var responsible: KotlinBoolean? = null
+    var _responsible: Element? = null
+    var role: CodeableConcept? = null
+    var qualification: CodeableConcept? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+        4 ->
+          _sequence =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
+        5 ->
+          provider = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.providerSer, null)
+        6 -> responsible = decoder.decodeBooleanElement(__desc, 6)
+        7 ->
+          _responsible =
+            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.sequenceSer, null)
+        8 -> role = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.roleSer, null)
+        9 ->
+          qualification =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.roleSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding CareTeam: " + __i)
+      }
+    }
+    return Claim.CareTeam(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = PositiveInt.of(sequence, _sequence)!!,
+      provider = provider!!,
+      responsible = R4Boolean.of(responsible, _responsible),
+      role = role,
+      qualification = qualification,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.CareTeam) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.sequence.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+    (value.sequence.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.sequenceSer, it)
+    }
+    (value.provider)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.providerSer, it) }
+    ((value.responsible?.value))?.let { encoder.encodeBooleanElement(__desc, 6, it) }
+    (value.responsible?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 7, Hoisted.sequenceSer, it)
+    }
+    (value.role)?.let { encoder.encodeSerializableElement(__desc, 8, Hoisted.roleSer, it) }
+    (value.qualification)?.let { encoder.encodeSerializableElement(__desc, 9, Hoisted.roleSer, it) }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val sequenceSer: KSerializer<Element> = Element.serializer()
+
+    public val providerSer: KSerializer<Reference> = Reference.serializer()
+
+    public val roleSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
   }
 }
 
-public object ClaimSupportingInfoSerializer : KSerializer<Claim.SupportingInfo> {
-  internal val surrogateSerializer: KSerializer<ClaimSupportingInfoSurrogate> by lazy {
-    ClaimSupportingInfoSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("timing", "value")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("SupportingInfo", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): Claim.SupportingInfo {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object ClaimSupportingInfoSerializer : KSerializer<Claim.SupportingInfo> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SupportingInfo") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("sequence", Int.serializer().descriptor, isOptional = true)
+      element("_sequence", Element.serializer().descriptor, isOptional = true)
+      element("category", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("timingDate", KotlinString.serializer().descriptor, isOptional = true)
+      element("_timingDate", Element.serializer().descriptor, isOptional = true)
+      element("timingPeriod", Period.serializer().descriptor, isOptional = true)
+      element("valueBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
+      element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
+      element("valueString", KotlinString.serializer().descriptor, isOptional = true)
+      element("_valueString", Element.serializer().descriptor, isOptional = true)
+      element("valueQuantity", Quantity.serializer().descriptor, isOptional = true)
+      element("valueAttachment", Attachment.serializer().descriptor, isOptional = true)
+      element("valueReference", Reference.serializer().descriptor, isOptional = true)
+      element("reason", CodeableConcept.serializer().descriptor, isOptional = true)
+    }
+
+  override fun deserialize(decoder: Decoder): Claim.SupportingInfo =
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.SupportingInfo) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = ClaimSupportingInfoSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.SupportingInfo {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var category: CodeableConcept? = null
+    var code: CodeableConcept? = null
+    var timingDate: KotlinString? = null
+    var _timingDate: Element? = null
+    var timingPeriod: Period? = null
+    var valueBoolean: KotlinBoolean? = null
+    var _valueBoolean: Element? = null
+    var valueString: KotlinString? = null
+    var _valueString: Element? = null
+    var valueQuantity: Quantity? = null
+    var valueAttachment: Attachment? = null
+    var valueReference: Reference? = null
+    var reason: CodeableConcept? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+        4 ->
+          _sequence =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
+        5 ->
+          category = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.categorySer, null)
+        6 -> code = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.categorySer, null)
+        7 -> timingDate = decoder.decodeStringElement(__desc, 7)
+        8 ->
+          _timingDate =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.sequenceSer, null)
+        9 ->
+          timingPeriod =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.timingPeriodSer, null)
+        10 -> valueBoolean = decoder.decodeBooleanElement(__desc, 10)
+        11 ->
+          _valueBoolean =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.sequenceSer, null)
+        12 -> valueString = decoder.decodeStringElement(__desc, 12)
+        13 ->
+          _valueString =
+            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.sequenceSer, null)
+        14 ->
+          valueQuantity =
+            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.valueQuantitySer, null)
+        15 ->
+          valueAttachment =
+            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.valueAttachmentSer, null)
+        16 ->
+          valueReference =
+            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.valueReferenceSer, null)
+        17 ->
+          reason = decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.categorySer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding SupportingInfo: " + __i)
+      }
+    }
+    return Claim.SupportingInfo(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = PositiveInt.of(sequence, _sequence)!!,
+      category = category!!,
+      code = code,
+      timing =
+        Claim.SupportingInfo.Timing.from(
+          Date.of(FhirDate.fromString(timingDate), _timingDate),
+          timingPeriod,
+        ),
+      `value` =
+        Claim.SupportingInfo.Value.from(
+          R4Boolean.of(valueBoolean, _valueBoolean),
+          R4String.of(valueString, _valueString),
+          valueQuantity,
+          valueAttachment,
+          valueReference,
+        ),
+      reason = reason,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.SupportingInfo) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.sequence.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+    (value.sequence.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.sequenceSer, it)
+    }
+    (value.category)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.categorySer, it) }
+    (value.code)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.categorySer, it) }
+    when (val __d = value.timing) {
+      null -> {}
+      is Claim.SupportingInfo.Timing.Date -> {
+        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 7, it) }
+        (__d.value.toElement())?.let {
+          encoder.encodeSerializableElement(__desc, 8, Hoisted.sequenceSer, it)
+        }
+      }
+      is Claim.SupportingInfo.Timing.Period -> {
+        encoder.encodeSerializableElement(__desc, 9, Hoisted.timingPeriodSer, __d.value)
+      }
+    }
+    when (val __d = value.`value`) {
+      null -> {}
+      is Claim.SupportingInfo.Value.Boolean -> {
+        ((__d.value.value))?.let { encoder.encodeBooleanElement(__desc, 10, it) }
+        (__d.value.toElement())?.let {
+          encoder.encodeSerializableElement(__desc, 11, Hoisted.sequenceSer, it)
+        }
+      }
+      is Claim.SupportingInfo.Value.String -> {
+        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 12, it) }
+        (__d.value.toElement())?.let {
+          encoder.encodeSerializableElement(__desc, 13, Hoisted.sequenceSer, it)
+        }
+      }
+      is Claim.SupportingInfo.Value.Quantity -> {
+        encoder.encodeSerializableElement(__desc, 14, Hoisted.valueQuantitySer, __d.value)
+      }
+      is Claim.SupportingInfo.Value.Attachment -> {
+        encoder.encodeSerializableElement(__desc, 15, Hoisted.valueAttachmentSer, __d.value)
+      }
+      is Claim.SupportingInfo.Value.Reference -> {
+        encoder.encodeSerializableElement(__desc, 16, Hoisted.valueReferenceSer, __d.value)
+      }
+    }
+    (value.reason)?.let { encoder.encodeSerializableElement(__desc, 17, Hoisted.categorySer, it) }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val sequenceSer: KSerializer<Element> = Element.serializer()
+
+    public val categorySer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val timingPeriodSer: KSerializer<Period> = Period.serializer()
+
+    public val valueQuantitySer: KSerializer<Quantity> = Quantity.serializer()
+
+    public val valueAttachmentSer: KSerializer<Attachment> = Attachment.serializer()
+
+    public val valueReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object ClaimDiagnosisSerializer : KSerializer<Claim.Diagnosis> {
-  internal val surrogateSerializer: KSerializer<ClaimDiagnosisSurrogate> by lazy {
-    ClaimDiagnosisSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("diagnosis")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Diagnosis", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): Claim.Diagnosis {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object ClaimDiagnosisSerializer : KSerializer<Claim.Diagnosis> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Diagnosis") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("sequence", Int.serializer().descriptor, isOptional = true)
+      element("_sequence", Element.serializer().descriptor, isOptional = true)
+      element(
+        "diagnosisCodeableConcept",
+        CodeableConcept.serializer().descriptor,
+        isOptional = true,
+      )
+      element("diagnosisReference", Reference.serializer().descriptor, isOptional = true)
+      element(
+        "type",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("onAdmission", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("packageCode", CodeableConcept.serializer().descriptor, isOptional = true)
+    }
+
+  override fun deserialize(decoder: Decoder): Claim.Diagnosis =
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Diagnosis) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = ClaimDiagnosisSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.Diagnosis {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var diagnosisCodeableConcept: CodeableConcept? = null
+    var diagnosisReference: Reference? = null
+    var type: List<CodeableConcept>? = null
+    var onAdmission: CodeableConcept? = null
+    var packageCode: CodeableConcept? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+        4 ->
+          _sequence =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
+        5 ->
+          diagnosisCodeableConcept =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              5,
+              Hoisted.diagnosisCodeableConceptSer,
+              null,
+            )
+        6 ->
+          diagnosisReference =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              6,
+              Hoisted.diagnosisReferenceSer,
+              null,
+            )
+        7 -> type = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.typeSer, null)
+        8 ->
+          onAdmission =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              8,
+              Hoisted.diagnosisCodeableConceptSer,
+              null,
+            )
+        9 ->
+          packageCode =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              9,
+              Hoisted.diagnosisCodeableConceptSer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Diagnosis: " + __i)
+      }
+    }
+    return Claim.Diagnosis(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = PositiveInt.of(sequence, _sequence)!!,
+      diagnosis = Claim.Diagnosis.Diagnosis.from(diagnosisCodeableConcept, diagnosisReference)!!,
+      type = type ?: listOf(),
+      onAdmission = onAdmission,
+      packageCode = packageCode,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.Diagnosis) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.sequence.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+    (value.sequence.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.sequenceSer, it)
+    }
+    when (val __d = value.diagnosis) {
+      null -> {}
+      is Claim.Diagnosis.Diagnosis.CodeableConcept -> {
+        encoder.encodeSerializableElement(__desc, 5, Hoisted.diagnosisCodeableConceptSer, __d.value)
+      }
+      is Claim.Diagnosis.Diagnosis.Reference -> {
+        encoder.encodeSerializableElement(__desc, 6, Hoisted.diagnosisReferenceSer, __d.value)
+      }
+    }
+    if (value.type.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 7, Hoisted.typeSer, value.type)
+    (value.onAdmission)?.let {
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.diagnosisCodeableConceptSer, it)
+    }
+    (value.packageCode)?.let {
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.diagnosisCodeableConceptSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val sequenceSer: KSerializer<Element> = Element.serializer()
+
+    public val diagnosisCodeableConceptSer: KSerializer<CodeableConcept> =
+      CodeableConcept.serializer()
+
+    public val diagnosisReferenceSer: KSerializer<Reference> = Reference.serializer()
+
+    public val typeSer: KSerializer<List<CodeableConcept>> =
+      ListSerializer(Hoisted.diagnosisCodeableConceptSer)
   }
 }
 
-public object ClaimProcedureSerializer : KSerializer<Claim.Procedure> {
-  internal val surrogateSerializer: KSerializer<ClaimProcedureSurrogate> by lazy {
-    ClaimProcedureSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("procedure")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Procedure", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): Claim.Procedure {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object ClaimProcedureSerializer : KSerializer<Claim.Procedure> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Procedure") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("sequence", Int.serializer().descriptor, isOptional = true)
+      element("_sequence", Element.serializer().descriptor, isOptional = true)
+      element(
+        "type",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("date", KotlinString.serializer().descriptor, isOptional = true)
+      element("_date", Element.serializer().descriptor, isOptional = true)
+      element(
+        "procedureCodeableConcept",
+        CodeableConcept.serializer().descriptor,
+        isOptional = true,
+      )
+      element("procedureReference", Reference.serializer().descriptor, isOptional = true)
+      element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    }
+
+  override fun deserialize(decoder: Decoder): Claim.Procedure =
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Procedure) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = ClaimProcedureSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.Procedure {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var type: List<CodeableConcept>? = null
+    var date: KotlinString? = null
+    var _date: Element? = null
+    var procedureCodeableConcept: CodeableConcept? = null
+    var procedureReference: Reference? = null
+    var udi: List<Reference>? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+        4 ->
+          _sequence =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
+        5 -> type = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.typeSer, null)
+        6 -> date = decoder.decodeStringElement(__desc, 6)
+        7 -> _date = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.sequenceSer, null)
+        8 ->
+          procedureCodeableConcept =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.typeSerInner, null)
+        9 ->
+          procedureReference =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              9,
+              Hoisted.procedureReferenceSer,
+              null,
+            )
+        10 -> udi = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.udiSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Procedure: " + __i)
+      }
+    }
+    return Claim.Procedure(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = PositiveInt.of(sequence, _sequence)!!,
+      type = type ?: listOf(),
+      date = DateTime.of(FhirDateTime.fromString(date), _date),
+      procedure = Claim.Procedure.Procedure.from(procedureCodeableConcept, procedureReference)!!,
+      udi = udi ?: listOf(),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.Procedure) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.sequence.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+    (value.sequence.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.sequenceSer, it)
+    }
+    if (value.type.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 5, Hoisted.typeSer, value.type)
+    ((value.date?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    (value.date?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 7, Hoisted.sequenceSer, it)
+    }
+    when (val __d = value.procedure) {
+      null -> {}
+      is Claim.Procedure.Procedure.CodeableConcept -> {
+        encoder.encodeSerializableElement(__desc, 8, Hoisted.typeSerInner, __d.value)
+      }
+      is Claim.Procedure.Procedure.Reference -> {
+        encoder.encodeSerializableElement(__desc, 9, Hoisted.procedureReferenceSer, __d.value)
+      }
+    }
+    if (value.udi.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.udiSer, value.udi)
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val sequenceSer: KSerializer<Element> = Element.serializer()
+
+    public val typeSerInner: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val typeSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.typeSerInner)
+
+    public val procedureReferenceSer: KSerializer<Reference> = Reference.serializer()
+
+    public val udiSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.procedureReferenceSer)
   }
 }
 
-public object ClaimInsuranceSerializer : KSerializer<Claim.Insurance> {
-  internal val surrogateSerializer: KSerializer<ClaimInsuranceSurrogate> by lazy {
-    ClaimInsuranceSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Insurance", surrogateSerializer.descriptor)
-  }
+internal object ClaimInsuranceSerializer : KSerializer<Claim.Insurance> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Insurance") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("sequence", Int.serializer().descriptor, isOptional = true)
+      element("_sequence", Element.serializer().descriptor, isOptional = true)
+      element("focal", KotlinBoolean.serializer().descriptor, isOptional = true)
+      element("_focal", Element.serializer().descriptor, isOptional = true)
+      element("identifier", Identifier.serializer().descriptor, isOptional = true)
+      element("coverage", Reference.serializer().descriptor, isOptional = true)
+      element("businessArrangement", KotlinString.serializer().descriptor, isOptional = true)
+      element("_businessArrangement", Element.serializer().descriptor, isOptional = true)
+      element(
+        "preAuthRef",
+        listSerialDescriptor(KotlinString.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "_preAuthRef",
+        listSerialDescriptor(Element.serializer().descriptor),
+        isOptional = true,
+      )
+      element("claimResponse", Reference.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Claim.Insurance =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Insurance) {
-    surrogateSerializer.serialize(encoder, ClaimInsuranceSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.Insurance {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var focal: KotlinBoolean? = null
+    var _focal: Element? = null
+    var identifier: Identifier? = null
+    var coverage: Reference? = null
+    var businessArrangement: KotlinString? = null
+    var _businessArrangement: Element? = null
+    var preAuthRef: List<KotlinString?>? = null
+    var _preAuthRef: List<Element?>? = null
+    var claimResponse: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+        4 ->
+          _sequence =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
+        5 -> focal = decoder.decodeBooleanElement(__desc, 5)
+        6 ->
+          _focal = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.sequenceSer, null)
+        7 ->
+          identifier =
+            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.identifierSer, null)
+        8 ->
+          coverage = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.coverageSer, null)
+        9 -> businessArrangement = decoder.decodeStringElement(__desc, 9)
+        10 ->
+          _businessArrangement =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.sequenceSer, null)
+        11 ->
+          preAuthRef =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.preAuthRefSer, null)
+        12 ->
+          _preAuthRef =
+            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.preAuthRefSer2, null)
+        13 ->
+          claimResponse =
+            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.coverageSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Insurance: " + __i)
+      }
+    }
+    return Claim.Insurance(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = PositiveInt.of(sequence, _sequence)!!,
+      focal = R4Boolean.of(focal, _focal)!!,
+      identifier = identifier,
+      coverage = coverage!!,
+      businessArrangement = R4String.of(businessArrangement, _businessArrangement),
+      preAuthRef =
+        (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { __i ->
+          R4String.of(preAuthRef?.getOrNull(__i)?.let { it }, _preAuthRef?.getOrNull(__i))!!
+        }),
+      claimResponse = claimResponse,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.Insurance) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.sequence.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+    (value.sequence.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.sequenceSer, it)
+    }
+    ((value.focal.value))?.let { encoder.encodeBooleanElement(__desc, 5, it) }
+    (value.focal.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.sequenceSer, it)
+    }
+    (value.identifier)?.let {
+      encoder.encodeSerializableElement(__desc, 7, Hoisted.identifierSer, it)
+    }
+    (value.coverage)?.let { encoder.encodeSerializableElement(__desc, 8, Hoisted.coverageSer, it) }
+    ((value.businessArrangement?.value))?.let { encoder.encodeStringElement(__desc, 9, it) }
+    (value.businessArrangement?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.sequenceSer, it)
+    }
+    (value.preAuthRef.map { it.value }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.preAuthRefSer, it)
+    }
+    (value.preAuthRef.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 12, Hoisted.preAuthRefSer2, it)
+    }
+    (value.claimResponse)?.let {
+      encoder.encodeSerializableElement(__desc, 13, Hoisted.coverageSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val sequenceSer: KSerializer<Element> = Element.serializer()
+
+    public val identifierSer: KSerializer<Identifier> = Identifier.serializer()
+
+    public val coverageSer: KSerializer<Reference> = Reference.serializer()
+
+    public val preAuthRefSerInner: KSerializer<KotlinString> = KotlinString.serializer()
+
+    public val preAuthRefSer: KSerializer<List<KotlinString?>> =
+      ListSerializer((Hoisted.preAuthRefSerInner).nullable)
+
+    public val preAuthRefSer2: KSerializer<List<Element?>> =
+      ListSerializer((Hoisted.sequenceSer).nullable)
   }
 }
 
-public object ClaimAccidentSerializer : KSerializer<Claim.Accident> {
-  internal val surrogateSerializer: KSerializer<ClaimAccidentSurrogate> by lazy {
-    ClaimAccidentSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("location")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Accident", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): Claim.Accident {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object ClaimAccidentSerializer : KSerializer<Claim.Accident> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Accident") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("date", KotlinString.serializer().descriptor, isOptional = true)
+      element("_date", Element.serializer().descriptor, isOptional = true)
+      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("locationAddress", Address.serializer().descriptor, isOptional = true)
+      element("locationReference", Reference.serializer().descriptor, isOptional = true)
+    }
+
+  override fun deserialize(decoder: Decoder): Claim.Accident =
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Accident) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = ClaimAccidentSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.Accident {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var date: KotlinString? = null
+    var _date: Element? = null
+    var type: CodeableConcept? = null
+    var locationAddress: Address? = null
+    var locationReference: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> date = decoder.decodeStringElement(__desc, 3)
+        4 -> _date = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.dateSer, null)
+        5 -> type = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.typeSer, null)
+        6 ->
+          locationAddress =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.locationAddressSer, null)
+        7 ->
+          locationReference =
+            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.locationReferenceSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Accident: " + __i)
+      }
+    }
+    return Claim.Accident(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      date = Date.of(FhirDate.fromString(date), _date)!!,
+      type = type,
+      location = Claim.Accident.Location.from(locationAddress, locationReference),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.Accident) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.date.value?.toString()))?.let { encoder.encodeStringElement(__desc, 3, it) }
+    (value.date.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.dateSer, it)
+    }
+    (value.type)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.typeSer, it) }
+    when (val __d = value.location) {
+      null -> {}
+      is Claim.Accident.Location.Address -> {
+        encoder.encodeSerializableElement(__desc, 6, Hoisted.locationAddressSer, __d.value)
+      }
+      is Claim.Accident.Location.Reference -> {
+        encoder.encodeSerializableElement(__desc, 7, Hoisted.locationReferenceSer, __d.value)
+      }
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val dateSer: KSerializer<Element> = Element.serializer()
+
+    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val locationAddressSer: KSerializer<Address> = Address.serializer()
+
+    public val locationReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object ClaimItemSerializer : KSerializer<Claim.Item> {
-  internal val surrogateSerializer: KSerializer<ClaimItemSurrogate> by lazy {
-    ClaimItemSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("serviced", "location")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Item", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): Claim.Item {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object ClaimItemSerializer : KSerializer<Claim.Item> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Item") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("sequence", Int.serializer().descriptor, isOptional = true)
+      element("_sequence", Element.serializer().descriptor, isOptional = true)
+      element(
+        "careTeamSequence",
+        listSerialDescriptor(Int.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "_careTeamSequence",
+        listSerialDescriptor(Element.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "diagnosisSequence",
+        listSerialDescriptor(Int.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "_diagnosisSequence",
+        listSerialDescriptor(Element.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "procedureSequence",
+        listSerialDescriptor(Int.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "_procedureSequence",
+        listSerialDescriptor(Element.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "informationSequence",
+        listSerialDescriptor(Int.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "_informationSequence",
+        listSerialDescriptor(Element.serializer().descriptor),
+        isOptional = true,
+      )
+      element("revenue", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("category", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("productOrService", CodeableConcept.serializer().descriptor, isOptional = true)
+      element(
+        "modifier",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "programCode",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("servicedDate", KotlinString.serializer().descriptor, isOptional = true)
+      element("_servicedDate", Element.serializer().descriptor, isOptional = true)
+      element("servicedPeriod", Period.serializer().descriptor, isOptional = true)
+      element("locationCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("locationAddress", Address.serializer().descriptor, isOptional = true)
+      element("locationReference", Reference.serializer().descriptor, isOptional = true)
+      element("quantity", Quantity.serializer().descriptor, isOptional = true)
+      element("unitPrice", Money.serializer().descriptor, isOptional = true)
+      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("_factor", Element.serializer().descriptor, isOptional = true)
+      element("net", Money.serializer().descriptor, isOptional = true)
+      element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+      element("bodySite", CodeableConcept.serializer().descriptor, isOptional = true)
+      element(
+        "subSite",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "encounter",
+        listSerialDescriptor(Reference.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "detail",
+        listSerialDescriptor(lazyDescriptor { Claim.Item.Detail.serializer().descriptor }),
+        isOptional = true,
+      )
+    }
+
+  override fun deserialize(decoder: Decoder): Claim.Item =
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Item) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = ClaimItemSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.Item {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var careTeamSequence: List<Int?>? = null
+    var _careTeamSequence: List<Element?>? = null
+    var diagnosisSequence: List<Int?>? = null
+    var _diagnosisSequence: List<Element?>? = null
+    var procedureSequence: List<Int?>? = null
+    var _procedureSequence: List<Element?>? = null
+    var informationSequence: List<Int?>? = null
+    var _informationSequence: List<Element?>? = null
+    var revenue: CodeableConcept? = null
+    var category: CodeableConcept? = null
+    var productOrService: CodeableConcept? = null
+    var modifier: List<CodeableConcept>? = null
+    var programCode: List<CodeableConcept>? = null
+    var servicedDate: KotlinString? = null
+    var _servicedDate: Element? = null
+    var servicedPeriod: Period? = null
+    var locationCodeableConcept: CodeableConcept? = null
+    var locationAddress: Address? = null
+    var locationReference: Reference? = null
+    var quantity: Quantity? = null
+    var unitPrice: Money? = null
+    var factor: BigDecimal? = null
+    var _factor: Element? = null
+    var net: Money? = null
+    var udi: List<Reference>? = null
+    var bodySite: CodeableConcept? = null
+    var subSite: List<CodeableConcept>? = null
+    var encounter: List<Reference>? = null
+    var detail: List<Claim.Item.Detail>? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+        4 ->
+          _sequence =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
+        5 ->
+          careTeamSequence =
+            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.careTeamSequenceSer, null)
+        6 ->
+          _careTeamSequence =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.careTeamSequenceSer2, null)
+        7 ->
+          diagnosisSequence =
+            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.careTeamSequenceSer, null)
+        8 ->
+          _diagnosisSequence =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.careTeamSequenceSer2, null)
+        9 ->
+          procedureSequence =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.careTeamSequenceSer, null)
+        10 ->
+          _procedureSequence =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              10,
+              Hoisted.careTeamSequenceSer2,
+              null,
+            )
+        11 ->
+          informationSequence =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.careTeamSequenceSer, null)
+        12 ->
+          _informationSequence =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              12,
+              Hoisted.careTeamSequenceSer2,
+              null,
+            )
+        13 ->
+          revenue = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.revenueSer, null)
+        14 ->
+          category = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.revenueSer, null)
+        15 ->
+          productOrService =
+            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.revenueSer, null)
+        16 ->
+          modifier =
+            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.modifierSer, null)
+        17 ->
+          programCode =
+            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.modifierSer, null)
+        18 -> servicedDate = decoder.decodeStringElement(__desc, 18)
+        19 ->
+          _servicedDate =
+            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.sequenceSer, null)
+        20 ->
+          servicedPeriod =
+            decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.servicedPeriodSer, null)
+        21 ->
+          locationCodeableConcept =
+            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.revenueSer, null)
+        22 ->
+          locationAddress =
+            decoder.decodeNullableSerializableElement(__desc, 22, Hoisted.locationAddressSer, null)
+        23 ->
+          locationReference =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              23,
+              Hoisted.locationReferenceSer,
+              null,
+            )
+        24 ->
+          quantity =
+            decoder.decodeNullableSerializableElement(__desc, 24, Hoisted.quantitySer, null)
+        25 ->
+          unitPrice =
+            decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.unitPriceSer, null)
+        26 ->
+          factor = decoder.decodeNullableSerializableElement(__desc, 26, BigDecimalSerializer, null)
+        27 ->
+          _factor = decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.sequenceSer, null)
+        28 ->
+          net = decoder.decodeNullableSerializableElement(__desc, 28, Hoisted.unitPriceSer, null)
+        29 -> udi = decoder.decodeNullableSerializableElement(__desc, 29, Hoisted.udiSer, null)
+        30 ->
+          bodySite = decoder.decodeNullableSerializableElement(__desc, 30, Hoisted.revenueSer, null)
+        31 ->
+          subSite = decoder.decodeNullableSerializableElement(__desc, 31, Hoisted.modifierSer, null)
+        32 ->
+          encounter = decoder.decodeNullableSerializableElement(__desc, 32, Hoisted.udiSer, null)
+        33 ->
+          detail = decoder.decodeNullableSerializableElement(__desc, 33, Hoisted.detailSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Item: " + __i)
+      }
+    }
+    return Claim.Item(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = PositiveInt.of(sequence, _sequence)!!,
+      careTeamSequence =
+        (kotlin.collections.List(
+          maxOf(careTeamSequence?.size ?: 0, _careTeamSequence?.size ?: 0)
+        ) { __i ->
+          PositiveInt.of(
+            careTeamSequence?.getOrNull(__i)?.let { it },
+            _careTeamSequence?.getOrNull(__i),
+          )!!
+        }),
+      diagnosisSequence =
+        (kotlin.collections.List(
+          maxOf(diagnosisSequence?.size ?: 0, _diagnosisSequence?.size ?: 0)
+        ) { __i ->
+          PositiveInt.of(
+            diagnosisSequence?.getOrNull(__i)?.let { it },
+            _diagnosisSequence?.getOrNull(__i),
+          )!!
+        }),
+      procedureSequence =
+        (kotlin.collections.List(
+          maxOf(procedureSequence?.size ?: 0, _procedureSequence?.size ?: 0)
+        ) { __i ->
+          PositiveInt.of(
+            procedureSequence?.getOrNull(__i)?.let { it },
+            _procedureSequence?.getOrNull(__i),
+          )!!
+        }),
+      informationSequence =
+        (kotlin.collections.List(
+          maxOf(informationSequence?.size ?: 0, _informationSequence?.size ?: 0)
+        ) { __i ->
+          PositiveInt.of(
+            informationSequence?.getOrNull(__i)?.let { it },
+            _informationSequence?.getOrNull(__i),
+          )!!
+        }),
+      revenue = revenue,
+      category = category,
+      productOrService = productOrService!!,
+      modifier = modifier ?: listOf(),
+      programCode = programCode ?: listOf(),
+      serviced =
+        Claim.Item.Serviced.from(
+          Date.of(FhirDate.fromString(servicedDate), _servicedDate),
+          servicedPeriod,
+        ),
+      location =
+        Claim.Item.Location.from(locationCodeableConcept, locationAddress, locationReference),
+      quantity = quantity,
+      unitPrice = unitPrice,
+      factor = Decimal.of(factor, _factor),
+      net = net,
+      udi = udi ?: listOf(),
+      bodySite = bodySite,
+      subSite = subSite ?: listOf(),
+      encounter = encounter ?: listOf(),
+      detail = detail ?: listOf(),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.Item) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.sequence.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+    (value.sequence.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.sequenceSer, it)
+    }
+    (value.careTeamSequence.map { it.value }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 5, Hoisted.careTeamSequenceSer, it)
+    }
+    (value.careTeamSequence.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.careTeamSequenceSer2, it)
+    }
+    (value.diagnosisSequence.map { it.value }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 7, Hoisted.careTeamSequenceSer, it)
+    }
+    (value.diagnosisSequence.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.careTeamSequenceSer2, it)
+    }
+    (value.procedureSequence.map { it.value }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.careTeamSequenceSer, it)
+    }
+    (value.procedureSequence.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.careTeamSequenceSer2, it)
+    }
+    (value.informationSequence.map { it.value }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.careTeamSequenceSer, it)
+    }
+    (value.informationSequence.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
+      encoder.encodeSerializableElement(__desc, 12, Hoisted.careTeamSequenceSer2, it)
+    }
+    (value.revenue)?.let { encoder.encodeSerializableElement(__desc, 13, Hoisted.revenueSer, it) }
+    (value.category)?.let { encoder.encodeSerializableElement(__desc, 14, Hoisted.revenueSer, it) }
+    (value.productOrService)?.let {
+      encoder.encodeSerializableElement(__desc, 15, Hoisted.revenueSer, it)
+    }
+    if (value.modifier.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 16, Hoisted.modifierSer, value.modifier)
+    if (value.programCode.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 17, Hoisted.modifierSer, value.programCode)
+    when (val __d = value.serviced) {
+      null -> {}
+      is Claim.Item.Serviced.Date -> {
+        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 18, it) }
+        (__d.value.toElement())?.let {
+          encoder.encodeSerializableElement(__desc, 19, Hoisted.sequenceSer, it)
+        }
+      }
+      is Claim.Item.Serviced.Period -> {
+        encoder.encodeSerializableElement(__desc, 20, Hoisted.servicedPeriodSer, __d.value)
+      }
+    }
+    when (val __d = value.location) {
+      null -> {}
+      is Claim.Item.Location.CodeableConcept -> {
+        encoder.encodeSerializableElement(__desc, 21, Hoisted.revenueSer, __d.value)
+      }
+      is Claim.Item.Location.Address -> {
+        encoder.encodeSerializableElement(__desc, 22, Hoisted.locationAddressSer, __d.value)
+      }
+      is Claim.Item.Location.Reference -> {
+        encoder.encodeSerializableElement(__desc, 23, Hoisted.locationReferenceSer, __d.value)
+      }
+    }
+    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 24, Hoisted.quantitySer, it) }
+    (value.unitPrice)?.let {
+      encoder.encodeSerializableElement(__desc, 25, Hoisted.unitPriceSer, it)
+    }
+    ((value.factor?.value))?.let {
+      encoder.encodeSerializableElement(__desc, 26, BigDecimalSerializer, it)
+    }
+    (value.factor?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 27, Hoisted.sequenceSer, it)
+    }
+    (value.net)?.let { encoder.encodeSerializableElement(__desc, 28, Hoisted.unitPriceSer, it) }
+    if (value.udi.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 29, Hoisted.udiSer, value.udi)
+    (value.bodySite)?.let { encoder.encodeSerializableElement(__desc, 30, Hoisted.revenueSer, it) }
+    if (value.subSite.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 31, Hoisted.modifierSer, value.subSite)
+    if (value.encounter.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 32, Hoisted.udiSer, value.encounter)
+    if (value.detail.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 33, Hoisted.detailSer, value.detail)
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val sequenceSer: KSerializer<Element> = Element.serializer()
+
+    public val careTeamSequenceSerInner: KSerializer<Int> = Int.serializer()
+
+    public val careTeamSequenceSer: KSerializer<List<Int?>> =
+      ListSerializer((Hoisted.careTeamSequenceSerInner).nullable)
+
+    public val careTeamSequenceSer2: KSerializer<List<Element?>> =
+      ListSerializer((Hoisted.sequenceSer).nullable)
+
+    public val revenueSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val modifierSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.revenueSer)
+
+    public val servicedPeriodSer: KSerializer<Period> = Period.serializer()
+
+    public val locationAddressSer: KSerializer<Address> = Address.serializer()
+
+    public val locationReferenceSer: KSerializer<Reference> = Reference.serializer()
+
+    public val quantitySer: KSerializer<Quantity> = Quantity.serializer()
+
+    public val unitPriceSer: KSerializer<Money> = Money.serializer()
+
+    public val udiSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.locationReferenceSer)
+
+    public val detailSerInner: KSerializer<Claim.Item.Detail> = Claim.Item.Detail.serializer()
+
+    public val detailSer: KSerializer<List<Claim.Item.Detail>> =
+      ListSerializer(Hoisted.detailSerInner)
   }
 }
 
-public object ClaimItemDetailSerializer : KSerializer<Claim.Item.Detail> {
-  internal val surrogateSerializer: KSerializer<ClaimItemDetailSurrogate> by lazy {
-    ClaimItemDetailSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Detail", surrogateSerializer.descriptor)
-  }
+internal object ClaimItemDetailSerializer : KSerializer<Claim.Item.Detail> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Detail") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("sequence", Int.serializer().descriptor, isOptional = true)
+      element("_sequence", Element.serializer().descriptor, isOptional = true)
+      element("revenue", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("category", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("productOrService", CodeableConcept.serializer().descriptor, isOptional = true)
+      element(
+        "modifier",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "programCode",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("quantity", Quantity.serializer().descriptor, isOptional = true)
+      element("unitPrice", Money.serializer().descriptor, isOptional = true)
+      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("_factor", Element.serializer().descriptor, isOptional = true)
+      element("net", Money.serializer().descriptor, isOptional = true)
+      element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+      element(
+        "subDetail",
+        listSerialDescriptor(
+          lazyDescriptor { Claim.Item.Detail.SubDetail.serializer().descriptor }
+        ),
+        isOptional = true,
+      )
+    }
 
   override fun deserialize(decoder: Decoder): Claim.Item.Detail =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Item.Detail) {
-    surrogateSerializer.serialize(encoder, ClaimItemDetailSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.Item.Detail {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var revenue: CodeableConcept? = null
+    var category: CodeableConcept? = null
+    var productOrService: CodeableConcept? = null
+    var modifier: List<CodeableConcept>? = null
+    var programCode: List<CodeableConcept>? = null
+    var quantity: Quantity? = null
+    var unitPrice: Money? = null
+    var factor: BigDecimal? = null
+    var _factor: Element? = null
+    var net: Money? = null
+    var udi: List<Reference>? = null
+    var subDetail: List<Claim.Item.Detail.SubDetail>? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+        4 ->
+          _sequence =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
+        5 ->
+          revenue = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.revenueSer, null)
+        6 ->
+          category = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.revenueSer, null)
+        7 ->
+          productOrService =
+            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.revenueSer, null)
+        8 ->
+          modifier = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.modifierSer, null)
+        9 ->
+          programCode =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.modifierSer, null)
+        10 ->
+          quantity =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.quantitySer, null)
+        11 ->
+          unitPrice =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.unitPriceSer, null)
+        12 ->
+          factor = decoder.decodeNullableSerializableElement(__desc, 12, BigDecimalSerializer, null)
+        13 ->
+          _factor = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.sequenceSer, null)
+        14 ->
+          net = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.unitPriceSer, null)
+        15 -> udi = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.udiSer, null)
+        16 ->
+          subDetail =
+            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.subDetailSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Detail: " + __i)
+      }
+    }
+    return Claim.Item.Detail(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = PositiveInt.of(sequence, _sequence)!!,
+      revenue = revenue,
+      category = category,
+      productOrService = productOrService!!,
+      modifier = modifier ?: listOf(),
+      programCode = programCode ?: listOf(),
+      quantity = quantity,
+      unitPrice = unitPrice,
+      factor = Decimal.of(factor, _factor),
+      net = net,
+      udi = udi ?: listOf(),
+      subDetail = subDetail ?: listOf(),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.Item.Detail) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.sequence.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+    (value.sequence.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.sequenceSer, it)
+    }
+    (value.revenue)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.revenueSer, it) }
+    (value.category)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.revenueSer, it) }
+    (value.productOrService)?.let {
+      encoder.encodeSerializableElement(__desc, 7, Hoisted.revenueSer, it)
+    }
+    if (value.modifier.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.modifierSer, value.modifier)
+    if (value.programCode.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.modifierSer, value.programCode)
+    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 10, Hoisted.quantitySer, it) }
+    (value.unitPrice)?.let {
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.unitPriceSer, it)
+    }
+    ((value.factor?.value))?.let {
+      encoder.encodeSerializableElement(__desc, 12, BigDecimalSerializer, it)
+    }
+    (value.factor?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 13, Hoisted.sequenceSer, it)
+    }
+    (value.net)?.let { encoder.encodeSerializableElement(__desc, 14, Hoisted.unitPriceSer, it) }
+    if (value.udi.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 15, Hoisted.udiSer, value.udi)
+    if (value.subDetail.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 16, Hoisted.subDetailSer, value.subDetail)
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val sequenceSer: KSerializer<Element> = Element.serializer()
+
+    public val revenueSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val modifierSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.revenueSer)
+
+    public val quantitySer: KSerializer<Quantity> = Quantity.serializer()
+
+    public val unitPriceSer: KSerializer<Money> = Money.serializer()
+
+    public val udiSerInner: KSerializer<Reference> = Reference.serializer()
+
+    public val udiSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.udiSerInner)
+
+    public val subDetailSerInner: KSerializer<Claim.Item.Detail.SubDetail> =
+      Claim.Item.Detail.SubDetail.serializer()
+
+    public val subDetailSer: KSerializer<List<Claim.Item.Detail.SubDetail>> =
+      ListSerializer(Hoisted.subDetailSerInner)
   }
 }
 
-public object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Detail.SubDetail> {
-  internal val surrogateSerializer: KSerializer<ClaimItemDetailSubDetailSurrogate> by lazy {
-    ClaimItemDetailSubDetailSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("SubDetail", surrogateSerializer.descriptor)
-  }
+internal object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Detail.SubDetail> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SubDetail") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("sequence", Int.serializer().descriptor, isOptional = true)
+      element("_sequence", Element.serializer().descriptor, isOptional = true)
+      element("revenue", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("category", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("productOrService", CodeableConcept.serializer().descriptor, isOptional = true)
+      element(
+        "modifier",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "programCode",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+      element("quantity", Quantity.serializer().descriptor, isOptional = true)
+      element("unitPrice", Money.serializer().descriptor, isOptional = true)
+      element("factor", BigDecimalSerializer.descriptor, isOptional = true)
+      element("_factor", Element.serializer().descriptor, isOptional = true)
+      element("net", Money.serializer().descriptor, isOptional = true)
+      element("udi", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Claim.Item.Detail.SubDetail =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim.Item.Detail.SubDetail) {
-    surrogateSerializer.serialize(encoder, ClaimItemDetailSubDetailSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  private fun deserializeJson(decoder: CompositeDecoder): Claim.Item.Detail.SubDetail {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var sequence: Int? = null
+    var _sequence: Element? = null
+    var revenue: CodeableConcept? = null
+    var category: CodeableConcept? = null
+    var productOrService: CodeableConcept? = null
+    var modifier: List<CodeableConcept>? = null
+    var programCode: List<CodeableConcept>? = null
+    var quantity: Quantity? = null
+    var unitPrice: Money? = null
+    var factor: BigDecimal? = null
+    var _factor: Element? = null
+    var net: Money? = null
+    var udi: List<Reference>? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> id = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+        4 ->
+          _sequence =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
+        5 ->
+          revenue = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.revenueSer, null)
+        6 ->
+          category = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.revenueSer, null)
+        7 ->
+          productOrService =
+            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.revenueSer, null)
+        8 ->
+          modifier = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.modifierSer, null)
+        9 ->
+          programCode =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.modifierSer, null)
+        10 ->
+          quantity =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.quantitySer, null)
+        11 ->
+          unitPrice =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.unitPriceSer, null)
+        12 ->
+          factor = decoder.decodeNullableSerializableElement(__desc, 12, BigDecimalSerializer, null)
+        13 ->
+          _factor = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.sequenceSer, null)
+        14 ->
+          net = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.unitPriceSer, null)
+        15 -> udi = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.udiSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding SubDetail: " + __i)
+      }
+    }
+    return Claim.Item.Detail.SubDetail(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      sequence = PositiveInt.of(sequence, _sequence)!!,
+      revenue = revenue,
+      category = category,
+      productOrService = productOrService!!,
+      modifier = modifier ?: listOf(),
+      programCode = programCode ?: listOf(),
+      quantity = quantity,
+      unitPrice = unitPrice,
+      factor = Decimal.of(factor, _factor),
+      net = net,
+      udi = udi ?: listOf(),
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim.Item.Detail.SubDetail) {
+    val __desc = descriptor
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+    ((value.sequence.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+    (value.sequence.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.sequenceSer, it)
+    }
+    (value.revenue)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.revenueSer, it) }
+    (value.category)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.revenueSer, it) }
+    (value.productOrService)?.let {
+      encoder.encodeSerializableElement(__desc, 7, Hoisted.revenueSer, it)
+    }
+    if (value.modifier.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.modifierSer, value.modifier)
+    if (value.programCode.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.modifierSer, value.programCode)
+    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 10, Hoisted.quantitySer, it) }
+    (value.unitPrice)?.let {
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.unitPriceSer, it)
+    }
+    ((value.factor?.value))?.let {
+      encoder.encodeSerializableElement(__desc, 12, BigDecimalSerializer, it)
+    }
+    (value.factor?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 13, Hoisted.sequenceSer, it)
+    }
+    (value.net)?.let { encoder.encodeSerializableElement(__desc, 14, Hoisted.unitPriceSer, it) }
+    if (value.udi.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 15, Hoisted.udiSer, value.udi)
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val sequenceSer: KSerializer<Element> = Element.serializer()
+
+    public val revenueSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val modifierSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.revenueSer)
+
+    public val quantitySer: KSerializer<Quantity> = Quantity.serializer()
+
+    public val unitPriceSer: KSerializer<Money> = Money.serializer()
+
+    public val udiSerInner: KSerializer<Reference> = Reference.serializer()
+
+    public val udiSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.udiSerInner)
   }
 }
 
-public object ClaimSupportingInfoTimingSerializer : KSerializer<Claim.SupportingInfo.Timing> {
-  internal val surrogateSerializer: KSerializer<ClaimSupportingInfoTimingSurrogate> by lazy {
-    ClaimSupportingInfoTimingSurrogate.serializer()
-  }
+internal object ClaimSupportingInfoTimingSerializer : KSerializer<Claim.SupportingInfo.Timing> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Claim.SupportingInfo.Timing") {
+      element("timingDate", KotlinString.serializer().descriptor, isOptional = true)
+      element("_timingDate", Element.serializer().descriptor, isOptional = true)
+      element("timingPeriod", Period.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Timing", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: Claim.SupportingInfo.Timing) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is Claim.SupportingInfo.Timing.Date -> {
+          ((__d.value.value?.toString()))?.let { encodeStringElement(__desc, 0, it) }
+          (__d.value.toElement())?.let {
+            encodeSerializableElement(__desc, 1, Hoisted.elementSer, it)
+          }
+        }
+        is Claim.SupportingInfo.Timing.Period -> {
+          encodeSerializableElement(__desc, 2, Hoisted.timingPeriodSer, __d.value)
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): Claim.SupportingInfo.Timing =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: Claim.SupportingInfo.Timing) {
-    surrogateSerializer.serialize(encoder, ClaimSupportingInfoTimingSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): Claim.SupportingInfo.Timing {
+    val __desc = descriptor
+    var timingDate: KotlinString? = null
+    var _timingDate: Element? = null
+    var timingPeriod: Period? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> timingDate = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          _timingDate =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.elementSer, null)
+        2 ->
+          timingPeriod =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.timingPeriodSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException(
+            "Unexpected index decoding Claim.SupportingInfo.Timing: " + __i
+          )
+      }
+    }
+    return Claim.SupportingInfo.Timing.from(
+      Date.of(FhirDate.fromString(timingDate), _timingDate),
+      timingPeriod,
+    )!!
+  }
+
+  private object Hoisted {
+    public val elementSer: KSerializer<Element> = Element.serializer()
+
+    public val timingPeriodSer: KSerializer<Period> = Period.serializer()
   }
 }
 
-public object ClaimSupportingInfoValueSerializer : KSerializer<Claim.SupportingInfo.Value> {
-  internal val surrogateSerializer: KSerializer<ClaimSupportingInfoValueSurrogate> by lazy {
-    ClaimSupportingInfoValueSurrogate.serializer()
-  }
+internal object ClaimSupportingInfoValueSerializer : KSerializer<Claim.SupportingInfo.Value> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Claim.SupportingInfo.Value") {
+      element("valueBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
+      element("_valueBoolean", Element.serializer().descriptor, isOptional = true)
+      element("valueString", KotlinString.serializer().descriptor, isOptional = true)
+      element("_valueString", Element.serializer().descriptor, isOptional = true)
+      element("valueQuantity", Quantity.serializer().descriptor, isOptional = true)
+      element("valueAttachment", Attachment.serializer().descriptor, isOptional = true)
+      element("valueReference", Reference.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Value", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: Claim.SupportingInfo.Value) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is Claim.SupportingInfo.Value.Boolean -> {
+          ((__d.value.value))?.let { encodeBooleanElement(__desc, 0, it) }
+          (__d.value.toElement())?.let {
+            encodeSerializableElement(__desc, 1, Hoisted.elementSer, it)
+          }
+        }
+        is Claim.SupportingInfo.Value.String -> {
+          ((__d.value.value))?.let { encodeStringElement(__desc, 2, it) }
+          (__d.value.toElement())?.let {
+            encodeSerializableElement(__desc, 3, Hoisted.elementSer, it)
+          }
+        }
+        is Claim.SupportingInfo.Value.Quantity -> {
+          encodeSerializableElement(__desc, 4, Hoisted.valueQuantitySer, __d.value)
+        }
+        is Claim.SupportingInfo.Value.Attachment -> {
+          encodeSerializableElement(__desc, 5, Hoisted.valueAttachmentSer, __d.value)
+        }
+        is Claim.SupportingInfo.Value.Reference -> {
+          encodeSerializableElement(__desc, 6, Hoisted.valueReferenceSer, __d.value)
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): Claim.SupportingInfo.Value =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: Claim.SupportingInfo.Value) {
-    surrogateSerializer.serialize(encoder, ClaimSupportingInfoValueSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): Claim.SupportingInfo.Value {
+    val __desc = descriptor
+    var valueBoolean: KotlinBoolean? = null
+    var _valueBoolean: Element? = null
+    var valueString: KotlinString? = null
+    var _valueString: Element? = null
+    var valueQuantity: Quantity? = null
+    var valueAttachment: Attachment? = null
+    var valueReference: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> valueBoolean = decoder.decodeBooleanElement(__desc, 0)
+        1 ->
+          _valueBoolean =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.elementSer, null)
+        2 -> valueString = decoder.decodeStringElement(__desc, 2)
+        3 ->
+          _valueString =
+            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.elementSer, null)
+        4 ->
+          valueQuantity =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.valueQuantitySer, null)
+        5 ->
+          valueAttachment =
+            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.valueAttachmentSer, null)
+        6 ->
+          valueReference =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.valueReferenceSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException(
+            "Unexpected index decoding Claim.SupportingInfo.Value: " + __i
+          )
+      }
+    }
+    return Claim.SupportingInfo.Value.from(
+      R4Boolean.of(valueBoolean, _valueBoolean),
+      R4String.of(valueString, _valueString),
+      valueQuantity,
+      valueAttachment,
+      valueReference,
+    )!!
+  }
+
+  private object Hoisted {
+    public val elementSer: KSerializer<Element> = Element.serializer()
+
+    public val valueQuantitySer: KSerializer<Quantity> = Quantity.serializer()
+
+    public val valueAttachmentSer: KSerializer<Attachment> = Attachment.serializer()
+
+    public val valueReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object ClaimDiagnosisDiagnosisSerializer : KSerializer<Claim.Diagnosis.Diagnosis> {
-  internal val surrogateSerializer: KSerializer<ClaimDiagnosisDiagnosisSurrogate> by lazy {
-    ClaimDiagnosisDiagnosisSurrogate.serializer()
-  }
+internal object ClaimDiagnosisDiagnosisSerializer : KSerializer<Claim.Diagnosis.Diagnosis> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Claim.Diagnosis.Diagnosis") {
+      element(
+        "diagnosisCodeableConcept",
+        CodeableConcept.serializer().descriptor,
+        isOptional = true,
+      )
+      element("diagnosisReference", Reference.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Diagnosis", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: Claim.Diagnosis.Diagnosis) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is Claim.Diagnosis.Diagnosis.CodeableConcept -> {
+          encodeSerializableElement(__desc, 0, Hoisted.diagnosisCodeableConceptSer, __d.value)
+        }
+        is Claim.Diagnosis.Diagnosis.Reference -> {
+          encodeSerializableElement(__desc, 1, Hoisted.diagnosisReferenceSer, __d.value)
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): Claim.Diagnosis.Diagnosis =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: Claim.Diagnosis.Diagnosis) {
-    surrogateSerializer.serialize(encoder, ClaimDiagnosisDiagnosisSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): Claim.Diagnosis.Diagnosis {
+    val __desc = descriptor
+    var diagnosisCodeableConcept: CodeableConcept? = null
+    var diagnosisReference: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 ->
+          diagnosisCodeableConcept =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              0,
+              Hoisted.diagnosisCodeableConceptSer,
+              null,
+            )
+        1 ->
+          diagnosisReference =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              1,
+              Hoisted.diagnosisReferenceSer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException(
+            "Unexpected index decoding Claim.Diagnosis.Diagnosis: " + __i
+          )
+      }
+    }
+    return Claim.Diagnosis.Diagnosis.from(diagnosisCodeableConcept, diagnosisReference)!!
+  }
+
+  private object Hoisted {
+    public val diagnosisCodeableConceptSer: KSerializer<CodeableConcept> =
+      CodeableConcept.serializer()
+
+    public val diagnosisReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object ClaimProcedureProcedureSerializer : KSerializer<Claim.Procedure.Procedure> {
-  internal val surrogateSerializer: KSerializer<ClaimProcedureProcedureSurrogate> by lazy {
-    ClaimProcedureProcedureSurrogate.serializer()
-  }
+internal object ClaimProcedureProcedureSerializer : KSerializer<Claim.Procedure.Procedure> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Claim.Procedure.Procedure") {
+      element(
+        "procedureCodeableConcept",
+        CodeableConcept.serializer().descriptor,
+        isOptional = true,
+      )
+      element("procedureReference", Reference.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Procedure", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: Claim.Procedure.Procedure) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is Claim.Procedure.Procedure.CodeableConcept -> {
+          encodeSerializableElement(__desc, 0, Hoisted.procedureCodeableConceptSer, __d.value)
+        }
+        is Claim.Procedure.Procedure.Reference -> {
+          encodeSerializableElement(__desc, 1, Hoisted.procedureReferenceSer, __d.value)
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): Claim.Procedure.Procedure =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: Claim.Procedure.Procedure) {
-    surrogateSerializer.serialize(encoder, ClaimProcedureProcedureSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): Claim.Procedure.Procedure {
+    val __desc = descriptor
+    var procedureCodeableConcept: CodeableConcept? = null
+    var procedureReference: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 ->
+          procedureCodeableConcept =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              0,
+              Hoisted.procedureCodeableConceptSer,
+              null,
+            )
+        1 ->
+          procedureReference =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              1,
+              Hoisted.procedureReferenceSer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException(
+            "Unexpected index decoding Claim.Procedure.Procedure: " + __i
+          )
+      }
+    }
+    return Claim.Procedure.Procedure.from(procedureCodeableConcept, procedureReference)!!
+  }
+
+  private object Hoisted {
+    public val procedureCodeableConceptSer: KSerializer<CodeableConcept> =
+      CodeableConcept.serializer()
+
+    public val procedureReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object ClaimAccidentLocationSerializer : KSerializer<Claim.Accident.Location> {
-  internal val surrogateSerializer: KSerializer<ClaimAccidentLocationSurrogate> by lazy {
-    ClaimAccidentLocationSurrogate.serializer()
-  }
+internal object ClaimAccidentLocationSerializer : KSerializer<Claim.Accident.Location> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Claim.Accident.Location") {
+      element("locationAddress", Address.serializer().descriptor, isOptional = true)
+      element("locationReference", Reference.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Location", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: Claim.Accident.Location) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is Claim.Accident.Location.Address -> {
+          encodeSerializableElement(__desc, 0, Hoisted.locationAddressSer, __d.value)
+        }
+        is Claim.Accident.Location.Reference -> {
+          encodeSerializableElement(__desc, 1, Hoisted.locationReferenceSer, __d.value)
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): Claim.Accident.Location =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: Claim.Accident.Location) {
-    surrogateSerializer.serialize(encoder, ClaimAccidentLocationSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): Claim.Accident.Location {
+    val __desc = descriptor
+    var locationAddress: Address? = null
+    var locationReference: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 ->
+          locationAddress =
+            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.locationAddressSer, null)
+        1 ->
+          locationReference =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.locationReferenceSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException("Unexpected index decoding Claim.Accident.Location: " + __i)
+      }
+    }
+    return Claim.Accident.Location.from(locationAddress, locationReference)!!
+  }
+
+  private object Hoisted {
+    public val locationAddressSer: KSerializer<Address> = Address.serializer()
+
+    public val locationReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object ClaimItemServicedSerializer : KSerializer<Claim.Item.Serviced> {
-  internal val surrogateSerializer: KSerializer<ClaimItemServicedSurrogate> by lazy {
-    ClaimItemServicedSurrogate.serializer()
-  }
+internal object ClaimItemServicedSerializer : KSerializer<Claim.Item.Serviced> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Claim.Item.Serviced") {
+      element("servicedDate", KotlinString.serializer().descriptor, isOptional = true)
+      element("_servicedDate", Element.serializer().descriptor, isOptional = true)
+      element("servicedPeriod", Period.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Serviced", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: Claim.Item.Serviced) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is Claim.Item.Serviced.Date -> {
+          ((__d.value.value?.toString()))?.let { encodeStringElement(__desc, 0, it) }
+          (__d.value.toElement())?.let {
+            encodeSerializableElement(__desc, 1, Hoisted.elementSer, it)
+          }
+        }
+        is Claim.Item.Serviced.Period -> {
+          encodeSerializableElement(__desc, 2, Hoisted.servicedPeriodSer, __d.value)
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): Claim.Item.Serviced =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: Claim.Item.Serviced) {
-    surrogateSerializer.serialize(encoder, ClaimItemServicedSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): Claim.Item.Serviced {
+    val __desc = descriptor
+    var servicedDate: KotlinString? = null
+    var _servicedDate: Element? = null
+    var servicedPeriod: Period? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> servicedDate = decoder.decodeStringElement(__desc, 0)
+        1 ->
+          _servicedDate =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.elementSer, null)
+        2 ->
+          servicedPeriod =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.servicedPeriodSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException("Unexpected index decoding Claim.Item.Serviced: " + __i)
+      }
+    }
+    return Claim.Item.Serviced.from(
+      Date.of(FhirDate.fromString(servicedDate), _servicedDate),
+      servicedPeriod,
+    )!!
+  }
+
+  private object Hoisted {
+    public val elementSer: KSerializer<Element> = Element.serializer()
+
+    public val servicedPeriodSer: KSerializer<Period> = Period.serializer()
   }
 }
 
-public object ClaimItemLocationSerializer : KSerializer<Claim.Item.Location> {
-  internal val surrogateSerializer: KSerializer<ClaimItemLocationSurrogate> by lazy {
-    ClaimItemLocationSurrogate.serializer()
-  }
+internal object ClaimItemLocationSerializer : KSerializer<Claim.Item.Location> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Claim.Item.Location") {
+      element("locationCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("locationAddress", Address.serializer().descriptor, isOptional = true)
+      element("locationReference", Reference.serializer().descriptor, isOptional = true)
+    }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Location", surrogateSerializer.descriptor)
+  override fun serialize(encoder: Encoder, `value`: Claim.Item.Location) {
+    encoder.encodeStructure(descriptor) {
+      val __desc = descriptor
+      when (val __d = value) {
+        is Claim.Item.Location.CodeableConcept -> {
+          encodeSerializableElement(__desc, 0, Hoisted.locationCodeableConceptSer, __d.value)
+        }
+        is Claim.Item.Location.Address -> {
+          encodeSerializableElement(__desc, 1, Hoisted.locationAddressSer, __d.value)
+        }
+        is Claim.Item.Location.Reference -> {
+          encodeSerializableElement(__desc, 2, Hoisted.locationReferenceSer, __d.value)
+        }
+      }
+    }
   }
 
   override fun deserialize(decoder: Decoder): Claim.Item.Location =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
-  override fun serialize(encoder: Encoder, `value`: Claim.Item.Location) {
-    surrogateSerializer.serialize(encoder, ClaimItemLocationSurrogate.fromModel(value))
+  internal fun deserializeJson(decoder: CompositeDecoder): Claim.Item.Location {
+    val __desc = descriptor
+    var locationCodeableConcept: CodeableConcept? = null
+    var locationAddress: Address? = null
+    var locationReference: Reference? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 ->
+          locationCodeableConcept =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              0,
+              Hoisted.locationCodeableConceptSer,
+              null,
+            )
+        1 ->
+          locationAddress =
+            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.locationAddressSer, null)
+        2 ->
+          locationReference =
+            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.locationReferenceSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else ->
+          throw SerializationException("Unexpected index decoding Claim.Item.Location: " + __i)
+      }
+    }
+    return Claim.Item.Location.from(locationCodeableConcept, locationAddress, locationReference)!!
+  }
+
+  private object Hoisted {
+    public val locationCodeableConceptSer: KSerializer<CodeableConcept> =
+      CodeableConcept.serializer()
+
+    public val locationAddressSer: KSerializer<Address> = Address.serializer()
+
+    public val locationReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }
 
-public object ClaimSerializer : KSerializer<Claim> {
-  internal val surrogateSerializer: KSerializer<ClaimSurrogate> by lazy {
-    ClaimSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Claim", surrogateSerializer.descriptor)
-  }
+internal object ClaimSerializer : KSerializer<Claim> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Claim") {
+      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element("meta", Meta.serializer().descriptor, isOptional = true)
+      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+      element("language", KotlinString.serializer().descriptor, isOptional = true)
+      element("_language", Element.serializer().descriptor, isOptional = true)
+      element("text", Narrative.serializer().descriptor, isOptional = true)
+      element(
+        "contained",
+        listSerialDescriptor(Resource.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "identifier",
+        listSerialDescriptor(Identifier.serializer().descriptor),
+        isOptional = true,
+      )
+      element("status", KotlinString.serializer().descriptor, isOptional = true)
+      element("_status", Element.serializer().descriptor, isOptional = true)
+      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("subType", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("use", KotlinString.serializer().descriptor, isOptional = true)
+      element("_use", Element.serializer().descriptor, isOptional = true)
+      element("patient", Reference.serializer().descriptor, isOptional = true)
+      element("billablePeriod", Period.serializer().descriptor, isOptional = true)
+      element("created", KotlinString.serializer().descriptor, isOptional = true)
+      element("_created", Element.serializer().descriptor, isOptional = true)
+      element("enterer", Reference.serializer().descriptor, isOptional = true)
+      element("insurer", Reference.serializer().descriptor, isOptional = true)
+      element("provider", Reference.serializer().descriptor, isOptional = true)
+      element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("fundsReserve", CodeableConcept.serializer().descriptor, isOptional = true)
+      element(
+        "related",
+        listSerialDescriptor(lazyDescriptor { Claim.Related.serializer().descriptor }),
+        isOptional = true,
+      )
+      element("prescription", Reference.serializer().descriptor, isOptional = true)
+      element("originalPrescription", Reference.serializer().descriptor, isOptional = true)
+      element("payee", lazyDescriptor { Claim.Payee.serializer().descriptor }, isOptional = true)
+      element("referral", Reference.serializer().descriptor, isOptional = true)
+      element("facility", Reference.serializer().descriptor, isOptional = true)
+      element(
+        "careTeam",
+        listSerialDescriptor(lazyDescriptor { Claim.CareTeam.serializer().descriptor }),
+        isOptional = true,
+      )
+      element(
+        "supportingInfo",
+        listSerialDescriptor(lazyDescriptor { Claim.SupportingInfo.serializer().descriptor }),
+        isOptional = true,
+      )
+      element(
+        "diagnosis",
+        listSerialDescriptor(lazyDescriptor { Claim.Diagnosis.serializer().descriptor }),
+        isOptional = true,
+      )
+      element(
+        "procedure",
+        listSerialDescriptor(lazyDescriptor { Claim.Procedure.serializer().descriptor }),
+        isOptional = true,
+      )
+      element(
+        "insurance",
+        listSerialDescriptor(lazyDescriptor { Claim.Insurance.serializer().descriptor }),
+        isOptional = true,
+      )
+      element(
+        "accident",
+        lazyDescriptor { Claim.Accident.serializer().descriptor },
+        isOptional = true,
+      )
+      element(
+        "item",
+        listSerialDescriptor(lazyDescriptor { Claim.Item.serializer().descriptor }),
+        isOptional = true,
+      )
+      element("total", Money.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): Claim =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim) {
-    surrogateSerializer.serialize(encoder, ClaimSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+  }
+
+  internal fun deserializeJson(decoder: CompositeDecoder): Claim {
+    val __desc = descriptor
+    var id: KotlinString? = null
+    var meta: Meta? = null
+    var implicitRules: KotlinString? = null
+    var _implicitRules: Element? = null
+    var language: KotlinString? = null
+    var _language: Element? = null
+    var text: Narrative? = null
+    var contained: List<Resource>? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var identifier: List<Identifier>? = null
+    var status: KotlinString? = null
+    var _status: Element? = null
+    var type: CodeableConcept? = null
+    var subType: CodeableConcept? = null
+    var use: KotlinString? = null
+    var _use: Element? = null
+    var patient: Reference? = null
+    var billablePeriod: Period? = null
+    var created: KotlinString? = null
+    var _created: Element? = null
+    var enterer: Reference? = null
+    var insurer: Reference? = null
+    var provider: Reference? = null
+    var priority: CodeableConcept? = null
+    var fundsReserve: CodeableConcept? = null
+    var related: List<Claim.Related>? = null
+    var prescription: Reference? = null
+    var originalPrescription: Reference? = null
+    var payee: Claim.Payee? = null
+    var referral: Reference? = null
+    var facility: Reference? = null
+    var careTeam: List<Claim.CareTeam>? = null
+    var supportingInfo: List<Claim.SupportingInfo>? = null
+    var diagnosis: List<Claim.Diagnosis>? = null
+    var procedure: List<Claim.Procedure>? = null
+    var insurance: List<Claim.Insurance>? = null
+    var accident: Claim.Accident? = null
+    var item: List<Claim.Item>? = null
+    var total: Money? = null
+    while (true) {
+      when (val __i = decoder.decodeElementIndex(__desc)) {
+        0 -> decoder.decodeStringElement(__desc, 0)
+        1 -> id = decoder.decodeStringElement(__desc, 1)
+        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
+        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
+        4 ->
+          _implicitRules =
+            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
+        5 -> language = decoder.decodeStringElement(__desc, 5)
+        6 ->
+          _language =
+            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
+        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
+        8 ->
+          contained =
+            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
+        9 ->
+          extension =
+            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
+        10 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
+        11 ->
+          identifier =
+            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
+        12 -> status = decoder.decodeStringElement(__desc, 12)
+        13 ->
+          _status =
+            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
+        14 -> type = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.typeSer, null)
+        15 -> subType = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.typeSer, null)
+        16 -> use = decoder.decodeStringElement(__desc, 16)
+        17 ->
+          _use =
+            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.implicitRulesSer, null)
+        18 ->
+          patient = decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.patientSer, null)
+        19 ->
+          billablePeriod =
+            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.billablePeriodSer, null)
+        20 -> created = decoder.decodeStringElement(__desc, 20)
+        21 ->
+          _created =
+            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.implicitRulesSer, null)
+        22 ->
+          enterer = decoder.decodeNullableSerializableElement(__desc, 22, Hoisted.patientSer, null)
+        23 ->
+          insurer = decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.patientSer, null)
+        24 ->
+          provider = decoder.decodeNullableSerializableElement(__desc, 24, Hoisted.patientSer, null)
+        25 ->
+          priority = decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.typeSer, null)
+        26 ->
+          fundsReserve =
+            decoder.decodeNullableSerializableElement(__desc, 26, Hoisted.typeSer, null)
+        27 ->
+          related = decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.relatedSer, null)
+        28 ->
+          prescription =
+            decoder.decodeNullableSerializableElement(__desc, 28, Hoisted.patientSer, null)
+        29 ->
+          originalPrescription =
+            decoder.decodeNullableSerializableElement(__desc, 29, Hoisted.patientSer, null)
+        30 -> payee = decoder.decodeNullableSerializableElement(__desc, 30, Hoisted.payeeSer, null)
+        31 ->
+          referral = decoder.decodeNullableSerializableElement(__desc, 31, Hoisted.patientSer, null)
+        32 ->
+          facility = decoder.decodeNullableSerializableElement(__desc, 32, Hoisted.patientSer, null)
+        33 ->
+          careTeam =
+            decoder.decodeNullableSerializableElement(__desc, 33, Hoisted.careTeamSer, null)
+        34 ->
+          supportingInfo =
+            decoder.decodeNullableSerializableElement(__desc, 34, Hoisted.supportingInfoSer, null)
+        35 ->
+          diagnosis =
+            decoder.decodeNullableSerializableElement(__desc, 35, Hoisted.diagnosisSer, null)
+        36 ->
+          procedure =
+            decoder.decodeNullableSerializableElement(__desc, 36, Hoisted.procedureSer, null)
+        37 ->
+          insurance =
+            decoder.decodeNullableSerializableElement(__desc, 37, Hoisted.insuranceSer, null)
+        38 ->
+          accident =
+            decoder.decodeNullableSerializableElement(__desc, 38, Hoisted.accidentSer, null)
+        39 -> item = decoder.decodeNullableSerializableElement(__desc, 39, Hoisted.itemSer, null)
+        40 -> total = decoder.decodeNullableSerializableElement(__desc, 40, Hoisted.totalSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding Claim: " + __i)
+      }
+    }
+    return Claim(
+      id = id,
+      meta = meta,
+      implicitRules = Uri.of(implicitRules, _implicitRules),
+      language = Code.of(language, _language),
+      text = text,
+      contained = contained ?: listOf(),
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      identifier = identifier ?: listOf(),
+      status = Enumeration.of(Claim.FinancialResourceStatusCodes.fromCode(status!!), _status),
+      type = type!!,
+      subType = subType,
+      use = Enumeration.of(Claim.Use.fromCode(use!!), _use),
+      patient = patient!!,
+      billablePeriod = billablePeriod,
+      created = DateTime.of(FhirDateTime.fromString(created), _created)!!,
+      enterer = enterer,
+      insurer = insurer,
+      provider = provider!!,
+      priority = priority!!,
+      fundsReserve = fundsReserve,
+      related = related ?: listOf(),
+      prescription = prescription,
+      originalPrescription = originalPrescription,
+      payee = payee,
+      referral = referral,
+      facility = facility,
+      careTeam = careTeam ?: listOf(),
+      supportingInfo = supportingInfo ?: listOf(),
+      diagnosis = diagnosis ?: listOf(),
+      procedure = procedure ?: listOf(),
+      insurance = insurance ?: listOf(),
+      accident = accident,
+      item = item ?: listOf(),
+      total = total,
+    )
+  }
+
+  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim) {
+    val __desc = descriptor
+    encoder.encodeStringElement(__desc, 0, "Claim")
+    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+    (value.implicitRules?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+    }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    (value.language?.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+    }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    if (value.contained.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+    if (value.identifier.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
+    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 12, it) }
+    (value.status.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+    }
+    (value.type)?.let { encoder.encodeSerializableElement(__desc, 14, Hoisted.typeSer, it) }
+    (value.subType)?.let { encoder.encodeSerializableElement(__desc, 15, Hoisted.typeSer, it) }
+    ((value.use.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 16, it) }
+    (value.use.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 17, Hoisted.implicitRulesSer, it)
+    }
+    (value.patient)?.let { encoder.encodeSerializableElement(__desc, 18, Hoisted.patientSer, it) }
+    (value.billablePeriod)?.let {
+      encoder.encodeSerializableElement(__desc, 19, Hoisted.billablePeriodSer, it)
+    }
+    ((value.created.value?.toString()))?.let { encoder.encodeStringElement(__desc, 20, it) }
+    (value.created.toElement())?.let {
+      encoder.encodeSerializableElement(__desc, 21, Hoisted.implicitRulesSer, it)
+    }
+    (value.enterer)?.let { encoder.encodeSerializableElement(__desc, 22, Hoisted.patientSer, it) }
+    (value.insurer)?.let { encoder.encodeSerializableElement(__desc, 23, Hoisted.patientSer, it) }
+    (value.provider)?.let { encoder.encodeSerializableElement(__desc, 24, Hoisted.patientSer, it) }
+    (value.priority)?.let { encoder.encodeSerializableElement(__desc, 25, Hoisted.typeSer, it) }
+    (value.fundsReserve)?.let { encoder.encodeSerializableElement(__desc, 26, Hoisted.typeSer, it) }
+    if (value.related.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 27, Hoisted.relatedSer, value.related)
+    (value.prescription)?.let {
+      encoder.encodeSerializableElement(__desc, 28, Hoisted.patientSer, it)
+    }
+    (value.originalPrescription)?.let {
+      encoder.encodeSerializableElement(__desc, 29, Hoisted.patientSer, it)
+    }
+    (value.payee)?.let { encoder.encodeSerializableElement(__desc, 30, Hoisted.payeeSer, it) }
+    (value.referral)?.let { encoder.encodeSerializableElement(__desc, 31, Hoisted.patientSer, it) }
+    (value.facility)?.let { encoder.encodeSerializableElement(__desc, 32, Hoisted.patientSer, it) }
+    if (value.careTeam.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 33, Hoisted.careTeamSer, value.careTeam)
+    if (value.supportingInfo.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 34, Hoisted.supportingInfoSer, value.supportingInfo)
+    if (value.diagnosis.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 35, Hoisted.diagnosisSer, value.diagnosis)
+    if (value.procedure.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 36, Hoisted.procedureSer, value.procedure)
+    if (value.insurance.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 37, Hoisted.insuranceSer, value.insurance)
+    (value.accident)?.let { encoder.encodeSerializableElement(__desc, 38, Hoisted.accidentSer, it) }
+    if (value.item.isNotEmpty())
+      encoder.encodeSerializableElement(__desc, 39, Hoisted.itemSer, value.item)
+    (value.total)?.let { encoder.encodeSerializableElement(__desc, 40, Hoisted.totalSer, it) }
+  }
+
+  private object Hoisted {
+    public val metaSer: KSerializer<Meta> = Meta.serializer()
+
+    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
+
+    public val textSer: KSerializer<Narrative> = Narrative.serializer()
+
+    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
+
+    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
+
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
+
+    public val identifierSer: KSerializer<List<Identifier>> =
+      ListSerializer(Hoisted.identifierSerInner)
+
+    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val patientSer: KSerializer<Reference> = Reference.serializer()
+
+    public val billablePeriodSer: KSerializer<Period> = Period.serializer()
+
+    public val relatedSerInner: KSerializer<Claim.Related> = Claim.Related.serializer()
+
+    public val relatedSer: KSerializer<List<Claim.Related>> =
+      ListSerializer(Hoisted.relatedSerInner)
+
+    public val payeeSer: KSerializer<Claim.Payee> = Claim.Payee.serializer()
+
+    public val careTeamSerInner: KSerializer<Claim.CareTeam> = Claim.CareTeam.serializer()
+
+    public val careTeamSer: KSerializer<List<Claim.CareTeam>> =
+      ListSerializer(Hoisted.careTeamSerInner)
+
+    public val supportingInfoSerInner: KSerializer<Claim.SupportingInfo> =
+      Claim.SupportingInfo.serializer()
+
+    public val supportingInfoSer: KSerializer<List<Claim.SupportingInfo>> =
+      ListSerializer(Hoisted.supportingInfoSerInner)
+
+    public val diagnosisSerInner: KSerializer<Claim.Diagnosis> = Claim.Diagnosis.serializer()
+
+    public val diagnosisSer: KSerializer<List<Claim.Diagnosis>> =
+      ListSerializer(Hoisted.diagnosisSerInner)
+
+    public val procedureSerInner: KSerializer<Claim.Procedure> = Claim.Procedure.serializer()
+
+    public val procedureSer: KSerializer<List<Claim.Procedure>> =
+      ListSerializer(Hoisted.procedureSerInner)
+
+    public val insuranceSerInner: KSerializer<Claim.Insurance> = Claim.Insurance.serializer()
+
+    public val insuranceSer: KSerializer<List<Claim.Insurance>> =
+      ListSerializer(Hoisted.insuranceSerInner)
+
+    public val accidentSer: KSerializer<Claim.Accident> = Claim.Accident.serializer()
+
+    public val itemSerInner: KSerializer<Claim.Item> = Claim.Item.serializer()
+
+    public val itemSer: KSerializer<List<Claim.Item>> = ListSerializer(Hoisted.itemSerInner)
+
+    public val totalSer: KSerializer<Money> = Money.serializer()
   }
 }

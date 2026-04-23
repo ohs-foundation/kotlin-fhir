@@ -54,10 +54,9 @@ enum class FhirPathType(
     override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
     override fun addCodeToConvertTypeInSurrogateToTypeInModel(
@@ -82,10 +81,9 @@ enum class FhirPathType(
     override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
     override fun addCodeToConvertTypeInSurrogateToTypeInModel(
@@ -110,10 +108,9 @@ enum class FhirPathType(
     override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N?.toLong()", surrogateClassName, propertyName)
+      codeBlock.add("%N?.toLong()", propertyName)
     }
 
     override fun addCodeToConvertTypeInSurrogateToTypeInModel(
@@ -131,7 +128,7 @@ enum class FhirPathType(
   DECIMAL(
     uri = "http://hl7.org/fhirpath/System.Decimal",
     fhirTypeCodes = listOf("decimal"),
-    typeInSurrogateClass = Double::class.asClassName(),
+    typeInSurrogateClass = ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal"),
   ) {
     override fun getTypeInModelClass(packageName: String) =
       ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal")
@@ -139,10 +136,9 @@ enum class FhirPathType(
     override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
     override fun addCodeToConvertTypeInSurrogateToTypeInModel(
@@ -154,7 +150,7 @@ enum class FhirPathType(
     }
 
     override fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder) {
-      codeBlock.add(".value?.toString()?.toDouble()")
+      codeBlock.add(".value")
     }
   },
   STRING(
@@ -180,10 +176,9 @@ enum class FhirPathType(
     override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
     override fun addCodeToConvertTypeInSurrogateToTypeInModel(
@@ -208,15 +203,9 @@ enum class FhirPathType(
     override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add(
-        "%T.fromString(this@%T.%N)",
-        getTypeInModelClass(packageName),
-        surrogateClassName,
-        propertyName,
-      )
+      codeBlock.add("%T.fromString(%N)", getTypeInModelClass(packageName), propertyName)
     }
 
     override fun addCodeToConvertTypeInSurrogateToTypeInModel(
@@ -241,10 +230,9 @@ enum class FhirPathType(
     override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
     override fun addCodeToConvertTypeInSurrogateToTypeInModel(
@@ -269,15 +257,9 @@ enum class FhirPathType(
     override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add(
-        "%T.fromString(this@%T.%N)",
-        getTypeInModelClass(packageName),
-        surrogateClassName,
-        propertyName,
-      )
+      codeBlock.add("%T.fromString(%N)", getTypeInModelClass(packageName), propertyName)
     }
 
     override fun addCodeToConvertTypeInSurrogateToTypeInModel(
@@ -306,17 +288,15 @@ enum class FhirPathType(
   abstract fun getTypeInModelClass(packageName: String): ClassName
 
   /**
-   * Adds code to the `codeBlock` to convert a property of this [FhirPathType] in the surrogate
-   * class to a property in the model class.
+   * Adds code to the `codeBlock` to convert a decoded local var of this [FhirPathType] to the
+   * corresponding value type used in the model class.
    *
-   * For example, for boolean this generates `this@surrogateClass.elementName`; and for integer64,
-   * this generates `this@surrogateClass.elementName?.toLong()` since integer64 is represented in
-   * the surrogate class as a string and needs to be converted to a [Long] in the model class.
+   * For example, for boolean this emits `elementName`; for integer64 (stored as a string on the
+   * wire), it emits `elementName?.toLong()`.
    */
   abstract fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
     codeBlock: CodeBlock.Builder,
     packageName: String,
-    surrogateClassName: ClassName,
     propertyName: String,
   )
 

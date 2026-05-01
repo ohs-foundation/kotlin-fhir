@@ -224,30 +224,81 @@ The following FHIR value sets are excluded from Kotlin enum generation.
 
 ### Search Parameters
 
-The codegen reads `SearchParameter-*.json` files from the FHIR core packages and generates typed search parameter constants on each concrete resource's companion object. This provides compile-time safe, discoverable access to FHIR search parameters.
+The codegen reads `SearchParameter-*.json` files from the FHIR core packages and generates per-resource sealed class hierarchies that bundle search parameter metadata with typed value extraction. This provides compile-time safe, discoverable access to FHIR search parameters.
 
-A `SearchParam` sealed interface is generated in each version package with concrete classes for each FHIR search parameter type:
+A `SearchParam` sealed interface is generated in each version package with four metadata properties:
 
-| FHIR search parameter type | Kotlin class           |
-|:---------------------------|:-----------------------|
-| number                     | `NumberSearchParam`    |
-| date                       | `DateSearchParam`      |
-| string                     | `StringSearchParam`    |
-| token                      | `TokenSearchParam`     |
-| reference                  | `ReferenceSearchParam` |
-| composite                  | `CompositeSearchParam` |
-| quantity                   | `QuantitySearchParam`  |
-| uri                        | `UriSearchParam`       |
-| special                    | `SpecialSearchParam`   |
+| Property     | Type              | Description                                                  |
+|:-------------|:------------------|:-------------------------------------------------------------|
+| `paramName`  | `String`          | The search parameter name as used in search URLs.            |
+| `type`       | `SearchParamType` | The search parameter type (number, date, string, token, …).  |
+| `expression` | `String`          | The FHIRPath expression that extracts values for this param. |
+| `target`     | `List<String>`    | Target resource types for reference search parameters.       |
 
-Each concrete resource class has a companion object with search parameter constants. For example, `Patient` has:
+For each resource type that has search parameters, a `{Resource}SearchParam<T>` sealed class is generated. Each search parameter is a `data object` that extends the sealed class and adds a typed `extract(resource): List<T>` function. A companion `ALL` property exposes every search parameter for the resource. For example, `PatientSearchParam` looks like:
 
 ```kotlin
-Patient.NAME        // StringSearchParam("name")
-Patient.BIRTHDATE   // DateSearchParam("birthdate")
-Patient.ACTIVE      // TokenSearchParam("active")
-Patient.GENERAL_PRACTITIONER  // ReferenceSearchParam("general-practitioner")
+sealed class PatientSearchParam<T> : SearchParam {
+  abstract fun extract(resource: Patient): List<T>
+
+  data object Birthdate : PatientSearchParam<Date>() {
+    override val paramName = "birthdate"
+    override val type = SearchParamType.fromCode("date")
+    override val expression = "Patient.birthDate"
+    override val target = emptyList<String>()
+    override fun extract(resource: Patient) = listOfNotNull(resource.birthDate)
+  }
+
+  data object GeneralPractitioner : PatientSearchParam<Reference>() {
+    override val paramName = "general-practitioner"
+    override val type = SearchParamType.fromCode("reference")
+    override val expression = "Patient.generalPractitioner"
+    override val target = listOf("Practitioner", "Organization", "PractitionerRole")
+    override fun extract(resource: Patient) = resource.generalPractitioner
+  }
+  // ... one data object per search parameter
+
+  companion object {
+    val ALL: List<PatientSearchParam<*>> = listOf(Birthdate, GeneralPractitioner, /* ... */)
+  }
+}
+
+// Usage:
+PatientSearchParam.Birthdate.extract(patient)              // type-safe: List<Date>
+PatientSearchParam.ALL.forEach { it.extract(patient) }     // iterate all for indexing
 ```
+
+#### Supported FHIRPath patterns
+
+The codegen translates the following FHIRPath shapes into Kotlin extraction code:
+
+| Pattern                           | Example expression                            | Generated extraction                                                                                                                                                   |
+|:----------------------------------|:----------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Simple property                   | `Patient.birthDate`                           | `listOfNotNull(resource.birthDate)`                                                                                                                                    |
+| Nested path                       | `Patient.address.city`                        | `resource.address.mapNotNull { it.city }`                                                                                                                              |
+| List property                     | `Patient.identifier`                          | `resource.identifier`                                                                                                                                                  |
+| Element cast `(X.path as Type)`   | `(Patient.deceased as dateTime)`              | `listOfNotNull((resource.deceased as? Patient.Deceased.DateTime)?.value)`                                                                                              |
+| Element cast `X.path.as(Type)`    | `Condition.onset.as(dateTime)`                | `listOfNotNull((resource.onset as? Condition.Onset.DateTime)?.value)`                                                                                                  |
+| Element (no cast)                 | `Patient.deceased`                            | `listOfNotNull(resource.deceased)` — without a cast, the caller gets the `Patient.Deceased` sealed interface itself rather than the underlying `Boolean` or `DateTime` |
+| `where(resolve() is Type)` filter | `Account.subject.where(resolve() is Patient)` | `resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }` — substring-matches `Reference.reference` against `Type/`, covering relative and absolute URL forms. Misses URN-form (`urn:uuid:…`), contained (`#id`), and `Reference.type`-only references |
+| `where(field='value')` filter     | `Patient.telecom.where(system='email')`       | `resource.telecom.filter { it.system?.value?.toString() == "email" }`                                                                                                  |
+
+#### Unsupported FHIRPath patterns
+
+When a FHIRPath expression doesn't match any of the shapes above, the codegen falls back to a stub: the search parameter's `extract()` returns `emptyList()` and its type parameter is `Any`. The metadata (`paramName`, `type`, `expression`, `target`) is still populated correctly. Downstream apps that need to support these search parameters can read the `expression` string and evaluate it with a FHIRPath engine.
+
+There are 206 such unsupported search parameters across versions. They fall into the following categories. The "Full list" column links to a per-category file containing every entry (param name, type, target, expression, source JSON file, canonical URL):
+
+| Pattern                                                           | Count | Example                                                                                    | Why it isn't supported                                                                                                 | Full list                                                               |
+|:------------------------------------------------------------------|------:|:-------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------|
+| `.ofType(Type)` choice narrowing                                  |   118 | `Observation.value.ofType(Quantity)`, `useContext.value.ofType(CodeableConcept)`           | Same intent as the supported `as`-cast form, but a different syntax that the resolver doesn't currently handle.        | [of-type.md](docs/unsupported-search-params/of-type.md)                 |
+| Empty FHIRPath (`expression = ""`)                                |    28 | `Patient.age`, `Resource._id`, `Resource._content`, `MedicationKnowledge.packaging-cost`   | The SearchParameter JSON has no extractable expression — there is nothing to translate.                                | [empty.md](docs/unsupported-search-params/empty.md)                     |
+| `.extension('url')` access                                        |    20 | `Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')`   | Fetching a specific extension by URL isn't implemented. Some R5 expressions add a trailing `.value`.                   | [extension.md](docs/unsupported-search-params/extension.md)             |
+| `composite` type with no component path                           |    13 | `Observation.code-value-concept`, `Device.code-value-concept`                              | Composite expressions are typically just the resource name; resolving them requires combining component params.        | [composite.md](docs/unsupported-search-params/composite.md)             |
+| Boolean logic (`and`, `or`)                                       |     5 | `Patient.deceased.exists() and Patient.deceased != false`                                  | Boolean combinators aren't translated. Only the `Patient/Person/Practitioner.deceased` token params use this.          | [boolean-logic.md](docs/unsupported-search-params/boolean-logic.md)     |
+| Multi-resource union without resource prefix                      |     3 | `name \| alias` for `InsurancePlan.name`                                                   | When no branch of the union starts with the resource name, the expression-slicing step finds nothing to resolve.       | [union.md](docs/unsupported-search-params/union.md)                     |
+| `where(...)` predicate other than `field='value'` / `resolve()`   |     3 | `QuestionnaireResponse.item.where(extension('…').exists()).answer.value.ofType(Reference)` | The matcher only handles `where(field='value')` and `where(resolve() is Type)`. Function-call predicates fall through. | [where-predicate.md](docs/unsupported-search-params/where-predicate.md) |
+| Other (parens, indexed access, bare path without resource prefix) |    16 | `(Citation.classification.type)`, `Bundle.entry[0].resource`, `id` for `Resource._id`      | Mixed: leading parens, `[0]` indexing, and bare paths missing the resource prefix all bypass the resolver.             | [other.md](docs/unsupported-search-params/other.md)                     |
 
 ## Serialization and deserialization
 
@@ -637,10 +688,16 @@ executed:
    - Verification: The reconstructed object from the builder is equal to the original object.
 4. Search parameter test:
    - Loads the source `SearchParameter-*.json` files as ground truth.
-   - For each concrete resource across R4, R4B, and R5, uses JVM reflection to verify:
-     - Count: the companion object has exactly the right number of search param constants.
-     - Name: each constant's `paramName` matches the `code` from the JSON definition.
-     - Type: each constant's class matches the expected type (e.g., `"date"` to `DateSearchParam`).
+   - For each concrete resource across R4, R4B, and R5, uses JVM reflection on the
+     generated `{Resource}SearchParam` sealed class and its `ALL` companion property
+     to verify:
+     - Count: `ALL` contains exactly one entry per search parameter defined for the resource.
+     - Name: each entry's `paramName` matches the `code` from the JSON definition.
+     - Type: each entry's `type` matches the FHIR search parameter type (e.g., `"date"`).
+     - Expression: the entry's `expression` matches the resource-specific portion of the
+       FHIRPath expression from the JSON definition.
+     - Target: the entry's `target` list matches the `target` resource types from the
+       JSON definition.
 
 [^7]: There are several exceptions. The FHIR specification allows for some variability in data
 representation, which may lead to differences between the original and newly serialized JSON. For

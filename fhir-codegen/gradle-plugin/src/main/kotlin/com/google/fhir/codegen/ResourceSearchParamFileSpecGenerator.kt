@@ -16,8 +16,13 @@
 
 package com.google.fhir.codegen
 
+import com.google.fhir.codegen.schema.Element
 import com.google.fhir.codegen.schema.SearchParameterDefinition
 import com.google.fhir.codegen.schema.capitalized
+import com.google.fhir.codegen.searchparam.SearchParamCodeEmitter
+import com.google.fhir.codegen.searchparam.SearchParamPattern
+import com.google.fhir.codegen.searchparam.SearchParamTypeResolver
+import com.google.fhir.codegen.searchparam.parseSearchParamExpression
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -25,6 +30,7 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.STAR
+import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.asClassName
@@ -32,8 +38,16 @@ import com.squareup.kotlinpoet.asClassName
 /**
  * Generates per-resource search parameter sealed classes.
  *
- * For each resource type (e.g., Patient), generates a `{Resource}SearchParam` sealed class where
- * each search parameter is a `data object` carrying both metadata and an `extract` function.
+ * For each resource type (e.g. Patient), produces a `{Resource}SearchParam` sealed class where each
+ * search parameter is a `data object` carrying both metadata and an `extract` function.
+ *
+ * This object orchestrates KotlinPoet type/file building. The actual work of interpreting the
+ * search parameter's FHIRPath expression and generating the `extract` body is split across the
+ * `com.google.fhir.codegen.searchparam` package:
+ * - [com.google.fhir.codegen.searchparam.parseSearchParamExpression] classifies the expression into
+ *   a [SearchParamPattern].
+ * - [SearchParamTypeResolver] maps a pattern to the type parameter `T`.
+ * - [SearchParamCodeEmitter] emits the Kotlin source string for the `extract` body.
  */
 object ResourceSearchParamFileSpecGenerator {
 
@@ -43,11 +57,14 @@ object ResourceSearchParamFileSpecGenerator {
    * @param packageName The package name for the generated file.
    * @param resourceName The resource type name (e.g., "Patient").
    * @param searchParams The search parameter definitions for this resource.
+   * @param elementsByType A map from StructureDefinition name to its snapshot elements, used to
+   *   resolve FHIRPath expressions to Kotlin property access code.
    */
   fun generate(
     packageName: String,
     resourceName: String,
     searchParams: List<SearchParameterDefinition>,
+    elementsByType: Map<String, List<Element>>,
   ): FileSpec {
     val searchParamInterfaceClassName = ClassName(packageName, "SearchParam")
     val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
@@ -56,6 +73,7 @@ object ResourceSearchParamFileSpecGenerator {
     val typeVariable = TypeVariableName("T")
     val listOfT = List::class.asClassName().parameterizedBy(typeVariable)
 
+    val resolver = FhirPathExpressionResolver(elementsByType)
     val dedupedParams = searchParams.distinctBy { it.code }.sortedBy { it.code }
 
     val sealedClass =
@@ -81,6 +99,7 @@ object ResourceSearchParamFileSpecGenerator {
                 resourceName,
                 resourceClassName,
                 searchParamTypeClassName,
+                resolver,
               )
             )
           }
@@ -117,16 +136,17 @@ object ResourceSearchParamFileSpecGenerator {
     resourceName: String,
     resourceClassName: ClassName,
     searchParamTypeClassName: ClassName,
+    resolver: FhirPathExpressionResolver,
   ): TypeSpec {
     val objectName = searchParam.code.toDataObjectName()
     val sealedClassName = ClassName(packageName, "${resourceName}SearchParam")
 
-    // Extract the expression portion relevant to this resource
     val resourceExpression = searchParam.extractExpressionForResource(resourceName)
+    val pattern = parseSearchParamExpression(resourceExpression, resourceName, resolver)
+    val (typeParamClassName, extractionCode) = render(pattern, packageName, resourceName)
 
-    // Use Any as the type parameter for now — specific types will be added
-    // when we implement extraction logic
-    val parentType = sealedClassName.parameterizedBy(ClassName("kotlin", "Any"))
+    val parentType = sealedClassName.parameterizedBy(typeParamClassName)
+    val returnType = List::class.asClassName().parameterizedBy(typeParamClassName)
 
     return TypeSpec.objectBuilder(objectName)
       .addModifiers(KModifier.PUBLIC, KModifier.DATA)
@@ -168,12 +188,66 @@ object ResourceSearchParamFileSpecGenerator {
         FunSpec.builder("extract")
           .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
           .addParameter("resource", resourceClassName)
-          .returns(List::class.asClassName().parameterizedBy(ClassName("kotlin", "Any")))
-          .addCode("return emptyList()")
+          .returns(returnType)
+          .addCode(extractionCode)
           .build()
       )
       .build()
   }
+
+  private data class ExtractionResult(val typeParam: TypeName, val code: String)
+
+  private fun render(
+    pattern: SearchParamPattern,
+    packageName: String,
+    resourceName: String,
+  ): ExtractionResult =
+    when (pattern) {
+      is SearchParamPattern.SimplePath ->
+        ExtractionResult(
+          SearchParamTypeResolver.forResolvedPath(pattern.resolved, packageName, resourceName),
+          SearchParamCodeEmitter.forSegments(pattern.resolved),
+        )
+      is SearchParamPattern.WhereResolve ->
+        ExtractionResult(
+          SearchParamTypeResolver.forResolvedPath(pattern.resolved, packageName, resourceName),
+          SearchParamCodeEmitter.forWhereResolve(pattern.resolved, pattern.targetType),
+        )
+      is SearchParamPattern.ElementNoCast ->
+        ExtractionResult(
+          SearchParamTypeResolver.forElementNoCast(pattern.resolved, packageName),
+          SearchParamCodeEmitter.forSegments(pattern.resolved),
+        )
+      is SearchParamPattern.ElementCast -> {
+        val sealedSubclass =
+          SearchParamTypeResolver.elementSubclass(pattern.resolved, pattern.targetType, packageName)
+        ExtractionResult(
+          SearchParamTypeResolver.forElementCastTarget(pattern.targetType, packageName),
+          SearchParamCodeEmitter.forElementCast(
+            pattern.resolved,
+            sealedSubclass.simpleNames.joinToString("."),
+          ),
+        )
+      }
+      is SearchParamPattern.WhereFilter -> {
+        val elementType = pattern.resolved.segments.last().leafTypeCode!!
+        val typeParam =
+          if (pattern.postPath != null)
+            SearchParamTypeResolver.forResolvedPath(pattern.postPath, packageName, resourceName)
+          else ClassName(packageName, elementType.capitalized())
+        ExtractionResult(
+          typeParam,
+          SearchParamCodeEmitter.forWhereFilter(
+            pattern.resolved,
+            pattern.field,
+            pattern.value,
+            pattern.postPath,
+          ),
+        )
+      }
+      SearchParamPattern.Unsupported ->
+        ExtractionResult(ClassName("kotlin", "Any"), "return emptyList()")
+    }
 }
 
 /**

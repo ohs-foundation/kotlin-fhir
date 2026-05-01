@@ -173,9 +173,18 @@ abstract class FhirCodegenTask : DefaultTask() {
 
     SearchParamFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
+    // Build element lookup map for resolving FHIRPath expressions to Kotlin property access
+    val elementsByType =
+      structureDefinitions.associate { sd -> sd.name to (sd.snapshot?.element ?: emptyList()) }
+
     // Generate per-resource search parameter sealed classes
     searchParamsByResource.forEach { (resourceName, params) ->
-      ResourceSearchParamFileSpecGenerator.generate(packageName, resourceName, params)
+      ResourceSearchParamFileSpecGenerator.generate(
+          packageName,
+          resourceName,
+          params,
+          elementsByType,
+        )
         .writeTo(outputDir)
     }
   }

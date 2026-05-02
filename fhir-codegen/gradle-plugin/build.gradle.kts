@@ -21,7 +21,7 @@ configure<GradlePluginDevelopmentExtension> {
     plugins {
         create("fhirCodegenPlugin") {
             id = "fhir-codegen"
-            implementationClass = "com.google.fhir.codegen.FhirCodegenPlugin"
+            implementationClass = "dev.ohs.fhir.codegen.FhirCodegenPlugin"
         }
     }
 }

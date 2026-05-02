@@ -1,21 +1,19 @@
 # Kotlin FHIR
 
-[![Release](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fdl.google.com%2Fdl%2Fandroid%2Fmaven2%2Fcom%2Fgoogle%2Ffhir%2Ffhir-model%2Fmaven-metadata.xml&query=%2F%2Fmetadata%2Fversioning%2Flatest&label=fhir-model&color=yellow)](https://maven.google.com/web/index.html?#com.google.fhir:fhir-model)
-[![Release](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fdl.google.com%2Fdl%2Fandroid%2Fmaven2%2Fcom%2Fgoogle%2Ffhir%2Ffhir-model-android%2Fmaven-metadata.xml&query=%2F%2Fmetadata%2Fversioning%2Flatest&label=fhir-model-android&color=yellow)](https://maven.google.com/web/index.html?#com.google.fhir:fhir-model-android)
-[![Release](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fdl.google.com%2Fdl%2Fandroid%2Fmaven2%2Fcom%2Fgoogle%2Ffhir%2Ffhir-model-iosarm64%2Fmaven-metadata.xml&query=%2F%2Fmetadata%2Fversioning%2Flatest&label=fhir-model-iosarm64&color=yellow)](https://maven.google.com/web/index.html?#com.google.fhir:fhir-model-iosarm64)
-[![Release](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fdl.google.com%2Fdl%2Fandroid%2Fmaven2%2Fcom%2Fgoogle%2Ffhir%2Ffhir-model-iossimulatorarm64%2Fmaven-metadata.xml&query=%2F%2Fmetadata%2Fversioning%2Flatest&label=fhir-model-iossimulatorarm64&color=yellow)](https://maven.google.com/web/index.html?#com.google.fhir:fhir-model-iossimulatorarm64)
-[![Release](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fdl.google.com%2Fdl%2Fandroid%2Fmaven2%2Fcom%2Fgoogle%2Ffhir%2Ffhir-model-iosx64%2Fmaven-metadata.xml&query=%2F%2Fmetadata%2Fversioning%2Flatest&label=fhir-model-iosx64&color=yellow)](https://maven.google.com/web/index.html?#com.google.fhir:fhir-model-iosx64)
-[![Release](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fdl.google.com%2Fdl%2Fandroid%2Fmaven2%2Fcom%2Fgoogle%2Ffhir%2Ffhir-model-js%2Fmaven-metadata.xml&query=%2F%2Fmetadata%2Fversioning%2Flatest&label=fhir-model-js&color=yellow)](https://maven.google.com/web/index.html?#com.google.fhir:fhir-model-js)
-[![Release](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fdl.google.com%2Fdl%2Fandroid%2Fmaven2%2Fcom%2Fgoogle%2Ffhir%2Ffhir-model-jvm%2Fmaven-metadata.xml&query=%2F%2Fmetadata%2Fversioning%2Flatest&label=fhir-model-jvm&color=yellow)](https://maven.google.com/web/index.html?#com.google.fhir:fhir-model-jvm)
-[![Release](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fdl.google.com%2Fdl%2Fandroid%2Fmaven2%2Fcom%2Fgoogle%2Ffhir%2Ffhir-model-wasm-js%2Fmaven-metadata.xml&query=%2F%2Fmetadata%2Fversioning%2Flatest&label=fhir-model-wasm-js&color=yellow)](https://maven.google.com/web/index.html?#com.google.fhir:fhir-model-wasm-js)
-[![Release](https://img.shields.io/badge/dynamic/xml?url=https%3A%2F%2Fdl.google.com%2Fdl%2Fandroid%2Fmaven2%2Fcom%2Fgoogle%2Ffhir%2Ffhir-model-wasm-wasi%2Fmaven-metadata.xml&query=%2F%2Fmetadata%2Fversioning%2Flatest&label=fhir-model-wasm-wasi&color=yellow)](https://maven.google.com/web/index.html?#com.google.fhir:fhir-model-wasm-wasi)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model?color=yellow&label=fhir-model)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-jvm?color=yellow&label=jvm)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-jvm)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-wasm-js?color=yellow&label=wasm-js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-wasm-js)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-wasm-wasi?color=yellow&label=wasm-wasi)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-wasm-wasi)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-js?color=yellow&label=js)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-js)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-android?color=yellow&label=android)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-android)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosx64?color=yellow&label=ios-x64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosx64)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iosarm64?color=yellow&label=ios-arm64)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iosarm64)
+[![Release](https://img.shields.io/maven-central/v/dev.ohs.fhir/fhir-model-iossimulatorarm64?color=yellow&label=ios-simulator)](https://central.sonatype.com/artifact/dev.ohs.fhir/fhir-model-iossimulatorarm64)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Kotlin FHIR is a lean and fast implementation of the
 [HL7® FHIR®](https://www.hl7.org/fhir/overview.html) data model on
 [Kotlin Multiplatform](https://kotlinlang.org/docs/multiplatform.html).
-
-**Warning:** The library is in alpha and subject to change. Use at your own risk.
 
 ## Key features
 
@@ -171,19 +169,19 @@ inherits from `DomainResource`, which inherits from `Resource`.
 ### Mapping FHIR ValueSets to Kotlin Enums
 
 Kotlin enums classes are generated for value sets referenced by elements via [binding](https://hl7.org/fhir/R5/terminologies.html#binding).
-The constants in the generated enum classes are derived from the `code` property of the expanded `CodeSystem` concepts in the [expansion packages](https://github.com/google/kotlin-fhir/tree/main/third_party/). The
+The constants in the generated enum classes are derived from the `code` property of the expanded `CodeSystem` concepts in the [expansion packages](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/). The
 value sets that are not bound to elements are excluded from code generation.
 
 #### Shared vs. Local Enums
 
-- If the `StructureDefinition` defines an element with a [**common binding**](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html), a **shared enum** is generated and placed in the `com.google.fhir.model.<r4|r4b|r5>.terminologies` package.  
+- If the `StructureDefinition` defines an element with a [**common binding**](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html), a **shared enum** is generated and placed in the `dev.ohs.fhir.model.<r4|r4b|r5>.terminologies` package.  
   **Example:** `AdministrativeGender`
 - If the element uses a **non-common binding**, a **local enum** is created inside the associated parent class.  
   **Example:** `NameUse` inside the `HumanName` class
 
 #### Enum Naming and Content
 
-The enum constants are derived from `ValueSet` definitions in the expansion packages for [R4](https://github.com/google/kotlin-fhir/tree/main/third_party/hl7.fhir.r4.expansions/package), [R4B](https://github.com/google/kotlin-fhir/tree/main/third_party/hl7.fhir.r4b.expansions/package), and [R5](https://github.com/google/kotlin-fhir/tree/main/third_party/hl7.fhir.r5.expansions/package).
+The enum constants are derived from `ValueSet` definitions in the expansion packages for [R4](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4.expansions/package), [R4B](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r4b.expansions/package), and [R5](https://github.com/ohs-foundation/kotlin-fhir/tree/main/third_party/hl7.fhir.r5.expansions/package).
 Each `ValueSet` includes codes from one or more `CodeSystem` resources it references.
 
 | FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/> |
@@ -326,9 +324,9 @@ serializer `PatientMultipleBirthSerializer` that delegates serialization / deser
 
 This process has an additional step to flatten and unflatten the JSON properties for the choice type
 elements using the FhirJsonTransformer (in
-[R4](https://github.com/google/kotlin-fhir/blob/main/fhir-model/src/commonMain/kotlin/com/google/fhir/model/r4/FhirJsonTransformer.kt),
-[R4B](https://github.com/google/kotlin-fhir/blob/main/fhir-model/src/commonMain/kotlin/com/google/fhir/model/r4b/FhirJsonTransformer.kt),
-[R5](https://github.com/google/kotlin-fhir/blob/main/fhir-model/src/commonMain/kotlin/com/google/fhir/model/r5/FhirJsonTransformer.kt)),
+[R4](https://github.com/ohs-foundation/kotlin-fhir/blob/main/fhir-model/src/commonMain/kotlin/dev/ohs/fhir/model/r4/FhirJsonTransformer.kt),
+[R4B](https://github.com/ohs-foundation/kotlin-fhir/blob/main/fhir-model/src/commonMain/kotlin/dev/ohs/fhir/model/r4b/FhirJsonTransformer.kt),
+[R5](https://github.com/ohs-foundation/kotlin-fhir/blob/main/fhir-model/src/commonMain/kotlin/dev/ohs/fhir/model/r5/FhirJsonTransformer.kt)),
 so the choice type can be handled independently by a surrogate. This also avoids hitting the
 [JVM constructor argument limit](https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-4.html#jvms-4.3.3)
 caused by FHIR fields with many possible types (e.g.,
@@ -492,28 +490,28 @@ Kotlin code is generated for StructureDefinitions in the following FHIR packages
 ### FHIR codegen
 
 To put all this together, the
-[FHIR codegen](fhir-codegen/gradle-plugin/src/main/kotlin/com/google/fhir/codegen) in the Gradle
+[FHIR codegen](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen) in the Gradle
 binary plugin generates, for each FHIR resource type:
 
-- the model class (the primary class) in the root package e.g. `com.google.fhir.model.r4`,
+- the model class (the primary class) in the root package e.g. `dev.ohs.fhir.model.r4`,
 - the surrogate classes (one for basic primitive type
   mapping to JSON properties, plus extras for each multi-choice/polymorphic property and backbone element)
-  in the surrogate package e.g. `com.google.fhir.model.r4.surrogates`, and
+  in the surrogate package e.g. `dev.ohs.fhir.model.r4.surrogates`, and
 - the serializer classes (to delegate serialization/deserialization to the corresponding surrogate classes) in the
-  serializer package e.g. `com.google.fhir.model.r4.serializers`,
+  serializer package e.g. `dev.ohs.fhir.model.r4.serializers`,
 
 using
-[`ModelTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/com/google/fhir/codegen/ModelTypeSpecGenerator.kt),
-[`SurrogateTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/com/google/fhir/codegen/SurrogateTypeSpecGenerator.kt),
+[`ModelTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/ModelTypeSpecGenerator.kt),
+[`SurrogateTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/SurrogateTypeSpecGenerator.kt),
 and
-[`SerializerTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/com/google/fhir/codegen/SerializerTypeSpecGenerator.kt),
+[`SerializerTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/SerializerTypeSpecGenerator.kt),
 respectively.
 
 Additionally,
-the [`schema`](fhir-codegen/gradle-plugin/src/main/kotlin/com/google/fhir/codegen/schema) package in
+the [`schema`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/schema) package in
 the FHIR codegen contains the schema for structure definitions and helper functions for processing
 them, and the
-[`primitives`](fhir-codegen/gradle-plugin/src/main/kotlin/com/google/fhir/codegen/primitives)
+[`primitives`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/primitives)
 package contains code to generate special data classes and serializers for primitive data types as
 mentioned [earlier](#mapping-fhir-primitive-data-types-to-kotlin).
 
@@ -522,14 +520,17 @@ mentioned [earlier](#mapping-fhir-primitive-data-types-to-kotlin).
 ### Adding the library dependency to your project
 
 To use the Kotlin FHIR model in your project, you need to add the Kotlin FHIR library dependency to
-your project. To do that, first make sure to include the [Google Maven](https://maven.google.com/)
-repository in the `build.gradle.kts` file in your project root.
+your project. To do that, first make sure to include the `mavenCentral()`[^5] repository in the
+`build.gradle.kts` file in your project root.
+
+[^5]: Early versions of this library (up to `1.0.0-beta02`) were published under the group ID
+`com.google.fhir` on [Google Maven](https://maven.google.com/web/index.html?q=fhir-model).
 
 ```
 // build.gradle.kts
 repositories {
-    // Other repositories such as mavenCentral() and gradlePluginPortal()
-    google()
+    // Other repositories such as gradlePluginPortal() and google()
+    mavenCentral()
 }
 ```
 
@@ -546,7 +547,7 @@ the `kotlin` block of the module's `build.gradle.kts` file (e.g., `composeApp/bu
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.google.fhir:fhir-model:1.0.0-beta02")
+            implementation("dev.ohs.fhir:fhir-model:1.0.0-beta03")
         }
     }
 }
@@ -560,32 +561,32 @@ For Android projects, add the dependency to the `dependency` block in the module
 ```
 // e.g., app/build.gradle.kts
 dependencies {
-    implementation("com.google.fhir:fhir-model:1.0.0-beta02")
+    implementation("dev.ohs.fhir:fhir-model:1.0.0-beta03")
 }
 ```
 
 ### Working with FHIR resources
 
 The generated Kotlin classes for FHIR resources are organized in version-specific packages:
-`com.google.fhir.model.<FHIR_VERSION>` where `<FHIR_VERSION>`∈ {`r4`, `r4b`, `r5`}.
+`dev.ohs.fhir.model.<FHIR_VERSION>` where `<FHIR_VERSION>`∈ {`r4`, `r4b`, `r5`}.
 
 For example:
 
-- `com.google.fhir.model.r4`
-- `com.google.fhir.model.r4b`
-- `com.google.fhir.model.r5`
+- `dev.ohs.fhir.model.r4`
+- `dev.ohs.fhir.model.r4b`
+- `dev.ohs.fhir.model.r5`
 
 Within each package, you'll find the corresponding Kotlin classes for all FHIR resources of that
 version. For example, the `Patient` class generated for FHIR R4 can be found in the
-`com.google.fhir.model.r4` package.
+`dev.ohs.fhir.model.r4` package.
 
 To create a new instance of a FHIR resource, use the provided builder class. For example:
 
 ```kotlin
-import com.google.fhir.model.r4.Date
-import com.google.fhir.model.r4.FhirDate
-import com.google.fhir.model.r4.HumanName
-import com.google.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.Date
+import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.HumanName
+import dev.ohs.fhir.model.r4.Patient
 
 fun main() {
     val patient =
@@ -594,7 +595,7 @@ fun main() {
                 id = "patient-01"
                 name.add(
                     HumanName.Builder().apply {
-                        given.add(com.google.fhir.model.r4.String.Builder().apply { value = "John" })
+                        given.add(dev.ohs.fhir.model.r4.String.Builder().apply { value = "John" })
                     }
                 )
                 birthDate = Date.Builder().apply { value = FhirDate.fromString("2000-01-01") }
@@ -609,7 +610,7 @@ To serialize and deserialize FHIR resources, use the provided `Fhir<FHIR_VERSION
 corresponding version-specific package:
 
 ```kotlin
-import com.google.fhir.model.r4.FhirR4Json  // or com.google.fhir.model.r4b.FhirR4bJson or com.google.fhir.model.r5.FhirR5Json
+import dev.ohs.fhir.model.r4.FhirR4Json  // or dev.ohs.fhir.model.r4b.FhirR4bJson or dev.ohs.fhir.model.r5.FhirR5Json
 
 fun main() {
     val jsonR4 = FhirR4Json()
@@ -626,8 +627,8 @@ Once this is correctly configured, use `encodeToString` and `decodeFromString` f
 serialize and deserialize:
 
 ```kotlin
-import com.google.fhir.model.r4.Patient
-import com.google.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.Resource
 
 fun main() {
     val jsonString = jsonR4.encodeToString(patient)  // Serialization
@@ -716,22 +717,55 @@ These tests are set up to run on JVM and as Android unit tests. To run them loca
 
 ### Publishing
 
-To create a maven repository from the generated FHIR model, run:
+For a comprehensive understanding of publishing KMP libraries to Maven Central, see the
+[Kotlin Multiplatform Publishing Guide](https://kotlinlang.org/docs/multiplatform-publish-lib.html)
+and the
+[Maven Central Publishing Guide](https://central.sonatype.org/publish/publish-portal-guide/).
 
+> **Note:** The project has already been set up to be released to Maven using the
+> [`gradle-maven-publish-plugin`](https://github.com/vanniktech/gradle-maven-publish-plugin). The
+> following sections outline the additional setup required for a developer to publish to Maven Local
+> and Maven Central.
+
+#### Maven Local
+To publish artifacts to your local Maven repository (`~/.m2/repository`) for local development and
+testing, run:
+
+```bash
+./gradlew :fhir-model:publishToMavenLocal
 ```
-./gradlew :fhir-model:publish
+
+#### Maven Central
+To publish a new release to Maven Central, first set up your GPG signing key and repository
+credentials to Gradle following the aforementioned official guides.
+
+**Best Practice**: Store these sensitive details in your **Global Gradle Properties** file at
+`~/.gradle/gradle.properties` (User Home directory). This ensures they are available to all your
+projects but are never accidentally committed to the Git repository.
+
+Your `~/.gradle/gradle.properties` should contain:
+
+```properties
+# Maven Central Credentials
+mavenCentralUsername=YOUR_USERNAME
+mavenCentralPassword=YOUR_PASSWORD
+
+# GPG Key Details
+signing.keyId=YOUR_KEY_ID
+signing.password=YOUR_KEY_PASSWORD
+signing.secretKeyRingFile=/path/to/secring.gpg
 ```
 
-This will create a maven repository in the `fhir-model/build/repo` directory with artifacts for all
-supported platforms.
-
-To zip the repository, run:
-
-```
-./gradlew :fhir-model:zipRepo
+You can verify your signing setup by running:
+```bash
+./gradlew :fhir-model:checkSigningConfiguration
 ```
 
-This will generate a `.zip` file in the `fhir-model/build/repoZip` directory.
+To publish to Maven Central, run:
+
+```bash
+./gradlew :fhir-model:publishToMavenCentral
+```
 
 ## Acknowledgements
 

@@ -1,5 +1,5 @@
 /*
- * Copyright $YEAR Open Health Stack Foundation
+ * Copyright 2025-2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,3 +14,11 @@
  * limitations under the License.
  */
 
+package dev.ohs.fhir.codegen.schema.valueset
+
+import kotlinx.serialization.Serializable
+
+@Serializable data class Expansion(val contains: List<Contains> = emptyList())
+
+@Serializable
+data class Contains(val system: String, val code: String, val display: String? = null)

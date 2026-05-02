@@ -1,5 +1,5 @@
 /*
- * Copyright $YEAR Open Health Stack Foundation
+ * Copyright 2025-2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,3 +14,15 @@
  * limitations under the License.
  */
 
+package dev.ohs.fhir.codegen.schema
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Extension(
+  val url: String,
+  val valueCode: String? = null,
+  val valueString: String? = null,
+  val valueBoolean: Boolean? = null,
+  val valueUrl: String? = null,
+)

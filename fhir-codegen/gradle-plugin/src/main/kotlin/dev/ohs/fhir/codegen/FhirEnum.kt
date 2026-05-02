@@ -1,5 +1,5 @@
 /*
- * Copyright $YEAR Open Health Stack Foundation
+ * Copyright 2025-2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,3 +14,16 @@
  * limitations under the License.
  */
 
+package dev.ohs.fhir.codegen
+
+data class FhirEnum(
+  val description: String? = null,
+  val constants: List<FhirEnumConstant> = emptyList(),
+)
+
+data class FhirEnumConstant(
+  val code: String,
+  val system: String,
+  val name: String,
+  val display: String? = null,
+)

@@ -2,8 +2,14 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
+val basePackage: String by project
+val mavenGroupId: String by project
+val mavenArtifactId: String by project
+val androidNamespace: String by project
+
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotest)
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
@@ -11,9 +17,6 @@ plugins {
     id("fhir-codegen")
     `maven-publish`
 }
-
-group = "com.google.fhir"
-version = "1.0.0-beta02"
 
 // Run `./gradlew r4` to generate FHIR models for R4 in `fhir-model/build/generated/r4`
 val codegenTaskR4 = fhirCodegenExtension.newTask("r4") {
@@ -24,7 +27,7 @@ val codegenTaskR4 = fhirCodegenExtension.newTask("r4") {
     this.expansionPackageFiles.from(
         File(project.rootDir, "third_party/hl7.fhir.r4.expansions/package").listFiles()
     )
-    this.packageName.set("com.google.fhir.model.r4")
+    this.packageName.set("$basePackage.r4")
 }
 
 // Run `./gradlew r4b` to generate FHIR models for R4B in `fhir-model/build/generated/r4b`
@@ -36,7 +39,7 @@ val codegenTaskR4B = fhirCodegenExtension.newTask("r4b") {
     this.expansionPackageFiles.from(
         File(project.rootDir, "third_party/hl7.fhir.r4b.expansions/package").listFiles()
     )
-    this.packageName.set("com.google.fhir.model.r4b")
+    this.packageName.set("$basePackage.r4b")
 }
 
 // Run `./gradlew r5` to generate FHIR models for R5 in `fhir-model/build/generated/r5`
@@ -48,7 +51,7 @@ val codegenTaskR5 = fhirCodegenExtension.newTask("r5") {
     this.expansionPackageFiles.from(
         File(project.rootDir, "third_party/hl7.fhir.r5.expansions/package").listFiles()
     )
-    this.packageName.set("com.google.fhir.model.r5")
+    this.packageName.set("$basePackage.r5")
 }
 
 // Run `./gradlew codegen` to generate all FHIR models in the main source set
@@ -150,7 +153,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.google.fhir"
+    namespace = androidNamespace
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -173,43 +176,34 @@ tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
 }
 
-// publishing prep
-val localRepo: Directory = project.layout.buildDirectory.get().dir("repo")
-publishing {
-    repositories {
-        maven {
-            url = localRepo.asFile.toURI()
-        }
-    }
-    publications {
-        withType<MavenPublication> {
-            pom {
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
+version = "1.0.0-beta03"
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+    coordinates(mavenGroupId, mavenArtifactId, version.toString())
+    pom {
+        name = "Kotlin FHIR"
+        description = "A Kotlin Multiplatform library for FHIR data model"
+        inceptionYear = "2025"
+        url = "https://github.com/ohs-foundation/kotlin-fhir"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
             }
         }
+        developers {
+            developer {
+                id = "ohs-foundation"
+                name = "Open Heath Stack Foundation"
+                url = "https://ohs.dev/"
+            }
+        }
+        scm {
+            url = "https://github.com/ohs-foundation/kotlin-fhir/"
+            connection = "scm:git:git://github.com/ohs-foundation/kotlin-fhir.git"
+            developerConnection = "scm:git:ssh://git@github.com/ohs-foundation/kotlin-fhir.git"
+        }
     }
-}
-val deleteRepoTask = tasks.register<Delete>("deleteLocalRepo") {
-    description =
-        "Deletes the local repository to get rid of stale artifacts before local publishing"
-    this.delete(localRepo)
-}
-tasks.named("publishAllPublicationsToMavenRepository").configure {
-    dependsOn(deleteRepoTask)
-}
-tasks.register("zipRepo", Zip::class) {
-    description = "Create a zip of the maven repository"
-    this.destinationDirectory.set(project.layout.buildDirectory.dir("repoZip"))
-    archiveBaseName.set("kotlin-fhir")
-
-    // Hint to gradle that the repo files are produced by the publish task. This establishes a
-    // dependency from the zipRepo task to the publish task.
-    this.from(tasks.named("publish").map { _ ->
-        localRepo
-    })
 }

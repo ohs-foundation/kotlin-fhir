@@ -1,5 +1,5 @@
 /*
- * Copyright $YEAR Open Health Stack Foundation
+ * Copyright 2025-2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,3 +14,17 @@
  * limitations under the License.
  */
 
+package dev.ohs.fhir.model.test
+
+import java.io.File
+
+actual fun loadExamplesFromFileSystem(
+  packageSubdirectory: String,
+  fileNameFilter: (String) -> Boolean,
+): Sequence<FhirResourceJsonExample> {
+  return File("${System.getProperty("projectRootDir")}/third_party/${packageSubdirectory}")
+    .listFiles()!!
+    .asSequence()
+    .filter { fileNameFilter(it.name) }
+    .map { FhirResourceJsonExample(it.name, it.readText()) }
+}

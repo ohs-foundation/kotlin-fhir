@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r4.SubstancePolymer
-import com.google.fhir.model.r4.surrogates.SubstancePolymerMonomerSetStartingMaterialSurrogate
-import com.google.fhir.model.r4.surrogates.SubstancePolymerMonomerSetSurrogate
-import com.google.fhir.model.r4.surrogates.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSurrogate
-import com.google.fhir.model.r4.surrogates.SubstancePolymerRepeatRepeatUnitStructuralRepresentationSurrogate
-import com.google.fhir.model.r4.surrogates.SubstancePolymerRepeatRepeatUnitSurrogate
-import com.google.fhir.model.r4.surrogates.SubstancePolymerRepeatSurrogate
-import com.google.fhir.model.r4.surrogates.SubstancePolymerSurrogate
+import dev.ohs.fhir.model.r5.SubstancePolymer
+import dev.ohs.fhir.model.r5.surrogates.SubstancePolymerMonomerSetStartingMaterialSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubstancePolymerMonomerSetSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubstancePolymerRepeatRepeatUnitStructuralRepresentationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubstancePolymerRepeatRepeatUnitSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubstancePolymerRepeatSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubstancePolymerSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

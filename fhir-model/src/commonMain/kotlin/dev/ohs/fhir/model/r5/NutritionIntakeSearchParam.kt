@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: NutritionIntake): List<T>
 
-  public data object Code : NutritionIntakeSearchParam<Any>() {
+  public data object Code : NutritionIntakeSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,7 +38,8 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
+    public override fun extract(resource: NutritionIntake): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
   public data object Date : NutritionIntakeSearchParam<Any>() {
@@ -53,7 +54,7 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
     public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
   }
 
-  public data object Encounter : NutritionIntakeSearchParam<Any>() {
+  public data object Encounter : NutritionIntakeSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -62,10 +63,11 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
+    public override fun extract(resource: NutritionIntake): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : NutritionIntakeSearchParam<Any>() {
+  public data object Identifier : NutritionIntakeSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,10 +76,11 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
+    public override fun extract(resource: NutritionIntake): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Nutrition : NutritionIntakeSearchParam<Any>() {
+  public data object Nutrition : NutritionIntakeSearchParam<CodeableConcept>() {
     public override val paramName: String = "nutrition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +89,11 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
+    public override fun extract(resource: NutritionIntake): List<CodeableConcept> =
+      resource.consumedItem.map { it.nutritionProduct }.mapNotNull { it.concept }
   }
 
-  public data object Patient : NutritionIntakeSearchParam<Any>() {
+  public data object Patient : NutritionIntakeSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,10 +102,13 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
+    public override fun extract(resource: NutritionIntake): List<Reference> =
+      listOf(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Source : NutritionIntakeSearchParam<Any>() {
+  public data object Source : NutritionIntakeSearchParam<Reference>() {
     public override val paramName: String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -111,7 +118,8 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Organization", "RelatedPerson", "PractitionerRole", "Practitioner", "Patient")
 
-    public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
+    public override fun extract(resource: NutritionIntake): List<Reference> =
+      listOfNotNull((resource.reported as? NutritionIntake.Reported.Reference)?.value)
   }
 
   public data object Status : NutritionIntakeSearchParam<Any>() {
@@ -123,10 +131,10 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
+    public override fun extract(resource: NutritionIntake): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : NutritionIntakeSearchParam<Any>() {
+  public data object Subject : NutritionIntakeSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -135,7 +143,8 @@ public sealed class NutritionIntakeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Group", "Patient")
 
-    public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
+    public override fun extract(resource: NutritionIntake): List<Reference> =
+      listOf(resource.subject)
   }
 
   public companion object {

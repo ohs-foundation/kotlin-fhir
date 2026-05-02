@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.ConditionDefinition
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.ConditionDefinitionMedicationSurrogate
-import com.google.fhir.model.r5.surrogates.ConditionDefinitionObservationSurrogate
-import com.google.fhir.model.r5.surrogates.ConditionDefinitionPlanSurrogate
-import com.google.fhir.model.r5.surrogates.ConditionDefinitionPreconditionSurrogate
-import com.google.fhir.model.r5.surrogates.ConditionDefinitionPreconditionValueSurrogate
-import com.google.fhir.model.r5.surrogates.ConditionDefinitionQuestionnaireSurrogate
-import com.google.fhir.model.r5.surrogates.ConditionDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.ConditionDefinitionVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.ConditionDefinition
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.ConditionDefinitionMedicationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConditionDefinitionObservationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConditionDefinitionPlanSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConditionDefinitionPreconditionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConditionDefinitionPreconditionValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConditionDefinitionQuestionnaireSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConditionDefinitionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConditionDefinitionVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

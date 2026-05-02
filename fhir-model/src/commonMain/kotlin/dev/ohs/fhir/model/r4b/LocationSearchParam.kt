@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,184 +28,195 @@ public sealed class LocationSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Location): List<T>
 
-  public data object Address : LocationSearchParam<Any>() {
-    public override val paramName: String = "address"
+  public data object Address : LocationSearchParam<dev.ohs.fhir.model.r4b.Address>() {
+    public override val paramName: kotlin.String = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Location.address"
+    public override val expression: kotlin.String = "Location.address"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<dev.ohs.fhir.model.r4b.Address> =
+      listOfNotNull(resource.address)
   }
 
-  public data object AddressCity : LocationSearchParam<Any>() {
-    public override val paramName: String = "address-city"
+  public data object AddressCity : LocationSearchParam<String>() {
+    public override val paramName: kotlin.String = "address-city"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Location.address.city"
+    public override val expression: kotlin.String = "Location.address.city"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<String> =
+      listOfNotNull(resource.address?.city)
   }
 
-  public data object AddressCountry : LocationSearchParam<Any>() {
-    public override val paramName: String = "address-country"
+  public data object AddressCountry : LocationSearchParam<String>() {
+    public override val paramName: kotlin.String = "address-country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Location.address.country"
+    public override val expression: kotlin.String = "Location.address.country"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<String> =
+      listOfNotNull(resource.address?.country)
   }
 
-  public data object AddressPostalcode : LocationSearchParam<Any>() {
-    public override val paramName: String = "address-postalcode"
+  public data object AddressPostalcode : LocationSearchParam<String>() {
+    public override val paramName: kotlin.String = "address-postalcode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Location.address.postalCode"
+    public override val expression: kotlin.String = "Location.address.postalCode"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<String> =
+      listOfNotNull(resource.address?.postalCode)
   }
 
-  public data object AddressState : LocationSearchParam<Any>() {
-    public override val paramName: String = "address-state"
+  public data object AddressState : LocationSearchParam<String>() {
+    public override val paramName: kotlin.String = "address-state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Location.address.state"
+    public override val expression: kotlin.String = "Location.address.state"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<String> =
+      listOfNotNull(resource.address?.state)
   }
 
   public data object AddressUse : LocationSearchParam<Any>() {
-    public override val paramName: String = "address-use"
+    public override val paramName: kotlin.String = "address-use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Location.address.use"
+    public override val expression: kotlin.String = "Location.address.use"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<Any> =
+      listOfNotNull(resource.address?.use)
   }
 
-  public data object Endpoint : LocationSearchParam<Any>() {
-    public override val paramName: String = "endpoint"
+  public data object Endpoint : LocationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Location.endpoint"
+    public override val expression: kotlin.String = "Location.endpoint"
 
-    public override val target: List<String> = listOf("Endpoint")
+    public override val target: List<kotlin.String> = listOf("Endpoint")
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<Reference> = resource.endpoint
   }
 
-  public data object Identifier : LocationSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : LocationSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Location.identifier"
+    public override val expression: kotlin.String = "Location.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
-  public data object Name : LocationSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : LocationSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Location.name"
+    public override val expression: kotlin.String = "Location.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<String> = listOfNotNull(resource.name)
   }
 
-  public data object Near : LocationSearchParam<Any>() {
-    public override val paramName: String = "near"
+  public data object Near : LocationSearchParam<Location.Position>() {
+    public override val paramName: kotlin.String = "near"
 
     public override val type: SearchParamType = SearchParamType.fromCode("special")
 
-    public override val expression: String = "Location.position"
+    public override val expression: kotlin.String = "Location.position"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<Location.Position> =
+      listOfNotNull(resource.position)
   }
 
-  public data object OperationalStatus : LocationSearchParam<Any>() {
-    public override val paramName: String = "operational-status"
+  public data object OperationalStatus : LocationSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "operational-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Location.operationalStatus"
+    public override val expression: kotlin.String = "Location.operationalStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<Coding> =
+      listOfNotNull(resource.operationalStatus)
   }
 
-  public data object Organization : LocationSearchParam<Any>() {
-    public override val paramName: String = "organization"
+  public data object Organization : LocationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Location.managingOrganization"
+    public override val expression: kotlin.String = "Location.managingOrganization"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<Reference> =
+      listOfNotNull(resource.managingOrganization)
   }
 
-  public data object Partof : LocationSearchParam<Any>() {
-    public override val paramName: String = "partof"
+  public data object Partof : LocationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "partof"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Location.partOf"
+    public override val expression: kotlin.String = "Location.partOf"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<kotlin.String> = listOf("Location")
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<Reference> =
+      listOfNotNull(resource.partOf)
   }
 
   public data object Status : LocationSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Location.status"
+    public override val expression: kotlin.String = "Location.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object Type : LocationSearchParam<Any>() {
-    public override val paramName: String = "type"
+  public data object Type : LocationSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Location.type"
+    public override val expression: kotlin.String = "Location.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Location): List<Any> = emptyList()
+    public override fun extract(resource: Location): List<CodeableConcept> = resource.type
   }
 
   public companion object {

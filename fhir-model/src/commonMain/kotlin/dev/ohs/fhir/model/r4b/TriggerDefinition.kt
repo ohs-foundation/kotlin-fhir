@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.TriggerDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.TriggerDefinitionTimingSerializer
+import dev.ohs.fhir.model.r4b.serializers.TriggerDefinitionSerializer
+import dev.ohs.fhir.model.r4b.serializers.TriggerDefinitionTimingSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -110,24 +110,24 @@ public data class TriggerDefinition(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) :
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) :
       TriggerDefinition.Timing
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
       TriggerDefinition.Timing
 
-    public data class Date(public val `value`: com.google.fhir.model.r4b.Date) :
+    public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) :
       TriggerDefinition.Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) :
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
       TriggerDefinition.Timing
 
     public companion object {
       internal fun from(
-        timingValue: com.google.fhir.model.r4b.Timing?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
-        dateValue: com.google.fhir.model.r4b.Date?,
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
+        timingValue: dev.ohs.fhir.model.r4b.Timing?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+        dateValue: dev.ohs.fhir.model.r4b.Date?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
       ): TriggerDefinition.Timing? {
         if (timingValue != null) return Timing(timingValue)
         if (referenceValue != null) return Reference(referenceValue)

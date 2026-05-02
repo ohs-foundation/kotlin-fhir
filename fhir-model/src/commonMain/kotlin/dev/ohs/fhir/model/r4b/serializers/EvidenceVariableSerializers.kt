@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.EvidenceVariable
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.surrogates.EvidenceVariableCategorySurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceVariableCategoryValueSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceVariableCharacteristicDefinitionSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceVariableCharacteristicSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceVariableCharacteristicTimeFromStartSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceVariableSurrogate
+import dev.ohs.fhir.model.r4b.EvidenceVariable
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceVariableCategorySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceVariableCategoryValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceVariableCharacteristicDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceVariableCharacteristicSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceVariableCharacteristicTimeFromStartSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceVariableSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

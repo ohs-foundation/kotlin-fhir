@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -65,7 +65,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
     public override fun extract(resource: Condition): List<Any> = emptyList()
   }
 
-  public data object BodySite : ConditionSearchParam<Any>() {
+  public data object BodySite : ConditionSearchParam<CodeableConcept>() {
     public override val paramName: String = "body-site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,10 +74,10 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<CodeableConcept> = resource.bodySite
   }
 
-  public data object Category : ConditionSearchParam<Any>() {
+  public data object Category : ConditionSearchParam<CodeableConcept>() {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +86,10 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<CodeableConcept> = resource.category
   }
 
-  public data object ClinicalStatus : ConditionSearchParam<Any>() {
+  public data object ClinicalStatus : ConditionSearchParam<CodeableConcept>() {
     public override val paramName: String = "clinical-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,10 +98,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<CodeableConcept> =
+      listOf(resource.clinicalStatus)
   }
 
-  public data object Code : ConditionSearchParam<Any>() {
+  public data object Code : ConditionSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -110,10 +111,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
-  public data object Encounter : ConditionSearchParam<Any>() {
+  public data object Encounter : ConditionSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -122,10 +124,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object Evidence : ConditionSearchParam<Any>() {
+  public data object Evidence : ConditionSearchParam<CodeableConcept>() {
     public override val paramName: String = "evidence"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -134,10 +137,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<CodeableConcept> =
+      resource.evidence.mapNotNull { it.concept }
   }
 
-  public data object EvidenceDetail : ConditionSearchParam<Any>() {
+  public data object EvidenceDetail : ConditionSearchParam<Reference>() {
     public override val paramName: String = "evidence-detail"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -306,10 +310,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<Reference> =
+      resource.evidence.mapNotNull { it.reference }
   }
 
-  public data object Identifier : ConditionSearchParam<Any>() {
+  public data object Identifier : ConditionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -318,7 +323,8 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
   public data object OnsetAge : ConditionSearchParam<Any>() {
@@ -357,7 +363,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
     public override fun extract(resource: Condition): List<Any> = emptyList()
   }
 
-  public data object ParticipantActor : ConditionSearchParam<Any>() {
+  public data object ParticipantActor : ConditionSearchParam<Reference>() {
     public override val paramName: String = "participant-actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -375,10 +381,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
         "Patient",
       )
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<Reference> =
+      resource.participant.map { it.actor }
   }
 
-  public data object ParticipantFunction : ConditionSearchParam<Any>() {
+  public data object ParticipantFunction : ConditionSearchParam<CodeableConcept>() {
     public override val paramName: String = "participant-function"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -387,10 +394,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<CodeableConcept> =
+      resource.participant.mapNotNull { it.function }
   }
 
-  public data object Patient : ConditionSearchParam<Any>() {
+  public data object Patient : ConditionSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -399,10 +407,13 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<Reference> =
+      listOf(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object RecordedDate : ConditionSearchParam<Any>() {
+  public data object RecordedDate : ConditionSearchParam<DateTime>() {
     public override val paramName: String = "recorded-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -411,10 +422,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<DateTime> =
+      listOfNotNull(resource.recordedDate)
   }
 
-  public data object Severity : ConditionSearchParam<Any>() {
+  public data object Severity : ConditionSearchParam<CodeableConcept>() {
     public override val paramName: String = "severity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -423,10 +435,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<CodeableConcept> =
+      listOfNotNull(resource.severity)
   }
 
-  public data object Stage : ConditionSearchParam<Any>() {
+  public data object Stage : ConditionSearchParam<CodeableConcept>() {
     public override val paramName: String = "stage"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -435,10 +448,11 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<CodeableConcept> =
+      resource.stage.mapNotNull { it.summary }
   }
 
-  public data object Subject : ConditionSearchParam<Any>() {
+  public data object Subject : ConditionSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -447,10 +461,10 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization")
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<Reference> = listOf(resource.subject)
   }
 
-  public data object VerificationStatus : ConditionSearchParam<Any>() {
+  public data object VerificationStatus : ConditionSearchParam<CodeableConcept>() {
     public override val paramName: String = "verification-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -459,7 +473,8 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Condition): List<Any> = emptyList()
+    public override fun extract(resource: Condition): List<CodeableConcept> =
+      listOfNotNull(resource.verificationStatus)
   }
 
   public companion object {

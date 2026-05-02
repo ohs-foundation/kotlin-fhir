@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class MediaSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Media): List<T>
 
-  public data object BasedOn : MediaSearchParam<Any>() {
+  public data object BasedOn : MediaSearchParam<Reference>() {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -38,10 +38,10 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("CarePlan", "ServiceRequest")
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<Reference> = resource.basedOn
   }
 
-  public data object Created : MediaSearchParam<Any>() {
+  public data object Created : MediaSearchParam<Media.Created>() {
     public override val paramName: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -50,10 +50,11 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<Media.Created> =
+      listOfNotNull(resource.created)
   }
 
-  public data object Device : MediaSearchParam<Any>() {
+  public data object Device : MediaSearchParam<Reference>() {
     public override val paramName: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -62,10 +63,10 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Device", "DeviceMetric")
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<Reference> = listOfNotNull(resource.device)
   }
 
-  public data object Encounter : MediaSearchParam<Any>() {
+  public data object Encounter : MediaSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,10 +75,11 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : MediaSearchParam<Any>() {
+  public data object Identifier : MediaSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +88,11 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
-  public data object Modality : MediaSearchParam<Any>() {
+  public data object Modality : MediaSearchParam<CodeableConcept>() {
     public override val paramName: String = "modality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,10 +101,11 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<CodeableConcept> =
+      listOfNotNull(resource.modality)
   }
 
-  public data object Operator : MediaSearchParam<Any>() {
+  public data object Operator : MediaSearchParam<Reference>() {
     public override val paramName: String = "operator"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -119,10 +123,10 @@ public sealed class MediaSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<Reference> = listOfNotNull(resource.operator)
   }
 
-  public data object Patient : MediaSearchParam<Any>() {
+  public data object Patient : MediaSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -131,10 +135,13 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Site : MediaSearchParam<Any>() {
+  public data object Site : MediaSearchParam<CodeableConcept>() {
     public override val paramName: String = "site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -143,7 +150,8 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<CodeableConcept> =
+      listOfNotNull(resource.bodySite)
   }
 
   public data object Status : MediaSearchParam<Any>() {
@@ -155,10 +163,10 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : MediaSearchParam<Any>() {
+  public data object Subject : MediaSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -176,10 +184,10 @@ public sealed class MediaSearchParam<T> : SearchParam {
         "Location",
       )
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<Reference> = listOfNotNull(resource.subject)
   }
 
-  public data object Type : MediaSearchParam<Any>() {
+  public data object Type : MediaSearchParam<CodeableConcept>() {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -188,10 +196,11 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<CodeableConcept> =
+      listOfNotNull(resource.type)
   }
 
-  public data object View : MediaSearchParam<Any>() {
+  public data object View : MediaSearchParam<CodeableConcept>() {
     public override val paramName: String = "view"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -200,7 +209,8 @@ public sealed class MediaSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Media): List<Any> = emptyList()
+    public override fun extract(resource: Media): List<CodeableConcept> =
+      listOfNotNull(resource.view)
   }
 
   public companion object {

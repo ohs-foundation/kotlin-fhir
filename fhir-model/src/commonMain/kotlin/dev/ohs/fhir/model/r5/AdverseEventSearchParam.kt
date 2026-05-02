@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -38,10 +38,10 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<Any> = listOf(resource.actuality)
   }
 
-  public data object Category : AdverseEventSearchParam<Any>() {
+  public data object Category : AdverseEventSearchParam<CodeableConcept>() {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +50,10 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<CodeableConcept> = resource.category
   }
 
-  public data object Code : AdverseEventSearchParam<Any>() {
+  public data object Code : AdverseEventSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,7 +62,8 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
   public data object Date : AdverseEventSearchParam<Any>() {
@@ -77,7 +78,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
     public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
   }
 
-  public data object Identifier : AdverseEventSearchParam<Any>() {
+  public data object Identifier : AdverseEventSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +87,11 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Location : AdverseEventSearchParam<Any>() {
+  public data object Location : AdverseEventSearchParam<Reference>() {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,10 +100,11 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Location")
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<Reference> =
+      listOfNotNull(resource.location)
   }
 
-  public data object Patient : AdverseEventSearchParam<Any>() {
+  public data object Patient : AdverseEventSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -110,10 +113,13 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<Reference> =
+      listOf(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Recorder : AdverseEventSearchParam<Any>() {
+  public data object Recorder : AdverseEventSearchParam<Reference>() {
     public override val paramName: String = "recorder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -123,10 +129,11 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("RelatedPerson", "PractitionerRole", "ResearchSubject", "Practitioner", "Patient")
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<Reference> =
+      listOfNotNull(resource.recorder)
   }
 
-  public data object Resultingeffect : AdverseEventSearchParam<Any>() {
+  public data object Resultingeffect : AdverseEventSearchParam<Reference>() {
     public override val paramName: String = "resultingeffect"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -135,10 +142,10 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Observation", "Condition")
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<Reference> = resource.resultingEffect
   }
 
-  public data object Seriousness : AdverseEventSearchParam<Any>() {
+  public data object Seriousness : AdverseEventSearchParam<CodeableConcept>() {
     public override val paramName: String = "seriousness"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -147,7 +154,8 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<CodeableConcept> =
+      listOfNotNull(resource.seriousness)
   }
 
   public data object Status : AdverseEventSearchParam<Any>() {
@@ -159,10 +167,10 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<Any> = listOf(resource.status)
   }
 
-  public data object Study : AdverseEventSearchParam<Any>() {
+  public data object Study : AdverseEventSearchParam<Reference>() {
     public override val paramName: String = "study"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -171,10 +179,10 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("ResearchStudy")
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<Reference> = resource.study
   }
 
-  public data object Subject : AdverseEventSearchParam<Any>() {
+  public data object Subject : AdverseEventSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -184,10 +192,10 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("RelatedPerson", "ResearchSubject", "Group", "Practitioner", "Patient")
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<Reference> = listOf(resource.subject)
   }
 
-  public data object Substance : AdverseEventSearchParam<Any>() {
+  public data object Substance : AdverseEventSearchParam<Reference>() {
     public override val paramName: String = "substance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -207,7 +215,10 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
         "Medication",
       )
 
-    public override fun extract(resource: AdverseEvent): List<Any> = emptyList()
+    public override fun extract(resource: AdverseEvent): List<Reference> =
+      resource.suspectEntity.mapNotNull {
+        (it.instance as? AdverseEvent.SuspectEntity.Instance.Reference)?.value
+      }
   }
 
   public companion object {

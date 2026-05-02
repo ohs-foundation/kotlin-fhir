@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.TestPlanDependencySerializer
-import com.google.fhir.model.r5.serializers.TestPlanSerializer
-import com.google.fhir.model.r5.serializers.TestPlanTestCaseAssertionSerializer
-import com.google.fhir.model.r5.serializers.TestPlanTestCaseDependencySerializer
-import com.google.fhir.model.r5.serializers.TestPlanTestCaseSerializer
-import com.google.fhir.model.r5.serializers.TestPlanTestCaseTestDataSerializer
-import com.google.fhir.model.r5.serializers.TestPlanTestCaseTestDataSourceSerializer
-import com.google.fhir.model.r5.serializers.TestPlanTestCaseTestRunScriptSerializer
-import com.google.fhir.model.r5.serializers.TestPlanTestCaseTestRunScriptSourceSerializer
-import com.google.fhir.model.r5.serializers.TestPlanTestCaseTestRunSerializer
-import com.google.fhir.model.r5.serializers.TestPlanVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.TestPlanDependencySerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanSerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseAssertionSerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseDependencySerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseSerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestDataSerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestDataSourceSerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestRunScriptSerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestRunScriptSourceSerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestRunSerializer
+import dev.ohs.fhir.model.r5.serializers.TestPlanVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -802,15 +802,14 @@ public data class TestPlan(
 
           public fun asReference(): Reference? = this as? Reference
 
-          public data class String(public val `value`: com.google.fhir.model.r5.String) : Source
+          public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Source
 
-          public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
-            Source
+          public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Source
 
           public companion object {
             internal fun from(
-              stringValue: com.google.fhir.model.r5.String?,
-              referenceValue: com.google.fhir.model.r5.Reference?,
+              stringValue: dev.ohs.fhir.model.r5.String?,
+              referenceValue: dev.ohs.fhir.model.r5.Reference?,
             ): Source? {
               if (stringValue != null) return String(stringValue)
               if (referenceValue != null) return Reference(referenceValue)
@@ -1005,15 +1004,14 @@ public data class TestPlan(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class String(public val `value`: com.google.fhir.model.r5.String) : Source
+        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Source
 
-        public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
-          Source
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Source
 
         public companion object {
           internal fun from(
-            stringValue: com.google.fhir.model.r5.String?,
-            referenceValue: com.google.fhir.model.r5.Reference?,
+            stringValue: dev.ohs.fhir.model.r5.String?,
+            referenceValue: dev.ohs.fhir.model.r5.Reference?,
           ): Source? {
             if (stringValue != null) return String(stringValue)
             if (referenceValue != null) return Reference(referenceValue)
@@ -1304,16 +1302,14 @@ public data class TestPlan(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)

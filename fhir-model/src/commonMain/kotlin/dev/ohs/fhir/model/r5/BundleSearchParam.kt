@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -53,7 +53,7 @@ public sealed class BundleSearchParam<T> : SearchParam {
     public override fun extract(resource: Bundle): List<Any> = emptyList()
   }
 
-  public data object Identifier : BundleSearchParam<Any>() {
+  public data object Identifier : BundleSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,7 +62,8 @@ public sealed class BundleSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Bundle): List<Any> = emptyList()
+    public override fun extract(resource: Bundle): List<dev.ohs.fhir.model.r5.Identifier> =
+      listOfNotNull(resource.identifier)
   }
 
   public data object Message : BundleSearchParam<Any>() {
@@ -77,7 +78,7 @@ public sealed class BundleSearchParam<T> : SearchParam {
     public override fun extract(resource: Bundle): List<Any> = emptyList()
   }
 
-  public data object Timestamp : BundleSearchParam<Any>() {
+  public data object Timestamp : BundleSearchParam<Instant>() {
     public override val paramName: String = "timestamp"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -86,7 +87,7 @@ public sealed class BundleSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Bundle): List<Any> = emptyList()
+    public override fun extract(resource: Bundle): List<Instant> = listOfNotNull(resource.timestamp)
   }
 
   public data object Type : BundleSearchParam<Any>() {
@@ -98,7 +99,7 @@ public sealed class BundleSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Bundle): List<Any> = emptyList()
+    public override fun extract(resource: Bundle): List<Any> = listOf(resource.type)
   }
 
   public companion object {

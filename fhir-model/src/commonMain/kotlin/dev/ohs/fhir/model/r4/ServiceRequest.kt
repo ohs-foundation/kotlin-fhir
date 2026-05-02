@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.ServiceRequestAsNeededSerializer
-import com.google.fhir.model.r4.serializers.ServiceRequestOccurrenceSerializer
-import com.google.fhir.model.r4.serializers.ServiceRequestQuantitySerializer
-import com.google.fhir.model.r4.serializers.ServiceRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.ServiceRequestAsNeededSerializer
+import dev.ohs.fhir.model.r4.serializers.ServiceRequestOccurrenceSerializer
+import dev.ohs.fhir.model.r4.serializers.ServiceRequestQuantitySerializer
+import dev.ohs.fhir.model.r4.serializers.ServiceRequestSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -427,20 +427,20 @@ public data class ServiceRequest(
 
     public fun asRange(): Range? = this as? Range
 
-    public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) :
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) :
       ServiceRequest.Quantity
 
-    public data class Ratio(public val `value`: com.google.fhir.model.r4.Ratio) :
+    public data class Ratio(public val `value`: dev.ohs.fhir.model.r4.Ratio) :
       ServiceRequest.Quantity
 
-    public data class Range(public val `value`: com.google.fhir.model.r4.Range) :
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) :
       ServiceRequest.Quantity
 
     public companion object {
       internal fun from(
-        quantityValue: com.google.fhir.model.r4.Quantity?,
-        ratioValue: com.google.fhir.model.r4.Ratio?,
-        rangeValue: com.google.fhir.model.r4.Range?,
+        quantityValue: dev.ohs.fhir.model.r4.Quantity?,
+        ratioValue: dev.ohs.fhir.model.r4.Ratio?,
+        rangeValue: dev.ohs.fhir.model.r4.Range?,
       ): ServiceRequest.Quantity? {
         if (quantityValue != null) return Quantity(quantityValue)
         if (ratioValue != null) return Ratio(ratioValue)
@@ -458,17 +458,17 @@ public data class ServiceRequest(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Occurrence
 
-    public data class Timing(public val `value`: com.google.fhir.model.r4.Timing) : Occurrence
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4.DateTime?,
-        periodValue: com.google.fhir.model.r4.Period?,
-        timingValue: com.google.fhir.model.r4.Timing?,
+        dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+        periodValue: dev.ohs.fhir.model.r4.Period?,
+        timingValue: dev.ohs.fhir.model.r4.Timing?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)
@@ -484,16 +484,15 @@ public data class ServiceRequest(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : AsNeeded
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : AsNeeded
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : AsNeeded
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+      AsNeeded
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r4.Boolean?,
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
+        booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
       ): AsNeeded? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

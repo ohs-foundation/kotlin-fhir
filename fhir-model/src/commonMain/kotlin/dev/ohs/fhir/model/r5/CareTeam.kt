@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.CareTeamParticipantCoverageSerializer
-import com.google.fhir.model.r5.serializers.CareTeamParticipantSerializer
-import com.google.fhir.model.r5.serializers.CareTeamSerializer
+import dev.ohs.fhir.model.r5.serializers.CareTeamParticipantCoverageSerializer
+import dev.ohs.fhir.model.r5.serializers.CareTeamParticipantSerializer
+import dev.ohs.fhir.model.r5.serializers.CareTeamSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -306,14 +306,14 @@ public data class CareTeam(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Coverage
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Coverage
 
-      public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) : Coverage
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Coverage
 
       public companion object {
         internal fun from(
-          periodValue: com.google.fhir.model.r5.Period?,
-          timingValue: com.google.fhir.model.r5.Timing?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
+          timingValue: dev.ohs.fhir.model.r5.Timing?,
         ): Coverage? {
           if (periodValue != null) return Period(periodValue)
           if (timingValue != null) return Timing(timingValue)

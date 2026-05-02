@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.ManufacturedItemDefinition
-import com.google.fhir.model.r5.surrogates.ManufacturedItemDefinitionComponentConstituentSurrogate
-import com.google.fhir.model.r5.surrogates.ManufacturedItemDefinitionComponentSurrogate
-import com.google.fhir.model.r5.surrogates.ManufacturedItemDefinitionPropertySurrogate
-import com.google.fhir.model.r5.surrogates.ManufacturedItemDefinitionPropertyValueSurrogate
-import com.google.fhir.model.r5.surrogates.ManufacturedItemDefinitionSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r5.surrogates.ManufacturedItemDefinitionComponentConstituentSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ManufacturedItemDefinitionComponentSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ManufacturedItemDefinitionPropertySurrogate
+import dev.ohs.fhir.model.r5.surrogates.ManufacturedItemDefinitionPropertyValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ManufacturedItemDefinitionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

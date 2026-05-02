@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: ImagingSelection): List<T>
 
-  public data object BasedOn : ImagingSelectionSearchParam<Any>() {
+  public data object BasedOn : ImagingSelectionSearchParam<Reference>() {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -39,10 +39,10 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Appointment", "ServiceRequest", "CarePlan", "Task", "AppointmentResponse")
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<Reference> = resource.basedOn
   }
 
-  public data object BodySite : ImagingSelectionSearchParam<Any>() {
+  public data object BodySite : ImagingSelectionSearchParam<CodeableConcept>() {
     public override val paramName: String = "body-site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -51,10 +51,11 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<CodeableConcept> =
+      listOfNotNull(resource.bodySite?.concept)
   }
 
-  public data object BodyStructure : ImagingSelectionSearchParam<Any>() {
+  public data object BodyStructure : ImagingSelectionSearchParam<Reference>() {
     public override val paramName: String = "body-structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -63,7 +64,8 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("BodyStructure")
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<Reference> =
+      listOfNotNull(resource.bodySite?.reference)
   }
 
   public data object Code : ImagingSelectionSearchParam<Any>() {
@@ -75,10 +77,10 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<Any> = listOf(resource.status)
   }
 
-  public data object DerivedFrom : ImagingSelectionSearchParam<Any>() {
+  public data object DerivedFrom : ImagingSelectionSearchParam<Reference>() {
     public override val paramName: String = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -87,10 +89,10 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("ImagingStudy", "DocumentReference")
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<Reference> = resource.derivedFrom
   }
 
-  public data object Identifier : ImagingSelectionSearchParam<Any>() {
+  public data object Identifier : ImagingSelectionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -99,10 +101,12 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(
+      resource: ImagingSelection
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Issued : ImagingSelectionSearchParam<Any>() {
+  public data object Issued : ImagingSelectionSearchParam<Instant>() {
     public override val paramName: String = "issued"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -111,10 +115,11 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<Instant> =
+      listOfNotNull(resource.issued)
   }
 
-  public data object Patient : ImagingSelectionSearchParam<Any>() {
+  public data object Patient : ImagingSelectionSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -123,7 +128,10 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
   public data object Status : ImagingSelectionSearchParam<Any>() {
@@ -135,10 +143,10 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<Any> = listOf(resource.status)
   }
 
-  public data object StudyUid : ImagingSelectionSearchParam<Any>() {
+  public data object StudyUid : ImagingSelectionSearchParam<Id>() {
     public override val paramName: String = "study-uid"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -147,10 +155,11 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<Id> =
+      listOfNotNull(resource.studyUid)
   }
 
-  public data object Subject : ImagingSelectionSearchParam<Any>() {
+  public data object Subject : ImagingSelectionSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -171,7 +180,8 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
         "Medication",
       )
 
-    public override fun extract(resource: ImagingSelection): List<Any> = emptyList()
+    public override fun extract(resource: ImagingSelection): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
   public companion object {

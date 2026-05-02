@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.Evidence
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.EvidenceCertaintySurrogate
-import com.google.fhir.model.r5.surrogates.EvidenceCiteAsSurrogate
-import com.google.fhir.model.r5.surrogates.EvidenceStatisticAttributeEstimateSurrogate
-import com.google.fhir.model.r5.surrogates.EvidenceStatisticModelCharacteristicSurrogate
-import com.google.fhir.model.r5.surrogates.EvidenceStatisticModelCharacteristicVariableSurrogate
-import com.google.fhir.model.r5.surrogates.EvidenceStatisticSampleSizeSurrogate
-import com.google.fhir.model.r5.surrogates.EvidenceStatisticSurrogate
-import com.google.fhir.model.r5.surrogates.EvidenceSurrogate
-import com.google.fhir.model.r5.surrogates.EvidenceVariableDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.EvidenceVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.Evidence
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.EvidenceCertaintySurrogate
+import dev.ohs.fhir.model.r5.surrogates.EvidenceCiteAsSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EvidenceStatisticAttributeEstimateSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EvidenceStatisticModelCharacteristicSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EvidenceStatisticModelCharacteristicVariableSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EvidenceStatisticSampleSizeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EvidenceStatisticSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EvidenceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EvidenceVariableDefinitionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EvidenceVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

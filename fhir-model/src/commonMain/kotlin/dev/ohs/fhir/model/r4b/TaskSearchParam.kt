@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class TaskSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Task): List<T>
 
-  public data object AuthoredOn : TaskSearchParam<Any>() {
+  public data object AuthoredOn : TaskSearchParam<DateTime>() {
     public override val paramName: String = "authored-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -38,10 +38,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<DateTime> = listOfNotNull(resource.authoredOn)
   }
 
-  public data object BasedOn : TaskSearchParam<Any>() {
+  public data object BasedOn : TaskSearchParam<Reference>() {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -192,10 +192,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Reference> = resource.basedOn
   }
 
-  public data object BusinessStatus : TaskSearchParam<Any>() {
+  public data object BusinessStatus : TaskSearchParam<CodeableConcept>() {
     public override val paramName: String = "business-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -204,10 +204,11 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<CodeableConcept> =
+      listOfNotNull(resource.businessStatus)
   }
 
-  public data object Code : TaskSearchParam<Any>() {
+  public data object Code : TaskSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -216,10 +217,11 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
-  public data object Encounter : TaskSearchParam<Any>() {
+  public data object Encounter : TaskSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -228,10 +230,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Reference> = listOfNotNull(resource.encounter)
   }
 
-  public data object Focus : TaskSearchParam<Any>() {
+  public data object Focus : TaskSearchParam<Reference>() {
     public override val paramName: String = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -382,10 +384,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Reference> = listOfNotNull(resource.focus)
   }
 
-  public data object GroupIdentifier : TaskSearchParam<Any>() {
+  public data object GroupIdentifier : TaskSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -394,10 +396,11 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<dev.ohs.fhir.model.r4b.Identifier> =
+      listOfNotNull(resource.groupIdentifier)
   }
 
-  public data object Identifier : TaskSearchParam<Any>() {
+  public data object Identifier : TaskSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -406,7 +409,8 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
   public data object Intent : TaskSearchParam<Any>() {
@@ -418,10 +422,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Any> = listOf(resource.intent)
   }
 
-  public data object Modified : TaskSearchParam<Any>() {
+  public data object Modified : TaskSearchParam<DateTime>() {
     public override val paramName: String = "modified"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -430,10 +434,11 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<DateTime> =
+      listOfNotNull(resource.lastModified)
   }
 
-  public data object Owner : TaskSearchParam<Any>() {
+  public data object Owner : TaskSearchParam<Reference>() {
     public override val paramName: String = "owner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -452,10 +457,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Reference> = listOfNotNull(resource.owner)
   }
 
-  public data object PartOf : TaskSearchParam<Any>() {
+  public data object PartOf : TaskSearchParam<Reference>() {
     public override val paramName: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -464,10 +469,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Task")
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Reference> = resource.partOf
   }
 
-  public data object Patient : TaskSearchParam<Any>() {
+  public data object Patient : TaskSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -476,10 +481,13 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Reference> =
+      listOfNotNull(resource.`for`).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Performer : TaskSearchParam<Any>() {
+  public data object Performer : TaskSearchParam<CodeableConcept>() {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -488,10 +496,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<CodeableConcept> = resource.performerType
   }
 
-  public data object Period : TaskSearchParam<Any>() {
+  public data object Period : TaskSearchParam<dev.ohs.fhir.model.r4b.Period>() {
     public override val paramName: String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -500,7 +508,8 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<dev.ohs.fhir.model.r4b.Period> =
+      listOfNotNull(resource.executionPeriod)
   }
 
   public data object Priority : TaskSearchParam<Any>() {
@@ -512,10 +521,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Any> = listOfNotNull(resource.priority)
   }
 
-  public data object Requester : TaskSearchParam<Any>() {
+  public data object Requester : TaskSearchParam<Reference>() {
     public override val paramName: String = "requester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -532,7 +541,7 @@ public sealed class TaskSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Reference> = listOfNotNull(resource.requester)
   }
 
   public data object Status : TaskSearchParam<Any>() {
@@ -544,10 +553,10 @@ public sealed class TaskSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : TaskSearchParam<Any>() {
+  public data object Subject : TaskSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -698,7 +707,7 @@ public sealed class TaskSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: Task): List<Any> = emptyList()
+    public override fun extract(resource: Task): List<Reference> = listOfNotNull(resource.`for`)
   }
 
   public companion object {

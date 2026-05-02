@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.fhir.codegen.searchparam
+package dev.ohs.fhir.codegen.searchparam
 
-import com.google.fhir.codegen.FhirPathExpressionResolver
-import com.google.fhir.codegen.ResolvedExpression
+import dev.ohs.fhir.codegen.FhirPathExpressionResolver
+import dev.ohs.fhir.codegen.ResolvedExpression
 
 /**
  * Classification of a FHIRPath search-parameter expression after parsing.

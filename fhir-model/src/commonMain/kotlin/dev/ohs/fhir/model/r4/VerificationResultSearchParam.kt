@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: VerificationResult): List<T>
 
-  public data object Target : VerificationResultSearchParam<Any>() {
+  public data object Target : VerificationResultSearchParam<Reference>() {
     public override val paramName: String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -185,7 +184,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<Reference> = resource.target
   }
 
   public companion object {

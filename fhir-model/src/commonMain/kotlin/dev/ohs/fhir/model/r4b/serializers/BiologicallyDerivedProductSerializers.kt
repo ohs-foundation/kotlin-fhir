@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.BiologicallyDerivedProduct
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.surrogates.BiologicallyDerivedProductCollectionCollectedSurrogate
-import com.google.fhir.model.r4b.surrogates.BiologicallyDerivedProductCollectionSurrogate
-import com.google.fhir.model.r4b.surrogates.BiologicallyDerivedProductManipulationSurrogate
-import com.google.fhir.model.r4b.surrogates.BiologicallyDerivedProductManipulationTimeSurrogate
-import com.google.fhir.model.r4b.surrogates.BiologicallyDerivedProductProcessingSurrogate
-import com.google.fhir.model.r4b.surrogates.BiologicallyDerivedProductProcessingTimeSurrogate
-import com.google.fhir.model.r4b.surrogates.BiologicallyDerivedProductStorageSurrogate
-import com.google.fhir.model.r4b.surrogates.BiologicallyDerivedProductSurrogate
+import dev.ohs.fhir.model.r4b.BiologicallyDerivedProduct
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.BiologicallyDerivedProductCollectionCollectedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.BiologicallyDerivedProductCollectionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.BiologicallyDerivedProductManipulationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.BiologicallyDerivedProductManipulationTimeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.BiologicallyDerivedProductProcessingSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.BiologicallyDerivedProductProcessingTimeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.BiologicallyDerivedProductStorageSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.BiologicallyDerivedProductSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

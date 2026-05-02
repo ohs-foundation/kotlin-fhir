@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,24 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.AdverseEvent
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.AdverseEventContributingFactorItemSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventContributingFactorSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventMitigatingActionItemSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventMitigatingActionSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventOccurrenceSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventParticipantSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventPreventiveActionItemSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventPreventiveActionSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventSupportingInfoItemSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventSupportingInfoSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventSuspectEntityCausalitySurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventSuspectEntityInstanceSurrogate
-import com.google.fhir.model.r5.surrogates.AdverseEventSuspectEntitySurrogate
+import dev.ohs.fhir.model.r5.AdverseEvent
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventContributingFactorItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventContributingFactorSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventMitigatingActionItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventMitigatingActionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventOccurrenceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventParticipantSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventPreventiveActionItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventPreventiveActionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventSupportingInfoItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventSupportingInfoSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventSuspectEntityCausalitySurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventSuspectEntityInstanceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AdverseEventSuspectEntitySurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

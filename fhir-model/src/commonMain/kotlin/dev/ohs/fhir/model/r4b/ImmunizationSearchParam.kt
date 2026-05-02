@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,198 +28,210 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Immunization): List<T>
 
-  public data object Date : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : ImmunizationSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "(Immunization.occurrence as dateTime)"
+    public override val expression: kotlin.String = "(Immunization.occurrence as dateTime)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<DateTime> =
+      listOfNotNull((resource.occurrence as? Immunization.Occurrence.DateTime)?.value)
   }
 
-  public data object Identifier : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : ImmunizationSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Immunization.identifier"
+    public override val expression: kotlin.String = "Immunization.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
-  public data object Location : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "location"
+  public data object Location : ImmunizationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Immunization.location"
+    public override val expression: kotlin.String = "Immunization.location"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<kotlin.String> = listOf("Location")
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<Reference> =
+      listOfNotNull(resource.location)
   }
 
-  public data object LotNumber : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "lot-number"
+  public data object LotNumber : ImmunizationSearchParam<String>() {
+    public override val paramName: kotlin.String = "lot-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Immunization.lotNumber"
+    public override val expression: kotlin.String = "Immunization.lotNumber"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<String> =
+      listOfNotNull(resource.lotNumber)
   }
 
-  public data object Manufacturer : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "manufacturer"
+  public data object Manufacturer : ImmunizationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "manufacturer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Immunization.manufacturer"
+    public override val expression: kotlin.String = "Immunization.manufacturer"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<Reference> =
+      listOfNotNull(resource.manufacturer)
   }
 
-  public data object Patient : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : ImmunizationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Immunization.patient"
+    public override val expression: kotlin.String = "Immunization.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<kotlin.String> = listOf("Patient")
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<Reference> = listOf(resource.patient)
   }
 
-  public data object Performer : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "performer"
+  public data object Performer : ImmunizationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Immunization.performer.actor"
+    public override val expression: kotlin.String = "Immunization.performer.actor"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Practitioner", "Organization", "PractitionerRole")
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<Reference> =
+      resource.performer.map { it.actor }
   }
 
-  public data object Reaction : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "reaction"
+  public data object Reaction : ImmunizationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "reaction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Immunization.reaction.detail"
+    public override val expression: kotlin.String = "Immunization.reaction.detail"
 
-    public override val target: List<String> = listOf("Observation")
+    public override val target: List<kotlin.String> = listOf("Observation")
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<Reference> =
+      resource.reaction.mapNotNull { it.detail }
   }
 
-  public data object ReactionDate : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "reaction-date"
+  public data object ReactionDate : ImmunizationSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "reaction-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "Immunization.reaction.date"
+    public override val expression: kotlin.String = "Immunization.reaction.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<DateTime> =
+      resource.reaction.mapNotNull { it.date }
   }
 
-  public data object ReasonCode : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "reason-code"
+  public data object ReasonCode : ImmunizationSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "reason-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Immunization.reasonCode"
+    public override val expression: kotlin.String = "Immunization.reasonCode"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<CodeableConcept> = resource.reasonCode
   }
 
-  public data object ReasonReference : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "reason-reference"
+  public data object ReasonReference : ImmunizationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "reason-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Immunization.reasonReference"
+    public override val expression: kotlin.String = "Immunization.reasonReference"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Condition", "Observation", "DiagnosticReport")
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<Reference> = resource.reasonReference
   }
 
-  public data object Series : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "series"
+  public data object Series : ImmunizationSearchParam<String>() {
+    public override val paramName: kotlin.String = "series"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Immunization.protocolApplied.series"
+    public override val expression: kotlin.String = "Immunization.protocolApplied.series"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<String> =
+      resource.protocolApplied.mapNotNull { it.series }
   }
 
   public data object Status : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Immunization.status"
+    public override val expression: kotlin.String = "Immunization.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<Any> = listOf(resource.status)
   }
 
-  public data object StatusReason : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "status-reason"
+  public data object StatusReason : ImmunizationSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "status-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Immunization.statusReason"
+    public override val expression: kotlin.String = "Immunization.statusReason"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<CodeableConcept> =
+      listOfNotNull(resource.statusReason)
   }
 
-  public data object TargetDisease : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "target-disease"
+  public data object TargetDisease : ImmunizationSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "target-disease"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Immunization.protocolApplied.targetDisease"
+    public override val expression: kotlin.String = "Immunization.protocolApplied.targetDisease"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<CodeableConcept> =
+      resource.protocolApplied.flatMap { it.targetDisease }
   }
 
-  public data object VaccineCode : ImmunizationSearchParam<Any>() {
-    public override val paramName: String = "vaccine-code"
+  public data object VaccineCode : ImmunizationSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "vaccine-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Immunization.vaccineCode"
+    public override val expression: kotlin.String = "Immunization.vaccineCode"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Immunization): List<Any> = emptyList()
+    public override fun extract(resource: Immunization): List<CodeableConcept> =
+      listOf(resource.vaccineCode)
   }
 
   public companion object {

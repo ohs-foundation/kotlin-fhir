@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.ExampleScenarioActorSerializer
-import com.google.fhir.model.r4.serializers.ExampleScenarioInstanceContainedInstanceSerializer
-import com.google.fhir.model.r4.serializers.ExampleScenarioInstanceSerializer
-import com.google.fhir.model.r4.serializers.ExampleScenarioInstanceVersionSerializer
-import com.google.fhir.model.r4.serializers.ExampleScenarioProcessSerializer
-import com.google.fhir.model.r4.serializers.ExampleScenarioProcessStepAlternativeSerializer
-import com.google.fhir.model.r4.serializers.ExampleScenarioProcessStepOperationSerializer
-import com.google.fhir.model.r4.serializers.ExampleScenarioProcessStepSerializer
-import com.google.fhir.model.r4.serializers.ExampleScenarioSerializer
-import com.google.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioActorSerializer
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioInstanceContainedInstanceSerializer
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioInstanceSerializer
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioInstanceVersionSerializer
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioProcessSerializer
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioProcessStepAlternativeSerializer
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioProcessStepOperationSerializer
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioProcessStepSerializer
+import dev.ohs.fhir.model.r4.serializers.ExampleScenarioSerializer
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

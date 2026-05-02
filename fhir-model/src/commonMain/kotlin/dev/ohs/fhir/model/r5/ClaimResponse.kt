@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,27 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ClaimResponseAddItemBodySiteSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseAddItemDetailSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseAddItemDetailSubDetailSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseAddItemLocationSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseAddItemSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseAddItemServicedSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseErrorSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseEventSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseEventWhenSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseInsuranceSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseItemAdjudicationSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseItemDetailSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseItemDetailSubDetailSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseItemReviewOutcomeSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseItemSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponsePaymentSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseProcessNoteSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseSerializer
-import com.google.fhir.model.r5.serializers.ClaimResponseTotalSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemBodySiteSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemDetailSubDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemLocationSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemServicedSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseErrorSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseEventSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseEventWhenSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseInsuranceSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseItemAdjudicationSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseItemDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseItemDetailSubDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseItemReviewOutcomeSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseItemSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponsePaymentSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseProcessNoteSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimResponseTotalSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -434,14 +434,14 @@ public data class ClaimResponse(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : When
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : When
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : When
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : When
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): When? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)
@@ -2149,14 +2149,14 @@ public data class ClaimResponse(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Serviced
+      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Serviced
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Serviced
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Serviced
 
       public companion object {
         internal fun from(
-          dateValue: com.google.fhir.model.r5.Date?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateValue: dev.ohs.fhir.model.r5.Date?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): Serviced? {
           if (dateValue != null) return Date(dateValue)
           if (periodValue != null) return Period(periodValue)
@@ -2173,20 +2173,18 @@ public data class ClaimResponse(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Location
-
-      public data class Address(public val `value`: com.google.fhir.model.r5.Address) : Location
-
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         Location
+
+      public data class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Location
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Location
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          addressValue: com.google.fhir.model.r5.Address?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          addressValue: dev.ohs.fhir.model.r5.Address?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Location? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (addressValue != null) return Address(addressValue)

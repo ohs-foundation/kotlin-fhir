@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,29 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactAbstractSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactClassificationSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactContributorshipEntryContributionInstanceSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactContributorshipEntrySerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactContributorshipSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactContributorshipSummarySerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactPartSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactPublicationFormPublishedInSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactPublicationFormSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactRelatesToSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactStatusDateSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactTitleSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactVersionSerializer
-import com.google.fhir.model.r5.serializers.CitationCitedArtifactWebLocationSerializer
-import com.google.fhir.model.r5.serializers.CitationClassificationSerializer
-import com.google.fhir.model.r5.serializers.CitationSerializer
-import com.google.fhir.model.r5.serializers.CitationStatusDateSerializer
-import com.google.fhir.model.r5.serializers.CitationSummarySerializer
-import com.google.fhir.model.r5.serializers.CitationVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactAbstractSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactClassificationSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactContributorshipEntryContributionInstanceSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactContributorshipEntrySerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactContributorshipSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactContributorshipSummarySerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactPartSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactPublicationFormPublishedInSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactPublicationFormSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactRelatesToSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactStatusDateSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactTitleSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactVersionSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationCitedArtifactWebLocationSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationClassificationSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationStatusDateSerializer
+import dev.ohs.fhir.model.r5.serializers.CitationSummarySerializer
+import dev.ohs.fhir.model.r5.serializers.CitationVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -3367,16 +3367,14 @@ public data class Citation(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)

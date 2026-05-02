@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.MessageDefinitionAllowedResponseSerializer
-import com.google.fhir.model.r4b.serializers.MessageDefinitionEventSerializer
-import com.google.fhir.model.r4b.serializers.MessageDefinitionFocusSerializer
-import com.google.fhir.model.r4b.serializers.MessageDefinitionSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
-import com.google.fhir.model.r4b.terminologies.ResourceType
+import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionAllowedResponseSerializer
+import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionEventSerializer
+import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionFocusSerializer
+import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -643,14 +643,14 @@ public data class MessageDefinition(
 
     public fun asUri(): Uri? = this as? Uri
 
-    public data class Coding(public val `value`: com.google.fhir.model.r4b.Coding) : Event
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : Event
 
-    public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Event
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Event
 
     public companion object {
       internal fun from(
-        codingValue: com.google.fhir.model.r4b.Coding?,
-        uriValue: com.google.fhir.model.r4b.Uri?,
+        codingValue: dev.ohs.fhir.model.r4b.Coding?,
+        uriValue: dev.ohs.fhir.model.r4b.Uri?,
       ): Event? {
         if (codingValue != null) return Coding(codingValue)
         if (uriValue != null) return Uri(uriValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.SubscriptionTopic
-import com.google.fhir.model.r5.surrogates.SubscriptionTopicCanFilterBySurrogate
-import com.google.fhir.model.r5.surrogates.SubscriptionTopicEventTriggerSurrogate
-import com.google.fhir.model.r5.surrogates.SubscriptionTopicNotificationShapeSurrogate
-import com.google.fhir.model.r5.surrogates.SubscriptionTopicResourceTriggerQueryCriteriaSurrogate
-import com.google.fhir.model.r5.surrogates.SubscriptionTopicResourceTriggerSurrogate
-import com.google.fhir.model.r5.surrogates.SubscriptionTopicSurrogate
-import com.google.fhir.model.r5.surrogates.SubscriptionTopicVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.SubscriptionTopic
+import dev.ohs.fhir.model.r5.surrogates.SubscriptionTopicCanFilterBySurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubscriptionTopicEventTriggerSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubscriptionTopicNotificationShapeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubscriptionTopicResourceTriggerQueryCriteriaSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubscriptionTopicResourceTriggerSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubscriptionTopicSurrogate
+import dev.ohs.fhir.model.r5.surrogates.SubscriptionTopicVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

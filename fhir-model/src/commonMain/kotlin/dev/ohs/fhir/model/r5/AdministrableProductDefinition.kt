@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.AdministrableProductDefinitionPropertySerializer
-import com.google.fhir.model.r5.serializers.AdministrableProductDefinitionPropertyValueSerializer
-import com.google.fhir.model.r5.serializers.AdministrableProductDefinitionRouteOfAdministrationSerializer
-import com.google.fhir.model.r5.serializers.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSerializer
-import com.google.fhir.model.r5.serializers.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSerializer
-import com.google.fhir.model.r5.serializers.AdministrableProductDefinitionSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionPropertySerializer
+import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionPropertyValueSerializer
+import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionRouteOfAdministrationSerializer
+import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSerializer
+import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSerializer
+import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -303,31 +303,30 @@ public data class AdministrableProductDefinition(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Value
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Value
+      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Markdown(public val `value`: com.google.fhir.model.r5.Markdown) : Value
+      public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Value
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) : Value
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Value
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          dateValue: com.google.fhir.model.r5.Date?,
-          booleanValue: com.google.fhir.model.r5.Boolean?,
-          markdownValue: com.google.fhir.model.r5.Markdown?,
-          attachmentValue: com.google.fhir.model.r5.Attachment?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          dateValue: dev.ohs.fhir.model.r5.Date?,
+          booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+          markdownValue: dev.ohs.fhir.model.r5.Markdown?,
+          attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (quantityValue != null) return Quantity(quantityValue)

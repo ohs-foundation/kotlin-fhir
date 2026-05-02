@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.EvidenceVariableCharacteristicDefinitionSerializer
-import com.google.fhir.model.r4.serializers.EvidenceVariableCharacteristicParticipantEffectiveSerializer
-import com.google.fhir.model.r4.serializers.EvidenceVariableCharacteristicSerializer
-import com.google.fhir.model.r4.serializers.EvidenceVariableSerializer
-import com.google.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.serializers.EvidenceVariableCharacteristicDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.EvidenceVariableCharacteristicParticipantEffectiveSerializer
+import dev.ohs.fhir.model.r4.serializers.EvidenceVariableCharacteristicSerializer
+import dev.ohs.fhir.model.r4.serializers.EvidenceVariableSerializer
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -470,35 +470,31 @@ public data class EvidenceVariable(
 
       public fun asTriggerDefinition(): TriggerDefinition? = this as? TriggerDefinition
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Definition
+
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Definition
+
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
         Definition
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r4.Canonical) :
+      public data class Expression(public val `value`: dev.ohs.fhir.model.r4.Expression) :
         Definition
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4.CodeableConcept
-      ) : Definition
-
-      public data class Expression(public val `value`: com.google.fhir.model.r4.Expression) :
+      public data class DataRequirement(public val `value`: dev.ohs.fhir.model.r4.DataRequirement) :
         Definition
-
-      public data class DataRequirement(
-        public val `value`: com.google.fhir.model.r4.DataRequirement
-      ) : Definition
 
       public data class TriggerDefinition(
-        public val `value`: com.google.fhir.model.r4.TriggerDefinition
+        public val `value`: dev.ohs.fhir.model.r4.TriggerDefinition
       ) : Definition
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r4.Reference?,
-          canonicalValue: com.google.fhir.model.r4.Canonical?,
-          codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-          expressionValue: com.google.fhir.model.r4.Expression?,
-          dataRequirementValue: com.google.fhir.model.r4.DataRequirement?,
-          triggerDefinitionValue: com.google.fhir.model.r4.TriggerDefinition?,
+          referenceValue: dev.ohs.fhir.model.r4.Reference?,
+          canonicalValue: dev.ohs.fhir.model.r4.Canonical?,
+          codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+          expressionValue: dev.ohs.fhir.model.r4.Expression?,
+          dataRequirementValue: dev.ohs.fhir.model.r4.DataRequirement?,
+          triggerDefinitionValue: dev.ohs.fhir.model.r4.TriggerDefinition?,
         ): Definition? {
           if (referenceValue != null) return Reference(referenceValue)
           if (canonicalValue != null) return Canonical(canonicalValue)
@@ -521,24 +517,24 @@ public data class EvidenceVariable(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) :
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
         ParticipantEffective
 
-      public data class Period(public val `value`: com.google.fhir.model.r4.Period) :
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) :
         ParticipantEffective
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4.Duration) :
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
         ParticipantEffective
 
-      public data class Timing(public val `value`: com.google.fhir.model.r4.Timing) :
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) :
         ParticipantEffective
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r4.DateTime?,
-          periodValue: com.google.fhir.model.r4.Period?,
-          durationValue: com.google.fhir.model.r4.Duration?,
-          timingValue: com.google.fhir.model.r4.Timing?,
+          dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+          periodValue: dev.ohs.fhir.model.r4.Period?,
+          durationValue: dev.ohs.fhir.model.r4.Duration?,
+          timingValue: dev.ohs.fhir.model.r4.Timing?,
         ): ParticipantEffective? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)

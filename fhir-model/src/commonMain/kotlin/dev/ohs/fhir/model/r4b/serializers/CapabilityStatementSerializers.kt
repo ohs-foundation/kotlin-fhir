@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,23 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.CapabilityStatement
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementDocumentSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementImplementationSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementMessagingEndpointSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementMessagingSupportedMessageSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementMessagingSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementRestInteractionSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementRestResourceInteractionSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementRestResourceOperationSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementRestResourceSearchParamSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementRestResourceSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementRestSecuritySurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementRestSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementSoftwareSurrogate
-import com.google.fhir.model.r4b.surrogates.CapabilityStatementSurrogate
+import dev.ohs.fhir.model.r4b.CapabilityStatement
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementDocumentSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementImplementationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementMessagingEndpointSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementMessagingSupportedMessageSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementMessagingSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementRestInteractionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementRestResourceInteractionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementRestResourceOperationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementRestResourceSearchParamSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementRestResourceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementRestSecuritySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementRestSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementSoftwareSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CapabilityStatementSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

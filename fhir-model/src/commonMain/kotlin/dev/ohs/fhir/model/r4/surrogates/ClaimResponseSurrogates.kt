@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,36 +17,36 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.surrogates
+package dev.ohs.fhir.model.r4.surrogates
 
-import com.google.fhir.model.r4.Address
-import com.google.fhir.model.r4.Attachment
-import com.google.fhir.model.r4.Boolean as R4Boolean
-import com.google.fhir.model.r4.ClaimResponse
-import com.google.fhir.model.r4.Code
-import com.google.fhir.model.r4.CodeableConcept
-import com.google.fhir.model.r4.Date
-import com.google.fhir.model.r4.DateTime
-import com.google.fhir.model.r4.Decimal
-import com.google.fhir.model.r4.Element
-import com.google.fhir.model.r4.Enumeration
-import com.google.fhir.model.r4.Extension
-import com.google.fhir.model.r4.FhirDate
-import com.google.fhir.model.r4.FhirDateTime
-import com.google.fhir.model.r4.Identifier
-import com.google.fhir.model.r4.Meta
-import com.google.fhir.model.r4.Money
-import com.google.fhir.model.r4.Narrative
-import com.google.fhir.model.r4.Period
-import com.google.fhir.model.r4.PositiveInt
-import com.google.fhir.model.r4.Quantity
-import com.google.fhir.model.r4.Reference
-import com.google.fhir.model.r4.Resource
-import com.google.fhir.model.r4.String as R4String
-import com.google.fhir.model.r4.Uri
-import com.google.fhir.model.r4.serializers.DoubleSerializer
-import com.google.fhir.model.r4.serializers.LocalTimeSerializer
-import com.google.fhir.model.r4.terminologies.NoteType
+import dev.ohs.fhir.model.r4.Address
+import dev.ohs.fhir.model.r4.Attachment
+import dev.ohs.fhir.model.r4.Boolean as R4Boolean
+import dev.ohs.fhir.model.r4.ClaimResponse
+import dev.ohs.fhir.model.r4.Code
+import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Date
+import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Decimal
+import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Meta
+import dev.ohs.fhir.model.r4.Money
+import dev.ohs.fhir.model.r4.Narrative
+import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.PositiveInt
+import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r4.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r4.terminologies.NoteType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Double
 import kotlin.Int

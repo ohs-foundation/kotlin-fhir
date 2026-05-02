@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.BiologicallyDerivedProduct
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.surrogates.BiologicallyDerivedProductCollectionCollectedSurrogate
-import com.google.fhir.model.r4.surrogates.BiologicallyDerivedProductCollectionSurrogate
-import com.google.fhir.model.r4.surrogates.BiologicallyDerivedProductManipulationSurrogate
-import com.google.fhir.model.r4.surrogates.BiologicallyDerivedProductManipulationTimeSurrogate
-import com.google.fhir.model.r4.surrogates.BiologicallyDerivedProductProcessingSurrogate
-import com.google.fhir.model.r4.surrogates.BiologicallyDerivedProductProcessingTimeSurrogate
-import com.google.fhir.model.r4.surrogates.BiologicallyDerivedProductStorageSurrogate
-import com.google.fhir.model.r4.surrogates.BiologicallyDerivedProductSurrogate
+import dev.ohs.fhir.model.r4.BiologicallyDerivedProduct
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.surrogates.BiologicallyDerivedProductCollectionCollectedSurrogate
+import dev.ohs.fhir.model.r4.surrogates.BiologicallyDerivedProductCollectionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.BiologicallyDerivedProductManipulationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.BiologicallyDerivedProductManipulationTimeSurrogate
+import dev.ohs.fhir.model.r4.surrogates.BiologicallyDerivedProductProcessingSurrogate
+import dev.ohs.fhir.model.r4.surrogates.BiologicallyDerivedProductProcessingTimeSurrogate
+import dev.ohs.fhir.model.r4.surrogates.BiologicallyDerivedProductStorageSurrogate
+import dev.ohs.fhir.model.r4.surrogates.BiologicallyDerivedProductSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

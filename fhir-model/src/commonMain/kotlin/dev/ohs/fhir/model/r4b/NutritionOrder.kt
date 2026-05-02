@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.NutritionOrderEnteralFormulaAdministrationRateSerializer
-import com.google.fhir.model.r4b.serializers.NutritionOrderEnteralFormulaAdministrationSerializer
-import com.google.fhir.model.r4b.serializers.NutritionOrderEnteralFormulaSerializer
-import com.google.fhir.model.r4b.serializers.NutritionOrderOralDietNutrientSerializer
-import com.google.fhir.model.r4b.serializers.NutritionOrderOralDietSerializer
-import com.google.fhir.model.r4b.serializers.NutritionOrderOralDietTextureSerializer
-import com.google.fhir.model.r4b.serializers.NutritionOrderSerializer
-import com.google.fhir.model.r4b.serializers.NutritionOrderSupplementSerializer
+import dev.ohs.fhir.model.r4b.serializers.NutritionOrderEnteralFormulaAdministrationRateSerializer
+import dev.ohs.fhir.model.r4b.serializers.NutritionOrderEnteralFormulaAdministrationSerializer
+import dev.ohs.fhir.model.r4b.serializers.NutritionOrderEnteralFormulaSerializer
+import dev.ohs.fhir.model.r4b.serializers.NutritionOrderOralDietNutrientSerializer
+import dev.ohs.fhir.model.r4b.serializers.NutritionOrderOralDietSerializer
+import dev.ohs.fhir.model.r4b.serializers.NutritionOrderOralDietTextureSerializer
+import dev.ohs.fhir.model.r4b.serializers.NutritionOrderSerializer
+import dev.ohs.fhir.model.r4b.serializers.NutritionOrderSupplementSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1072,14 +1072,14 @@ public data class NutritionOrder(
 
         public fun asRatio(): Ratio? = this as? Ratio
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Rate
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Rate
 
-        public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) : Rate
+        public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Rate
 
         public companion object {
           internal fun from(
-            quantityValue: com.google.fhir.model.r4b.Quantity?,
-            ratioValue: com.google.fhir.model.r4b.Ratio?,
+            quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+            ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
           ): Rate? {
             if (quantityValue != null) return Quantity(quantityValue)
             if (ratioValue != null) return Ratio(ratioValue)

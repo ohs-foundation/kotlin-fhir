@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.Questionnaire
-import com.google.fhir.model.r4b.surrogates.QuestionnaireItemAnswerOptionSurrogate
-import com.google.fhir.model.r4b.surrogates.QuestionnaireItemAnswerOptionValueSurrogate
-import com.google.fhir.model.r4b.surrogates.QuestionnaireItemEnableWhenAnswerSurrogate
-import com.google.fhir.model.r4b.surrogates.QuestionnaireItemEnableWhenSurrogate
-import com.google.fhir.model.r4b.surrogates.QuestionnaireItemInitialSurrogate
-import com.google.fhir.model.r4b.surrogates.QuestionnaireItemInitialValueSurrogate
-import com.google.fhir.model.r4b.surrogates.QuestionnaireItemSurrogate
-import com.google.fhir.model.r4b.surrogates.QuestionnaireSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.Questionnaire
+import dev.ohs.fhir.model.r4b.surrogates.QuestionnaireItemAnswerOptionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.QuestionnaireItemAnswerOptionValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.QuestionnaireItemEnableWhenAnswerSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.QuestionnaireItemEnableWhenSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.QuestionnaireItemInitialSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.QuestionnaireItemInitialValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.QuestionnaireItemSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.QuestionnaireSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

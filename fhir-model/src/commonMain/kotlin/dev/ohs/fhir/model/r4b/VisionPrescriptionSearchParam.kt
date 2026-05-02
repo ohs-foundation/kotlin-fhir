@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: VisionPrescription): List<T>
 
-  public data object Datewritten : VisionPrescriptionSearchParam<Any>() {
+  public data object Datewritten : VisionPrescriptionSearchParam<DateTime>() {
     public override val paramName: String = "datewritten"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -38,10 +38,11 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: VisionPrescription): List<Any> = emptyList()
+    public override fun extract(resource: VisionPrescription): List<DateTime> =
+      listOf(resource.dateWritten)
   }
 
-  public data object Encounter : VisionPrescriptionSearchParam<Any>() {
+  public data object Encounter : VisionPrescriptionSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -50,10 +51,12 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: VisionPrescription): List<Any> = emptyList()
+    public override fun extract(resource: VisionPrescription): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : VisionPrescriptionSearchParam<Any>() {
+  public data object Identifier :
+    VisionPrescriptionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,10 +65,12 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: VisionPrescription): List<Any> = emptyList()
+    public override fun extract(
+      resource: VisionPrescription
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Patient : VisionPrescriptionSearchParam<Any>() {
+  public data object Patient : VisionPrescriptionSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,10 +79,11 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: VisionPrescription): List<Any> = emptyList()
+    public override fun extract(resource: VisionPrescription): List<Reference> =
+      listOf(resource.patient)
   }
 
-  public data object Prescriber : VisionPrescriptionSearchParam<Any>() {
+  public data object Prescriber : VisionPrescriptionSearchParam<Reference>() {
     public override val paramName: String = "prescriber"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -86,7 +92,8 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Practitioner", "PractitionerRole")
 
-    public override fun extract(resource: VisionPrescription): List<Any> = emptyList()
+    public override fun extract(resource: VisionPrescription): List<Reference> =
+      listOf(resource.prescriber)
   }
 
   public data object Status : VisionPrescriptionSearchParam<Any>() {
@@ -98,7 +105,7 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: VisionPrescription): List<Any> = emptyList()
+    public override fun extract(resource: VisionPrescription): List<Any> = listOf(resource.status)
   }
 
   public companion object {

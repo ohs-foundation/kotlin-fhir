@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.MolecularSequenceQualityRocSerializer
-import com.google.fhir.model.r4.serializers.MolecularSequenceQualitySerializer
-import com.google.fhir.model.r4.serializers.MolecularSequenceReferenceSeqSerializer
-import com.google.fhir.model.r4.serializers.MolecularSequenceRepositorySerializer
-import com.google.fhir.model.r4.serializers.MolecularSequenceSerializer
-import com.google.fhir.model.r4.serializers.MolecularSequenceStructureVariantInnerSerializer
-import com.google.fhir.model.r4.serializers.MolecularSequenceStructureVariantOuterSerializer
-import com.google.fhir.model.r4.serializers.MolecularSequenceStructureVariantSerializer
-import com.google.fhir.model.r4.serializers.MolecularSequenceVariantSerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceQualityRocSerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceQualitySerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceReferenceSeqSerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceRepositorySerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceSerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceStructureVariantInnerSerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceStructureVariantOuterSerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceStructureVariantSerializer
+import dev.ohs.fhir.model.r4.serializers.MolecularSequenceVariantSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

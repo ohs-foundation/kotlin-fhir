@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
-import kotlin.String
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,40 +27,44 @@ public sealed class MedicinalProductSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: MedicinalProduct): List<T>
 
-  public data object Identifier : MedicinalProductSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : MedicinalProductSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicinalProduct.identifier"
+    public override val expression: kotlin.String = "MedicinalProduct.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicinalProduct): List<Any> = emptyList()
+    public override fun extract(
+      resource: MedicinalProduct
+    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Name : MedicinalProductSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : MedicinalProductSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "MedicinalProduct.name.productName"
+    public override val expression: kotlin.String = "MedicinalProduct.name.productName"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicinalProduct): List<Any> = emptyList()
+    public override fun extract(resource: MedicinalProduct): List<String> =
+      resource.name.map { it.productName }
   }
 
-  public data object NameLanguage : MedicinalProductSearchParam<Any>() {
-    public override val paramName: String = "name-language"
+  public data object NameLanguage : MedicinalProductSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "name-language"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicinalProduct.name.countryLanguage.language"
+    public override val expression: kotlin.String = "MedicinalProduct.name.countryLanguage.language"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicinalProduct): List<Any> = emptyList()
+    public override fun extract(resource: MedicinalProduct): List<CodeableConcept> =
+      resource.name.flatMap { it.countryLanguage }.map { it.language }
   }
 
   public companion object {

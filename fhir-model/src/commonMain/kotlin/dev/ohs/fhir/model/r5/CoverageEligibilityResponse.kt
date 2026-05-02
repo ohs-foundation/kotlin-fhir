@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseErrorSerializer
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseEventSerializer
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseEventWhenSerializer
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemBenefitAllowedSerializer
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemBenefitSerializer
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemBenefitUsedSerializer
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemSerializer
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceSerializer
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseSerializer
-import com.google.fhir.model.r5.serializers.CoverageEligibilityResponseServicedSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseErrorSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseEventSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseEventWhenSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemBenefitAllowedSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemBenefitSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemBenefitUsedSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseSerializer
+import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseServicedSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -309,14 +309,14 @@ public data class CoverageEligibilityResponse(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : When
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : When
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : When
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : When
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): When? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)
@@ -664,18 +664,18 @@ public data class CoverageEligibilityResponse(
 
           public fun asMoney(): Money? = this as? Money
 
-          public data class UnsignedInt(public val `value`: com.google.fhir.model.r5.UnsignedInt) :
+          public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) :
             Allowed
 
-          public data class String(public val `value`: com.google.fhir.model.r5.String) : Allowed
+          public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Allowed
 
-          public data class Money(public val `value`: com.google.fhir.model.r5.Money) : Allowed
+          public data class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Allowed
 
           public companion object {
             internal fun from(
-              unsignedIntValue: com.google.fhir.model.r5.UnsignedInt?,
-              stringValue: com.google.fhir.model.r5.String?,
-              moneyValue: com.google.fhir.model.r5.Money?,
+              unsignedIntValue: dev.ohs.fhir.model.r5.UnsignedInt?,
+              stringValue: dev.ohs.fhir.model.r5.String?,
+              moneyValue: dev.ohs.fhir.model.r5.Money?,
             ): Allowed? {
               if (unsignedIntValue != null) return UnsignedInt(unsignedIntValue)
               if (stringValue != null) return String(stringValue)
@@ -693,18 +693,18 @@ public data class CoverageEligibilityResponse(
 
           public fun asMoney(): Money? = this as? Money
 
-          public data class UnsignedInt(public val `value`: com.google.fhir.model.r5.UnsignedInt) :
+          public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) :
             Used
 
-          public data class String(public val `value`: com.google.fhir.model.r5.String) : Used
+          public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Used
 
-          public data class Money(public val `value`: com.google.fhir.model.r5.Money) : Used
+          public data class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Used
 
           public companion object {
             internal fun from(
-              unsignedIntValue: com.google.fhir.model.r5.UnsignedInt?,
-              stringValue: com.google.fhir.model.r5.String?,
-              moneyValue: com.google.fhir.model.r5.Money?,
+              unsignedIntValue: dev.ohs.fhir.model.r5.UnsignedInt?,
+              stringValue: dev.ohs.fhir.model.r5.String?,
+              moneyValue: dev.ohs.fhir.model.r5.Money?,
             ): Used? {
               if (unsignedIntValue != null) return UnsignedInt(unsignedIntValue)
               if (stringValue != null) return String(stringValue)
@@ -1142,14 +1142,14 @@ public data class CoverageEligibilityResponse(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Serviced
+    public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Serviced
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Serviced
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Serviced
 
     public companion object {
       internal fun from(
-        dateValue: com.google.fhir.model.r5.Date?,
-        periodValue: com.google.fhir.model.r5.Period?,
+        dateValue: dev.ohs.fhir.model.r5.Date?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
       ): Serviced? {
         if (dateValue != null) return Date(dateValue)
         if (periodValue != null) return Period(periodValue)

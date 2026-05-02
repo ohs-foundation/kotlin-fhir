@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.ExampleScenario
-import com.google.fhir.model.r4b.surrogates.ExampleScenarioActorSurrogate
-import com.google.fhir.model.r4b.surrogates.ExampleScenarioInstanceContainedInstanceSurrogate
-import com.google.fhir.model.r4b.surrogates.ExampleScenarioInstanceSurrogate
-import com.google.fhir.model.r4b.surrogates.ExampleScenarioInstanceVersionSurrogate
-import com.google.fhir.model.r4b.surrogates.ExampleScenarioProcessStepAlternativeSurrogate
-import com.google.fhir.model.r4b.surrogates.ExampleScenarioProcessStepOperationSurrogate
-import com.google.fhir.model.r4b.surrogates.ExampleScenarioProcessStepSurrogate
-import com.google.fhir.model.r4b.surrogates.ExampleScenarioProcessSurrogate
-import com.google.fhir.model.r4b.surrogates.ExampleScenarioSurrogate
+import dev.ohs.fhir.model.r4b.ExampleScenario
+import dev.ohs.fhir.model.r4b.surrogates.ExampleScenarioActorSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExampleScenarioInstanceContainedInstanceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExampleScenarioInstanceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExampleScenarioInstanceVersionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExampleScenarioProcessStepAlternativeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExampleScenarioProcessStepOperationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExampleScenarioProcessStepSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExampleScenarioProcessSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExampleScenarioSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

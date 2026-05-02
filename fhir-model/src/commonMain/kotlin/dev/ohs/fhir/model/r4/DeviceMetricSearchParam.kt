@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -38,10 +38,10 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceMetric): List<Any> = emptyList()
+    public override fun extract(resource: DeviceMetric): List<Any> = listOf(resource.category)
   }
 
-  public data object Identifier : DeviceMetricSearchParam<Any>() {
+  public data object Identifier : DeviceMetricSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +50,11 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceMetric): List<Any> = emptyList()
+    public override fun extract(resource: DeviceMetric): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.identifier
   }
 
-  public data object Parent : DeviceMetricSearchParam<Any>() {
+  public data object Parent : DeviceMetricSearchParam<Reference>() {
     public override val paramName: String = "parent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -62,10 +63,11 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Device")
 
-    public override fun extract(resource: DeviceMetric): List<Any> = emptyList()
+    public override fun extract(resource: DeviceMetric): List<Reference> =
+      listOfNotNull(resource.parent)
   }
 
-  public data object Source : DeviceMetricSearchParam<Any>() {
+  public data object Source : DeviceMetricSearchParam<Reference>() {
     public override val paramName: String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,10 +76,11 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Device")
 
-    public override fun extract(resource: DeviceMetric): List<Any> = emptyList()
+    public override fun extract(resource: DeviceMetric): List<Reference> =
+      listOfNotNull(resource.source)
   }
 
-  public data object Type : DeviceMetricSearchParam<Any>() {
+  public data object Type : DeviceMetricSearchParam<CodeableConcept>() {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,7 +89,8 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceMetric): List<Any> = emptyList()
+    public override fun extract(resource: DeviceMetric): List<CodeableConcept> =
+      listOf(resource.type)
   }
 
   public companion object {

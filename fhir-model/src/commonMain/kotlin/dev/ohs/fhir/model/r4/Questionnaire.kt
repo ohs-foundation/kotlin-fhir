@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.QuestionnaireItemAnswerOptionSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireItemAnswerOptionValueSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireItemEnableWhenAnswerSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireItemEnableWhenSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireItemInitialSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireItemInitialValueSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireItemSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireSerializer
-import com.google.fhir.model.r4.terminologies.PublicationStatus
-import com.google.fhir.model.r4.terminologies.ResourceType
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemAnswerOptionSerializer
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemAnswerOptionValueSerializer
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemEnableWhenAnswerSerializer
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemEnableWhenSerializer
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemInitialSerializer
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemInitialValueSerializer
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemSerializer
+import dev.ohs.fhir.model.r4.serializers.QuestionnaireSerializer
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -665,39 +665,38 @@ public data class Questionnaire(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Answer
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Answer
 
-        public data class Decimal(public val `value`: com.google.fhir.model.r4.Decimal) : Answer
+        public data class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Answer
 
-        public data class Integer(public val `value`: com.google.fhir.model.r4.Integer) : Answer
+        public data class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Answer
 
-        public data class Date(public val `value`: com.google.fhir.model.r4.Date) : Answer
+        public data class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Answer
 
-        public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Answer
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Answer
 
-        public data class Time(public val `value`: com.google.fhir.model.r4.Time) : Answer
+        public data class Time(public val `value`: dev.ohs.fhir.model.r4.Time) : Answer
 
-        public data class String(public val `value`: com.google.fhir.model.r4.String) : Answer
+        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Answer
 
-        public data class Coding(public val `value`: com.google.fhir.model.r4.Coding) : Answer
+        public data class Coding(public val `value`: dev.ohs.fhir.model.r4.Coding) : Answer
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) : Answer
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Answer
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
-          Answer
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Answer
 
         public companion object {
           internal fun from(
-            booleanValue: com.google.fhir.model.r4.Boolean?,
-            decimalValue: com.google.fhir.model.r4.Decimal?,
-            integerValue: com.google.fhir.model.r4.Integer?,
-            dateValue: com.google.fhir.model.r4.Date?,
-            dateTimeValue: com.google.fhir.model.r4.DateTime?,
-            timeValue: com.google.fhir.model.r4.Time?,
-            stringValue: com.google.fhir.model.r4.String?,
-            codingValue: com.google.fhir.model.r4.Coding?,
-            quantityValue: com.google.fhir.model.r4.Quantity?,
-            referenceValue: com.google.fhir.model.r4.Reference?,
+            booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+            decimalValue: dev.ohs.fhir.model.r4.Decimal?,
+            integerValue: dev.ohs.fhir.model.r4.Integer?,
+            dateValue: dev.ohs.fhir.model.r4.Date?,
+            dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+            timeValue: dev.ohs.fhir.model.r4.Time?,
+            stringValue: dev.ohs.fhir.model.r4.String?,
+            codingValue: dev.ohs.fhir.model.r4.Coding?,
+            quantityValue: dev.ohs.fhir.model.r4.Quantity?,
+            referenceValue: dev.ohs.fhir.model.r4.Reference?,
           ): Answer? {
             if (booleanValue != null) return Boolean(booleanValue)
             if (decimalValue != null) return Decimal(decimalValue)
@@ -862,26 +861,26 @@ public data class Questionnaire(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Integer(public val `value`: com.google.fhir.model.r4.Integer) : Value
+        public data class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Value
 
-        public data class Date(public val `value`: com.google.fhir.model.r4.Date) : Value
+        public data class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Value
 
-        public data class Time(public val `value`: com.google.fhir.model.r4.Time) : Value
+        public data class Time(public val `value`: dev.ohs.fhir.model.r4.Time) : Value
 
-        public data class String(public val `value`: com.google.fhir.model.r4.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-        public data class Coding(public val `value`: com.google.fhir.model.r4.Coding) : Value
+        public data class Coding(public val `value`: dev.ohs.fhir.model.r4.Coding) : Value
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Value
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Value
 
         public companion object {
           internal fun from(
-            integerValue: com.google.fhir.model.r4.Integer?,
-            dateValue: com.google.fhir.model.r4.Date?,
-            timeValue: com.google.fhir.model.r4.Time?,
-            stringValue: com.google.fhir.model.r4.String?,
-            codingValue: com.google.fhir.model.r4.Coding?,
-            referenceValue: com.google.fhir.model.r4.Reference?,
+            integerValue: dev.ohs.fhir.model.r4.Integer?,
+            dateValue: dev.ohs.fhir.model.r4.Date?,
+            timeValue: dev.ohs.fhir.model.r4.Time?,
+            stringValue: dev.ohs.fhir.model.r4.String?,
+            codingValue: dev.ohs.fhir.model.r4.Coding?,
+            referenceValue: dev.ohs.fhir.model.r4.Reference?,
           ): Value? {
             if (integerValue != null) return Integer(integerValue)
             if (dateValue != null) return Date(dateValue)
@@ -1046,45 +1045,44 @@ public data class Questionnaire(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
 
-        public data class Decimal(public val `value`: com.google.fhir.model.r4.Decimal) : Value
+        public data class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Value
 
-        public data class Integer(public val `value`: com.google.fhir.model.r4.Integer) : Value
+        public data class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Value
 
-        public data class Date(public val `value`: com.google.fhir.model.r4.Date) : Value
+        public data class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Value
 
-        public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Value
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Value
 
-        public data class Time(public val `value`: com.google.fhir.model.r4.Time) : Value
+        public data class Time(public val `value`: dev.ohs.fhir.model.r4.Time) : Value
 
-        public data class String(public val `value`: com.google.fhir.model.r4.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-        public data class Uri(public val `value`: com.google.fhir.model.r4.Uri) : Value
+        public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Value
 
-        public data class Attachment(public val `value`: com.google.fhir.model.r4.Attachment) :
-          Value
+        public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Value
 
-        public data class Coding(public val `value`: com.google.fhir.model.r4.Coding) : Value
+        public data class Coding(public val `value`: dev.ohs.fhir.model.r4.Coding) : Value
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Value
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Value
 
         public companion object {
           internal fun from(
-            booleanValue: com.google.fhir.model.r4.Boolean?,
-            decimalValue: com.google.fhir.model.r4.Decimal?,
-            integerValue: com.google.fhir.model.r4.Integer?,
-            dateValue: com.google.fhir.model.r4.Date?,
-            dateTimeValue: com.google.fhir.model.r4.DateTime?,
-            timeValue: com.google.fhir.model.r4.Time?,
-            stringValue: com.google.fhir.model.r4.String?,
-            uriValue: com.google.fhir.model.r4.Uri?,
-            attachmentValue: com.google.fhir.model.r4.Attachment?,
-            codingValue: com.google.fhir.model.r4.Coding?,
-            quantityValue: com.google.fhir.model.r4.Quantity?,
-            referenceValue: com.google.fhir.model.r4.Reference?,
+            booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+            decimalValue: dev.ohs.fhir.model.r4.Decimal?,
+            integerValue: dev.ohs.fhir.model.r4.Integer?,
+            dateValue: dev.ohs.fhir.model.r4.Date?,
+            dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+            timeValue: dev.ohs.fhir.model.r4.Time?,
+            stringValue: dev.ohs.fhir.model.r4.String?,
+            uriValue: dev.ohs.fhir.model.r4.Uri?,
+            attachmentValue: dev.ohs.fhir.model.r4.Attachment?,
+            codingValue: dev.ohs.fhir.model.r4.Coding?,
+            quantityValue: dev.ohs.fhir.model.r4.Quantity?,
+            referenceValue: dev.ohs.fhir.model.r4.Reference?,
           ): Value? {
             if (booleanValue != null) return Boolean(booleanValue)
             if (decimalValue != null) return Decimal(decimalValue)

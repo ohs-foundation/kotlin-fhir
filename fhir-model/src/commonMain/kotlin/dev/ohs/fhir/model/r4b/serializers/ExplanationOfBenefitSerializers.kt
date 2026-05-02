@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,42 +16,42 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4.ExplanationOfBenefit
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitAccidentLocationSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitAccidentSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitAddItemDetailSubDetailSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitAddItemDetailSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitAddItemLocationSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitAddItemServicedSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitAddItemSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitBenefitBalanceFinancialAllowedSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitBenefitBalanceFinancialSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitBenefitBalanceFinancialUsedSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitBenefitBalanceSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitCareTeamSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitDiagnosisDiagnosisSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitDiagnosisSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitInsuranceSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitItemAdjudicationSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitItemDetailSubDetailSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitItemDetailSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitItemLocationSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitItemServicedSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitItemSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitPayeeSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitPaymentSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitProcedureProcedureSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitProcedureSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitProcessNoteSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitRelatedSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitSupportingInfoSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitSupportingInfoTimingSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitSupportingInfoValueSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitSurrogate
-import com.google.fhir.model.r4.surrogates.ExplanationOfBenefitTotalSurrogate
+import dev.ohs.fhir.model.r4b.ExplanationOfBenefit
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitAccidentLocationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitAccidentSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitAddItemDetailSubDetailSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitAddItemDetailSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitAddItemLocationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitAddItemServicedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitAddItemSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitBenefitBalanceFinancialAllowedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitBenefitBalanceFinancialSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitBenefitBalanceFinancialUsedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitBenefitBalanceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitCareTeamSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitDiagnosisDiagnosisSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitDiagnosisSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitInsuranceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitItemAdjudicationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitItemDetailSubDetailSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitItemDetailSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitItemLocationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitItemServicedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitItemSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitPayeeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitPaymentSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitProcedureProcedureSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitProcedureSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitProcessNoteSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitRelatedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitSupportingInfoSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitSupportingInfoTimingSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitSupportingInfoValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExplanationOfBenefitTotalSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

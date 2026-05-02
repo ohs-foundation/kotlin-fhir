@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,21 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.TestPlan
-import com.google.fhir.model.r5.surrogates.TestPlanDependencySurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanSurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanTestCaseAssertionSurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanTestCaseDependencySurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanTestCaseSurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanTestCaseTestDataSourceSurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanTestCaseTestDataSurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanTestCaseTestRunScriptSourceSurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanTestCaseTestRunScriptSurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanTestCaseTestRunSurrogate
-import com.google.fhir.model.r5.surrogates.TestPlanVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.TestPlan
+import dev.ohs.fhir.model.r5.surrogates.TestPlanDependencySurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanTestCaseAssertionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanTestCaseDependencySurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanTestCaseSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanTestCaseTestDataSourceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanTestCaseTestDataSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanTestCaseTestRunScriptSourceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanTestCaseTestRunScriptSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanTestCaseTestRunSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TestPlanVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

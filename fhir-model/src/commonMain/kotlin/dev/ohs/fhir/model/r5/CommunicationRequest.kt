@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.CommunicationRequestOccurrenceSerializer
-import com.google.fhir.model.r5.serializers.CommunicationRequestPayloadContentSerializer
-import com.google.fhir.model.r5.serializers.CommunicationRequestPayloadSerializer
-import com.google.fhir.model.r5.serializers.CommunicationRequestSerializer
+import dev.ohs.fhir.model.r5.serializers.CommunicationRequestOccurrenceSerializer
+import dev.ohs.fhir.model.r5.serializers.CommunicationRequestPayloadContentSerializer
+import dev.ohs.fhir.model.r5.serializers.CommunicationRequestPayloadSerializer
+import dev.ohs.fhir.model.r5.serializers.CommunicationRequestSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -373,20 +373,18 @@ public data class CommunicationRequest(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) :
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Content
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Content
+
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         Content
-
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Content
-
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Content
 
       public companion object {
         internal fun from(
-          attachmentValue: com.google.fhir.model.r5.Attachment?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): Content? {
           if (attachmentValue != null) return Attachment(attachmentValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -469,14 +467,14 @@ public data class CommunicationRequest(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        periodValue: com.google.fhir.model.r5.Period?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.PackagedProductDefinitionLegalStatusOfSupplySerializer
-import com.google.fhir.model.r5.serializers.PackagedProductDefinitionPackagingContainedItemSerializer
-import com.google.fhir.model.r5.serializers.PackagedProductDefinitionPackagingPropertySerializer
-import com.google.fhir.model.r5.serializers.PackagedProductDefinitionPackagingPropertyValueSerializer
-import com.google.fhir.model.r5.serializers.PackagedProductDefinitionPackagingSerializer
-import com.google.fhir.model.r5.serializers.PackagedProductDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionLegalStatusOfSupplySerializer
+import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionPackagingContainedItemSerializer
+import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionPackagingPropertySerializer
+import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionPackagingPropertyValueSerializer
+import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionPackagingSerializer
+import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -538,25 +538,24 @@ public data class PackagedProductDefinition(
         public fun asAttachment(): Attachment? = this as? Attachment
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Value
+        public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-        public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) :
-          Value
+        public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
         public companion object {
           internal fun from(
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            quantityValue: com.google.fhir.model.r5.Quantity?,
-            dateValue: com.google.fhir.model.r5.Date?,
-            booleanValue: com.google.fhir.model.r5.Boolean?,
-            attachmentValue: com.google.fhir.model.r5.Attachment?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+            dateValue: dev.ohs.fhir.model.r5.Date?,
+            booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+            attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
           ): Value? {
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
             if (quantityValue != null) return Quantity(quantityValue)

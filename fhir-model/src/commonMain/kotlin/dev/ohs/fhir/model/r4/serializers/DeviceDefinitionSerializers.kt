@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.DeviceDefinition
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.surrogates.DeviceDefinitionCapabilitySurrogate
-import com.google.fhir.model.r4.surrogates.DeviceDefinitionDeviceNameSurrogate
-import com.google.fhir.model.r4.surrogates.DeviceDefinitionManufacturerSurrogate
-import com.google.fhir.model.r4.surrogates.DeviceDefinitionMaterialSurrogate
-import com.google.fhir.model.r4.surrogates.DeviceDefinitionPropertySurrogate
-import com.google.fhir.model.r4.surrogates.DeviceDefinitionSpecializationSurrogate
-import com.google.fhir.model.r4.surrogates.DeviceDefinitionSurrogate
-import com.google.fhir.model.r4.surrogates.DeviceDefinitionUdiDeviceIdentifierSurrogate
+import dev.ohs.fhir.model.r4.DeviceDefinition
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.surrogates.DeviceDefinitionCapabilitySurrogate
+import dev.ohs.fhir.model.r4.surrogates.DeviceDefinitionDeviceNameSurrogate
+import dev.ohs.fhir.model.r4.surrogates.DeviceDefinitionManufacturerSurrogate
+import dev.ohs.fhir.model.r4.surrogates.DeviceDefinitionMaterialSurrogate
+import dev.ohs.fhir.model.r4.surrogates.DeviceDefinitionPropertySurrogate
+import dev.ohs.fhir.model.r4.surrogates.DeviceDefinitionSpecializationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.DeviceDefinitionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.DeviceDefinitionUdiDeviceIdentifierSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

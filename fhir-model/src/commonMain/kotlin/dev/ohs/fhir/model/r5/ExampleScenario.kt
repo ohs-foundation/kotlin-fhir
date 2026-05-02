@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ExampleScenarioActorSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioInstanceContainedInstanceSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioInstanceSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioInstanceStructureProfileSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioInstanceVersionSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioProcessSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioProcessStepAlternativeSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioProcessStepOperationSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioProcessStepSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioSerializer
-import com.google.fhir.model.r5.serializers.ExampleScenarioVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioActorSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioInstanceContainedInstanceSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioInstanceSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioInstanceStructureProfileSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioInstanceVersionSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioProcessSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioProcessStepAlternativeSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioProcessStepOperationSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioProcessStepSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioSerializer
+import dev.ohs.fhir.model.r5.serializers.ExampleScenarioVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -845,15 +845,15 @@ public data class ExampleScenario(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) :
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) :
         StructureProfile
 
-      public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : StructureProfile
+      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : StructureProfile
 
       public companion object {
         internal fun from(
-          canonicalValue: com.google.fhir.model.r5.Canonical?,
-          uriValue: com.google.fhir.model.r5.Uri?,
+          canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
+          uriValue: dev.ohs.fhir.model.r5.Uri?,
         ): StructureProfile? {
           if (canonicalValue != null) return Canonical(canonicalValue)
           if (uriValue != null) return Uri(uriValue)
@@ -1658,16 +1658,14 @@ public data class ExampleScenario(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)

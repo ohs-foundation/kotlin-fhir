@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.EvidenceReportCiteAsSerializer
-import com.google.fhir.model.r5.serializers.EvidenceReportRelatesToSerializer
-import com.google.fhir.model.r5.serializers.EvidenceReportRelatesToTargetSerializer
-import com.google.fhir.model.r5.serializers.EvidenceReportSectionSerializer
-import com.google.fhir.model.r5.serializers.EvidenceReportSerializer
-import com.google.fhir.model.r5.serializers.EvidenceReportSubjectCharacteristicSerializer
-import com.google.fhir.model.r5.serializers.EvidenceReportSubjectCharacteristicValueSerializer
-import com.google.fhir.model.r5.serializers.EvidenceReportSubjectSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.EvidenceReportCiteAsSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceReportRelatesToSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceReportRelatesToTargetSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceReportSectionSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceReportSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceReportSubjectCharacteristicSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceReportSubjectCharacteristicValueSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceReportSubjectSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -443,25 +443,25 @@ public data class EvidenceReport(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Value
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
         public companion object {
           internal fun from(
-            referenceValue: com.google.fhir.model.r5.Reference?,
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            booleanValue: com.google.fhir.model.r5.Boolean?,
-            quantityValue: com.google.fhir.model.r5.Quantity?,
-            rangeValue: com.google.fhir.model.r5.Range?,
+            referenceValue: dev.ohs.fhir.model.r5.Reference?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+            rangeValue: dev.ohs.fhir.model.r5.Range?,
           ): Value? {
             if (referenceValue != null) return Reference(referenceValue)
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -1173,14 +1173,14 @@ public data class EvidenceReport(
 
     public fun asMarkdown(): Markdown? = this as? Markdown
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : CiteAs
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : CiteAs
 
-    public data class Markdown(public val `value`: com.google.fhir.model.r5.Markdown) : CiteAs
+    public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : CiteAs
 
     public companion object {
       internal fun from(
-        referenceValue: com.google.fhir.model.r5.Reference?,
-        markdownValue: com.google.fhir.model.r5.Markdown?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
+        markdownValue: dev.ohs.fhir.model.r5.Markdown?,
       ): CiteAs? {
         if (referenceValue != null) return Reference(referenceValue)
         if (markdownValue != null) return Markdown(markdownValue)

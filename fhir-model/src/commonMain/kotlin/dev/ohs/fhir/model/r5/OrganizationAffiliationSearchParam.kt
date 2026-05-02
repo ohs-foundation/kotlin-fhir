@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: OrganizationAffiliation): List<T>
 
-  public data object Active : OrganizationAffiliationSearchParam<Any>() {
+  public data object Active : OrganizationAffiliationSearchParam<Boolean>() {
     public override val paramName: String = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +37,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<Boolean> =
+      listOfNotNull(resource.active)
   }
 
-  public data object Date : OrganizationAffiliationSearchParam<Any>() {
+  public data object Date : OrganizationAffiliationSearchParam<Period>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -50,10 +50,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<Period> =
+      listOfNotNull(resource.period)
   }
 
-  public data object Email : OrganizationAffiliationSearchParam<Any>() {
+  public data object Email : OrganizationAffiliationSearchParam<ContactPoint>() {
     public override val paramName: String = "email"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -63,10 +64,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
+      resource.contact.flatMap { it.telecom }.filter { it.system?.value?.toString() == "email" }
   }
 
-  public data object Endpoint : OrganizationAffiliationSearchParam<Any>() {
+  public data object Endpoint : OrganizationAffiliationSearchParam<Reference>() {
     public override val paramName: String = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -75,10 +77,12 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Endpoint")
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
+      resource.endpoint
   }
 
-  public data object Identifier : OrganizationAffiliationSearchParam<Any>() {
+  public data object Identifier :
+    OrganizationAffiliationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -87,10 +91,12 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(
+      resource: OrganizationAffiliation
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Location : OrganizationAffiliationSearchParam<Any>() {
+  public data object Location : OrganizationAffiliationSearchParam<Reference>() {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -99,10 +105,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Location")
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
+      resource.location
   }
 
-  public data object Network : OrganizationAffiliationSearchParam<Any>() {
+  public data object Network : OrganizationAffiliationSearchParam<Reference>() {
     public override val paramName: String = "network"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -111,10 +118,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization")
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
+      resource.network
   }
 
-  public data object ParticipatingOrganization : OrganizationAffiliationSearchParam<Any>() {
+  public data object ParticipatingOrganization : OrganizationAffiliationSearchParam<Reference>() {
     public override val paramName: String = "participating-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -123,10 +131,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization")
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
+      listOfNotNull(resource.participatingOrganization)
   }
 
-  public data object Phone : OrganizationAffiliationSearchParam<Any>() {
+  public data object Phone : OrganizationAffiliationSearchParam<ContactPoint>() {
     public override val paramName: String = "phone"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -136,10 +145,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
+      resource.contact.flatMap { it.telecom }.filter { it.system?.value?.toString() == "phone" }
   }
 
-  public data object PrimaryOrganization : OrganizationAffiliationSearchParam<Any>() {
+  public data object PrimaryOrganization : OrganizationAffiliationSearchParam<Reference>() {
     public override val paramName: String = "primary-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -148,10 +158,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization")
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
+      listOfNotNull(resource.organization)
   }
 
-  public data object Role : OrganizationAffiliationSearchParam<Any>() {
+  public data object Role : OrganizationAffiliationSearchParam<CodeableConcept>() {
     public override val paramName: String = "role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -160,10 +171,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<CodeableConcept> =
+      resource.code
   }
 
-  public data object Service : OrganizationAffiliationSearchParam<Any>() {
+  public data object Service : OrganizationAffiliationSearchParam<Reference>() {
     public override val paramName: String = "service"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -172,10 +184,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("HealthcareService")
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
+      resource.healthcareService
   }
 
-  public data object Specialty : OrganizationAffiliationSearchParam<Any>() {
+  public data object Specialty : OrganizationAffiliationSearchParam<CodeableConcept>() {
     public override val paramName: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -184,10 +197,11 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<CodeableConcept> =
+      resource.specialty
   }
 
-  public data object Telecom : OrganizationAffiliationSearchParam<Any>() {
+  public data object Telecom : OrganizationAffiliationSearchParam<ContactPoint>() {
     public override val paramName: String = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -196,7 +210,8 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: OrganizationAffiliation): List<Any> = emptyList()
+    public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
+      resource.contact.flatMap { it.telecom }
   }
 
   public companion object {

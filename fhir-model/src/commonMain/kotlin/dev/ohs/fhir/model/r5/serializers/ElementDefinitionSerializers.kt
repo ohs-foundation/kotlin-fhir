@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,26 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.ElementDefinition
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.ElementDefinitionBaseSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionBindingAdditionalSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionBindingSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionConstraintSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionDefaultValueSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionExampleSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionExampleValueSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionFixedSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionMappingSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionMaxValueSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionMinValueSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionPatternSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionSlicingDiscriminatorSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionSlicingSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.ElementDefinitionTypeSurrogate
+import dev.ohs.fhir.model.r5.ElementDefinition
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionBaseSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionBindingAdditionalSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionBindingSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionConstraintSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionDefaultValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionExampleSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionExampleValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionFixedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionMappingSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionMaxValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionMinValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionPatternSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionSlicingDiscriminatorSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionSlicingSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ElementDefinitionTypeSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

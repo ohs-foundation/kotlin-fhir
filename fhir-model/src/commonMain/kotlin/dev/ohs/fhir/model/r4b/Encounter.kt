@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4.serializers.EncounterClassHistorySerializer
-import com.google.fhir.model.r4.serializers.EncounterDiagnosisSerializer
-import com.google.fhir.model.r4.serializers.EncounterHospitalizationSerializer
-import com.google.fhir.model.r4.serializers.EncounterLocationSerializer
-import com.google.fhir.model.r4.serializers.EncounterParticipantSerializer
-import com.google.fhir.model.r4.serializers.EncounterSerializer
-import com.google.fhir.model.r4.serializers.EncounterStatusHistorySerializer
+import dev.ohs.fhir.model.r4b.serializers.EncounterClassHistorySerializer
+import dev.ohs.fhir.model.r4b.serializers.EncounterDiagnosisSerializer
+import dev.ohs.fhir.model.r4b.serializers.EncounterHospitalizationSerializer
+import dev.ohs.fhir.model.r4b.serializers.EncounterLocationSerializer
+import dev.ohs.fhir.model.r4b.serializers.EncounterParticipantSerializer
+import dev.ohs.fhir.model.r4b.serializers.EncounterSerializer
+import dev.ohs.fhir.model.r4b.serializers.EncounterStatusHistorySerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

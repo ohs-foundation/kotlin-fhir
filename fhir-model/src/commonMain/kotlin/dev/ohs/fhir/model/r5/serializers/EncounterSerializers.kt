@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.Encounter
-import com.google.fhir.model.r5.surrogates.EncounterAdmissionSurrogate
-import com.google.fhir.model.r5.surrogates.EncounterDiagnosisSurrogate
-import com.google.fhir.model.r5.surrogates.EncounterLocationSurrogate
-import com.google.fhir.model.r5.surrogates.EncounterParticipantSurrogate
-import com.google.fhir.model.r5.surrogates.EncounterReasonSurrogate
-import com.google.fhir.model.r5.surrogates.EncounterSurrogate
+import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.surrogates.EncounterAdmissionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EncounterDiagnosisSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EncounterLocationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EncounterParticipantSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EncounterReasonSurrogate
+import dev.ohs.fhir.model.r5.surrogates.EncounterSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: GenomicStudy): List<T>
 
-  public data object Focus : GenomicStudySearchParam<Any>() {
+  public data object Focus : GenomicStudySearchParam<Reference>() {
     public override val paramName: String = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -198,10 +198,11 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: GenomicStudy): List<Any> = emptyList()
+    public override fun extract(resource: GenomicStudy): List<Reference> =
+      resource.analysis.flatMap { it.focus }
   }
 
-  public data object Identifier : GenomicStudySearchParam<Any>() {
+  public data object Identifier : GenomicStudySearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -210,10 +211,11 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: GenomicStudy): List<Any> = emptyList()
+    public override fun extract(resource: GenomicStudy): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Patient : GenomicStudySearchParam<Any>() {
+  public data object Patient : GenomicStudySearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -222,7 +224,10 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: GenomicStudy): List<Any> = emptyList()
+    public override fun extract(resource: GenomicStudy): List<Reference> =
+      listOf(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
   public data object Status : GenomicStudySearchParam<Any>() {
@@ -234,10 +239,10 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: GenomicStudy): List<Any> = emptyList()
+    public override fun extract(resource: GenomicStudy): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : GenomicStudySearchParam<Any>() {
+  public data object Subject : GenomicStudySearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -247,7 +252,7 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("NutritionProduct", "Group", "BiologicallyDerivedProduct", "Substance", "Patient")
 
-    public override fun extract(resource: GenomicStudy): List<Any> = emptyList()
+    public override fun extract(resource: GenomicStudy): List<Reference> = listOf(resource.subject)
   }
 
   public companion object {

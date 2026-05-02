@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.TerminologyCapabilities
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesClosureSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesCodeSystemSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesCodeSystemVersionFilterSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesCodeSystemVersionSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesExpansionParameterSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesExpansionSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesImplementationSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesSoftwareSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesTranslationSurrogate
-import com.google.fhir.model.r4.surrogates.TerminologyCapabilitiesValidateCodeSurrogate
+import dev.ohs.fhir.model.r4.TerminologyCapabilities
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesClosureSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesCodeSystemSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesCodeSystemVersionFilterSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesCodeSystemVersionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesExpansionParameterSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesExpansionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesImplementationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesSoftwareSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesTranslationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TerminologyCapabilitiesValidateCodeSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

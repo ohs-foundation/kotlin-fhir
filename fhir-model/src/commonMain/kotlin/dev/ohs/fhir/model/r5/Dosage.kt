@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.DosageDoseAndRateDoseSerializer
-import com.google.fhir.model.r5.serializers.DosageDoseAndRateRateSerializer
-import com.google.fhir.model.r5.serializers.DosageDoseAndRateSerializer
-import com.google.fhir.model.r5.serializers.DosageSerializer
+import dev.ohs.fhir.model.r5.serializers.DosageDoseAndRateDoseSerializer
+import dev.ohs.fhir.model.r5.serializers.DosageDoseAndRateRateSerializer
+import dev.ohs.fhir.model.r5.serializers.DosageDoseAndRateSerializer
+import dev.ohs.fhir.model.r5.serializers.DosageSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -249,14 +249,14 @@ public data class Dosage(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Dose
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Dose
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Dose
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Dose
 
       public companion object {
         internal fun from(
-          rangeValue: com.google.fhir.model.r5.Range?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
         ): Dose? {
           if (rangeValue != null) return Range(rangeValue)
           if (quantityValue != null) return Quantity(quantityValue)
@@ -273,17 +273,17 @@ public data class Dosage(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Rate
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Rate
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Rate
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Rate
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Rate
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Rate
 
       public companion object {
         internal fun from(
-          ratioValue: com.google.fhir.model.r5.Ratio?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
+          ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
         ): Rate? {
           if (ratioValue != null) return Ratio(ratioValue)
           if (rangeValue != null) return Range(rangeValue)

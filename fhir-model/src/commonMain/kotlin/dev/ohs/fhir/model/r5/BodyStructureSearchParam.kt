@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -41,7 +41,7 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
     public override fun extract(resource: BodyStructure): List<Any> = emptyList()
   }
 
-  public data object Identifier : BodyStructureSearchParam<Any>() {
+  public data object Identifier : BodyStructureSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +50,11 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: BodyStructure): List<Any> = emptyList()
+    public override fun extract(resource: BodyStructure): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Included_structure : BodyStructureSearchParam<Any>() {
+  public data object Included_structure : BodyStructureSearchParam<CodeableConcept>() {
     public override val paramName: String = "included_structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,10 +63,11 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: BodyStructure): List<Any> = emptyList()
+    public override fun extract(resource: BodyStructure): List<CodeableConcept> =
+      resource.includedStructure.map { it.structure }
   }
 
-  public data object Morphology : BodyStructureSearchParam<Any>() {
+  public data object Morphology : BodyStructureSearchParam<CodeableConcept>() {
     public override val paramName: String = "morphology"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,10 +76,11 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: BodyStructure): List<Any> = emptyList()
+    public override fun extract(resource: BodyStructure): List<CodeableConcept> =
+      listOfNotNull(resource.morphology)
   }
 
-  public data object Patient : BodyStructureSearchParam<Any>() {
+  public data object Patient : BodyStructureSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -86,7 +89,7 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: BodyStructure): List<Any> = emptyList()
+    public override fun extract(resource: BodyStructure): List<Reference> = listOf(resource.patient)
   }
 
   public companion object {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.RiskAssessment
-import com.google.fhir.model.r5.surrogates.RiskAssessmentOccurrenceSurrogate
-import com.google.fhir.model.r5.surrogates.RiskAssessmentPredictionProbabilitySurrogate
-import com.google.fhir.model.r5.surrogates.RiskAssessmentPredictionSurrogate
-import com.google.fhir.model.r5.surrogates.RiskAssessmentPredictionWhenSurrogate
-import com.google.fhir.model.r5.surrogates.RiskAssessmentSurrogate
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.RiskAssessment
+import dev.ohs.fhir.model.r4.surrogates.RiskAssessmentOccurrenceSurrogate
+import dev.ohs.fhir.model.r4.surrogates.RiskAssessmentPredictionProbabilitySurrogate
+import dev.ohs.fhir.model.r4.surrogates.RiskAssessmentPredictionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.RiskAssessmentPredictionWhenSurrogate
+import dev.ohs.fhir.model.r4.surrogates.RiskAssessmentSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

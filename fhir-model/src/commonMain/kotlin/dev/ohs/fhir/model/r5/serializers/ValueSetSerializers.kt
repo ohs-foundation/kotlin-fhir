@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,27 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.ValueSet
-import com.google.fhir.model.r5.surrogates.ValueSetComposeIncludeConceptDesignationSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetComposeIncludeConceptSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetComposeIncludeFilterSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetComposeIncludeSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetComposeSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetExpansionContainsPropertySubPropertySurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetExpansionContainsPropertySubPropertyValueSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetExpansionContainsPropertySurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetExpansionContainsPropertyValueSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetExpansionContainsSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetExpansionParameterSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetExpansionParameterValueSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetExpansionPropertySurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetExpansionSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetScopeSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetSurrogate
-import com.google.fhir.model.r5.surrogates.ValueSetVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.ValueSet
+import dev.ohs.fhir.model.r5.surrogates.ValueSetComposeIncludeConceptDesignationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetComposeIncludeConceptSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetComposeIncludeFilterSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetComposeIncludeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetComposeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetExpansionContainsPropertySubPropertySurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetExpansionContainsPropertySubPropertyValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetExpansionContainsPropertySurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetExpansionContainsPropertyValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetExpansionContainsSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetExpansionParameterSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetExpansionParameterValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetExpansionPropertySurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetExpansionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetScopeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ValueSetVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

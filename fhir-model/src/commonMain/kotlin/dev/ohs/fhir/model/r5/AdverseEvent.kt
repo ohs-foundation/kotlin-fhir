@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.AdverseEventContributingFactorItemSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventContributingFactorSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventMitigatingActionItemSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventMitigatingActionSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventOccurrenceSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventParticipantSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventPreventiveActionItemSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventPreventiveActionSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventSupportingInfoItemSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventSupportingInfoSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventSuspectEntityCausalitySerializer
-import com.google.fhir.model.r5.serializers.AdverseEventSuspectEntityInstanceSerializer
-import com.google.fhir.model.r5.serializers.AdverseEventSuspectEntitySerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventContributingFactorItemSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventContributingFactorSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventMitigatingActionItemSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventMitigatingActionSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventOccurrenceSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventParticipantSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventPreventiveActionItemSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventPreventiveActionSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventSupportingInfoItemSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventSupportingInfoSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventSuspectEntityCausalitySerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventSuspectEntityInstanceSerializer
+import dev.ohs.fhir.model.r5.serializers.AdverseEventSuspectEntitySerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -630,17 +630,15 @@ public data class AdverseEvent(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Instance
-
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         Instance
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Instance
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Instance? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -774,16 +772,15 @@ public data class AdverseEvent(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Item
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Item
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Item
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): Item? {
           if (referenceValue != null) return Reference(referenceValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -907,16 +904,15 @@ public data class AdverseEvent(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Item
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Item
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Item
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): Item? {
           if (referenceValue != null) return Reference(referenceValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -1043,16 +1039,15 @@ public data class AdverseEvent(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Item
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Item
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Item
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): Item? {
           if (referenceValue != null) return Reference(referenceValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -1184,16 +1179,15 @@ public data class AdverseEvent(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Item
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Item
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Item
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): Item? {
           if (referenceValue != null) return Reference(referenceValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -1273,17 +1267,17 @@ public data class AdverseEvent(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
-    public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) : Occurrence
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        periodValue: com.google.fhir.model.r5.Period?,
-        timingValue: com.google.fhir.model.r5.Timing?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        timingValue: dev.ohs.fhir.model.r5.Timing?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)

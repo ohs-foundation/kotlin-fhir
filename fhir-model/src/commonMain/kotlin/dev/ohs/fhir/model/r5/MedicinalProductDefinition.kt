@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.MedicinalProductDefinitionCharacteristicSerializer
-import com.google.fhir.model.r5.serializers.MedicinalProductDefinitionCharacteristicValueSerializer
-import com.google.fhir.model.r5.serializers.MedicinalProductDefinitionContactSerializer
-import com.google.fhir.model.r5.serializers.MedicinalProductDefinitionCrossReferenceSerializer
-import com.google.fhir.model.r5.serializers.MedicinalProductDefinitionNamePartSerializer
-import com.google.fhir.model.r5.serializers.MedicinalProductDefinitionNameSerializer
-import com.google.fhir.model.r5.serializers.MedicinalProductDefinitionNameUsageSerializer
-import com.google.fhir.model.r5.serializers.MedicinalProductDefinitionOperationSerializer
-import com.google.fhir.model.r5.serializers.MedicinalProductDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionCharacteristicSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionCharacteristicValueSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionContactSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionCrossReferenceSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionNamePartSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionNameSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionNameUsageSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionOperationSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1143,31 +1143,30 @@ public data class MedicinalProductDefinition(
 
       public fun asAttachment(): Attachment? = this as? Attachment
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Value
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Value
 
-      public data class Markdown(public val `value`: com.google.fhir.model.r5.Markdown) : Value
+      public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Value
+      public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-      public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Value
+      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) : Value
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          markdownValue: com.google.fhir.model.r5.Markdown?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          integerValue: com.google.fhir.model.r5.Integer?,
-          dateValue: com.google.fhir.model.r5.Date?,
-          booleanValue: com.google.fhir.model.r5.Boolean?,
-          attachmentValue: com.google.fhir.model.r5.Attachment?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          markdownValue: dev.ohs.fhir.model.r5.Markdown?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          integerValue: dev.ohs.fhir.model.r5.Integer?,
+          dateValue: dev.ohs.fhir.model.r5.Date?,
+          booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+          attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (markdownValue != null) return Markdown(markdownValue)

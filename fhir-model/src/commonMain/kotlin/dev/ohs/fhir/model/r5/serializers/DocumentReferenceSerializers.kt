@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.DocumentReference
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.DocumentReferenceAttesterSurrogate
-import com.google.fhir.model.r5.surrogates.DocumentReferenceContentProfileSurrogate
-import com.google.fhir.model.r5.surrogates.DocumentReferenceContentProfileValueSurrogate
-import com.google.fhir.model.r5.surrogates.DocumentReferenceContentSurrogate
-import com.google.fhir.model.r5.surrogates.DocumentReferenceRelatesToSurrogate
-import com.google.fhir.model.r5.surrogates.DocumentReferenceSurrogate
+import dev.ohs.fhir.model.r5.DocumentReference
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.DocumentReferenceAttesterSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DocumentReferenceContentProfileSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DocumentReferenceContentProfileValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DocumentReferenceContentSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DocumentReferenceRelatesToSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DocumentReferenceSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

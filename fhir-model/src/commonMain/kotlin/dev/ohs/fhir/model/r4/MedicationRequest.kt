@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.MedicationRequestDispenseRequestInitialFillSerializer
-import com.google.fhir.model.r4.serializers.MedicationRequestDispenseRequestSerializer
-import com.google.fhir.model.r4.serializers.MedicationRequestMedicationSerializer
-import com.google.fhir.model.r4.serializers.MedicationRequestReportedSerializer
-import com.google.fhir.model.r4.serializers.MedicationRequestSerializer
-import com.google.fhir.model.r4.serializers.MedicationRequestSubstitutionAllowedSerializer
-import com.google.fhir.model.r4.serializers.MedicationRequestSubstitutionSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationRequestDispenseRequestInitialFillSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationRequestDispenseRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationRequestMedicationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationRequestReportedSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationRequestSubstitutionAllowedSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationRequestSubstitutionSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -799,16 +799,15 @@ public data class MedicationRequest(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Allowed
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Allowed
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4.CodeableConcept
-      ) : Allowed
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+        Allowed
 
       public companion object {
         internal fun from(
-          booleanValue: com.google.fhir.model.r4.Boolean?,
-          codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
+          booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+          codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
         ): Allowed? {
           if (booleanValue != null) return Boolean(booleanValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -889,14 +888,14 @@ public data class MedicationRequest(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Reported
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Reported
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Reported
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Reported
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r4.Boolean?,
-        referenceValue: com.google.fhir.model.r4.Reference?,
+        booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): Reported? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (referenceValue != null) return Reference(referenceValue)
@@ -911,17 +910,15 @@ public data class MedicationRequest(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : Medication
-
-    public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       Medication
+
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Medication
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): Medication? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)

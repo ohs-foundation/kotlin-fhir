@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.NutritionOrder
-import com.google.fhir.model.r4.surrogates.NutritionOrderEnteralFormulaAdministrationRateSurrogate
-import com.google.fhir.model.r4.surrogates.NutritionOrderEnteralFormulaAdministrationSurrogate
-import com.google.fhir.model.r4.surrogates.NutritionOrderEnteralFormulaSurrogate
-import com.google.fhir.model.r4.surrogates.NutritionOrderOralDietNutrientSurrogate
-import com.google.fhir.model.r4.surrogates.NutritionOrderOralDietSurrogate
-import com.google.fhir.model.r4.surrogates.NutritionOrderOralDietTextureSurrogate
-import com.google.fhir.model.r4.surrogates.NutritionOrderSupplementSurrogate
-import com.google.fhir.model.r4.surrogates.NutritionOrderSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.NutritionOrder
+import dev.ohs.fhir.model.r4b.surrogates.NutritionOrderEnteralFormulaAdministrationRateSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.NutritionOrderEnteralFormulaAdministrationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.NutritionOrderEnteralFormulaSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.NutritionOrderOralDietNutrientSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.NutritionOrderOralDietSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.NutritionOrderOralDietTextureSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.NutritionOrderSupplementSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.NutritionOrderSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

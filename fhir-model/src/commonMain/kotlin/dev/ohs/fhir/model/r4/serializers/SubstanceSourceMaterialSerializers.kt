@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.SubstanceSourceMaterial
-import com.google.fhir.model.r4.surrogates.SubstanceSourceMaterialFractionDescriptionSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSourceMaterialOrganismAuthorSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSourceMaterialOrganismHybridSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSourceMaterialOrganismOrganismGeneralSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSourceMaterialOrganismSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSourceMaterialPartDescriptionSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSourceMaterialSurrogate
+import dev.ohs.fhir.model.r4.SubstanceSourceMaterial
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSourceMaterialFractionDescriptionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSourceMaterialOrganismAuthorSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSourceMaterialOrganismHybridSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSourceMaterialOrganismOrganismGeneralSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSourceMaterialOrganismSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSourceMaterialPartDescriptionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSourceMaterialSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

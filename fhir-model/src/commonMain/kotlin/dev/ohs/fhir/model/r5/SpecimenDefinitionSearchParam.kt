@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,112 +28,122 @@ public sealed class SpecimenDefinitionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: SpecimenDefinition): List<T>
 
-  public data object Container : SpecimenDefinitionSearchParam<Any>() {
-    public override val paramName: String = "container"
+  public data object Container : SpecimenDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "container"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SpecimenDefinition.typeTested.container.type"
+    public override val expression: kotlin.String = "SpecimenDefinition.typeTested.container.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
+      resource.typeTested.mapNotNull { it.container }.mapNotNull { it.type }
   }
 
-  public data object Experimental : SpecimenDefinitionSearchParam<Any>() {
-    public override val paramName: String = "experimental"
+  public data object Experimental : SpecimenDefinitionSearchParam<Boolean>() {
+    public override val paramName: kotlin.String = "experimental"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SpecimenDefinition.experimental"
+    public override val expression: kotlin.String = "SpecimenDefinition.experimental"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<Boolean> =
+      listOfNotNull(resource.experimental)
   }
 
-  public data object Identifier : SpecimenDefinitionSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier :
+    SpecimenDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SpecimenDefinition.identifier"
+    public override val expression: kotlin.String = "SpecimenDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(
+      resource: SpecimenDefinition
+    ): List<dev.ohs.fhir.model.r5.Identifier> = listOfNotNull(resource.identifier)
   }
 
-  public data object IsDerived : SpecimenDefinitionSearchParam<Any>() {
-    public override val paramName: String = "is-derived"
+  public data object IsDerived : SpecimenDefinitionSearchParam<Boolean>() {
+    public override val paramName: kotlin.String = "is-derived"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SpecimenDefinition.typeTested.isDerived"
+    public override val expression: kotlin.String = "SpecimenDefinition.typeTested.isDerived"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<Boolean> =
+      resource.typeTested.mapNotNull { it.isDerived }
   }
 
   public data object Status : SpecimenDefinitionSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SpecimenDefinition.status"
+    public override val expression: kotlin.String = "SpecimenDefinition.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : SpecimenDefinitionSearchParam<Any>() {
-    public override val paramName: String = "title"
+  public data object Title : SpecimenDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "SpecimenDefinition.title"
+    public override val expression: kotlin.String = "SpecimenDefinition.title"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<String> =
+      listOfNotNull(resource.title)
   }
 
-  public data object Type : SpecimenDefinitionSearchParam<Any>() {
-    public override val paramName: String = "type"
+  public data object Type : SpecimenDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SpecimenDefinition.typeCollected"
+    public override val expression: kotlin.String = "SpecimenDefinition.typeCollected"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
+      listOfNotNull(resource.typeCollected)
   }
 
-  public data object TypeTested : SpecimenDefinitionSearchParam<Any>() {
-    public override val paramName: String = "type-tested"
+  public data object TypeTested : SpecimenDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "type-tested"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SpecimenDefinition.typeTested.type"
+    public override val expression: kotlin.String = "SpecimenDefinition.typeTested.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
+      resource.typeTested.mapNotNull { it.type }
   }
 
-  public data object Url : SpecimenDefinitionSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : SpecimenDefinitionSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "SpecimenDefinition.url"
+    public override val expression: kotlin.String = "SpecimenDefinition.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<Uri> =
+      listOfNotNull(resource.url)
   }
 
   public companion object {

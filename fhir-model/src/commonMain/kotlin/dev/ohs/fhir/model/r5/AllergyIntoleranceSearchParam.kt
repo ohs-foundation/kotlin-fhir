@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -38,10 +38,10 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<Any> = resource.category
   }
 
-  public data object ClinicalStatus : AllergyIntoleranceSearchParam<Any>() {
+  public data object ClinicalStatus : AllergyIntoleranceSearchParam<CodeableConcept>() {
     public override val paramName: String = "clinical-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +50,11 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
+      listOfNotNull(resource.clinicalStatus)
   }
 
-  public data object Code : AllergyIntoleranceSearchParam<Any>() {
+  public data object Code : AllergyIntoleranceSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,7 +63,8 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
   public data object Criticality : AllergyIntoleranceSearchParam<Any>() {
@@ -74,10 +76,11 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<Any> =
+      listOfNotNull(resource.criticality)
   }
 
-  public data object Date : AllergyIntoleranceSearchParam<Any>() {
+  public data object Date : AllergyIntoleranceSearchParam<DateTime>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -86,10 +89,12 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<DateTime> =
+      listOfNotNull(resource.recordedDate)
   }
 
-  public data object Identifier : AllergyIntoleranceSearchParam<Any>() {
+  public data object Identifier :
+    AllergyIntoleranceSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,10 +103,12 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(
+      resource: AllergyIntolerance
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object LastDate : AllergyIntoleranceSearchParam<Any>() {
+  public data object LastDate : AllergyIntoleranceSearchParam<DateTime>() {
     public override val paramName: String = "last-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -110,10 +117,11 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<DateTime> =
+      listOfNotNull(resource.lastOccurrence)
   }
 
-  public data object ManifestationCode : AllergyIntoleranceSearchParam<Any>() {
+  public data object ManifestationCode : AllergyIntoleranceSearchParam<CodeableConcept>() {
     public override val paramName: String = "manifestation-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -122,10 +130,11 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
+      resource.reaction.flatMap { it.manifestation }.mapNotNull { it.concept }
   }
 
-  public data object ManifestationReference : AllergyIntoleranceSearchParam<Any>() {
+  public data object ManifestationReference : AllergyIntoleranceSearchParam<Reference>() {
     public override val paramName: String = "manifestation-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -134,10 +143,11 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Observation")
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<Reference> =
+      resource.reaction.flatMap { it.manifestation }.mapNotNull { it.reference }
   }
 
-  public data object Participant : AllergyIntoleranceSearchParam<Any>() {
+  public data object Participant : AllergyIntoleranceSearchParam<Reference>() {
     public override val paramName: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -155,10 +165,11 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
         "Patient",
       )
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<Reference> =
+      resource.participant.map { it.actor }
   }
 
-  public data object Patient : AllergyIntoleranceSearchParam<Any>() {
+  public data object Patient : AllergyIntoleranceSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -167,10 +178,11 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<Reference> =
+      listOf(resource.patient)
   }
 
-  public data object Route : AllergyIntoleranceSearchParam<Any>() {
+  public data object Route : AllergyIntoleranceSearchParam<CodeableConcept>() {
     public override val paramName: String = "route"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -179,7 +191,8 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
+      resource.reaction.mapNotNull { it.exposureRoute }
   }
 
   public data object Severity : AllergyIntoleranceSearchParam<Any>() {
@@ -191,10 +204,11 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<Any> =
+      resource.reaction.mapNotNull { it.severity }
   }
 
-  public data object Type : AllergyIntoleranceSearchParam<Any>() {
+  public data object Type : AllergyIntoleranceSearchParam<CodeableConcept>() {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -203,10 +217,11 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
+      listOfNotNull(resource.type)
   }
 
-  public data object VerificationStatus : AllergyIntoleranceSearchParam<Any>() {
+  public data object VerificationStatus : AllergyIntoleranceSearchParam<CodeableConcept>() {
     public override val paramName: String = "verification-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -215,7 +230,8 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AllergyIntolerance): List<Any> = emptyList()
+    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
+      listOfNotNull(resource.verificationStatus)
   }
 
   public companion object {

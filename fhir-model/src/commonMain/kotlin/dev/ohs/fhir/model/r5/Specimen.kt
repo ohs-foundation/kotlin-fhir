@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.SpecimenCollectionCollectedSerializer
-import com.google.fhir.model.r5.serializers.SpecimenCollectionFastingStatusSerializer
-import com.google.fhir.model.r5.serializers.SpecimenCollectionSerializer
-import com.google.fhir.model.r5.serializers.SpecimenContainerSerializer
-import com.google.fhir.model.r5.serializers.SpecimenFeatureSerializer
-import com.google.fhir.model.r5.serializers.SpecimenProcessingSerializer
-import com.google.fhir.model.r5.serializers.SpecimenProcessingTimeSerializer
-import com.google.fhir.model.r5.serializers.SpecimenSerializer
-import com.google.fhir.model.r5.terminologies.SpecimenCombined
+import dev.ohs.fhir.model.r5.serializers.SpecimenCollectionCollectedSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenCollectionFastingStatusSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenCollectionSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenContainerSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenFeatureSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenProcessingSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenProcessingTimeSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenSerializer
+import dev.ohs.fhir.model.r5.terminologies.SpecimenCombined
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -464,14 +464,14 @@ public data class Specimen(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Collected
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Collected
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Collected
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Collected
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): Collected? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)
@@ -486,17 +486,16 @@ public data class Specimen(
 
       public fun asDuration(): Duration? = this as? Duration
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : FastingStatus
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        FastingStatus
 
-      public data class Duration(public val `value`: com.google.fhir.model.r5.Duration) :
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
         FastingStatus
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          durationValue: com.google.fhir.model.r5.Duration?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          durationValue: dev.ohs.fhir.model.r5.Duration?,
         ): FastingStatus? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (durationValue != null) return Duration(durationValue)
@@ -684,14 +683,14 @@ public data class Specimen(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Time
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Time
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Time
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Time
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): Time? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)

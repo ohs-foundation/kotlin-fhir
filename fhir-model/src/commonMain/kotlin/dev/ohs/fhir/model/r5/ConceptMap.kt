@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,24 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ConceptMapAdditionalAttributeSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapGroupElementSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapGroupElementTargetDependsOnSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapGroupElementTargetDependsOnValueSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapGroupElementTargetPropertySerializer
-import com.google.fhir.model.r5.serializers.ConceptMapGroupElementTargetPropertyValueSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapGroupElementTargetSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapGroupSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapGroupUnmappedSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapPropertySerializer
-import com.google.fhir.model.r5.serializers.ConceptMapSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapSourceScopeSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapTargetScopeSerializer
-import com.google.fhir.model.r5.serializers.ConceptMapVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.ConceptMapRelationship
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.ConceptMapAdditionalAttributeSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetDependsOnSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetDependsOnValueSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetPropertySerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetPropertyValueSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupUnmappedSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapPropertySerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapSourceScopeSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapTargetScopeSerializer
+import dev.ohs.fhir.model.r5.serializers.ConceptMapVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.ConceptMapRelationship
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1144,30 +1144,29 @@ public data class ConceptMap(
 
             public fun asCode(): Code? = this as? Code
 
-            public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) : Value
+            public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-            public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+            public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-            public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Value
+            public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-            public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+            public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-            public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) :
-              Value
+            public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-            public data class Decimal(public val `value`: com.google.fhir.model.r5.Decimal) : Value
+            public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
 
-            public data class Code(public val `value`: com.google.fhir.model.r5.Code) : Value
+            public data class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
 
             public companion object {
               internal fun from(
-                codingValue: com.google.fhir.model.r5.Coding?,
-                stringValue: com.google.fhir.model.r5.String?,
-                integerValue: com.google.fhir.model.r5.Integer?,
-                booleanValue: com.google.fhir.model.r5.Boolean?,
-                dateTimeValue: com.google.fhir.model.r5.DateTime?,
-                decimalValue: com.google.fhir.model.r5.Decimal?,
-                codeValue: com.google.fhir.model.r5.Code?,
+                codingValue: dev.ohs.fhir.model.r5.Coding?,
+                stringValue: dev.ohs.fhir.model.r5.String?,
+                integerValue: dev.ohs.fhir.model.r5.Integer?,
+                booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+                dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+                decimalValue: dev.ohs.fhir.model.r5.Decimal?,
+                codeValue: dev.ohs.fhir.model.r5.Code?,
               ): Value? {
                 if (codingValue != null) return Coding(codingValue)
                 if (stringValue != null) return String(stringValue)
@@ -1322,24 +1321,23 @@ public data class ConceptMap(
 
             public fun asQuantity(): Quantity? = this as? Quantity
 
-            public data class Code(public val `value`: com.google.fhir.model.r5.Code) : Value
+            public data class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
 
-            public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) : Value
+            public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-            public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+            public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-            public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+            public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-            public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
-              Value
+            public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
             public companion object {
               internal fun from(
-                codeValue: com.google.fhir.model.r5.Code?,
-                codingValue: com.google.fhir.model.r5.Coding?,
-                stringValue: com.google.fhir.model.r5.String?,
-                booleanValue: com.google.fhir.model.r5.Boolean?,
-                quantityValue: com.google.fhir.model.r5.Quantity?,
+                codeValue: dev.ohs.fhir.model.r5.Code?,
+                codingValue: dev.ohs.fhir.model.r5.Coding?,
+                stringValue: dev.ohs.fhir.model.r5.String?,
+                booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+                quantityValue: dev.ohs.fhir.model.r5.Quantity?,
               ): Value? {
                 if (codeValue != null) return Code(codeValue)
                 if (codingValue != null) return Coding(codingValue)
@@ -1916,16 +1914,14 @@ public data class ConceptMap(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)
@@ -1940,15 +1936,14 @@ public data class ConceptMap(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : SourceScope
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : SourceScope
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) :
-      SourceScope
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : SourceScope
 
     public companion object {
       internal fun from(
-        uriValue: com.google.fhir.model.r5.Uri?,
-        canonicalValue: com.google.fhir.model.r5.Canonical?,
+        uriValue: dev.ohs.fhir.model.r5.Uri?,
+        canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
       ): SourceScope? {
         if (uriValue != null) return Uri(uriValue)
         if (canonicalValue != null) return Canonical(canonicalValue)
@@ -1963,15 +1958,14 @@ public data class ConceptMap(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : TargetScope
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : TargetScope
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) :
-      TargetScope
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : TargetScope
 
     public companion object {
       internal fun from(
-        uriValue: com.google.fhir.model.r5.Uri?,
-        canonicalValue: com.google.fhir.model.r5.Canonical?,
+        uriValue: dev.ohs.fhir.model.r5.Uri?,
+        canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
       ): TargetScope? {
         if (uriValue != null) return Uri(uriValue)
         if (canonicalValue != null) return Canonical(canonicalValue)

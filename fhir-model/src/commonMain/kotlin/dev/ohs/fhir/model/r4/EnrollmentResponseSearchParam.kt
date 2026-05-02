@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,8 @@ public sealed class EnrollmentResponseSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: EnrollmentResponse): List<T>
 
-  public data object Identifier : EnrollmentResponseSearchParam<Any>() {
+  public data object Identifier :
+    EnrollmentResponseSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +39,12 @@ public sealed class EnrollmentResponseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: EnrollmentResponse): List<Any> = emptyList()
+    public override fun extract(
+      resource: EnrollmentResponse
+    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Request : EnrollmentResponseSearchParam<Any>() {
+  public data object Request : EnrollmentResponseSearchParam<Reference>() {
     public override val paramName: String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -50,7 +53,8 @@ public sealed class EnrollmentResponseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("EnrollmentRequest")
 
-    public override fun extract(resource: EnrollmentResponse): List<Any> = emptyList()
+    public override fun extract(resource: EnrollmentResponse): List<Reference> =
+      listOfNotNull(resource.request)
   }
 
   public data object Status : EnrollmentResponseSearchParam<Any>() {
@@ -62,7 +66,8 @@ public sealed class EnrollmentResponseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: EnrollmentResponse): List<Any> = emptyList()
+    public override fun extract(resource: EnrollmentResponse): List<Any> =
+      listOfNotNull(resource.status)
   }
 
   public companion object {

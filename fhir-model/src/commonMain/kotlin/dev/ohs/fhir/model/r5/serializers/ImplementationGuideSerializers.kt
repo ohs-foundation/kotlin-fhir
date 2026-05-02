@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,24 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.ImplementationGuide
-import com.google.fhir.model.r5.surrogates.ImplementationGuideDefinitionGroupingSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideDefinitionPageSourceSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideDefinitionPageSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideDefinitionParameterSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideDefinitionResourceSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideDefinitionTemplateSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideDependsOnSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideGlobalSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideManifestPageSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideManifestResourceSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideManifestSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideSurrogate
-import com.google.fhir.model.r5.surrogates.ImplementationGuideVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.ImplementationGuide
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideDefinitionGroupingSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideDefinitionPageSourceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideDefinitionPageSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideDefinitionParameterSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideDefinitionResourceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideDefinitionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideDefinitionTemplateSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideDependsOnSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideGlobalSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideManifestPageSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideManifestResourceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideManifestSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ImplementationGuideVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

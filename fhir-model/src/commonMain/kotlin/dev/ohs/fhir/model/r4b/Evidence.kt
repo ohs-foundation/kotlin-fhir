@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.EvidenceCertaintySerializer
-import com.google.fhir.model.r4b.serializers.EvidenceCiteAsSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceStatisticAttributeEstimateSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceStatisticModelCharacteristicSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceStatisticModelCharacteristicVariableSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceStatisticSampleSizeSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceStatisticSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceVariableDefinitionSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.EvidenceCertaintySerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceCiteAsSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceStatisticAttributeEstimateSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceStatisticModelCharacteristicSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceStatisticModelCharacteristicVariableSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceStatisticSampleSizeSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceStatisticSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableDefinitionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1423,14 +1423,14 @@ public data class Evidence(
 
     public fun asMarkdown(): Markdown? = this as? Markdown
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : CiteAs
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : CiteAs
 
-    public data class Markdown(public val `value`: com.google.fhir.model.r4b.Markdown) : CiteAs
+    public data class Markdown(public val `value`: dev.ohs.fhir.model.r4b.Markdown) : CiteAs
 
     public companion object {
       internal fun from(
-        referenceValue: com.google.fhir.model.r4b.Reference?,
-        markdownValue: com.google.fhir.model.r4b.Markdown?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+        markdownValue: dev.ohs.fhir.model.r4b.Markdown?,
       ): CiteAs? {
         if (referenceValue != null) return Reference(referenceValue)
         if (markdownValue != null) return Markdown(markdownValue)

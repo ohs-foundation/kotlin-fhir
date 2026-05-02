@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
-import kotlin.String
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,64 +27,71 @@ public sealed class SubstanceDefinitionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: SubstanceDefinition): List<T>
 
-  public data object Classification : SubstanceDefinitionSearchParam<Any>() {
-    public override val paramName: String = "classification"
+  public data object Classification : SubstanceDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "classification"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SubstanceDefinition.classification"
+    public override val expression: kotlin.String = "SubstanceDefinition.classification"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SubstanceDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SubstanceDefinition): List<CodeableConcept> =
+      resource.classification
   }
 
-  public data object Code : SubstanceDefinitionSearchParam<Any>() {
-    public override val paramName: String = "code"
+  public data object Code : SubstanceDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SubstanceDefinition.code.code"
+    public override val expression: kotlin.String = "SubstanceDefinition.code.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SubstanceDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SubstanceDefinition): List<CodeableConcept> =
+      resource.code.mapNotNull { it.code }
   }
 
-  public data object Domain : SubstanceDefinitionSearchParam<Any>() {
-    public override val paramName: String = "domain"
+  public data object Domain : SubstanceDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "domain"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SubstanceDefinition.domain"
+    public override val expression: kotlin.String = "SubstanceDefinition.domain"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SubstanceDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SubstanceDefinition): List<CodeableConcept> =
+      listOfNotNull(resource.domain)
   }
 
-  public data object Identifier : SubstanceDefinitionSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier :
+    SubstanceDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SubstanceDefinition.identifier"
+    public override val expression: kotlin.String = "SubstanceDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SubstanceDefinition): List<Any> = emptyList()
+    public override fun extract(
+      resource: SubstanceDefinition
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Name : SubstanceDefinitionSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : SubstanceDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "SubstanceDefinition.name.name"
+    public override val expression: kotlin.String = "SubstanceDefinition.name.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SubstanceDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SubstanceDefinition): List<String> =
+      resource.name.map { it.name }
   }
 
   public companion object {

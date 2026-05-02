@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ProcedureFocalDeviceSerializer
-import com.google.fhir.model.r5.serializers.ProcedureOccurrenceSerializer
-import com.google.fhir.model.r5.serializers.ProcedurePerformerSerializer
-import com.google.fhir.model.r5.serializers.ProcedureReportedSerializer
-import com.google.fhir.model.r5.serializers.ProcedureSerializer
+import dev.ohs.fhir.model.r5.serializers.ProcedureFocalDeviceSerializer
+import dev.ohs.fhir.model.r5.serializers.ProcedureOccurrenceSerializer
+import dev.ohs.fhir.model.r5.serializers.ProcedurePerformerSerializer
+import dev.ohs.fhir.model.r5.serializers.ProcedureReportedSerializer
+import dev.ohs.fhir.model.r5.serializers.ProcedureSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -656,26 +656,26 @@ public data class Procedure(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) : Occurrence
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Occurrence
 
-    public data class Age(public val `value`: com.google.fhir.model.r5.Age) : Occurrence
+    public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Occurrence
 
-    public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Occurrence
+    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Occurrence
 
-    public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) : Occurrence
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        periodValue: com.google.fhir.model.r5.Period?,
-        stringValue: com.google.fhir.model.r5.String?,
-        ageValue: com.google.fhir.model.r5.Age?,
-        rangeValue: com.google.fhir.model.r5.Range?,
-        timingValue: com.google.fhir.model.r5.Timing?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        ageValue: dev.ohs.fhir.model.r5.Age?,
+        rangeValue: dev.ohs.fhir.model.r5.Range?,
+        timingValue: dev.ohs.fhir.model.r5.Timing?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)
@@ -694,14 +694,14 @@ public data class Procedure(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Reported
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Reported
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Reported
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Reported
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r5.Boolean?,
-        referenceValue: com.google.fhir.model.r5.Reference?,
+        booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
       ): Reported? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (referenceValue != null) return Reference(referenceValue)

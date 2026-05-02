@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Group): List<T>
 
-  public data object Actual : GroupSearchParam<Any>() {
+  public data object Actual : GroupSearchParam<Boolean>() {
     public override val paramName: String = "actual"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,10 @@ public sealed class GroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<Boolean> = listOf(resource.actual)
   }
 
-  public data object Characteristic : GroupSearchParam<Any>() {
+  public data object Characteristic : GroupSearchParam<CodeableConcept>() {
     public override val paramName: String = "characteristic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +50,11 @@ public sealed class GroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<CodeableConcept> =
+      resource.characteristic.map { it.code }
   }
 
-  public data object CharacteristicValue : GroupSearchParam<Any>() {
+  public data object CharacteristicValue : GroupSearchParam<Group.Characteristic>() {
     public override val paramName: String = "characteristic-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -62,10 +63,11 @@ public sealed class GroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<Group.Characteristic> =
+      resource.characteristic
   }
 
-  public data object Code : GroupSearchParam<Any>() {
+  public data object Code : GroupSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,10 +76,11 @@ public sealed class GroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
-  public data object Exclude : GroupSearchParam<Any>() {
+  public data object Exclude : GroupSearchParam<Boolean>() {
     public override val paramName: String = "exclude"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +89,11 @@ public sealed class GroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<Boolean> =
+      resource.characteristic.map { it.exclude }
   }
 
-  public data object Identifier : GroupSearchParam<Any>() {
+  public data object Identifier : GroupSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,10 +102,11 @@ public sealed class GroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.identifier
   }
 
-  public data object ManagingEntity : GroupSearchParam<Any>() {
+  public data object ManagingEntity : GroupSearchParam<Reference>() {
     public override val paramName: String = "managing-entity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -111,10 +116,11 @@ public sealed class GroupSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Practitioner", "Organization", "PractitionerRole", "RelatedPerson")
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<Reference> =
+      listOfNotNull(resource.managingEntity)
   }
 
-  public data object Member : GroupSearchParam<Any>() {
+  public data object Member : GroupSearchParam<Reference>() {
     public override val paramName: String = "member"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -132,7 +138,8 @@ public sealed class GroupSearchParam<T> : SearchParam {
         "PractitionerRole",
       )
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<Reference> =
+      resource.member.map { it.entity }
   }
 
   public data object Type : GroupSearchParam<Any>() {
@@ -144,10 +151,10 @@ public sealed class GroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<Any> = listOf(resource.type)
   }
 
-  public data object Value : GroupSearchParam<Any>() {
+  public data object Value : GroupSearchParam<CodeableConcept>() {
     public override val paramName: String = "value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -156,7 +163,10 @@ public sealed class GroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Group): List<Any> = emptyList()
+    public override fun extract(resource: Group): List<CodeableConcept> =
+      resource.characteristic.mapNotNull {
+        (it.value as? Group.Characteristic.Value.CodeableConcept)?.value
+      }
   }
 
   public companion object {

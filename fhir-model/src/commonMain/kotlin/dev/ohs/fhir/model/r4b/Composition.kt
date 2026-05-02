@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.CompositionAttesterSerializer
-import com.google.fhir.model.r4b.serializers.CompositionEventSerializer
-import com.google.fhir.model.r4b.serializers.CompositionRelatesToSerializer
-import com.google.fhir.model.r4b.serializers.CompositionRelatesToTargetSerializer
-import com.google.fhir.model.r4b.serializers.CompositionSectionSerializer
-import com.google.fhir.model.r4b.serializers.CompositionSerializer
+import dev.ohs.fhir.model.r4b.serializers.CompositionAttesterSerializer
+import dev.ohs.fhir.model.r4b.serializers.CompositionEventSerializer
+import dev.ohs.fhir.model.r4b.serializers.CompositionRelatesToSerializer
+import dev.ohs.fhir.model.r4b.serializers.CompositionRelatesToTargetSerializer
+import dev.ohs.fhir.model.r4b.serializers.CompositionSectionSerializer
+import dev.ohs.fhir.model.r4b.serializers.CompositionSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -470,15 +470,14 @@ public data class Composition(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Identifier(public val `value`: com.google.fhir.model.r4b.Identifier) :
-        Target
+      public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) : Target
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Target
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Target
 
       public companion object {
         internal fun from(
-          identifierValue: com.google.fhir.model.r4b.Identifier?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          identifierValue: dev.ohs.fhir.model.r4b.Identifier?,
+          referenceValue: dev.ohs.fhir.model.r4b.Reference?,
         ): Target? {
           if (identifierValue != null) return Identifier(identifierValue)
           if (referenceValue != null) return Reference(referenceValue)

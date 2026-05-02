@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.DiagnosticReportEffectiveSerializer
-import com.google.fhir.model.r4b.serializers.DiagnosticReportMediaSerializer
-import com.google.fhir.model.r4b.serializers.DiagnosticReportSerializer
+import dev.ohs.fhir.model.r4b.serializers.DiagnosticReportEffectiveSerializer
+import dev.ohs.fhir.model.r4b.serializers.DiagnosticReportMediaSerializer
+import dev.ohs.fhir.model.r4b.serializers.DiagnosticReportSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -423,14 +423,14 @@ public data class DiagnosticReport(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Effective
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Effective
 
-    public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Effective
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Effective
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        periodValue: com.google.fhir.model.r4b.Period?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
       ): Effective? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)

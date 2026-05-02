@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,34 +17,34 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.surrogates
+package dev.ohs.fhir.model.r4.surrogates
 
-import com.google.fhir.model.r4.Address
-import com.google.fhir.model.r4.Attachment
-import com.google.fhir.model.r4.Boolean as R4Boolean
-import com.google.fhir.model.r4.Code
-import com.google.fhir.model.r4.CodeableConcept
-import com.google.fhir.model.r4.ContactPoint
-import com.google.fhir.model.r4.Date
-import com.google.fhir.model.r4.DateTime
-import com.google.fhir.model.r4.Element
-import com.google.fhir.model.r4.Enumeration
-import com.google.fhir.model.r4.Extension
-import com.google.fhir.model.r4.FhirDate
-import com.google.fhir.model.r4.FhirDateTime
-import com.google.fhir.model.r4.HumanName
-import com.google.fhir.model.r4.Identifier
-import com.google.fhir.model.r4.Integer
-import com.google.fhir.model.r4.Meta
-import com.google.fhir.model.r4.Narrative
-import com.google.fhir.model.r4.Patient
-import com.google.fhir.model.r4.Period
-import com.google.fhir.model.r4.Reference
-import com.google.fhir.model.r4.Resource
-import com.google.fhir.model.r4.Uri
-import com.google.fhir.model.r4.serializers.DoubleSerializer
-import com.google.fhir.model.r4.serializers.LocalTimeSerializer
-import com.google.fhir.model.r4.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r4.Address
+import dev.ohs.fhir.model.r4.Attachment
+import dev.ohs.fhir.model.r4.Boolean as R4Boolean
+import dev.ohs.fhir.model.r4.Code
+import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.ContactPoint
+import dev.ohs.fhir.model.r4.Date
+import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.HumanName
+import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Integer
+import dev.ohs.fhir.model.r4.Meta
+import dev.ohs.fhir.model.r4.Narrative
+import dev.ohs.fhir.model.r4.Patient
+import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r4.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r4.terminologies.AdministrativeGender
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.String

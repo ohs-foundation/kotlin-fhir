@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.NutritionProduct
-import com.google.fhir.model.r5.surrogates.NutritionProductCharacteristicSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionProductCharacteristicValueSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionProductIngredientSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionProductInstanceSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionProductNutrientSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionProductSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.NutritionProduct
+import dev.ohs.fhir.model.r5.surrogates.NutritionProductCharacteristicSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionProductCharacteristicValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionProductIngredientSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionProductInstanceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionProductNutrientSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionProductSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

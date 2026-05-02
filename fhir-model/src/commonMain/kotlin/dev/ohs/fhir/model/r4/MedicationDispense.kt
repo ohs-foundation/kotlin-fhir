@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.MedicationDispenseMedicationSerializer
-import com.google.fhir.model.r4.serializers.MedicationDispensePerformerSerializer
-import com.google.fhir.model.r4.serializers.MedicationDispenseSerializer
-import com.google.fhir.model.r4.serializers.MedicationDispenseStatusReasonSerializer
-import com.google.fhir.model.r4.serializers.MedicationDispenseSubstitutionSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationDispenseMedicationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationDispensePerformerSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationDispenseSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationDispenseStatusReasonSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationDispenseSubstitutionSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -563,17 +563,15 @@ public data class MedicationDispense(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : StatusReason
-
-    public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       StatusReason
+
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : StatusReason
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): StatusReason? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)
@@ -588,17 +586,15 @@ public data class MedicationDispense(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : Medication
-
-    public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       Medication
+
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Medication
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): Medication? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.SpecimenDefinition
-import com.google.fhir.model.r4.surrogates.SpecimenDefinitionSurrogate
-import com.google.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSurrogate
-import com.google.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedContainerAdditiveSurrogate
-import com.google.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedContainerMinimumVolumeSurrogate
-import com.google.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedContainerSurrogate
-import com.google.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedHandlingSurrogate
-import com.google.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedSurrogate
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.SpecimenDefinition
+import dev.ohs.fhir.model.r4.surrogates.SpecimenDefinitionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedContainerAdditiveSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedContainerMinimumVolumeSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedContainerSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedHandlingSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SpecimenDefinitionTypeTestedSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

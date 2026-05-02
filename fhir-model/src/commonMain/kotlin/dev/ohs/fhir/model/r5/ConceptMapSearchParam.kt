@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -30,86 +29,88 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
   public abstract fun extract(resource: ConceptMap): List<T>
 
   public data object Context : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "context"
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "(ConceptMap.useContext.value.ofType(CodeableConcept))"
+    public override val expression: kotlin.String =
+      "(ConceptMap.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Any> = emptyList()
   }
 
   public data object ContextQuantity : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "context-quantity"
+    public override val paramName: kotlin.String = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
-    public override val expression: String = "(ConceptMap.useContext.value.ofType(Quantity))"
+    public override val expression: kotlin.String = "(ConceptMap.useContext.value.ofType(Quantity))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Any> = emptyList()
   }
 
-  public data object ContextType : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "context-type"
+  public data object ContextType : ConceptMapSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ConceptMap.useContext.code"
+    public override val expression: kotlin.String = "ConceptMap.useContext.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Coding> =
+      resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "context-type-quantity"
+  public data object ContextTypeQuantity : ConceptMapSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "ConceptMap.useContext"
+    public override val expression: kotlin.String = "ConceptMap.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "context-type-value"
+  public data object ContextTypeValue : ConceptMapSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "ConceptMap.useContext"
+    public override val expression: kotlin.String = "ConceptMap.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : ConceptMapSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "ConceptMap.date"
+    public override val expression: kotlin.String = "ConceptMap.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object DerivedFrom : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "derived-from"
+  public data object DerivedFrom : ConceptMapSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "ConceptMap.relatedArtifact.where(type='derived-from').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -271,102 +272,110 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "derived-from" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Description : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : ConceptMapSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ConceptMap.description"
+    public override val expression: kotlin.String = "ConceptMap.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Markdown> =
+      listOfNotNull(resource.description)
   }
 
-  public data object Effective : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "effective"
+  public data object Effective : ConceptMapSearchParam<Period>() {
+    public override val paramName: kotlin.String = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "ConceptMap.effectivePeriod"
+    public override val expression: kotlin.String = "ConceptMap.effectivePeriod"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Period> =
+      listOfNotNull(resource.effectivePeriod)
   }
 
-  public data object Identifier : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : ConceptMapSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ConceptMap.identifier"
+    public override val expression: kotlin.String = "ConceptMap.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Jurisdiction : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "jurisdiction"
+  public data object Jurisdiction : ConceptMapSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ConceptMap.jurisdiction"
+    public override val expression: kotlin.String = "ConceptMap.jurisdiction"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<CodeableConcept> = resource.jurisdiction
   }
 
-  public data object MappingProperty : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "mapping-property"
+  public data object MappingProperty : ConceptMapSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "mapping-property"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "ConceptMap.property.uri"
+    public override val expression: kotlin.String = "ConceptMap.property.uri"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Uri> =
+      resource.property.mapNotNull { it.uri }
   }
 
-  public data object Name : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : ConceptMapSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ConceptMap.name"
+    public override val expression: kotlin.String = "ConceptMap.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<String> = listOfNotNull(resource.name)
   }
 
-  public data object OtherMap : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "other-map"
+  public data object OtherMap : ConceptMapSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "other-map"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ConceptMap.group.unmapped.otherMap"
+    public override val expression: kotlin.String = "ConceptMap.group.unmapped.otherMap"
 
-    public override val target: List<String> = listOf("ConceptMap")
+    public override val target: List<kotlin.String> = listOf("ConceptMap")
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Canonical> =
+      resource.group.mapNotNull { it.unmapped }.mapNotNull { it.otherMap }
   }
 
-  public data object Predecessor : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "predecessor"
+  public data object Predecessor : ConceptMapSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "ConceptMap.relatedArtifact.where(type='predecessor').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -528,175 +537,188 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "predecessor" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Publisher : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "publisher"
+  public data object Publisher : ConceptMapSearchParam<String>() {
+    public override val paramName: kotlin.String = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ConceptMap.publisher"
+    public override val expression: kotlin.String = "ConceptMap.publisher"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<String> =
+      listOfNotNull(resource.publisher)
   }
 
   public data object SourceCode : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "source-code"
+    public override val paramName: kotlin.String = "source-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ConceptMap.group.element.code"
+    public override val expression: kotlin.String = "ConceptMap.group.element.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Any> =
+      resource.group.flatMap { it.element }.mapNotNull { it.code }
   }
 
-  public data object SourceGroupSystem : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "source-group-system"
+  public data object SourceGroupSystem : ConceptMapSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "source-group-system"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ConceptMap.group.source"
+    public override val expression: kotlin.String = "ConceptMap.group.source"
 
-    public override val target: List<String> = listOf("CodeSystem")
+    public override val target: List<kotlin.String> = listOf("CodeSystem")
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Canonical> =
+      resource.group.mapNotNull { it.source }
   }
 
-  public data object SourceScope : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "source-scope"
+  public data object SourceScope : ConceptMapSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "source-scope"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "(ConceptMap.sourceScope as canonical)"
+    public override val expression: kotlin.String = "(ConceptMap.sourceScope as canonical)"
 
-    public override val target: List<String> = listOf("ValueSet")
+    public override val target: List<kotlin.String> = listOf("ValueSet")
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Canonical> =
+      listOfNotNull((resource.sourceScope as? ConceptMap.SourceScope.Canonical)?.value)
   }
 
-  public data object SourceScopeUri : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "source-scope-uri"
+  public data object SourceScopeUri : ConceptMapSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "source-scope-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "(ConceptMap.sourceScope as uri)"
+    public override val expression: kotlin.String = "(ConceptMap.sourceScope as uri)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Uri> =
+      listOfNotNull((resource.sourceScope as? ConceptMap.SourceScope.Uri)?.value)
   }
 
   public data object Status : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ConceptMap.status"
+    public override val expression: kotlin.String = "ConceptMap.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Any> = listOf(resource.status)
   }
 
   public data object TargetCode : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "target-code"
+    public override val paramName: kotlin.String = "target-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ConceptMap.group.element.target.code"
+    public override val expression: kotlin.String = "ConceptMap.group.element.target.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Any> =
+      resource.group.flatMap { it.element }.flatMap { it.target }.mapNotNull { it.code }
   }
 
-  public data object TargetGroupSystem : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "target-group-system"
+  public data object TargetGroupSystem : ConceptMapSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "target-group-system"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ConceptMap.group.target"
+    public override val expression: kotlin.String = "ConceptMap.group.target"
 
-    public override val target: List<String> = listOf("CodeSystem")
+    public override val target: List<kotlin.String> = listOf("CodeSystem")
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Canonical> =
+      resource.group.mapNotNull { it.target }
   }
 
-  public data object TargetScope : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "target-scope"
+  public data object TargetScope : ConceptMapSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "target-scope"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "(ConceptMap.targetScope as canonical)"
+    public override val expression: kotlin.String = "(ConceptMap.targetScope as canonical)"
 
-    public override val target: List<String> = listOf("ValueSet")
+    public override val target: List<kotlin.String> = listOf("ValueSet")
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Canonical> =
+      listOfNotNull((resource.targetScope as? ConceptMap.TargetScope.Canonical)?.value)
   }
 
-  public data object TargetScopeUri : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "target-scope-uri"
+  public data object TargetScopeUri : ConceptMapSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "target-scope-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "(ConceptMap.targetScope as uri)"
+    public override val expression: kotlin.String = "(ConceptMap.targetScope as uri)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Uri> =
+      listOfNotNull((resource.targetScope as? ConceptMap.TargetScope.Uri)?.value)
   }
 
-  public data object Title : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "title"
+  public data object Title : ConceptMapSearchParam<String>() {
+    public override val paramName: kotlin.String = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ConceptMap.title"
+    public override val expression: kotlin.String = "ConceptMap.title"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<String> = listOfNotNull(resource.title)
   }
 
-  public data object Topic : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "topic"
+  public data object Topic : ConceptMapSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ConceptMap.topic"
+    public override val expression: kotlin.String = "ConceptMap.topic"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<CodeableConcept> = resource.topic
   }
 
-  public data object Url : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : ConceptMapSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "ConceptMap.url"
+    public override val expression: kotlin.String = "ConceptMap.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : ConceptMapSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : ConceptMapSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ConceptMap.version"
+    public override val expression: kotlin.String = "ConceptMap.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ConceptMap): List<Any> = emptyList()
+    public override fun extract(resource: ConceptMap): List<String> =
+      listOfNotNull(resource.version)
   }
 
   public companion object {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionContraindicationOtherTherapySerializer
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionContraindicationSerializer
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionIndicationDurationSerializer
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionIndicationSerializer
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionInteractionInteractantItemSerializer
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionInteractionInteractantSerializer
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionInteractionSerializer
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionSerializer
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionUndesirableEffectSerializer
-import com.google.fhir.model.r5.serializers.ClinicalUseDefinitionWarningSerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionContraindicationOtherTherapySerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionContraindicationSerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionIndicationDurationSerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionIndicationSerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionInteractionInteractantItemSerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionInteractionInteractantSerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionInteractionSerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionUndesirableEffectSerializer
+import dev.ohs.fhir.model.r5.serializers.ClinicalUseDefinitionWarningSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -591,14 +591,14 @@ public data class ClinicalUseDefinition(
 
       public fun asString(): String? = this as? String
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Duration
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Duration
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Duration
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Duration
 
       public companion object {
         internal fun from(
-          rangeValue: com.google.fhir.model.r5.Range?,
-          stringValue: com.google.fhir.model.r5.String?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
         ): Duration? {
           if (rangeValue != null) return Range(rangeValue)
           if (stringValue != null) return String(stringValue)
@@ -839,16 +839,16 @@ public data class ClinicalUseDefinition(
 
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-        public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Item
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Item
 
         public companion object {
           internal fun from(
-            referenceValue: com.google.fhir.model.r5.Reference?,
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+            referenceValue: dev.ohs.fhir.model.r5.Reference?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
           ): Item? {
             if (referenceValue != null) return Reference(referenceValue)
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

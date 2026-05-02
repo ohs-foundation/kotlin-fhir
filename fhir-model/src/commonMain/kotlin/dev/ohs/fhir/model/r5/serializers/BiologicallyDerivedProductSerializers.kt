@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.BiologicallyDerivedProduct
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.BiologicallyDerivedProductCollectionCollectedSurrogate
-import com.google.fhir.model.r5.surrogates.BiologicallyDerivedProductCollectionSurrogate
-import com.google.fhir.model.r5.surrogates.BiologicallyDerivedProductPropertySurrogate
-import com.google.fhir.model.r5.surrogates.BiologicallyDerivedProductPropertyValueSurrogate
-import com.google.fhir.model.r5.surrogates.BiologicallyDerivedProductSurrogate
+import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.BiologicallyDerivedProductCollectionCollectedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.BiologicallyDerivedProductCollectionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.BiologicallyDerivedProductPropertySurrogate
+import dev.ohs.fhir.model.r5.surrogates.BiologicallyDerivedProductPropertyValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.BiologicallyDerivedProductSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

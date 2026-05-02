@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: RiskAssessment): List<T>
 
-  public data object Condition : RiskAssessmentSearchParam<Any>() {
+  public data object Condition : RiskAssessmentSearchParam<Reference>() {
     public override val paramName: String = "condition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -38,10 +37,11 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Condition")
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(resource: RiskAssessment): List<Reference> =
+      listOfNotNull(resource.condition)
   }
 
-  public data object Date : RiskAssessmentSearchParam<Any>() {
+  public data object Date : RiskAssessmentSearchParam<DateTime>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -50,10 +50,11 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(resource: RiskAssessment): List<DateTime> =
+      listOfNotNull((resource.occurrence as? RiskAssessment.Occurrence.DateTime)?.value)
   }
 
-  public data object Encounter : RiskAssessmentSearchParam<Any>() {
+  public data object Encounter : RiskAssessmentSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -62,10 +63,11 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(resource: RiskAssessment): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : RiskAssessmentSearchParam<Any>() {
+  public data object Identifier : RiskAssessmentSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,10 +76,11 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(resource: RiskAssessment): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
-  public data object Method : RiskAssessmentSearchParam<Any>() {
+  public data object Method : RiskAssessmentSearchParam<CodeableConcept>() {
     public override val paramName: String = "method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +89,11 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(resource: RiskAssessment): List<CodeableConcept> =
+      listOfNotNull(resource.method)
   }
 
-  public data object Patient : RiskAssessmentSearchParam<Any>() {
+  public data object Patient : RiskAssessmentSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,10 +102,13 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(resource: RiskAssessment): List<Reference> =
+      listOf(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Performer : RiskAssessmentSearchParam<Any>() {
+  public data object Performer : RiskAssessmentSearchParam<Reference>() {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -110,10 +117,12 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Practitioner", "Device", "PractitionerRole")
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(resource: RiskAssessment): List<Reference> =
+      listOfNotNull(resource.performer)
   }
 
-  public data object Probability : RiskAssessmentSearchParam<Any>() {
+  public data object Probability :
+    RiskAssessmentSearchParam<RiskAssessment.Prediction.Probability>() {
     public override val paramName: String = "probability"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
@@ -122,10 +131,13 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(
+      resource: RiskAssessment
+    ): List<RiskAssessment.Prediction.Probability> =
+      resource.prediction.mapNotNull { it.probability }
   }
 
-  public data object Risk : RiskAssessmentSearchParam<Any>() {
+  public data object Risk : RiskAssessmentSearchParam<CodeableConcept>() {
     public override val paramName: String = "risk"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -134,10 +146,11 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(resource: RiskAssessment): List<CodeableConcept> =
+      resource.prediction.mapNotNull { it.qualitativeRisk }
   }
 
-  public data object Subject : RiskAssessmentSearchParam<Any>() {
+  public data object Subject : RiskAssessmentSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -146,7 +159,8 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Group", "Patient")
 
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
+    public override fun extract(resource: RiskAssessment): List<Reference> =
+      listOf(resource.subject)
   }
 
   public companion object {

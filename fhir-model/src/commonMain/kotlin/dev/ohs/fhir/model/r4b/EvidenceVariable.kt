@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.EvidenceVariableCategorySerializer
-import com.google.fhir.model.r4b.serializers.EvidenceVariableCategoryValueSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceVariableCharacteristicDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceVariableCharacteristicSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceVariableCharacteristicTimeFromStartSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceVariableSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCategorySerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCategoryValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCharacteristicDefinitionSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCharacteristicSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCharacteristicTimeFromStartSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -574,25 +574,25 @@ public data class EvidenceVariable(
 
       public fun asExpression(): Expression? = this as? Expression
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
         Definition
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) :
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
         Definition
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Definition
 
-      public data class Expression(public val `value`: com.google.fhir.model.r4b.Expression) :
+      public data class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) :
         Definition
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r4b.Reference?,
-          canonicalValue: com.google.fhir.model.r4b.Canonical?,
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          expressionValue: com.google.fhir.model.r4b.Expression?,
+          referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+          canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          expressionValue: dev.ohs.fhir.model.r4b.Expression?,
         ): Definition? {
           if (referenceValue != null) return Reference(referenceValue)
           if (canonicalValue != null) return Canonical(canonicalValue)
@@ -756,18 +756,18 @@ public data class EvidenceVariable(
       public fun asRange(): Range? = this as? Range
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-      public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Value
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          quantityValue: com.google.fhir.model.r4b.Quantity?,
-          rangeValue: com.google.fhir.model.r4b.Range?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (quantityValue != null) return Quantity(quantityValue)

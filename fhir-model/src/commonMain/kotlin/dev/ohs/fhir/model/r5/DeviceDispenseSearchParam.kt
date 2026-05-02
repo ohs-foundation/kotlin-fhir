@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class DeviceDispenseSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: DeviceDispense): List<T>
 
-  public data object Code : DeviceDispenseSearchParam<Any>() {
+  public data object Code : DeviceDispenseSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,11 @@ public sealed class DeviceDispenseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceDispense): List<Any> = emptyList()
+    public override fun extract(resource: DeviceDispense): List<CodeableConcept> =
+      listOfNotNull(resource.device.concept)
   }
 
-  public data object Identifier : DeviceDispenseSearchParam<Any>() {
+  public data object Identifier : DeviceDispenseSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +51,11 @@ public sealed class DeviceDispenseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceDispense): List<Any> = emptyList()
+    public override fun extract(resource: DeviceDispense): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Patient : DeviceDispenseSearchParam<Any>() {
+  public data object Patient : DeviceDispenseSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -62,7 +64,10 @@ public sealed class DeviceDispenseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: DeviceDispense): List<Any> = emptyList()
+    public override fun extract(resource: DeviceDispense): List<Reference> =
+      listOf(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
   public data object Status : DeviceDispenseSearchParam<Any>() {
@@ -74,10 +79,10 @@ public sealed class DeviceDispenseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceDispense): List<Any> = emptyList()
+    public override fun extract(resource: DeviceDispense): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : DeviceDispenseSearchParam<Any>() {
+  public data object Subject : DeviceDispenseSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -86,7 +91,8 @@ public sealed class DeviceDispenseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Practitioner", "Patient")
 
-    public override fun extract(resource: DeviceDispense): List<Any> = emptyList()
+    public override fun extract(resource: DeviceDispense): List<Reference> =
+      listOf(resource.subject)
   }
 
   public companion object {

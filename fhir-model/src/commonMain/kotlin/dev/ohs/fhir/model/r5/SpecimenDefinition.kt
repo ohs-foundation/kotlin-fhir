@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.SpecimenDefinitionSerializer
-import com.google.fhir.model.r5.serializers.SpecimenDefinitionSubjectSerializer
-import com.google.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSerializer
-import com.google.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerAdditiveSerializer
-import com.google.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerMinimumVolumeSerializer
-import com.google.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerSerializer
-import com.google.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedHandlingSerializer
-import com.google.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedSerializer
-import com.google.fhir.model.r5.serializers.SpecimenDefinitionVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionSubjectSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerAdditiveSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerMinimumVolumeSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedHandlingSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedSerializer
+import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -600,16 +600,16 @@ public data class SpecimenDefinition(
           public fun asReference(): Reference? = this as? Reference
 
           public data class CodeableConcept(
-            public val `value`: com.google.fhir.model.r5.CodeableConcept
+            public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
           ) : Additive
 
-          public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+          public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
             Additive
 
           public companion object {
             internal fun from(
-              codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-              referenceValue: com.google.fhir.model.r5.Reference?,
+              codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+              referenceValue: dev.ohs.fhir.model.r5.Reference?,
             ): Additive? {
               if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
               if (referenceValue != null) return Reference(referenceValue)
@@ -681,16 +681,15 @@ public data class SpecimenDefinition(
 
         public fun asString(): String? = this as? String
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
           MinimumVolume
 
-        public data class String(public val `value`: com.google.fhir.model.r5.String) :
-          MinimumVolume
+        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : MinimumVolume
 
         public companion object {
           internal fun from(
-            quantityValue: com.google.fhir.model.r5.Quantity?,
-            stringValue: com.google.fhir.model.r5.String?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+            stringValue: dev.ohs.fhir.model.r5.String?,
           ): MinimumVolume? {
             if (quantityValue != null) return Quantity(quantityValue)
             if (stringValue != null) return String(stringValue)
@@ -1035,16 +1034,14 @@ public data class SpecimenDefinition(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)
@@ -1059,16 +1056,15 @@ public data class SpecimenDefinition(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r5.CodeableConcept
-    ) : Subject
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+      Subject
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Subject
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Subject
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r5.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
       ): Subject? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)

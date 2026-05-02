@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Specimen): List<T>
 
-  public data object Accession : SpecimenSearchParam<Any>() {
+  public data object Accession : SpecimenSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "accession"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,11 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<dev.ohs.fhir.model.r4.Identifier> =
+      listOfNotNull(resource.accessionIdentifier)
   }
 
-  public data object Bodysite : SpecimenSearchParam<Any>() {
+  public data object Bodysite : SpecimenSearchParam<CodeableConcept>() {
     public override val paramName: String = "bodysite"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +51,11 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<CodeableConcept> =
+      listOfNotNull(resource.collection?.bodySite)
   }
 
-  public data object Collected : SpecimenSearchParam<Any>() {
+  public data object Collected : SpecimenSearchParam<Specimen.Collection.Collected>() {
     public override val paramName: String = "collected"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -62,10 +64,11 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<Specimen.Collection.Collected> =
+      listOfNotNull(resource.collection?.collected)
   }
 
-  public data object Collector : SpecimenSearchParam<Any>() {
+  public data object Collector : SpecimenSearchParam<Reference>() {
     public override val paramName: String = "collector"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,10 +77,11 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Practitioner", "PractitionerRole")
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<Reference> =
+      listOfNotNull(resource.collection?.collector)
   }
 
-  public data object Container : SpecimenSearchParam<Any>() {
+  public data object Container : SpecimenSearchParam<CodeableConcept>() {
     public override val paramName: String = "container"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +90,11 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<CodeableConcept> =
+      resource.container.mapNotNull { it.type }
   }
 
-  public data object ContainerId : SpecimenSearchParam<Any>() {
+  public data object ContainerId : SpecimenSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "container-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,10 +103,11 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.container.flatMap { it.identifier }
   }
 
-  public data object Identifier : SpecimenSearchParam<Any>() {
+  public data object Identifier : SpecimenSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -110,10 +116,11 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.identifier
   }
 
-  public data object Parent : SpecimenSearchParam<Any>() {
+  public data object Parent : SpecimenSearchParam<Reference>() {
     public override val paramName: String = "parent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -122,10 +129,10 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Specimen")
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<Reference> = resource.parent
   }
 
-  public data object Patient : SpecimenSearchParam<Any>() {
+  public data object Patient : SpecimenSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -134,7 +141,10 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
   public data object Status : SpecimenSearchParam<Any>() {
@@ -146,10 +156,10 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object Subject : SpecimenSearchParam<Any>() {
+  public data object Subject : SpecimenSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -159,10 +169,11 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Group", "Device", "Patient", "Substance", "Location")
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
-  public data object Type : SpecimenSearchParam<Any>() {
+  public data object Type : SpecimenSearchParam<CodeableConcept>() {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -171,7 +182,8 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Specimen): List<Any> = emptyList()
+    public override fun extract(resource: Specimen): List<CodeableConcept> =
+      listOfNotNull(resource.type)
   }
 
   public companion object {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.ResearchStudy
-import com.google.fhir.model.r5.surrogates.ResearchStudyAssociatedPartySurrogate
-import com.google.fhir.model.r5.surrogates.ResearchStudyComparisonGroupSurrogate
-import com.google.fhir.model.r5.surrogates.ResearchStudyLabelSurrogate
-import com.google.fhir.model.r5.surrogates.ResearchStudyObjectiveSurrogate
-import com.google.fhir.model.r5.surrogates.ResearchStudyOutcomeMeasureSurrogate
-import com.google.fhir.model.r5.surrogates.ResearchStudyProgressStatusSurrogate
-import com.google.fhir.model.r5.surrogates.ResearchStudyRecruitmentSurrogate
-import com.google.fhir.model.r5.surrogates.ResearchStudySurrogate
+import dev.ohs.fhir.model.r5.ResearchStudy
+import dev.ohs.fhir.model.r5.surrogates.ResearchStudyAssociatedPartySurrogate
+import dev.ohs.fhir.model.r5.surrogates.ResearchStudyComparisonGroupSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ResearchStudyLabelSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ResearchStudyObjectiveSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ResearchStudyOutcomeMeasureSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ResearchStudyProgressStatusSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ResearchStudyRecruitmentSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ResearchStudySurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

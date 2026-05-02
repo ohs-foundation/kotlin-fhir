@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,27 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.TestScriptDestinationSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptFixtureSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptMetadataCapabilitySerializer
-import com.google.fhir.model.r4b.serializers.TestScriptMetadataLinkSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptMetadataSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptOriginSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptSetupActionAssertSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptSetupActionOperationRequestHeaderSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptSetupActionOperationSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptSetupActionSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptSetupSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptTeardownActionSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptTeardownSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptTestActionSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptTestSerializer
-import com.google.fhir.model.r4b.serializers.TestScriptVariableSerializer
-import com.google.fhir.model.r4b.terminologies.FHIRDefinedType
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.TestScriptDestinationSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptFixtureSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptMetadataCapabilitySerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptMetadataLinkSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptMetadataSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptOriginSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptSetupActionAssertSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptSetupActionOperationRequestHeaderSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptSetupActionOperationSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptSetupActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptSetupSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptTeardownActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptTeardownSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptTestActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptTestSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestScriptVariableSerializer
+import dev.ohs.fhir.model.r4b.terminologies.FHIRDefinedType
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -30,159 +29,164 @@ public sealed class EvidenceSearchParam<T> : SearchParam {
   public abstract fun extract(resource: Evidence): List<T>
 
   public data object Context : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "context"
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "(Evidence.useContext.value.ofType(CodeableConcept))"
+    public override val expression: kotlin.String =
+      "(Evidence.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: Evidence): List<Any> = emptyList()
   }
 
   public data object ContextQuantity : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "context-quantity"
+    public override val paramName: kotlin.String = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
-    public override val expression: String = "(Evidence.useContext.value.ofType(Quantity))"
+    public override val expression: kotlin.String = "(Evidence.useContext.value.ofType(Quantity))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: Evidence): List<Any> = emptyList()
   }
 
-  public data object ContextType : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "context-type"
+  public data object ContextType : EvidenceSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Evidence.useContext.code"
+    public override val expression: kotlin.String = "Evidence.useContext.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<Coding> =
+      resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "context-type-quantity"
+  public data object ContextTypeQuantity : EvidenceSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "Evidence.useContext"
+    public override val expression: kotlin.String = "Evidence.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "context-type-value"
+  public data object ContextTypeValue : EvidenceSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "Evidence.useContext"
+    public override val expression: kotlin.String = "Evidence.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : EvidenceSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "Evidence.date"
+    public override val expression: kotlin.String = "Evidence.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object Description : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : EvidenceSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Evidence.description"
+    public override val expression: kotlin.String = "Evidence.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<Markdown> =
+      listOfNotNull(resource.description)
   }
 
-  public data object Identifier : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : EvidenceSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Evidence.identifier"
+    public override val expression: kotlin.String = "Evidence.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Publisher : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "publisher"
+  public data object Publisher : EvidenceSearchParam<String>() {
+    public override val paramName: kotlin.String = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Evidence.publisher"
+    public override val expression: kotlin.String = "Evidence.publisher"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<String> =
+      listOfNotNull(resource.publisher)
   }
 
   public data object Status : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Evidence.status"
+    public override val expression: kotlin.String = "Evidence.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "title"
+  public data object Title : EvidenceSearchParam<String>() {
+    public override val paramName: kotlin.String = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Evidence.title"
+    public override val expression: kotlin.String = "Evidence.title"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<String> = listOfNotNull(resource.title)
   }
 
-  public data object Url : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : EvidenceSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "Evidence.url"
+    public override val expression: kotlin.String = "Evidence.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : EvidenceSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : EvidenceSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Evidence.version"
+    public override val expression: kotlin.String = "Evidence.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Evidence): List<Any> = emptyList()
+    public override fun extract(resource: Evidence): List<String> = listOfNotNull(resource.version)
   }
 
   public companion object {

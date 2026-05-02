@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4.serializers.QuestionnaireResponseItemAnswerSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireResponseItemAnswerValueSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireResponseItemSerializer
-import com.google.fhir.model.r4.serializers.QuestionnaireResponseSerializer
+import dev.ohs.fhir.model.r4b.serializers.QuestionnaireResponseItemAnswerSerializer
+import dev.ohs.fhir.model.r4b.serializers.QuestionnaireResponseItemAnswerValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.QuestionnaireResponseItemSerializer
+import dev.ohs.fhir.model.r4b.serializers.QuestionnaireResponseSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -419,45 +419,44 @@ public data class QuestionnaireResponse(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-        public data class Decimal(public val `value`: com.google.fhir.model.r4.Decimal) : Value
+        public data class Decimal(public val `value`: dev.ohs.fhir.model.r4b.Decimal) : Value
 
-        public data class Integer(public val `value`: com.google.fhir.model.r4.Integer) : Value
+        public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
 
-        public data class Date(public val `value`: com.google.fhir.model.r4.Date) : Value
+        public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Value
 
-        public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Value
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
 
-        public data class Time(public val `value`: com.google.fhir.model.r4.Time) : Value
+        public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
 
-        public data class String(public val `value`: com.google.fhir.model.r4.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
 
-        public data class Uri(public val `value`: com.google.fhir.model.r4.Uri) : Value
+        public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Value
 
-        public data class Attachment(public val `value`: com.google.fhir.model.r4.Attachment) :
-          Value
+        public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Value
 
-        public data class Coding(public val `value`: com.google.fhir.model.r4.Coding) : Value
+        public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : Value
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Value
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Value
 
         public companion object {
           internal fun from(
-            booleanValue: com.google.fhir.model.r4.Boolean?,
-            decimalValue: com.google.fhir.model.r4.Decimal?,
-            integerValue: com.google.fhir.model.r4.Integer?,
-            dateValue: com.google.fhir.model.r4.Date?,
-            dateTimeValue: com.google.fhir.model.r4.DateTime?,
-            timeValue: com.google.fhir.model.r4.Time?,
-            stringValue: com.google.fhir.model.r4.String?,
-            uriValue: com.google.fhir.model.r4.Uri?,
-            attachmentValue: com.google.fhir.model.r4.Attachment?,
-            codingValue: com.google.fhir.model.r4.Coding?,
-            quantityValue: com.google.fhir.model.r4.Quantity?,
-            referenceValue: com.google.fhir.model.r4.Reference?,
+            booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+            decimalValue: dev.ohs.fhir.model.r4b.Decimal?,
+            integerValue: dev.ohs.fhir.model.r4b.Integer?,
+            dateValue: dev.ohs.fhir.model.r4b.Date?,
+            dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+            timeValue: dev.ohs.fhir.model.r4b.Time?,
+            stringValue: dev.ohs.fhir.model.r4b.String?,
+            uriValue: dev.ohs.fhir.model.r4b.Uri?,
+            attachmentValue: dev.ohs.fhir.model.r4b.Attachment?,
+            codingValue: dev.ohs.fhir.model.r4b.Coding?,
+            quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+            referenceValue: dev.ohs.fhir.model.r4b.Reference?,
           ): Value? {
             if (booleanValue != null) return Boolean(booleanValue)
             if (decimalValue != null) return Decimal(decimalValue)

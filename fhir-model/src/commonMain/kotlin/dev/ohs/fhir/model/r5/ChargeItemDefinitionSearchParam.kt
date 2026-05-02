@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -30,185 +29,200 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
   public abstract fun extract(resource: ChargeItemDefinition): List<T>
 
   public data object Context : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context"
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "(ChargeItemDefinition.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
   }
 
   public data object ContextQuantity : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-quantity"
+    public override val paramName: kotlin.String = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "(ChargeItemDefinition.useContext.value.ofType(Quantity))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
   }
 
-  public data object ContextType : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type"
+  public data object ContextType : ChargeItemDefinitionSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ChargeItemDefinition.useContext.code"
+    public override val expression: kotlin.String = "ChargeItemDefinition.useContext.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<Coding> =
+      resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type-quantity"
+  public data object ContextTypeQuantity : ChargeItemDefinitionSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "ChargeItemDefinition.useContext"
+    public override val expression: kotlin.String = "ChargeItemDefinition.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<UsageContext> =
+      resource.useContext
   }
 
-  public data object ContextTypeValue : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type-value"
+  public data object ContextTypeValue : ChargeItemDefinitionSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "ChargeItemDefinition.useContext"
+    public override val expression: kotlin.String = "ChargeItemDefinition.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<UsageContext> =
+      resource.useContext
   }
 
-  public data object Date : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : ChargeItemDefinitionSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "ChargeItemDefinition.date"
+    public override val expression: kotlin.String = "ChargeItemDefinition.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<DateTime> =
+      listOfNotNull(resource.date)
   }
 
-  public data object Description : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : ChargeItemDefinitionSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ChargeItemDefinition.description"
+    public override val expression: kotlin.String = "ChargeItemDefinition.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<Markdown> =
+      listOfNotNull(resource.description)
   }
 
-  public data object Effective : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "effective"
+  public data object Effective : ChargeItemDefinitionSearchParam<Period>() {
+    public override val paramName: kotlin.String = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "ChargeItemDefinition.applicability.effectivePeriod"
+    public override val expression: kotlin.String =
+      "ChargeItemDefinition.applicability.effectivePeriod"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<Period> =
+      resource.applicability.mapNotNull { it.effectivePeriod }
   }
 
-  public data object Identifier : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier :
+    ChargeItemDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ChargeItemDefinition.identifier"
+    public override val expression: kotlin.String = "ChargeItemDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(
+      resource: ChargeItemDefinition
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Jurisdiction : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "jurisdiction"
+  public data object Jurisdiction : ChargeItemDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ChargeItemDefinition.jurisdiction"
+    public override val expression: kotlin.String = "ChargeItemDefinition.jurisdiction"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<CodeableConcept> =
+      resource.jurisdiction
   }
 
-  public data object Publisher : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "publisher"
+  public data object Publisher : ChargeItemDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ChargeItemDefinition.publisher"
+    public override val expression: kotlin.String = "ChargeItemDefinition.publisher"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<String> =
+      listOfNotNull(resource.publisher)
   }
 
   public data object Status : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ChargeItemDefinition.status"
+    public override val expression: kotlin.String = "ChargeItemDefinition.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "title"
+  public data object Title : ChargeItemDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ChargeItemDefinition.title"
+    public override val expression: kotlin.String = "ChargeItemDefinition.title"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<String> =
+      listOfNotNull(resource.title)
   }
 
-  public data object Url : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : ChargeItemDefinitionSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "ChargeItemDefinition.url"
+    public override val expression: kotlin.String = "ChargeItemDefinition.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<Uri> =
+      listOfNotNull(resource.url)
   }
 
-  public data object Version : ChargeItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : ChargeItemDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ChargeItemDefinition.version"
+    public override val expression: kotlin.String = "ChargeItemDefinition.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ChargeItemDefinition): List<String> =
+      listOfNotNull(resource.version)
   }
 
   public companion object {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ResearchStudyAssociatedPartySerializer
-import com.google.fhir.model.r5.serializers.ResearchStudyComparisonGroupSerializer
-import com.google.fhir.model.r5.serializers.ResearchStudyLabelSerializer
-import com.google.fhir.model.r5.serializers.ResearchStudyObjectiveSerializer
-import com.google.fhir.model.r5.serializers.ResearchStudyOutcomeMeasureSerializer
-import com.google.fhir.model.r5.serializers.ResearchStudyProgressStatusSerializer
-import com.google.fhir.model.r5.serializers.ResearchStudyRecruitmentSerializer
-import com.google.fhir.model.r5.serializers.ResearchStudySerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.ResearchStudyAssociatedPartySerializer
+import dev.ohs.fhir.model.r5.serializers.ResearchStudyComparisonGroupSerializer
+import dev.ohs.fhir.model.r5.serializers.ResearchStudyLabelSerializer
+import dev.ohs.fhir.model.r5.serializers.ResearchStudyObjectiveSerializer
+import dev.ohs.fhir.model.r5.serializers.ResearchStudyOutcomeMeasureSerializer
+import dev.ohs.fhir.model.r5.serializers.ResearchStudyProgressStatusSerializer
+import dev.ohs.fhir.model.r5.serializers.ResearchStudyRecruitmentSerializer
+import dev.ohs.fhir.model.r5.serializers.ResearchStudySerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

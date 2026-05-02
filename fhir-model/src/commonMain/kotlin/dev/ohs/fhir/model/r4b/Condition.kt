@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.ConditionAbatementSerializer
-import com.google.fhir.model.r4b.serializers.ConditionEvidenceSerializer
-import com.google.fhir.model.r4b.serializers.ConditionOnsetSerializer
-import com.google.fhir.model.r4b.serializers.ConditionSerializer
-import com.google.fhir.model.r4b.serializers.ConditionStageSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConditionAbatementSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConditionEvidenceSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConditionOnsetSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConditionSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConditionStageSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -530,23 +530,23 @@ public data class Condition(
 
     public fun asString(): String? = this as? String
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Onset
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Onset
 
-    public data class Age(public val `value`: com.google.fhir.model.r4b.Age) : Onset
+    public data class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : Onset
 
-    public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Onset
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Onset
 
-    public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Onset
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Onset
 
-    public data class String(public val `value`: com.google.fhir.model.r4b.String) : Onset
+    public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Onset
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        ageValue: com.google.fhir.model.r4b.Age?,
-        periodValue: com.google.fhir.model.r4b.Period?,
-        rangeValue: com.google.fhir.model.r4b.Range?,
-        stringValue: com.google.fhir.model.r4b.String?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        ageValue: dev.ohs.fhir.model.r4b.Age?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
+        rangeValue: dev.ohs.fhir.model.r4b.Range?,
+        stringValue: dev.ohs.fhir.model.r4b.String?,
       ): Onset? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (ageValue != null) return Age(ageValue)
@@ -570,23 +570,23 @@ public data class Condition(
 
     public fun asString(): String? = this as? String
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Abatement
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Abatement
 
-    public data class Age(public val `value`: com.google.fhir.model.r4b.Age) : Abatement
+    public data class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : Abatement
 
-    public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Abatement
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Abatement
 
-    public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Abatement
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Abatement
 
-    public data class String(public val `value`: com.google.fhir.model.r4b.String) : Abatement
+    public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Abatement
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        ageValue: com.google.fhir.model.r4b.Age?,
-        periodValue: com.google.fhir.model.r4b.Period?,
-        rangeValue: com.google.fhir.model.r4b.Range?,
-        stringValue: com.google.fhir.model.r4b.String?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        ageValue: dev.ohs.fhir.model.r4b.Age?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
+        rangeValue: dev.ohs.fhir.model.r4b.Range?,
+        stringValue: dev.ohs.fhir.model.r4b.String?,
       ): Abatement? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (ageValue != null) return Age(ageValue)

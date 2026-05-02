@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.EvidenceReport
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.surrogates.EvidenceReportCiteAsSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceReportRelatesToSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceReportRelatesToTargetSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceReportSectionSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceReportSubjectCharacteristicSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceReportSubjectCharacteristicValueSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceReportSubjectSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceReportSurrogate
+import dev.ohs.fhir.model.r4b.EvidenceReport
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceReportCiteAsSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceReportRelatesToSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceReportRelatesToTargetSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceReportSectionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceReportSubjectCharacteristicSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceReportSubjectCharacteristicValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceReportSubjectSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceReportSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

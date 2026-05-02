@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4b.serializers.CodeSystemConceptDesignationSerializer
-import com.google.fhir.model.r4b.serializers.CodeSystemConceptPropertySerializer
-import com.google.fhir.model.r4b.serializers.CodeSystemConceptPropertyValueSerializer
-import com.google.fhir.model.r4b.serializers.CodeSystemConceptSerializer
-import com.google.fhir.model.r4b.serializers.CodeSystemFilterSerializer
-import com.google.fhir.model.r4b.serializers.CodeSystemPropertySerializer
-import com.google.fhir.model.r4b.serializers.CodeSystemSerializer
-import com.google.fhir.model.r4b.terminologies.CommonLanguages
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptDesignationSerializer
+import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptPropertySerializer
+import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptPropertyValueSerializer
+import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptSerializer
+import dev.ohs.fhir.model.r4.serializers.CodeSystemFilterSerializer
+import dev.ohs.fhir.model.r4.serializers.CodeSystemPropertySerializer
+import dev.ohs.fhir.model.r4.serializers.CodeSystemSerializer
+import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -980,29 +980,29 @@ public data class CodeSystem(
 
         public fun asDecimal(): Decimal? = this as? Decimal
 
-        public data class Code(public val `value`: com.google.fhir.model.r4b.Code) : Value
+        public data class Code(public val `value`: dev.ohs.fhir.model.r4.Code) : Value
 
-        public data class Coding(public val `value`: com.google.fhir.model.r4b.Coding) : Value
+        public data class Coding(public val `value`: dev.ohs.fhir.model.r4.Coding) : Value
 
-        public data class String(public val `value`: com.google.fhir.model.r4b.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-        public data class Integer(public val `value`: com.google.fhir.model.r4b.Integer) : Value
+        public data class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
 
-        public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Value
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Value
 
-        public data class Decimal(public val `value`: com.google.fhir.model.r4b.Decimal) : Value
+        public data class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Value
 
         public companion object {
           internal fun from(
-            codeValue: com.google.fhir.model.r4b.Code?,
-            codingValue: com.google.fhir.model.r4b.Coding?,
-            stringValue: com.google.fhir.model.r4b.String?,
-            integerValue: com.google.fhir.model.r4b.Integer?,
-            booleanValue: com.google.fhir.model.r4b.Boolean?,
-            dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-            decimalValue: com.google.fhir.model.r4b.Decimal?,
+            codeValue: dev.ohs.fhir.model.r4.Code?,
+            codingValue: dev.ohs.fhir.model.r4.Coding?,
+            stringValue: dev.ohs.fhir.model.r4.String?,
+            integerValue: dev.ohs.fhir.model.r4.Integer?,
+            booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+            dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+            decimalValue: dev.ohs.fhir.model.r4.Decimal?,
           ): Value? {
             if (codeValue != null) return Code(codeValue)
             if (codingValue != null) return Coding(codingValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,24 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.ConceptMap
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.ConceptMapAdditionalAttributeSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapGroupElementSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapGroupElementTargetDependsOnSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapGroupElementTargetDependsOnValueSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapGroupElementTargetPropertySurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapGroupElementTargetPropertyValueSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapGroupElementTargetSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapGroupSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapGroupUnmappedSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapPropertySurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapSourceScopeSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapTargetScopeSurrogate
-import com.google.fhir.model.r5.surrogates.ConceptMapVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.ConceptMap
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapAdditionalAttributeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapGroupElementSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapGroupElementTargetDependsOnSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapGroupElementTargetDependsOnValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapGroupElementTargetPropertySurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapGroupElementTargetPropertyValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapGroupElementTargetSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapGroupSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapGroupUnmappedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapPropertySurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapSourceScopeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapTargetScopeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConceptMapVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

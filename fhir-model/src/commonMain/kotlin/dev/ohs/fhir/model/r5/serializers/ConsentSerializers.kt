@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.Consent
-import com.google.fhir.model.r5.surrogates.ConsentPolicyBasisSurrogate
-import com.google.fhir.model.r5.surrogates.ConsentProvisionActorSurrogate
-import com.google.fhir.model.r5.surrogates.ConsentProvisionDataSurrogate
-import com.google.fhir.model.r5.surrogates.ConsentProvisionSurrogate
-import com.google.fhir.model.r5.surrogates.ConsentSurrogate
-import com.google.fhir.model.r5.surrogates.ConsentVerificationSurrogate
+import dev.ohs.fhir.model.r5.Consent
+import dev.ohs.fhir.model.r5.surrogates.ConsentPolicyBasisSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConsentProvisionActorSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConsentProvisionDataSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConsentProvisionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConsentSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ConsentVerificationSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.PaymentReconciliationDetailSerializer
-import com.google.fhir.model.r4b.serializers.PaymentReconciliationProcessNoteSerializer
-import com.google.fhir.model.r4b.serializers.PaymentReconciliationSerializer
-import com.google.fhir.model.r4b.terminologies.NoteType
-import com.google.fhir.model.r4b.terminologies.RemittanceOutcome
+import dev.ohs.fhir.model.r4b.serializers.PaymentReconciliationDetailSerializer
+import dev.ohs.fhir.model.r4b.serializers.PaymentReconciliationProcessNoteSerializer
+import dev.ohs.fhir.model.r4b.serializers.PaymentReconciliationSerializer
+import dev.ohs.fhir.model.r4b.terminologies.NoteType
+import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

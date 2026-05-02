@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.DosageAsNeededSerializer
-import com.google.fhir.model.r4b.serializers.DosageDoseAndRateDoseSerializer
-import com.google.fhir.model.r4b.serializers.DosageDoseAndRateRateSerializer
-import com.google.fhir.model.r4b.serializers.DosageDoseAndRateSerializer
-import com.google.fhir.model.r4b.serializers.DosageSerializer
+import dev.ohs.fhir.model.r4b.serializers.DosageAsNeededSerializer
+import dev.ohs.fhir.model.r4b.serializers.DosageDoseAndRateDoseSerializer
+import dev.ohs.fhir.model.r4b.serializers.DosageDoseAndRateRateSerializer
+import dev.ohs.fhir.model.r4b.serializers.DosageDoseAndRateSerializer
+import dev.ohs.fhir.model.r4b.serializers.DosageSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -238,14 +238,14 @@ public data class Dosage(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Dose
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Dose
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Dose
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Dose
 
       public companion object {
         internal fun from(
-          rangeValue: com.google.fhir.model.r4b.Range?,
-          quantityValue: com.google.fhir.model.r4b.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
         ): Dose? {
           if (rangeValue != null) return Range(rangeValue)
           if (quantityValue != null) return Quantity(quantityValue)
@@ -262,17 +262,17 @@ public data class Dosage(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) : Rate
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Rate
 
-      public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Rate
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Rate
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Rate
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Rate
 
       public companion object {
         internal fun from(
-          ratioValue: com.google.fhir.model.r4b.Ratio?,
-          rangeValue: com.google.fhir.model.r4b.Range?,
-          quantityValue: com.google.fhir.model.r4b.Quantity?,
+          ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
         ): Rate? {
           if (ratioValue != null) return Ratio(ratioValue)
           if (rangeValue != null) return Range(rangeValue)
@@ -359,16 +359,15 @@ public data class Dosage(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : AsNeeded
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : AsNeeded
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : AsNeeded
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      AsNeeded
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r4b.Boolean?,
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
+        booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
       ): AsNeeded? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

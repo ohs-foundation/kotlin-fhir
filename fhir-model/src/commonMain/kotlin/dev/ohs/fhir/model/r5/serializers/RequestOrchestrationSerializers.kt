@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.RequestOrchestration
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionConditionSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionDynamicValueSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionInputSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionOutputSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionParticipantActorSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionParticipantSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionRelatedActionOffsetSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionRelatedActionSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationActionTimingSurrogate
-import com.google.fhir.model.r5.surrogates.RequestOrchestrationSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.RequestOrchestration
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionConditionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionDefinitionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionDynamicValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionInputSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionOutputSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionParticipantActorSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionParticipantSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionRelatedActionOffsetSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionRelatedActionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationActionTimingSurrogate
+import dev.ohs.fhir.model.r5.surrogates.RequestOrchestrationSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

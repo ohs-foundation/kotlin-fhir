@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.SubstancePolymerMonomerSetSerializer
-import com.google.fhir.model.r5.serializers.SubstancePolymerMonomerSetStartingMaterialSerializer
-import com.google.fhir.model.r5.serializers.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer
-import com.google.fhir.model.r5.serializers.SubstancePolymerRepeatRepeatUnitSerializer
-import com.google.fhir.model.r5.serializers.SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializer
-import com.google.fhir.model.r5.serializers.SubstancePolymerRepeatSerializer
-import com.google.fhir.model.r5.serializers.SubstancePolymerSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstancePolymerMonomerSetSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstancePolymerMonomerSetStartingMaterialSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstancePolymerRepeatRepeatUnitSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstancePolymerRepeatSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstancePolymerSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

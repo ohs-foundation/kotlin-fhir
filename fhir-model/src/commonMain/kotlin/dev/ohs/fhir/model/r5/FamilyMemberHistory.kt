@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.FamilyMemberHistoryAgeSerializer
-import com.google.fhir.model.r5.serializers.FamilyMemberHistoryBornSerializer
-import com.google.fhir.model.r5.serializers.FamilyMemberHistoryConditionOnsetSerializer
-import com.google.fhir.model.r5.serializers.FamilyMemberHistoryConditionSerializer
-import com.google.fhir.model.r5.serializers.FamilyMemberHistoryDeceasedSerializer
-import com.google.fhir.model.r5.serializers.FamilyMemberHistoryParticipantSerializer
-import com.google.fhir.model.r5.serializers.FamilyMemberHistoryProcedurePerformedSerializer
-import com.google.fhir.model.r5.serializers.FamilyMemberHistoryProcedureSerializer
-import com.google.fhir.model.r5.serializers.FamilyMemberHistorySerializer
+import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistoryAgeSerializer
+import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistoryBornSerializer
+import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistoryConditionOnsetSerializer
+import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistoryConditionSerializer
+import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistoryDeceasedSerializer
+import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistoryParticipantSerializer
+import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistoryProcedurePerformedSerializer
+import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistoryProcedureSerializer
+import dev.ohs.fhir.model.r5.serializers.FamilyMemberHistorySerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -500,20 +500,20 @@ public data class FamilyMemberHistory(
 
       public fun asString(): String? = this as? String
 
-      public data class Age(public val `value`: com.google.fhir.model.r5.Age) : Onset
+      public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Onset
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Onset
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Onset
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Onset
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Onset
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Onset
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Onset
 
       public companion object {
         internal fun from(
-          ageValue: com.google.fhir.model.r5.Age?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          periodValue: com.google.fhir.model.r5.Period?,
-          stringValue: com.google.fhir.model.r5.String?,
+          ageValue: dev.ohs.fhir.model.r5.Age?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
         ): Onset? {
           if (ageValue != null) return Age(ageValue)
           if (rangeValue != null) return Range(rangeValue)
@@ -701,23 +701,23 @@ public data class FamilyMemberHistory(
 
       public fun asDateTime(): DateTime? = this as? DateTime
 
-      public data class Age(public val `value`: com.google.fhir.model.r5.Age) : Performed
+      public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Performed
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Performed
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Performed
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Performed
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Performed
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Performed
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Performed
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Performed
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Performed
 
       public companion object {
         internal fun from(
-          ageValue: com.google.fhir.model.r5.Age?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          periodValue: com.google.fhir.model.r5.Period?,
-          stringValue: com.google.fhir.model.r5.String?,
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
+          ageValue: dev.ohs.fhir.model.r5.Age?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
         ): Performed? {
           if (ageValue != null) return Age(ageValue)
           if (rangeValue != null) return Range(rangeValue)
@@ -821,17 +821,17 @@ public data class FamilyMemberHistory(
 
     public fun asString(): String? = this as? String
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Born
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Born
 
-    public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Born
+    public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Born
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) : Born
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Born
 
     public companion object {
       internal fun from(
-        periodValue: com.google.fhir.model.r5.Period?,
-        dateValue: com.google.fhir.model.r5.Date?,
-        stringValue: com.google.fhir.model.r5.String?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        dateValue: dev.ohs.fhir.model.r5.Date?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
       ): Born? {
         if (periodValue != null) return Period(periodValue)
         if (dateValue != null) return Date(dateValue)
@@ -849,20 +849,19 @@ public data class FamilyMemberHistory(
 
     public fun asString(): String? = this as? String
 
-    public data class Age(public val `value`: com.google.fhir.model.r5.Age) :
+    public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : FamilyMemberHistory.Age
+
+    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) :
       FamilyMemberHistory.Age
 
-    public data class Range(public val `value`: com.google.fhir.model.r5.Range) :
-      FamilyMemberHistory.Age
-
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) :
       FamilyMemberHistory.Age
 
     public companion object {
       internal fun from(
-        ageValue: com.google.fhir.model.r5.Age?,
-        rangeValue: com.google.fhir.model.r5.Range?,
-        stringValue: com.google.fhir.model.r5.String?,
+        ageValue: dev.ohs.fhir.model.r5.Age?,
+        rangeValue: dev.ohs.fhir.model.r5.Range?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
       ): FamilyMemberHistory.Age? {
         if (ageValue != null) return Age(ageValue)
         if (rangeValue != null) return Range(rangeValue)
@@ -884,23 +883,23 @@ public data class FamilyMemberHistory(
 
     public fun asString(): String? = this as? String
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Deceased
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Deceased
 
-    public data class Age(public val `value`: com.google.fhir.model.r5.Age) : Deceased
+    public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Deceased
 
-    public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Deceased
+    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Deceased
 
-    public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Deceased
+    public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Deceased
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) : Deceased
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Deceased
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r5.Boolean?,
-        ageValue: com.google.fhir.model.r5.Age?,
-        rangeValue: com.google.fhir.model.r5.Range?,
-        dateValue: com.google.fhir.model.r5.Date?,
-        stringValue: com.google.fhir.model.r5.String?,
+        booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+        ageValue: dev.ohs.fhir.model.r5.Age?,
+        rangeValue: dev.ohs.fhir.model.r5.Range?,
+        dateValue: dev.ohs.fhir.model.r5.Date?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
       ): Deceased? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (ageValue != null) return Age(ageValue)

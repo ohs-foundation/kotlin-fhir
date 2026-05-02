@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.MedicationDispense
-import com.google.fhir.model.r4b.surrogates.MedicationDispenseMedicationSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationDispensePerformerSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationDispenseStatusReasonSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationDispenseSubstitutionSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationDispenseSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.MedicationDispense
+import dev.ohs.fhir.model.r4b.surrogates.MedicationDispenseMedicationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationDispensePerformerSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationDispenseStatusReasonSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationDispenseSubstitutionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationDispenseSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

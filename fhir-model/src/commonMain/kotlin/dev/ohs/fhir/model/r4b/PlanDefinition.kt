@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,23 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.PlanDefinitionActionConditionSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionActionDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionActionDynamicValueSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionActionParticipantSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionActionRelatedActionOffsetSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionActionRelatedActionSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionActionSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionActionSubjectSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionActionTimingSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionGoalSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionGoalTargetDetailSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionGoalTargetSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.PlanDefinitionSubjectSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionConditionSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionDefinitionSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionDynamicValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionParticipantSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionRelatedActionOffsetSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionRelatedActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionSubjectSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionTimingSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionGoalSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionGoalTargetDetailSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionGoalTargetSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionSerializer
+import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionSubjectSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -590,19 +590,19 @@ public data class PlanDefinition(
 
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Detail
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Detail
 
-        public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Detail
+        public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Detail
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r4b.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
         ) : Detail
 
         public companion object {
           internal fun from(
-            quantityValue: com.google.fhir.model.r4b.Quantity?,
-            rangeValue: com.google.fhir.model.r4b.Range?,
-            codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
+            quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+            rangeValue: dev.ohs.fhir.model.r4b.Range?,
+            codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
           ): Detail? {
             if (quantityValue != null) return Quantity(quantityValue)
             if (rangeValue != null) return Range(rangeValue)
@@ -1193,14 +1193,14 @@ public data class PlanDefinition(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) : Offset
+        public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Offset
 
-        public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Offset
+        public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Offset
 
         public companion object {
           internal fun from(
-            durationValue: com.google.fhir.model.r4b.Duration?,
-            rangeValue: com.google.fhir.model.r4b.Range?,
+            durationValue: dev.ohs.fhir.model.r4b.Duration?,
+            rangeValue: dev.ohs.fhir.model.r4b.Range?,
           ): Offset? {
             if (durationValue != null) return Duration(durationValue)
             if (rangeValue != null) return Range(rangeValue)
@@ -1552,20 +1552,18 @@ public data class PlanDefinition(
       public fun asCanonical(): Canonical? = this as? Canonical
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Subject
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-        Subject
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) :
-        Subject
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Subject
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
-          canonicalValue: com.google.fhir.model.r4b.Canonical?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+          canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
         ): Subject? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -1589,30 +1587,28 @@ public data class PlanDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) :
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
         Action.Timing
 
-      public data class Age(public val `value`: com.google.fhir.model.r4b.Age) : Action.Timing
+      public data class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : Action.Timing
 
-      public data class Period(public val `value`: com.google.fhir.model.r4b.Period) :
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Action.Timing
+
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
         Action.Timing
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) :
-        Action.Timing
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Action.Timing
 
-      public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Action.Timing
-
-      public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) :
-        Action.Timing
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Action.Timing
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-          ageValue: com.google.fhir.model.r4b.Age?,
-          periodValue: com.google.fhir.model.r4b.Period?,
-          durationValue: com.google.fhir.model.r4b.Duration?,
-          rangeValue: com.google.fhir.model.r4b.Range?,
-          timingValue: com.google.fhir.model.r4b.Timing?,
+          dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+          ageValue: dev.ohs.fhir.model.r4b.Age?,
+          periodValue: dev.ohs.fhir.model.r4b.Period?,
+          durationValue: dev.ohs.fhir.model.r4b.Duration?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          timingValue: dev.ohs.fhir.model.r4b.Timing?,
         ): Action.Timing? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (ageValue != null) return Age(ageValue)
@@ -1631,15 +1627,15 @@ public data class PlanDefinition(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) :
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
         Definition
 
-      public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Definition
+      public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Definition
 
       public companion object {
         internal fun from(
-          canonicalValue: com.google.fhir.model.r4b.Canonical?,
-          uriValue: com.google.fhir.model.r4b.Uri?,
+          canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
+          uriValue: dev.ohs.fhir.model.r4b.Uri?,
         ): Definition? {
           if (canonicalValue != null) return Canonical(canonicalValue)
           if (uriValue != null) return Uri(uriValue)
@@ -1894,19 +1890,18 @@ public data class PlanDefinition(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Subject
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      Subject
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Subject
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) : Subject
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Subject
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
-        canonicalValue: com.google.fhir.model.r4b.Canonical?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+        canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
       ): Subject? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.ConsentPolicySerializer
-import com.google.fhir.model.r4b.serializers.ConsentProvisionActorSerializer
-import com.google.fhir.model.r4b.serializers.ConsentProvisionDataSerializer
-import com.google.fhir.model.r4b.serializers.ConsentProvisionSerializer
-import com.google.fhir.model.r4b.serializers.ConsentSerializer
-import com.google.fhir.model.r4b.serializers.ConsentSourceSerializer
-import com.google.fhir.model.r4b.serializers.ConsentVerificationSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConsentPolicySerializer
+import dev.ohs.fhir.model.r4b.serializers.ConsentProvisionActorSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConsentProvisionDataSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConsentProvisionSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConsentSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConsentSourceSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConsentVerificationSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1016,14 +1016,14 @@ public data class Consent(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) : Source
+    public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Source
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Source
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Source
 
     public companion object {
       internal fun from(
-        attachmentValue: com.google.fhir.model.r4b.Attachment?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
+        attachmentValue: dev.ohs.fhir.model.r4b.Attachment?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
       ): Source? {
         if (attachmentValue != null) return Attachment(attachmentValue)
         if (referenceValue != null) return Reference(referenceValue)

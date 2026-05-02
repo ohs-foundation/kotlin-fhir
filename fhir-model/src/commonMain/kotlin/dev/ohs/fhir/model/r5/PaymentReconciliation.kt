@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.PaymentReconciliationAllocationSerializer
-import com.google.fhir.model.r5.serializers.PaymentReconciliationAllocationTargetItemSerializer
-import com.google.fhir.model.r5.serializers.PaymentReconciliationProcessNoteSerializer
-import com.google.fhir.model.r5.serializers.PaymentReconciliationSerializer
-import com.google.fhir.model.r5.terminologies.NoteType
+import dev.ohs.fhir.model.r5.serializers.PaymentReconciliationAllocationSerializer
+import dev.ohs.fhir.model.r5.serializers.PaymentReconciliationAllocationTargetItemSerializer
+import dev.ohs.fhir.model.r5.serializers.PaymentReconciliationProcessNoteSerializer
+import dev.ohs.fhir.model.r5.serializers.PaymentReconciliationSerializer
+import dev.ohs.fhir.model.r5.terminologies.NoteType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -385,19 +385,19 @@ public data class PaymentReconciliation(
 
       public fun asPositiveInt(): PositiveInt? = this as? PositiveInt
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : TargetItem
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : TargetItem
 
-      public data class Identifier(public val `value`: com.google.fhir.model.r5.Identifier) :
+      public data class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) :
         TargetItem
 
-      public data class PositiveInt(public val `value`: com.google.fhir.model.r5.PositiveInt) :
+      public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r5.PositiveInt) :
         TargetItem
 
       public companion object {
         internal fun from(
-          stringValue: com.google.fhir.model.r5.String?,
-          identifierValue: com.google.fhir.model.r5.Identifier?,
-          positiveIntValue: com.google.fhir.model.r5.PositiveInt?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
+          identifierValue: dev.ohs.fhir.model.r5.Identifier?,
+          positiveIntValue: dev.ohs.fhir.model.r5.PositiveInt?,
         ): TargetItem? {
           if (stringValue != null) return String(stringValue)
           if (identifierValue != null) return Identifier(identifierValue)

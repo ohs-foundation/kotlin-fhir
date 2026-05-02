@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.NutritionOrder
-import com.google.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaAdditiveSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaAdministrationRateSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaAdministrationScheduleSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaAdministrationSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderOralDietNutrientSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderOralDietScheduleSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderOralDietSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderOralDietTextureSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderSupplementScheduleSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderSupplementSurrogate
-import com.google.fhir.model.r5.surrogates.NutritionOrderSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.NutritionOrder
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaAdditiveSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaAdministrationRateSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaAdministrationScheduleSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaAdministrationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderEnteralFormulaSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderOralDietNutrientSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderOralDietScheduleSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderOralDietSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderOralDietTextureSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderSupplementScheduleSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderSupplementSurrogate
+import dev.ohs.fhir.model.r5.surrogates.NutritionOrderSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

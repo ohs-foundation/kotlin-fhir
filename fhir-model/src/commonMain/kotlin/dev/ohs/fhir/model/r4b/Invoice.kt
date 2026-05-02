@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4.serializers.InvoiceLineItemChargeItemSerializer
-import com.google.fhir.model.r4.serializers.InvoiceLineItemPriceComponentSerializer
-import com.google.fhir.model.r4.serializers.InvoiceLineItemSerializer
-import com.google.fhir.model.r4.serializers.InvoiceParticipantSerializer
-import com.google.fhir.model.r4.serializers.InvoiceSerializer
+import dev.ohs.fhir.model.r4b.serializers.InvoiceLineItemChargeItemSerializer
+import dev.ohs.fhir.model.r4b.serializers.InvoiceLineItemPriceComponentSerializer
+import dev.ohs.fhir.model.r4b.serializers.InvoiceLineItemSerializer
+import dev.ohs.fhir.model.r4b.serializers.InvoiceParticipantSerializer
+import dev.ohs.fhir.model.r4b.serializers.InvoiceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -617,17 +617,17 @@ public data class Invoice(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
         ChargeItem
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : ChargeItem
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r4.Reference?,
-          codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
         ): ChargeItem? {
           if (referenceValue != null) return Reference(referenceValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

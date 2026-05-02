@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.CommunicationPayloadContentSerializer
-import com.google.fhir.model.r5.serializers.CommunicationPayloadSerializer
-import com.google.fhir.model.r5.serializers.CommunicationSerializer
+import dev.ohs.fhir.model.r5.serializers.CommunicationPayloadContentSerializer
+import dev.ohs.fhir.model.r5.serializers.CommunicationPayloadSerializer
+import dev.ohs.fhir.model.r5.serializers.CommunicationSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -371,20 +371,18 @@ public data class Communication(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) :
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Content
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Content
+
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         Content
-
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Content
-
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Content
 
       public companion object {
         internal fun from(
-          attachmentValue: com.google.fhir.model.r5.Attachment?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): Content? {
           if (attachmentValue != null) return Attachment(attachmentValue)
           if (referenceValue != null) return Reference(referenceValue)

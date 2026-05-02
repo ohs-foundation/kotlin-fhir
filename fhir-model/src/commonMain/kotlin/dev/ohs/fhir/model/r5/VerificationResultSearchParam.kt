@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: VerificationResult): List<T>
 
-  public data object AttestationMethod : VerificationResultSearchParam<Any>() {
+  public data object AttestationMethod : VerificationResultSearchParam<CodeableConcept>() {
     public override val paramName: String = "attestation-method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,11 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<CodeableConcept> =
+      listOfNotNull(resource.attestation?.communicationMethod)
   }
 
-  public data object AttestationOnbehalfof : VerificationResultSearchParam<Any>() {
+  public data object AttestationOnbehalfof : VerificationResultSearchParam<Reference>() {
     public override val paramName: String = "attestation-onbehalfof"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -51,10 +52,11 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Organization", "PractitionerRole", "Practitioner")
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<Reference> =
+      listOfNotNull(resource.attestation?.onBehalfOf)
   }
 
-  public data object AttestationWho : VerificationResultSearchParam<Any>() {
+  public data object AttestationWho : VerificationResultSearchParam<Reference>() {
     public override val paramName: String = "attestation-who"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -64,10 +66,11 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Organization", "PractitionerRole", "Practitioner")
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<Reference> =
+      listOfNotNull(resource.attestation?.who)
   }
 
-  public data object PrimarysourceDate : VerificationResultSearchParam<Any>() {
+  public data object PrimarysourceDate : VerificationResultSearchParam<DateTime>() {
     public override val paramName: String = "primarysource-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -76,10 +79,11 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<DateTime> =
+      resource.primarySource.mapNotNull { it.validationDate }
   }
 
-  public data object PrimarysourceType : VerificationResultSearchParam<Any>() {
+  public data object PrimarysourceType : VerificationResultSearchParam<CodeableConcept>() {
     public override val paramName: String = "primarysource-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -88,10 +92,11 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<CodeableConcept> =
+      resource.primarySource.flatMap { it.type }
   }
 
-  public data object PrimarysourceWho : VerificationResultSearchParam<Any>() {
+  public data object PrimarysourceWho : VerificationResultSearchParam<Reference>() {
     public override val paramName: String = "primarysource-who"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -101,7 +106,8 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Organization", "PractitionerRole", "Practitioner")
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<Reference> =
+      resource.primarySource.mapNotNull { it.who }
   }
 
   public data object Status : VerificationResultSearchParam<Any>() {
@@ -113,10 +119,10 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<Any> = listOf(resource.status)
   }
 
-  public data object StatusDate : VerificationResultSearchParam<Any>() {
+  public data object StatusDate : VerificationResultSearchParam<DateTime>() {
     public override val paramName: String = "status-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -125,10 +131,11 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<DateTime> =
+      listOfNotNull(resource.statusDate)
   }
 
-  public data object Target : VerificationResultSearchParam<Any>() {
+  public data object Target : VerificationResultSearchParam<Reference>() {
     public override val paramName: String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -297,10 +304,10 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<Reference> = resource.target
   }
 
-  public data object ValidatorOrganization : VerificationResultSearchParam<Any>() {
+  public data object ValidatorOrganization : VerificationResultSearchParam<Reference>() {
     public override val paramName: String = "validator-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -309,7 +316,8 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization")
 
-    public override fun extract(resource: VerificationResult): List<Any> = emptyList()
+    public override fun extract(resource: VerificationResult): List<Reference> =
+      resource.validator.map { it.organization }
   }
 
   public companion object {

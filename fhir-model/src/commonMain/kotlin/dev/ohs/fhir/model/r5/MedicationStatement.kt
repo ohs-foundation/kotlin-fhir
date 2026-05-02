@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.MedicationStatementAdherenceSerializer
-import com.google.fhir.model.r5.serializers.MedicationStatementEffectiveSerializer
-import com.google.fhir.model.r5.serializers.MedicationStatementSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationStatementAdherenceSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationStatementEffectiveSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationStatementSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -427,17 +427,17 @@ public data class MedicationStatement(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Effective
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Effective
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Effective
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Effective
 
-    public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) : Effective
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Effective
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        periodValue: com.google.fhir.model.r5.Period?,
-        timingValue: com.google.fhir.model.r5.Timing?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        timingValue: dev.ohs.fhir.model.r5.Timing?,
       ): Effective? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)

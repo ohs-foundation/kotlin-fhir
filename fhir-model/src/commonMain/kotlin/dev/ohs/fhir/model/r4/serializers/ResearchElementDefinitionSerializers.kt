@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.ResearchElementDefinition
-import com.google.fhir.model.r4.surrogates.ResearchElementDefinitionCharacteristicDefinitionSurrogate
-import com.google.fhir.model.r4.surrogates.ResearchElementDefinitionCharacteristicParticipantEffectiveSurrogate
-import com.google.fhir.model.r4.surrogates.ResearchElementDefinitionCharacteristicStudyEffectiveSurrogate
-import com.google.fhir.model.r4.surrogates.ResearchElementDefinitionCharacteristicSurrogate
-import com.google.fhir.model.r4.surrogates.ResearchElementDefinitionSubjectSurrogate
-import com.google.fhir.model.r4.surrogates.ResearchElementDefinitionSurrogate
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.ResearchElementDefinition
+import dev.ohs.fhir.model.r4.surrogates.ResearchElementDefinitionCharacteristicDefinitionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ResearchElementDefinitionCharacteristicParticipantEffectiveSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ResearchElementDefinitionCharacteristicStudyEffectiveSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ResearchElementDefinitionCharacteristicSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ResearchElementDefinitionSubjectSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ResearchElementDefinitionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

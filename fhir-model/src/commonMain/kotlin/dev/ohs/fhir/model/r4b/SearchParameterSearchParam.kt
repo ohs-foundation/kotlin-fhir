@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -30,231 +29,242 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
   public abstract fun extract(resource: SearchParameter): List<T>
 
   public data object Base : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "base"
+    public override val paramName: kotlin.String = "base"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SearchParameter.base"
+    public override val expression: kotlin.String = "SearchParameter.base"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Any> = resource.base
   }
 
   public data object Code : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "code"
+    public override val paramName: kotlin.String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SearchParameter.code"
+    public override val expression: kotlin.String = "SearchParameter.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Any> = listOf(resource.code)
   }
 
-  public data object Component : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "component"
+  public data object Component : SearchParameterSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "component"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "SearchParameter.component.definition"
+    public override val expression: kotlin.String = "SearchParameter.component.definition"
 
-    public override val target: List<String> = listOf("SearchParameter")
+    public override val target: List<kotlin.String> = listOf("SearchParameter")
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Canonical> =
+      resource.component.map { it.definition }
   }
 
-  public data object Context : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "context"
+  public data object Context : SearchParameterSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "(SearchParameter.useContext.value as CodeableConcept)"
+    public override val expression: kotlin.String =
+      "(SearchParameter.useContext.value as CodeableConcept)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<CodeableConcept> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "context-quantity"
+  public data object ContextQuantity : SearchParameterSearchParam<Quantity>() {
+    public override val paramName: kotlin.String = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
-    public override val expression: String = "(SearchParameter.useContext.value as Quantity)"
+    public override val expression: kotlin.String = "(SearchParameter.useContext.value as Quantity)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Quantity> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "context-type"
+  public data object ContextType : SearchParameterSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SearchParameter.useContext.code"
+    public override val expression: kotlin.String = "SearchParameter.useContext.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Coding> =
+      resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "context-type-quantity"
+  public data object ContextTypeQuantity : SearchParameterSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "SearchParameter.useContext"
+    public override val expression: kotlin.String = "SearchParameter.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "context-type-value"
+  public data object ContextTypeValue : SearchParameterSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "SearchParameter.useContext"
+    public override val expression: kotlin.String = "SearchParameter.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : SearchParameterSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "SearchParameter.date"
+    public override val expression: kotlin.String = "SearchParameter.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<DateTime> =
+      listOfNotNull(resource.date)
   }
 
-  public data object DerivedFrom : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "derived-from"
+  public data object DerivedFrom : SearchParameterSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "SearchParameter.derivedFrom"
+    public override val expression: kotlin.String = "SearchParameter.derivedFrom"
 
-    public override val target: List<String> = listOf("SearchParameter")
+    public override val target: List<kotlin.String> = listOf("SearchParameter")
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Canonical> =
+      listOfNotNull(resource.derivedFrom)
   }
 
-  public data object Description : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : SearchParameterSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "SearchParameter.description"
+    public override val expression: kotlin.String = "SearchParameter.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Markdown> =
+      listOf(resource.description)
   }
 
-  public data object Jurisdiction : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "jurisdiction"
+  public data object Jurisdiction : SearchParameterSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SearchParameter.jurisdiction"
+    public override val expression: kotlin.String = "SearchParameter.jurisdiction"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<CodeableConcept> =
+      resource.jurisdiction
   }
 
-  public data object Name : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : SearchParameterSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "SearchParameter.name"
+    public override val expression: kotlin.String = "SearchParameter.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<String> = listOf(resource.name)
   }
 
-  public data object Publisher : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "publisher"
+  public data object Publisher : SearchParameterSearchParam<String>() {
+    public override val paramName: kotlin.String = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "SearchParameter.publisher"
+    public override val expression: kotlin.String = "SearchParameter.publisher"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<String> =
+      listOfNotNull(resource.publisher)
   }
 
   public data object Status : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SearchParameter.status"
+    public override val expression: kotlin.String = "SearchParameter.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Any> = listOf(resource.status)
   }
 
   public data object Target : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "target"
+    public override val paramName: kotlin.String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SearchParameter.target"
+    public override val expression: kotlin.String = "SearchParameter.target"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Any> = resource.target
   }
 
   public data object Type : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "type"
+    public override val paramName: kotlin.String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SearchParameter.type"
+    public override val expression: kotlin.String = "SearchParameter.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Any> = listOf(resource.type)
   }
 
-  public data object Url : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : SearchParameterSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "SearchParameter.url"
+    public override val expression: kotlin.String = "SearchParameter.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<Uri> = listOf(resource.url)
   }
 
-  public data object Version : SearchParameterSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : SearchParameterSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "SearchParameter.version"
+    public override val expression: kotlin.String = "SearchParameter.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: SearchParameter): List<Any> = emptyList()
+    public override fun extract(resource: SearchParameter): List<String> =
+      listOfNotNull(resource.version)
   }
 
   public companion object {

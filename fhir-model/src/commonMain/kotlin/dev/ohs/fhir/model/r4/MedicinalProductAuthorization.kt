@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.MedicinalProductAuthorizationJurisdictionalAuthorizationSerializer
-import com.google.fhir.model.r4.serializers.MedicinalProductAuthorizationProcedureDateSerializer
-import com.google.fhir.model.r4.serializers.MedicinalProductAuthorizationProcedureSerializer
-import com.google.fhir.model.r4.serializers.MedicinalProductAuthorizationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationJurisdictionalAuthorizationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationProcedureDateSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationProcedureSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -405,14 +405,14 @@ public data class MedicinalProductAuthorization(
 
       public fun asDateTime(): DateTime? = this as? DateTime
 
-      public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Date
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Date
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Date
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Date
 
       public companion object {
         internal fun from(
-          periodValue: com.google.fhir.model.r4.Period?,
-          dateTimeValue: com.google.fhir.model.r4.DateTime?,
+          periodValue: dev.ohs.fhir.model.r4.Period?,
+          dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
         ): Date? {
           if (periodValue != null) return Period(periodValue)
           if (dateTimeValue != null) return DateTime(dateTimeValue)

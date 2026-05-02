@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.OperationDefinitionOverloadSerializer
-import com.google.fhir.model.r4b.serializers.OperationDefinitionParameterBindingSerializer
-import com.google.fhir.model.r4b.serializers.OperationDefinitionParameterReferencedFromSerializer
-import com.google.fhir.model.r4b.serializers.OperationDefinitionParameterSerializer
-import com.google.fhir.model.r4b.serializers.OperationDefinitionSerializer
-import com.google.fhir.model.r4b.terminologies.BindingStrength
-import com.google.fhir.model.r4b.terminologies.FHIRAllTypes
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
-import com.google.fhir.model.r4b.terminologies.ResourceType
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.serializers.OperationDefinitionOverloadSerializer
+import dev.ohs.fhir.model.r4b.serializers.OperationDefinitionParameterBindingSerializer
+import dev.ohs.fhir.model.r4b.serializers.OperationDefinitionParameterReferencedFromSerializer
+import dev.ohs.fhir.model.r4b.serializers.OperationDefinitionParameterSerializer
+import dev.ohs.fhir.model.r4b.serializers.OperationDefinitionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.BindingStrength
+import dev.ohs.fhir.model.r4b.terminologies.FHIRAllTypes
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.ResourceType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

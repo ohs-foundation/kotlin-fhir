@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.InventoryItem
-import com.google.fhir.model.r5.surrogates.InventoryItemAssociationSurrogate
-import com.google.fhir.model.r5.surrogates.InventoryItemCharacteristicSurrogate
-import com.google.fhir.model.r5.surrogates.InventoryItemCharacteristicValueSurrogate
-import com.google.fhir.model.r5.surrogates.InventoryItemDescriptionSurrogate
-import com.google.fhir.model.r5.surrogates.InventoryItemInstanceSurrogate
-import com.google.fhir.model.r5.surrogates.InventoryItemNameSurrogate
-import com.google.fhir.model.r5.surrogates.InventoryItemResponsibleOrganizationSurrogate
-import com.google.fhir.model.r5.surrogates.InventoryItemSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.InventoryItem
+import dev.ohs.fhir.model.r5.surrogates.InventoryItemAssociationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InventoryItemCharacteristicSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InventoryItemCharacteristicValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InventoryItemDescriptionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InventoryItemInstanceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InventoryItemNameSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InventoryItemResponsibleOrganizationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InventoryItemSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

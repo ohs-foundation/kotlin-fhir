@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.MedicinalProductDefinition
-import com.google.fhir.model.r4b.surrogates.MedicinalProductDefinitionCharacteristicSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicinalProductDefinitionCharacteristicValueSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicinalProductDefinitionContactSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicinalProductDefinitionCrossReferenceSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicinalProductDefinitionNameCountryLanguageSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicinalProductDefinitionNameNamePartSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicinalProductDefinitionNameSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicinalProductDefinitionOperationSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicinalProductDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.MedicinalProductDefinition
+import dev.ohs.fhir.model.r4b.surrogates.MedicinalProductDefinitionCharacteristicSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicinalProductDefinitionCharacteristicValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicinalProductDefinitionContactSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicinalProductDefinitionCrossReferenceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicinalProductDefinitionNameCountryLanguageSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicinalProductDefinitionNameNamePartSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicinalProductDefinitionNameSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicinalProductDefinitionOperationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicinalProductDefinitionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

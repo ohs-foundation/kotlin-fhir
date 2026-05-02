@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,70 +17,70 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.surrogates
+package dev.ohs.fhir.model.r5.surrogates
 
-import com.google.fhir.model.r5.Address
-import com.google.fhir.model.r5.Age
-import com.google.fhir.model.r5.Annotation
-import com.google.fhir.model.r5.Attachment
-import com.google.fhir.model.r5.Availability
-import com.google.fhir.model.r5.Base64Binary
-import com.google.fhir.model.r5.Boolean as R5Boolean
-import com.google.fhir.model.r5.Canonical
-import com.google.fhir.model.r5.Code
-import com.google.fhir.model.r5.CodeableConcept
-import com.google.fhir.model.r5.CodeableReference
-import com.google.fhir.model.r5.Coding
-import com.google.fhir.model.r5.ContactDetail
-import com.google.fhir.model.r5.ContactPoint
-import com.google.fhir.model.r5.Count
-import com.google.fhir.model.r5.DataRequirement
-import com.google.fhir.model.r5.Date
-import com.google.fhir.model.r5.DateTime
-import com.google.fhir.model.r5.Decimal
-import com.google.fhir.model.r5.Distance
-import com.google.fhir.model.r5.Dosage
-import com.google.fhir.model.r5.Duration
-import com.google.fhir.model.r5.Element
-import com.google.fhir.model.r5.Expression
-import com.google.fhir.model.r5.ExtendedContactDetail
-import com.google.fhir.model.r5.Extension
-import com.google.fhir.model.r5.FhirDate
-import com.google.fhir.model.r5.FhirDateTime
-import com.google.fhir.model.r5.HumanName
-import com.google.fhir.model.r5.Id
-import com.google.fhir.model.r5.Identifier
-import com.google.fhir.model.r5.Instant
-import com.google.fhir.model.r5.Integer
-import com.google.fhir.model.r5.Integer64
-import com.google.fhir.model.r5.Markdown
-import com.google.fhir.model.r5.Meta
-import com.google.fhir.model.r5.Money
-import com.google.fhir.model.r5.Oid
-import com.google.fhir.model.r5.ParameterDefinition
-import com.google.fhir.model.r5.Parameters
-import com.google.fhir.model.r5.Period
-import com.google.fhir.model.r5.PositiveInt
-import com.google.fhir.model.r5.Quantity
-import com.google.fhir.model.r5.Range
-import com.google.fhir.model.r5.Ratio
-import com.google.fhir.model.r5.RatioRange
-import com.google.fhir.model.r5.Reference
-import com.google.fhir.model.r5.RelatedArtifact
-import com.google.fhir.model.r5.Resource
-import com.google.fhir.model.r5.SampledData
-import com.google.fhir.model.r5.Signature
-import com.google.fhir.model.r5.String as R5String
-import com.google.fhir.model.r5.Time
-import com.google.fhir.model.r5.Timing
-import com.google.fhir.model.r5.TriggerDefinition
-import com.google.fhir.model.r5.UnsignedInt
-import com.google.fhir.model.r5.Uri
-import com.google.fhir.model.r5.Url
-import com.google.fhir.model.r5.UsageContext
-import com.google.fhir.model.r5.Uuid
-import com.google.fhir.model.r5.serializers.DoubleSerializer
-import com.google.fhir.model.r5.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r5.Address
+import dev.ohs.fhir.model.r5.Age
+import dev.ohs.fhir.model.r5.Annotation
+import dev.ohs.fhir.model.r5.Attachment
+import dev.ohs.fhir.model.r5.Availability
+import dev.ohs.fhir.model.r5.Base64Binary
+import dev.ohs.fhir.model.r5.Boolean as R5Boolean
+import dev.ohs.fhir.model.r5.Canonical
+import dev.ohs.fhir.model.r5.Code
+import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.CodeableReference
+import dev.ohs.fhir.model.r5.Coding
+import dev.ohs.fhir.model.r5.ContactDetail
+import dev.ohs.fhir.model.r5.ContactPoint
+import dev.ohs.fhir.model.r5.Count
+import dev.ohs.fhir.model.r5.DataRequirement
+import dev.ohs.fhir.model.r5.Date
+import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Decimal
+import dev.ohs.fhir.model.r5.Distance
+import dev.ohs.fhir.model.r5.Dosage
+import dev.ohs.fhir.model.r5.Duration
+import dev.ohs.fhir.model.r5.Element
+import dev.ohs.fhir.model.r5.Expression
+import dev.ohs.fhir.model.r5.ExtendedContactDetail
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDate
+import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.HumanName
+import dev.ohs.fhir.model.r5.Id
+import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Instant
+import dev.ohs.fhir.model.r5.Integer
+import dev.ohs.fhir.model.r5.Integer64
+import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Meta
+import dev.ohs.fhir.model.r5.Money
+import dev.ohs.fhir.model.r5.Oid
+import dev.ohs.fhir.model.r5.ParameterDefinition
+import dev.ohs.fhir.model.r5.Parameters
+import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.PositiveInt
+import dev.ohs.fhir.model.r5.Quantity
+import dev.ohs.fhir.model.r5.Range
+import dev.ohs.fhir.model.r5.Ratio
+import dev.ohs.fhir.model.r5.RatioRange
+import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedArtifact
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.SampledData
+import dev.ohs.fhir.model.r5.Signature
+import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.Time
+import dev.ohs.fhir.model.r5.Timing
+import dev.ohs.fhir.model.r5.TriggerDefinition
+import dev.ohs.fhir.model.r5.UnsignedInt
+import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.Url
+import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.Uuid
+import dev.ohs.fhir.model.r5.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r5.serializers.LocalTimeSerializer
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Double
 import kotlin.Int

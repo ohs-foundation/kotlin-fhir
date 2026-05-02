@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.TimingRepeatBoundsSerializer
-import com.google.fhir.model.r4.serializers.TimingRepeatSerializer
-import com.google.fhir.model.r4.serializers.TimingSerializer
+import dev.ohs.fhir.model.r4.serializers.TimingRepeatBoundsSerializer
+import dev.ohs.fhir.model.r4.serializers.TimingRepeatSerializer
+import dev.ohs.fhir.model.r4.serializers.TimingSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -247,17 +247,17 @@ public data class Timing(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4.Duration) : Bounds
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) : Bounds
 
-      public data class Range(public val `value`: com.google.fhir.model.r4.Range) : Bounds
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Bounds
 
-      public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Bounds
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Bounds
 
       public companion object {
         internal fun from(
-          durationValue: com.google.fhir.model.r4.Duration?,
-          rangeValue: com.google.fhir.model.r4.Range?,
-          periodValue: com.google.fhir.model.r4.Period?,
+          durationValue: dev.ohs.fhir.model.r4.Duration?,
+          rangeValue: dev.ohs.fhir.model.r4.Range?,
+          periodValue: dev.ohs.fhir.model.r4.Period?,
         ): Bounds? {
           if (durationValue != null) return Duration(durationValue)
           if (rangeValue != null) return Range(rangeValue)

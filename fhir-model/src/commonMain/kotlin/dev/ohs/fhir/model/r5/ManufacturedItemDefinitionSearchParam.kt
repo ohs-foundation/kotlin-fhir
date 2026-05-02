@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,64 +28,72 @@ public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: ManufacturedItemDefinition): List<T>
 
-  public data object DoseForm : ManufacturedItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "dose-form"
+  public data object DoseForm : ManufacturedItemDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "dose-form"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ManufacturedItemDefinition.manufacturedDoseForm"
+    public override val expression: kotlin.String =
+      "ManufacturedItemDefinition.manufacturedDoseForm"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ManufacturedItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
+      listOf(resource.manufacturedDoseForm)
   }
 
-  public data object Identifier : ManufacturedItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier :
+    ManufacturedItemDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ManufacturedItemDefinition.identifier"
+    public override val expression: kotlin.String = "ManufacturedItemDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ManufacturedItemDefinition): List<Any> = emptyList()
+    public override fun extract(
+      resource: ManufacturedItemDefinition
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Ingredient : ManufacturedItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "ingredient"
+  public data object Ingredient : ManufacturedItemDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ManufacturedItemDefinition.ingredient"
+    public override val expression: kotlin.String = "ManufacturedItemDefinition.ingredient"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ManufacturedItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
+      resource.ingredient
   }
 
-  public data object Name : ManufacturedItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : ManufacturedItemDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ManufacturedItemDefinition.name"
+    public override val expression: kotlin.String = "ManufacturedItemDefinition.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ManufacturedItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ManufacturedItemDefinition): List<String> =
+      listOfNotNull(resource.name)
   }
 
   public data object Status : ManufacturedItemDefinitionSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ManufacturedItemDefinition.status"
+    public override val expression: kotlin.String = "ManufacturedItemDefinition.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ManufacturedItemDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ManufacturedItemDefinition): List<Any> =
+      listOf(resource.status)
   }
 
   public companion object {

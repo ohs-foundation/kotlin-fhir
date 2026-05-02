@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.MedicationRequest
-import com.google.fhir.model.r4b.surrogates.MedicationRequestDispenseRequestInitialFillSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationRequestDispenseRequestSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationRequestMedicationSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationRequestReportedSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationRequestSubstitutionAllowedSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationRequestSubstitutionSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationRequestSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.MedicationRequest
+import dev.ohs.fhir.model.r4b.surrogates.MedicationRequestDispenseRequestInitialFillSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationRequestDispenseRequestSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationRequestMedicationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationRequestReportedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationRequestSubstitutionAllowedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationRequestSubstitutionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationRequestSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

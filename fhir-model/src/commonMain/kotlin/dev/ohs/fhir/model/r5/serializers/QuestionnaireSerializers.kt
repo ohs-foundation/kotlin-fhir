@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.Questionnaire
-import com.google.fhir.model.r5.surrogates.QuestionnaireItemAnswerOptionSurrogate
-import com.google.fhir.model.r5.surrogates.QuestionnaireItemAnswerOptionValueSurrogate
-import com.google.fhir.model.r5.surrogates.QuestionnaireItemEnableWhenAnswerSurrogate
-import com.google.fhir.model.r5.surrogates.QuestionnaireItemEnableWhenSurrogate
-import com.google.fhir.model.r5.surrogates.QuestionnaireItemInitialSurrogate
-import com.google.fhir.model.r5.surrogates.QuestionnaireItemInitialValueSurrogate
-import com.google.fhir.model.r5.surrogates.QuestionnaireItemSurrogate
-import com.google.fhir.model.r5.surrogates.QuestionnaireSurrogate
-import com.google.fhir.model.r5.surrogates.QuestionnaireVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.Questionnaire
+import dev.ohs.fhir.model.r5.surrogates.QuestionnaireItemAnswerOptionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.QuestionnaireItemAnswerOptionValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.QuestionnaireItemEnableWhenAnswerSurrogate
+import dev.ohs.fhir.model.r5.surrogates.QuestionnaireItemEnableWhenSurrogate
+import dev.ohs.fhir.model.r5.surrogates.QuestionnaireItemInitialSurrogate
+import dev.ohs.fhir.model.r5.surrogates.QuestionnaireItemInitialValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.QuestionnaireItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.QuestionnaireSurrogate
+import dev.ohs.fhir.model.r5.surrogates.QuestionnaireVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

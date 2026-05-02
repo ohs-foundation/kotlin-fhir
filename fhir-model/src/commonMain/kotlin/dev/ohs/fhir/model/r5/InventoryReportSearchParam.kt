@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class InventoryReportSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: InventoryReport): List<T>
 
-  public data object Identifier : InventoryReportSearchParam<Any>() {
+  public data object Identifier : InventoryReportSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,11 @@ public sealed class InventoryReportSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: InventoryReport): List<Any> = emptyList()
+    public override fun extract(resource: InventoryReport): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Item : InventoryReportSearchParam<Any>() {
+  public data object Item : InventoryReportSearchParam<CodeableConcept>() {
     public override val paramName: String = "item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +51,11 @@ public sealed class InventoryReportSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: InventoryReport): List<Any> = emptyList()
+    public override fun extract(resource: InventoryReport): List<CodeableConcept> =
+      resource.inventoryListing.flatMap { it.item }.map { it.item }.mapNotNull { it.concept }
   }
 
-  public data object ItemReference : InventoryReportSearchParam<Any>() {
+  public data object ItemReference : InventoryReportSearchParam<Reference>() {
     public override val paramName: String = "item-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -69,7 +71,8 @@ public sealed class InventoryReportSearchParam<T> : SearchParam {
         "Medication",
       )
 
-    public override fun extract(resource: InventoryReport): List<Any> = emptyList()
+    public override fun extract(resource: InventoryReport): List<Reference> =
+      resource.inventoryListing.flatMap { it.item }.map { it.item }.mapNotNull { it.reference }
   }
 
   public data object Status : InventoryReportSearchParam<Any>() {
@@ -81,7 +84,7 @@ public sealed class InventoryReportSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: InventoryReport): List<Any> = emptyList()
+    public override fun extract(resource: InventoryReport): List<Any> = listOf(resource.status)
   }
 
   public companion object {

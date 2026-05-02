@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class ScheduleSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Schedule): List<T>
 
-  public data object Active : ScheduleSearchParam<Any>() {
+  public data object Active : ScheduleSearchParam<Boolean>() {
     public override val paramName: String = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +37,10 @@ public sealed class ScheduleSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Schedule): List<Any> = emptyList()
+    public override fun extract(resource: Schedule): List<Boolean> = listOfNotNull(resource.active)
   }
 
-  public data object Actor : ScheduleSearchParam<Any>() {
+  public data object Actor : ScheduleSearchParam<Reference>() {
     public override val paramName: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -59,10 +58,10 @@ public sealed class ScheduleSearchParam<T> : SearchParam {
         "Location",
       )
 
-    public override fun extract(resource: Schedule): List<Any> = emptyList()
+    public override fun extract(resource: Schedule): List<Reference> = resource.actor
   }
 
-  public data object Date : ScheduleSearchParam<Any>() {
+  public data object Date : ScheduleSearchParam<Period>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -71,10 +70,11 @@ public sealed class ScheduleSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Schedule): List<Any> = emptyList()
+    public override fun extract(resource: Schedule): List<Period> =
+      listOfNotNull(resource.planningHorizon)
   }
 
-  public data object Identifier : ScheduleSearchParam<Any>() {
+  public data object Identifier : ScheduleSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -83,10 +83,11 @@ public sealed class ScheduleSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Schedule): List<Any> = emptyList()
+    public override fun extract(resource: Schedule): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.identifier
   }
 
-  public data object ServiceCategory : ScheduleSearchParam<Any>() {
+  public data object ServiceCategory : ScheduleSearchParam<CodeableConcept>() {
     public override val paramName: String = "service-category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -95,10 +96,11 @@ public sealed class ScheduleSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Schedule): List<Any> = emptyList()
+    public override fun extract(resource: Schedule): List<CodeableConcept> =
+      resource.serviceCategory
   }
 
-  public data object ServiceType : ScheduleSearchParam<Any>() {
+  public data object ServiceType : ScheduleSearchParam<CodeableConcept>() {
     public override val paramName: String = "service-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -107,10 +109,10 @@ public sealed class ScheduleSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Schedule): List<Any> = emptyList()
+    public override fun extract(resource: Schedule): List<CodeableConcept> = resource.serviceType
   }
 
-  public data object Specialty : ScheduleSearchParam<Any>() {
+  public data object Specialty : ScheduleSearchParam<CodeableConcept>() {
     public override val paramName: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -119,7 +121,7 @@ public sealed class ScheduleSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Schedule): List<Any> = emptyList()
+    public override fun extract(resource: Schedule): List<CodeableConcept> = resource.specialty
   }
 
   public companion object {

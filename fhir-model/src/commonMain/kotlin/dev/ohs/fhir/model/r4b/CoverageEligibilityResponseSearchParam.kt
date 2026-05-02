@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,113 +28,124 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: CoverageEligibilityResponse): List<T>
 
-  public data object Created : CoverageEligibilityResponseSearchParam<Any>() {
-    public override val paramName: String = "created"
+  public data object Created : CoverageEligibilityResponseSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "CoverageEligibilityResponse.created"
+    public override val expression: kotlin.String = "CoverageEligibilityResponse.created"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CoverageEligibilityResponse): List<Any> = emptyList()
+    public override fun extract(resource: CoverageEligibilityResponse): List<DateTime> =
+      listOf(resource.created)
   }
 
-  public data object Disposition : CoverageEligibilityResponseSearchParam<Any>() {
-    public override val paramName: String = "disposition"
+  public data object Disposition : CoverageEligibilityResponseSearchParam<String>() {
+    public override val paramName: kotlin.String = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "CoverageEligibilityResponse.disposition"
+    public override val expression: kotlin.String = "CoverageEligibilityResponse.disposition"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CoverageEligibilityResponse): List<Any> = emptyList()
+    public override fun extract(resource: CoverageEligibilityResponse): List<String> =
+      listOfNotNull(resource.disposition)
   }
 
-  public data object Identifier : CoverageEligibilityResponseSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier :
+    CoverageEligibilityResponseSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CoverageEligibilityResponse.identifier"
+    public override val expression: kotlin.String = "CoverageEligibilityResponse.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CoverageEligibilityResponse): List<Any> = emptyList()
+    public override fun extract(
+      resource: CoverageEligibilityResponse
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Insurer : CoverageEligibilityResponseSearchParam<Any>() {
-    public override val paramName: String = "insurer"
+  public data object Insurer : CoverageEligibilityResponseSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "insurer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "CoverageEligibilityResponse.insurer"
+    public override val expression: kotlin.String = "CoverageEligibilityResponse.insurer"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: CoverageEligibilityResponse): List<Any> = emptyList()
+    public override fun extract(resource: CoverageEligibilityResponse): List<Reference> =
+      listOf(resource.insurer)
   }
 
   public data object Outcome : CoverageEligibilityResponseSearchParam<Any>() {
-    public override val paramName: String = "outcome"
+    public override val paramName: kotlin.String = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CoverageEligibilityResponse.outcome"
+    public override val expression: kotlin.String = "CoverageEligibilityResponse.outcome"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CoverageEligibilityResponse): List<Any> = emptyList()
+    public override fun extract(resource: CoverageEligibilityResponse): List<Any> =
+      listOf(resource.outcome)
   }
 
-  public data object Patient : CoverageEligibilityResponseSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : CoverageEligibilityResponseSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "CoverageEligibilityResponse.patient"
+    public override val expression: kotlin.String = "CoverageEligibilityResponse.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<kotlin.String> = listOf("Patient")
 
-    public override fun extract(resource: CoverageEligibilityResponse): List<Any> = emptyList()
+    public override fun extract(resource: CoverageEligibilityResponse): List<Reference> =
+      listOf(resource.patient)
   }
 
-  public data object Request : CoverageEligibilityResponseSearchParam<Any>() {
-    public override val paramName: String = "request"
+  public data object Request : CoverageEligibilityResponseSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "CoverageEligibilityResponse.request"
+    public override val expression: kotlin.String = "CoverageEligibilityResponse.request"
 
-    public override val target: List<String> = listOf("CoverageEligibilityRequest")
+    public override val target: List<kotlin.String> = listOf("CoverageEligibilityRequest")
 
-    public override fun extract(resource: CoverageEligibilityResponse): List<Any> = emptyList()
+    public override fun extract(resource: CoverageEligibilityResponse): List<Reference> =
+      listOf(resource.request)
   }
 
-  public data object Requestor : CoverageEligibilityResponseSearchParam<Any>() {
-    public override val paramName: String = "requestor"
+  public data object Requestor : CoverageEligibilityResponseSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "requestor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "CoverageEligibilityResponse.requestor"
+    public override val expression: kotlin.String = "CoverageEligibilityResponse.requestor"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Practitioner", "Organization", "PractitionerRole")
 
-    public override fun extract(resource: CoverageEligibilityResponse): List<Any> = emptyList()
+    public override fun extract(resource: CoverageEligibilityResponse): List<Reference> =
+      listOfNotNull(resource.requestor)
   }
 
   public data object Status : CoverageEligibilityResponseSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CoverageEligibilityResponse.status"
+    public override val expression: kotlin.String = "CoverageEligibilityResponse.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CoverageEligibilityResponse): List<Any> = emptyList()
+    public override fun extract(resource: CoverageEligibilityResponse): List<Any> =
+      listOf(resource.status)
   }
 
   public companion object {

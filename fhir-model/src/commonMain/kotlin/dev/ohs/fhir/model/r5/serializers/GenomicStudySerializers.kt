@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.GenomicStudy
-import com.google.fhir.model.r5.surrogates.GenomicStudyAnalysisDeviceSurrogate
-import com.google.fhir.model.r5.surrogates.GenomicStudyAnalysisInputGeneratedBySurrogate
-import com.google.fhir.model.r5.surrogates.GenomicStudyAnalysisInputSurrogate
-import com.google.fhir.model.r5.surrogates.GenomicStudyAnalysisOutputSurrogate
-import com.google.fhir.model.r5.surrogates.GenomicStudyAnalysisPerformerSurrogate
-import com.google.fhir.model.r5.surrogates.GenomicStudyAnalysisSurrogate
-import com.google.fhir.model.r5.surrogates.GenomicStudySurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.GenomicStudy
+import dev.ohs.fhir.model.r5.surrogates.GenomicStudyAnalysisDeviceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.GenomicStudyAnalysisInputGeneratedBySurrogate
+import dev.ohs.fhir.model.r5.surrogates.GenomicStudyAnalysisInputSurrogate
+import dev.ohs.fhir.model.r5.surrogates.GenomicStudyAnalysisOutputSurrogate
+import dev.ohs.fhir.model.r5.surrogates.GenomicStudyAnalysisPerformerSurrogate
+import dev.ohs.fhir.model.r5.surrogates.GenomicStudyAnalysisSurrogate
+import dev.ohs.fhir.model.r5.surrogates.GenomicStudySurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

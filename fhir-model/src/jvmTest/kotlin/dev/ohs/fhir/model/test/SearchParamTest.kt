@@ -1,5 +1,5 @@
 /*
- * Copyright 2025-2026 Google LLC
+ * Copyright 2025-2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.fhir.model.test
+package dev.ohs.fhir.model.test
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -44,7 +44,7 @@ private data class SearchParamTestSuite(
 )
 
 private fun loadSearchParams(
-  corePackageSubdirectory: String,
+  corePackageSubdirectory: String
 ): Map<String, List<SearchParameterDef>> {
   val rootDir = System.getProperty("projectRootDir")
   return File("$rootDir/third_party/$corePackageSubdirectory")
@@ -74,9 +74,9 @@ private fun extractExpressionForResource(expression: String?, resourceName: Stri
 class SearchParamTest :
   FunSpec({
     listOf(
-        SearchParamTestSuite("R4", "hl7.fhir.r4.core/package", "com.google.fhir.model.r4"),
-        SearchParamTestSuite("R4B", "hl7.fhir.r4b.core/package", "com.google.fhir.model.r4b"),
-        SearchParamTestSuite("R5", "hl7.fhir.r5.core/package", "com.google.fhir.model.r5"),
+        SearchParamTestSuite("R4", "hl7.fhir.r4.core/package", "dev.ohs.fhir.model.r4"),
+        SearchParamTestSuite("R4B", "hl7.fhir.r4b.core/package", "dev.ohs.fhir.model.r4b"),
+        SearchParamTestSuite("R5", "hl7.fhir.r5.core/package", "dev.ohs.fhir.model.r5"),
       )
       .forEach { testSuite ->
         val searchParamsByResource = loadSearchParams(testSuite.corePackageSubdirectory)
@@ -117,8 +117,7 @@ class SearchParamTest :
             val allSearchParams = allProperty.get(companion) as List<Any>
 
             // Build a map from data object name to search param instance
-            val searchParamsByName =
-              allSearchParams.associateBy { it::class.simpleName!! }
+            val searchParamsByName = allSearchParams.associateBy { it::class.simpleName!! }
 
             val dedupedExpected = expectedParams.distinctBy { it.code }.sortedBy { it.code }
 

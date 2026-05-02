@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.Account
-import com.google.fhir.model.r5.surrogates.AccountBalanceSurrogate
-import com.google.fhir.model.r5.surrogates.AccountCoverageSurrogate
-import com.google.fhir.model.r5.surrogates.AccountDiagnosisSurrogate
-import com.google.fhir.model.r5.surrogates.AccountGuarantorSurrogate
-import com.google.fhir.model.r5.surrogates.AccountProcedureSurrogate
-import com.google.fhir.model.r5.surrogates.AccountRelatedAccountSurrogate
-import com.google.fhir.model.r5.surrogates.AccountSurrogate
+import dev.ohs.fhir.model.r5.Account
+import dev.ohs.fhir.model.r5.surrogates.AccountBalanceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AccountCoverageSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AccountDiagnosisSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AccountGuarantorSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AccountProcedureSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AccountRelatedAccountSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AccountSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

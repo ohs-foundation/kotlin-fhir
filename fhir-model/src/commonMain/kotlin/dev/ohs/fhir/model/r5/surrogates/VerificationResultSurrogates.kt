@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,28 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.surrogates
+package dev.ohs.fhir.model.r5.surrogates
 
-import com.google.fhir.model.r5.Code
-import com.google.fhir.model.r5.CodeableConcept
-import com.google.fhir.model.r5.Date
-import com.google.fhir.model.r5.DateTime
-import com.google.fhir.model.r5.Element
-import com.google.fhir.model.r5.Enumeration
-import com.google.fhir.model.r5.Extension
-import com.google.fhir.model.r5.FhirDate
-import com.google.fhir.model.r5.FhirDateTime
-import com.google.fhir.model.r5.Meta
-import com.google.fhir.model.r5.Narrative
-import com.google.fhir.model.r5.Reference
-import com.google.fhir.model.r5.Resource
-import com.google.fhir.model.r5.Signature
-import com.google.fhir.model.r5.String as R5String
-import com.google.fhir.model.r5.Timing
-import com.google.fhir.model.r5.Uri
-import com.google.fhir.model.r5.VerificationResult
-import com.google.fhir.model.r5.serializers.DoubleSerializer
-import com.google.fhir.model.r5.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r5.Code
+import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Date
+import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Element
+import dev.ohs.fhir.model.r5.Enumeration
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDate
+import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.Meta
+import dev.ohs.fhir.model.r5.Narrative
+import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.Signature
+import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.Timing
+import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.VerificationResult
+import dev.ohs.fhir.model.r5.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r5.serializers.LocalTimeSerializer
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List

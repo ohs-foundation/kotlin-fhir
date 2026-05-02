@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,14 +28,14 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: DocumentManifest): List<T>
 
-  public data object Author : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "author"
+  public data object Author : DocumentManifestSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentManifest.author"
+    public override val expression: kotlin.String = "DocumentManifest.author"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Practitioner",
         "Organization",
@@ -46,53 +45,57 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<Reference> = resource.author
   }
 
-  public data object Created : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "created"
+  public data object Created : DocumentManifestSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "DocumentManifest.created"
+    public override val expression: kotlin.String = "DocumentManifest.created"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<DateTime> =
+      listOfNotNull(resource.created)
   }
 
-  public data object Description : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : DocumentManifestSearchParam<String>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "DocumentManifest.description"
+    public override val expression: kotlin.String = "DocumentManifest.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<String> =
+      listOfNotNull(resource.description)
   }
 
-  public data object Identifier : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : DocumentManifestSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentManifest.masterIdentifier"
+    public override val expression: kotlin.String = "DocumentManifest.masterIdentifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(
+      resource: DocumentManifest
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = listOfNotNull(resource.masterIdentifier)
   }
 
-  public data object Item : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "item"
+  public data object Item : DocumentManifestSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentManifest.content"
+    public override val expression: kotlin.String = "DocumentManifest.content"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -236,54 +239,60 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<Reference> = resource.content
   }
 
-  public data object Patient : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : DocumentManifestSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentManifest.subject.where(resolve() is Patient)"
+    public override val expression: kotlin.String =
+      "DocumentManifest.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<kotlin.String> = listOf("Patient")
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Recipient : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "recipient"
+  public data object Recipient : DocumentManifestSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "recipient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentManifest.recipient"
+    public override val expression: kotlin.String = "DocumentManifest.recipient"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Practitioner", "Organization", "Patient", "PractitionerRole", "RelatedPerson")
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<Reference> = resource.recipient
   }
 
-  public data object RelatedId : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "related-id"
+  public data object RelatedId : DocumentManifestSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "related-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentManifest.related.identifier"
+    public override val expression: kotlin.String = "DocumentManifest.related.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(
+      resource: DocumentManifest
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.related.mapNotNull { it.identifier }
   }
 
-  public data object RelatedRef : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "related-ref"
+  public data object RelatedRef : DocumentManifestSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "related-ref"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentManifest.related.ref"
+    public override val expression: kotlin.String = "DocumentManifest.related.ref"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -427,55 +436,60 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<Reference> =
+      resource.related.mapNotNull { it.ref }
   }
 
-  public data object Source : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "source"
+  public data object Source : DocumentManifestSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "DocumentManifest.source"
+    public override val expression: kotlin.String = "DocumentManifest.source"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<Uri> =
+      listOfNotNull(resource.source)
   }
 
   public data object Status : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentManifest.status"
+    public override val expression: kotlin.String = "DocumentManifest.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "subject"
+  public data object Subject : DocumentManifestSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentManifest.subject"
+    public override val expression: kotlin.String = "DocumentManifest.subject"
 
-    public override val target: List<String> = listOf("Practitioner", "Group", "Device", "Patient")
+    public override val target: List<kotlin.String> =
+      listOf("Practitioner", "Group", "Device", "Patient")
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
-  public data object Type : DocumentManifestSearchParam<Any>() {
-    public override val paramName: String = "type"
+  public data object Type : DocumentManifestSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentManifest.type"
+    public override val expression: kotlin.String = "DocumentManifest.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentManifest): List<Any> = emptyList()
+    public override fun extract(resource: DocumentManifest): List<CodeableConcept> =
+      listOfNotNull(resource.type)
   }
 
   public companion object {

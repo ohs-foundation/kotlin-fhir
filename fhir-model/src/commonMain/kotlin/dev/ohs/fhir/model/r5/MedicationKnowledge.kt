@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,33 +16,33 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeCostCostSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeCostSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalDrugCharacteristicSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalDrugCharacteristicValueSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalIngredientSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalIngredientStrengthSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicValueSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelineSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeMedicineClassificationSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeMedicineClassificationSourceSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeMonitoringProgramSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeMonographSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgePackagingSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeRegulatoryMaxDispenseSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeRegulatorySerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeRegulatorySubstitutionSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeRelatedMedicationKnowledgeSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineEnvironmentalSettingSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineEnvironmentalSettingValueSerializer
-import com.google.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeCostCostSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeCostSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalDrugCharacteristicSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalDrugCharacteristicValueSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalIngredientSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalIngredientStrengthSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicValueSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelineSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeMedicineClassificationSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeMedicineClassificationSourceSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeMonitoringProgramSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeMonographSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgePackagingSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeRegulatoryMaxDispenseSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeRegulatorySerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeRegulatorySubstitutionSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeRelatedMedicationKnowledgeSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineEnvironmentalSettingSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineEnvironmentalSettingValueSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -592,16 +592,15 @@ public data class MedicationKnowledge(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Money(public val `value`: com.google.fhir.model.r5.Money) : Cost
+      public data class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Cost
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Cost
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Cost
 
       public companion object {
         internal fun from(
-          moneyValue: com.google.fhir.model.r5.Money?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          moneyValue: dev.ohs.fhir.model.r5.Money?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): Cost? {
           if (moneyValue != null) return Money(moneyValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -977,7 +976,7 @@ public data class MedicationKnowledge(
          */
         public val type: CodeableConcept,
         /** Dosage for the medication for the specific guidelines. */
-        public val dosage: List<com.google.fhir.model.r5.Dosage>,
+        public val dosage: List<dev.ohs.fhir.model.r5.Dosage>,
       ) : BackboneElement() {
         public fun toBuilder(): Builder =
           with(this) {
@@ -995,7 +994,7 @@ public data class MedicationKnowledge(
            */
           public var type: CodeableConcept.Builder,
           /** Dosage for the medication for the specific guidelines. */
-          public var dosage: MutableList<com.google.fhir.model.r5.Dosage.Builder>,
+          public var dosage: MutableList<dev.ohs.fhir.model.r5.Dosage.Builder>,
         ) {
           /**
            * Unique id for the element within a resource (for internal references). This may be any
@@ -1124,18 +1123,18 @@ public data class MedicationKnowledge(
           public fun asRange(): Range? = this as? Range
 
           public data class CodeableConcept(
-            public val `value`: com.google.fhir.model.r5.CodeableConcept
+            public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
           ) : Value
 
-          public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+          public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-          public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+          public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
           public companion object {
             internal fun from(
-              codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-              quantityValue: com.google.fhir.model.r5.Quantity?,
-              rangeValue: com.google.fhir.model.r5.Range?,
+              codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+              quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+              rangeValue: dev.ohs.fhir.model.r5.Range?,
             ): Value? {
               if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
               if (quantityValue != null) return Quantity(quantityValue)
@@ -1413,14 +1412,14 @@ public data class MedicationKnowledge(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Source
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Source
 
-      public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : Source
+      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Source
 
       public companion object {
         internal fun from(
-          stringValue: com.google.fhir.model.r5.String?,
-          uriValue: com.google.fhir.model.r5.Uri?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
+          uriValue: dev.ohs.fhir.model.r5.Uri?,
         ): Source? {
           if (stringValue != null) return String(stringValue)
           if (uriValue != null) return Uri(uriValue)
@@ -1757,19 +1756,19 @@ public data class MedicationKnowledge(
 
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
         public companion object {
           internal fun from(
-            quantityValue: com.google.fhir.model.r5.Quantity?,
-            rangeValue: com.google.fhir.model.r5.Range?,
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+            rangeValue: dev.ohs.fhir.model.r5.Range?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
           ): Value? {
             if (quantityValue != null) return Quantity(quantityValue)
             if (rangeValue != null) return Range(rangeValue)
@@ -2413,20 +2412,19 @@ public data class MedicationKnowledge(
 
         public fun asQuantity(): Quantity? = this as? Quantity
 
-        public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Strength
+        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Strength
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Strength
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
-          Strength
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Strength
 
         public companion object {
           internal fun from(
-            ratioValue: com.google.fhir.model.r5.Ratio?,
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            quantityValue: com.google.fhir.model.r5.Quantity?,
+            ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
           ): Strength? {
             if (ratioValue != null) return Ratio(ratioValue)
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -2580,26 +2578,25 @@ public data class MedicationKnowledge(
         public fun asAttachment(): Attachment? = this as? Attachment
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Base64Binary(public val `value`: com.google.fhir.model.r5.Base64Binary) :
+        public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
           Value
 
-        public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) :
-          Value
+        public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
         public companion object {
           internal fun from(
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            stringValue: com.google.fhir.model.r5.String?,
-            quantityValue: com.google.fhir.model.r5.Quantity?,
-            base64BinaryValue: com.google.fhir.model.r5.Base64Binary?,
-            attachmentValue: com.google.fhir.model.r5.Attachment?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            stringValue: dev.ohs.fhir.model.r5.String?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+            base64BinaryValue: dev.ohs.fhir.model.r5.Base64Binary?,
+            attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
           ): Value? {
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
             if (stringValue != null) return String(stringValue)

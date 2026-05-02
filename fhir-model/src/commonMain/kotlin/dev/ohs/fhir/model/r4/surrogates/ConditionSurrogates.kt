@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,28 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.surrogates
+package dev.ohs.fhir.model.r4.surrogates
 
-import com.google.fhir.model.r4.Age
-import com.google.fhir.model.r4.Annotation
-import com.google.fhir.model.r4.Code
-import com.google.fhir.model.r4.CodeableConcept
-import com.google.fhir.model.r4.Condition
-import com.google.fhir.model.r4.DateTime
-import com.google.fhir.model.r4.Element
-import com.google.fhir.model.r4.Extension
-import com.google.fhir.model.r4.FhirDateTime
-import com.google.fhir.model.r4.Identifier
-import com.google.fhir.model.r4.Meta
-import com.google.fhir.model.r4.Narrative
-import com.google.fhir.model.r4.Period
-import com.google.fhir.model.r4.Range
-import com.google.fhir.model.r4.Reference
-import com.google.fhir.model.r4.Resource
-import com.google.fhir.model.r4.String as R4String
-import com.google.fhir.model.r4.Uri
-import com.google.fhir.model.r4.serializers.DoubleSerializer
-import com.google.fhir.model.r4.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r4.Age
+import dev.ohs.fhir.model.r4.Annotation
+import dev.ohs.fhir.model.r4.Code
+import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Condition
+import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Meta
+import dev.ohs.fhir.model.r4.Narrative
+import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.Range
+import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r4.serializers.LocalTimeSerializer
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List

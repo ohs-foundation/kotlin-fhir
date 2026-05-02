@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.Evidence
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.surrogates.EvidenceCertaintySurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceCiteAsSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceStatisticAttributeEstimateSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceStatisticModelCharacteristicSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceStatisticModelCharacteristicVariableSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceStatisticSampleSizeSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceStatisticSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceSurrogate
-import com.google.fhir.model.r4b.surrogates.EvidenceVariableDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.Evidence
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceCertaintySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceCiteAsSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceStatisticAttributeEstimateSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceStatisticModelCharacteristicSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceStatisticModelCharacteristicVariableSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceStatisticSampleSizeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceStatisticSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.EvidenceVariableDefinitionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

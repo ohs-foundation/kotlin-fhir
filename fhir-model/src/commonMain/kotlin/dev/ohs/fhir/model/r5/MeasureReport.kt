@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.MeasureReportGroupMeasureScoreSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportGroupPopulationSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportGroupSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportGroupStratifierSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumComponentSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumComponentValueSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumMeasureScoreSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumPopulationSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumValueSerializer
-import com.google.fhir.model.r5.serializers.MeasureReportSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupMeasureScoreSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupPopulationSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumComponentSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumComponentValueSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumMeasureScoreSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumPopulationSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumValueSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureReportSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -761,26 +761,25 @@ public data class MeasureReport(
             public fun asReference(): Reference? = this as? Reference
 
             public data class CodeableConcept(
-              public val `value`: com.google.fhir.model.r5.CodeableConcept
+              public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
             ) : Value
 
-            public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+            public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-            public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
-              Value
+            public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-            public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+            public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-            public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+            public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
               Value
 
             public companion object {
               internal fun from(
-                codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-                booleanValue: com.google.fhir.model.r5.Boolean?,
-                quantityValue: com.google.fhir.model.r5.Quantity?,
-                rangeValue: com.google.fhir.model.r5.Range?,
-                referenceValue: com.google.fhir.model.r5.Reference?,
+                codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+                booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+                quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+                rangeValue: dev.ohs.fhir.model.r5.Range?,
+                referenceValue: dev.ohs.fhir.model.r5.Reference?,
               ): Value? {
                 if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
                 if (booleanValue != null) return Boolean(booleanValue)
@@ -1061,25 +1060,24 @@ public data class MeasureReport(
           public fun asReference(): Reference? = this as? Reference
 
           public data class CodeableConcept(
-            public val `value`: com.google.fhir.model.r5.CodeableConcept
+            public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
           ) : Value
 
-          public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+          public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-          public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+          public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-          public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+          public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-          public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
-            Value
+          public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
           public companion object {
             internal fun from(
-              codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-              booleanValue: com.google.fhir.model.r5.Boolean?,
-              quantityValue: com.google.fhir.model.r5.Quantity?,
-              rangeValue: com.google.fhir.model.r5.Range?,
-              referenceValue: com.google.fhir.model.r5.Reference?,
+              codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+              booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+              quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+              rangeValue: dev.ohs.fhir.model.r5.Range?,
+              referenceValue: dev.ohs.fhir.model.r5.Reference?,
             ): Value? {
               if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
               if (booleanValue != null) return Boolean(booleanValue)
@@ -1105,33 +1103,31 @@ public data class MeasureReport(
 
           public fun asDuration(): Duration? = this as? Duration
 
-          public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
+          public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
             MeasureScore
 
-          public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) :
+          public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
             MeasureScore
 
           public data class CodeableConcept(
-            public val `value`: com.google.fhir.model.r5.CodeableConcept
+            public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
           ) : MeasureScore
 
-          public data class Period(public val `value`: com.google.fhir.model.r5.Period) :
-            MeasureScore
+          public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : MeasureScore
 
-          public data class Range(public val `value`: com.google.fhir.model.r5.Range) :
-            MeasureScore
+          public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : MeasureScore
 
-          public data class Duration(public val `value`: com.google.fhir.model.r5.Duration) :
+          public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
             MeasureScore
 
           public companion object {
             internal fun from(
-              quantityValue: com.google.fhir.model.r5.Quantity?,
-              dateTimeValue: com.google.fhir.model.r5.DateTime?,
-              codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-              periodValue: com.google.fhir.model.r5.Period?,
-              rangeValue: com.google.fhir.model.r5.Range?,
-              durationValue: com.google.fhir.model.r5.Duration?,
+              quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+              dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+              codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+              periodValue: dev.ohs.fhir.model.r5.Period?,
+              rangeValue: dev.ohs.fhir.model.r5.Range?,
+              durationValue: dev.ohs.fhir.model.r5.Duration?,
             ): MeasureScore? {
               if (quantityValue != null) return Quantity(quantityValue)
               if (dateTimeValue != null) return DateTime(dateTimeValue)
@@ -1303,31 +1299,27 @@ public data class MeasureReport(
 
       public fun asDuration(): Duration? = this as? Duration
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : MeasureScore
+
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : MeasureScore
+
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         MeasureScore
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) :
-        MeasureScore
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : MeasureScore
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : MeasureScore
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : MeasureScore
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : MeasureScore
-
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : MeasureScore
-
-      public data class Duration(public val `value`: com.google.fhir.model.r5.Duration) :
-        MeasureScore
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : MeasureScore
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          periodValue: com.google.fhir.model.r5.Period?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          durationValue: com.google.fhir.model.r5.Duration?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          durationValue: dev.ohs.fhir.model.r5.Duration?,
         ): MeasureScore? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (dateTimeValue != null) return DateTime(dateTimeValue)

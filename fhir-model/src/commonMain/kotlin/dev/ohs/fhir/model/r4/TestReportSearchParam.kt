@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,76 +28,79 @@ public sealed class TestReportSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: TestReport): List<T>
 
-  public data object Identifier : TestReportSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : TestReportSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "TestReport.identifier"
+    public override val expression: kotlin.String = "TestReport.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: TestReport): List<Any> = emptyList()
+    public override fun extract(resource: TestReport): List<dev.ohs.fhir.model.r4.Identifier> =
+      listOfNotNull(resource.identifier)
   }
 
-  public data object Issued : TestReportSearchParam<Any>() {
-    public override val paramName: String = "issued"
+  public data object Issued : TestReportSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "issued"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "TestReport.issued"
+    public override val expression: kotlin.String = "TestReport.issued"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: TestReport): List<Any> = emptyList()
+    public override fun extract(resource: TestReport): List<DateTime> =
+      listOfNotNull(resource.issued)
   }
 
-  public data object Participant : TestReportSearchParam<Any>() {
-    public override val paramName: String = "participant"
+  public data object Participant : TestReportSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "TestReport.participant.uri"
+    public override val expression: kotlin.String = "TestReport.participant.uri"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: TestReport): List<Any> = emptyList()
+    public override fun extract(resource: TestReport): List<Uri> =
+      resource.participant.map { it.uri }
   }
 
   public data object Result : TestReportSearchParam<Any>() {
-    public override val paramName: String = "result"
+    public override val paramName: kotlin.String = "result"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "TestReport.result"
+    public override val expression: kotlin.String = "TestReport.result"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: TestReport): List<Any> = emptyList()
+    public override fun extract(resource: TestReport): List<Any> = listOf(resource.result)
   }
 
-  public data object Tester : TestReportSearchParam<Any>() {
-    public override val paramName: String = "tester"
+  public data object Tester : TestReportSearchParam<String>() {
+    public override val paramName: kotlin.String = "tester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "TestReport.tester"
+    public override val expression: kotlin.String = "TestReport.tester"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: TestReport): List<Any> = emptyList()
+    public override fun extract(resource: TestReport): List<String> = listOfNotNull(resource.tester)
   }
 
-  public data object Testscript : TestReportSearchParam<Any>() {
-    public override val paramName: String = "testscript"
+  public data object Testscript : TestReportSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "testscript"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "TestReport.testScript"
+    public override val expression: kotlin.String = "TestReport.testScript"
 
-    public override val target: List<String> = listOf("TestScript")
+    public override val target: List<kotlin.String> = listOf("TestScript")
 
-    public override fun extract(resource: TestReport): List<Any> = emptyList()
+    public override fun extract(resource: TestReport): List<Reference> = listOf(resource.testScript)
   }
 
   public companion object {

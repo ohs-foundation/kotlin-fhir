@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.AnnotationAuthorSerializer
-import com.google.fhir.model.r4.serializers.AnnotationSerializer
+import dev.ohs.fhir.model.r4.serializers.AnnotationAuthorSerializer
+import dev.ohs.fhir.model.r4.serializers.AnnotationSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -77,14 +77,14 @@ public data class Annotation(
 
     public fun asString(): String? = this as? String
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Author
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Author
 
-    public data class String(public val `value`: com.google.fhir.model.r4.String) : Author
+    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Author
 
     public companion object {
       internal fun from(
-        referenceValue: com.google.fhir.model.r4.Reference?,
-        stringValue: com.google.fhir.model.r4.String?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
+        stringValue: dev.ohs.fhir.model.r4.String?,
       ): Author? {
         if (referenceValue != null) return Reference(referenceValue)
         if (stringValue != null) return String(stringValue)

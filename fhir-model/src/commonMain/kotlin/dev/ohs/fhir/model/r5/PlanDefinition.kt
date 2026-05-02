@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,29 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionConditionSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionDefinitionSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionDynamicValueSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionInputSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionOutputSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionParticipantSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionRelatedActionOffsetSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionRelatedActionSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionSubjectSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActionTimingSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActorOptionSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionActorSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionAsNeededSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionGoalSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionGoalTargetDetailSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionGoalTargetSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionSubjectSerializer
-import com.google.fhir.model.r5.serializers.PlanDefinitionVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionConditionSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionDynamicValueSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionInputSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionOutputSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionParticipantSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionRelatedActionOffsetSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionRelatedActionSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionSubjectSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionTimingSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActorOptionSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActorSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionAsNeededSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionGoalSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionGoalTargetDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionGoalTargetSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionSubjectSerializer
+import dev.ohs.fhir.model.r5.serializers.PlanDefinitionVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -686,31 +686,31 @@ public data class PlanDefinition(
 
         public fun asRatio(): Ratio? = this as? Ratio
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Detail
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Detail
 
-        public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Detail
+        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Detail
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Detail
 
-        public data class String(public val `value`: com.google.fhir.model.r5.String) : Detail
+        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Detail
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Detail
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Detail
 
-        public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Detail
+        public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Detail
 
-        public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Detail
+        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Detail
 
         public companion object {
           internal fun from(
-            quantityValue: com.google.fhir.model.r5.Quantity?,
-            rangeValue: com.google.fhir.model.r5.Range?,
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            stringValue: com.google.fhir.model.r5.String?,
-            booleanValue: com.google.fhir.model.r5.Boolean?,
-            integerValue: com.google.fhir.model.r5.Integer?,
-            ratioValue: com.google.fhir.model.r5.Ratio?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+            rangeValue: dev.ohs.fhir.model.r5.Range?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            stringValue: dev.ohs.fhir.model.r5.String?,
+            booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+            integerValue: dev.ohs.fhir.model.r5.Integer?,
+            ratioValue: dev.ohs.fhir.model.r5.Ratio?,
           ): Detail? {
             if (quantityValue != null) return Quantity(quantityValue)
             if (rangeValue != null) return Range(rangeValue)
@@ -1891,14 +1891,14 @@ public data class PlanDefinition(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Duration(public val `value`: com.google.fhir.model.r5.Duration) : Offset
+        public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Offset
 
-        public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Offset
+        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Offset
 
         public companion object {
           internal fun from(
-            durationValue: com.google.fhir.model.r5.Duration?,
-            rangeValue: com.google.fhir.model.r5.Range?,
+            durationValue: dev.ohs.fhir.model.r5.Duration?,
+            rangeValue: dev.ohs.fhir.model.r5.Range?,
           ): Offset? {
             if (durationValue != null) return Duration(durationValue)
             if (rangeValue != null) return Range(rangeValue)
@@ -2296,19 +2296,18 @@ public data class PlanDefinition(
 
       public fun asCanonical(): Canonical? = this as? Canonical
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Subject
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Subject
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Subject
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Subject
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) : Subject
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Subject
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          canonicalValue: com.google.fhir.model.r5.Canonical?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
         ): Subject? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -2328,21 +2327,21 @@ public data class PlanDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class Age(public val `value`: com.google.fhir.model.r5.Age) : Action.Timing
+      public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Action.Timing
 
-      public data class Duration(public val `value`: com.google.fhir.model.r5.Duration) :
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
         Action.Timing
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Action.Timing
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Action.Timing
 
-      public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) : Action.Timing
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Action.Timing
 
       public companion object {
         internal fun from(
-          ageValue: com.google.fhir.model.r5.Age?,
-          durationValue: com.google.fhir.model.r5.Duration?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          timingValue: com.google.fhir.model.r5.Timing?,
+          ageValue: dev.ohs.fhir.model.r5.Age?,
+          durationValue: dev.ohs.fhir.model.r5.Duration?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          timingValue: dev.ohs.fhir.model.r5.Timing?,
         ): Action.Timing? {
           if (ageValue != null) return Age(ageValue)
           if (durationValue != null) return Duration(durationValue)
@@ -2359,15 +2358,14 @@ public data class PlanDefinition(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) :
-        Definition
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Definition
 
-      public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : Definition
+      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Definition
 
       public companion object {
         internal fun from(
-          canonicalValue: com.google.fhir.model.r5.Canonical?,
-          uriValue: com.google.fhir.model.r5.Uri?,
+          canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
+          uriValue: dev.ohs.fhir.model.r5.Uri?,
         ): Definition? {
           if (canonicalValue != null) return Canonical(canonicalValue)
           if (uriValue != null) return Uri(uriValue)
@@ -2658,16 +2656,14 @@ public data class PlanDefinition(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)
@@ -2684,19 +2680,18 @@ public data class PlanDefinition(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r5.CodeableConcept
-    ) : Subject
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+      Subject
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Subject
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Subject
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) : Subject
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Subject
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r5.Reference?,
-        canonicalValue: com.google.fhir.model.r5.Canonical?,
+        codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
+        canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
       ): Subject? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)
@@ -2712,16 +2707,15 @@ public data class PlanDefinition(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : AsNeeded
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : AsNeeded
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r5.CodeableConcept
-    ) : AsNeeded
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+      AsNeeded
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r5.Boolean?,
-        codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+        booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+        codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
       ): AsNeeded? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

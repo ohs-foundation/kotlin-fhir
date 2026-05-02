@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4b.serializers.ValueSetComposeIncludeConceptDesignationSerializer
-import com.google.fhir.model.r4b.serializers.ValueSetComposeIncludeConceptSerializer
-import com.google.fhir.model.r4b.serializers.ValueSetComposeIncludeFilterSerializer
-import com.google.fhir.model.r4b.serializers.ValueSetComposeIncludeSerializer
-import com.google.fhir.model.r4b.serializers.ValueSetComposeSerializer
-import com.google.fhir.model.r4b.serializers.ValueSetExpansionContainsSerializer
-import com.google.fhir.model.r4b.serializers.ValueSetExpansionParameterSerializer
-import com.google.fhir.model.r4b.serializers.ValueSetExpansionParameterValueSerializer
-import com.google.fhir.model.r4b.serializers.ValueSetExpansionSerializer
-import com.google.fhir.model.r4b.serializers.ValueSetSerializer
-import com.google.fhir.model.r4b.terminologies.CommonLanguages
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.serializers.ValueSetComposeIncludeConceptDesignationSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetComposeIncludeConceptSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetComposeIncludeFilterSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetComposeIncludeSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetComposeSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionContainsSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionParameterSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionParameterValueSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionSerializer
+import dev.ohs.fhir.model.r4.serializers.ValueSetSerializer
+import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1418,29 +1418,29 @@ public data class ValueSet(
 
         public fun asDateTime(): DateTime? = this as? DateTime
 
-        public data class String(public val `value`: com.google.fhir.model.r4b.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
 
-        public data class Integer(public val `value`: com.google.fhir.model.r4b.Integer) : Value
+        public data class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Value
 
-        public data class Decimal(public val `value`: com.google.fhir.model.r4b.Decimal) : Value
+        public data class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Value
 
-        public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Value
+        public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Value
 
-        public data class Code(public val `value`: com.google.fhir.model.r4b.Code) : Value
+        public data class Code(public val `value`: dev.ohs.fhir.model.r4.Code) : Value
 
-        public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Value
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Value
 
         public companion object {
           internal fun from(
-            stringValue: com.google.fhir.model.r4b.String?,
-            booleanValue: com.google.fhir.model.r4b.Boolean?,
-            integerValue: com.google.fhir.model.r4b.Integer?,
-            decimalValue: com.google.fhir.model.r4b.Decimal?,
-            uriValue: com.google.fhir.model.r4b.Uri?,
-            codeValue: com.google.fhir.model.r4b.Code?,
-            dateTimeValue: com.google.fhir.model.r4b.DateTime?,
+            stringValue: dev.ohs.fhir.model.r4.String?,
+            booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+            integerValue: dev.ohs.fhir.model.r4.Integer?,
+            decimalValue: dev.ohs.fhir.model.r4.Decimal?,
+            uriValue: dev.ohs.fhir.model.r4.Uri?,
+            codeValue: dev.ohs.fhir.model.r4.Code?,
+            dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
           ): Value? {
             if (stringValue != null) return String(stringValue)
             if (booleanValue != null) return Boolean(booleanValue)

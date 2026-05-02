@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.MolecularSequence
-import com.google.fhir.model.r4.surrogates.MolecularSequenceQualityRocSurrogate
-import com.google.fhir.model.r4.surrogates.MolecularSequenceQualitySurrogate
-import com.google.fhir.model.r4.surrogates.MolecularSequenceReferenceSeqSurrogate
-import com.google.fhir.model.r4.surrogates.MolecularSequenceRepositorySurrogate
-import com.google.fhir.model.r4.surrogates.MolecularSequenceStructureVariantInnerSurrogate
-import com.google.fhir.model.r4.surrogates.MolecularSequenceStructureVariantOuterSurrogate
-import com.google.fhir.model.r4.surrogates.MolecularSequenceStructureVariantSurrogate
-import com.google.fhir.model.r4.surrogates.MolecularSequenceSurrogate
-import com.google.fhir.model.r4.surrogates.MolecularSequenceVariantSurrogate
+import dev.ohs.fhir.model.r4.MolecularSequence
+import dev.ohs.fhir.model.r4.surrogates.MolecularSequenceQualityRocSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MolecularSequenceQualitySurrogate
+import dev.ohs.fhir.model.r4.surrogates.MolecularSequenceReferenceSeqSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MolecularSequenceRepositorySurrogate
+import dev.ohs.fhir.model.r4.surrogates.MolecularSequenceStructureVariantInnerSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MolecularSequenceStructureVariantOuterSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MolecularSequenceStructureVariantSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MolecularSequenceSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MolecularSequenceVariantSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

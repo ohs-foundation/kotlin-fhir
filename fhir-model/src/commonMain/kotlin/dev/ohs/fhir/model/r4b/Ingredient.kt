@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.IngredientManufacturerSerializer
-import com.google.fhir.model.r4b.serializers.IngredientSerializer
-import com.google.fhir.model.r4b.serializers.IngredientSubstanceSerializer
-import com.google.fhir.model.r4b.serializers.IngredientSubstanceStrengthConcentrationSerializer
-import com.google.fhir.model.r4b.serializers.IngredientSubstanceStrengthPresentationSerializer
-import com.google.fhir.model.r4b.serializers.IngredientSubstanceStrengthReferenceStrengthSerializer
-import com.google.fhir.model.r4b.serializers.IngredientSubstanceStrengthReferenceStrengthStrengthSerializer
-import com.google.fhir.model.r4b.serializers.IngredientSubstanceStrengthSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.IngredientManufacturerSerializer
+import dev.ohs.fhir.model.r4b.serializers.IngredientSerializer
+import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceSerializer
+import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthConcentrationSerializer
+import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthPresentationSerializer
+import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthReferenceStrengthSerializer
+import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthReferenceStrengthStrengthSerializer
+import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -550,15 +550,15 @@ public data class Ingredient(
 
           public fun asRatioRange(): RatioRange? = this as? RatioRange
 
-          public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) : Strength
+          public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Strength
 
-          public data class RatioRange(public val `value`: com.google.fhir.model.r4b.RatioRange) :
+          public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
             Strength
 
           public companion object {
             internal fun from(
-              ratioValue: com.google.fhir.model.r4b.Ratio?,
-              ratioRangeValue: com.google.fhir.model.r4b.RatioRange?,
+              ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+              ratioRangeValue: dev.ohs.fhir.model.r4b.RatioRange?,
             ): Strength? {
               if (ratioValue != null) return Ratio(ratioValue)
               if (ratioRangeValue != null) return RatioRange(ratioRangeValue)
@@ -639,15 +639,15 @@ public data class Ingredient(
 
         public fun asRatioRange(): RatioRange? = this as? RatioRange
 
-        public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) : Presentation
+        public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Presentation
 
-        public data class RatioRange(public val `value`: com.google.fhir.model.r4b.RatioRange) :
+        public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
           Presentation
 
         public companion object {
           internal fun from(
-            ratioValue: com.google.fhir.model.r4b.Ratio?,
-            ratioRangeValue: com.google.fhir.model.r4b.RatioRange?,
+            ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+            ratioRangeValue: dev.ohs.fhir.model.r4b.RatioRange?,
           ): Presentation? {
             if (ratioValue != null) return Ratio(ratioValue)
             if (ratioRangeValue != null) return RatioRange(ratioRangeValue)
@@ -662,16 +662,15 @@ public data class Ingredient(
 
         public fun asRatioRange(): RatioRange? = this as? RatioRange
 
-        public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) :
-          Concentration
+        public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Concentration
 
-        public data class RatioRange(public val `value`: com.google.fhir.model.r4b.RatioRange) :
+        public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
           Concentration
 
         public companion object {
           internal fun from(
-            ratioValue: com.google.fhir.model.r4b.Ratio?,
-            ratioRangeValue: com.google.fhir.model.r4b.RatioRange?,
+            ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+            ratioRangeValue: dev.ohs.fhir.model.r4b.RatioRange?,
           ): Concentration? {
             if (ratioValue != null) return Ratio(ratioValue)
             if (ratioRangeValue != null) return RatioRange(ratioRangeValue)

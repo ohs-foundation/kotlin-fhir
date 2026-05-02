@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.PopulationAgeSerializer
-import com.google.fhir.model.r4b.serializers.PopulationSerializer
+import dev.ohs.fhir.model.r4b.serializers.PopulationAgeSerializer
+import dev.ohs.fhir.model.r4b.serializers.PopulationSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -97,16 +97,15 @@ public data class Population(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Age
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Age
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Age
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      Age
 
     public companion object {
       internal fun from(
-        rangeValue: com.google.fhir.model.r4b.Range?,
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
+        rangeValue: dev.ohs.fhir.model.r4b.Range?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
       ): Age? {
         if (rangeValue != null) return Range(rangeValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

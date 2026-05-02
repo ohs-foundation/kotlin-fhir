@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.CompartmentDefinitionResourceSerializer
-import com.google.fhir.model.r4b.serializers.CompartmentDefinitionSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
-import com.google.fhir.model.r4b.terminologies.ResourceType
+import dev.ohs.fhir.model.r4b.serializers.CompartmentDefinitionResourceSerializer
+import dev.ohs.fhir.model.r4b.serializers.CompartmentDefinitionSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -95,7 +95,7 @@ public data class CompartmentDefinition(
    * resources may have profiles and tags In their meta elements, but SHALL NOT have security
    * labels.
    */
-  override val contained: List<com.google.fhir.model.r4b.Resource> = listOf(),
+  override val contained: List<dev.ohs.fhir.model.r4b.Resource> = listOf(),
   /**
    * May be used to represent additional information that is not part of the basic definition of the
    * resource. To make the use of extensions safe and manageable, there is a strict set of
@@ -533,7 +533,7 @@ public data class CompartmentDefinition(
      * resources may have profiles and tags In their meta elements, but SHALL NOT have security
      * labels.
      */
-    public var contained: MutableList<com.google.fhir.model.r4b.Resource.Builder> = mutableListOf()
+    public var contained: MutableList<dev.ohs.fhir.model.r4b.Resource.Builder> = mutableListOf()
 
     /**
      * May be used to represent additional information that is not part of the basic definition of

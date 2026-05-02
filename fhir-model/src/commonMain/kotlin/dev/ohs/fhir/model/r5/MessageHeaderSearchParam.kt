@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,63 +28,66 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: MessageHeader): List<T>
 
-  public data object Author : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "author"
+  public data object Author : MessageHeaderSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "MessageHeader.author"
+    public override val expression: kotlin.String = "MessageHeader.author"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Device", "Organization", "PractitionerRole", "Practitioner")
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<Reference> =
+      listOfNotNull(resource.author)
   }
 
   public data object Code : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "code"
+    public override val paramName: kotlin.String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MessageHeader.response.code"
+    public override val expression: kotlin.String = "MessageHeader.response.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<Any> =
+      listOfNotNull(resource.response?.code)
   }
 
-  public data object Destination : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "destination"
+  public data object Destination : MessageHeaderSearchParam<String>() {
+    public override val paramName: kotlin.String = "destination"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "MessageHeader.destination.name"
+    public override val expression: kotlin.String = "MessageHeader.destination.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<String> =
+      resource.destination.mapNotNull { it.name }
   }
 
   public data object Event : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "event"
+    public override val paramName: kotlin.String = "event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MessageHeader.event.ofType(Coding)"
+    public override val expression: kotlin.String = "MessageHeader.event.ofType(Coding)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: MessageHeader): List<Any> = emptyList()
   }
 
-  public data object Focus : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "focus"
+  public data object Focus : MessageHeaderSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "MessageHeader.focus"
+    public override val expression: kotlin.String = "MessageHeader.focus"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -247,82 +249,88 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<Reference> = resource.focus
   }
 
-  public data object Receiver : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "receiver"
+  public data object Receiver : MessageHeaderSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "receiver"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "MessageHeader.destination.receiver"
+    public override val expression: kotlin.String = "MessageHeader.destination.receiver"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Organization", "PractitionerRole", "Practitioner")
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<Reference> =
+      resource.destination.mapNotNull { it.receiver }
   }
 
-  public data object ResponseId : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "response-id"
+  public data object ResponseId : MessageHeaderSearchParam<Identifier>() {
+    public override val paramName: kotlin.String = "response-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MessageHeader.response.identifier"
+    public override val expression: kotlin.String = "MessageHeader.response.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<Identifier> =
+      listOfNotNull(resource.response?.identifier)
   }
 
-  public data object Responsible : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "responsible"
+  public data object Responsible : MessageHeaderSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "responsible"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "MessageHeader.responsible"
+    public override val expression: kotlin.String = "MessageHeader.responsible"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Organization", "PractitionerRole", "Practitioner")
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<Reference> =
+      listOfNotNull(resource.responsible)
   }
 
-  public data object Sender : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "sender"
+  public data object Sender : MessageHeaderSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "sender"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "MessageHeader.sender"
+    public override val expression: kotlin.String = "MessageHeader.sender"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Device", "Organization", "PractitionerRole", "Practitioner")
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<Reference> =
+      listOfNotNull(resource.sender)
   }
 
-  public data object Source : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "source"
+  public data object Source : MessageHeaderSearchParam<String>() {
+    public override val paramName: kotlin.String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "MessageHeader.source.name"
+    public override val expression: kotlin.String = "MessageHeader.source.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<String> =
+      listOfNotNull(resource.source.name)
   }
 
-  public data object Target : MessageHeaderSearchParam<Any>() {
-    public override val paramName: String = "target"
+  public data object Target : MessageHeaderSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "MessageHeader.destination.target"
+    public override val expression: kotlin.String = "MessageHeader.destination.target"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<kotlin.String> = listOf("Device")
 
-    public override fun extract(resource: MessageHeader): List<Any> = emptyList()
+    public override fun extract(resource: MessageHeader): List<Reference> =
+      resource.destination.mapNotNull { it.target }
   }
 
   public companion object {

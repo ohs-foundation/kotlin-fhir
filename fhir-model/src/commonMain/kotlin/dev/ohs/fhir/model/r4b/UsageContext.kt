@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.UsageContextSerializer
-import com.google.fhir.model.r4b.serializers.UsageContextValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.UsageContextSerializer
+import dev.ohs.fhir.model.r4b.serializers.UsageContextValueSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -78,22 +78,21 @@ public data class UsageContext(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Value
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      Value
 
-    public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Value
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-    public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Value
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Value
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Value
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-        quantityValue: com.google.fhir.model.r4b.Quantity?,
-        rangeValue: com.google.fhir.model.r4b.Range?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+        quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+        rangeValue: dev.ohs.fhir.model.r4b.Range?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
       ): Value? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (quantityValue != null) return Quantity(quantityValue)

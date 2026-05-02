@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,47 +16,47 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.ExplanationOfBenefit
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitAccidentLocationSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitAccidentSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemBodySiteSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemDetailSubDetailSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemDetailSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemLocationSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemServicedSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitBenefitBalanceFinancialAllowedSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitBenefitBalanceFinancialSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitBenefitBalanceFinancialUsedSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitBenefitBalanceSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitCareTeamSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitDiagnosisDiagnosisSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitDiagnosisSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitEventSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitEventWhenSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitInsuranceSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitItemAdjudicationSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitItemBodySiteSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitItemDetailSubDetailSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitItemDetailSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitItemLocationSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitItemReviewOutcomeSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitItemServicedSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitItemSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitPayeeSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitPaymentSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitProcedureProcedureSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitProcedureSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitProcessNoteSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitRelatedSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitSupportingInfoSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitSupportingInfoTimingSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitSupportingInfoValueSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitSurrogate
-import com.google.fhir.model.r5.surrogates.ExplanationOfBenefitTotalSurrogate
+import dev.ohs.fhir.model.r5.ExplanationOfBenefit
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitAccidentLocationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitAccidentSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemBodySiteSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemDetailSubDetailSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemDetailSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemLocationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemServicedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitAddItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitBenefitBalanceFinancialAllowedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitBenefitBalanceFinancialSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitBenefitBalanceFinancialUsedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitBenefitBalanceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitCareTeamSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitDiagnosisDiagnosisSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitDiagnosisSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitEventSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitEventWhenSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitInsuranceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitItemAdjudicationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitItemBodySiteSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitItemDetailSubDetailSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitItemDetailSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitItemLocationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitItemReviewOutcomeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitItemServicedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitPayeeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitPaymentSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitProcedureProcedureSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitProcedureSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitProcessNoteSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitRelatedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitSupportingInfoSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitSupportingInfoTimingSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitSupportingInfoValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ExplanationOfBenefitTotalSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

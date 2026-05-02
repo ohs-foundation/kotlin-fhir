@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.InsurancePlan
-import com.google.fhir.model.r4b.surrogates.InsurancePlanContactSurrogate
-import com.google.fhir.model.r4b.surrogates.InsurancePlanCoverageBenefitLimitSurrogate
-import com.google.fhir.model.r4b.surrogates.InsurancePlanCoverageBenefitSurrogate
-import com.google.fhir.model.r4b.surrogates.InsurancePlanCoverageSurrogate
-import com.google.fhir.model.r4b.surrogates.InsurancePlanPlanGeneralCostSurrogate
-import com.google.fhir.model.r4b.surrogates.InsurancePlanPlanSpecificCostBenefitCostSurrogate
-import com.google.fhir.model.r4b.surrogates.InsurancePlanPlanSpecificCostBenefitSurrogate
-import com.google.fhir.model.r4b.surrogates.InsurancePlanPlanSpecificCostSurrogate
-import com.google.fhir.model.r4b.surrogates.InsurancePlanPlanSurrogate
-import com.google.fhir.model.r4b.surrogates.InsurancePlanSurrogate
+import dev.ohs.fhir.model.r4b.InsurancePlan
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanContactSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanCoverageBenefitLimitSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanCoverageBenefitSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanCoverageSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanPlanGeneralCostSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanPlanSpecificCostBenefitCostSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanPlanSpecificCostBenefitSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanPlanSpecificCostSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanPlanSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InsurancePlanSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

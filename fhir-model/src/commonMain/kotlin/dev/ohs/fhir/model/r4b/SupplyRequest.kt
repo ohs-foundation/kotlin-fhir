@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.SupplyRequestItemSerializer
-import com.google.fhir.model.r4b.serializers.SupplyRequestOccurrenceSerializer
-import com.google.fhir.model.r4b.serializers.SupplyRequestParameterSerializer
-import com.google.fhir.model.r4b.serializers.SupplyRequestParameterValueSerializer
-import com.google.fhir.model.r4b.serializers.SupplyRequestSerializer
+import dev.ohs.fhir.model.r4b.serializers.SupplyRequestItemSerializer
+import dev.ohs.fhir.model.r4b.serializers.SupplyRequestOccurrenceSerializer
+import dev.ohs.fhir.model.r4b.serializers.SupplyRequestParameterSerializer
+import dev.ohs.fhir.model.r4b.serializers.SupplyRequestParameterValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.SupplyRequestSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -277,21 +277,21 @@ public data class SupplyRequest(
       public fun asBoolean(): Boolean? = this as? Boolean
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-      public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Value
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          quantityValue: com.google.fhir.model.r4b.Quantity?,
-          rangeValue: com.google.fhir.model.r4b.Range?,
-          booleanValue: com.google.fhir.model.r4b.Boolean?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (quantityValue != null) return Quantity(quantityValue)
@@ -370,16 +370,15 @@ public data class SupplyRequest(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Item
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      Item
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Item
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Item
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
       ): Item? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)
@@ -396,17 +395,17 @@ public data class SupplyRequest(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Occurrence
 
-    public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) : Occurrence
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        periodValue: com.google.fhir.model.r4b.Period?,
-        timingValue: com.google.fhir.model.r4b.Timing?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
+        timingValue: dev.ohs.fhir.model.r4b.Timing?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.PatientCommunicationSerializer
-import com.google.fhir.model.r5.serializers.PatientContactSerializer
-import com.google.fhir.model.r5.serializers.PatientDeceasedSerializer
-import com.google.fhir.model.r5.serializers.PatientLinkSerializer
-import com.google.fhir.model.r5.serializers.PatientMultipleBirthSerializer
-import com.google.fhir.model.r5.serializers.PatientSerializer
-import com.google.fhir.model.r5.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r5.serializers.PatientCommunicationSerializer
+import dev.ohs.fhir.model.r5.serializers.PatientContactSerializer
+import dev.ohs.fhir.model.r5.serializers.PatientDeceasedSerializer
+import dev.ohs.fhir.model.r5.serializers.PatientLinkSerializer
+import dev.ohs.fhir.model.r5.serializers.PatientMultipleBirthSerializer
+import dev.ohs.fhir.model.r5.serializers.PatientSerializer
+import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -752,14 +752,14 @@ public data class Patient(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Deceased
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Deceased
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Deceased
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Deceased
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r5.Boolean?,
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
+        booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
       ): Deceased? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (dateTimeValue != null) return DateTime(dateTimeValue)
@@ -774,14 +774,14 @@ public data class Patient(
 
     public fun asInteger(): Integer? = this as? Integer
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : MultipleBirth
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : MultipleBirth
 
-    public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : MultipleBirth
+    public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : MultipleBirth
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r5.Boolean?,
-        integerValue: com.google.fhir.model.r5.Integer?,
+        booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+        integerValue: dev.ohs.fhir.model.r5.Integer?,
       ): MultipleBirth? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (integerValue != null) return Integer(integerValue)

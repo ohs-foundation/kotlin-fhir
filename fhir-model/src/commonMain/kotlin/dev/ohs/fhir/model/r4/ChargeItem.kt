@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.ChargeItemOccurrenceSerializer
-import com.google.fhir.model.r4.serializers.ChargeItemPerformerSerializer
-import com.google.fhir.model.r4.serializers.ChargeItemProductSerializer
-import com.google.fhir.model.r4.serializers.ChargeItemSerializer
+import dev.ohs.fhir.model.r4.serializers.ChargeItemOccurrenceSerializer
+import dev.ohs.fhir.model.r4.serializers.ChargeItemPerformerSerializer
+import dev.ohs.fhir.model.r4.serializers.ChargeItemProductSerializer
+import dev.ohs.fhir.model.r4.serializers.ChargeItemSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -442,17 +442,17 @@ public data class ChargeItem(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Occurrence
 
-    public data class Timing(public val `value`: com.google.fhir.model.r4.Timing) : Occurrence
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4.DateTime?,
-        periodValue: com.google.fhir.model.r4.Period?,
-        timingValue: com.google.fhir.model.r4.Timing?,
+        dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+        periodValue: dev.ohs.fhir.model.r4.Period?,
+        timingValue: dev.ohs.fhir.model.r4.Timing?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)
@@ -468,16 +468,15 @@ public data class ChargeItem(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Product
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Product
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : Product
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+      Product
 
     public companion object {
       internal fun from(
-        referenceValue: com.google.fhir.model.r4.Reference?,
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
       ): Product? {
         if (referenceValue != null) return Reference(referenceValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

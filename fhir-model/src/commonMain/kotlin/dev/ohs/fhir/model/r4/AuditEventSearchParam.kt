@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -30,37 +29,38 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
   public abstract fun extract(resource: AuditEvent): List<T>
 
   public data object Action : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "action"
+    public override val paramName: kotlin.String = "action"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "AuditEvent.action"
+    public override val expression: kotlin.String = "AuditEvent.action"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Any> = listOfNotNull(resource.action)
   }
 
-  public data object Address : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "address"
+  public data object Address : AuditEventSearchParam<String>() {
+    public override val paramName: kotlin.String = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "AuditEvent.agent.network.address"
+    public override val expression: kotlin.String = "AuditEvent.agent.network.address"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<String> =
+      resource.agent.mapNotNull { it.network }.mapNotNull { it.address }
   }
 
-  public data object Agent : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "agent"
+  public data object Agent : AuditEventSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "agent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "AuditEvent.agent.who"
+    public override val expression: kotlin.String = "AuditEvent.agent.who"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Practitioner",
         "Organization",
@@ -70,65 +70,69 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Reference> =
+      resource.agent.mapNotNull { it.who }
   }
 
-  public data object AgentName : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "agent-name"
+  public data object AgentName : AuditEventSearchParam<String>() {
+    public override val paramName: kotlin.String = "agent-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "AuditEvent.agent.name"
+    public override val expression: kotlin.String = "AuditEvent.agent.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<String> =
+      resource.agent.mapNotNull { it.name }
   }
 
-  public data object AgentRole : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "agent-role"
+  public data object AgentRole : AuditEventSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "agent-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "AuditEvent.agent.role"
+    public override val expression: kotlin.String = "AuditEvent.agent.role"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<CodeableConcept> =
+      resource.agent.flatMap { it.role }
   }
 
-  public data object Altid : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "altid"
+  public data object Altid : AuditEventSearchParam<String>() {
+    public override val paramName: kotlin.String = "altid"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "AuditEvent.agent.altId"
+    public override val expression: kotlin.String = "AuditEvent.agent.altId"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<String> =
+      resource.agent.mapNotNull { it.altId }
   }
 
-  public data object Date : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : AuditEventSearchParam<Instant>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "AuditEvent.recorded"
+    public override val expression: kotlin.String = "AuditEvent.recorded"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Instant> = listOf(resource.recorded)
   }
 
-  public data object Entity : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "entity"
+  public data object Entity : AuditEventSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "entity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "AuditEvent.entity.what"
+    public override val expression: kotlin.String = "AuditEvent.entity.what"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -277,101 +281,111 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Reference> =
+      resource.entity.mapNotNull { it.what }
   }
 
-  public data object EntityName : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "entity-name"
+  public data object EntityName : AuditEventSearchParam<String>() {
+    public override val paramName: kotlin.String = "entity-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "AuditEvent.entity.name"
+    public override val expression: kotlin.String = "AuditEvent.entity.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<String> =
+      resource.entity.mapNotNull { it.name }
   }
 
-  public data object EntityRole : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "entity-role"
+  public data object EntityRole : AuditEventSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "entity-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "AuditEvent.entity.role"
+    public override val expression: kotlin.String = "AuditEvent.entity.role"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Coding> =
+      resource.entity.mapNotNull { it.role }
   }
 
-  public data object EntityType : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "entity-type"
+  public data object EntityType : AuditEventSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "entity-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "AuditEvent.entity.type"
+    public override val expression: kotlin.String = "AuditEvent.entity.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Coding> =
+      resource.entity.mapNotNull { it.type }
   }
 
   public data object Outcome : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "outcome"
+    public override val paramName: kotlin.String = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "AuditEvent.outcome"
+    public override val expression: kotlin.String = "AuditEvent.outcome"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Any> = listOfNotNull(resource.outcome)
   }
 
-  public data object Patient : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : AuditEventSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "AuditEvent.agent.who.where(resolve() is Patient)"
+    public override val expression: kotlin.String =
+      "AuditEvent.agent.who.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<kotlin.String> = listOf("Patient")
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Reference> =
+      resource.agent
+        .mapNotNull { it.who }
+        .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
   }
 
-  public data object Policy : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "policy"
+  public data object Policy : AuditEventSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "policy"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "AuditEvent.agent.policy"
+    public override val expression: kotlin.String = "AuditEvent.agent.policy"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Uri> =
+      resource.agent.flatMap { it.policy }
   }
 
-  public data object Site : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "site"
+  public data object Site : AuditEventSearchParam<String>() {
+    public override val paramName: kotlin.String = "site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "AuditEvent.source.site"
+    public override val expression: kotlin.String = "AuditEvent.source.site"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<String> =
+      listOfNotNull(resource.source.site)
   }
 
-  public data object Source : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "source"
+  public data object Source : AuditEventSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "AuditEvent.source.observer"
+    public override val expression: kotlin.String = "AuditEvent.source.observer"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Practitioner",
         "Organization",
@@ -381,31 +395,32 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Reference> =
+      listOf(resource.source.observer)
   }
 
-  public data object Subtype : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "subtype"
+  public data object Subtype : AuditEventSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "subtype"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "AuditEvent.subtype"
+    public override val expression: kotlin.String = "AuditEvent.subtype"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Coding> = resource.subtype
   }
 
-  public data object Type : AuditEventSearchParam<Any>() {
-    public override val paramName: String = "type"
+  public data object Type : AuditEventSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "AuditEvent.type"
+    public override val expression: kotlin.String = "AuditEvent.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: AuditEvent): List<Any> = emptyList()
+    public override fun extract(resource: AuditEvent): List<Coding> = listOf(resource.type)
   }
 
   public companion object {

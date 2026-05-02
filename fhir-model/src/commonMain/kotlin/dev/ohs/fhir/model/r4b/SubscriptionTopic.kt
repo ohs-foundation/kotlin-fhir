@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.SubscriptionTopicCanFilterBySerializer
-import com.google.fhir.model.r4b.serializers.SubscriptionTopicEventTriggerSerializer
-import com.google.fhir.model.r4b.serializers.SubscriptionTopicNotificationShapeSerializer
-import com.google.fhir.model.r4b.serializers.SubscriptionTopicResourceTriggerQueryCriteriaSerializer
-import com.google.fhir.model.r4b.serializers.SubscriptionTopicResourceTriggerSerializer
-import com.google.fhir.model.r4b.serializers.SubscriptionTopicSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicCanFilterBySerializer
+import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicEventTriggerSerializer
+import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicNotificationShapeSerializer
+import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicResourceTriggerQueryCriteriaSerializer
+import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicResourceTriggerSerializer
+import dev.ohs.fhir.model.r4b.serializers.SubscriptionTopicSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

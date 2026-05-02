@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.IngredientManufacturerSerializer
-import com.google.fhir.model.r5.serializers.IngredientSerializer
-import com.google.fhir.model.r5.serializers.IngredientSubstanceSerializer
-import com.google.fhir.model.r5.serializers.IngredientSubstanceStrengthConcentrationSerializer
-import com.google.fhir.model.r5.serializers.IngredientSubstanceStrengthPresentationSerializer
-import com.google.fhir.model.r5.serializers.IngredientSubstanceStrengthReferenceStrengthSerializer
-import com.google.fhir.model.r5.serializers.IngredientSubstanceStrengthReferenceStrengthStrengthSerializer
-import com.google.fhir.model.r5.serializers.IngredientSubstanceStrengthSerializer
-import com.google.fhir.model.r5.terminologies.IngredientManufacturerRole
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.IngredientManufacturerSerializer
+import dev.ohs.fhir.model.r5.serializers.IngredientSerializer
+import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceSerializer
+import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthConcentrationSerializer
+import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthPresentationSerializer
+import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthReferenceStrengthSerializer
+import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthReferenceStrengthStrengthSerializer
+import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthSerializer
+import dev.ohs.fhir.model.r5.terminologies.IngredientManufacturerRole
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -572,19 +572,18 @@ public data class Ingredient(
 
           public fun asQuantity(): Quantity? = this as? Quantity
 
-          public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Strength
+          public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Strength
 
-          public data class RatioRange(public val `value`: com.google.fhir.model.r5.RatioRange) :
+          public data class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) :
             Strength
 
-          public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
-            Strength
+          public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Strength
 
           public companion object {
             internal fun from(
-              ratioValue: com.google.fhir.model.r5.Ratio?,
-              ratioRangeValue: com.google.fhir.model.r5.RatioRange?,
-              quantityValue: com.google.fhir.model.r5.Quantity?,
+              ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+              ratioRangeValue: dev.ohs.fhir.model.r5.RatioRange?,
+              quantityValue: dev.ohs.fhir.model.r5.Quantity?,
             ): Strength? {
               if (ratioValue != null) return Ratio(ratioValue)
               if (ratioRangeValue != null) return RatioRange(ratioRangeValue)
@@ -669,24 +668,24 @@ public data class Ingredient(
 
         public fun asQuantity(): Quantity? = this as? Quantity
 
-        public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Presentation
+        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Presentation
 
-        public data class RatioRange(public val `value`: com.google.fhir.model.r5.RatioRange) :
+        public data class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) :
           Presentation
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Presentation
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
           Presentation
 
         public companion object {
           internal fun from(
-            ratioValue: com.google.fhir.model.r5.Ratio?,
-            ratioRangeValue: com.google.fhir.model.r5.RatioRange?,
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            quantityValue: com.google.fhir.model.r5.Quantity?,
+            ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+            ratioRangeValue: dev.ohs.fhir.model.r5.RatioRange?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
           ): Presentation? {
             if (ratioValue != null) return Ratio(ratioValue)
             if (ratioRangeValue != null) return RatioRange(ratioRangeValue)
@@ -707,24 +706,24 @@ public data class Ingredient(
 
         public fun asQuantity(): Quantity? = this as? Quantity
 
-        public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Concentration
+        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Concentration
 
-        public data class RatioRange(public val `value`: com.google.fhir.model.r5.RatioRange) :
+        public data class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) :
           Concentration
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Concentration
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
           Concentration
 
         public companion object {
           internal fun from(
-            ratioValue: com.google.fhir.model.r5.Ratio?,
-            ratioRangeValue: com.google.fhir.model.r5.RatioRange?,
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            quantityValue: com.google.fhir.model.r5.Quantity?,
+            ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+            ratioRangeValue: dev.ohs.fhir.model.r5.RatioRange?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
           ): Concentration? {
             if (ratioValue != null) return Ratio(ratioValue)
             if (ratioRangeValue != null) return RatioRange(ratioRangeValue)

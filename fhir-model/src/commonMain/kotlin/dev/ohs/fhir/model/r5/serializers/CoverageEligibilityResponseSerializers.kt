@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.CoverageEligibilityResponse
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseErrorSurrogate
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseEventSurrogate
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseEventWhenSurrogate
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceItemBenefitAllowedSurrogate
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceItemBenefitSurrogate
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceItemBenefitUsedSurrogate
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceItemSurrogate
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceSurrogate
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseServicedSurrogate
-import com.google.fhir.model.r5.surrogates.CoverageEligibilityResponseSurrogate
+import dev.ohs.fhir.model.r5.CoverageEligibilityResponse
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseErrorSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseEventSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseEventWhenSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceItemBenefitAllowedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceItemBenefitSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceItemBenefitUsedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseInsuranceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseServicedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CoverageEligibilityResponseSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

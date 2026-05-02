@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,30 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.PlanDefinition
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionConditionSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionDynamicValueSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionInputSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionOutputSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionParticipantSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionRelatedActionOffsetSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionRelatedActionSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionSubjectSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActionTimingSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActorOptionSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionActorSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionAsNeededSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionGoalSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionGoalTargetDetailSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionGoalTargetSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionSubjectSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.PlanDefinitionVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.PlanDefinition
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionConditionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionDefinitionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionDynamicValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionInputSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionOutputSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionParticipantSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionRelatedActionOffsetSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionRelatedActionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionSubjectSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActionTimingSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActorOptionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionActorSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionAsNeededSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionGoalSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionGoalTargetDetailSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionGoalTargetSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionSubjectSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.PlanDefinitionVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

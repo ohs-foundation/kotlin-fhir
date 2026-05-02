@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.GuidanceResponseModuleSerializer
-import com.google.fhir.model.r4.serializers.GuidanceResponseSerializer
+import dev.ohs.fhir.model.r4.serializers.GuidanceResponseModuleSerializer
+import dev.ohs.fhir.model.r4.serializers.GuidanceResponseSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -236,19 +236,18 @@ public data class GuidanceResponse(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Uri(public val `value`: com.google.fhir.model.r4.Uri) : Module
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Module
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r4.Canonical) : Module
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Module
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : Module
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+      Module
 
     public companion object {
       internal fun from(
-        uriValue: com.google.fhir.model.r4.Uri?,
-        canonicalValue: com.google.fhir.model.r4.Canonical?,
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
+        uriValue: dev.ohs.fhir.model.r4.Uri?,
+        canonicalValue: dev.ohs.fhir.model.r4.Canonical?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
       ): Module? {
         if (uriValue != null) return Uri(uriValue)
         if (canonicalValue != null) return Canonical(canonicalValue)

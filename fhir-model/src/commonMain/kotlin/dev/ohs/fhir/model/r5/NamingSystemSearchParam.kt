@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,100 +28,103 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: NamingSystem): List<T>
 
-  public data object Contact : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "contact"
+  public data object Contact : NamingSystemSearchParam<String>() {
+    public override val paramName: kotlin.String = "contact"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "NamingSystem.contact.name"
+    public override val expression: kotlin.String = "NamingSystem.contact.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<String> =
+      resource.contact.mapNotNull { it.name }
   }
 
   public data object Context : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "context"
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "(NamingSystem.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<Any> = emptyList()
   }
 
   public data object ContextQuantity : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "context-quantity"
+    public override val paramName: kotlin.String = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
-    public override val expression: String = "(NamingSystem.useContext.value.ofType(Quantity))"
+    public override val expression: kotlin.String =
+      "(NamingSystem.useContext.value.ofType(Quantity))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<Any> = emptyList()
   }
 
-  public data object ContextType : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "context-type"
+  public data object ContextType : NamingSystemSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.useContext.code"
+    public override val expression: kotlin.String = "NamingSystem.useContext.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<Coding> =
+      resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "context-type-quantity"
+  public data object ContextTypeQuantity : NamingSystemSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "NamingSystem.useContext"
+    public override val expression: kotlin.String = "NamingSystem.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "context-type-value"
+  public data object ContextTypeValue : NamingSystemSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "NamingSystem.useContext"
+    public override val expression: kotlin.String = "NamingSystem.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : NamingSystemSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "NamingSystem.date"
+    public override val expression: kotlin.String = "NamingSystem.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<DateTime> = listOf(resource.date)
   }
 
-  public data object DerivedFrom : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "derived-from"
+  public data object DerivedFrom : NamingSystemSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "NamingSystem.relatedArtifact.where(type='derived-from').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -284,114 +286,123 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "derived-from" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Description : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : NamingSystemSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "NamingSystem.description"
+    public override val expression: kotlin.String = "NamingSystem.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<Markdown> =
+      listOfNotNull(resource.description)
   }
 
-  public data object Effective : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "effective"
+  public data object Effective : NamingSystemSearchParam<dev.ohs.fhir.model.r5.Period>() {
+    public override val paramName: kotlin.String = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "NamingSystem.effectivePeriod"
+    public override val expression: kotlin.String = "NamingSystem.effectivePeriod"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<dev.ohs.fhir.model.r5.Period> =
+      listOfNotNull(resource.effectivePeriod)
   }
 
   public data object IdType : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "id-type"
+    public override val paramName: kotlin.String = "id-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.uniqueId.type"
+    public override val expression: kotlin.String = "NamingSystem.uniqueId.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<Any> =
+      resource.uniqueId.map { it.type }
   }
 
-  public data object Identifier : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : NamingSystemSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.identifier"
+    public override val expression: kotlin.String = "NamingSystem.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Jurisdiction : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "jurisdiction"
+  public data object Jurisdiction : NamingSystemSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.jurisdiction"
+    public override val expression: kotlin.String = "NamingSystem.jurisdiction"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<CodeableConcept> =
+      resource.jurisdiction
   }
 
   public data object Kind : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "kind"
+    public override val paramName: kotlin.String = "kind"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.kind"
+    public override val expression: kotlin.String = "NamingSystem.kind"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<Any> = listOf(resource.kind)
   }
 
-  public data object Name : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : NamingSystemSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "NamingSystem.name"
+    public override val expression: kotlin.String = "NamingSystem.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<String> = listOf(resource.name)
   }
 
-  public data object Period : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "period"
+  public data object Period : NamingSystemSearchParam<dev.ohs.fhir.model.r5.Period>() {
+    public override val paramName: kotlin.String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "NamingSystem.uniqueId.period"
+    public override val expression: kotlin.String = "NamingSystem.uniqueId.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<dev.ohs.fhir.model.r5.Period> =
+      resource.uniqueId.mapNotNull { it.period }
   }
 
-  public data object Predecessor : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "predecessor"
+  public data object Predecessor : NamingSystemSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "NamingSystem.relatedArtifact.where(type='predecessor').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -553,115 +564,124 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "predecessor" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Publisher : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "publisher"
+  public data object Publisher : NamingSystemSearchParam<String>() {
+    public override val paramName: kotlin.String = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "NamingSystem.publisher"
+    public override val expression: kotlin.String = "NamingSystem.publisher"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<String> =
+      listOfNotNull(resource.publisher)
   }
 
-  public data object Responsible : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "responsible"
+  public data object Responsible : NamingSystemSearchParam<String>() {
+    public override val paramName: kotlin.String = "responsible"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "NamingSystem.responsible"
+    public override val expression: kotlin.String = "NamingSystem.responsible"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<String> =
+      listOfNotNull(resource.responsible)
   }
 
   public data object Status : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.status"
+    public override val expression: kotlin.String = "NamingSystem.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<Any> = listOf(resource.status)
   }
 
-  public data object Telecom : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "telecom"
+  public data object Telecom : NamingSystemSearchParam<ContactPoint>() {
+    public override val paramName: kotlin.String = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.contact.telecom"
+    public override val expression: kotlin.String = "NamingSystem.contact.telecom"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<ContactPoint> =
+      resource.contact.flatMap { it.telecom }
   }
 
-  public data object Topic : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "topic"
+  public data object Topic : NamingSystemSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.topic"
+    public override val expression: kotlin.String = "NamingSystem.topic"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<CodeableConcept> = resource.topic
   }
 
-  public data object Type : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "type"
+  public data object Type : NamingSystemSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.type"
+    public override val expression: kotlin.String = "NamingSystem.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<CodeableConcept> =
+      listOfNotNull(resource.type)
   }
 
-  public data object Url : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : NamingSystemSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "NamingSystem.url"
+    public override val expression: kotlin.String = "NamingSystem.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Value : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "value"
+  public data object Value : NamingSystemSearchParam<String>() {
+    public override val paramName: kotlin.String = "value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "NamingSystem.uniqueId.value"
+    public override val expression: kotlin.String = "NamingSystem.uniqueId.value"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<String> =
+      resource.uniqueId.map { it.value }
   }
 
-  public data object Version : NamingSystemSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : NamingSystemSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NamingSystem.version"
+    public override val expression: kotlin.String = "NamingSystem.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NamingSystem): List<Any> = emptyList()
+    public override fun extract(resource: NamingSystem): List<String> =
+      listOfNotNull(resource.version)
   }
 
   public companion object {

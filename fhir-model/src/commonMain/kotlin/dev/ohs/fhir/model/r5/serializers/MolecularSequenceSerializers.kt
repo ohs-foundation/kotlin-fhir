@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.MolecularSequence
-import com.google.fhir.model.r5.surrogates.MolecularSequenceRelativeEditSurrogate
-import com.google.fhir.model.r5.surrogates.MolecularSequenceRelativeStartingSequenceSequenceSurrogate
-import com.google.fhir.model.r5.surrogates.MolecularSequenceRelativeStartingSequenceSurrogate
-import com.google.fhir.model.r5.surrogates.MolecularSequenceRelativeSurrogate
-import com.google.fhir.model.r5.surrogates.MolecularSequenceSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.MolecularSequence
+import dev.ohs.fhir.model.r5.surrogates.MolecularSequenceRelativeEditSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MolecularSequenceRelativeStartingSequenceSequenceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MolecularSequenceRelativeStartingSequenceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MolecularSequenceRelativeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MolecularSequenceSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

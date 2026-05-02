@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,35 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactAbstractSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactClassificationSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactClassificationWhoClassifiedSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipEntryAffiliationInfoSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipEntryContributionInstanceSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipEntrySerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipSummarySerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactPartSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormPeriodicReleaseSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormPublishedInSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactRelatesToSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactRelatesToTargetSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactStatusDateSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactTitleSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactVersionSerializer
-import com.google.fhir.model.r4b.serializers.CitationCitedArtifactWebLocationSerializer
-import com.google.fhir.model.r4b.serializers.CitationClassificationSerializer
-import com.google.fhir.model.r4b.serializers.CitationRelatesToSerializer
-import com.google.fhir.model.r4b.serializers.CitationRelatesToTargetSerializer
-import com.google.fhir.model.r4b.serializers.CitationSerializer
-import com.google.fhir.model.r4b.serializers.CitationStatusDateSerializer
-import com.google.fhir.model.r4b.serializers.CitationSummarySerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactAbstractSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactClassificationSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactClassificationWhoClassifiedSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipEntryAffiliationInfoSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipEntryContributionInstanceSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipEntrySerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactContributorshipSummarySerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactPartSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormPeriodicReleaseSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormPublishedInSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactRelatesToSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactRelatesToTargetSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactStatusDateSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactTitleSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactVersionSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactWebLocationSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationClassificationSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationRelatesToSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationRelatesToTargetSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationStatusDateSerializer
+import dev.ohs.fhir.model.r4b.serializers.CitationSummarySerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -788,22 +788,20 @@ public data class Citation(
 
       public fun asAttachment(): Attachment? = this as? Attachment
 
-      public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Target
+      public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Target
 
-      public data class Identifier(public val `value`: com.google.fhir.model.r4b.Identifier) :
-        Target
+      public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) : Target
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Target
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Target
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
-        Target
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Target
 
       public companion object {
         internal fun from(
-          uriValue: com.google.fhir.model.r4b.Uri?,
-          identifierValue: com.google.fhir.model.r4b.Identifier?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
-          attachmentValue: com.google.fhir.model.r4b.Attachment?,
+          uriValue: dev.ohs.fhir.model.r4b.Uri?,
+          identifierValue: dev.ohs.fhir.model.r4b.Identifier?,
+          referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+          attachmentValue: dev.ohs.fhir.model.r4b.Attachment?,
         ): Target? {
           if (uriValue != null) return Uri(uriValue)
           if (identifierValue != null) return Identifier(identifierValue)
@@ -1664,23 +1662,22 @@ public data class Citation(
 
         public fun asAttachment(): Attachment? = this as? Attachment
 
-        public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Target
+        public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Target
 
-        public data class Identifier(public val `value`: com.google.fhir.model.r4b.Identifier) :
+        public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) :
           Target
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-          Target
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Target
 
-        public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
+        public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) :
           Target
 
         public companion object {
           internal fun from(
-            uriValue: com.google.fhir.model.r4b.Uri?,
-            identifierValue: com.google.fhir.model.r4b.Identifier?,
-            referenceValue: com.google.fhir.model.r4b.Reference?,
-            attachmentValue: com.google.fhir.model.r4b.Attachment?,
+            uriValue: dev.ohs.fhir.model.r4b.Uri?,
+            identifierValue: dev.ohs.fhir.model.r4b.Identifier?,
+            referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+            attachmentValue: dev.ohs.fhir.model.r4b.Attachment?,
           ): Target? {
             if (uriValue != null) return Uri(uriValue)
             if (identifierValue != null) return Identifier(identifierValue)

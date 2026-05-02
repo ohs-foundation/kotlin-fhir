@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.CodeSystemConceptDesignationSerializer
-import com.google.fhir.model.r5.serializers.CodeSystemConceptPropertySerializer
-import com.google.fhir.model.r5.serializers.CodeSystemConceptPropertyValueSerializer
-import com.google.fhir.model.r5.serializers.CodeSystemConceptSerializer
-import com.google.fhir.model.r5.serializers.CodeSystemFilterSerializer
-import com.google.fhir.model.r5.serializers.CodeSystemPropertySerializer
-import com.google.fhir.model.r5.serializers.CodeSystemSerializer
-import com.google.fhir.model.r5.serializers.CodeSystemVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.CodeSystemConceptDesignationSerializer
+import dev.ohs.fhir.model.r5.serializers.CodeSystemConceptPropertySerializer
+import dev.ohs.fhir.model.r5.serializers.CodeSystemConceptPropertyValueSerializer
+import dev.ohs.fhir.model.r5.serializers.CodeSystemConceptSerializer
+import dev.ohs.fhir.model.r5.serializers.CodeSystemFilterSerializer
+import dev.ohs.fhir.model.r5.serializers.CodeSystemPropertySerializer
+import dev.ohs.fhir.model.r5.serializers.CodeSystemSerializer
+import dev.ohs.fhir.model.r5.serializers.CodeSystemVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1130,29 +1130,29 @@ public data class CodeSystem(
 
         public fun asDecimal(): Decimal? = this as? Decimal
 
-        public data class Code(public val `value`: com.google.fhir.model.r5.Code) : Value
+        public data class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
 
-        public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) : Value
+        public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-        public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-        public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Value
+        public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-        public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Value
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-        public data class Decimal(public val `value`: com.google.fhir.model.r5.Decimal) : Value
+        public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
 
         public companion object {
           internal fun from(
-            codeValue: com.google.fhir.model.r5.Code?,
-            codingValue: com.google.fhir.model.r5.Coding?,
-            stringValue: com.google.fhir.model.r5.String?,
-            integerValue: com.google.fhir.model.r5.Integer?,
-            booleanValue: com.google.fhir.model.r5.Boolean?,
-            dateTimeValue: com.google.fhir.model.r5.DateTime?,
-            decimalValue: com.google.fhir.model.r5.Decimal?,
+            codeValue: dev.ohs.fhir.model.r5.Code?,
+            codingValue: dev.ohs.fhir.model.r5.Coding?,
+            stringValue: dev.ohs.fhir.model.r5.String?,
+            integerValue: dev.ohs.fhir.model.r5.Integer?,
+            booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+            dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+            decimalValue: dev.ohs.fhir.model.r5.Decimal?,
           ): Value? {
             if (codeValue != null) return Code(codeValue)
             if (codingValue != null) return Coding(codingValue)
@@ -1320,16 +1320,14 @@ public data class CodeSystem(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)

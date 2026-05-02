@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,24 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionCharacterizationSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionCodeSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionMoietyAmountSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionMoietySerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionMolecularWeightSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionNameOfficialSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionNameSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionPropertySerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionPropertyValueSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionRelationshipAmountSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionRelationshipSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionRelationshipSubstanceDefinitionSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionSourceMaterialSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionStructureRepresentationSerializer
-import com.google.fhir.model.r5.serializers.SubstanceDefinitionStructureSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionCharacterizationSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionCodeSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionMoietyAmountSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionMoietySerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionMolecularWeightSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionNameOfficialSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionNameSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionPropertySerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionPropertyValueSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionRelationshipAmountSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionRelationshipSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionRelationshipSubstanceDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionSourceMaterialSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionStructureRepresentationSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionStructureSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -86,7 +86,7 @@ public data class SubstanceDefinition(
    * language is specified, it should it also be specified on the div element in the html (see rules
    * in HTML5 for information about the relationship between xml:lang and the html lang attribute).
    */
-  override val language: com.google.fhir.model.r5.Code? = null,
+  override val language: dev.ohs.fhir.model.r5.Code? = null,
   /**
    * A human-readable narrative that contains a summary of the resource and can be used to represent
    * the content of the resource to a human. The narrative need not encode all the structured data,
@@ -332,14 +332,14 @@ public data class SubstanceDefinition(
 
       public fun asString(): String? = this as? String
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Amount
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Amount
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Amount
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Amount
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          stringValue: com.google.fhir.model.r5.String?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
         ): Amount? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (stringValue != null) return String(stringValue)
@@ -641,25 +641,24 @@ public data class SubstanceDefinition(
 
       public fun asAttachment(): Attachment? = this as? Attachment
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Value
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Value
+      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) : Value
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          dateValue: com.google.fhir.model.r5.Date?,
-          booleanValue: com.google.fhir.model.r5.Boolean?,
-          attachmentValue: com.google.fhir.model.r5.Attachment?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          dateValue: dev.ohs.fhir.model.r5.Date?,
+          booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+          attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (quantityValue != null) return Quantity(quantityValue)
@@ -1702,17 +1701,16 @@ public data class SubstanceDefinition(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
         SubstanceDefinition
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : SubstanceDefinition
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        SubstanceDefinition
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): SubstanceDefinition? {
           if (referenceValue != null) return Reference(referenceValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -1729,17 +1727,17 @@ public data class SubstanceDefinition(
 
       public fun asString(): String? = this as? String
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Amount
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Amount
 
-      public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Amount
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Amount
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Amount
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Amount
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          ratioValue: com.google.fhir.model.r5.Ratio?,
-          stringValue: com.google.fhir.model.r5.String?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
         ): Amount? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (ratioValue != null) return Ratio(ratioValue)
@@ -2033,7 +2031,7 @@ public data class SubstanceDefinition(
      * in the html (see rules in HTML5 for information about the relationship between xml:lang and
      * the html lang attribute).
      */
-    public var language: com.google.fhir.model.r5.Code.Builder? = null
+    public var language: dev.ohs.fhir.model.r5.Code.Builder? = null
 
     /**
      * A human-readable narrative that contains a summary of the resource and can be used to

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Consent): List<T>
 
-  public data object Action : ConsentSearchParam<Any>() {
+  public data object Action : ConsentSearchParam<CodeableConcept>() {
     public override val paramName: String = "action"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,11 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<CodeableConcept> =
+      resource.provision?.action ?: emptyList()
   }
 
-  public data object Actor : ConsentSearchParam<Any>() {
+  public data object Actor : ConsentSearchParam<Reference>() {
     public override val paramName: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -60,10 +61,11 @@ public sealed class ConsentSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<Reference> =
+      (resource.provision?.actor ?: emptyList()).map { it.reference }
   }
 
-  public data object Category : ConsentSearchParam<Any>() {
+  public data object Category : ConsentSearchParam<CodeableConcept>() {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -72,10 +74,10 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<CodeableConcept> = resource.category
   }
 
-  public data object Consentor : ConsentSearchParam<Any>() {
+  public data object Consentor : ConsentSearchParam<Reference>() {
     public override val paramName: String = "consentor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -85,10 +87,10 @@ public sealed class ConsentSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Practitioner", "Organization", "Patient", "PractitionerRole", "RelatedPerson")
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<Reference> = resource.performer
   }
 
-  public data object Data : ConsentSearchParam<Any>() {
+  public data object Data : ConsentSearchParam<Reference>() {
     public override val paramName: String = "data"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -239,10 +241,11 @@ public sealed class ConsentSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<Reference> =
+      (resource.provision?.data ?: emptyList()).map { it.reference }
   }
 
-  public data object Date : ConsentSearchParam<Any>() {
+  public data object Date : ConsentSearchParam<DateTime>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -251,10 +254,11 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<DateTime> =
+      listOfNotNull(resource.dateTime)
   }
 
-  public data object Identifier : ConsentSearchParam<Any>() {
+  public data object Identifier : ConsentSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -263,10 +267,11 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
-  public data object Organization : ConsentSearchParam<Any>() {
+  public data object Organization : ConsentSearchParam<Reference>() {
     public override val paramName: String = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -275,10 +280,10 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization")
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<Reference> = resource.organization
   }
 
-  public data object Patient : ConsentSearchParam<Any>() {
+  public data object Patient : ConsentSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -287,10 +292,11 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<Reference> =
+      listOfNotNull(resource.patient)
   }
 
-  public data object Period : ConsentSearchParam<Any>() {
+  public data object Period : ConsentSearchParam<dev.ohs.fhir.model.r4b.Period>() {
     public override val paramName: String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -299,10 +305,11 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<dev.ohs.fhir.model.r4b.Period> =
+      listOfNotNull(resource.provision?.period)
   }
 
-  public data object Purpose : ConsentSearchParam<Any>() {
+  public data object Purpose : ConsentSearchParam<Coding>() {
     public override val paramName: String = "purpose"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -311,10 +318,11 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<Coding> =
+      resource.provision?.purpose ?: emptyList()
   }
 
-  public data object Scope : ConsentSearchParam<Any>() {
+  public data object Scope : ConsentSearchParam<CodeableConcept>() {
     public override val paramName: String = "scope"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -323,10 +331,10 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<CodeableConcept> = listOf(resource.scope)
   }
 
-  public data object SecurityLabel : ConsentSearchParam<Any>() {
+  public data object SecurityLabel : ConsentSearchParam<Coding>() {
     public override val paramName: String = "security-label"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -335,10 +343,11 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<Coding> =
+      resource.provision?.securityLabel ?: emptyList()
   }
 
-  public data object SourceReference : ConsentSearchParam<Any>() {
+  public data object SourceReference : ConsentSearchParam<Consent.Source>() {
     public override val paramName: String = "source-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -348,7 +357,8 @@ public sealed class ConsentSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Consent", "Contract", "QuestionnaireResponse", "DocumentReference")
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<Consent.Source> =
+      listOfNotNull(resource.source)
   }
 
   public data object Status : ConsentSearchParam<Any>() {
@@ -360,7 +370,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Consent): List<Any> = emptyList()
+    public override fun extract(resource: Consent): List<Any> = listOf(resource.status)
   }
 
   public companion object {

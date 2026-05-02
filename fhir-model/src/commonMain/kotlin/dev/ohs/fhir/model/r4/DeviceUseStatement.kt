@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.DeviceUseStatementSerializer
-import com.google.fhir.model.r4.serializers.DeviceUseStatementTimingSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceUseStatementSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceUseStatementTimingSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -214,20 +214,20 @@ public data class DeviceUseStatement(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Timing(public val `value`: com.google.fhir.model.r4.Timing) :
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) :
       DeviceUseStatement.Timing
 
-    public data class Period(public val `value`: com.google.fhir.model.r4.Period) :
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) :
       DeviceUseStatement.Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) :
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
       DeviceUseStatement.Timing
 
     public companion object {
       internal fun from(
-        timingValue: com.google.fhir.model.r4.Timing?,
-        periodValue: com.google.fhir.model.r4.Period?,
-        dateTimeValue: com.google.fhir.model.r4.DateTime?,
+        timingValue: dev.ohs.fhir.model.r4.Timing?,
+        periodValue: dev.ohs.fhir.model.r4.Period?,
+        dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
       ): DeviceUseStatement.Timing? {
         if (timingValue != null) return Timing(timingValue)
         if (periodValue != null) return Period(periodValue)

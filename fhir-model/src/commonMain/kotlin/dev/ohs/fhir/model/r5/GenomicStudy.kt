@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.GenomicStudyAnalysisDeviceSerializer
-import com.google.fhir.model.r5.serializers.GenomicStudyAnalysisInputGeneratedBySerializer
-import com.google.fhir.model.r5.serializers.GenomicStudyAnalysisInputSerializer
-import com.google.fhir.model.r5.serializers.GenomicStudyAnalysisOutputSerializer
-import com.google.fhir.model.r5.serializers.GenomicStudyAnalysisPerformerSerializer
-import com.google.fhir.model.r5.serializers.GenomicStudyAnalysisSerializer
-import com.google.fhir.model.r5.serializers.GenomicStudySerializer
+import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisDeviceSerializer
+import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisInputGeneratedBySerializer
+import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisInputSerializer
+import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisOutputSerializer
+import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisPerformerSerializer
+import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisSerializer
+import dev.ohs.fhir.model.r5.serializers.GenomicStudySerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -378,16 +378,16 @@ public data class GenomicStudy(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Identifier(public val `value`: com.google.fhir.model.r5.Identifier) :
+        public data class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) :
           GeneratedBy
 
-        public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
           GeneratedBy
 
         public companion object {
           internal fun from(
-            identifierValue: com.google.fhir.model.r5.Identifier?,
-            referenceValue: com.google.fhir.model.r5.Reference?,
+            identifierValue: dev.ohs.fhir.model.r5.Identifier?,
+            referenceValue: dev.ohs.fhir.model.r5.Reference?,
           ): GeneratedBy? {
             if (identifierValue != null) return Identifier(identifierValue)
             if (referenceValue != null) return Reference(referenceValue)

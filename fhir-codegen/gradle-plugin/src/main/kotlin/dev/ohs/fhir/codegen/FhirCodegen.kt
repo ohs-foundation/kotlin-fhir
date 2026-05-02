@@ -1,5 +1,5 @@
 /*
- * Copyright 2025-2026 Google LLC
+ * Copyright 2025-2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.fhir.codegen
+package dev.ohs.fhir.codegen
 
-import com.google.fhir.codegen.schema.SearchParameterDefinition
-import com.google.fhir.codegen.schema.StructureDefinition
-import com.google.fhir.codegen.schema.serializableWithCustomSerializer
-import com.google.fhir.codegen.schema.valueset.ValueSet
 import com.squareup.kotlinpoet.FileSpec
+import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
+import dev.ohs.fhir.codegen.schema.StructureDefinition
+import dev.ohs.fhir.codegen.schema.serializableWithCustomSerializer
+import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 
 /**
  * Generates [FileSpec]s for a given FHIR StructureDefinition.

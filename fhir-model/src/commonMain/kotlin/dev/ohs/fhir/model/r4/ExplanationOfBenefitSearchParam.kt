@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,211 +28,229 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: ExplanationOfBenefit): List<T>
 
-  public data object CareTeam : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "care-team"
+  public data object CareTeam : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "care-team"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.careTeam.provider"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.careTeam.provider"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Practitioner", "Organization", "PractitionerRole")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      resource.careTeam.map { it.provider }
   }
 
-  public data object Claim : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "claim"
+  public data object Claim : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "claim"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.claim"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.claim"
 
-    public override val target: List<String> = listOf("Claim")
+    public override val target: List<kotlin.String> = listOf("Claim")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      listOfNotNull(resource.claim)
   }
 
-  public data object Coverage : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "coverage"
+  public data object Coverage : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "coverage"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.insurance.coverage"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.insurance.coverage"
 
-    public override val target: List<String> = listOf("Coverage")
+    public override val target: List<kotlin.String> = listOf("Coverage")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      resource.insurance.map { it.coverage }
   }
 
-  public data object Created : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "created"
+  public data object Created : ExplanationOfBenefitSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "ExplanationOfBenefit.created"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.created"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<DateTime> =
+      listOf(resource.created)
   }
 
-  public data object DetailUdi : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "detail-udi"
+  public data object DetailUdi : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "detail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.item.detail.udi"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.item.detail.udi"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<kotlin.String> = listOf("Device")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      resource.item.flatMap { it.detail }.flatMap { it.udi }
   }
 
-  public data object Disposition : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "disposition"
+  public data object Disposition : ExplanationOfBenefitSearchParam<String>() {
+    public override val paramName: kotlin.String = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ExplanationOfBenefit.disposition"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.disposition"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<String> =
+      listOfNotNull(resource.disposition)
   }
 
-  public data object Encounter : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "encounter"
+  public data object Encounter : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.item.encounter"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.item.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<kotlin.String> = listOf("Encounter")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      resource.item.flatMap { it.encounter }
   }
 
-  public data object Enterer : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "enterer"
+  public data object Enterer : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.enterer"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.enterer"
 
-    public override val target: List<String> = listOf("Practitioner", "PractitionerRole")
+    public override val target: List<kotlin.String> = listOf("Practitioner", "PractitionerRole")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      listOfNotNull(resource.enterer)
   }
 
-  public data object Facility : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "facility"
+  public data object Facility : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.facility"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.facility"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<kotlin.String> = listOf("Location")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      listOfNotNull(resource.facility)
   }
 
-  public data object Identifier : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier :
+    ExplanationOfBenefitSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ExplanationOfBenefit.identifier"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(
+      resource: ExplanationOfBenefit
+    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object ItemUdi : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "item-udi"
+  public data object ItemUdi : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "item-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.item.udi"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.item.udi"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<kotlin.String> = listOf("Device")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      resource.item.flatMap { it.udi }
   }
 
-  public data object Patient : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.patient"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<kotlin.String> = listOf("Patient")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      listOf(resource.patient)
   }
 
-  public data object Payee : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "payee"
+  public data object Payee : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "payee"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.payee.party"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.payee.party"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Practitioner", "Organization", "Patient", "PractitionerRole", "RelatedPerson")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      listOfNotNull(resource.payee?.party)
   }
 
-  public data object ProcedureUdi : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "procedure-udi"
+  public data object ProcedureUdi : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "procedure-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.procedure.udi"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.procedure.udi"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<kotlin.String> = listOf("Device")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      resource.procedure.flatMap { it.udi }
   }
 
-  public data object Provider : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "provider"
+  public data object Provider : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.provider"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.provider"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Practitioner", "Organization", "PractitionerRole")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      listOf(resource.provider)
   }
 
   public data object Status : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ExplanationOfBenefit.status"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Any> = listOf(resource.status)
   }
 
-  public data object SubdetailUdi : ExplanationOfBenefitSearchParam<Any>() {
-    public override val paramName: String = "subdetail-udi"
+  public data object SubdetailUdi : ExplanationOfBenefitSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "subdetail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ExplanationOfBenefit.item.detail.subDetail.udi"
+    public override val expression: kotlin.String = "ExplanationOfBenefit.item.detail.subDetail.udi"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<kotlin.String> = listOf("Device")
 
-    public override fun extract(resource: ExplanationOfBenefit): List<Any> = emptyList()
+    public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
+      resource.item.flatMap { it.detail }.flatMap { it.subDetail }.flatMap { it.udi }
   }
 
   public companion object {

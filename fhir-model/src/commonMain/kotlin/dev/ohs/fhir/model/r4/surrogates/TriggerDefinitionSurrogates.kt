@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,23 +17,23 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.surrogates
+package dev.ohs.fhir.model.r4.surrogates
 
-import com.google.fhir.model.r4.DataRequirement
-import com.google.fhir.model.r4.Date
-import com.google.fhir.model.r4.DateTime
-import com.google.fhir.model.r4.Element
-import com.google.fhir.model.r4.Enumeration
-import com.google.fhir.model.r4.Expression
-import com.google.fhir.model.r4.Extension
-import com.google.fhir.model.r4.FhirDate
-import com.google.fhir.model.r4.FhirDateTime
-import com.google.fhir.model.r4.Reference
-import com.google.fhir.model.r4.String as R4String
-import com.google.fhir.model.r4.Timing
-import com.google.fhir.model.r4.TriggerDefinition
-import com.google.fhir.model.r4.serializers.DoubleSerializer
-import com.google.fhir.model.r4.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r4.DataRequirement
+import dev.ohs.fhir.model.r4.Date
+import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.Enumeration
+import dev.ohs.fhir.model.r4.Expression
+import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.FhirDateTime
+import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.Timing
+import dev.ohs.fhir.model.r4.TriggerDefinition
+import dev.ohs.fhir.model.r4.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r4.serializers.LocalTimeSerializer
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.EvidenceReportCiteAsSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceReportRelatesToSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceReportRelatesToTargetSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceReportSectionSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceReportSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceReportSubjectCharacteristicSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceReportSubjectCharacteristicValueSerializer
-import com.google.fhir.model.r4b.serializers.EvidenceReportSubjectSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.EvidenceReportCiteAsSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceReportRelatesToSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceReportRelatesToTargetSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceReportSectionSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceReportSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceReportSubjectCharacteristicSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceReportSubjectCharacteristicValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.EvidenceReportSubjectSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -428,26 +428,25 @@ public data class EvidenceReport(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-          Value
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Value
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r4b.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
         ) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-        public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Value
+        public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
         public companion object {
           internal fun from(
-            referenceValue: com.google.fhir.model.r4b.Reference?,
-            codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-            booleanValue: com.google.fhir.model.r4b.Boolean?,
-            quantityValue: com.google.fhir.model.r4b.Quantity?,
-            rangeValue: com.google.fhir.model.r4b.Range?,
+            referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+            codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+            booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+            quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+            rangeValue: dev.ohs.fhir.model.r4b.Range?,
           ): Value? {
             if (referenceValue != null) return Reference(referenceValue)
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -659,15 +658,14 @@ public data class EvidenceReport(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Identifier(public val `value`: com.google.fhir.model.r4b.Identifier) :
-        Target
+      public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) : Target
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Target
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Target
 
       public companion object {
         internal fun from(
-          identifierValue: com.google.fhir.model.r4b.Identifier?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          identifierValue: dev.ohs.fhir.model.r4b.Identifier?,
+          referenceValue: dev.ohs.fhir.model.r4b.Reference?,
         ): Target? {
           if (identifierValue != null) return Identifier(identifierValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -1054,14 +1052,14 @@ public data class EvidenceReport(
 
     public fun asMarkdown(): Markdown? = this as? Markdown
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : CiteAs
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : CiteAs
 
-    public data class Markdown(public val `value`: com.google.fhir.model.r4b.Markdown) : CiteAs
+    public data class Markdown(public val `value`: dev.ohs.fhir.model.r4b.Markdown) : CiteAs
 
     public companion object {
       internal fun from(
-        referenceValue: com.google.fhir.model.r4b.Reference?,
-        markdownValue: com.google.fhir.model.r4b.Markdown?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+        markdownValue: dev.ohs.fhir.model.r4b.Markdown?,
       ): CiteAs? {
         if (referenceValue != null) return Reference(referenceValue)
         if (markdownValue != null) return Markdown(markdownValue)

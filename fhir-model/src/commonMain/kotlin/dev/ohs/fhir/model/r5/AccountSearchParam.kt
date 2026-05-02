@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,110 +28,116 @@ public sealed class AccountSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Account): List<T>
 
-  public data object Guarantor : AccountSearchParam<Any>() {
-    public override val paramName: String = "guarantor"
+  public data object Guarantor : AccountSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "guarantor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Account.guarantor.party"
+    public override val expression: kotlin.String = "Account.guarantor.party"
 
-    public override val target: List<String> = listOf("Organization", "RelatedPerson", "Patient")
+    public override val target: List<kotlin.String> =
+      listOf("Organization", "RelatedPerson", "Patient")
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<Reference> =
+      resource.guarantor.map { it.party }
   }
 
-  public data object Identifier : AccountSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : AccountSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Account.identifier"
+    public override val expression: kotlin.String = "Account.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Name : AccountSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : AccountSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Account.name"
+    public override val expression: kotlin.String = "Account.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<String> = listOfNotNull(resource.name)
   }
 
-  public data object Owner : AccountSearchParam<Any>() {
-    public override val paramName: String = "owner"
+  public data object Owner : AccountSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "owner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Account.owner"
+    public override val expression: kotlin.String = "Account.owner"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<Reference> = listOfNotNull(resource.owner)
   }
 
-  public data object Patient : AccountSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : AccountSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Account.subject.where(resolve() is Patient)"
+    public override val expression: kotlin.String = "Account.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<kotlin.String> = listOf("Patient")
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<Reference> =
+      resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
   }
 
-  public data object Period : AccountSearchParam<Any>() {
-    public override val paramName: String = "period"
+  public data object Period : AccountSearchParam<dev.ohs.fhir.model.r5.Period>() {
+    public override val paramName: kotlin.String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "Account.servicePeriod"
+    public override val expression: kotlin.String = "Account.servicePeriod"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<dev.ohs.fhir.model.r5.Period> =
+      listOfNotNull(resource.servicePeriod)
   }
 
-  public data object Relatedaccount : AccountSearchParam<Any>() {
-    public override val paramName: String = "relatedaccount"
+  public data object Relatedaccount : AccountSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "relatedaccount"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Account.relatedAccount.account"
+    public override val expression: kotlin.String = "Account.relatedAccount.account"
 
-    public override val target: List<String> = listOf("Account")
+    public override val target: List<kotlin.String> = listOf("Account")
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<Reference> =
+      resource.relatedAccount.map { it.account }
   }
 
   public data object Status : AccountSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Account.status"
+    public override val expression: kotlin.String = "Account.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : AccountSearchParam<Any>() {
-    public override val paramName: String = "subject"
+  public data object Subject : AccountSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Account.subject"
+    public override val expression: kotlin.String = "Account.subject"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "HealthcareService",
         "Device",
@@ -143,19 +148,20 @@ public sealed class AccountSearchParam<T> : SearchParam {
         "Patient",
       )
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<Reference> = resource.subject
   }
 
-  public data object Type : AccountSearchParam<Any>() {
-    public override val paramName: String = "type"
+  public data object Type : AccountSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Account.type"
+    public override val expression: kotlin.String = "Account.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Account): List<Any> = emptyList()
+    public override fun extract(resource: Account): List<CodeableConcept> =
+      listOfNotNull(resource.type)
   }
 
   public companion object {

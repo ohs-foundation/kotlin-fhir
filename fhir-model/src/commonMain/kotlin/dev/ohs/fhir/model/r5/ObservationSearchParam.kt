@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class ObservationSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Observation): List<T>
 
-  public data object BasedOn : ObservationSearchParam<Any>() {
+  public data object BasedOn : ObservationSearchParam<Reference>() {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -46,10 +46,10 @@ public sealed class ObservationSearchParam<T> : SearchParam {
         "NutritionOrder",
       )
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> = resource.basedOn
   }
 
-  public data object Category : ObservationSearchParam<Any>() {
+  public data object Category : ObservationSearchParam<CodeableConcept>() {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,10 +58,10 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<CodeableConcept> = resource.category
   }
 
-  public data object Code : ObservationSearchParam<Any>() {
+  public data object Code : ObservationSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -70,7 +70,8 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<CodeableConcept> =
+      listOf(resource.code)
   }
 
   public data object CodeValueConcept : ObservationSearchParam<Any>() {
@@ -121,7 +122,7 @@ public sealed class ObservationSearchParam<T> : SearchParam {
     public override fun extract(resource: Observation): List<Any> = emptyList()
   }
 
-  public data object ComboCode : ObservationSearchParam<Any>() {
+  public data object ComboCode : ObservationSearchParam<CodeableConcept>() {
     public override val paramName: String = "combo-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -130,10 +131,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<CodeableConcept> =
+      listOf(resource.code)
   }
 
-  public data object ComboCodeValueConcept : ObservationSearchParam<Any>() {
+  public data object ComboCodeValueConcept : ObservationSearchParam<Observation.Component>() {
     public override val paramName: String = "combo-code-value-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -142,10 +144,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Observation.Component> =
+      resource.component
   }
 
-  public data object ComboCodeValueQuantity : ObservationSearchParam<Any>() {
+  public data object ComboCodeValueQuantity : ObservationSearchParam<Observation.Component>() {
     public override val paramName: String = "combo-code-value-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -154,10 +157,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Observation.Component> =
+      resource.component
   }
 
-  public data object ComboDataAbsentReason : ObservationSearchParam<Any>() {
+  public data object ComboDataAbsentReason : ObservationSearchParam<CodeableConcept>() {
     public override val paramName: String = "combo-data-absent-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -166,7 +170,8 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<CodeableConcept> =
+      listOfNotNull(resource.dataAbsentReason)
   }
 
   public data object ComboValueConcept : ObservationSearchParam<Any>() {
@@ -193,7 +198,7 @@ public sealed class ObservationSearchParam<T> : SearchParam {
     public override fun extract(resource: Observation): List<Any> = emptyList()
   }
 
-  public data object ComponentCode : ObservationSearchParam<Any>() {
+  public data object ComponentCode : ObservationSearchParam<CodeableConcept>() {
     public override val paramName: String = "component-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -202,10 +207,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<CodeableConcept> =
+      resource.component.map { it.code }
   }
 
-  public data object ComponentCodeValueConcept : ObservationSearchParam<Any>() {
+  public data object ComponentCodeValueConcept : ObservationSearchParam<Observation.Component>() {
     public override val paramName: String = "component-code-value-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -214,10 +220,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Observation.Component> =
+      resource.component
   }
 
-  public data object ComponentCodeValueQuantity : ObservationSearchParam<Any>() {
+  public data object ComponentCodeValueQuantity : ObservationSearchParam<Observation.Component>() {
     public override val paramName: String = "component-code-value-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -226,10 +233,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Observation.Component> =
+      resource.component
   }
 
-  public data object ComponentDataAbsentReason : ObservationSearchParam<Any>() {
+  public data object ComponentDataAbsentReason : ObservationSearchParam<CodeableConcept>() {
     public override val paramName: String = "component-data-absent-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -238,7 +246,8 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<CodeableConcept> =
+      resource.component.mapNotNull { it.dataAbsentReason }
   }
 
   public data object ComponentValueCanonical : ObservationSearchParam<Any>() {
@@ -289,7 +298,7 @@ public sealed class ObservationSearchParam<T> : SearchParam {
     public override fun extract(resource: Observation): List<Any> = emptyList()
   }
 
-  public data object DataAbsentReason : ObservationSearchParam<Any>() {
+  public data object DataAbsentReason : ObservationSearchParam<CodeableConcept>() {
     public override val paramName: String = "data-absent-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -298,7 +307,8 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<CodeableConcept> =
+      listOfNotNull(resource.dataAbsentReason)
   }
 
   public data object Date : ObservationSearchParam<Any>() {
@@ -313,7 +323,7 @@ public sealed class ObservationSearchParam<T> : SearchParam {
     public override fun extract(resource: Observation): List<Any> = emptyList()
   }
 
-  public data object DerivedFrom : ObservationSearchParam<Any>() {
+  public data object DerivedFrom : ObservationSearchParam<Reference>() {
     public override val paramName: String = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -331,10 +341,10 @@ public sealed class ObservationSearchParam<T> : SearchParam {
         "QuestionnaireResponse",
       )
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> = resource.derivedFrom
   }
 
-  public data object Device : ObservationSearchParam<Any>() {
+  public data object Device : ObservationSearchParam<Reference>() {
     public override val paramName: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -343,10 +353,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Device", "DeviceMetric")
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> =
+      listOfNotNull(resource.device)
   }
 
-  public data object Encounter : ObservationSearchParam<Any>() {
+  public data object Encounter : ObservationSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -355,10 +366,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object Focus : ObservationSearchParam<Any>() {
+  public data object Focus : ObservationSearchParam<Reference>() {
     public override val paramName: String = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -527,10 +539,10 @@ public sealed class ObservationSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> = resource.focus
   }
 
-  public data object HasMember : ObservationSearchParam<Any>() {
+  public data object HasMember : ObservationSearchParam<Reference>() {
     public override val paramName: String = "has-member"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -540,10 +552,10 @@ public sealed class ObservationSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Observation", "MolecularSequence", "QuestionnaireResponse")
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> = resource.hasMember
   }
 
-  public data object Identifier : ObservationSearchParam<Any>() {
+  public data object Identifier : ObservationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -552,10 +564,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Method : ObservationSearchParam<Any>() {
+  public data object Method : ObservationSearchParam<CodeableConcept>() {
     public override val paramName: String = "method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -564,10 +577,11 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<CodeableConcept> =
+      listOfNotNull(resource.method)
   }
 
-  public data object PartOf : ObservationSearchParam<Any>() {
+  public data object PartOf : ObservationSearchParam<Reference>() {
     public override val paramName: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -585,10 +599,10 @@ public sealed class ObservationSearchParam<T> : SearchParam {
         "MedicationDispense",
       )
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> = resource.partOf
   }
 
-  public data object Patient : ObservationSearchParam<Any>() {
+  public data object Patient : ObservationSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -597,10 +611,13 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Performer : ObservationSearchParam<Any>() {
+  public data object Performer : ObservationSearchParam<Reference>() {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -617,10 +634,10 @@ public sealed class ObservationSearchParam<T> : SearchParam {
         "Patient",
       )
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> = resource.performer
   }
 
-  public data object Specimen : ObservationSearchParam<Any>() {
+  public data object Specimen : ObservationSearchParam<Reference>() {
     public override val paramName: String = "specimen"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -629,7 +646,8 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Group", "Specimen")
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> =
+      listOfNotNull(resource.specimen)
   }
 
   public data object Status : ObservationSearchParam<Any>() {
@@ -641,10 +659,10 @@ public sealed class ObservationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : ObservationSearchParam<Any>() {
+  public data object Subject : ObservationSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -666,7 +684,8 @@ public sealed class ObservationSearchParam<T> : SearchParam {
         "Medication",
       )
 
-    public override fun extract(resource: Observation): List<Any> = emptyList()
+    public override fun extract(resource: Observation): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
   public data object ValueCanonical : ObservationSearchParam<Any>() {

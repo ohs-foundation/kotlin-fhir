@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.Observation
-import com.google.fhir.model.r4b.surrogates.ObservationComponentSurrogate
-import com.google.fhir.model.r4b.surrogates.ObservationComponentValueSurrogate
-import com.google.fhir.model.r4b.surrogates.ObservationEffectiveSurrogate
-import com.google.fhir.model.r4b.surrogates.ObservationReferenceRangeSurrogate
-import com.google.fhir.model.r4b.surrogates.ObservationSurrogate
-import com.google.fhir.model.r4b.surrogates.ObservationValueSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.Observation
+import dev.ohs.fhir.model.r4b.surrogates.ObservationComponentSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ObservationComponentValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ObservationEffectiveSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ObservationReferenceRangeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ObservationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ObservationValueSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

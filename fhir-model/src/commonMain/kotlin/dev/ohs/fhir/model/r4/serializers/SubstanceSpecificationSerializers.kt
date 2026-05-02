@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,26 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.SubstanceSpecification
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationCodeSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationMoietyAmountSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationMoietySurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationNameOfficialSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationNameSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationPropertyAmountSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationPropertyDefiningSubstanceSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationPropertySurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationRelationshipAmountSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationRelationshipSubstanceSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationRelationshipSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationStructureIsotopeMolecularWeightSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationStructureIsotopeSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationStructureRepresentationSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationStructureSurrogate
-import com.google.fhir.model.r4.surrogates.SubstanceSpecificationSurrogate
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.SubstanceSpecification
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationCodeSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationMoietyAmountSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationMoietySurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationNameOfficialSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationNameSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationPropertyAmountSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationPropertyDefiningSubstanceSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationPropertySurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationRelationshipAmountSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationRelationshipSubstanceSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationRelationshipSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationStructureIsotopeMolecularWeightSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationStructureIsotopeSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationStructureRepresentationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationStructureSurrogate
+import dev.ohs.fhir.model.r4.surrogates.SubstanceSpecificationSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

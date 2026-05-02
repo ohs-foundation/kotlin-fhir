@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -30,172 +29,185 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
   public abstract fun extract(resource: CompartmentDefinition): List<T>
 
   public data object Code : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "code"
+    public override val paramName: kotlin.String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CompartmentDefinition.code"
+    public override val expression: kotlin.String = "CompartmentDefinition.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<Any> = listOf(resource.code)
   }
 
-  public data object Context : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context"
+  public data object Context : CompartmentDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "(CompartmentDefinition.useContext.value as CodeableConcept)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<CodeableConcept> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-quantity"
+  public data object ContextQuantity : CompartmentDefinitionSearchParam<Quantity>() {
+    public override val paramName: kotlin.String = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
-    public override val expression: String = "(CompartmentDefinition.useContext.value as Quantity)"
+    public override val expression: kotlin.String =
+      "(CompartmentDefinition.useContext.value as Quantity)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<Quantity> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type"
+  public data object ContextType : CompartmentDefinitionSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CompartmentDefinition.useContext.code"
+    public override val expression: kotlin.String = "CompartmentDefinition.useContext.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<Coding> =
+      resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type-quantity"
+  public data object ContextTypeQuantity : CompartmentDefinitionSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "CompartmentDefinition.useContext"
+    public override val expression: kotlin.String = "CompartmentDefinition.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<UsageContext> =
+      resource.useContext
   }
 
-  public data object ContextTypeValue : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type-value"
+  public data object ContextTypeValue : CompartmentDefinitionSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "CompartmentDefinition.useContext"
+    public override val expression: kotlin.String = "CompartmentDefinition.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<UsageContext> =
+      resource.useContext
   }
 
-  public data object Date : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : CompartmentDefinitionSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "CompartmentDefinition.date"
+    public override val expression: kotlin.String = "CompartmentDefinition.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<DateTime> =
+      listOfNotNull(resource.date)
   }
 
-  public data object Description : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : CompartmentDefinitionSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "CompartmentDefinition.description"
+    public override val expression: kotlin.String = "CompartmentDefinition.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<Markdown> =
+      listOfNotNull(resource.description)
   }
 
-  public data object Name : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : CompartmentDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "CompartmentDefinition.name"
+    public override val expression: kotlin.String = "CompartmentDefinition.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<String> =
+      listOf(resource.name)
   }
 
-  public data object Publisher : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "publisher"
+  public data object Publisher : CompartmentDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "CompartmentDefinition.publisher"
+    public override val expression: kotlin.String = "CompartmentDefinition.publisher"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<String> =
+      listOfNotNull(resource.publisher)
   }
 
   public data object Resource : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "resource"
+    public override val paramName: kotlin.String = "resource"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CompartmentDefinition.resource.code"
+    public override val expression: kotlin.String = "CompartmentDefinition.resource.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<Any> =
+      resource.resource.map { it.code }
   }
 
   public data object Status : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CompartmentDefinition.status"
+    public override val expression: kotlin.String = "CompartmentDefinition.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<Any> =
+      listOf(resource.status)
   }
 
-  public data object Url : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : CompartmentDefinitionSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "CompartmentDefinition.url"
+    public override val expression: kotlin.String = "CompartmentDefinition.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<Uri> = listOf(resource.url)
   }
 
-  public data object Version : CompartmentDefinitionSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : CompartmentDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CompartmentDefinition.version"
+    public override val expression: kotlin.String = "CompartmentDefinition.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CompartmentDefinition): List<Any> = emptyList()
+    public override fun extract(resource: CompartmentDefinition): List<String> =
+      listOfNotNull(resource.version)
   }
 
   public companion object {

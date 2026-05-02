@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.TestReportParticipantSerializer
-import com.google.fhir.model.r5.serializers.TestReportSerializer
-import com.google.fhir.model.r5.serializers.TestReportSetupActionAssertRequirementLinkSerializer
-import com.google.fhir.model.r5.serializers.TestReportSetupActionAssertRequirementSerializer
-import com.google.fhir.model.r5.serializers.TestReportSetupActionAssertSerializer
-import com.google.fhir.model.r5.serializers.TestReportSetupActionOperationSerializer
-import com.google.fhir.model.r5.serializers.TestReportSetupActionSerializer
-import com.google.fhir.model.r5.serializers.TestReportSetupSerializer
-import com.google.fhir.model.r5.serializers.TestReportTeardownActionSerializer
-import com.google.fhir.model.r5.serializers.TestReportTeardownSerializer
-import com.google.fhir.model.r5.serializers.TestReportTestActionSerializer
-import com.google.fhir.model.r5.serializers.TestReportTestSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportParticipantSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportSetupActionAssertRequirementLinkSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportSetupActionAssertRequirementSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportSetupActionAssertSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportSetupActionOperationSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportSetupActionSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportSetupSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportTeardownActionSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportTeardownSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportTestActionSerializer
+import dev.ohs.fhir.model.r5.serializers.TestReportTestSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -700,15 +700,14 @@ public data class TestReport(
 
             public fun asCanonical(): Canonical? = this as? Canonical
 
-            public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : Link
+            public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Link
 
-            public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) :
-              Link
+            public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Link
 
             public companion object {
               internal fun from(
-                uriValue: com.google.fhir.model.r5.Uri?,
-                canonicalValue: com.google.fhir.model.r5.Canonical?,
+                uriValue: dev.ohs.fhir.model.r5.Uri?,
+                canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
               ): Link? {
                 if (uriValue != null) return Uri(uriValue)
                 if (canonicalValue != null) return Canonical(canonicalValue)

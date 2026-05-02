@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.MedicationBatchSerializer
-import com.google.fhir.model.r5.serializers.MedicationIngredientSerializer
-import com.google.fhir.model.r5.serializers.MedicationIngredientStrengthSerializer
-import com.google.fhir.model.r5.serializers.MedicationSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationBatchSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationIngredientSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationIngredientStrengthSerializer
+import dev.ohs.fhir.model.r5.serializers.MedicationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -301,19 +301,18 @@ public data class Medication(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Strength
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Strength
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Strength
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Strength
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Strength
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Strength
 
       public companion object {
         internal fun from(
-          ratioValue: com.google.fhir.model.r5.Ratio?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
+          ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
         ): Strength? {
           if (ratioValue != null) return Ratio(ratioValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

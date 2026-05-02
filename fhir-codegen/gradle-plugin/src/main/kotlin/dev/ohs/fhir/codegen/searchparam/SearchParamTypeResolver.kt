@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.google.fhir.codegen.searchparam
+package dev.ohs.fhir.codegen.searchparam
 
-import com.google.fhir.codegen.ResolvedExpression
-import com.google.fhir.codegen.schema.capitalized
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
+import dev.ohs.fhir.codegen.ResolvedExpression
+import dev.ohs.fhir.codegen.schema.capitalized
 
 /**
  * Resolves the KotlinPoet [ClassName] / [TypeName] used as the type parameter `T` (or for

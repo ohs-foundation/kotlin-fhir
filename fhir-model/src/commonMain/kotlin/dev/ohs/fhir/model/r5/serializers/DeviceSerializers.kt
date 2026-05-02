@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.Device
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.DeviceConformsToSurrogate
-import com.google.fhir.model.r5.surrogates.DeviceNameSurrogate
-import com.google.fhir.model.r5.surrogates.DevicePropertySurrogate
-import com.google.fhir.model.r5.surrogates.DevicePropertyValueSurrogate
-import com.google.fhir.model.r5.surrogates.DeviceSurrogate
-import com.google.fhir.model.r5.surrogates.DeviceUdiCarrierSurrogate
-import com.google.fhir.model.r5.surrogates.DeviceVersionSurrogate
+import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.DeviceConformsToSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DeviceNameSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DevicePropertySurrogate
+import dev.ohs.fhir.model.r5.surrogates.DevicePropertyValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DeviceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DeviceUdiCarrierSurrogate
+import dev.ohs.fhir.model.r5.surrogates.DeviceVersionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.VirtualServiceDetailAddressSerializer
-import com.google.fhir.model.r5.serializers.VirtualServiceDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.VirtualServiceDetailAddressSerializer
+import dev.ohs.fhir.model.r5.serializers.VirtualServiceDetailSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -111,23 +111,23 @@ public data class VirtualServiceDetail(
 
     public fun asExtendedContactDetail(): ExtendedContactDetail? = this as? ExtendedContactDetail
 
-    public data class Url(public val `value`: com.google.fhir.model.r5.Url) : Address
+    public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Address
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) : Address
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Address
 
-    public data class ContactPoint(public val `value`: com.google.fhir.model.r5.ContactPoint) :
+    public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
       Address
 
     public data class ExtendedContactDetail(
-      public val `value`: com.google.fhir.model.r5.ExtendedContactDetail
+      public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail
     ) : Address
 
     public companion object {
       internal fun from(
-        urlValue: com.google.fhir.model.r5.Url?,
-        stringValue: com.google.fhir.model.r5.String?,
-        contactPointValue: com.google.fhir.model.r5.ContactPoint?,
-        extendedContactDetailValue: com.google.fhir.model.r5.ExtendedContactDetail?,
+        urlValue: dev.ohs.fhir.model.r5.Url?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        contactPointValue: dev.ohs.fhir.model.r5.ContactPoint?,
+        extendedContactDetailValue: dev.ohs.fhir.model.r5.ExtendedContactDetail?,
       ): Address? {
         if (urlValue != null) return Url(urlValue)
         if (stringValue != null) return String(stringValue)

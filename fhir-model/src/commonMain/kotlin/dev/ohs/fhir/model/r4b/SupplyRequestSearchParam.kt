@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class SupplyRequestSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: SupplyRequest): List<T>
 
-  public data object Category : SupplyRequestSearchParam<Any>() {
+  public data object Category : SupplyRequestSearchParam<CodeableConcept>() {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,11 @@ public sealed class SupplyRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: SupplyRequest): List<Any> = emptyList()
+    public override fun extract(resource: SupplyRequest): List<CodeableConcept> =
+      listOfNotNull(resource.category)
   }
 
-  public data object Date : SupplyRequestSearchParam<Any>() {
+  public data object Date : SupplyRequestSearchParam<DateTime>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -50,10 +51,11 @@ public sealed class SupplyRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: SupplyRequest): List<Any> = emptyList()
+    public override fun extract(resource: SupplyRequest): List<DateTime> =
+      listOfNotNull(resource.authoredOn)
   }
 
-  public data object Identifier : SupplyRequestSearchParam<Any>() {
+  public data object Identifier : SupplyRequestSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,10 +64,11 @@ public sealed class SupplyRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: SupplyRequest): List<Any> = emptyList()
+    public override fun extract(resource: SupplyRequest): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
-  public data object Requester : SupplyRequestSearchParam<Any>() {
+  public data object Requester : SupplyRequestSearchParam<Reference>() {
     public override val paramName: String = "requester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -82,7 +85,8 @@ public sealed class SupplyRequestSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: SupplyRequest): List<Any> = emptyList()
+    public override fun extract(resource: SupplyRequest): List<Reference> =
+      listOfNotNull(resource.requester)
   }
 
   public data object Status : SupplyRequestSearchParam<Any>() {
@@ -94,10 +98,10 @@ public sealed class SupplyRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: SupplyRequest): List<Any> = emptyList()
+    public override fun extract(resource: SupplyRequest): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object Subject : SupplyRequestSearchParam<Any>() {
+  public data object Subject : SupplyRequestSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -106,10 +110,11 @@ public sealed class SupplyRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization", "Patient", "Location")
 
-    public override fun extract(resource: SupplyRequest): List<Any> = emptyList()
+    public override fun extract(resource: SupplyRequest): List<Reference> =
+      listOfNotNull(resource.deliverTo)
   }
 
-  public data object Supplier : SupplyRequestSearchParam<Any>() {
+  public data object Supplier : SupplyRequestSearchParam<Reference>() {
     public override val paramName: String = "supplier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -118,7 +123,7 @@ public sealed class SupplyRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization", "HealthcareService")
 
-    public override fun extract(resource: SupplyRequest): List<Any> = emptyList()
+    public override fun extract(resource: SupplyRequest): List<Reference> = resource.supplier
   }
 
   public companion object {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025-2026 Google LLC
+ * Copyright 2025-2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.fhir.codegen
+package dev.ohs.fhir.codegen
 
-import com.google.fhir.codegen.primitives.DoubleSerializerFileSpecGenerator
-import com.google.fhir.codegen.primitives.EnumerationFileSpecGenerator
-import com.google.fhir.codegen.primitives.FhirDateFileSpecGenerator
-import com.google.fhir.codegen.primitives.FhirDateTimeFileSpecGenerator
-import com.google.fhir.codegen.primitives.LocalTimeSerializerFileSpecGenerator
-import com.google.fhir.codegen.schema.SearchParameterDefinition
-import com.google.fhir.codegen.schema.StructureDefinition
-import com.google.fhir.codegen.schema.capitalized
-import com.google.fhir.codegen.schema.urlPart
-import com.google.fhir.codegen.schema.valueset.ValueSet
 import com.squareup.kotlinpoet.ClassName
+import dev.ohs.fhir.codegen.primitives.DoubleSerializerFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.EnumerationFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirDateFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirDateTimeFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.LocalTimeSerializerFileSpecGenerator
+import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
+import dev.ohs.fhir.codegen.schema.StructureDefinition
+import dev.ohs.fhir.codegen.schema.capitalized
+import dev.ohs.fhir.codegen.schema.urlPart
+import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection

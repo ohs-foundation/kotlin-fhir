@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.MessageHeaderDestinationEndpointSerializer
-import com.google.fhir.model.r5.serializers.MessageHeaderDestinationSerializer
-import com.google.fhir.model.r5.serializers.MessageHeaderEventSerializer
-import com.google.fhir.model.r5.serializers.MessageHeaderResponseSerializer
-import com.google.fhir.model.r5.serializers.MessageHeaderSerializer
-import com.google.fhir.model.r5.serializers.MessageHeaderSourceEndpointSerializer
-import com.google.fhir.model.r5.serializers.MessageHeaderSourceSerializer
+import dev.ohs.fhir.model.r5.serializers.MessageHeaderDestinationEndpointSerializer
+import dev.ohs.fhir.model.r5.serializers.MessageHeaderDestinationSerializer
+import dev.ohs.fhir.model.r5.serializers.MessageHeaderEventSerializer
+import dev.ohs.fhir.model.r5.serializers.MessageHeaderResponseSerializer
+import dev.ohs.fhir.model.r5.serializers.MessageHeaderSerializer
+import dev.ohs.fhir.model.r5.serializers.MessageHeaderSourceEndpointSerializer
+import dev.ohs.fhir.model.r5.serializers.MessageHeaderSourceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -306,15 +306,14 @@ public data class MessageHeader(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Url(public val `value`: com.google.fhir.model.r5.Url) : Endpoint
+      public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Endpoint
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
-        Endpoint
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Endpoint
 
       public companion object {
         internal fun from(
-          urlValue: com.google.fhir.model.r5.Url?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          urlValue: dev.ohs.fhir.model.r5.Url?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Endpoint? {
           if (urlValue != null) return Url(urlValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -482,15 +481,14 @@ public data class MessageHeader(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Url(public val `value`: com.google.fhir.model.r5.Url) : Endpoint
+      public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Endpoint
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
-        Endpoint
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Endpoint
 
       public companion object {
         internal fun from(
-          urlValue: com.google.fhir.model.r5.Url?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          urlValue: dev.ohs.fhir.model.r5.Url?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Endpoint? {
           if (urlValue != null) return Url(urlValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -729,14 +727,14 @@ public data class MessageHeader(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) : Event
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Event
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) : Event
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Event
 
     public companion object {
       internal fun from(
-        codingValue: com.google.fhir.model.r5.Coding?,
-        canonicalValue: com.google.fhir.model.r5.Canonical?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
+        canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
       ): Event? {
         if (codingValue != null) return Coding(codingValue)
         if (canonicalValue != null) return Canonical(canonicalValue)

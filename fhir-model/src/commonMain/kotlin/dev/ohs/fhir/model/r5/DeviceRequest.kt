@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.DeviceRequestOccurrenceSerializer
-import com.google.fhir.model.r5.serializers.DeviceRequestParameterSerializer
-import com.google.fhir.model.r5.serializers.DeviceRequestParameterValueSerializer
-import com.google.fhir.model.r5.serializers.DeviceRequestSerializer
+import dev.ohs.fhir.model.r5.serializers.DeviceRequestOccurrenceSerializer
+import dev.ohs.fhir.model.r5.serializers.DeviceRequestParameterSerializer
+import dev.ohs.fhir.model.r5.serializers.DeviceRequestParameterValueSerializer
+import dev.ohs.fhir.model.r5.serializers.DeviceRequestSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -358,22 +358,21 @@ public data class DeviceRequest(
 
       public fun asBoolean(): Boolean? = this as? Boolean
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Value
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          booleanValue: com.google.fhir.model.r5.Boolean?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          booleanValue: dev.ohs.fhir.model.r5.Boolean?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (quantityValue != null) return Quantity(quantityValue)
@@ -454,17 +453,17 @@ public data class DeviceRequest(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
-    public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) : Occurrence
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        periodValue: com.google.fhir.model.r5.Period?,
-        timingValue: com.google.fhir.model.r5.Timing?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        timingValue: dev.ohs.fhir.model.r5.Timing?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)

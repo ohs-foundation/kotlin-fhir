@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.TestReport
-import com.google.fhir.model.r4.surrogates.TestReportParticipantSurrogate
-import com.google.fhir.model.r4.surrogates.TestReportSetupActionAssertSurrogate
-import com.google.fhir.model.r4.surrogates.TestReportSetupActionOperationSurrogate
-import com.google.fhir.model.r4.surrogates.TestReportSetupActionSurrogate
-import com.google.fhir.model.r4.surrogates.TestReportSetupSurrogate
-import com.google.fhir.model.r4.surrogates.TestReportSurrogate
-import com.google.fhir.model.r4.surrogates.TestReportTeardownActionSurrogate
-import com.google.fhir.model.r4.surrogates.TestReportTeardownSurrogate
-import com.google.fhir.model.r4.surrogates.TestReportTestActionSurrogate
-import com.google.fhir.model.r4.surrogates.TestReportTestSurrogate
+import dev.ohs.fhir.model.r4.TestReport
+import dev.ohs.fhir.model.r4.surrogates.TestReportParticipantSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestReportSetupActionAssertSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestReportSetupActionOperationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestReportSetupActionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestReportSetupSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestReportSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestReportTeardownActionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestReportTeardownSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestReportTestActionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestReportTestSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

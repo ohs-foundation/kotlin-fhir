@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4.serializers.GoalSerializer
-import com.google.fhir.model.r4.serializers.GoalStartSerializer
-import com.google.fhir.model.r4.serializers.GoalTargetDetailSerializer
-import com.google.fhir.model.r4.serializers.GoalTargetDueSerializer
-import com.google.fhir.model.r4.serializers.GoalTargetSerializer
+import dev.ohs.fhir.model.r4b.serializers.GoalSerializer
+import dev.ohs.fhir.model.r4b.serializers.GoalStartSerializer
+import dev.ohs.fhir.model.r4b.serializers.GoalTargetDetailSerializer
+import dev.ohs.fhir.model.r4b.serializers.GoalTargetDueSerializer
+import dev.ohs.fhir.model.r4b.serializers.GoalTargetSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -349,31 +349,31 @@ public data class Goal(
 
       public fun asRatio(): Ratio? = this as? Ratio
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) : Detail
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Detail
 
-      public data class Range(public val `value`: com.google.fhir.model.r4.Range) : Detail
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Detail
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Detail
 
-      public data class String(public val `value`: com.google.fhir.model.r4.String) : Detail
+      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Detail
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Detail
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Detail
 
-      public data class Integer(public val `value`: com.google.fhir.model.r4.Integer) : Detail
+      public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Detail
 
-      public data class Ratio(public val `value`: com.google.fhir.model.r4.Ratio) : Detail
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Detail
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r4.Quantity?,
-          rangeValue: com.google.fhir.model.r4.Range?,
-          codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-          stringValue: com.google.fhir.model.r4.String?,
-          booleanValue: com.google.fhir.model.r4.Boolean?,
-          integerValue: com.google.fhir.model.r4.Integer?,
-          ratioValue: com.google.fhir.model.r4.Ratio?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          stringValue: dev.ohs.fhir.model.r4b.String?,
+          booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+          integerValue: dev.ohs.fhir.model.r4b.Integer?,
+          ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
         ): Detail? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (rangeValue != null) return Range(rangeValue)
@@ -393,14 +393,14 @@ public data class Goal(
 
       public fun asDuration(): Duration? = this as? Duration
 
-      public data class Date(public val `value`: com.google.fhir.model.r4.Date) : Due
+      public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Due
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4.Duration) : Due
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Due
 
       public companion object {
         internal fun from(
-          dateValue: com.google.fhir.model.r4.Date?,
-          durationValue: com.google.fhir.model.r4.Duration?,
+          dateValue: dev.ohs.fhir.model.r4b.Date?,
+          durationValue: dev.ohs.fhir.model.r4b.Duration?,
         ): Due? {
           if (dateValue != null) return Date(dateValue)
           if (durationValue != null) return Duration(durationValue)
@@ -490,16 +490,15 @@ public data class Goal(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Date(public val `value`: com.google.fhir.model.r4.Date) : Start
+    public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Start
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : Start
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      Start
 
     public companion object {
       internal fun from(
-        dateValue: com.google.fhir.model.r4.Date?,
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
+        dateValue: dev.ohs.fhir.model.r4b.Date?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
       ): Start? {
         if (dateValue != null) return Date(dateValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

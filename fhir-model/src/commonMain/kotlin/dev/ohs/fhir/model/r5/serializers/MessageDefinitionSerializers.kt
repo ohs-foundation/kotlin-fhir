@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.MessageDefinition
-import com.google.fhir.model.r5.surrogates.MessageDefinitionAllowedResponseSurrogate
-import com.google.fhir.model.r5.surrogates.MessageDefinitionEventSurrogate
-import com.google.fhir.model.r5.surrogates.MessageDefinitionFocusSurrogate
-import com.google.fhir.model.r5.surrogates.MessageDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.MessageDefinitionVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.MessageDefinition
+import dev.ohs.fhir.model.r5.surrogates.MessageDefinitionAllowedResponseSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MessageDefinitionEventSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MessageDefinitionFocusSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MessageDefinitionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MessageDefinitionVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

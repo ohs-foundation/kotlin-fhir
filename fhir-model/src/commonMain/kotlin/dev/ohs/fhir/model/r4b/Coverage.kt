@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.CoverageClassSerializer
-import com.google.fhir.model.r4b.serializers.CoverageCostToBeneficiaryExceptionSerializer
-import com.google.fhir.model.r4b.serializers.CoverageCostToBeneficiarySerializer
-import com.google.fhir.model.r4b.serializers.CoverageCostToBeneficiaryValueSerializer
-import com.google.fhir.model.r4b.serializers.CoverageSerializer
+import dev.ohs.fhir.model.r4b.serializers.CoverageClassSerializer
+import dev.ohs.fhir.model.r4b.serializers.CoverageCostToBeneficiaryExceptionSerializer
+import dev.ohs.fhir.model.r4b.serializers.CoverageCostToBeneficiarySerializer
+import dev.ohs.fhir.model.r4b.serializers.CoverageCostToBeneficiaryValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.CoverageSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -592,14 +592,14 @@ public data class Coverage(
 
       public fun asMoney(): Money? = this as? Money
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-      public data class Money(public val `value`: com.google.fhir.model.r4b.Money) : Value
+      public data class Money(public val `value`: dev.ohs.fhir.model.r4b.Money) : Value
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r4b.Quantity?,
-          moneyValue: com.google.fhir.model.r4b.Money?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+          moneyValue: dev.ohs.fhir.model.r4b.Money?,
         ): Value? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (moneyValue != null) return Money(moneyValue)

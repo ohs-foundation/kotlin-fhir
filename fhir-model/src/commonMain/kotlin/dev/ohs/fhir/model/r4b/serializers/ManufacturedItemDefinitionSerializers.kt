@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.ManufacturedItemDefinition
-import com.google.fhir.model.r4b.surrogates.ManufacturedItemDefinitionPropertySurrogate
-import com.google.fhir.model.r4b.surrogates.ManufacturedItemDefinitionPropertyValueSurrogate
-import com.google.fhir.model.r4b.surrogates.ManufacturedItemDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r4b.surrogates.ManufacturedItemDefinitionPropertySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ManufacturedItemDefinitionPropertyValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ManufacturedItemDefinitionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

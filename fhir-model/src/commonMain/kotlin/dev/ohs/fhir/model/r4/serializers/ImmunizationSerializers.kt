@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.Immunization
-import com.google.fhir.model.r4b.surrogates.ImmunizationEducationSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationOccurrenceSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationPerformerSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationProtocolAppliedDoseNumberSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationProtocolAppliedSeriesDosesSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationProtocolAppliedSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationReactionSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationSurrogate
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.Immunization
+import dev.ohs.fhir.model.r4.surrogates.ImmunizationEducationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ImmunizationOccurrenceSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ImmunizationPerformerSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ImmunizationProtocolAppliedDoseNumberSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ImmunizationProtocolAppliedSeriesDosesSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ImmunizationProtocolAppliedSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ImmunizationReactionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ImmunizationSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

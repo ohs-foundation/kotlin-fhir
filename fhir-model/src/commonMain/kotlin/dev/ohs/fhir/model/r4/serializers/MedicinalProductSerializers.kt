@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.MedicinalProduct
-import com.google.fhir.model.r4.surrogates.MedicinalProductManufacturingBusinessOperationSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductNameCountryLanguageSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductNameNamePartSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductNameSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductSpecialDesignationIndicationSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductSpecialDesignationSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductSurrogate
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.MedicinalProduct
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductManufacturingBusinessOperationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductNameCountryLanguageSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductNameNamePartSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductNameSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductSpecialDesignationIndicationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductSpecialDesignationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

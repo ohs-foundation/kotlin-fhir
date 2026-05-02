@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class GuidanceResponseSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: GuidanceResponse): List<T>
 
-  public data object Identifier : GuidanceResponseSearchParam<Any>() {
+  public data object Identifier : GuidanceResponseSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +37,12 @@ public sealed class GuidanceResponseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: GuidanceResponse): List<Any> = emptyList()
+    public override fun extract(
+      resource: GuidanceResponse
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Patient : GuidanceResponseSearchParam<Any>() {
+  public data object Patient : GuidanceResponseSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -50,10 +51,13 @@ public sealed class GuidanceResponseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: GuidanceResponse): List<Any> = emptyList()
+    public override fun extract(resource: GuidanceResponse): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Request : GuidanceResponseSearchParam<Any>() {
+  public data object Request : GuidanceResponseSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,10 +66,12 @@ public sealed class GuidanceResponseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: GuidanceResponse): List<Any> = emptyList()
+    public override fun extract(
+      resource: GuidanceResponse
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = listOfNotNull(resource.requestIdentifier)
   }
 
-  public data object Subject : GuidanceResponseSearchParam<Any>() {
+  public data object Subject : GuidanceResponseSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,7 +80,8 @@ public sealed class GuidanceResponseSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Group", "Patient")
 
-    public override fun extract(resource: GuidanceResponse): List<Any> = emptyList()
+    public override fun extract(resource: GuidanceResponse): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
   public companion object {

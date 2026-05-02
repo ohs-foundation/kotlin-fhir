@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionContraindicationOtherTherapySerializer
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionContraindicationSerializer
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionIndicationDurationSerializer
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionIndicationSerializer
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionInteractionInteractantItemSerializer
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionInteractionInteractantSerializer
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionInteractionSerializer
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionUndesirableEffectSerializer
-import com.google.fhir.model.r4b.serializers.ClinicalUseDefinitionWarningSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionContraindicationOtherTherapySerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionContraindicationSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionIndicationDurationSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionIndicationSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionInteractionInteractantItemSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionInteractionInteractantSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionInteractionSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionUndesirableEffectSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionWarningSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -558,14 +558,14 @@ public data class ClinicalUseDefinition(
 
       public fun asString(): String? = this as? String
 
-      public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Duration
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Duration
 
-      public data class String(public val `value`: com.google.fhir.model.r4b.String) : Duration
+      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Duration
 
       public companion object {
         internal fun from(
-          rangeValue: com.google.fhir.model.r4b.Range?,
-          stringValue: com.google.fhir.model.r4b.String?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          stringValue: dev.ohs.fhir.model.r4b.String?,
         ): Duration? {
           if (rangeValue != null) return Range(rangeValue)
           if (stringValue != null) return String(stringValue)
@@ -794,16 +794,16 @@ public data class ClinicalUseDefinition(
 
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Item
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Item
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r4b.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
         ) : Item
 
         public companion object {
           internal fun from(
-            referenceValue: com.google.fhir.model.r4b.Reference?,
-            codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
+            referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+            codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
           ): Item? {
             if (referenceValue != null) return Reference(referenceValue)
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class ArtifactAssessmentSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: ArtifactAssessment): List<T>
 
-  public data object Date : ArtifactAssessmentSearchParam<Any>() {
+  public data object Date : ArtifactAssessmentSearchParam<DateTime>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -38,10 +37,12 @@ public sealed class ArtifactAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ArtifactAssessment): List<Any> = emptyList()
+    public override fun extract(resource: ArtifactAssessment): List<DateTime> =
+      listOfNotNull(resource.date)
   }
 
-  public data object Identifier : ArtifactAssessmentSearchParam<Any>() {
+  public data object Identifier :
+    ArtifactAssessmentSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,7 +51,9 @@ public sealed class ArtifactAssessmentSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ArtifactAssessment): List<Any> = emptyList()
+    public override fun extract(
+      resource: ArtifactAssessment
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
   public companion object {

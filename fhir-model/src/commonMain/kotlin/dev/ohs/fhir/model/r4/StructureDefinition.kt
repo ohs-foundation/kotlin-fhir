@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.StructureDefinitionContextSerializer
-import com.google.fhir.model.r4.serializers.StructureDefinitionDifferentialSerializer
-import com.google.fhir.model.r4.serializers.StructureDefinitionMappingSerializer
-import com.google.fhir.model.r4.serializers.StructureDefinitionSerializer
-import com.google.fhir.model.r4.serializers.StructureDefinitionSnapshotSerializer
-import com.google.fhir.model.r4.terminologies.FHIRVersion
-import com.google.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.serializers.StructureDefinitionContextSerializer
+import dev.ohs.fhir.model.r4.serializers.StructureDefinitionDifferentialSerializer
+import dev.ohs.fhir.model.r4.serializers.StructureDefinitionMappingSerializer
+import dev.ohs.fhir.model.r4.serializers.StructureDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.StructureDefinitionSnapshotSerializer
+import dev.ohs.fhir.model.r4.terminologies.FHIRVersion
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

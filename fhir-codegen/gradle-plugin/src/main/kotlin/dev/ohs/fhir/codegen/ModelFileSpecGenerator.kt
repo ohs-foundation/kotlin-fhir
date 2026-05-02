@@ -1,5 +1,5 @@
 /*
- * Copyright 2025-2026 Google LLC
+ * Copyright 2025-2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,8 @@
  * limitations under the License.
  */
 
-package com.google.fhir.codegen
+package dev.ohs.fhir.codegen
 
-import com.google.fhir.codegen.schema.Element
-import com.google.fhir.codegen.schema.StructureDefinition
-import com.google.fhir.codegen.schema.Type
-import com.google.fhir.codegen.schema.backboneElements
-import com.google.fhir.codegen.schema.capitalized
-import com.google.fhir.codegen.schema.getBindingValueSetUrl
-import com.google.fhir.codegen.schema.getElementName
-import com.google.fhir.codegen.schema.hasPrimaryConstructor
-import com.google.fhir.codegen.schema.isCommonBinding
-import com.google.fhir.codegen.schema.normalizeEnumName
-import com.google.fhir.codegen.schema.rootElements
-import com.google.fhir.codegen.schema.sanitizeKDoc
-import com.google.fhir.codegen.schema.serializableWithCustomSerializer
-import com.google.fhir.codegen.schema.typeIsEnumeratedCode
-import com.google.fhir.codegen.schema.valueset.ValueSet
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -43,6 +28,21 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asTypeName
+import dev.ohs.fhir.codegen.schema.Element
+import dev.ohs.fhir.codegen.schema.StructureDefinition
+import dev.ohs.fhir.codegen.schema.Type
+import dev.ohs.fhir.codegen.schema.backboneElements
+import dev.ohs.fhir.codegen.schema.capitalized
+import dev.ohs.fhir.codegen.schema.getBindingValueSetUrl
+import dev.ohs.fhir.codegen.schema.getElementName
+import dev.ohs.fhir.codegen.schema.hasPrimaryConstructor
+import dev.ohs.fhir.codegen.schema.isCommonBinding
+import dev.ohs.fhir.codegen.schema.normalizeEnumName
+import dev.ohs.fhir.codegen.schema.rootElements
+import dev.ohs.fhir.codegen.schema.sanitizeKDoc
+import dev.ohs.fhir.codegen.schema.serializableWithCustomSerializer
+import dev.ohs.fhir.codegen.schema.typeIsEnumeratedCode
+import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -646,8 +646,8 @@ private fun TypeSpec.Builder.addOfFunctionForDecimal(className: ClassName): Type
  *
  * ```
  * internal fun from(
- *   booleanValue: com.google.fhir.model.r4.Boolean?,
- *   dateTimeValue: com.google.fhir.model.r4.DateTime?,
+ *   booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+ *   dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
  * ): Deceased? {
  *   if (booleanValue != null) return Boolean(booleanValue)
  *   if (dateTimeValue != null) return DateTime(dateTimeValue)

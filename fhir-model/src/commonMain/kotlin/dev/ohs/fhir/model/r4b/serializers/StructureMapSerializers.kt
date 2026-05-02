@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,21 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.StructureMap
-import com.google.fhir.model.r4b.surrogates.StructureMapGroupInputSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapGroupRuleDependentSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapGroupRuleSourceDefaultValueSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapGroupRuleSourceSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapGroupRuleSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapGroupRuleTargetParameterSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapGroupRuleTargetParameterValueSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapGroupRuleTargetSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapGroupSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapStructureSurrogate
-import com.google.fhir.model.r4b.surrogates.StructureMapSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.StructureMap
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapGroupInputSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapGroupRuleDependentSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapGroupRuleSourceDefaultValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapGroupRuleSourceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapGroupRuleSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapGroupRuleTargetParameterSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapGroupRuleTargetParameterValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapGroupRuleTargetSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapGroupSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapStructureSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.StructureMapSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

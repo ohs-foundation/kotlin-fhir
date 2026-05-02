@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ProvenanceAgentSerializer
-import com.google.fhir.model.r5.serializers.ProvenanceEntitySerializer
-import com.google.fhir.model.r5.serializers.ProvenanceOccurredSerializer
-import com.google.fhir.model.r5.serializers.ProvenanceSerializer
+import dev.ohs.fhir.model.r5.serializers.ProvenanceAgentSerializer
+import dev.ohs.fhir.model.r5.serializers.ProvenanceEntitySerializer
+import dev.ohs.fhir.model.r5.serializers.ProvenanceOccurredSerializer
+import dev.ohs.fhir.model.r5.serializers.ProvenanceSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -560,14 +560,14 @@ public data class Provenance(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Occurred
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurred
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Occurred
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurred
 
     public companion object {
       internal fun from(
-        periodValue: com.google.fhir.model.r5.Period?,
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
       ): Occurred? {
         if (periodValue != null) return Period(periodValue)
         if (dateTimeValue != null) return DateTime(dateTimeValue)

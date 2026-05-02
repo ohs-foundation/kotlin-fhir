@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.ImmunizationRecommendation
-import com.google.fhir.model.r4b.surrogates.ImmunizationRecommendationRecommendationDateCriterionSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationRecommendationRecommendationDoseNumberSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationRecommendationRecommendationSeriesDosesSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationRecommendationRecommendationSurrogate
-import com.google.fhir.model.r4b.surrogates.ImmunizationRecommendationSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.ImmunizationRecommendation
+import dev.ohs.fhir.model.r4b.surrogates.ImmunizationRecommendationRecommendationDateCriterionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImmunizationRecommendationRecommendationDoseNumberSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImmunizationRecommendationRecommendationSeriesDosesSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImmunizationRecommendationRecommendationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImmunizationRecommendationSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

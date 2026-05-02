@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.CoverageEligibilityRequestInsuranceSerializer
-import com.google.fhir.model.r4.serializers.CoverageEligibilityRequestItemDiagnosisDiagnosisSerializer
-import com.google.fhir.model.r4.serializers.CoverageEligibilityRequestItemDiagnosisSerializer
-import com.google.fhir.model.r4.serializers.CoverageEligibilityRequestItemSerializer
-import com.google.fhir.model.r4.serializers.CoverageEligibilityRequestSerializer
-import com.google.fhir.model.r4.serializers.CoverageEligibilityRequestServicedSerializer
-import com.google.fhir.model.r4.serializers.CoverageEligibilityRequestSupportingInfoSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityRequestInsuranceSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityRequestItemDiagnosisDiagnosisSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityRequestItemDiagnosisSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityRequestItemSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityRequestSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityRequestServicedSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageEligibilityRequestSupportingInfoSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -692,16 +692,16 @@ public data class CoverageEligibilityRequest(
         public fun asReference(): Reference? = this as? Reference
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r4.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
         ) : Diagnosis
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
           Diagnosis
 
         public companion object {
           internal fun from(
-            codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-            referenceValue: com.google.fhir.model.r4.Reference?,
+            codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+            referenceValue: dev.ohs.fhir.model.r4.Reference?,
           ): Diagnosis? {
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
             if (referenceValue != null) return Reference(referenceValue)
@@ -885,14 +885,14 @@ public data class CoverageEligibilityRequest(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class Date(public val `value`: com.google.fhir.model.r4.Date) : Serviced
+    public data class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Serviced
 
-    public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Serviced
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Serviced
 
     public companion object {
       internal fun from(
-        dateValue: com.google.fhir.model.r4.Date?,
-        periodValue: com.google.fhir.model.r4.Period?,
+        dateValue: dev.ohs.fhir.model.r4.Date?,
+        periodValue: dev.ohs.fhir.model.r4.Period?,
       ): Serviced? {
         if (dateValue != null) return Date(dateValue)
         if (periodValue != null) return Period(periodValue)

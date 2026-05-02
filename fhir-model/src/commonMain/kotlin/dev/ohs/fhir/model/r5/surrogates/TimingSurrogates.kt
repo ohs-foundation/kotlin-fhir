@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,24 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.surrogates
+package dev.ohs.fhir.model.r5.surrogates
 
-import com.google.fhir.model.r4b.CodeableConcept
-import com.google.fhir.model.r4b.DateTime
-import com.google.fhir.model.r4b.Decimal
-import com.google.fhir.model.r4b.Duration
-import com.google.fhir.model.r4b.Element
-import com.google.fhir.model.r4b.Enumeration
-import com.google.fhir.model.r4b.Extension
-import com.google.fhir.model.r4b.FhirDateTime
-import com.google.fhir.model.r4b.Period
-import com.google.fhir.model.r4b.PositiveInt
-import com.google.fhir.model.r4b.Range
-import com.google.fhir.model.r4b.Time
-import com.google.fhir.model.r4b.Timing
-import com.google.fhir.model.r4b.UnsignedInt
-import com.google.fhir.model.r4b.serializers.DoubleSerializer
-import com.google.fhir.model.r4b.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Decimal
+import dev.ohs.fhir.model.r5.Duration
+import dev.ohs.fhir.model.r5.Element
+import dev.ohs.fhir.model.r5.Enumeration
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.PositiveInt
+import dev.ohs.fhir.model.r5.Range
+import dev.ohs.fhir.model.r5.Time
+import dev.ohs.fhir.model.r5.Timing
+import dev.ohs.fhir.model.r5.UnsignedInt
+import dev.ohs.fhir.model.r5.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r5.serializers.LocalTimeSerializer
 import kotlin.Double
 import kotlin.Int
 import kotlin.String

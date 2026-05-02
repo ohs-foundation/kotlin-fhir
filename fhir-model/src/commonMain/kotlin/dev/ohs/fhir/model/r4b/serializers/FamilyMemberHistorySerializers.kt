@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FamilyMemberHistory
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.surrogates.FamilyMemberHistoryAgeSurrogate
-import com.google.fhir.model.r4b.surrogates.FamilyMemberHistoryBornSurrogate
-import com.google.fhir.model.r4b.surrogates.FamilyMemberHistoryConditionOnsetSurrogate
-import com.google.fhir.model.r4b.surrogates.FamilyMemberHistoryConditionSurrogate
-import com.google.fhir.model.r4b.surrogates.FamilyMemberHistoryDeceasedSurrogate
-import com.google.fhir.model.r4b.surrogates.FamilyMemberHistorySurrogate
+import dev.ohs.fhir.model.r4b.FamilyMemberHistory
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.FamilyMemberHistoryAgeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.FamilyMemberHistoryBornSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.FamilyMemberHistoryConditionOnsetSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.FamilyMemberHistoryConditionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.FamilyMemberHistoryDeceasedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.FamilyMemberHistorySurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

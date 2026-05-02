@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,30 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.Citation
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactAbstractSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactClassificationSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactContributorshipEntryContributionInstanceSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactContributorshipEntrySurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactContributorshipSummarySurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactContributorshipSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactPartSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactPublicationFormPublishedInSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactPublicationFormSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactRelatesToSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactStatusDateSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactTitleSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactVersionSurrogate
-import com.google.fhir.model.r5.surrogates.CitationCitedArtifactWebLocationSurrogate
-import com.google.fhir.model.r5.surrogates.CitationClassificationSurrogate
-import com.google.fhir.model.r5.surrogates.CitationStatusDateSurrogate
-import com.google.fhir.model.r5.surrogates.CitationSummarySurrogate
-import com.google.fhir.model.r5.surrogates.CitationSurrogate
-import com.google.fhir.model.r5.surrogates.CitationVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.Citation
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactAbstractSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactClassificationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactContributorshipEntryContributionInstanceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactContributorshipEntrySurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactContributorshipSummarySurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactContributorshipSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactPartSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactPublicationFormPublishedInSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactPublicationFormSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactRelatesToSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactStatusDateSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactTitleSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactVersionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationCitedArtifactWebLocationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationClassificationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationStatusDateSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationSummarySurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.CitationVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

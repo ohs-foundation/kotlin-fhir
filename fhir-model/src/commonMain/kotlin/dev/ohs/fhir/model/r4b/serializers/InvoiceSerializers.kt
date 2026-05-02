@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.Invoice
-import com.google.fhir.model.r4b.surrogates.InvoiceLineItemChargeItemSurrogate
-import com.google.fhir.model.r4b.surrogates.InvoiceLineItemPriceComponentSurrogate
-import com.google.fhir.model.r4b.surrogates.InvoiceLineItemSurrogate
-import com.google.fhir.model.r4b.surrogates.InvoiceParticipantSurrogate
-import com.google.fhir.model.r4b.surrogates.InvoiceSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.Invoice
+import dev.ohs.fhir.model.r4b.surrogates.InvoiceLineItemChargeItemSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InvoiceLineItemPriceComponentSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InvoiceLineItemSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InvoiceParticipantSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.InvoiceSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

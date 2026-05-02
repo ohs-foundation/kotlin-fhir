@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.Invoice
-import com.google.fhir.model.r5.surrogates.InvoiceLineItemChargeItemSurrogate
-import com.google.fhir.model.r5.surrogates.InvoiceLineItemServicedSurrogate
-import com.google.fhir.model.r5.surrogates.InvoiceLineItemSurrogate
-import com.google.fhir.model.r5.surrogates.InvoiceParticipantSurrogate
-import com.google.fhir.model.r5.surrogates.InvoicePeriodSurrogate
-import com.google.fhir.model.r5.surrogates.InvoiceSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.Invoice
+import dev.ohs.fhir.model.r5.surrogates.InvoiceLineItemChargeItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InvoiceLineItemServicedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InvoiceLineItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InvoiceParticipantSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InvoicePeriodSurrogate
+import dev.ohs.fhir.model.r5.surrogates.InvoiceSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

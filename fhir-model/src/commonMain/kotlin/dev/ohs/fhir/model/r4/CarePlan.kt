@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.CarePlanActivityDetailProductSerializer
-import com.google.fhir.model.r4.serializers.CarePlanActivityDetailScheduledSerializer
-import com.google.fhir.model.r4.serializers.CarePlanActivityDetailSerializer
-import com.google.fhir.model.r4.serializers.CarePlanActivitySerializer
-import com.google.fhir.model.r4.serializers.CarePlanSerializer
+import dev.ohs.fhir.model.r4.serializers.CarePlanActivityDetailProductSerializer
+import dev.ohs.fhir.model.r4.serializers.CarePlanActivityDetailScheduledSerializer
+import dev.ohs.fhir.model.r4.serializers.CarePlanActivityDetailSerializer
+import dev.ohs.fhir.model.r4.serializers.CarePlanActivitySerializer
+import dev.ohs.fhir.model.r4.serializers.CarePlanSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -601,17 +601,17 @@ public data class CarePlan(
 
         public fun asString(): String? = this as? String
 
-        public data class Timing(public val `value`: com.google.fhir.model.r4.Timing) : Scheduled
+        public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Scheduled
 
-        public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Scheduled
+        public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Scheduled
 
-        public data class String(public val `value`: com.google.fhir.model.r4.String) : Scheduled
+        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Scheduled
 
         public companion object {
           internal fun from(
-            timingValue: com.google.fhir.model.r4.Timing?,
-            periodValue: com.google.fhir.model.r4.Period?,
-            stringValue: com.google.fhir.model.r4.String?,
+            timingValue: dev.ohs.fhir.model.r4.Timing?,
+            periodValue: dev.ohs.fhir.model.r4.Period?,
+            stringValue: dev.ohs.fhir.model.r4.String?,
           ): Scheduled? {
             if (timingValue != null) return Timing(timingValue)
             if (periodValue != null) return Period(periodValue)
@@ -628,16 +628,15 @@ public data class CarePlan(
         public fun asReference(): Reference? = this as? Reference
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r4.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
         ) : Product
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
-          Product
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Product
 
         public companion object {
           internal fun from(
-            codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-            referenceValue: com.google.fhir.model.r4.Reference?,
+            codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+            referenceValue: dev.ohs.fhir.model.r4.Reference?,
           ): Product? {
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
             if (referenceValue != null) return Reference(referenceValue)

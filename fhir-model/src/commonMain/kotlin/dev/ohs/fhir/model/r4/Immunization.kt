@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4b.serializers.ImmunizationEducationSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationOccurrenceSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationPerformerSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationProtocolAppliedDoseNumberSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationProtocolAppliedSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationProtocolAppliedSeriesDosesSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationReactionSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationEducationSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationOccurrenceSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationPerformerSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationProtocolAppliedDoseNumberSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationProtocolAppliedSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationProtocolAppliedSeriesDosesSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationReactionSerializer
+import dev.ohs.fhir.model.r4.serializers.ImmunizationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -761,15 +761,15 @@ public data class Immunization(
 
       public fun asString(): String? = this as? String
 
-      public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
+      public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4.PositiveInt) :
         DoseNumber
 
-      public data class String(public val `value`: com.google.fhir.model.r4b.String) : DoseNumber
+      public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : DoseNumber
 
       public companion object {
         internal fun from(
-          positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-          stringValue: com.google.fhir.model.r4b.String?,
+          positiveIntValue: dev.ohs.fhir.model.r4.PositiveInt?,
+          stringValue: dev.ohs.fhir.model.r4.String?,
         ): DoseNumber? {
           if (positiveIntValue != null) return PositiveInt(positiveIntValue)
           if (stringValue != null) return String(stringValue)
@@ -784,15 +784,15 @@ public data class Immunization(
 
       public fun asString(): String? = this as? String
 
-      public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
+      public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4.PositiveInt) :
         SeriesDoses
 
-      public data class String(public val `value`: com.google.fhir.model.r4b.String) : SeriesDoses
+      public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : SeriesDoses
 
       public companion object {
         internal fun from(
-          positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-          stringValue: com.google.fhir.model.r4b.String?,
+          positiveIntValue: dev.ohs.fhir.model.r4.PositiveInt?,
+          stringValue: dev.ohs.fhir.model.r4.String?,
         ): SeriesDoses? {
           if (positiveIntValue != null) return PositiveInt(positiveIntValue)
           if (stringValue != null) return String(stringValue)
@@ -890,14 +890,14 @@ public data class Immunization(
 
     public fun asString(): String? = this as? String
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Occurrence
 
-    public data class String(public val `value`: com.google.fhir.model.r4b.String) : Occurrence
+    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        stringValue: com.google.fhir.model.r4b.String?,
+        dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+        stringValue: dev.ohs.fhir.model.r4.String?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (stringValue != null) return String(stringValue)

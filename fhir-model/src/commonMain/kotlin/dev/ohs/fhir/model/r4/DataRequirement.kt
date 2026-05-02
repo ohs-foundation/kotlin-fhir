@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.DataRequirementCodeFilterSerializer
-import com.google.fhir.model.r4.serializers.DataRequirementDateFilterSerializer
-import com.google.fhir.model.r4.serializers.DataRequirementDateFilterValueSerializer
-import com.google.fhir.model.r4.serializers.DataRequirementSerializer
-import com.google.fhir.model.r4.serializers.DataRequirementSortSerializer
-import com.google.fhir.model.r4.serializers.DataRequirementSubjectSerializer
-import com.google.fhir.model.r4.terminologies.FHIRAllTypes
+import dev.ohs.fhir.model.r4.serializers.DataRequirementCodeFilterSerializer
+import dev.ohs.fhir.model.r4.serializers.DataRequirementDateFilterSerializer
+import dev.ohs.fhir.model.r4.serializers.DataRequirementDateFilterValueSerializer
+import dev.ohs.fhir.model.r4.serializers.DataRequirementSerializer
+import dev.ohs.fhir.model.r4.serializers.DataRequirementSortSerializer
+import dev.ohs.fhir.model.r4.serializers.DataRequirementSubjectSerializer
+import dev.ohs.fhir.model.r4.terminologies.FHIRAllTypes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -334,17 +334,17 @@ public data class DataRequirement(
 
       public fun asDuration(): Duration? = this as? Duration
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Value
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Value
 
-      public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Value
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Value
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4.Duration) : Value
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) : Value
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r4.DateTime?,
-          periodValue: com.google.fhir.model.r4.Period?,
-          durationValue: com.google.fhir.model.r4.Duration?,
+          dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+          periodValue: dev.ohs.fhir.model.r4.Period?,
+          durationValue: dev.ohs.fhir.model.r4.Duration?,
         ): Value? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)
@@ -502,16 +502,15 @@ public data class DataRequirement(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : Subject
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+      Subject
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Subject
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Subject
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): Subject? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)

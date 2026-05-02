@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.TestReportParticipantSerializer
-import com.google.fhir.model.r4b.serializers.TestReportSerializer
-import com.google.fhir.model.r4b.serializers.TestReportSetupActionAssertSerializer
-import com.google.fhir.model.r4b.serializers.TestReportSetupActionOperationSerializer
-import com.google.fhir.model.r4b.serializers.TestReportSetupActionSerializer
-import com.google.fhir.model.r4b.serializers.TestReportSetupSerializer
-import com.google.fhir.model.r4b.serializers.TestReportTeardownActionSerializer
-import com.google.fhir.model.r4b.serializers.TestReportTeardownSerializer
-import com.google.fhir.model.r4b.serializers.TestReportTestActionSerializer
-import com.google.fhir.model.r4b.serializers.TestReportTestSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportParticipantSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportSetupActionAssertSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportSetupActionOperationSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportSetupActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportSetupSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportTeardownActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportTeardownSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportTestActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.TestReportTestSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

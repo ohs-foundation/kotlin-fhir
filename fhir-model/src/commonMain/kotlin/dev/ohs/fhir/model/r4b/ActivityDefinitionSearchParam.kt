@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,15 +28,15 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: ActivityDefinition): List<T>
 
-  public data object ComposedOf : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "composed-of"
+  public data object ComposedOf : ActivityDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "ActivityDefinition.relatedArtifact.where(type='composed-of').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -181,91 +180,101 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "composed-of" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Context : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context"
+  public data object Context : ActivityDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "(ActivityDefinition.useContext.value as CodeableConcept)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<CodeableConcept> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-quantity"
+  public data object ContextQuantity : ActivityDefinitionSearchParam<Quantity>() {
+    public override val paramName: kotlin.String = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
-    public override val expression: String = "(ActivityDefinition.useContext.value as Quantity)"
+    public override val expression: kotlin.String =
+      "(ActivityDefinition.useContext.value as Quantity)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Quantity> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type"
+  public data object ContextType : ActivityDefinitionSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ActivityDefinition.useContext.code"
+    public override val expression: kotlin.String = "ActivityDefinition.useContext.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Coding> =
+      resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type-quantity"
+  public data object ContextTypeQuantity : ActivityDefinitionSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "ActivityDefinition.useContext"
+    public override val expression: kotlin.String = "ActivityDefinition.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<UsageContext> =
+      resource.useContext
   }
 
-  public data object ContextTypeValue : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type-value"
+  public data object ContextTypeValue : ActivityDefinitionSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "ActivityDefinition.useContext"
+    public override val expression: kotlin.String = "ActivityDefinition.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<UsageContext> =
+      resource.useContext
   }
 
-  public data object Date : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : ActivityDefinitionSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "ActivityDefinition.date"
+    public override val expression: kotlin.String = "ActivityDefinition.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<DateTime> =
+      listOfNotNull(resource.date)
   }
 
-  public data object DependsOn : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "depends-on"
+  public data object DependsOn : ActivityDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "ActivityDefinition.relatedArtifact.where(type='depends-on').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Library",
         "Account",
@@ -409,18 +418,21 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "depends-on" }
+        .mapNotNull { it.resource }
   }
 
-  public data object DerivedFrom : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "derived-from"
+  public data object DerivedFrom : ActivityDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "ActivityDefinition.relatedArtifact.where(type='derived-from').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -564,78 +576,88 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "derived-from" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Description : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : ActivityDefinitionSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ActivityDefinition.description"
+    public override val expression: kotlin.String = "ActivityDefinition.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Markdown> =
+      listOfNotNull(resource.description)
   }
 
-  public data object Effective : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "effective"
+  public data object Effective : ActivityDefinitionSearchParam<Period>() {
+    public override val paramName: kotlin.String = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "ActivityDefinition.effectivePeriod"
+    public override val expression: kotlin.String = "ActivityDefinition.effectivePeriod"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Period> =
+      listOfNotNull(resource.effectivePeriod)
   }
 
-  public data object Identifier : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier :
+    ActivityDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ActivityDefinition.identifier"
+    public override val expression: kotlin.String = "ActivityDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(
+      resource: ActivityDefinition
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Jurisdiction : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "jurisdiction"
+  public data object Jurisdiction : ActivityDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ActivityDefinition.jurisdiction"
+    public override val expression: kotlin.String = "ActivityDefinition.jurisdiction"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<CodeableConcept> =
+      resource.jurisdiction
   }
 
-  public data object Name : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : ActivityDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ActivityDefinition.name"
+    public override val expression: kotlin.String = "ActivityDefinition.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<String> =
+      listOfNotNull(resource.name)
   }
 
-  public data object Predecessor : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "predecessor"
+  public data object Predecessor : ActivityDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "ActivityDefinition.relatedArtifact.where(type='predecessor').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -779,42 +801,46 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "predecessor" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Publisher : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "publisher"
+  public data object Publisher : ActivityDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ActivityDefinition.publisher"
+    public override val expression: kotlin.String = "ActivityDefinition.publisher"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<String> =
+      listOfNotNull(resource.publisher)
   }
 
   public data object Status : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ActivityDefinition.status"
+    public override val expression: kotlin.String = "ActivityDefinition.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Successor : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "successor"
+  public data object Successor : ActivityDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "ActivityDefinition.relatedArtifact.where(type='successor').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -958,55 +984,62 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "successor" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Title : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "title"
+  public data object Title : ActivityDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ActivityDefinition.title"
+    public override val expression: kotlin.String = "ActivityDefinition.title"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<String> =
+      listOfNotNull(resource.title)
   }
 
-  public data object Topic : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "topic"
+  public data object Topic : ActivityDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ActivityDefinition.topic"
+    public override val expression: kotlin.String = "ActivityDefinition.topic"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<CodeableConcept> =
+      resource.topic
   }
 
-  public data object Url : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : ActivityDefinitionSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "ActivityDefinition.url"
+    public override val expression: kotlin.String = "ActivityDefinition.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<Uri> =
+      listOfNotNull(resource.url)
   }
 
-  public data object Version : ActivityDefinitionSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : ActivityDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ActivityDefinition.version"
+    public override val expression: kotlin.String = "ActivityDefinition.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ActivityDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ActivityDefinition): List<String> =
+      listOfNotNull(resource.version)
   }
 
   public companion object {

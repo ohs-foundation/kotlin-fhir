@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.CompartmentDefinitionResourceSerializer
-import com.google.fhir.model.r5.serializers.CompartmentDefinitionSerializer
-import com.google.fhir.model.r5.serializers.CompartmentDefinitionVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
-import com.google.fhir.model.r5.terminologies.ResourceType
+import dev.ohs.fhir.model.r5.serializers.CompartmentDefinitionResourceSerializer
+import dev.ohs.fhir.model.r5.serializers.CompartmentDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.CompartmentDefinitionVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -98,7 +98,7 @@ public data class CompartmentDefinition(
    * resources may have profiles and tags in their meta elements, but SHALL NOT have security
    * labels.
    */
-  override val contained: List<com.google.fhir.model.r5.Resource> = listOf(),
+  override val contained: List<dev.ohs.fhir.model.r5.Resource> = listOf(),
   /**
    * May be used to represent additional information that is not part of the basic definition of the
    * resource. To make the use of extensions safe and managable, there is a strict set of governance
@@ -478,16 +478,14 @@ public data class CompartmentDefinition(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)
@@ -621,7 +619,7 @@ public data class CompartmentDefinition(
      * resources may have profiles and tags in their meta elements, but SHALL NOT have security
      * labels.
      */
-    public var contained: MutableList<com.google.fhir.model.r5.Resource.Builder> = mutableListOf()
+    public var contained: MutableList<dev.ohs.fhir.model.r5.Resource.Builder> = mutableListOf()
 
     /**
      * May be used to represent additional information that is not part of the basic definition of

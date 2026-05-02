@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.Transport
-import com.google.fhir.model.r5.surrogates.TransportInputSurrogate
-import com.google.fhir.model.r5.surrogates.TransportInputValueSurrogate
-import com.google.fhir.model.r5.surrogates.TransportOutputSurrogate
-import com.google.fhir.model.r5.surrogates.TransportOutputValueSurrogate
-import com.google.fhir.model.r5.surrogates.TransportRestrictionSurrogate
-import com.google.fhir.model.r5.surrogates.TransportSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.Transport
+import dev.ohs.fhir.model.r5.surrogates.TransportInputSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TransportInputValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TransportOutputSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TransportOutputValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TransportRestrictionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.TransportSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

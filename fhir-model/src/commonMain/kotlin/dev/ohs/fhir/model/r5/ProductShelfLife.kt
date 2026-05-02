@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ProductShelfLifePeriodSerializer
-import com.google.fhir.model.r5.serializers.ProductShelfLifeSerializer
+import dev.ohs.fhir.model.r5.serializers.ProductShelfLifePeriodSerializer
+import dev.ohs.fhir.model.r5.serializers.ProductShelfLifeSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -108,14 +108,14 @@ public data class ProductShelfLife(
 
     public fun asString(): String? = this as? String
 
-    public data class Duration(public val `value`: com.google.fhir.model.r5.Duration) : Period
+    public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Period
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) : Period
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Period
 
     public companion object {
       internal fun from(
-        durationValue: com.google.fhir.model.r5.Duration?,
-        stringValue: com.google.fhir.model.r5.String?,
+        durationValue: dev.ohs.fhir.model.r5.Duration?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
       ): Period? {
         if (durationValue != null) return Duration(durationValue)
         if (stringValue != null) return String(stringValue)

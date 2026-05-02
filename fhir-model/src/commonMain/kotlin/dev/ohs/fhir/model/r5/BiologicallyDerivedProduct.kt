@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.BiologicallyDerivedProductCollectionCollectedSerializer
-import com.google.fhir.model.r5.serializers.BiologicallyDerivedProductCollectionSerializer
-import com.google.fhir.model.r5.serializers.BiologicallyDerivedProductPropertySerializer
-import com.google.fhir.model.r5.serializers.BiologicallyDerivedProductPropertyValueSerializer
-import com.google.fhir.model.r5.serializers.BiologicallyDerivedProductSerializer
+import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductCollectionCollectedSerializer
+import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductCollectionSerializer
+import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductPropertySerializer
+import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductPropertyValueSerializer
+import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -302,14 +302,14 @@ public data class BiologicallyDerivedProduct(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Collected
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Collected
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Collected
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Collected
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): Collected? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)
@@ -468,37 +468,36 @@ public data class BiologicallyDerivedProduct(
 
       public fun asAttachment(): Attachment? = this as? Attachment
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Value
+      public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Value
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Value
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Value
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-      public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Value
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) : Value
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
       public companion object {
         internal fun from(
-          booleanValue: com.google.fhir.model.r5.Boolean?,
-          integerValue: com.google.fhir.model.r5.Integer?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          periodValue: com.google.fhir.model.r5.Period?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          ratioValue: com.google.fhir.model.r5.Ratio?,
-          stringValue: com.google.fhir.model.r5.String?,
-          attachmentValue: com.google.fhir.model.r5.Attachment?,
+          booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+          integerValue: dev.ohs.fhir.model.r5.Integer?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
+          attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
         ): Value? {
           if (booleanValue != null) return Boolean(booleanValue)
           if (integerValue != null) return Integer(integerValue)

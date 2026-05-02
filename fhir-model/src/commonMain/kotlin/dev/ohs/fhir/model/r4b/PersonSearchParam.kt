@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,233 +28,254 @@ public sealed class PersonSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Person): List<T>
 
-  public data object Address : PersonSearchParam<Any>() {
-    public override val paramName: String = "address"
+  public data object Address : PersonSearchParam<dev.ohs.fhir.model.r4b.Address>() {
+    public override val paramName: kotlin.String = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Person.address"
+    public override val expression: kotlin.String = "Person.address"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<dev.ohs.fhir.model.r4b.Address> =
+      resource.address
   }
 
-  public data object AddressCity : PersonSearchParam<Any>() {
-    public override val paramName: String = "address-city"
+  public data object AddressCity : PersonSearchParam<String>() {
+    public override val paramName: kotlin.String = "address-city"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Person.address.city"
+    public override val expression: kotlin.String = "Person.address.city"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<String> =
+      resource.address.mapNotNull { it.city }
   }
 
-  public data object AddressCountry : PersonSearchParam<Any>() {
-    public override val paramName: String = "address-country"
+  public data object AddressCountry : PersonSearchParam<String>() {
+    public override val paramName: kotlin.String = "address-country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Person.address.country"
+    public override val expression: kotlin.String = "Person.address.country"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<String> =
+      resource.address.mapNotNull { it.country }
   }
 
-  public data object AddressPostalcode : PersonSearchParam<Any>() {
-    public override val paramName: String = "address-postalcode"
+  public data object AddressPostalcode : PersonSearchParam<String>() {
+    public override val paramName: kotlin.String = "address-postalcode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Person.address.postalCode"
+    public override val expression: kotlin.String = "Person.address.postalCode"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<String> =
+      resource.address.mapNotNull { it.postalCode }
   }
 
-  public data object AddressState : PersonSearchParam<Any>() {
-    public override val paramName: String = "address-state"
+  public data object AddressState : PersonSearchParam<String>() {
+    public override val paramName: kotlin.String = "address-state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Person.address.state"
+    public override val expression: kotlin.String = "Person.address.state"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<String> =
+      resource.address.mapNotNull { it.state }
   }
 
   public data object AddressUse : PersonSearchParam<Any>() {
-    public override val paramName: String = "address-use"
+    public override val paramName: kotlin.String = "address-use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Person.address.use"
+    public override val expression: kotlin.String = "Person.address.use"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<Any> =
+      resource.address.mapNotNull { it.use }
   }
 
-  public data object Birthdate : PersonSearchParam<Any>() {
-    public override val paramName: String = "birthdate"
+  public data object Birthdate : PersonSearchParam<Date>() {
+    public override val paramName: kotlin.String = "birthdate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "Person.birthDate"
+    public override val expression: kotlin.String = "Person.birthDate"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<Date> = listOfNotNull(resource.birthDate)
   }
 
-  public data object Email : PersonSearchParam<Any>() {
-    public override val paramName: String = "email"
+  public data object Email : PersonSearchParam<ContactPoint>() {
+    public override val paramName: kotlin.String = "email"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Person.telecom.where(system='email')"
+    public override val expression: kotlin.String = "Person.telecom.where(system='email')"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<ContactPoint> =
+      resource.telecom.filter { it.system?.value?.toString() == "email" }
   }
 
   public data object Gender : PersonSearchParam<Any>() {
-    public override val paramName: String = "gender"
+    public override val paramName: kotlin.String = "gender"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Person.gender"
+    public override val expression: kotlin.String = "Person.gender"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<Any> = listOfNotNull(resource.gender)
   }
 
-  public data object Identifier : PersonSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : PersonSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Person.identifier"
+    public override val expression: kotlin.String = "Person.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
-  public data object Link : PersonSearchParam<Any>() {
-    public override val paramName: String = "link"
+  public data object Link : PersonSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "link"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Person.link.target"
+    public override val expression: kotlin.String = "Person.link.target"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Practitioner", "Patient", "Person", "RelatedPerson")
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<Reference> = resource.link.map { it.target }
   }
 
-  public data object Name : PersonSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : PersonSearchParam<HumanName>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Person.name"
+    public override val expression: kotlin.String = "Person.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<HumanName> = resource.name
   }
 
-  public data object Organization : PersonSearchParam<Any>() {
-    public override val paramName: String = "organization"
+  public data object Organization : PersonSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Person.managingOrganization"
+    public override val expression: kotlin.String = "Person.managingOrganization"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<Reference> =
+      listOfNotNull(resource.managingOrganization)
   }
 
-  public data object Patient : PersonSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : PersonSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Person.link.target.where(resolve() is Patient)"
+    public override val expression: kotlin.String = "Person.link.target.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<kotlin.String> = listOf("Patient")
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<Reference> =
+      resource.link
+        .map { it.target }
+        .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
   }
 
-  public data object Phone : PersonSearchParam<Any>() {
-    public override val paramName: String = "phone"
+  public data object Phone : PersonSearchParam<ContactPoint>() {
+    public override val paramName: kotlin.String = "phone"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Person.telecom.where(system='phone')"
+    public override val expression: kotlin.String = "Person.telecom.where(system='phone')"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<ContactPoint> =
+      resource.telecom.filter { it.system?.value?.toString() == "phone" }
   }
 
-  public data object Phonetic : PersonSearchParam<Any>() {
-    public override val paramName: String = "phonetic"
+  public data object Phonetic : PersonSearchParam<HumanName>() {
+    public override val paramName: kotlin.String = "phonetic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Person.name"
+    public override val expression: kotlin.String = "Person.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<HumanName> = resource.name
   }
 
-  public data object Practitioner : PersonSearchParam<Any>() {
-    public override val paramName: String = "practitioner"
+  public data object Practitioner : PersonSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Person.link.target.where(resolve() is Practitioner)"
+    public override val expression: kotlin.String =
+      "Person.link.target.where(resolve() is Practitioner)"
 
-    public override val target: List<String> = listOf("Practitioner")
+    public override val target: List<kotlin.String> = listOf("Practitioner")
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<Reference> =
+      resource.link
+        .map { it.target }
+        .filter { it.reference?.value?.toString()?.contains("Practitioner/") == true }
   }
 
-  public data object Relatedperson : PersonSearchParam<Any>() {
-    public override val paramName: String = "relatedperson"
+  public data object Relatedperson : PersonSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "relatedperson"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Person.link.target.where(resolve() is RelatedPerson)"
+    public override val expression: kotlin.String =
+      "Person.link.target.where(resolve() is RelatedPerson)"
 
-    public override val target: List<String> = listOf("RelatedPerson")
+    public override val target: List<kotlin.String> = listOf("RelatedPerson")
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<Reference> =
+      resource.link
+        .map { it.target }
+        .filter { it.reference?.value?.toString()?.contains("RelatedPerson/") == true }
   }
 
-  public data object Telecom : PersonSearchParam<Any>() {
-    public override val paramName: String = "telecom"
+  public data object Telecom : PersonSearchParam<ContactPoint>() {
+    public override val paramName: kotlin.String = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Person.telecom"
+    public override val expression: kotlin.String = "Person.telecom"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Person): List<Any> = emptyList()
+    public override fun extract(resource: Person): List<ContactPoint> = resource.telecom
   }
 
   public companion object {

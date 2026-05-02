@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.Extension
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.surrogates.ExtensionSurrogate
-import com.google.fhir.model.r4b.surrogates.ExtensionValueSurrogate
+import dev.ohs.fhir.model.r4b.Extension
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.ExtensionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ExtensionValueSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -62,7 +62,7 @@ public object ExtensionSerializer : KSerializer<Extension> {
 
   override val descriptor: SerialDescriptor by lazy {
     SerialDescriptor(
-      "com.google.fhir.model.r4b",
+      "dev.ohs.fhir.model.r4b",
       PrimitiveSerialDescriptor("Extension", PrimitiveKind.STRING),
     )
   }

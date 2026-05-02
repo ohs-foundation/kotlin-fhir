@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.RequestGroupActionConditionSerializer
-import com.google.fhir.model.r4b.serializers.RequestGroupActionRelatedActionOffsetSerializer
-import com.google.fhir.model.r4b.serializers.RequestGroupActionRelatedActionSerializer
-import com.google.fhir.model.r4b.serializers.RequestGroupActionSerializer
-import com.google.fhir.model.r4b.serializers.RequestGroupActionTimingSerializer
-import com.google.fhir.model.r4b.serializers.RequestGroupSerializer
+import dev.ohs.fhir.model.r4b.serializers.RequestGroupActionConditionSerializer
+import dev.ohs.fhir.model.r4b.serializers.RequestGroupActionRelatedActionOffsetSerializer
+import dev.ohs.fhir.model.r4b.serializers.RequestGroupActionRelatedActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.RequestGroupActionSerializer
+import dev.ohs.fhir.model.r4b.serializers.RequestGroupActionTimingSerializer
+import dev.ohs.fhir.model.r4b.serializers.RequestGroupSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -566,14 +566,14 @@ public data class RequestGroup(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) : Offset
+        public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Offset
 
-        public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Offset
+        public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Offset
 
         public companion object {
           internal fun from(
-            durationValue: com.google.fhir.model.r4b.Duration?,
-            rangeValue: com.google.fhir.model.r4b.Range?,
+            durationValue: dev.ohs.fhir.model.r4b.Duration?,
+            rangeValue: dev.ohs.fhir.model.r4b.Range?,
           ): Offset? {
             if (durationValue != null) return Duration(durationValue)
             if (rangeValue != null) return Range(rangeValue)
@@ -660,30 +660,28 @@ public data class RequestGroup(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) :
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
         Action.Timing
 
-      public data class Age(public val `value`: com.google.fhir.model.r4b.Age) : Action.Timing
+      public data class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : Action.Timing
 
-      public data class Period(public val `value`: com.google.fhir.model.r4b.Period) :
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Action.Timing
+
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
         Action.Timing
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) :
-        Action.Timing
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Action.Timing
 
-      public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Action.Timing
-
-      public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) :
-        Action.Timing
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Action.Timing
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-          ageValue: com.google.fhir.model.r4b.Age?,
-          periodValue: com.google.fhir.model.r4b.Period?,
-          durationValue: com.google.fhir.model.r4b.Duration?,
-          rangeValue: com.google.fhir.model.r4b.Range?,
-          timingValue: com.google.fhir.model.r4b.Timing?,
+          dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+          ageValue: dev.ohs.fhir.model.r4b.Age?,
+          periodValue: dev.ohs.fhir.model.r4b.Period?,
+          durationValue: dev.ohs.fhir.model.r4b.Duration?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          timingValue: dev.ohs.fhir.model.r4b.Timing?,
         ): Action.Timing? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (ageValue != null) return Age(ageValue)

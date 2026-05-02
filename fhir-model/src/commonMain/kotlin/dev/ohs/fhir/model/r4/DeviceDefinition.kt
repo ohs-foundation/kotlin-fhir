@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4b.serializers.DeviceDefinitionCapabilitySerializer
-import com.google.fhir.model.r4b.serializers.DeviceDefinitionDeviceNameSerializer
-import com.google.fhir.model.r4b.serializers.DeviceDefinitionManufacturerSerializer
-import com.google.fhir.model.r4b.serializers.DeviceDefinitionMaterialSerializer
-import com.google.fhir.model.r4b.serializers.DeviceDefinitionPropertySerializer
-import com.google.fhir.model.r4b.serializers.DeviceDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.DeviceDefinitionSpecializationSerializer
-import com.google.fhir.model.r4b.serializers.DeviceDefinitionUdiDeviceIdentifierSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionCapabilitySerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionDeviceNameSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionManufacturerSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionMaterialSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionPropertySerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionSpecializationSerializer
+import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionUdiDeviceIdentifierSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -969,15 +969,14 @@ public data class DeviceDefinition(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class String(public val `value`: com.google.fhir.model.r4b.String) : Manufacturer
+    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Manufacturer
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-      Manufacturer
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Manufacturer
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r4b.String?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
+        stringValue: dev.ohs.fhir.model.r4.String?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): Manufacturer? {
         if (stringValue != null) return String(stringValue)
         if (referenceValue != null) return Reference(referenceValue)

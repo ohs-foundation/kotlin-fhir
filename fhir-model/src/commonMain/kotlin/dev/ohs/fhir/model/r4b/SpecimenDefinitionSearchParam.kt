@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class SpecimenDefinitionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: SpecimenDefinition): List<T>
 
-  public data object Container : SpecimenDefinitionSearchParam<Any>() {
+  public data object Container : SpecimenDefinitionSearchParam<CodeableConcept>() {
     public override val paramName: String = "container"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +37,12 @@ public sealed class SpecimenDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
+      resource.typeTested.mapNotNull { it.container }.mapNotNull { it.type }
   }
 
-  public data object Identifier : SpecimenDefinitionSearchParam<Any>() {
+  public data object Identifier :
+    SpecimenDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +51,12 @@ public sealed class SpecimenDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(
+      resource: SpecimenDefinition
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = listOfNotNull(resource.identifier)
   }
 
-  public data object Type : SpecimenDefinitionSearchParam<Any>() {
+  public data object Type : SpecimenDefinitionSearchParam<CodeableConcept>() {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,7 +65,8 @@ public sealed class SpecimenDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: SpecimenDefinition): List<Any> = emptyList()
+    public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
+      listOfNotNull(resource.typeCollected)
   }
 
   public companion object {

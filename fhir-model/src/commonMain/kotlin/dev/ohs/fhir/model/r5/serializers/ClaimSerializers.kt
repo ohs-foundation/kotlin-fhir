@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,32 +16,32 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.Claim
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.ClaimAccidentLocationSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimAccidentSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimCareTeamSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimDiagnosisDiagnosisSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimDiagnosisSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimEventSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimEventWhenSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimInsuranceSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimItemBodySiteSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimItemDetailSubDetailSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimItemDetailSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimItemLocationSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimItemServicedSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimItemSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimPayeeSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimProcedureProcedureSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimProcedureSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimRelatedSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimSupportingInfoSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimSupportingInfoTimingSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimSupportingInfoValueSurrogate
-import com.google.fhir.model.r5.surrogates.ClaimSurrogate
+import dev.ohs.fhir.model.r5.Claim
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.ClaimAccidentLocationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimAccidentSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimCareTeamSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimDiagnosisDiagnosisSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimDiagnosisSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimEventSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimEventWhenSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimInsuranceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimItemBodySiteSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimItemDetailSubDetailSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimItemDetailSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimItemLocationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimItemServicedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimItemSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimPayeeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimProcedureProcedureSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimProcedureSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimRelatedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimSupportingInfoSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimSupportingInfoTimingSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimSupportingInfoValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ClaimSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

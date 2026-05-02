@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class TestPlanSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: TestPlan): List<T>
 
-  public data object Identifier : TestPlanSearchParam<Any>() {
+  public data object Identifier : TestPlanSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,11 @@ public sealed class TestPlanSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: TestPlan): List<Any> = emptyList()
+    public override fun extract(resource: TestPlan): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Scope : TestPlanSearchParam<Any>() {
+  public data object Scope : TestPlanSearchParam<Reference>() {
     public override val paramName: String = "scope"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -210,7 +211,7 @@ public sealed class TestPlanSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: TestPlan): List<Any> = emptyList()
+    public override fun extract(resource: TestPlan): List<Reference> = resource.scope
   }
 
   public data object Status : TestPlanSearchParam<Any>() {
@@ -222,10 +223,10 @@ public sealed class TestPlanSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: TestPlan): List<Any> = emptyList()
+    public override fun extract(resource: TestPlan): List<Any> = listOf(resource.status)
   }
 
-  public data object Url : TestPlanSearchParam<Any>() {
+  public data object Url : TestPlanSearchParam<Uri>() {
     public override val paramName: String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -234,7 +235,7 @@ public sealed class TestPlanSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: TestPlan): List<Any> = emptyList()
+    public override fun extract(resource: TestPlan): List<Uri> = listOfNotNull(resource.url)
   }
 
   public companion object {

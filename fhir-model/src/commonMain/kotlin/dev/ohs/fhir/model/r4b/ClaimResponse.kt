@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,25 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.ClaimResponseAddItemDetailSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseAddItemDetailSubDetailSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseAddItemLocationSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseAddItemSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseAddItemServicedSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseErrorSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseInsuranceSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseItemAdjudicationSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseItemDetailSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseItemDetailSubDetailSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseItemSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponsePaymentSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseProcessNoteSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseSerializer
-import com.google.fhir.model.r4b.serializers.ClaimResponseTotalSerializer
-import com.google.fhir.model.r4b.terminologies.NoteType
-import com.google.fhir.model.r4b.terminologies.RemittanceOutcome
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemDetailSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemDetailSubDetailSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemLocationSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemServicedSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseErrorSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseInsuranceSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseItemAdjudicationSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseItemDetailSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseItemDetailSubDetailSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseItemSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponsePaymentSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseProcessNoteSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseSerializer
+import dev.ohs.fhir.model.r4b.serializers.ClaimResponseTotalSerializer
+import dev.ohs.fhir.model.r4b.terminologies.NoteType
+import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1478,14 +1478,14 @@ public data class ClaimResponse(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Date(public val `value`: com.google.fhir.model.r4b.Date) : Serviced
+      public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Serviced
 
-      public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Serviced
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Serviced
 
       public companion object {
         internal fun from(
-          dateValue: com.google.fhir.model.r4b.Date?,
-          periodValue: com.google.fhir.model.r4b.Period?,
+          dateValue: dev.ohs.fhir.model.r4b.Date?,
+          periodValue: dev.ohs.fhir.model.r4b.Period?,
         ): Serviced? {
           if (dateValue != null) return Date(dateValue)
           if (periodValue != null) return Period(periodValue)
@@ -1503,19 +1503,18 @@ public data class ClaimResponse(
       public fun asReference(): Reference? = this as? Reference
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Location
 
-      public data class Address(public val `value`: com.google.fhir.model.r4b.Address) : Location
+      public data class Address(public val `value`: dev.ohs.fhir.model.r4b.Address) : Location
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-        Location
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Location
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          addressValue: com.google.fhir.model.r4b.Address?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          addressValue: dev.ohs.fhir.model.r4b.Address?,
+          referenceValue: dev.ohs.fhir.model.r4b.Reference?,
         ): Location? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (addressValue != null) return Address(addressValue)

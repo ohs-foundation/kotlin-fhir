@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.Specimen
-import com.google.fhir.model.r4b.surrogates.SpecimenCollectionCollectedSurrogate
-import com.google.fhir.model.r4b.surrogates.SpecimenCollectionFastingStatusSurrogate
-import com.google.fhir.model.r4b.surrogates.SpecimenCollectionSurrogate
-import com.google.fhir.model.r4b.surrogates.SpecimenContainerAdditiveSurrogate
-import com.google.fhir.model.r4b.surrogates.SpecimenContainerSurrogate
-import com.google.fhir.model.r4b.surrogates.SpecimenProcessingSurrogate
-import com.google.fhir.model.r4b.surrogates.SpecimenProcessingTimeSurrogate
-import com.google.fhir.model.r4b.surrogates.SpecimenSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.Specimen
+import dev.ohs.fhir.model.r4b.surrogates.SpecimenCollectionCollectedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SpecimenCollectionFastingStatusSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SpecimenCollectionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SpecimenContainerAdditiveSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SpecimenContainerSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SpecimenProcessingSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SpecimenProcessingTimeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SpecimenSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

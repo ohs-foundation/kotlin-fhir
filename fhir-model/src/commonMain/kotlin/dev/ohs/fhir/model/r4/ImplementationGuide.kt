@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,26 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.ImplementationGuideDefinitionGroupingSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideDefinitionPageNameSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideDefinitionPageSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideDefinitionParameterSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideDefinitionResourceExampleSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideDefinitionResourceSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideDefinitionSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideDefinitionTemplateSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideDependsOnSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideGlobalSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideManifestPageSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideManifestResourceExampleSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideManifestResourceSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideManifestSerializer
-import com.google.fhir.model.r4.serializers.ImplementationGuideSerializer
-import com.google.fhir.model.r4.terminologies.FHIRVersion
-import com.google.fhir.model.r4.terminologies.PublicationStatus
-import com.google.fhir.model.r4.terminologies.ResourceType
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideDefinitionGroupingSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideDefinitionPageNameSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideDefinitionPageSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideDefinitionParameterSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideDefinitionResourceExampleSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideDefinitionResourceSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideDefinitionTemplateSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideDependsOnSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideGlobalSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideManifestPageSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideManifestResourceExampleSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideManifestResourceSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideManifestSerializer
+import dev.ohs.fhir.model.r4.serializers.ImplementationGuideSerializer
+import dev.ohs.fhir.model.r4.terminologies.FHIRVersion
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -935,15 +935,14 @@ public data class ImplementationGuide(
 
         public fun asCanonical(): Canonical? = this as? Canonical
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Example
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Example
 
-        public data class Canonical(public val `value`: com.google.fhir.model.r4.Canonical) :
-          Example
+        public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Example
 
         public companion object {
           internal fun from(
-            booleanValue: com.google.fhir.model.r4.Boolean?,
-            canonicalValue: com.google.fhir.model.r4.Canonical?,
+            booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+            canonicalValue: dev.ohs.fhir.model.r4.Canonical?,
           ): Example? {
             if (booleanValue != null) return Boolean(booleanValue)
             if (canonicalValue != null) return Canonical(canonicalValue)
@@ -1146,14 +1145,14 @@ public data class ImplementationGuide(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Url(public val `value`: com.google.fhir.model.r4.Url) : Name
+        public data class Url(public val `value`: dev.ohs.fhir.model.r4.Url) : Name
 
-        public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Name
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Name
 
         public companion object {
           internal fun from(
-            urlValue: com.google.fhir.model.r4.Url?,
-            referenceValue: com.google.fhir.model.r4.Reference?,
+            urlValue: dev.ohs.fhir.model.r4.Url?,
+            referenceValue: dev.ohs.fhir.model.r4.Reference?,
           ): Name? {
             if (urlValue != null) return Url(urlValue)
             if (referenceValue != null) return Reference(referenceValue)
@@ -1715,15 +1714,14 @@ public data class ImplementationGuide(
 
         public fun asCanonical(): Canonical? = this as? Canonical
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Example
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Example
 
-        public data class Canonical(public val `value`: com.google.fhir.model.r4.Canonical) :
-          Example
+        public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Example
 
         public companion object {
           internal fun from(
-            booleanValue: com.google.fhir.model.r4.Boolean?,
-            canonicalValue: com.google.fhir.model.r4.Canonical?,
+            booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+            canonicalValue: dev.ohs.fhir.model.r4.Canonical?,
           ): Example? {
             if (booleanValue != null) return Boolean(booleanValue)
             if (canonicalValue != null) return Canonical(canonicalValue)

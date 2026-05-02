@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.DocumentReferenceAttesterSerializer
-import com.google.fhir.model.r5.serializers.DocumentReferenceContentProfileSerializer
-import com.google.fhir.model.r5.serializers.DocumentReferenceContentProfileValueSerializer
-import com.google.fhir.model.r5.serializers.DocumentReferenceContentSerializer
-import com.google.fhir.model.r5.serializers.DocumentReferenceRelatesToSerializer
-import com.google.fhir.model.r5.serializers.DocumentReferenceSerializer
-import com.google.fhir.model.r5.terminologies.DocumentReferenceStatus
+import dev.ohs.fhir.model.r5.serializers.DocumentReferenceAttesterSerializer
+import dev.ohs.fhir.model.r5.serializers.DocumentReferenceContentProfileSerializer
+import dev.ohs.fhir.model.r5.serializers.DocumentReferenceContentProfileValueSerializer
+import dev.ohs.fhir.model.r5.serializers.DocumentReferenceContentSerializer
+import dev.ohs.fhir.model.r5.serializers.DocumentReferenceRelatesToSerializer
+import dev.ohs.fhir.model.r5.serializers.DocumentReferenceSerializer
+import dev.ohs.fhir.model.r5.terminologies.DocumentReferenceStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -715,17 +715,17 @@ public data class DocumentReference(
 
         public fun asCanonical(): Canonical? = this as? Canonical
 
-        public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) : Value
+        public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-        public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : Value
+        public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Value
 
-        public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) : Value
+        public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Value
 
         public companion object {
           internal fun from(
-            codingValue: com.google.fhir.model.r5.Coding?,
-            uriValue: com.google.fhir.model.r5.Uri?,
-            canonicalValue: com.google.fhir.model.r5.Canonical?,
+            codingValue: dev.ohs.fhir.model.r5.Coding?,
+            uriValue: dev.ohs.fhir.model.r5.Uri?,
+            canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
           ): Value? {
             if (codingValue != null) return Coding(codingValue)
             if (uriValue != null) return Uri(uriValue)

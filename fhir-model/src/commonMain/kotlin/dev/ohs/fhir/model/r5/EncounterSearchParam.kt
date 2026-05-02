@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class EncounterSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Encounter): List<T>
 
-  public data object Account : EncounterSearchParam<Any>() {
+  public data object Account : EncounterSearchParam<Reference>() {
     public override val paramName: String = "account"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -38,10 +38,10 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Account")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> = resource.account
   }
 
-  public data object Appointment : EncounterSearchParam<Any>() {
+  public data object Appointment : EncounterSearchParam<Reference>() {
     public override val paramName: String = "appointment"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -50,10 +50,10 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Appointment")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> = resource.appointment
   }
 
-  public data object BasedOn : EncounterSearchParam<Any>() {
+  public data object BasedOn : EncounterSearchParam<Reference>() {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -63,10 +63,10 @@ public sealed class EncounterSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("DeviceRequest", "ServiceRequest", "CarePlan", "MedicationRequest")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> = resource.basedOn
   }
 
-  public data object Careteam : EncounterSearchParam<Any>() {
+  public data object Careteam : EncounterSearchParam<Reference>() {
     public override val paramName: String = "careteam"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -75,10 +75,10 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("CareTeam")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> = resource.careTeam
   }
 
-  public data object Class : EncounterSearchParam<Any>() {
+  public data object Class : EncounterSearchParam<CodeableConcept>() {
     public override val paramName: String = "class"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -87,10 +87,10 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<CodeableConcept> = resource.`class`
   }
 
-  public data object Date : EncounterSearchParam<Any>() {
+  public data object Date : EncounterSearchParam<Period>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -99,10 +99,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Period> =
+      listOfNotNull(resource.actualPeriod)
   }
 
-  public data object DateStart : EncounterSearchParam<Any>() {
+  public data object DateStart : EncounterSearchParam<DateTime>() {
     public override val paramName: String = "date-start"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -111,10 +112,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<DateTime> =
+      listOfNotNull(resource.actualPeriod?.start)
   }
 
-  public data object DiagnosisCode : EncounterSearchParam<Any>() {
+  public data object DiagnosisCode : EncounterSearchParam<CodeableConcept>() {
     public override val paramName: String = "diagnosis-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -123,10 +125,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<CodeableConcept> =
+      resource.diagnosis.flatMap { it.condition }.mapNotNull { it.concept }
   }
 
-  public data object DiagnosisReference : EncounterSearchParam<Any>() {
+  public data object DiagnosisReference : EncounterSearchParam<Reference>() {
     public override val paramName: String = "diagnosis-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -135,10 +138,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Condition")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> =
+      resource.diagnosis.flatMap { it.condition }.mapNotNull { it.reference }
   }
 
-  public data object EndDate : EncounterSearchParam<Any>() {
+  public data object EndDate : EncounterSearchParam<DateTime>() {
     public override val paramName: String = "end-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -147,10 +151,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<DateTime> =
+      listOfNotNull(resource.actualPeriod?.end)
   }
 
-  public data object EpisodeOfCare : EncounterSearchParam<Any>() {
+  public data object EpisodeOfCare : EncounterSearchParam<Reference>() {
     public override val paramName: String = "episode-of-care"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -159,10 +164,10 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("EpisodeOfCare")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> = resource.episodeOfCare
   }
 
-  public data object Identifier : EncounterSearchParam<Any>() {
+  public data object Identifier : EncounterSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -171,10 +176,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Length : EncounterSearchParam<Any>() {
+  public data object Length : EncounterSearchParam<Duration>() {
     public override val paramName: String = "length"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -183,10 +189,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Duration> =
+      listOfNotNull(resource.length)
   }
 
-  public data object Location : EncounterSearchParam<Any>() {
+  public data object Location : EncounterSearchParam<Reference>() {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -195,10 +202,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Location")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> =
+      resource.location.map { it.location }
   }
 
-  public data object LocationPeriod : EncounterSearchParam<Any>() {
+  public data object LocationPeriod : EncounterSearchParam<Encounter.Location>() {
     public override val paramName: String = "location-period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -207,10 +215,10 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Encounter.Location> = resource.location
   }
 
-  public data object PartOf : EncounterSearchParam<Any>() {
+  public data object PartOf : EncounterSearchParam<Reference>() {
     public override val paramName: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -219,10 +227,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> =
+      listOfNotNull(resource.partOf)
   }
 
-  public data object Participant : EncounterSearchParam<Any>() {
+  public data object Participant : EncounterSearchParam<Reference>() {
     public override val paramName: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -240,10 +249,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
         "Patient",
       )
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> =
+      resource.participant.mapNotNull { it.actor }
   }
 
-  public data object ParticipantType : EncounterSearchParam<Any>() {
+  public data object ParticipantType : EncounterSearchParam<CodeableConcept>() {
     public override val paramName: String = "participant-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -252,10 +262,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<CodeableConcept> =
+      resource.participant.flatMap { it.type }
   }
 
-  public data object Patient : EncounterSearchParam<Any>() {
+  public data object Patient : EncounterSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -264,10 +275,13 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Practitioner : EncounterSearchParam<Any>() {
+  public data object Practitioner : EncounterSearchParam<Reference>() {
     public override val paramName: String = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -277,10 +291,13 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Practitioner")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> =
+      resource.participant
+        .mapNotNull { it.actor }
+        .filter { it.reference?.value?.toString()?.contains("Practitioner/") == true }
   }
 
-  public data object ReasonCode : EncounterSearchParam<Any>() {
+  public data object ReasonCode : EncounterSearchParam<CodeableConcept>() {
     public override val paramName: String = "reason-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -289,10 +306,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<CodeableConcept> =
+      resource.reason.flatMap { it.value }.mapNotNull { it.concept }
   }
 
-  public data object ReasonReference : EncounterSearchParam<Any>() {
+  public data object ReasonReference : EncounterSearchParam<Reference>() {
     public override val paramName: String = "reason-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -308,10 +326,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
         "Condition",
       )
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> =
+      resource.reason.flatMap { it.value }.mapNotNull { it.reference }
   }
 
-  public data object ServiceProvider : EncounterSearchParam<Any>() {
+  public data object ServiceProvider : EncounterSearchParam<Reference>() {
     public override val paramName: String = "service-provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -320,10 +339,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> =
+      listOfNotNull(resource.serviceProvider)
   }
 
-  public data object SpecialArrangement : EncounterSearchParam<Any>() {
+  public data object SpecialArrangement : EncounterSearchParam<CodeableConcept>() {
     public override val paramName: String = "special-arrangement"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -332,7 +352,8 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<CodeableConcept> =
+      resource.specialArrangement
   }
 
   public data object Status : EncounterSearchParam<Any>() {
@@ -344,10 +365,10 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : EncounterSearchParam<Any>() {
+  public data object Subject : EncounterSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -356,10 +377,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Group", "Patient")
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
-  public data object SubjectStatus : EncounterSearchParam<Any>() {
+  public data object SubjectStatus : EncounterSearchParam<CodeableConcept>() {
     public override val paramName: String = "subject-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -368,10 +390,11 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<CodeableConcept> =
+      listOfNotNull(resource.subjectStatus)
   }
 
-  public data object Type : EncounterSearchParam<Any>() {
+  public data object Type : EncounterSearchParam<CodeableConcept>() {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -380,7 +403,7 @@ public sealed class EncounterSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Encounter): List<Any> = emptyList()
+    public override fun extract(resource: Encounter): List<CodeableConcept> = resource.type
   }
 
   public companion object {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.DeviceRequestCodeSerializer
-import com.google.fhir.model.r4b.serializers.DeviceRequestOccurrenceSerializer
-import com.google.fhir.model.r4b.serializers.DeviceRequestParameterSerializer
-import com.google.fhir.model.r4b.serializers.DeviceRequestParameterValueSerializer
-import com.google.fhir.model.r4b.serializers.DeviceRequestSerializer
+import dev.ohs.fhir.model.r4b.serializers.DeviceRequestCodeSerializer
+import dev.ohs.fhir.model.r4b.serializers.DeviceRequestOccurrenceSerializer
+import dev.ohs.fhir.model.r4b.serializers.DeviceRequestParameterSerializer
+import dev.ohs.fhir.model.r4b.serializers.DeviceRequestParameterValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.DeviceRequestSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -75,7 +75,7 @@ public data class DeviceRequest(
    * language is specified, it should it also be specified on the div element in the html (see rules
    * in HTML5 for information about the relationship between xml:lang and the html lang attribute).
    */
-  override val language: com.google.fhir.model.r4b.Code? = null,
+  override val language: dev.ohs.fhir.model.r4b.Code? = null,
   /**
    * A human-readable narrative that contains a summary of the resource and can be used to represent
    * the content of the resource to a human. The narrative need not encode all the structured data,
@@ -333,21 +333,21 @@ public data class DeviceRequest(
       public fun asBoolean(): Boolean? = this as? Boolean
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-      public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Value
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          quantityValue: com.google.fhir.model.r4b.Quantity?,
-          rangeValue: com.google.fhir.model.r4b.Range?,
-          booleanValue: com.google.fhir.model.r4b.Boolean?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (quantityValue != null) return Quantity(quantityValue)
@@ -426,16 +426,15 @@ public data class DeviceRequest(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Code
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Code
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Code
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      Code
 
     public companion object {
       internal fun from(
-        referenceValue: com.google.fhir.model.r4b.Reference?,
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
       ): Code? {
         if (referenceValue != null) return Reference(referenceValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -452,17 +451,17 @@ public data class DeviceRequest(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Occurrence
 
-    public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) : Occurrence
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        periodValue: com.google.fhir.model.r4b.Period?,
-        timingValue: com.google.fhir.model.r4b.Timing?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
+        timingValue: dev.ohs.fhir.model.r4b.Timing?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)
@@ -522,7 +521,7 @@ public data class DeviceRequest(
      * in the html (see rules in HTML5 for information about the relationship between xml:lang and
      * the html lang attribute).
      */
-    public var language: com.google.fhir.model.r4b.Code.Builder? = null
+    public var language: dev.ohs.fhir.model.r4b.Code.Builder? = null
 
     /**
      * A human-readable narrative that contains a summary of the resource and can be used to

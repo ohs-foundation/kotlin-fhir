@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FamilyMemberHistory
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.FamilyMemberHistoryAgeSurrogate
-import com.google.fhir.model.r5.surrogates.FamilyMemberHistoryBornSurrogate
-import com.google.fhir.model.r5.surrogates.FamilyMemberHistoryConditionOnsetSurrogate
-import com.google.fhir.model.r5.surrogates.FamilyMemberHistoryConditionSurrogate
-import com.google.fhir.model.r5.surrogates.FamilyMemberHistoryDeceasedSurrogate
-import com.google.fhir.model.r5.surrogates.FamilyMemberHistoryParticipantSurrogate
-import com.google.fhir.model.r5.surrogates.FamilyMemberHistoryProcedurePerformedSurrogate
-import com.google.fhir.model.r5.surrogates.FamilyMemberHistoryProcedureSurrogate
-import com.google.fhir.model.r5.surrogates.FamilyMemberHistorySurrogate
+import dev.ohs.fhir.model.r5.FamilyMemberHistory
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.FamilyMemberHistoryAgeSurrogate
+import dev.ohs.fhir.model.r5.surrogates.FamilyMemberHistoryBornSurrogate
+import dev.ohs.fhir.model.r5.surrogates.FamilyMemberHistoryConditionOnsetSurrogate
+import dev.ohs.fhir.model.r5.surrogates.FamilyMemberHistoryConditionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.FamilyMemberHistoryDeceasedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.FamilyMemberHistoryParticipantSurrogate
+import dev.ohs.fhir.model.r5.surrogates.FamilyMemberHistoryProcedurePerformedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.FamilyMemberHistoryProcedureSurrogate
+import dev.ohs.fhir.model.r5.surrogates.FamilyMemberHistorySurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

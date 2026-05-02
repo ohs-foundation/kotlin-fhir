@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4.serializers.ObservationComponentSerializer
-import com.google.fhir.model.r4.serializers.ObservationComponentValueSerializer
-import com.google.fhir.model.r4.serializers.ObservationEffectiveSerializer
-import com.google.fhir.model.r4.serializers.ObservationReferenceRangeSerializer
-import com.google.fhir.model.r4.serializers.ObservationSerializer
-import com.google.fhir.model.r4.serializers.ObservationValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.ObservationComponentSerializer
+import dev.ohs.fhir.model.r4b.serializers.ObservationComponentValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.ObservationEffectiveSerializer
+import dev.ohs.fhir.model.r4b.serializers.ObservationReferenceRangeSerializer
+import dev.ohs.fhir.model.r4b.serializers.ObservationSerializer
+import dev.ohs.fhir.model.r4b.serializers.ObservationValueSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -732,44 +732,43 @@ public data class Observation(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Value
 
-      public data class String(public val `value`: com.google.fhir.model.r4.String) : Value
+      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-      public data class Integer(public val `value`: com.google.fhir.model.r4.Integer) : Value
+      public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
 
-      public data class Range(public val `value`: com.google.fhir.model.r4.Range) : Value
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
-      public data class Ratio(public val `value`: com.google.fhir.model.r4.Ratio) : Value
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Value
 
-      public data class SampledData(public val `value`: com.google.fhir.model.r4.SampledData) :
-        Value
+      public data class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) : Value
 
-      public data class Time(public val `value`: com.google.fhir.model.r4.Time) : Value
+      public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Value
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
 
-      public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Value
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Value
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r4.Quantity?,
-          codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-          stringValue: com.google.fhir.model.r4.String?,
-          booleanValue: com.google.fhir.model.r4.Boolean?,
-          integerValue: com.google.fhir.model.r4.Integer?,
-          rangeValue: com.google.fhir.model.r4.Range?,
-          ratioValue: com.google.fhir.model.r4.Ratio?,
-          sampledDataValue: com.google.fhir.model.r4.SampledData?,
-          timeValue: com.google.fhir.model.r4.Time?,
-          dateTimeValue: com.google.fhir.model.r4.DateTime?,
-          periodValue: com.google.fhir.model.r4.Period?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          stringValue: dev.ohs.fhir.model.r4b.String?,
+          booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+          integerValue: dev.ohs.fhir.model.r4b.Integer?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+          sampledDataValue: dev.ohs.fhir.model.r4b.SampledData?,
+          timeValue: dev.ohs.fhir.model.r4b.Time?,
+          dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+          periodValue: dev.ohs.fhir.model.r4b.Period?,
         ): Value? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -912,20 +911,20 @@ public data class Observation(
 
     public fun asInstant(): Instant? = this as? Instant
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Effective
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Effective
 
-    public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Effective
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Effective
 
-    public data class Timing(public val `value`: com.google.fhir.model.r4.Timing) : Effective
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Effective
 
-    public data class Instant(public val `value`: com.google.fhir.model.r4.Instant) : Effective
+    public data class Instant(public val `value`: dev.ohs.fhir.model.r4b.Instant) : Effective
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4.DateTime?,
-        periodValue: com.google.fhir.model.r4.Period?,
-        timingValue: com.google.fhir.model.r4.Timing?,
-        instantValue: com.google.fhir.model.r4.Instant?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
+        timingValue: dev.ohs.fhir.model.r4b.Timing?,
+        instantValue: dev.ohs.fhir.model.r4b.Instant?,
       ): Effective? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)
@@ -960,43 +959,42 @@ public data class Observation(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) : Value
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : Value
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      Value
 
-    public data class String(public val `value`: com.google.fhir.model.r4.String) : Value
+    public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r4.Boolean) : Value
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-    public data class Integer(public val `value`: com.google.fhir.model.r4.Integer) : Value
+    public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
 
-    public data class Range(public val `value`: com.google.fhir.model.r4.Range) : Value
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
-    public data class Ratio(public val `value`: com.google.fhir.model.r4.Ratio) : Value
+    public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Value
 
-    public data class SampledData(public val `value`: com.google.fhir.model.r4.SampledData) : Value
+    public data class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) : Value
 
-    public data class Time(public val `value`: com.google.fhir.model.r4.Time) : Value
+    public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Value
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
 
-    public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Value
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Value
 
     public companion object {
       internal fun from(
-        quantityValue: com.google.fhir.model.r4.Quantity?,
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-        stringValue: com.google.fhir.model.r4.String?,
-        booleanValue: com.google.fhir.model.r4.Boolean?,
-        integerValue: com.google.fhir.model.r4.Integer?,
-        rangeValue: com.google.fhir.model.r4.Range?,
-        ratioValue: com.google.fhir.model.r4.Ratio?,
-        sampledDataValue: com.google.fhir.model.r4.SampledData?,
-        timeValue: com.google.fhir.model.r4.Time?,
-        dateTimeValue: com.google.fhir.model.r4.DateTime?,
-        periodValue: com.google.fhir.model.r4.Period?,
+        quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+        stringValue: dev.ohs.fhir.model.r4b.String?,
+        booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+        integerValue: dev.ohs.fhir.model.r4b.Integer?,
+        rangeValue: dev.ohs.fhir.model.r4b.Range?,
+        ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+        sampledDataValue: dev.ohs.fhir.model.r4b.SampledData?,
+        timeValue: dev.ohs.fhir.model.r4b.Time?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
       ): Value? {
         if (quantityValue != null) return Quantity(quantityValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

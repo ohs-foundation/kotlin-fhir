@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ObservationComponentSerializer
-import com.google.fhir.model.r5.serializers.ObservationComponentValueSerializer
-import com.google.fhir.model.r5.serializers.ObservationEffectiveSerializer
-import com.google.fhir.model.r5.serializers.ObservationInstantiatesSerializer
-import com.google.fhir.model.r5.serializers.ObservationReferenceRangeSerializer
-import com.google.fhir.model.r5.serializers.ObservationSerializer
-import com.google.fhir.model.r5.serializers.ObservationTriggeredBySerializer
-import com.google.fhir.model.r5.serializers.ObservationValueSerializer
+import dev.ohs.fhir.model.r5.serializers.ObservationComponentSerializer
+import dev.ohs.fhir.model.r5.serializers.ObservationComponentValueSerializer
+import dev.ohs.fhir.model.r5.serializers.ObservationEffectiveSerializer
+import dev.ohs.fhir.model.r5.serializers.ObservationInstantiatesSerializer
+import dev.ohs.fhir.model.r5.serializers.ObservationReferenceRangeSerializer
+import dev.ohs.fhir.model.r5.serializers.ObservationSerializer
+import dev.ohs.fhir.model.r5.serializers.ObservationTriggeredBySerializer
+import dev.ohs.fhir.model.r5.serializers.ObservationValueSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -916,50 +916,48 @@ public data class Observation(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Value
-
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
-
-      public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
-
-      public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Value
-
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
-
-      public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Value
-
-      public data class SampledData(public val `value`: com.google.fhir.model.r5.SampledData) :
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         Value
 
-      public data class Time(public val `value`: com.google.fhir.model.r5.Time) : Value
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Value
+      public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) : Value
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Value
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
+
+      public data class SampledData(public val `value`: dev.ohs.fhir.model.r5.SampledData) : Value
+
+      public data class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
+
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
+
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
+
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          stringValue: com.google.fhir.model.r5.String?,
-          booleanValue: com.google.fhir.model.r5.Boolean?,
-          integerValue: com.google.fhir.model.r5.Integer?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          ratioValue: com.google.fhir.model.r5.Ratio?,
-          sampledDataValue: com.google.fhir.model.r5.SampledData?,
-          timeValue: com.google.fhir.model.r5.Time?,
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          periodValue: com.google.fhir.model.r5.Period?,
-          attachmentValue: com.google.fhir.model.r5.Attachment?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
+          booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+          integerValue: dev.ohs.fhir.model.r5.Integer?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+          sampledDataValue: dev.ohs.fhir.model.r5.SampledData?,
+          timeValue: dev.ohs.fhir.model.r5.Time?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
+          attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Value? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -1113,16 +1111,14 @@ public data class Observation(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) :
-      Instantiates
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Instantiates
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
-      Instantiates
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Instantiates
 
     public companion object {
       internal fun from(
-        canonicalValue: com.google.fhir.model.r5.Canonical?,
-        referenceValue: com.google.fhir.model.r5.Reference?,
+        canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
       ): Instantiates? {
         if (canonicalValue != null) return Canonical(canonicalValue)
         if (referenceValue != null) return Reference(referenceValue)
@@ -1141,20 +1137,20 @@ public data class Observation(
 
     public fun asInstant(): Instant? = this as? Instant
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Effective
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Effective
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Effective
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Effective
 
-    public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) : Effective
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Effective
 
-    public data class Instant(public val `value`: com.google.fhir.model.r5.Instant) : Effective
+    public data class Instant(public val `value`: dev.ohs.fhir.model.r5.Instant) : Effective
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        periodValue: com.google.fhir.model.r5.Period?,
-        timingValue: com.google.fhir.model.r5.Timing?,
-        instantValue: com.google.fhir.model.r5.Instant?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        timingValue: dev.ohs.fhir.model.r5.Timing?,
+        instantValue: dev.ohs.fhir.model.r5.Instant?,
       ): Effective? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)
@@ -1193,49 +1189,48 @@ public data class Observation(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r5.CodeableConcept
-    ) : Value
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+      Value
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-    public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Value
+    public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-    public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-    public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Value
+    public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-    public data class SampledData(public val `value`: com.google.fhir.model.r5.SampledData) : Value
+    public data class SampledData(public val `value`: dev.ohs.fhir.model.r5.SampledData) : Value
 
-    public data class Time(public val `value`: com.google.fhir.model.r5.Time) : Value
+    public data class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Value
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Value
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
 
-    public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) : Value
+    public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Value
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
     public companion object {
       internal fun from(
-        quantityValue: com.google.fhir.model.r5.Quantity?,
-        codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-        stringValue: com.google.fhir.model.r5.String?,
-        booleanValue: com.google.fhir.model.r5.Boolean?,
-        integerValue: com.google.fhir.model.r5.Integer?,
-        rangeValue: com.google.fhir.model.r5.Range?,
-        ratioValue: com.google.fhir.model.r5.Ratio?,
-        sampledDataValue: com.google.fhir.model.r5.SampledData?,
-        timeValue: com.google.fhir.model.r5.Time?,
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        periodValue: com.google.fhir.model.r5.Period?,
-        attachmentValue: com.google.fhir.model.r5.Attachment?,
-        referenceValue: com.google.fhir.model.r5.Reference?,
+        quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+        codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+        integerValue: dev.ohs.fhir.model.r5.Integer?,
+        rangeValue: dev.ohs.fhir.model.r5.Range?,
+        ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+        sampledDataValue: dev.ohs.fhir.model.r5.SampledData?,
+        timeValue: dev.ohs.fhir.model.r5.Time?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
       ): Value? {
         if (quantityValue != null) return Quantity(quantityValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

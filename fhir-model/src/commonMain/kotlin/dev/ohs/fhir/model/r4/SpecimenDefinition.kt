@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.SpecimenDefinitionSerializer
-import com.google.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSerializer
-import com.google.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedContainerAdditiveSerializer
-import com.google.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedContainerMinimumVolumeSerializer
-import com.google.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedContainerSerializer
-import com.google.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedHandlingSerializer
-import com.google.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedSerializer
+import dev.ohs.fhir.model.r4.serializers.SpecimenDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSerializer
+import dev.ohs.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedContainerAdditiveSerializer
+import dev.ohs.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedContainerMinimumVolumeSerializer
+import dev.ohs.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedContainerSerializer
+import dev.ohs.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedHandlingSerializer
+import dev.ohs.fhir.model.r4.serializers.SpecimenDefinitionTypeTestedSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -385,16 +385,16 @@ public data class SpecimenDefinition(
           public fun asReference(): Reference? = this as? Reference
 
           public data class CodeableConcept(
-            public val `value`: com.google.fhir.model.r4.CodeableConcept
+            public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
           ) : Additive
 
-          public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
+          public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
             Additive
 
           public companion object {
             internal fun from(
-              codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-              referenceValue: com.google.fhir.model.r4.Reference?,
+              codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+              referenceValue: dev.ohs.fhir.model.r4.Reference?,
             ): Additive? {
               if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
               if (referenceValue != null) return Reference(referenceValue)
@@ -466,16 +466,15 @@ public data class SpecimenDefinition(
 
         public fun asString(): String? = this as? String
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) :
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) :
           MinimumVolume
 
-        public data class String(public val `value`: com.google.fhir.model.r4.String) :
-          MinimumVolume
+        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : MinimumVolume
 
         public companion object {
           internal fun from(
-            quantityValue: com.google.fhir.model.r4.Quantity?,
-            stringValue: com.google.fhir.model.r4.String?,
+            quantityValue: dev.ohs.fhir.model.r4.Quantity?,
+            stringValue: dev.ohs.fhir.model.r4.String?,
           ): MinimumVolume? {
             if (quantityValue != null) return Quantity(quantityValue)
             if (stringValue != null) return String(stringValue)

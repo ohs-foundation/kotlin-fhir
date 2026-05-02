@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ServiceRequestAsNeededSerializer
-import com.google.fhir.model.r5.serializers.ServiceRequestOccurrenceSerializer
-import com.google.fhir.model.r5.serializers.ServiceRequestOrderDetailParameterSerializer
-import com.google.fhir.model.r5.serializers.ServiceRequestOrderDetailParameterValueSerializer
-import com.google.fhir.model.r5.serializers.ServiceRequestOrderDetailSerializer
-import com.google.fhir.model.r5.serializers.ServiceRequestPatientInstructionInstructionSerializer
-import com.google.fhir.model.r5.serializers.ServiceRequestPatientInstructionSerializer
-import com.google.fhir.model.r5.serializers.ServiceRequestQuantitySerializer
-import com.google.fhir.model.r5.serializers.ServiceRequestSerializer
+import dev.ohs.fhir.model.r5.serializers.ServiceRequestAsNeededSerializer
+import dev.ohs.fhir.model.r5.serializers.ServiceRequestOccurrenceSerializer
+import dev.ohs.fhir.model.r5.serializers.ServiceRequestOrderDetailParameterSerializer
+import dev.ohs.fhir.model.r5.serializers.ServiceRequestOrderDetailParameterValueSerializer
+import dev.ohs.fhir.model.r5.serializers.ServiceRequestOrderDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.ServiceRequestPatientInstructionInstructionSerializer
+import dev.ohs.fhir.model.r5.serializers.ServiceRequestPatientInstructionSerializer
+import dev.ohs.fhir.model.r5.serializers.ServiceRequestQuantitySerializer
+import dev.ohs.fhir.model.r5.serializers.ServiceRequestSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -556,31 +556,31 @@ public data class ServiceRequest(
 
         public fun asPeriod(): Period? = this as? Period
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Value
+        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-        public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-        public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Value
+        public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
 
         public companion object {
           internal fun from(
-            quantityValue: com.google.fhir.model.r5.Quantity?,
-            ratioValue: com.google.fhir.model.r5.Ratio?,
-            rangeValue: com.google.fhir.model.r5.Range?,
-            booleanValue: com.google.fhir.model.r5.Boolean?,
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            stringValue: com.google.fhir.model.r5.String?,
-            periodValue: com.google.fhir.model.r5.Period?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+            ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+            rangeValue: dev.ohs.fhir.model.r5.Range?,
+            booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            stringValue: dev.ohs.fhir.model.r5.String?,
+            periodValue: dev.ohs.fhir.model.r5.Period?,
           ): Value? {
             if (quantityValue != null) return Quantity(quantityValue)
             if (ratioValue != null) return Ratio(ratioValue)
@@ -777,16 +777,15 @@ public data class ServiceRequest(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Markdown(public val `value`: com.google.fhir.model.r5.Markdown) :
-        Instruction
+      public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Instruction
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
         Instruction
 
       public companion object {
         internal fun from(
-          markdownValue: com.google.fhir.model.r5.Markdown?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          markdownValue: dev.ohs.fhir.model.r5.Markdown?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Instruction? {
           if (markdownValue != null) return Markdown(markdownValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -857,20 +856,20 @@ public data class ServiceRequest(
 
     public fun asRange(): Range? = this as? Range
 
-    public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) :
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
       ServiceRequest.Quantity
 
-    public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) :
+    public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) :
       ServiceRequest.Quantity
 
-    public data class Range(public val `value`: com.google.fhir.model.r5.Range) :
+    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) :
       ServiceRequest.Quantity
 
     public companion object {
       internal fun from(
-        quantityValue: com.google.fhir.model.r5.Quantity?,
-        ratioValue: com.google.fhir.model.r5.Ratio?,
-        rangeValue: com.google.fhir.model.r5.Range?,
+        quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+        ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+        rangeValue: dev.ohs.fhir.model.r5.Range?,
       ): ServiceRequest.Quantity? {
         if (quantityValue != null) return Quantity(quantityValue)
         if (ratioValue != null) return Ratio(ratioValue)
@@ -888,17 +887,17 @@ public data class ServiceRequest(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
-    public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) : Occurrence
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        periodValue: com.google.fhir.model.r5.Period?,
-        timingValue: com.google.fhir.model.r5.Timing?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        timingValue: dev.ohs.fhir.model.r5.Timing?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)
@@ -914,16 +913,15 @@ public data class ServiceRequest(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : AsNeeded
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : AsNeeded
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r5.CodeableConcept
-    ) : AsNeeded
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+      AsNeeded
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r5.Boolean?,
-        codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+        booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+        codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
       ): AsNeeded? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)

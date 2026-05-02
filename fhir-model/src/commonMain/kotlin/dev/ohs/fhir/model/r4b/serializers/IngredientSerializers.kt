@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.Ingredient
-import com.google.fhir.model.r4b.surrogates.IngredientManufacturerSurrogate
-import com.google.fhir.model.r4b.surrogates.IngredientSubstanceStrengthConcentrationSurrogate
-import com.google.fhir.model.r4b.surrogates.IngredientSubstanceStrengthPresentationSurrogate
-import com.google.fhir.model.r4b.surrogates.IngredientSubstanceStrengthReferenceStrengthStrengthSurrogate
-import com.google.fhir.model.r4b.surrogates.IngredientSubstanceStrengthReferenceStrengthSurrogate
-import com.google.fhir.model.r4b.surrogates.IngredientSubstanceStrengthSurrogate
-import com.google.fhir.model.r4b.surrogates.IngredientSubstanceSurrogate
-import com.google.fhir.model.r4b.surrogates.IngredientSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.Ingredient
+import dev.ohs.fhir.model.r4b.surrogates.IngredientManufacturerSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.IngredientSubstanceStrengthConcentrationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.IngredientSubstanceStrengthPresentationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.IngredientSubstanceStrengthReferenceStrengthStrengthSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.IngredientSubstanceStrengthReferenceStrengthSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.IngredientSubstanceStrengthSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.IngredientSubstanceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.IngredientSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,196 +28,203 @@ public sealed class CitationSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Citation): List<T>
 
-  public data object Context : CitationSearchParam<Any>() {
-    public override val paramName: String = "context"
+  public data object Context : CitationSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "(Citation.useContext.value as CodeableConcept)"
+    public override val expression: kotlin.String = "(Citation.useContext.value as CodeableConcept)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<CodeableConcept> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : CitationSearchParam<Any>() {
-    public override val paramName: String = "context-quantity"
+  public data object ContextQuantity : CitationSearchParam<Quantity>() {
+    public override val paramName: kotlin.String = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
-    public override val expression: String = "(Citation.useContext.value as Quantity)"
+    public override val expression: kotlin.String = "(Citation.useContext.value as Quantity)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<Quantity> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : CitationSearchParam<Any>() {
-    public override val paramName: String = "context-type"
+  public data object ContextType : CitationSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Citation.useContext.code"
+    public override val expression: kotlin.String = "Citation.useContext.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<Coding> =
+      resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : CitationSearchParam<Any>() {
-    public override val paramName: String = "context-type-quantity"
+  public data object ContextTypeQuantity : CitationSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "Citation.useContext"
+    public override val expression: kotlin.String = "Citation.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : CitationSearchParam<Any>() {
-    public override val paramName: String = "context-type-value"
+  public data object ContextTypeValue : CitationSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "Citation.useContext"
+    public override val expression: kotlin.String = "Citation.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : CitationSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : CitationSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "Citation.date"
+    public override val expression: kotlin.String = "Citation.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object Description : CitationSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : CitationSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Citation.description"
+    public override val expression: kotlin.String = "Citation.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<Markdown> =
+      listOfNotNull(resource.description)
   }
 
-  public data object Effective : CitationSearchParam<Any>() {
-    public override val paramName: String = "effective"
+  public data object Effective : CitationSearchParam<Period>() {
+    public override val paramName: kotlin.String = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "Citation.effectivePeriod"
+    public override val expression: kotlin.String = "Citation.effectivePeriod"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<Period> =
+      listOfNotNull(resource.effectivePeriod)
   }
 
-  public data object Identifier : CitationSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : CitationSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Citation.identifier"
+    public override val expression: kotlin.String = "Citation.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
-  public data object Jurisdiction : CitationSearchParam<Any>() {
-    public override val paramName: String = "jurisdiction"
+  public data object Jurisdiction : CitationSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Citation.jurisdiction"
+    public override val expression: kotlin.String = "Citation.jurisdiction"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<CodeableConcept> = resource.jurisdiction
   }
 
-  public data object Name : CitationSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : CitationSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Citation.name"
+    public override val expression: kotlin.String = "Citation.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<String> = listOfNotNull(resource.name)
   }
 
-  public data object Publisher : CitationSearchParam<Any>() {
-    public override val paramName: String = "publisher"
+  public data object Publisher : CitationSearchParam<String>() {
+    public override val paramName: kotlin.String = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Citation.publisher"
+    public override val expression: kotlin.String = "Citation.publisher"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<String> =
+      listOfNotNull(resource.publisher)
   }
 
   public data object Status : CitationSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Citation.status"
+    public override val expression: kotlin.String = "Citation.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : CitationSearchParam<Any>() {
-    public override val paramName: String = "title"
+  public data object Title : CitationSearchParam<String>() {
+    public override val paramName: kotlin.String = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Citation.title"
+    public override val expression: kotlin.String = "Citation.title"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<String> = listOfNotNull(resource.title)
   }
 
-  public data object Url : CitationSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : CitationSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "Citation.url"
+    public override val expression: kotlin.String = "Citation.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : CitationSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : CitationSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Citation.version"
+    public override val expression: kotlin.String = "Citation.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Citation): List<Any> = emptyList()
+    public override fun extract(resource: Citation): List<String> = listOfNotNull(resource.version)
   }
 
   public companion object {

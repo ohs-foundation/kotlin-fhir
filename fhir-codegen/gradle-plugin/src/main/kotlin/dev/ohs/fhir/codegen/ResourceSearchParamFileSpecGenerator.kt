@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,8 @@
  * limitations under the License.
  */
 
-package com.google.fhir.codegen
+package dev.ohs.fhir.codegen
 
-import com.google.fhir.codegen.schema.Element
-import com.google.fhir.codegen.schema.SearchParameterDefinition
-import com.google.fhir.codegen.schema.capitalized
-import com.google.fhir.codegen.searchparam.SearchParamCodeEmitter
-import com.google.fhir.codegen.searchparam.SearchParamPattern
-import com.google.fhir.codegen.searchparam.SearchParamTypeResolver
-import com.google.fhir.codegen.searchparam.parseSearchParamExpression
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -34,6 +27,13 @@ import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.asClassName
+import dev.ohs.fhir.codegen.schema.Element
+import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
+import dev.ohs.fhir.codegen.schema.capitalized
+import dev.ohs.fhir.codegen.searchparam.SearchParamCodeEmitter
+import dev.ohs.fhir.codegen.searchparam.SearchParamPattern
+import dev.ohs.fhir.codegen.searchparam.SearchParamTypeResolver
+import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
 
 /**
  * Generates per-resource search parameter sealed classes.
@@ -43,9 +43,9 @@ import com.squareup.kotlinpoet.asClassName
  *
  * This object orchestrates KotlinPoet type/file building. The actual work of interpreting the
  * search parameter's FHIRPath expression and generating the `extract` body is split across the
- * `com.google.fhir.codegen.searchparam` package:
- * - [com.google.fhir.codegen.searchparam.parseSearchParamExpression] classifies the expression into
- *   a [SearchParamPattern].
+ * `dev.ohs.fhir.codegen.searchparam` package:
+ * - [dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression] classifies the expression into a
+ *   [SearchParamPattern].
  * - [SearchParamTypeResolver] maps a pattern to the type parameter `T`.
  * - [SearchParamCodeEmitter] emits the Kotlin source string for the `extract` body.
  */

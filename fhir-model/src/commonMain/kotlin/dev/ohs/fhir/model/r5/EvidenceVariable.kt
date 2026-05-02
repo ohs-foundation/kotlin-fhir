@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,21 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.EvidenceVariableCategorySerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableCategoryValueSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitionByCombinationSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitionByTypeAndValueSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitionByTypeAndValueValueSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableCharacteristicDurationSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableCharacteristicInstancesSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableCharacteristicSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableCharacteristicTimeFromEventEventSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableCharacteristicTimeFromEventSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCategorySerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCategoryValueSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitionByCombinationSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitionByTypeAndValueSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitionByTypeAndValueValueSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicDurationSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicInstancesSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicTimeFromEventEventSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicTimeFromEventSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -631,27 +631,27 @@ public data class EvidenceVariable(
         public fun asId(): Id? = this as? Id
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-        public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Value
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
-        public data class Id(public val `value`: com.google.fhir.model.r5.Id) : Value
+        public data class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
 
         public companion object {
           internal fun from(
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            booleanValue: com.google.fhir.model.r5.Boolean?,
-            quantityValue: com.google.fhir.model.r5.Quantity?,
-            rangeValue: com.google.fhir.model.r5.Range?,
-            referenceValue: com.google.fhir.model.r5.Reference?,
-            idValue: com.google.fhir.model.r5.Id?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+            rangeValue: dev.ohs.fhir.model.r5.Range?,
+            referenceValue: dev.ohs.fhir.model.r5.Reference?,
+            idValue: dev.ohs.fhir.model.r5.Id?,
           ): Value? {
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
             if (booleanValue != null) return Boolean(booleanValue)
@@ -930,21 +930,21 @@ public data class EvidenceVariable(
         public fun asId(): Id? = this as? Id
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Event
 
-        public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Event
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Event
 
-        public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Event
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Event
 
-        public data class Id(public val `value`: com.google.fhir.model.r5.Id) : Event
+        public data class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Event
 
         public companion object {
           internal fun from(
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            referenceValue: com.google.fhir.model.r5.Reference?,
-            dateTimeValue: com.google.fhir.model.r5.DateTime?,
-            idValue: com.google.fhir.model.r5.Id?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            referenceValue: dev.ohs.fhir.model.r5.Reference?,
+            dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+            idValue: dev.ohs.fhir.model.r5.Id?,
           ): Event? {
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
             if (referenceValue != null) return Reference(referenceValue)
@@ -1033,14 +1033,14 @@ public data class EvidenceVariable(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Instances
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Instances
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Instances
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Instances
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          rangeValue: com.google.fhir.model.r5.Range?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
         ): Instances? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (rangeValue != null) return Range(rangeValue)
@@ -1055,14 +1055,14 @@ public data class EvidenceVariable(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Duration
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Duration
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Duration
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Duration
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          rangeValue: com.google.fhir.model.r5.Range?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
         ): Duration? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (rangeValue != null) return Range(rangeValue)
@@ -1253,19 +1253,18 @@ public data class EvidenceVariable(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Value
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          rangeValue: com.google.fhir.model.r5.Range?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (quantityValue != null) return Quantity(quantityValue)
@@ -1339,16 +1338,14 @@ public data class EvidenceVariable(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)

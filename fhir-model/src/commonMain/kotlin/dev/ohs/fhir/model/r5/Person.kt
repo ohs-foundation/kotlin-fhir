@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.PersonCommunicationSerializer
-import com.google.fhir.model.r5.serializers.PersonDeceasedSerializer
-import com.google.fhir.model.r5.serializers.PersonLinkSerializer
-import com.google.fhir.model.r5.serializers.PersonSerializer
-import com.google.fhir.model.r5.terminologies.AdministrativeGender
+import dev.ohs.fhir.model.r5.serializers.PersonCommunicationSerializer
+import dev.ohs.fhir.model.r5.serializers.PersonDeceasedSerializer
+import dev.ohs.fhir.model.r5.serializers.PersonLinkSerializer
+import dev.ohs.fhir.model.r5.serializers.PersonSerializer
+import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -498,14 +498,14 @@ public data class Person(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Deceased
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Deceased
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Deceased
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Deceased
 
     public companion object {
       internal fun from(
-        booleanValue: com.google.fhir.model.r5.Boolean?,
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
+        booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
       ): Deceased? {
         if (booleanValue != null) return Boolean(booleanValue)
         if (dateTimeValue != null) return DateTime(dateTimeValue)

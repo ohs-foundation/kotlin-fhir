@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,76 +28,79 @@ public sealed class EndpointSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Endpoint): List<T>
 
-  public data object ConnectionType : EndpointSearchParam<Any>() {
-    public override val paramName: String = "connection-type"
+  public data object ConnectionType : EndpointSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "connection-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Endpoint.connectionType"
+    public override val expression: kotlin.String = "Endpoint.connectionType"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Endpoint): List<Any> = emptyList()
+    public override fun extract(resource: Endpoint): List<CodeableConcept> = resource.connectionType
   }
 
-  public data object Identifier : EndpointSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : EndpointSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Endpoint.identifier"
+    public override val expression: kotlin.String = "Endpoint.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Endpoint): List<Any> = emptyList()
+    public override fun extract(resource: Endpoint): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Name : EndpointSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : EndpointSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Endpoint.name"
+    public override val expression: kotlin.String = "Endpoint.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Endpoint): List<Any> = emptyList()
+    public override fun extract(resource: Endpoint): List<String> = listOfNotNull(resource.name)
   }
 
-  public data object Organization : EndpointSearchParam<Any>() {
-    public override val paramName: String = "organization"
+  public data object Organization : EndpointSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Endpoint.managingOrganization"
+    public override val expression: kotlin.String = "Endpoint.managingOrganization"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: Endpoint): List<Any> = emptyList()
+    public override fun extract(resource: Endpoint): List<Reference> =
+      listOfNotNull(resource.managingOrganization)
   }
 
-  public data object PayloadType : EndpointSearchParam<Any>() {
-    public override val paramName: String = "payload-type"
+  public data object PayloadType : EndpointSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "payload-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Endpoint.payload.type"
+    public override val expression: kotlin.String = "Endpoint.payload.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Endpoint): List<Any> = emptyList()
+    public override fun extract(resource: Endpoint): List<CodeableConcept> =
+      resource.payload.flatMap { it.type }
   }
 
   public data object Status : EndpointSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Endpoint.status"
+    public override val expression: kotlin.String = "Endpoint.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Endpoint): List<Any> = emptyList()
+    public override fun extract(resource: Endpoint): List<Any> = listOf(resource.status)
   }
 
   public companion object {

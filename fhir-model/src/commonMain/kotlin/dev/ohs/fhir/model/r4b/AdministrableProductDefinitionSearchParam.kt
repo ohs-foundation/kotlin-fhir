@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class AdministrableProductDefinitionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: AdministrableProductDefinition): List<T>
 
-  public data object Device : AdministrableProductDefinitionSearchParam<Any>() {
+  public data object Device : AdministrableProductDefinitionSearchParam<Reference>() {
     public override val paramName: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -38,10 +37,11 @@ public sealed class AdministrableProductDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("DeviceDefinition")
 
-    public override fun extract(resource: AdministrableProductDefinition): List<Any> = emptyList()
+    public override fun extract(resource: AdministrableProductDefinition): List<Reference> =
+      listOfNotNull(resource.device)
   }
 
-  public data object DoseForm : AdministrableProductDefinitionSearchParam<Any>() {
+  public data object DoseForm : AdministrableProductDefinitionSearchParam<CodeableConcept>() {
     public override val paramName: String = "dose-form"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +50,11 @@ public sealed class AdministrableProductDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdministrableProductDefinition): List<Any> = emptyList()
+    public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
+      listOfNotNull(resource.administrableDoseForm)
   }
 
-  public data object FormOf : AdministrableProductDefinitionSearchParam<Any>() {
+  public data object FormOf : AdministrableProductDefinitionSearchParam<Reference>() {
     public override val paramName: String = "form-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -62,10 +63,12 @@ public sealed class AdministrableProductDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("MedicinalProductDefinition")
 
-    public override fun extract(resource: AdministrableProductDefinition): List<Any> = emptyList()
+    public override fun extract(resource: AdministrableProductDefinition): List<Reference> =
+      resource.formOf
   }
 
-  public data object Identifier : AdministrableProductDefinitionSearchParam<Any>() {
+  public data object Identifier :
+    AdministrableProductDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,10 +77,12 @@ public sealed class AdministrableProductDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdministrableProductDefinition): List<Any> = emptyList()
+    public override fun extract(
+      resource: AdministrableProductDefinition
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Ingredient : AdministrableProductDefinitionSearchParam<Any>() {
+  public data object Ingredient : AdministrableProductDefinitionSearchParam<CodeableConcept>() {
     public override val paramName: String = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +91,11 @@ public sealed class AdministrableProductDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdministrableProductDefinition): List<Any> = emptyList()
+    public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
+      resource.ingredient
   }
 
-  public data object ManufacturedItem : AdministrableProductDefinitionSearchParam<Any>() {
+  public data object ManufacturedItem : AdministrableProductDefinitionSearchParam<Reference>() {
     public override val paramName: String = "manufactured-item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,10 +104,11 @@ public sealed class AdministrableProductDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("ManufacturedItemDefinition")
 
-    public override fun extract(resource: AdministrableProductDefinition): List<Any> = emptyList()
+    public override fun extract(resource: AdministrableProductDefinition): List<Reference> =
+      resource.producedFrom
   }
 
-  public data object Route : AdministrableProductDefinitionSearchParam<Any>() {
+  public data object Route : AdministrableProductDefinitionSearchParam<CodeableConcept>() {
     public override val paramName: String = "route"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -111,10 +118,11 @@ public sealed class AdministrableProductDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdministrableProductDefinition): List<Any> = emptyList()
+    public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
+      resource.routeOfAdministration.map { it.code }
   }
 
-  public data object TargetSpecies : AdministrableProductDefinitionSearchParam<Any>() {
+  public data object TargetSpecies : AdministrableProductDefinitionSearchParam<CodeableConcept>() {
     public override val paramName: String = "target-species"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -124,7 +132,8 @@ public sealed class AdministrableProductDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: AdministrableProductDefinition): List<Any> = emptyList()
+    public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
+      resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }
   }
 
   public companion object {

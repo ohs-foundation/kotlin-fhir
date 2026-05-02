@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,21 +17,21 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.surrogates
+package dev.ohs.fhir.model.r4.surrogates
 
-import com.google.fhir.model.r4.Boolean as R4Boolean
-import com.google.fhir.model.r4.CodeableConcept
-import com.google.fhir.model.r4.Dosage
-import com.google.fhir.model.r4.Element
-import com.google.fhir.model.r4.Extension
-import com.google.fhir.model.r4.Integer
-import com.google.fhir.model.r4.Quantity
-import com.google.fhir.model.r4.Range
-import com.google.fhir.model.r4.Ratio
-import com.google.fhir.model.r4.String as R4String
-import com.google.fhir.model.r4.Timing
-import com.google.fhir.model.r4.serializers.DoubleSerializer
-import com.google.fhir.model.r4.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r4.Boolean as R4Boolean
+import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Dosage
+import dev.ohs.fhir.model.r4.Element
+import dev.ohs.fhir.model.r4.Extension
+import dev.ohs.fhir.model.r4.Integer
+import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Range
+import dev.ohs.fhir.model.r4.Ratio
+import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.Timing
+import dev.ohs.fhir.model.r4.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r4.serializers.LocalTimeSerializer
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
 import kotlin.String as KotlinString

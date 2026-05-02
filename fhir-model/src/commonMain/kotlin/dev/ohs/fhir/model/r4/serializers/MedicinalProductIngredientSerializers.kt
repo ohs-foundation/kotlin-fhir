@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.MedicinalProductIngredient
-import com.google.fhir.model.r4.surrogates.MedicinalProductIngredientSpecifiedSubstanceStrengthReferenceStrengthSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductIngredientSpecifiedSubstanceStrengthSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductIngredientSpecifiedSubstanceSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductIngredientSubstanceSurrogate
-import com.google.fhir.model.r4.surrogates.MedicinalProductIngredientSurrogate
+import dev.ohs.fhir.model.r4.MedicinalProductIngredient
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductIngredientSpecifiedSubstanceStrengthReferenceStrengthSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductIngredientSpecifiedSubstanceStrengthSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductIngredientSpecifiedSubstanceSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductIngredientSubstanceSurrogate
+import dev.ohs.fhir.model.r4.surrogates.MedicinalProductIngredientSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

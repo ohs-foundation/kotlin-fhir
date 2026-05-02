@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,26 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.CapabilityStatementDocumentSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementImplementationSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementMessagingEndpointSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementMessagingSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementMessagingSupportedMessageSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementRestInteractionSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementRestResourceInteractionSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementRestResourceOperationSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementRestResourceSearchParamSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementRestResourceSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementRestSecuritySerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementRestSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementSerializer
-import com.google.fhir.model.r4b.serializers.CapabilityStatementSoftwareSerializer
-import com.google.fhir.model.r4b.terminologies.FHIRVersion
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
-import com.google.fhir.model.r4b.terminologies.ResourceType
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementDocumentSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementImplementationSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementMessagingEndpointSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementMessagingSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementMessagingSupportedMessageSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementRestInteractionSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementRestResourceInteractionSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementRestResourceOperationSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementRestResourceSearchParamSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementRestResourceSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementRestSecuritySerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementRestSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementSerializer
+import dev.ohs.fhir.model.r4b.serializers.CapabilityStatementSoftwareSerializer
+import dev.ohs.fhir.model.r4b.terminologies.FHIRVersion
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.terminologies.ResourceType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

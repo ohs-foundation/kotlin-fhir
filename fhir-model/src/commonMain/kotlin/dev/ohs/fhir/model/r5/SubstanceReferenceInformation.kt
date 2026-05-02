@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.SubstanceReferenceInformationGeneElementSerializer
-import com.google.fhir.model.r5.serializers.SubstanceReferenceInformationGeneSerializer
-import com.google.fhir.model.r5.serializers.SubstanceReferenceInformationSerializer
-import com.google.fhir.model.r5.serializers.SubstanceReferenceInformationTargetAmountSerializer
-import com.google.fhir.model.r5.serializers.SubstanceReferenceInformationTargetSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceReferenceInformationGeneElementSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceReferenceInformationGeneSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceReferenceInformationSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceReferenceInformationTargetAmountSerializer
+import dev.ohs.fhir.model.r5.serializers.SubstanceReferenceInformationTargetSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -482,17 +482,17 @@ public data class SubstanceReferenceInformation(
 
       public fun asString(): String? = this as? String
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Amount
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Amount
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Amount
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Amount
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Amount
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Amount
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          stringValue: com.google.fhir.model.r5.String?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
         ): Amount? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (rangeValue != null) return Range(rangeValue)

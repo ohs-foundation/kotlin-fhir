@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.ConceptMapGroupElementSerializer
-import com.google.fhir.model.r4b.serializers.ConceptMapGroupElementTargetDependsOnSerializer
-import com.google.fhir.model.r4b.serializers.ConceptMapGroupElementTargetSerializer
-import com.google.fhir.model.r4b.serializers.ConceptMapGroupSerializer
-import com.google.fhir.model.r4b.serializers.ConceptMapGroupUnmappedSerializer
-import com.google.fhir.model.r4b.serializers.ConceptMapSerializer
-import com.google.fhir.model.r4b.serializers.ConceptMapSourceSerializer
-import com.google.fhir.model.r4b.serializers.ConceptMapTargetSerializer
-import com.google.fhir.model.r4b.terminologies.ConceptMapEquivalence
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.ConceptMapGroupElementSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConceptMapGroupElementTargetDependsOnSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConceptMapGroupElementTargetSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConceptMapGroupSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConceptMapGroupUnmappedSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConceptMapSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConceptMapSourceSerializer
+import dev.ohs.fhir.model.r4b.serializers.ConceptMapTargetSerializer
+import dev.ohs.fhir.model.r4b.terminologies.ConceptMapEquivalence
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1195,14 +1195,14 @@ public data class ConceptMap(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Source
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Source
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) : Source
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Source
 
     public companion object {
       internal fun from(
-        uriValue: com.google.fhir.model.r4b.Uri?,
-        canonicalValue: com.google.fhir.model.r4b.Canonical?,
+        uriValue: dev.ohs.fhir.model.r4b.Uri?,
+        canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
       ): Source? {
         if (uriValue != null) return Uri(uriValue)
         if (canonicalValue != null) return Canonical(canonicalValue)
@@ -1217,14 +1217,14 @@ public data class ConceptMap(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Target
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Target
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) : Target
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Target
 
     public companion object {
       internal fun from(
-        uriValue: com.google.fhir.model.r4b.Uri?,
-        canonicalValue: com.google.fhir.model.r4b.Canonical?,
+        uriValue: dev.ohs.fhir.model.r4b.Uri?,
+        canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
       ): Target? {
         if (uriValue != null) return Uri(uriValue)
         if (canonicalValue != null) return Canonical(canonicalValue)

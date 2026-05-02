@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ArtifactAssessmentArtifactSerializer
-import com.google.fhir.model.r5.serializers.ArtifactAssessmentCiteAsSerializer
-import com.google.fhir.model.r5.serializers.ArtifactAssessmentContentSerializer
-import com.google.fhir.model.r5.serializers.ArtifactAssessmentSerializer
+import dev.ohs.fhir.model.r5.serializers.ArtifactAssessmentArtifactSerializer
+import dev.ohs.fhir.model.r5.serializers.ArtifactAssessmentCiteAsSerializer
+import dev.ohs.fhir.model.r5.serializers.ArtifactAssessmentContentSerializer
+import dev.ohs.fhir.model.r5.serializers.ArtifactAssessmentSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -411,14 +411,14 @@ public data class ArtifactAssessment(
 
     public fun asMarkdown(): Markdown? = this as? Markdown
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : CiteAs
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : CiteAs
 
-    public data class Markdown(public val `value`: com.google.fhir.model.r5.Markdown) : CiteAs
+    public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : CiteAs
 
     public companion object {
       internal fun from(
-        referenceValue: com.google.fhir.model.r5.Reference?,
-        markdownValue: com.google.fhir.model.r5.Markdown?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
+        markdownValue: dev.ohs.fhir.model.r5.Markdown?,
       ): CiteAs? {
         if (referenceValue != null) return Reference(referenceValue)
         if (markdownValue != null) return Markdown(markdownValue)
@@ -435,17 +435,17 @@ public data class ArtifactAssessment(
 
     public fun asUri(): Uri? = this as? Uri
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Artifact
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Artifact
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) : Artifact
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Artifact
 
-    public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : Artifact
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Artifact
 
     public companion object {
       internal fun from(
-        referenceValue: com.google.fhir.model.r5.Reference?,
-        canonicalValue: com.google.fhir.model.r5.Canonical?,
-        uriValue: com.google.fhir.model.r5.Uri?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
+        canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
+        uriValue: dev.ohs.fhir.model.r5.Uri?,
       ): Artifact? {
         if (referenceValue != null) return Reference(referenceValue)
         if (canonicalValue != null) return Canonical(canonicalValue)

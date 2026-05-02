@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,36 +16,36 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.Citation
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactAbstractSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactClassificationSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactClassificationWhoClassifiedSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipEntryAffiliationInfoSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipEntryContributionInstanceSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipEntrySurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipSummarySurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactPartSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactPublicationFormPeriodicReleaseSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactPublicationFormPublishedInSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactPublicationFormSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactRelatesToSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactRelatesToTargetSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactStatusDateSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactTitleSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactVersionSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationCitedArtifactWebLocationSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationClassificationSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationRelatesToSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationRelatesToTargetSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationStatusDateSurrogate
-import com.google.fhir.model.r4b.surrogates.CitationSummarySurrogate
-import com.google.fhir.model.r4b.surrogates.CitationSurrogate
+import dev.ohs.fhir.model.r4b.Citation
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactAbstractSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactClassificationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactClassificationWhoClassifiedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipEntryAffiliationInfoSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipEntryContributionInstanceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipEntrySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipSummarySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactContributorshipSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactPartSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactPublicationFormPeriodicReleaseDateOfPublicationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactPublicationFormPeriodicReleaseSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactPublicationFormPublishedInSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactPublicationFormSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactRelatesToSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactRelatesToTargetSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactStatusDateSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactTitleSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactVersionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationCitedArtifactWebLocationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationClassificationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationRelatesToSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationRelatesToTargetSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationStatusDateSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationSummarySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.CitationSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

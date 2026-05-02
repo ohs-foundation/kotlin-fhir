@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,30 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.TestScriptDestinationSerializer
-import com.google.fhir.model.r5.serializers.TestScriptFixtureSerializer
-import com.google.fhir.model.r5.serializers.TestScriptMetadataCapabilitySerializer
-import com.google.fhir.model.r5.serializers.TestScriptMetadataLinkSerializer
-import com.google.fhir.model.r5.serializers.TestScriptMetadataSerializer
-import com.google.fhir.model.r5.serializers.TestScriptOriginSerializer
-import com.google.fhir.model.r5.serializers.TestScriptScopeSerializer
-import com.google.fhir.model.r5.serializers.TestScriptSerializer
-import com.google.fhir.model.r5.serializers.TestScriptSetupActionAssertRequirementLinkSerializer
-import com.google.fhir.model.r5.serializers.TestScriptSetupActionAssertRequirementSerializer
-import com.google.fhir.model.r5.serializers.TestScriptSetupActionAssertSerializer
-import com.google.fhir.model.r5.serializers.TestScriptSetupActionOperationRequestHeaderSerializer
-import com.google.fhir.model.r5.serializers.TestScriptSetupActionOperationSerializer
-import com.google.fhir.model.r5.serializers.TestScriptSetupActionSerializer
-import com.google.fhir.model.r5.serializers.TestScriptSetupSerializer
-import com.google.fhir.model.r5.serializers.TestScriptTeardownActionSerializer
-import com.google.fhir.model.r5.serializers.TestScriptTeardownSerializer
-import com.google.fhir.model.r5.serializers.TestScriptTestActionSerializer
-import com.google.fhir.model.r5.serializers.TestScriptTestSerializer
-import com.google.fhir.model.r5.serializers.TestScriptVariableSerializer
-import com.google.fhir.model.r5.serializers.TestScriptVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.TestScriptDestinationSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptFixtureSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptMetadataCapabilitySerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptMetadataLinkSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptMetadataSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptOriginSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptScopeSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionAssertRequirementLinkSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionAssertRequirementSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionAssertSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionOperationRequestHeaderSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionOperationSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptSetupSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptTeardownActionSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptTeardownSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptTestActionSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptTestSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptVariableSerializer
+import dev.ohs.fhir.model.r5.serializers.TestScriptVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -2816,15 +2816,14 @@ public data class TestScript(
 
             public fun asCanonical(): Canonical? = this as? Canonical
 
-            public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : Link
+            public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Link
 
-            public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) :
-              Link
+            public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Link
 
             public companion object {
               internal fun from(
-                uriValue: com.google.fhir.model.r5.Uri?,
-                canonicalValue: com.google.fhir.model.r5.Canonical?,
+                uriValue: dev.ohs.fhir.model.r5.Uri?,
+                canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
               ): Link? {
                 if (uriValue != null) return Uri(uriValue)
                 if (canonicalValue != null) return Canonical(canonicalValue)
@@ -3824,16 +3823,14 @@ public data class TestScript(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)

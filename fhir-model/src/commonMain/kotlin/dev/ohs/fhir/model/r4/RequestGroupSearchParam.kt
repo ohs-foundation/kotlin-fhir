@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: RequestGroup): List<T>
 
-  public data object Author : RequestGroupSearchParam<Any>() {
+  public data object Author : RequestGroupSearchParam<Reference>() {
     public override val paramName: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -38,10 +38,11 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Practitioner", "Device", "PractitionerRole")
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Reference> =
+      listOfNotNull(resource.author)
   }
 
-  public data object Authored : RequestGroupSearchParam<Any>() {
+  public data object Authored : RequestGroupSearchParam<DateTime>() {
     public override val paramName: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -50,10 +51,11 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<DateTime> =
+      listOfNotNull(resource.authoredOn)
   }
 
-  public data object Code : RequestGroupSearchParam<Any>() {
+  public data object Code : RequestGroupSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,10 +64,11 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
-  public data object Encounter : RequestGroupSearchParam<Any>() {
+  public data object Encounter : RequestGroupSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,10 +77,11 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object GroupIdentifier : RequestGroupSearchParam<Any>() {
+  public data object GroupIdentifier : RequestGroupSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +90,11 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<dev.ohs.fhir.model.r4.Identifier> =
+      listOfNotNull(resource.groupIdentifier)
   }
 
-  public data object Identifier : RequestGroupSearchParam<Any>() {
+  public data object Identifier : RequestGroupSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,10 +103,11 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.identifier
   }
 
-  public data object InstantiatesCanonical : RequestGroupSearchParam<Any>() {
+  public data object InstantiatesCanonical : RequestGroupSearchParam<Canonical>() {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -110,10 +116,11 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Canonical> =
+      resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : RequestGroupSearchParam<Any>() {
+  public data object InstantiatesUri : RequestGroupSearchParam<Uri>() {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -122,7 +129,7 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Uri> = resource.instantiatesUri
   }
 
   public data object Intent : RequestGroupSearchParam<Any>() {
@@ -134,10 +141,10 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Any> = listOf(resource.intent)
   }
 
-  public data object Participant : RequestGroupSearchParam<Any>() {
+  public data object Participant : RequestGroupSearchParam<Reference>() {
     public override val paramName: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -147,10 +154,11 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Practitioner", "Device", "Patient", "PractitionerRole", "RelatedPerson")
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Reference> =
+      resource.action.flatMap { it.participant }
   }
 
-  public data object Patient : RequestGroupSearchParam<Any>() {
+  public data object Patient : RequestGroupSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -159,7 +167,10 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
   public data object Priority : RequestGroupSearchParam<Any>() {
@@ -171,7 +182,8 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Any> =
+      listOfNotNull(resource.priority)
   }
 
   public data object Status : RequestGroupSearchParam<Any>() {
@@ -183,10 +195,10 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : RequestGroupSearchParam<Any>() {
+  public data object Subject : RequestGroupSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -195,7 +207,8 @@ public sealed class RequestGroupSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Group", "Patient")
 
-    public override fun extract(resource: RequestGroup): List<Any> = emptyList()
+    public override fun extract(resource: RequestGroup): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
   public companion object {

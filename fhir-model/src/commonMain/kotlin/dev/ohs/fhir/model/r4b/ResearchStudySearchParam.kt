@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,160 +28,165 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: ResearchStudy): List<T>
 
-  public data object Category : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "category"
+  public data object Category : ResearchStudySearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ResearchStudy.category"
+    public override val expression: kotlin.String = "ResearchStudy.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.category
   }
 
-  public data object Date : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : ResearchStudySearchParam<Period>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "ResearchStudy.period"
+    public override val expression: kotlin.String = "ResearchStudy.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<Period> =
+      listOfNotNull(resource.period)
   }
 
-  public data object Focus : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "focus"
+  public data object Focus : ResearchStudySearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ResearchStudy.focus"
+    public override val expression: kotlin.String = "ResearchStudy.focus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.focus
   }
 
-  public data object Identifier : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : ResearchStudySearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ResearchStudy.identifier"
+    public override val expression: kotlin.String = "ResearchStudy.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<dev.ohs.fhir.model.r4b.Identifier> =
+      resource.identifier
   }
 
-  public data object Keyword : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "keyword"
+  public data object Keyword : ResearchStudySearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "keyword"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ResearchStudy.keyword"
+    public override val expression: kotlin.String = "ResearchStudy.keyword"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.keyword
   }
 
-  public data object Location : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "location"
+  public data object Location : ResearchStudySearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ResearchStudy.location"
+    public override val expression: kotlin.String = "ResearchStudy.location"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.location
   }
 
-  public data object Partof : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "partof"
+  public data object Partof : ResearchStudySearchParam<Reference>() {
+    public override val paramName: kotlin.String = "partof"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ResearchStudy.partOf"
+    public override val expression: kotlin.String = "ResearchStudy.partOf"
 
-    public override val target: List<String> = listOf("ResearchStudy")
+    public override val target: List<kotlin.String> = listOf("ResearchStudy")
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<Reference> = resource.partOf
   }
 
-  public data object Principalinvestigator : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "principalinvestigator"
+  public data object Principalinvestigator : ResearchStudySearchParam<Reference>() {
+    public override val paramName: kotlin.String = "principalinvestigator"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ResearchStudy.principalInvestigator"
+    public override val expression: kotlin.String = "ResearchStudy.principalInvestigator"
 
-    public override val target: List<String> = listOf("Practitioner", "PractitionerRole")
+    public override val target: List<kotlin.String> = listOf("Practitioner", "PractitionerRole")
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<Reference> =
+      listOfNotNull(resource.principalInvestigator)
   }
 
-  public data object Protocol : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "protocol"
+  public data object Protocol : ResearchStudySearchParam<Reference>() {
+    public override val paramName: kotlin.String = "protocol"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ResearchStudy.protocol"
+    public override val expression: kotlin.String = "ResearchStudy.protocol"
 
-    public override val target: List<String> = listOf("PlanDefinition")
+    public override val target: List<kotlin.String> = listOf("PlanDefinition")
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<Reference> = resource.protocol
   }
 
-  public data object Site : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "site"
+  public data object Site : ResearchStudySearchParam<Reference>() {
+    public override val paramName: kotlin.String = "site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ResearchStudy.site"
+    public override val expression: kotlin.String = "ResearchStudy.site"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<kotlin.String> = listOf("Location")
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<Reference> = resource.site
   }
 
-  public data object Sponsor : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "sponsor"
+  public data object Sponsor : ResearchStudySearchParam<Reference>() {
+    public override val paramName: kotlin.String = "sponsor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "ResearchStudy.sponsor"
+    public override val expression: kotlin.String = "ResearchStudy.sponsor"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<Reference> =
+      listOfNotNull(resource.sponsor)
   }
 
   public data object Status : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "ResearchStudy.status"
+    public override val expression: kotlin.String = "ResearchStudy.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : ResearchStudySearchParam<Any>() {
-    public override val paramName: String = "title"
+  public data object Title : ResearchStudySearchParam<String>() {
+    public override val paramName: kotlin.String = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "ResearchStudy.title"
+    public override val expression: kotlin.String = "ResearchStudy.title"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: ResearchStudy): List<Any> = emptyList()
+    public override fun extract(resource: ResearchStudy): List<String> =
+      listOfNotNull(resource.title)
   }
 
   public companion object {

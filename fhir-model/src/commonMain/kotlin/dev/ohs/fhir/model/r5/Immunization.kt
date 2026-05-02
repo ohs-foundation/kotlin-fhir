@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ImmunizationOccurrenceSerializer
-import com.google.fhir.model.r5.serializers.ImmunizationPerformerSerializer
-import com.google.fhir.model.r5.serializers.ImmunizationProgramEligibilitySerializer
-import com.google.fhir.model.r5.serializers.ImmunizationProtocolAppliedSerializer
-import com.google.fhir.model.r5.serializers.ImmunizationReactionSerializer
-import com.google.fhir.model.r5.serializers.ImmunizationSerializer
+import dev.ohs.fhir.model.r5.serializers.ImmunizationOccurrenceSerializer
+import dev.ohs.fhir.model.r5.serializers.ImmunizationPerformerSerializer
+import dev.ohs.fhir.model.r5.serializers.ImmunizationProgramEligibilitySerializer
+import dev.ohs.fhir.model.r5.serializers.ImmunizationProtocolAppliedSerializer
+import dev.ohs.fhir.model.r5.serializers.ImmunizationReactionSerializer
+import dev.ohs.fhir.model.r5.serializers.ImmunizationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -842,14 +842,14 @@ public data class Immunization(
 
     public fun asString(): String? = this as? String
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) : Occurrence
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        stringValue: com.google.fhir.model.r5.String?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (stringValue != null) return String(stringValue)

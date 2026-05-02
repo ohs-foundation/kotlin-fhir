@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: RegulatedAuthorization): List<T>
 
-  public data object Case : RegulatedAuthorizationSearchParam<Any>() {
+  public data object Case : RegulatedAuthorizationSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "case"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +37,12 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RegulatedAuthorization): List<Any> = emptyList()
+    public override fun extract(
+      resource: RegulatedAuthorization
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = listOfNotNull(resource.case?.identifier)
   }
 
-  public data object CaseType : RegulatedAuthorizationSearchParam<Any>() {
+  public data object CaseType : RegulatedAuthorizationSearchParam<CodeableConcept>() {
     public override val paramName: String = "case-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +51,11 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RegulatedAuthorization): List<Any> = emptyList()
+    public override fun extract(resource: RegulatedAuthorization): List<CodeableConcept> =
+      listOfNotNull(resource.case?.type)
   }
 
-  public data object Holder : RegulatedAuthorizationSearchParam<Any>() {
+  public data object Holder : RegulatedAuthorizationSearchParam<Reference>() {
     public override val paramName: String = "holder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -62,10 +64,12 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization")
 
-    public override fun extract(resource: RegulatedAuthorization): List<Any> = emptyList()
+    public override fun extract(resource: RegulatedAuthorization): List<Reference> =
+      listOfNotNull(resource.holder)
   }
 
-  public data object Identifier : RegulatedAuthorizationSearchParam<Any>() {
+  public data object Identifier :
+    RegulatedAuthorizationSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,10 +78,12 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RegulatedAuthorization): List<Any> = emptyList()
+    public override fun extract(
+      resource: RegulatedAuthorization
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Region : RegulatedAuthorizationSearchParam<Any>() {
+  public data object Region : RegulatedAuthorizationSearchParam<CodeableConcept>() {
     public override val paramName: String = "region"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +92,11 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RegulatedAuthorization): List<Any> = emptyList()
+    public override fun extract(resource: RegulatedAuthorization): List<CodeableConcept> =
+      resource.region
   }
 
-  public data object Status : RegulatedAuthorizationSearchParam<Any>() {
+  public data object Status : RegulatedAuthorizationSearchParam<CodeableConcept>() {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,10 +105,11 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RegulatedAuthorization): List<Any> = emptyList()
+    public override fun extract(resource: RegulatedAuthorization): List<CodeableConcept> =
+      listOfNotNull(resource.status)
   }
 
-  public data object Subject : RegulatedAuthorizationSearchParam<Any>() {
+  public data object Subject : RegulatedAuthorizationSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -125,7 +133,8 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
         "Location",
       )
 
-    public override fun extract(resource: RegulatedAuthorization): List<Any> = emptyList()
+    public override fun extract(resource: RegulatedAuthorization): List<Reference> =
+      resource.subject
   }
 
   public companion object {

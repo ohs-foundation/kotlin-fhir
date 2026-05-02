@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,25 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.ImplementationGuide
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideDefinitionGroupingSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideDefinitionPageNameSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideDefinitionPageSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideDefinitionParameterSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideDefinitionResourceExampleSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideDefinitionResourceSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideDefinitionSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideDefinitionTemplateSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideDependsOnSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideGlobalSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideManifestPageSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideManifestResourceExampleSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideManifestResourceSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideManifestSurrogate
-import com.google.fhir.model.r4b.surrogates.ImplementationGuideSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.ImplementationGuide
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideDefinitionGroupingSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideDefinitionPageNameSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideDefinitionPageSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideDefinitionParameterSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideDefinitionResourceExampleSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideDefinitionResourceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideDefinitionTemplateSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideDependsOnSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideGlobalSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideManifestPageSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideManifestResourceExampleSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideManifestResourceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideManifestSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ImplementationGuideSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.Patient
-import com.google.fhir.model.r5.surrogates.PatientCommunicationSurrogate
-import com.google.fhir.model.r5.surrogates.PatientContactSurrogate
-import com.google.fhir.model.r5.surrogates.PatientDeceasedSurrogate
-import com.google.fhir.model.r5.surrogates.PatientLinkSurrogate
-import com.google.fhir.model.r5.surrogates.PatientMultipleBirthSurrogate
-import com.google.fhir.model.r5.surrogates.PatientSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.Patient
+import dev.ohs.fhir.model.r4b.surrogates.PatientCommunicationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PatientContactSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PatientDeceasedSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PatientLinkSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PatientMultipleBirthSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PatientSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

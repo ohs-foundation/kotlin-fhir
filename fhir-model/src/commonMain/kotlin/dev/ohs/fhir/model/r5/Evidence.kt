@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.EvidenceCertaintySerializer
-import com.google.fhir.model.r5.serializers.EvidenceCiteAsSerializer
-import com.google.fhir.model.r5.serializers.EvidenceSerializer
-import com.google.fhir.model.r5.serializers.EvidenceStatisticAttributeEstimateSerializer
-import com.google.fhir.model.r5.serializers.EvidenceStatisticModelCharacteristicSerializer
-import com.google.fhir.model.r5.serializers.EvidenceStatisticModelCharacteristicVariableSerializer
-import com.google.fhir.model.r5.serializers.EvidenceStatisticSampleSizeSerializer
-import com.google.fhir.model.r5.serializers.EvidenceStatisticSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVariableDefinitionSerializer
-import com.google.fhir.model.r5.serializers.EvidenceVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.EvidenceCertaintySerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceCiteAsSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticAttributeEstimateSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticModelCharacteristicSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticModelCharacteristicVariableSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticSampleSizeSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVariableDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.EvidenceVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1501,16 +1501,14 @@ public data class Evidence(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)
@@ -1525,14 +1523,14 @@ public data class Evidence(
 
     public fun asMarkdown(): Markdown? = this as? Markdown
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : CiteAs
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : CiteAs
 
-    public data class Markdown(public val `value`: com.google.fhir.model.r5.Markdown) : CiteAs
+    public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : CiteAs
 
     public companion object {
       internal fun from(
-        referenceValue: com.google.fhir.model.r5.Reference?,
-        markdownValue: com.google.fhir.model.r5.Markdown?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
+        markdownValue: dev.ohs.fhir.model.r5.Markdown?,
       ): CiteAs? {
         if (referenceValue != null) return Reference(referenceValue)
         if (markdownValue != null) return Markdown(markdownValue)

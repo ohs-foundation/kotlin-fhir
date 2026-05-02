@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.DeviceUsageAdherenceSerializer
-import com.google.fhir.model.r5.serializers.DeviceUsageSerializer
-import com.google.fhir.model.r5.serializers.DeviceUsageTimingSerializer
+import dev.ohs.fhir.model.r5.serializers.DeviceUsageAdherenceSerializer
+import dev.ohs.fhir.model.r5.serializers.DeviceUsageSerializer
+import dev.ohs.fhir.model.r5.serializers.DeviceUsageTimingSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -353,20 +353,18 @@ public data class DeviceUsage(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) :
-      DeviceUsage.Timing
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : DeviceUsage.Timing
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) :
-      DeviceUsage.Timing
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : DeviceUsage.Timing
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) :
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
       DeviceUsage.Timing
 
     public companion object {
       internal fun from(
-        timingValue: com.google.fhir.model.r5.Timing?,
-        periodValue: com.google.fhir.model.r5.Period?,
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
+        timingValue: dev.ohs.fhir.model.r5.Timing?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
       ): DeviceUsage.Timing? {
         if (timingValue != null) return Timing(timingValue)
         if (periodValue != null) return Period(periodValue)

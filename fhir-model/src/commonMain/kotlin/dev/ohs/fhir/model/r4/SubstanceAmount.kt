@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.SubstanceAmountAmountSerializer
-import com.google.fhir.model.r4.serializers.SubstanceAmountReferenceRangeSerializer
-import com.google.fhir.model.r4.serializers.SubstanceAmountSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceAmountAmountSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceAmountReferenceRangeSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceAmountSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -187,17 +187,17 @@ public data class SubstanceAmount(
 
     public fun asString(): String? = this as? String
 
-    public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) : Amount
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Amount
 
-    public data class Range(public val `value`: com.google.fhir.model.r4.Range) : Amount
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Amount
 
-    public data class String(public val `value`: com.google.fhir.model.r4.String) : Amount
+    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Amount
 
     public companion object {
       internal fun from(
-        quantityValue: com.google.fhir.model.r4.Quantity?,
-        rangeValue: com.google.fhir.model.r4.Range?,
-        stringValue: com.google.fhir.model.r4.String?,
+        quantityValue: dev.ohs.fhir.model.r4.Quantity?,
+        rangeValue: dev.ohs.fhir.model.r4.Range?,
+        stringValue: dev.ohs.fhir.model.r4.String?,
       ): Amount? {
         if (quantityValue != null) return Quantity(quantityValue)
         if (rangeValue != null) return Range(rangeValue)

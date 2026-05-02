@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,8 @@ public sealed class MedicinalProductPharmaceuticalSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: MedicinalProductPharmaceutical): List<T>
 
-  public data object Identifier : MedicinalProductPharmaceuticalSearchParam<Any>() {
+  public data object Identifier :
+    MedicinalProductPharmaceuticalSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,12 @@ public sealed class MedicinalProductPharmaceuticalSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: MedicinalProductPharmaceutical): List<Any> = emptyList()
+    public override fun extract(
+      resource: MedicinalProductPharmaceutical
+    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Route : MedicinalProductPharmaceuticalSearchParam<Any>() {
+  public data object Route : MedicinalProductPharmaceuticalSearchParam<CodeableConcept>() {
     public override val paramName: String = "route"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -51,10 +53,11 @@ public sealed class MedicinalProductPharmaceuticalSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: MedicinalProductPharmaceutical): List<Any> = emptyList()
+    public override fun extract(resource: MedicinalProductPharmaceutical): List<CodeableConcept> =
+      resource.routeOfAdministration.map { it.code }
   }
 
-  public data object TargetSpecies : MedicinalProductPharmaceuticalSearchParam<Any>() {
+  public data object TargetSpecies : MedicinalProductPharmaceuticalSearchParam<CodeableConcept>() {
     public override val paramName: String = "target-species"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -64,7 +67,8 @@ public sealed class MedicinalProductPharmaceuticalSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: MedicinalProductPharmaceutical): List<Any> = emptyList()
+    public override fun extract(resource: MedicinalProductPharmaceutical): List<CodeableConcept> =
+      resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }
   }
 
   public companion object {

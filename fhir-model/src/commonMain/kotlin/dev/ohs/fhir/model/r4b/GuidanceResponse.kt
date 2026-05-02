@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.GuidanceResponseModuleSerializer
-import com.google.fhir.model.r4b.serializers.GuidanceResponseSerializer
+import dev.ohs.fhir.model.r4b.serializers.GuidanceResponseModuleSerializer
+import dev.ohs.fhir.model.r4b.serializers.GuidanceResponseSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -236,19 +236,18 @@ public data class GuidanceResponse(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Module
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Module
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) : Module
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Module
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Module
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      Module
 
     public companion object {
       internal fun from(
-        uriValue: com.google.fhir.model.r4b.Uri?,
-        canonicalValue: com.google.fhir.model.r4b.Canonical?,
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
+        uriValue: dev.ohs.fhir.model.r4b.Uri?,
+        canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
       ): Module? {
         if (uriValue != null) return Uri(uriValue)
         if (canonicalValue != null) return Canonical(canonicalValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,162 +28,181 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: MedicationKnowledge): List<T>
 
-  public data object Classification : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "classification"
+  public data object Classification : MedicationKnowledgeSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "classification"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "MedicationKnowledge.medicineClassification.classification"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
+      resource.medicineClassification.flatMap { it.classification }
   }
 
-  public data object ClassificationType : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "classification-type"
+  public data object ClassificationType : MedicationKnowledgeSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "classification-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicationKnowledge.medicineClassification.type"
+    public override val expression: kotlin.String =
+      "MedicationKnowledge.medicineClassification.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
+      resource.medicineClassification.map { it.type }
   }
 
-  public data object Code : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "code"
+  public data object Code : MedicationKnowledgeSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicationKnowledge.code"
+    public override val expression: kotlin.String = "MedicationKnowledge.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
-  public data object Doseform : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "doseform"
+  public data object Doseform : MedicationKnowledgeSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "doseform"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicationKnowledge.doseForm"
+    public override val expression: kotlin.String = "MedicationKnowledge.doseForm"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
+      listOfNotNull(resource.doseForm)
   }
 
-  public data object Ingredient : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "ingredient"
+  public data object Ingredient : MedicationKnowledgeSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "(MedicationKnowledge.ingredient.item as Reference)"
+    public override val expression: kotlin.String =
+      "(MedicationKnowledge.ingredient.item as Reference)"
 
-    public override val target: List<String> = listOf("Substance")
+    public override val target: List<kotlin.String> = listOf("Substance")
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<Reference> =
+      resource.ingredient.mapNotNull {
+        (it.item as? MedicationKnowledge.Ingredient.Item.Reference)?.value
+      }
   }
 
-  public data object IngredientCode : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "ingredient-code"
+  public data object IngredientCode : MedicationKnowledgeSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "ingredient-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "(MedicationKnowledge.ingredient.item as CodeableConcept)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
+      resource.ingredient.mapNotNull {
+        (it.item as? MedicationKnowledge.Ingredient.Item.CodeableConcept)?.value
+      }
   }
 
-  public data object Manufacturer : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "manufacturer"
+  public data object Manufacturer : MedicationKnowledgeSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "manufacturer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "MedicationKnowledge.manufacturer"
+    public override val expression: kotlin.String = "MedicationKnowledge.manufacturer"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<Reference> =
+      listOfNotNull(resource.manufacturer)
   }
 
-  public data object MonitoringProgramName : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "monitoring-program-name"
+  public data object MonitoringProgramName : MedicationKnowledgeSearchParam<String>() {
+    public override val paramName: kotlin.String = "monitoring-program-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicationKnowledge.monitoringProgram.name"
+    public override val expression: kotlin.String = "MedicationKnowledge.monitoringProgram.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<String> =
+      resource.monitoringProgram.mapNotNull { it.name }
   }
 
-  public data object MonitoringProgramType : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "monitoring-program-type"
+  public data object MonitoringProgramType : MedicationKnowledgeSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "monitoring-program-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicationKnowledge.monitoringProgram.type"
+    public override val expression: kotlin.String = "MedicationKnowledge.monitoringProgram.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
+      resource.monitoringProgram.mapNotNull { it.type }
   }
 
-  public data object Monograph : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "monograph"
+  public data object Monograph : MedicationKnowledgeSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "monograph"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "MedicationKnowledge.monograph.source"
+    public override val expression: kotlin.String = "MedicationKnowledge.monograph.source"
 
-    public override val target: List<String> = listOf("Media", "DocumentReference")
+    public override val target: List<kotlin.String> = listOf("Media", "DocumentReference")
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<Reference> =
+      resource.monograph.mapNotNull { it.source }
   }
 
-  public data object MonographType : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "monograph-type"
+  public data object MonographType : MedicationKnowledgeSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "monograph-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicationKnowledge.monograph.type"
+    public override val expression: kotlin.String = "MedicationKnowledge.monograph.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
+      resource.monograph.mapNotNull { it.type }
   }
 
-  public data object SourceCost : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "source-cost"
+  public data object SourceCost : MedicationKnowledgeSearchParam<String>() {
+    public override val paramName: kotlin.String = "source-cost"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicationKnowledge.cost.source"
+    public override val expression: kotlin.String = "MedicationKnowledge.cost.source"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<String> =
+      resource.cost.mapNotNull { it.source }
   }
 
   public data object Status : MedicationKnowledgeSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "MedicationKnowledge.status"
+    public override val expression: kotlin.String = "MedicationKnowledge.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
+    public override fun extract(resource: MedicationKnowledge): List<Any> =
+      listOfNotNull(resource.status)
   }
 
   public companion object {

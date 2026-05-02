@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,101 +28,111 @@ public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: PaymentReconciliation): List<T>
 
-  public data object Created : PaymentReconciliationSearchParam<Any>() {
-    public override val paramName: String = "created"
+  public data object Created : PaymentReconciliationSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "PaymentReconciliation.created"
+    public override val expression: kotlin.String = "PaymentReconciliation.created"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: PaymentReconciliation): List<Any> = emptyList()
+    public override fun extract(resource: PaymentReconciliation): List<DateTime> =
+      listOf(resource.created)
   }
 
-  public data object Disposition : PaymentReconciliationSearchParam<Any>() {
-    public override val paramName: String = "disposition"
+  public data object Disposition : PaymentReconciliationSearchParam<String>() {
+    public override val paramName: kotlin.String = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "PaymentReconciliation.disposition"
+    public override val expression: kotlin.String = "PaymentReconciliation.disposition"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: PaymentReconciliation): List<Any> = emptyList()
+    public override fun extract(resource: PaymentReconciliation): List<String> =
+      listOfNotNull(resource.disposition)
   }
 
-  public data object Identifier : PaymentReconciliationSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier :
+    PaymentReconciliationSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "PaymentReconciliation.identifier"
+    public override val expression: kotlin.String = "PaymentReconciliation.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: PaymentReconciliation): List<Any> = emptyList()
+    public override fun extract(
+      resource: PaymentReconciliation
+    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
   public data object Outcome : PaymentReconciliationSearchParam<Any>() {
-    public override val paramName: String = "outcome"
+    public override val paramName: kotlin.String = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "PaymentReconciliation.outcome"
+    public override val expression: kotlin.String = "PaymentReconciliation.outcome"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: PaymentReconciliation): List<Any> = emptyList()
+    public override fun extract(resource: PaymentReconciliation): List<Any> =
+      listOfNotNull(resource.outcome)
   }
 
-  public data object PaymentIssuer : PaymentReconciliationSearchParam<Any>() {
-    public override val paramName: String = "payment-issuer"
+  public data object PaymentIssuer : PaymentReconciliationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "payment-issuer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "PaymentReconciliation.paymentIssuer"
+    public override val expression: kotlin.String = "PaymentReconciliation.paymentIssuer"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: PaymentReconciliation): List<Any> = emptyList()
+    public override fun extract(resource: PaymentReconciliation): List<Reference> =
+      listOfNotNull(resource.paymentIssuer)
   }
 
-  public data object Request : PaymentReconciliationSearchParam<Any>() {
-    public override val paramName: String = "request"
+  public data object Request : PaymentReconciliationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "PaymentReconciliation.request"
+    public override val expression: kotlin.String = "PaymentReconciliation.request"
 
-    public override val target: List<String> = listOf("Task")
+    public override val target: List<kotlin.String> = listOf("Task")
 
-    public override fun extract(resource: PaymentReconciliation): List<Any> = emptyList()
+    public override fun extract(resource: PaymentReconciliation): List<Reference> =
+      listOfNotNull(resource.request)
   }
 
-  public data object Requestor : PaymentReconciliationSearchParam<Any>() {
-    public override val paramName: String = "requestor"
+  public data object Requestor : PaymentReconciliationSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "requestor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "PaymentReconciliation.requestor"
+    public override val expression: kotlin.String = "PaymentReconciliation.requestor"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Practitioner", "Organization", "PractitionerRole")
 
-    public override fun extract(resource: PaymentReconciliation): List<Any> = emptyList()
+    public override fun extract(resource: PaymentReconciliation): List<Reference> =
+      listOfNotNull(resource.requestor)
   }
 
   public data object Status : PaymentReconciliationSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "PaymentReconciliation.status"
+    public override val expression: kotlin.String = "PaymentReconciliation.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: PaymentReconciliation): List<Any> = emptyList()
+    public override fun extract(resource: PaymentReconciliation): List<Any> =
+      listOf(resource.status)
   }
 
   public companion object {

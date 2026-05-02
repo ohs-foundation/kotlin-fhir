@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,21 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.StructureMapConstSerializer
-import com.google.fhir.model.r5.serializers.StructureMapGroupInputSerializer
-import com.google.fhir.model.r5.serializers.StructureMapGroupRuleDependentSerializer
-import com.google.fhir.model.r5.serializers.StructureMapGroupRuleSerializer
-import com.google.fhir.model.r5.serializers.StructureMapGroupRuleSourceSerializer
-import com.google.fhir.model.r5.serializers.StructureMapGroupRuleTargetParameterSerializer
-import com.google.fhir.model.r5.serializers.StructureMapGroupRuleTargetParameterValueSerializer
-import com.google.fhir.model.r5.serializers.StructureMapGroupRuleTargetSerializer
-import com.google.fhir.model.r5.serializers.StructureMapGroupSerializer
-import com.google.fhir.model.r5.serializers.StructureMapSerializer
-import com.google.fhir.model.r5.serializers.StructureMapStructureSerializer
-import com.google.fhir.model.r5.serializers.StructureMapVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.StructureMapConstSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapGroupInputSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleDependentSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleSourceSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleTargetParameterSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleTargetParameterValueSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleTargetSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapGroupSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapStructureSerializer
+import dev.ohs.fhir.model.r5.serializers.StructureMapVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1255,33 +1255,32 @@ public data class StructureMap(
 
             public fun asDateTime(): DateTime? = this as? DateTime
 
-            public data class Id(public val `value`: com.google.fhir.model.r5.Id) : Value
+            public data class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
 
-            public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+            public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-            public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+            public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-            public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Value
+            public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-            public data class Decimal(public val `value`: com.google.fhir.model.r5.Decimal) : Value
+            public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
 
-            public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Value
+            public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-            public data class Time(public val `value`: com.google.fhir.model.r5.Time) : Value
+            public data class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
 
-            public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) :
-              Value
+            public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
             public companion object {
               internal fun from(
-                idValue: com.google.fhir.model.r5.Id?,
-                stringValue: com.google.fhir.model.r5.String?,
-                booleanValue: com.google.fhir.model.r5.Boolean?,
-                integerValue: com.google.fhir.model.r5.Integer?,
-                decimalValue: com.google.fhir.model.r5.Decimal?,
-                dateValue: com.google.fhir.model.r5.Date?,
-                timeValue: com.google.fhir.model.r5.Time?,
-                dateTimeValue: com.google.fhir.model.r5.DateTime?,
+                idValue: dev.ohs.fhir.model.r5.Id?,
+                stringValue: dev.ohs.fhir.model.r5.String?,
+                booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+                integerValue: dev.ohs.fhir.model.r5.Integer?,
+                decimalValue: dev.ohs.fhir.model.r5.Decimal?,
+                dateValue: dev.ohs.fhir.model.r5.Date?,
+                timeValue: dev.ohs.fhir.model.r5.Time?,
+                dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
               ): Value? {
                 if (idValue != null) return Id(idValue)
                 if (stringValue != null) return String(stringValue)
@@ -1707,16 +1706,14 @@ public data class StructureMap(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)

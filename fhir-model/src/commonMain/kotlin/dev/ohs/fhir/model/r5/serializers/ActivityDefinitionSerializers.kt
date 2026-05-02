@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.ActivityDefinition
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.ActivityDefinitionAsNeededSurrogate
-import com.google.fhir.model.r5.surrogates.ActivityDefinitionDynamicValueSurrogate
-import com.google.fhir.model.r5.surrogates.ActivityDefinitionParticipantSurrogate
-import com.google.fhir.model.r5.surrogates.ActivityDefinitionProductSurrogate
-import com.google.fhir.model.r5.surrogates.ActivityDefinitionSubjectSurrogate
-import com.google.fhir.model.r5.surrogates.ActivityDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.ActivityDefinitionTimingSurrogate
-import com.google.fhir.model.r5.surrogates.ActivityDefinitionVersionAlgorithmSurrogate
+import dev.ohs.fhir.model.r5.ActivityDefinition
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.surrogates.ActivityDefinitionAsNeededSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ActivityDefinitionDynamicValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ActivityDefinitionParticipantSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ActivityDefinitionProductSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ActivityDefinitionSubjectSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ActivityDefinitionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ActivityDefinitionTimingSurrogate
+import dev.ohs.fhir.model.r5.surrogates.ActivityDefinitionVersionAlgorithmSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

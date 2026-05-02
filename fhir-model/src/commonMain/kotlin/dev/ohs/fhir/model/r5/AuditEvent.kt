@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.AuditEventAgentNetworkSerializer
-import com.google.fhir.model.r5.serializers.AuditEventAgentSerializer
-import com.google.fhir.model.r5.serializers.AuditEventEntityDetailSerializer
-import com.google.fhir.model.r5.serializers.AuditEventEntityDetailValueSerializer
-import com.google.fhir.model.r5.serializers.AuditEventEntitySerializer
-import com.google.fhir.model.r5.serializers.AuditEventOccurredSerializer
-import com.google.fhir.model.r5.serializers.AuditEventOutcomeSerializer
-import com.google.fhir.model.r5.serializers.AuditEventSerializer
-import com.google.fhir.model.r5.serializers.AuditEventSourceSerializer
+import dev.ohs.fhir.model.r5.serializers.AuditEventAgentNetworkSerializer
+import dev.ohs.fhir.model.r5.serializers.AuditEventAgentSerializer
+import dev.ohs.fhir.model.r5.serializers.AuditEventEntityDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.AuditEventEntityDetailValueSerializer
+import dev.ohs.fhir.model.r5.serializers.AuditEventEntitySerializer
+import dev.ohs.fhir.model.r5.serializers.AuditEventOccurredSerializer
+import dev.ohs.fhir.model.r5.serializers.AuditEventOutcomeSerializer
+import dev.ohs.fhir.model.r5.serializers.AuditEventSerializer
+import dev.ohs.fhir.model.r5.serializers.AuditEventSourceSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -521,17 +521,17 @@ public data class AuditEvent(
 
       public fun asString(): String? = this as? String
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Network
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Network
 
-      public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : Network
+      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Network
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Network
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Network
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          uriValue: com.google.fhir.model.r5.Uri?,
-          stringValue: com.google.fhir.model.r5.String?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          uriValue: dev.ohs.fhir.model.r5.Uri?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
         ): Network? {
           if (referenceValue != null) return Reference(referenceValue)
           if (uriValue != null) return Uri(uriValue)
@@ -973,44 +973,44 @@ public data class AuditEvent(
 
         public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r5.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-        public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Value
+        public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-        public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-        public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Value
+        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-        public data class Time(public val `value`: com.google.fhir.model.r5.Time) : Value
+        public data class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
 
-        public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Value
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-        public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Value
+        public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
 
-        public data class Base64Binary(public val `value`: com.google.fhir.model.r5.Base64Binary) :
+        public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
           Value
 
         public companion object {
           internal fun from(
-            quantityValue: com.google.fhir.model.r5.Quantity?,
-            codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-            stringValue: com.google.fhir.model.r5.String?,
-            booleanValue: com.google.fhir.model.r5.Boolean?,
-            integerValue: com.google.fhir.model.r5.Integer?,
-            rangeValue: com.google.fhir.model.r5.Range?,
-            ratioValue: com.google.fhir.model.r5.Ratio?,
-            timeValue: com.google.fhir.model.r5.Time?,
-            dateTimeValue: com.google.fhir.model.r5.DateTime?,
-            periodValue: com.google.fhir.model.r5.Period?,
-            base64BinaryValue: com.google.fhir.model.r5.Base64Binary?,
+            quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+            codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+            stringValue: dev.ohs.fhir.model.r5.String?,
+            booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+            integerValue: dev.ohs.fhir.model.r5.Integer?,
+            rangeValue: dev.ohs.fhir.model.r5.Range?,
+            ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+            timeValue: dev.ohs.fhir.model.r5.Time?,
+            dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+            periodValue: dev.ohs.fhir.model.r5.Period?,
+            base64BinaryValue: dev.ohs.fhir.model.r5.Base64Binary?,
           ): Value? {
             if (quantityValue != null) return Quantity(quantityValue)
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -1201,14 +1201,14 @@ public data class AuditEvent(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Occurred
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurred
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Occurred
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurred
 
     public companion object {
       internal fun from(
-        periodValue: com.google.fhir.model.r5.Period?,
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
       ): Occurred? {
         if (periodValue != null) return Period(periodValue)
         if (dateTimeValue != null) return DateTime(dateTimeValue)

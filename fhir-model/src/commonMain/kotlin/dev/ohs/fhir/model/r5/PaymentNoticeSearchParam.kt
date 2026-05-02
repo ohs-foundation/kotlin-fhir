@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class PaymentNoticeSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: PaymentNotice): List<T>
 
-  public data object Created : PaymentNoticeSearchParam<Any>() {
+  public data object Created : PaymentNoticeSearchParam<DateTime>() {
     public override val paramName: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -38,10 +38,10 @@ public sealed class PaymentNoticeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: PaymentNotice): List<Any> = emptyList()
+    public override fun extract(resource: PaymentNotice): List<DateTime> = listOf(resource.created)
   }
 
-  public data object Identifier : PaymentNoticeSearchParam<Any>() {
+  public data object Identifier : PaymentNoticeSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +50,11 @@ public sealed class PaymentNoticeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: PaymentNotice): List<Any> = emptyList()
+    public override fun extract(resource: PaymentNotice): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object PaymentStatus : PaymentNoticeSearchParam<Any>() {
+  public data object PaymentStatus : PaymentNoticeSearchParam<CodeableConcept>() {
     public override val paramName: String = "payment-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,10 +63,11 @@ public sealed class PaymentNoticeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: PaymentNotice): List<Any> = emptyList()
+    public override fun extract(resource: PaymentNotice): List<CodeableConcept> =
+      listOfNotNull(resource.paymentStatus)
   }
 
-  public data object Reporter : PaymentNoticeSearchParam<Any>() {
+  public data object Reporter : PaymentNoticeSearchParam<Reference>() {
     public override val paramName: String = "reporter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -75,10 +77,11 @@ public sealed class PaymentNoticeSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Organization", "PractitionerRole", "Practitioner")
 
-    public override fun extract(resource: PaymentNotice): List<Any> = emptyList()
+    public override fun extract(resource: PaymentNotice): List<Reference> =
+      listOfNotNull(resource.reporter)
   }
 
-  public data object Request : PaymentNoticeSearchParam<Any>() {
+  public data object Request : PaymentNoticeSearchParam<Reference>() {
     public override val paramName: String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -247,10 +250,11 @@ public sealed class PaymentNoticeSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: PaymentNotice): List<Any> = emptyList()
+    public override fun extract(resource: PaymentNotice): List<Reference> =
+      listOfNotNull(resource.request)
   }
 
-  public data object Response : PaymentNoticeSearchParam<Any>() {
+  public data object Response : PaymentNoticeSearchParam<Reference>() {
     public override val paramName: String = "response"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -419,7 +423,8 @@ public sealed class PaymentNoticeSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: PaymentNotice): List<Any> = emptyList()
+    public override fun extract(resource: PaymentNotice): List<Reference> =
+      listOfNotNull(resource.response)
   }
 
   public data object Status : PaymentNoticeSearchParam<Any>() {
@@ -431,7 +436,7 @@ public sealed class PaymentNoticeSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: PaymentNotice): List<Any> = emptyList()
+    public override fun extract(resource: PaymentNotice): List<Any> = listOf(resource.status)
   }
 
   public companion object {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,27 +28,28 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: DocumentReference): List<T>
 
-  public data object Attester : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "attester"
+  public data object Attester : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "attester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.attester.party"
+    public override val expression: kotlin.String = "DocumentReference.attester.party"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Organization", "RelatedPerson", "PractitionerRole", "Practitioner", "Patient")
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> =
+      resource.attester.mapNotNull { it.party }
   }
 
-  public data object Author : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "author"
+  public data object Author : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.author"
+    public override val expression: kotlin.String = "DocumentReference.author"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Organization",
         "Device",
@@ -60,17 +60,17 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
         "Patient",
       )
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> = resource.author
   }
 
-  public data object BasedOn : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "based-on"
+  public data object BasedOn : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.basedOn"
+    public override val expression: kotlin.String = "DocumentReference.basedOn"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Claim",
         "RequestOrchestration",
@@ -90,149 +90,161 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
         "NutritionOrder",
       )
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> = resource.basedOn
   }
 
-  public data object Bodysite : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "bodysite"
+  public data object Bodysite : DocumentReferenceSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "bodysite"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.bodySite.concept"
+    public override val expression: kotlin.String = "DocumentReference.bodySite.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<CodeableConcept> =
+      resource.bodySite.mapNotNull { it.concept }
   }
 
-  public data object BodysiteReference : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "bodysite-reference"
+  public data object BodysiteReference : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "bodysite-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.bodySite.reference"
+    public override val expression: kotlin.String = "DocumentReference.bodySite.reference"
 
-    public override val target: List<String> = listOf("BodyStructure")
+    public override val target: List<kotlin.String> = listOf("BodyStructure")
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> =
+      resource.bodySite.mapNotNull { it.reference }
   }
 
-  public data object Category : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "category"
+  public data object Category : DocumentReferenceSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.category"
+    public override val expression: kotlin.String = "DocumentReference.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<CodeableConcept> =
+      resource.category
   }
 
   public data object Contenttype : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "contenttype"
+    public override val paramName: kotlin.String = "contenttype"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.content.attachment.contentType"
+    public override val expression: kotlin.String =
+      "DocumentReference.content.attachment.contentType"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Any> =
+      resource.content.map { it.attachment }.mapNotNull { it.contentType }
   }
 
-  public data object Context : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "context"
+  public data object Context : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.context"
+    public override val expression: kotlin.String = "DocumentReference.context"
 
-    public override val target: List<String> = listOf("Appointment", "Encounter", "EpisodeOfCare")
+    public override val target: List<kotlin.String> =
+      listOf("Appointment", "Encounter", "EpisodeOfCare")
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> = resource.context
   }
 
-  public data object Creation : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "creation"
+  public data object Creation : DocumentReferenceSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "creation"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "DocumentReference.content.attachment.creation"
+    public override val expression: kotlin.String = "DocumentReference.content.attachment.creation"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<DateTime> =
+      resource.content.map { it.attachment }.mapNotNull { it.creation }
   }
 
-  public data object Custodian : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "custodian"
+  public data object Custodian : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "custodian"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.custodian"
+    public override val expression: kotlin.String = "DocumentReference.custodian"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<kotlin.String> = listOf("Organization")
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> =
+      listOfNotNull(resource.custodian)
   }
 
-  public data object Date : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : DocumentReferenceSearchParam<Instant>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "DocumentReference.date"
+    public override val expression: kotlin.String = "DocumentReference.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Instant> =
+      listOfNotNull(resource.date)
   }
 
-  public data object Description : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : DocumentReferenceSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "DocumentReference.description"
+    public override val expression: kotlin.String = "DocumentReference.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Markdown> =
+      listOfNotNull(resource.description)
   }
 
   public data object DocStatus : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "doc-status"
+    public override val paramName: kotlin.String = "doc-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.docStatus"
+    public override val expression: kotlin.String = "DocumentReference.docStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Any> =
+      listOfNotNull(resource.docStatus)
   }
 
-  public data object EventCode : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "event-code"
+  public data object EventCode : DocumentReferenceSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "event-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.event.concept"
+    public override val expression: kotlin.String = "DocumentReference.event.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<CodeableConcept> =
+      resource.event.mapNotNull { it.concept }
   }
 
-  public data object EventReference : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "event-reference"
+  public data object EventReference : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "event-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.event.reference"
+    public override val expression: kotlin.String = "DocumentReference.event.reference"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -394,30 +406,32 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> =
+      resource.event.mapNotNull { it.reference }
   }
 
-  public data object Facility : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "facility"
+  public data object Facility : DocumentReferenceSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.facilityType"
+    public override val expression: kotlin.String = "DocumentReference.facilityType"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<CodeableConcept> =
+      listOfNotNull(resource.facilityType)
   }
 
   public data object FormatCanonical : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "format-canonical"
+    public override val paramName: kotlin.String = "format-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "(DocumentReference.content.profile.value.ofType(canonical))"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "ActivityDefinition",
         "ActorDefinition",
@@ -463,182 +477,198 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
   }
 
   public data object FormatCode : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "format-code"
+    public override val paramName: kotlin.String = "format-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "(DocumentReference.content.profile.value.ofType(Coding))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: DocumentReference): List<Any> = emptyList()
   }
 
   public data object FormatUri : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "format-uri"
+    public override val paramName: kotlin.String = "format-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "(DocumentReference.content.profile.value.ofType(uri))"
+    public override val expression: kotlin.String =
+      "(DocumentReference.content.profile.value.ofType(uri))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: DocumentReference): List<Any> = emptyList()
   }
 
-  public data object Identifier : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : DocumentReferenceSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.identifier"
+    public override val expression: kotlin.String = "DocumentReference.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(
+      resource: DocumentReference
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
   public data object Language : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "language"
+    public override val paramName: kotlin.String = "language"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.content.attachment.language"
+    public override val expression: kotlin.String = "DocumentReference.content.attachment.language"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Any> =
+      resource.content.map { it.attachment }.mapNotNull { it.language }
   }
 
-  public data object Location : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "location"
+  public data object Location : DocumentReferenceSearchParam<Url>() {
+    public override val paramName: kotlin.String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "DocumentReference.content.attachment.url"
+    public override val expression: kotlin.String = "DocumentReference.content.attachment.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Url> =
+      resource.content.map { it.attachment }.mapNotNull { it.url }
   }
 
-  public data object Modality : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "modality"
+  public data object Modality : DocumentReferenceSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "modality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.modality"
+    public override val expression: kotlin.String = "DocumentReference.modality"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<CodeableConcept> =
+      resource.modality
   }
 
-  public data object Patient : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.subject.where(resolve() is Patient)"
+    public override val expression: kotlin.String =
+      "DocumentReference.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<kotlin.String> = listOf("Patient")
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Period : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "period"
+  public data object Period : DocumentReferenceSearchParam<dev.ohs.fhir.model.r5.Period>() {
+    public override val paramName: kotlin.String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "DocumentReference.period"
+    public override val expression: kotlin.String = "DocumentReference.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<dev.ohs.fhir.model.r5.Period> =
+      listOfNotNull(resource.period)
   }
 
-  public data object Relatesto : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "relatesto"
+  public data object Relatesto : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "relatesto"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.relatesTo.target"
+    public override val expression: kotlin.String = "DocumentReference.relatesTo.target"
 
-    public override val target: List<String> = listOf("DocumentReference")
+    public override val target: List<kotlin.String> = listOf("DocumentReference")
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> =
+      resource.relatesTo.map { it.target }
   }
 
-  public data object Relation : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "relation"
+  public data object Relation : DocumentReferenceSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "relation"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.relatesTo.code"
+    public override val expression: kotlin.String = "DocumentReference.relatesTo.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<CodeableConcept> =
+      resource.relatesTo.map { it.code }
   }
 
-  public data object Relationship : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "relationship"
+  public data object Relationship : DocumentReferenceSearchParam<DocumentReference.RelatesTo>() {
+    public override val paramName: kotlin.String = "relationship"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "DocumentReference.relatesTo"
+    public override val expression: kotlin.String = "DocumentReference.relatesTo"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<DocumentReference.RelatesTo> =
+      resource.relatesTo
   }
 
-  public data object SecurityLabel : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "security-label"
+  public data object SecurityLabel : DocumentReferenceSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "security-label"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.securityLabel"
+    public override val expression: kotlin.String = "DocumentReference.securityLabel"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<CodeableConcept> =
+      resource.securityLabel
   }
 
-  public data object Setting : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "setting"
+  public data object Setting : DocumentReferenceSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "setting"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.practiceSetting"
+    public override val expression: kotlin.String = "DocumentReference.practiceSetting"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<CodeableConcept> =
+      listOfNotNull(resource.practiceSetting)
   }
 
   public data object Status : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.status"
+    public override val expression: kotlin.String = "DocumentReference.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "subject"
+  public data object Subject : DocumentReferenceSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "DocumentReference.subject"
+    public override val expression: kotlin.String = "DocumentReference.subject"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -800,31 +830,34 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
-  public data object Type : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "type"
+  public data object Type : DocumentReferenceSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "DocumentReference.type"
+    public override val expression: kotlin.String = "DocumentReference.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<CodeableConcept> =
+      listOfNotNull(resource.type)
   }
 
-  public data object Version : DocumentReferenceSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : DocumentReferenceSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "DocumentReference.version"
+    public override val expression: kotlin.String = "DocumentReference.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: DocumentReference): List<Any> = emptyList()
+    public override fun extract(resource: DocumentReference): List<String> =
+      listOfNotNull(resource.version)
   }
 
   public companion object {

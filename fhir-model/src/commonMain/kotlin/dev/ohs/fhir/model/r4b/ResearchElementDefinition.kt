@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.ResearchElementDefinitionCharacteristicDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.ResearchElementDefinitionCharacteristicParticipantEffectiveSerializer
-import com.google.fhir.model.r4b.serializers.ResearchElementDefinitionCharacteristicSerializer
-import com.google.fhir.model.r4b.serializers.ResearchElementDefinitionCharacteristicStudyEffectiveSerializer
-import com.google.fhir.model.r4b.serializers.ResearchElementDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.ResearchElementDefinitionSubjectSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.ResearchElementDefinitionCharacteristicDefinitionSerializer
+import dev.ohs.fhir.model.r4b.serializers.ResearchElementDefinitionCharacteristicParticipantEffectiveSerializer
+import dev.ohs.fhir.model.r4b.serializers.ResearchElementDefinitionCharacteristicSerializer
+import dev.ohs.fhir.model.r4b.serializers.ResearchElementDefinitionCharacteristicStudyEffectiveSerializer
+import dev.ohs.fhir.model.r4b.serializers.ResearchElementDefinitionSerializer
+import dev.ohs.fhir.model.r4b.serializers.ResearchElementDefinitionSubjectSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -534,25 +534,25 @@ public data class ResearchElementDefinition(
       public fun asDataRequirement(): DataRequirement? = this as? DataRequirement
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Definition
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) :
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
         Definition
 
-      public data class Expression(public val `value`: com.google.fhir.model.r4b.Expression) :
+      public data class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) :
         Definition
 
       public data class DataRequirement(
-        public val `value`: com.google.fhir.model.r4b.DataRequirement
+        public val `value`: dev.ohs.fhir.model.r4b.DataRequirement
       ) : Definition
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          canonicalValue: com.google.fhir.model.r4b.Canonical?,
-          expressionValue: com.google.fhir.model.r4b.Expression?,
-          dataRequirementValue: com.google.fhir.model.r4b.DataRequirement?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
+          expressionValue: dev.ohs.fhir.model.r4b.Expression?,
+          dataRequirementValue: dev.ohs.fhir.model.r4b.DataRequirement?,
         ): Definition? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (canonicalValue != null) return Canonical(canonicalValue)
@@ -573,24 +573,22 @@ public data class ResearchElementDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) :
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
         StudyEffective
 
-      public data class Period(public val `value`: com.google.fhir.model.r4b.Period) :
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : StudyEffective
+
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
         StudyEffective
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) :
-        StudyEffective
-
-      public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) :
-        StudyEffective
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : StudyEffective
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-          periodValue: com.google.fhir.model.r4b.Period?,
-          durationValue: com.google.fhir.model.r4b.Duration?,
-          timingValue: com.google.fhir.model.r4b.Timing?,
+          dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+          periodValue: dev.ohs.fhir.model.r4b.Period?,
+          durationValue: dev.ohs.fhir.model.r4b.Duration?,
+          timingValue: dev.ohs.fhir.model.r4b.Timing?,
         ): StudyEffective? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)
@@ -613,24 +611,24 @@ public data class ResearchElementDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) :
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
         ParticipantEffective
 
-      public data class Period(public val `value`: com.google.fhir.model.r4b.Period) :
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) :
         ParticipantEffective
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) :
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
         ParticipantEffective
 
-      public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) :
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) :
         ParticipantEffective
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-          periodValue: com.google.fhir.model.r4b.Period?,
-          durationValue: com.google.fhir.model.r4b.Duration?,
-          timingValue: com.google.fhir.model.r4b.Timing?,
+          dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+          periodValue: dev.ohs.fhir.model.r4b.Period?,
+          durationValue: dev.ohs.fhir.model.r4b.Duration?,
+          timingValue: dev.ohs.fhir.model.r4b.Timing?,
         ): ParticipantEffective? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)
@@ -752,16 +750,15 @@ public data class ResearchElementDefinition(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Subject
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+      Subject
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Subject
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
       ): Subject? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)

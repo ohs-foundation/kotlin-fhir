@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,63 +28,64 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: CareTeam): List<T>
 
-  public data object Category : CareTeamSearchParam<Any>() {
-    public override val paramName: String = "category"
+  public data object Category : CareTeamSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CareTeam.category"
+    public override val expression: kotlin.String = "CareTeam.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CareTeam): List<Any> = emptyList()
+    public override fun extract(resource: CareTeam): List<CodeableConcept> = resource.category
   }
 
   public data object Date : CareTeamSearchParam<Any>() {
-    public override val paramName: String = "date"
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
     public override fun extract(resource: CareTeam): List<Any> = emptyList()
   }
 
-  public data object Identifier : CareTeamSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : CareTeamSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CareTeam.identifier"
+    public override val expression: kotlin.String = "CareTeam.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CareTeam): List<Any> = emptyList()
+    public override fun extract(resource: CareTeam): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Name : CareTeamSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : CareTeamSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "CareTeam.name"
+    public override val expression: kotlin.String = "CareTeam.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CareTeam): List<Any> = emptyList()
+    public override fun extract(resource: CareTeam): List<String> = listOfNotNull(resource.name)
   }
 
-  public data object Participant : CareTeamSearchParam<Any>() {
-    public override val paramName: String = "participant"
+  public data object Participant : CareTeamSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "CareTeam.participant.member"
+    public override val expression: kotlin.String = "CareTeam.participant.member"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Organization",
         "CareTeam",
@@ -95,43 +95,48 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
         "Patient",
       )
 
-    public override fun extract(resource: CareTeam): List<Any> = emptyList()
+    public override fun extract(resource: CareTeam): List<Reference> =
+      resource.participant.mapNotNull { it.member }
   }
 
-  public data object Patient : CareTeamSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : CareTeamSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "CareTeam.subject.where(resolve() is Patient)"
+    public override val expression: kotlin.String = "CareTeam.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<kotlin.String> = listOf("Patient")
 
-    public override fun extract(resource: CareTeam): List<Any> = emptyList()
+    public override fun extract(resource: CareTeam): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
   public data object Status : CareTeamSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "CareTeam.status"
+    public override val expression: kotlin.String = "CareTeam.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: CareTeam): List<Any> = emptyList()
+    public override fun extract(resource: CareTeam): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object Subject : CareTeamSearchParam<Any>() {
-    public override val paramName: String = "subject"
+  public data object Subject : CareTeamSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "CareTeam.subject"
+    public override val expression: kotlin.String = "CareTeam.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<kotlin.String> = listOf("Group", "Patient")
 
-    public override fun extract(resource: CareTeam): List<Any> = emptyList()
+    public override fun extract(resource: CareTeam): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
   public companion object {

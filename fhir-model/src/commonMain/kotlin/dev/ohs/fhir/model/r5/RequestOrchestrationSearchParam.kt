@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: RequestOrchestration): List<T>
 
-  public data object Author : RequestOrchestrationSearchParam<Any>() {
+  public data object Author : RequestOrchestrationSearchParam<Reference>() {
     public override val paramName: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -38,10 +38,11 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Device", "PractitionerRole", "Practitioner")
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Reference> =
+      listOfNotNull(resource.author)
   }
 
-  public data object Authored : RequestOrchestrationSearchParam<Any>() {
+  public data object Authored : RequestOrchestrationSearchParam<DateTime>() {
     public override val paramName: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -50,10 +51,11 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<DateTime> =
+      listOfNotNull(resource.authoredOn)
   }
 
-  public data object BasedOn : RequestOrchestrationSearchParam<Any>() {
+  public data object BasedOn : RequestOrchestrationSearchParam<Reference>() {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -222,10 +224,10 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Reference> = resource.basedOn
   }
 
-  public data object Code : RequestOrchestrationSearchParam<Any>() {
+  public data object Code : RequestOrchestrationSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -234,10 +236,11 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
-  public data object Encounter : RequestOrchestrationSearchParam<Any>() {
+  public data object Encounter : RequestOrchestrationSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -246,10 +249,12 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter")
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object GroupIdentifier : RequestOrchestrationSearchParam<Any>() {
+  public data object GroupIdentifier :
+    RequestOrchestrationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -258,10 +263,13 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(
+      resource: RequestOrchestration
+    ): List<dev.ohs.fhir.model.r5.Identifier> = listOfNotNull(resource.groupIdentifier)
   }
 
-  public data object Identifier : RequestOrchestrationSearchParam<Any>() {
+  public data object Identifier :
+    RequestOrchestrationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -270,10 +278,12 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(
+      resource: RequestOrchestration
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object InstantiatesCanonical : RequestOrchestrationSearchParam<Any>() {
+  public data object InstantiatesCanonical : RequestOrchestrationSearchParam<Canonical>() {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -322,10 +332,11 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
         "ValueSet",
       )
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Canonical> =
+      resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : RequestOrchestrationSearchParam<Any>() {
+  public data object InstantiatesUri : RequestOrchestrationSearchParam<Uri>() {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -334,7 +345,8 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Uri> =
+      resource.instantiatesUri
   }
 
   public data object Intent : RequestOrchestrationSearchParam<Any>() {
@@ -346,7 +358,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Any> = listOf(resource.intent)
   }
 
   public data object Participant : RequestOrchestrationSearchParam<Any>() {
@@ -377,7 +389,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
     public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
   }
 
-  public data object Patient : RequestOrchestrationSearchParam<Any>() {
+  public data object Patient : RequestOrchestrationSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -387,7 +399,10 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
   public data object Priority : RequestOrchestrationSearchParam<Any>() {
@@ -399,7 +414,8 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Any> =
+      listOfNotNull(resource.priority)
   }
 
   public data object Status : RequestOrchestrationSearchParam<Any>() {
@@ -411,10 +427,10 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : RequestOrchestrationSearchParam<Any>() {
+  public data object Subject : RequestOrchestrationSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -435,7 +451,8 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
         "Patient",
       )
 
-    public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
+    public override fun extract(resource: RequestOrchestration): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
   public companion object {

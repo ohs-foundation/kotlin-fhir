@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.OperationDefinition
-import com.google.fhir.model.r4.surrogates.OperationDefinitionOverloadSurrogate
-import com.google.fhir.model.r4.surrogates.OperationDefinitionParameterBindingSurrogate
-import com.google.fhir.model.r4.surrogates.OperationDefinitionParameterReferencedFromSurrogate
-import com.google.fhir.model.r4.surrogates.OperationDefinitionParameterSurrogate
-import com.google.fhir.model.r4.surrogates.OperationDefinitionSurrogate
+import dev.ohs.fhir.model.r4.OperationDefinition
+import dev.ohs.fhir.model.r4.surrogates.OperationDefinitionOverloadSurrogate
+import dev.ohs.fhir.model.r4.surrogates.OperationDefinitionParameterBindingSurrogate
+import dev.ohs.fhir.model.r4.surrogates.OperationDefinitionParameterReferencedFromSurrogate
+import dev.ohs.fhir.model.r4.surrogates.OperationDefinitionParameterSurrogate
+import dev.ohs.fhir.model.r4.surrogates.OperationDefinitionSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

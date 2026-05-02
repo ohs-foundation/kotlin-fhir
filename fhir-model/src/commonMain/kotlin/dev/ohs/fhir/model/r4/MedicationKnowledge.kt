@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,29 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesDosageSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesIndicationSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsCharacteristicSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeCostSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeDrugCharacteristicSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeDrugCharacteristicValueSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeIngredientItemSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeIngredientSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeKineticsSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeMedicineClassificationSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeMonitoringProgramSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeMonographSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgePackagingSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeRegulatoryMaxDispenseSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeRegulatoryScheduleSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeRegulatorySerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeRegulatorySubstitutionSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeRelatedMedicationKnowledgeSerializer
-import com.google.fhir.model.r4b.serializers.MedicationKnowledgeSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeAdministrationGuidelinesDosageSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeAdministrationGuidelinesIndicationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsCharacteristicSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeAdministrationGuidelinesSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeCostSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeDrugCharacteristicSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeDrugCharacteristicValueSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeIngredientItemSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeIngredientSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeKineticsSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeMedicineClassificationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeMonitoringProgramSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeMonographSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgePackagingSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeRegulatoryMaxDispenseSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeRegulatoryScheduleSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeRegulatorySerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeRegulatorySubstitutionSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeRelatedMedicationKnowledgeSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -585,16 +585,15 @@ public data class MedicationKnowledge(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
-      ) : Item
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+        Item
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Item
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Item
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r4.Reference?,
         ): Item? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -1013,7 +1012,7 @@ public data class MedicationKnowledge(
       /** The type of dosage (for example, prophylaxis, maintenance, therapeutic, etc.). */
       public val type: CodeableConcept,
       /** Dosage for the medication for the specific guidelines. */
-      public val dosage: List<com.google.fhir.model.r4b.Dosage>,
+      public val dosage: List<dev.ohs.fhir.model.r4.Dosage>,
     ) : BackboneElement() {
       public fun toBuilder(): Builder =
         with(this) {
@@ -1028,7 +1027,7 @@ public data class MedicationKnowledge(
         /** The type of dosage (for example, prophylaxis, maintenance, therapeutic, etc.). */
         public var type: CodeableConcept.Builder,
         /** Dosage for the medication for the specific guidelines. */
-        public var dosage: MutableList<com.google.fhir.model.r4b.Dosage.Builder>,
+        public var dosage: MutableList<dev.ohs.fhir.model.r4.Dosage.Builder>,
       ) {
         /**
          * Unique id for the element within a resource (for internal references). This may be any
@@ -1154,16 +1153,16 @@ public data class MedicationKnowledge(
         public fun asQuantity(): Quantity? = this as? Quantity
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r4b.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
         ) : Characteristic
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) :
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) :
           Characteristic
 
         public companion object {
           internal fun from(
-            codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-            quantityValue: com.google.fhir.model.r4b.Quantity?,
+            codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+            quantityValue: dev.ohs.fhir.model.r4.Quantity?,
           ): Characteristic? {
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
             if (quantityValue != null) return Quantity(quantityValue)
@@ -1239,17 +1238,15 @@ public data class MedicationKnowledge(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
-      ) : Indication
-
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
         Indication
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Indication
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r4.Reference?,
         ): Indication? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -1643,23 +1640,22 @@ public data class MedicationKnowledge(
 
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
-      ) : Value
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+        Value
 
-      public data class String(public val `value`: com.google.fhir.model.r4b.String) : Value
+      public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
 
-      public data class Base64Binary(public val `value`: com.google.fhir.model.r4b.Base64Binary) :
+      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) :
         Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          stringValue: com.google.fhir.model.r4b.String?,
-          quantityValue: com.google.fhir.model.r4b.Quantity?,
-          base64BinaryValue: com.google.fhir.model.r4b.Base64Binary?,
+          codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+          stringValue: dev.ohs.fhir.model.r4.String?,
+          quantityValue: dev.ohs.fhir.model.r4.Quantity?,
+          base64BinaryValue: dev.ohs.fhir.model.r4.Base64Binary?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (stringValue != null) return String(stringValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,25 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.SubstanceDefinition
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionCodeSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionMoietyAmountSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionMoietySurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionMolecularWeightSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionNameOfficialSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionNameSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionPropertySurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionPropertyValueSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionRelationshipAmountSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionRelationshipSubstanceDefinitionSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionRelationshipSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionSourceMaterialSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionStructureRepresentationSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionStructureSurrogate
-import com.google.fhir.model.r4b.surrogates.SubstanceDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.SubstanceDefinition
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionCodeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionMoietyAmountSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionMoietySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionMolecularWeightSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionNameOfficialSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionNameSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionPropertySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionPropertyValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionRelationshipAmountSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionRelationshipSubstanceDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionRelationshipSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionSourceMaterialSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionStructureRepresentationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionStructureSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.SubstanceDefinitionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

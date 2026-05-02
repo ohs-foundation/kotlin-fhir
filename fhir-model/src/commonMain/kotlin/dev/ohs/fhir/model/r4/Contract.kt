@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,33 +16,33 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4b.serializers.ContractContentDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.ContractFriendlyContentSerializer
-import com.google.fhir.model.r4b.serializers.ContractFriendlySerializer
-import com.google.fhir.model.r4b.serializers.ContractLegalContentSerializer
-import com.google.fhir.model.r4b.serializers.ContractLegalSerializer
-import com.google.fhir.model.r4b.serializers.ContractLegallyBindingSerializer
-import com.google.fhir.model.r4b.serializers.ContractRuleContentSerializer
-import com.google.fhir.model.r4b.serializers.ContractRuleSerializer
-import com.google.fhir.model.r4b.serializers.ContractSerializer
-import com.google.fhir.model.r4b.serializers.ContractSignerSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermActionOccurrenceSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermActionSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermActionSubjectSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermAssetContextSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermAssetSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermAssetValuedItemEntitySerializer
-import com.google.fhir.model.r4b.serializers.ContractTermAssetValuedItemSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermOfferAnswerSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermOfferAnswerValueSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermOfferPartySerializer
-import com.google.fhir.model.r4b.serializers.ContractTermOfferSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermSecurityLabelSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermSerializer
-import com.google.fhir.model.r4b.serializers.ContractTermTopicSerializer
-import com.google.fhir.model.r4b.serializers.ContractTopicSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractContentDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractFriendlyContentSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractFriendlySerializer
+import dev.ohs.fhir.model.r4.serializers.ContractLegalContentSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractLegalSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractLegallyBindingSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractRuleContentSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractRuleSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractSignerSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermActionOccurrenceSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermActionSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermActionSubjectSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermAssetContextSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermAssetSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermAssetValuedItemEntitySerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermAssetValuedItemSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermOfferAnswerSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermOfferAnswerValueSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermOfferPartySerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermOfferSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermSecurityLabelSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTermTopicSerializer
+import dev.ohs.fhir.model.r4.serializers.ContractTopicSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1117,48 +1117,45 @@ public data class Contract(
 
           public fun asReference(): Reference? = this as? Reference
 
-          public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Value
+          public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
 
-          public data class Decimal(public val `value`: com.google.fhir.model.r4b.Decimal) : Value
+          public data class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Value
 
-          public data class Integer(public val `value`: com.google.fhir.model.r4b.Integer) : Value
+          public data class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Value
 
-          public data class Date(public val `value`: com.google.fhir.model.r4b.Date) : Value
+          public data class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Value
 
-          public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) :
+          public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Value
+
+          public data class Time(public val `value`: dev.ohs.fhir.model.r4.Time) : Value
+
+          public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
+
+          public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Value
+
+          public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) :
             Value
 
-          public data class Time(public val `value`: com.google.fhir.model.r4b.Time) : Value
+          public data class Coding(public val `value`: dev.ohs.fhir.model.r4.Coding) : Value
 
-          public data class String(public val `value`: com.google.fhir.model.r4b.String) : Value
+          public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
 
-          public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Value
-
-          public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
-            Value
-
-          public data class Coding(public val `value`: com.google.fhir.model.r4b.Coding) : Value
-
-          public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) :
-            Value
-
-          public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-            Value
+          public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Value
 
           public companion object {
             internal fun from(
-              booleanValue: com.google.fhir.model.r4b.Boolean?,
-              decimalValue: com.google.fhir.model.r4b.Decimal?,
-              integerValue: com.google.fhir.model.r4b.Integer?,
-              dateValue: com.google.fhir.model.r4b.Date?,
-              dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-              timeValue: com.google.fhir.model.r4b.Time?,
-              stringValue: com.google.fhir.model.r4b.String?,
-              uriValue: com.google.fhir.model.r4b.Uri?,
-              attachmentValue: com.google.fhir.model.r4b.Attachment?,
-              codingValue: com.google.fhir.model.r4b.Coding?,
-              quantityValue: com.google.fhir.model.r4b.Quantity?,
-              referenceValue: com.google.fhir.model.r4b.Reference?,
+              booleanValue: dev.ohs.fhir.model.r4.Boolean?,
+              decimalValue: dev.ohs.fhir.model.r4.Decimal?,
+              integerValue: dev.ohs.fhir.model.r4.Integer?,
+              dateValue: dev.ohs.fhir.model.r4.Date?,
+              dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+              timeValue: dev.ohs.fhir.model.r4.Time?,
+              stringValue: dev.ohs.fhir.model.r4.String?,
+              uriValue: dev.ohs.fhir.model.r4.Uri?,
+              attachmentValue: dev.ohs.fhir.model.r4.Attachment?,
+              codingValue: dev.ohs.fhir.model.r4.Coding?,
+              quantityValue: dev.ohs.fhir.model.r4.Quantity?,
+              referenceValue: dev.ohs.fhir.model.r4.Reference?,
             ): Value? {
               if (booleanValue != null) return Boolean(booleanValue)
               if (decimalValue != null) return Decimal(decimalValue)
@@ -1718,16 +1715,15 @@ public data class Contract(
           public fun asReference(): Reference? = this as? Reference
 
           public data class CodeableConcept(
-            public val `value`: com.google.fhir.model.r4b.CodeableConcept
+            public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
           ) : Entity
 
-          public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-            Entity
+          public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Entity
 
           public companion object {
             internal fun from(
-              codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-              referenceValue: com.google.fhir.model.r4b.Reference?,
+              codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+              referenceValue: dev.ohs.fhir.model.r4.Reference?,
             ): Entity? {
               if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
               if (referenceValue != null) return Reference(referenceValue)
@@ -2250,18 +2246,17 @@ public data class Contract(
 
         public fun asTiming(): Timing? = this as? Timing
 
-        public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) :
-          Occurrence
+        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Occurrence
 
-        public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Occurrence
+        public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Occurrence
 
-        public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) : Occurrence
+        public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Occurrence
 
         public companion object {
           internal fun from(
-            dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-            periodValue: com.google.fhir.model.r4b.Period?,
-            timingValue: com.google.fhir.model.r4b.Timing?,
+            dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+            periodValue: dev.ohs.fhir.model.r4.Period?,
+            timingValue: dev.ohs.fhir.model.r4.Timing?,
           ): Occurrence? {
             if (dateTimeValue != null) return DateTime(dateTimeValue)
             if (periodValue != null) return Period(periodValue)
@@ -2441,16 +2436,15 @@ public data class Contract(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
-      ) : Topic
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+        Topic
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Topic
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Topic
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r4.Reference?,
         ): Topic? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -2764,16 +2758,14 @@ public data class Contract(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
-        Content
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-        Content
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
 
       public companion object {
         internal fun from(
-          attachmentValue: com.google.fhir.model.r4b.Attachment?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          attachmentValue: dev.ohs.fhir.model.r4.Attachment?,
+          referenceValue: dev.ohs.fhir.model.r4.Reference?,
         ): Content? {
           if (attachmentValue != null) return Attachment(attachmentValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -2897,16 +2889,14 @@ public data class Contract(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
-        Content
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-        Content
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
 
       public companion object {
         internal fun from(
-          attachmentValue: com.google.fhir.model.r4b.Attachment?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          attachmentValue: dev.ohs.fhir.model.r4.Attachment?,
+          referenceValue: dev.ohs.fhir.model.r4.Reference?,
         ): Content? {
           if (attachmentValue != null) return Attachment(attachmentValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -3027,16 +3017,14 @@ public data class Contract(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
-        Content
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
-        Content
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
 
       public companion object {
         internal fun from(
-          attachmentValue: com.google.fhir.model.r4b.Attachment?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          attachmentValue: dev.ohs.fhir.model.r4.Attachment?,
+          referenceValue: dev.ohs.fhir.model.r4.Reference?,
         ): Content? {
           if (attachmentValue != null) return Attachment(attachmentValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -3105,16 +3093,15 @@ public data class Contract(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Topic
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+      Topic
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Topic
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Topic
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): Topic? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)
@@ -3129,16 +3116,16 @@ public data class Contract(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
+    public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) :
       LegallyBinding
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
       LegallyBinding
 
     public companion object {
       internal fun from(
-        attachmentValue: com.google.fhir.model.r4b.Attachment?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
+        attachmentValue: dev.ohs.fhir.model.r4.Attachment?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): LegallyBinding? {
         if (attachmentValue != null) return Attachment(attachmentValue)
         if (referenceValue != null) return Reference(referenceValue)

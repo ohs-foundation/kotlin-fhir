@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,15 +28,15 @@ public sealed class EventDefinitionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: EventDefinition): List<T>
 
-  public data object ComposedOf : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "composed-of"
+  public data object ComposedOf : EventDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "EventDefinition.relatedArtifact.where(type='composed-of').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -186,90 +185,98 @@ public sealed class EventDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "composed-of" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Context : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context"
+  public data object Context : EventDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "(EventDefinition.useContext.value as CodeableConcept)"
+    public override val expression: kotlin.String =
+      "(EventDefinition.useContext.value as CodeableConcept)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<CodeableConcept> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-quantity"
+  public data object ContextQuantity : EventDefinitionSearchParam<Quantity>() {
+    public override val paramName: kotlin.String = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
-    public override val expression: String = "(EventDefinition.useContext.value as Quantity)"
+    public override val expression: kotlin.String = "(EventDefinition.useContext.value as Quantity)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Quantity> =
+      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type"
+  public data object ContextType : EventDefinitionSearchParam<Coding>() {
+    public override val paramName: kotlin.String = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "EventDefinition.useContext.code"
+    public override val expression: kotlin.String = "EventDefinition.useContext.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Coding> =
+      resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type-quantity"
+  public data object ContextTypeQuantity : EventDefinitionSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "EventDefinition.useContext"
+    public override val expression: kotlin.String = "EventDefinition.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "context-type-value"
+  public data object ContextTypeValue : EventDefinitionSearchParam<UsageContext>() {
+    public override val paramName: kotlin.String = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
-    public override val expression: String = "EventDefinition.useContext"
+    public override val expression: kotlin.String = "EventDefinition.useContext"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : EventDefinitionSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "EventDefinition.date"
+    public override val expression: kotlin.String = "EventDefinition.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<DateTime> =
+      listOfNotNull(resource.date)
   }
 
-  public data object DependsOn : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "depends-on"
+  public data object DependsOn : EventDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "EventDefinition.relatedArtifact.where(type='depends-on').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -418,18 +425,21 @@ public sealed class EventDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "depends-on" }
+        .mapNotNull { it.resource }
   }
 
-  public data object DerivedFrom : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "derived-from"
+  public data object DerivedFrom : EventDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "EventDefinition.relatedArtifact.where(type='derived-from').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -578,78 +588,86 @@ public sealed class EventDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "derived-from" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Description : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "description"
+  public data object Description : EventDefinitionSearchParam<Markdown>() {
+    public override val paramName: kotlin.String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "EventDefinition.description"
+    public override val expression: kotlin.String = "EventDefinition.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Markdown> =
+      listOfNotNull(resource.description)
   }
 
-  public data object Effective : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "effective"
+  public data object Effective : EventDefinitionSearchParam<Period>() {
+    public override val paramName: kotlin.String = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "EventDefinition.effectivePeriod"
+    public override val expression: kotlin.String = "EventDefinition.effectivePeriod"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Period> =
+      listOfNotNull(resource.effectivePeriod)
   }
 
-  public data object Identifier : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : EventDefinitionSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "EventDefinition.identifier"
+    public override val expression: kotlin.String = "EventDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.identifier
   }
 
-  public data object Jurisdiction : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "jurisdiction"
+  public data object Jurisdiction : EventDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "EventDefinition.jurisdiction"
+    public override val expression: kotlin.String = "EventDefinition.jurisdiction"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<CodeableConcept> =
+      resource.jurisdiction
   }
 
-  public data object Name : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "name"
+  public data object Name : EventDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "EventDefinition.name"
+    public override val expression: kotlin.String = "EventDefinition.name"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<String> =
+      listOfNotNull(resource.name)
   }
 
-  public data object Predecessor : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "predecessor"
+  public data object Predecessor : EventDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "EventDefinition.relatedArtifact.where(type='predecessor').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -798,42 +816,46 @@ public sealed class EventDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "predecessor" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Publisher : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "publisher"
+  public data object Publisher : EventDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "EventDefinition.publisher"
+    public override val expression: kotlin.String = "EventDefinition.publisher"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<String> =
+      listOfNotNull(resource.publisher)
   }
 
   public data object Status : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "EventDefinition.status"
+    public override val expression: kotlin.String = "EventDefinition.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Successor : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "successor"
+  public data object Successor : EventDefinitionSearchParam<Canonical>() {
+    public override val paramName: kotlin.String = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String =
+    public override val expression: kotlin.String =
       "EventDefinition.relatedArtifact.where(type='successor').resource"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -982,55 +1004,60 @@ public sealed class EventDefinitionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Canonical> =
+      resource.relatedArtifact
+        .filter { it.type?.value?.toString() == "successor" }
+        .mapNotNull { it.resource }
   }
 
-  public data object Title : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "title"
+  public data object Title : EventDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "EventDefinition.title"
+    public override val expression: kotlin.String = "EventDefinition.title"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<String> =
+      listOfNotNull(resource.title)
   }
 
-  public data object Topic : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "topic"
+  public data object Topic : EventDefinitionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "EventDefinition.topic"
+    public override val expression: kotlin.String = "EventDefinition.topic"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<CodeableConcept> = resource.topic
   }
 
-  public data object Url : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "url"
+  public data object Url : EventDefinitionSearchParam<Uri>() {
+    public override val paramName: kotlin.String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
-    public override val expression: String = "EventDefinition.url"
+    public override val expression: kotlin.String = "EventDefinition.url"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : EventDefinitionSearchParam<Any>() {
-    public override val paramName: String = "version"
+  public data object Version : EventDefinitionSearchParam<String>() {
+    public override val paramName: kotlin.String = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "EventDefinition.version"
+    public override val expression: kotlin.String = "EventDefinition.version"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: EventDefinition): List<Any> = emptyList()
+    public override fun extract(resource: EventDefinition): List<String> =
+      listOfNotNull(resource.version)
   }
 
   public companion object {

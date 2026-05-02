@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.CoverageClassSerializer
-import com.google.fhir.model.r4.serializers.CoverageCostToBeneficiaryExceptionSerializer
-import com.google.fhir.model.r4.serializers.CoverageCostToBeneficiarySerializer
-import com.google.fhir.model.r4.serializers.CoverageCostToBeneficiaryValueSerializer
-import com.google.fhir.model.r4.serializers.CoverageSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageClassSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageCostToBeneficiaryExceptionSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageCostToBeneficiarySerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageCostToBeneficiaryValueSerializer
+import dev.ohs.fhir.model.r4.serializers.CoverageSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -592,14 +592,14 @@ public data class Coverage(
 
       public fun asMoney(): Money? = this as? Money
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
 
-      public data class Money(public val `value`: com.google.fhir.model.r4.Money) : Value
+      public data class Money(public val `value`: dev.ohs.fhir.model.r4.Money) : Value
 
       public companion object {
         internal fun from(
-          quantityValue: com.google.fhir.model.r4.Quantity?,
-          moneyValue: com.google.fhir.model.r4.Money?,
+          quantityValue: dev.ohs.fhir.model.r4.Quantity?,
+          moneyValue: dev.ohs.fhir.model.r4.Money?,
         ): Value? {
           if (quantityValue != null) return Quantity(quantityValue)
           if (moneyValue != null) return Money(moneyValue)

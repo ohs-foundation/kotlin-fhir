@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.RiskEvidenceSynthesis
-import com.google.fhir.model.r4.surrogates.RiskEvidenceSynthesisCertaintyCertaintySubcomponentSurrogate
-import com.google.fhir.model.r4.surrogates.RiskEvidenceSynthesisCertaintySurrogate
-import com.google.fhir.model.r4.surrogates.RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSurrogate
-import com.google.fhir.model.r4.surrogates.RiskEvidenceSynthesisRiskEstimateSurrogate
-import com.google.fhir.model.r4.surrogates.RiskEvidenceSynthesisSampleSizeSurrogate
-import com.google.fhir.model.r4.surrogates.RiskEvidenceSynthesisSurrogate
+import dev.ohs.fhir.model.r4.RiskEvidenceSynthesis
+import dev.ohs.fhir.model.r4.surrogates.RiskEvidenceSynthesisCertaintyCertaintySubcomponentSurrogate
+import dev.ohs.fhir.model.r4.surrogates.RiskEvidenceSynthesisCertaintySurrogate
+import dev.ohs.fhir.model.r4.surrogates.RiskEvidenceSynthesisRiskEstimatePrecisionEstimateSurrogate
+import dev.ohs.fhir.model.r4.surrogates.RiskEvidenceSynthesisRiskEstimateSurrogate
+import dev.ohs.fhir.model.r4.surrogates.RiskEvidenceSynthesisSampleSizeSurrogate
+import dev.ohs.fhir.model.r4.surrogates.RiskEvidenceSynthesisSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

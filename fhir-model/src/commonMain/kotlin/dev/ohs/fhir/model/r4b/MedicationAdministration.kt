@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.MedicationAdministrationDosageRateSerializer
-import com.google.fhir.model.r4b.serializers.MedicationAdministrationDosageSerializer
-import com.google.fhir.model.r4b.serializers.MedicationAdministrationEffectiveSerializer
-import com.google.fhir.model.r4b.serializers.MedicationAdministrationMedicationSerializer
-import com.google.fhir.model.r4b.serializers.MedicationAdministrationPerformerSerializer
-import com.google.fhir.model.r4b.serializers.MedicationAdministrationSerializer
+import dev.ohs.fhir.model.r4b.serializers.MedicationAdministrationDosageRateSerializer
+import dev.ohs.fhir.model.r4b.serializers.MedicationAdministrationDosageSerializer
+import dev.ohs.fhir.model.r4b.serializers.MedicationAdministrationEffectiveSerializer
+import dev.ohs.fhir.model.r4b.serializers.MedicationAdministrationMedicationSerializer
+import dev.ohs.fhir.model.r4b.serializers.MedicationAdministrationPerformerSerializer
+import dev.ohs.fhir.model.r4b.serializers.MedicationAdministrationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -500,14 +500,14 @@ public data class MedicationAdministration(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) : Rate
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Rate
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Rate
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Rate
 
       public companion object {
         internal fun from(
-          ratioValue: com.google.fhir.model.r4b.Ratio?,
-          quantityValue: com.google.fhir.model.r4b.Quantity?,
+          ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
         ): Rate? {
           if (ratioValue != null) return Ratio(ratioValue)
           if (quantityValue != null) return Quantity(quantityValue)
@@ -642,17 +642,15 @@ public data class MedicationAdministration(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Medication
-
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Medication
+
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Medication
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
       ): Medication? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)
@@ -667,14 +665,14 @@ public data class MedicationAdministration(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Effective
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Effective
 
-    public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Effective
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Effective
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        periodValue: com.google.fhir.model.r4b.Period?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
       ): Effective? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)

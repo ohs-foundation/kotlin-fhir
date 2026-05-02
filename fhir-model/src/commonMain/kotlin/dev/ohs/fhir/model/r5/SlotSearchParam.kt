@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class SlotSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Slot): List<T>
 
-  public data object AppointmentType : SlotSearchParam<Any>() {
+  public data object AppointmentType : SlotSearchParam<CodeableConcept>() {
     public override val paramName: String = "appointment-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,10 @@ public sealed class SlotSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Slot): List<Any> = emptyList()
+    public override fun extract(resource: Slot): List<CodeableConcept> = resource.appointmentType
   }
 
-  public data object Identifier : SlotSearchParam<Any>() {
+  public data object Identifier : SlotSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +50,11 @@ public sealed class SlotSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Slot): List<Any> = emptyList()
+    public override fun extract(resource: Slot): List<dev.ohs.fhir.model.r5.Identifier> =
+      resource.identifier
   }
 
-  public data object Schedule : SlotSearchParam<Any>() {
+  public data object Schedule : SlotSearchParam<Reference>() {
     public override val paramName: String = "schedule"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -62,10 +63,10 @@ public sealed class SlotSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Schedule")
 
-    public override fun extract(resource: Slot): List<Any> = emptyList()
+    public override fun extract(resource: Slot): List<Reference> = listOf(resource.schedule)
   }
 
-  public data object ServiceCategory : SlotSearchParam<Any>() {
+  public data object ServiceCategory : SlotSearchParam<CodeableConcept>() {
     public override val paramName: String = "service-category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,10 +75,10 @@ public sealed class SlotSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Slot): List<Any> = emptyList()
+    public override fun extract(resource: Slot): List<CodeableConcept> = resource.serviceCategory
   }
 
-  public data object ServiceType : SlotSearchParam<Any>() {
+  public data object ServiceType : SlotSearchParam<CodeableConcept>() {
     public override val paramName: String = "service-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +87,11 @@ public sealed class SlotSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Slot): List<Any> = emptyList()
+    public override fun extract(resource: Slot): List<CodeableConcept> =
+      resource.serviceType.mapNotNull { it.concept }
   }
 
-  public data object ServiceTypeReference : SlotSearchParam<Any>() {
+  public data object ServiceTypeReference : SlotSearchParam<Reference>() {
     public override val paramName: String = "service-type-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,10 +100,11 @@ public sealed class SlotSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("HealthcareService")
 
-    public override fun extract(resource: Slot): List<Any> = emptyList()
+    public override fun extract(resource: Slot): List<Reference> =
+      resource.serviceType.mapNotNull { it.reference }
   }
 
-  public data object Specialty : SlotSearchParam<Any>() {
+  public data object Specialty : SlotSearchParam<CodeableConcept>() {
     public override val paramName: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -110,10 +113,10 @@ public sealed class SlotSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Slot): List<Any> = emptyList()
+    public override fun extract(resource: Slot): List<CodeableConcept> = resource.specialty
   }
 
-  public data object Start : SlotSearchParam<Any>() {
+  public data object Start : SlotSearchParam<Instant>() {
     public override val paramName: String = "start"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -122,7 +125,7 @@ public sealed class SlotSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Slot): List<Any> = emptyList()
+    public override fun extract(resource: Slot): List<Instant> = listOf(resource.start)
   }
 
   public data object Status : SlotSearchParam<Any>() {
@@ -134,7 +137,7 @@ public sealed class SlotSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: Slot): List<Any> = emptyList()
+    public override fun extract(resource: Slot): List<Any> = listOf(resource.status)
   }
 
   public companion object {

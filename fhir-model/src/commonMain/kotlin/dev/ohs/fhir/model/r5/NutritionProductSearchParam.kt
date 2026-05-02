@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
-import kotlin.String
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,64 +27,72 @@ public sealed class NutritionProductSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: NutritionProduct): List<T>
 
-  public data object Code : NutritionProductSearchParam<Any>() {
-    public override val paramName: String = "code"
+  public data object Code : NutritionProductSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NutritionProduct.code"
+    public override val expression: kotlin.String = "NutritionProduct.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NutritionProduct): List<Any> = emptyList()
+    public override fun extract(resource: NutritionProduct): List<CodeableConcept> =
+      listOfNotNull(resource.code)
   }
 
-  public data object Identifier : NutritionProductSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : NutritionProductSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NutritionProduct.instance.identifier"
+    public override val expression: kotlin.String = "NutritionProduct.instance.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NutritionProduct): List<Any> = emptyList()
+    public override fun extract(
+      resource: NutritionProduct
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.instance.flatMap { it.identifier }
   }
 
-  public data object LotNumber : NutritionProductSearchParam<Any>() {
-    public override val paramName: String = "lot-number"
+  public data object LotNumber : NutritionProductSearchParam<String>() {
+    public override val paramName: kotlin.String = "lot-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NutritionProduct.instance.lotNumber"
+    public override val expression: kotlin.String = "NutritionProduct.instance.lotNumber"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NutritionProduct): List<Any> = emptyList()
+    public override fun extract(resource: NutritionProduct): List<String> =
+      resource.instance.mapNotNull { it.lotNumber }
   }
 
-  public data object SerialNumber : NutritionProductSearchParam<Any>() {
-    public override val paramName: String = "serial-number"
+  public data object SerialNumber :
+    NutritionProductSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    public override val paramName: kotlin.String = "serial-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NutritionProduct.instance.identifier"
+    public override val expression: kotlin.String = "NutritionProduct.instance.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NutritionProduct): List<Any> = emptyList()
+    public override fun extract(
+      resource: NutritionProduct
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.instance.flatMap { it.identifier }
   }
 
-  public data object Status : NutritionProductSearchParam<Any>() {
-    public override val paramName: String = "status"
+  public data object Status : NutritionProductSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "NutritionProduct.category"
+    public override val expression: kotlin.String = "NutritionProduct.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: NutritionProduct): List<Any> = emptyList()
+    public override fun extract(resource: NutritionProduct): List<CodeableConcept> =
+      resource.category
   }
 
   public companion object {

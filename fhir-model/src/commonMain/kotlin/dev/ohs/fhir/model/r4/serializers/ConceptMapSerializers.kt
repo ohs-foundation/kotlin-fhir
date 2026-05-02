@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.ConceptMap
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.surrogates.ConceptMapGroupElementSurrogate
-import com.google.fhir.model.r4.surrogates.ConceptMapGroupElementTargetDependsOnSurrogate
-import com.google.fhir.model.r4.surrogates.ConceptMapGroupElementTargetSurrogate
-import com.google.fhir.model.r4.surrogates.ConceptMapGroupSurrogate
-import com.google.fhir.model.r4.surrogates.ConceptMapGroupUnmappedSurrogate
-import com.google.fhir.model.r4.surrogates.ConceptMapSourceSurrogate
-import com.google.fhir.model.r4.surrogates.ConceptMapSurrogate
-import com.google.fhir.model.r4.surrogates.ConceptMapTargetSurrogate
+import dev.ohs.fhir.model.r4.ConceptMap
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.surrogates.ConceptMapGroupElementSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ConceptMapGroupElementTargetDependsOnSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ConceptMapGroupElementTargetSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ConceptMapGroupSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ConceptMapGroupUnmappedSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ConceptMapSourceSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ConceptMapSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ConceptMapTargetSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

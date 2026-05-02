@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.ValueSet
-import com.google.fhir.model.r4.surrogates.ValueSetComposeIncludeConceptDesignationSurrogate
-import com.google.fhir.model.r4.surrogates.ValueSetComposeIncludeConceptSurrogate
-import com.google.fhir.model.r4.surrogates.ValueSetComposeIncludeFilterSurrogate
-import com.google.fhir.model.r4.surrogates.ValueSetComposeIncludeSurrogate
-import com.google.fhir.model.r4.surrogates.ValueSetComposeSurrogate
-import com.google.fhir.model.r4.surrogates.ValueSetExpansionContainsSurrogate
-import com.google.fhir.model.r4.surrogates.ValueSetExpansionParameterSurrogate
-import com.google.fhir.model.r4.surrogates.ValueSetExpansionParameterValueSurrogate
-import com.google.fhir.model.r4.surrogates.ValueSetExpansionSurrogate
-import com.google.fhir.model.r4.surrogates.ValueSetSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.ValueSet
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetComposeIncludeConceptDesignationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetComposeIncludeConceptSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetComposeIncludeFilterSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetComposeIncludeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetComposeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetExpansionContainsSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetExpansionParameterSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetExpansionParameterValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetExpansionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ValueSetSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

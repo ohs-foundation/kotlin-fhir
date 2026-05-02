@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,26 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.TestScript
-import com.google.fhir.model.r4.surrogates.TestScriptDestinationSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptFixtureSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptMetadataCapabilitySurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptMetadataLinkSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptMetadataSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptOriginSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptSetupActionAssertSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptSetupActionOperationRequestHeaderSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptSetupActionOperationSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptSetupActionSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptSetupSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptTeardownActionSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptTeardownSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptTestActionSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptTestSurrogate
-import com.google.fhir.model.r4.surrogates.TestScriptVariableSurrogate
+import dev.ohs.fhir.model.r4.TestScript
+import dev.ohs.fhir.model.r4.surrogates.TestScriptDestinationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptFixtureSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptMetadataCapabilitySurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptMetadataLinkSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptMetadataSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptOriginSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptSetupActionAssertSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptSetupActionOperationRequestHeaderSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptSetupActionOperationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptSetupActionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptSetupSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptTeardownActionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptTeardownSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptTestActionSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptTestSurrogate
+import dev.ohs.fhir.model.r4.surrogates.TestScriptVariableSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

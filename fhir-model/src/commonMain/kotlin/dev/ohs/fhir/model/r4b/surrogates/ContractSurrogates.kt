@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,41 +17,41 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.surrogates
+package dev.ohs.fhir.model.r4b.surrogates
 
-import com.google.fhir.model.r4b.Annotation
-import com.google.fhir.model.r4b.Attachment
-import com.google.fhir.model.r4b.Boolean as R4bBoolean
-import com.google.fhir.model.r4b.Code
-import com.google.fhir.model.r4b.CodeableConcept
-import com.google.fhir.model.r4b.Coding
-import com.google.fhir.model.r4b.Contract
-import com.google.fhir.model.r4b.Date
-import com.google.fhir.model.r4b.DateTime
-import com.google.fhir.model.r4b.Decimal
-import com.google.fhir.model.r4b.Element
-import com.google.fhir.model.r4b.Enumeration
-import com.google.fhir.model.r4b.Extension
-import com.google.fhir.model.r4b.FhirDate
-import com.google.fhir.model.r4b.FhirDateTime
-import com.google.fhir.model.r4b.Identifier
-import com.google.fhir.model.r4b.Integer
-import com.google.fhir.model.r4b.Markdown
-import com.google.fhir.model.r4b.Meta
-import com.google.fhir.model.r4b.Money
-import com.google.fhir.model.r4b.Narrative
-import com.google.fhir.model.r4b.Period
-import com.google.fhir.model.r4b.Quantity
-import com.google.fhir.model.r4b.Reference
-import com.google.fhir.model.r4b.Resource
-import com.google.fhir.model.r4b.Signature
-import com.google.fhir.model.r4b.String as R4bString
-import com.google.fhir.model.r4b.Time
-import com.google.fhir.model.r4b.Timing
-import com.google.fhir.model.r4b.UnsignedInt
-import com.google.fhir.model.r4b.Uri
-import com.google.fhir.model.r4b.serializers.DoubleSerializer
-import com.google.fhir.model.r4b.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r4b.Annotation
+import dev.ohs.fhir.model.r4b.Attachment
+import dev.ohs.fhir.model.r4b.Boolean as R4bBoolean
+import dev.ohs.fhir.model.r4b.Code
+import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Coding
+import dev.ohs.fhir.model.r4b.Contract
+import dev.ohs.fhir.model.r4b.Date
+import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Decimal
+import dev.ohs.fhir.model.r4b.Element
+import dev.ohs.fhir.model.r4b.Enumeration
+import dev.ohs.fhir.model.r4b.Extension
+import dev.ohs.fhir.model.r4b.FhirDate
+import dev.ohs.fhir.model.r4b.FhirDateTime
+import dev.ohs.fhir.model.r4b.Identifier
+import dev.ohs.fhir.model.r4b.Integer
+import dev.ohs.fhir.model.r4b.Markdown
+import dev.ohs.fhir.model.r4b.Meta
+import dev.ohs.fhir.model.r4b.Money
+import dev.ohs.fhir.model.r4b.Narrative
+import dev.ohs.fhir.model.r4b.Period
+import dev.ohs.fhir.model.r4b.Quantity
+import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.Resource
+import dev.ohs.fhir.model.r4b.Signature
+import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.Time
+import dev.ohs.fhir.model.r4b.Timing
+import dev.ohs.fhir.model.r4b.UnsignedInt
+import dev.ohs.fhir.model.r4b.Uri
+import dev.ohs.fhir.model.r4b.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r4b.serializers.LocalTimeSerializer
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Double
 import kotlin.Int

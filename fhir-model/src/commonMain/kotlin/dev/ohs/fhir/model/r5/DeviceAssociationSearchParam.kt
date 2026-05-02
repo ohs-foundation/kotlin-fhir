@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
-import kotlin.Any
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -29,7 +28,7 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: DeviceAssociation): List<T>
 
-  public data object Device : DeviceAssociationSearchParam<Any>() {
+  public data object Device : DeviceAssociationSearchParam<Reference>() {
     public override val paramName: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -38,10 +37,11 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Device")
 
-    public override fun extract(resource: DeviceAssociation): List<Any> = emptyList()
+    public override fun extract(resource: DeviceAssociation): List<Reference> =
+      listOf(resource.device)
   }
 
-  public data object Identifier : DeviceAssociationSearchParam<Any>() {
+  public data object Identifier : DeviceAssociationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,10 +50,12 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceAssociation): List<Any> = emptyList()
+    public override fun extract(
+      resource: DeviceAssociation
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Operator : DeviceAssociationSearchParam<Any>() {
+  public data object Operator : DeviceAssociationSearchParam<Reference>() {
     public override val paramName: String = "operator"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -62,10 +64,11 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("RelatedPerson", "Practitioner", "Patient")
 
-    public override fun extract(resource: DeviceAssociation): List<Any> = emptyList()
+    public override fun extract(resource: DeviceAssociation): List<Reference> =
+      resource.operation.flatMap { it.operator }
   }
 
-  public data object Patient : DeviceAssociationSearchParam<Any>() {
+  public data object Patient : DeviceAssociationSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,10 +77,13 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: DeviceAssociation): List<Any> = emptyList()
+    public override fun extract(resource: DeviceAssociation): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Status : DeviceAssociationSearchParam<Any>() {
+  public data object Status : DeviceAssociationSearchParam<CodeableConcept>() {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,10 +92,11 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceAssociation): List<Any> = emptyList()
+    public override fun extract(resource: DeviceAssociation): List<CodeableConcept> =
+      listOf(resource.status)
   }
 
-  public data object Subject : DeviceAssociationSearchParam<Any>() {
+  public data object Subject : DeviceAssociationSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,7 +105,10 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: DeviceAssociation): List<Any> = emptyList()
+    public override fun extract(resource: DeviceAssociation): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
   public companion object {

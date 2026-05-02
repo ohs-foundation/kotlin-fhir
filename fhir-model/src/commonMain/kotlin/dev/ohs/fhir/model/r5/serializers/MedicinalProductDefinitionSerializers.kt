@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.MedicinalProductDefinition
-import com.google.fhir.model.r5.surrogates.MedicinalProductDefinitionCharacteristicSurrogate
-import com.google.fhir.model.r5.surrogates.MedicinalProductDefinitionCharacteristicValueSurrogate
-import com.google.fhir.model.r5.surrogates.MedicinalProductDefinitionContactSurrogate
-import com.google.fhir.model.r5.surrogates.MedicinalProductDefinitionCrossReferenceSurrogate
-import com.google.fhir.model.r5.surrogates.MedicinalProductDefinitionNamePartSurrogate
-import com.google.fhir.model.r5.surrogates.MedicinalProductDefinitionNameSurrogate
-import com.google.fhir.model.r5.surrogates.MedicinalProductDefinitionNameUsageSurrogate
-import com.google.fhir.model.r5.surrogates.MedicinalProductDefinitionOperationSurrogate
-import com.google.fhir.model.r5.surrogates.MedicinalProductDefinitionSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.MedicinalProductDefinition
+import dev.ohs.fhir.model.r5.surrogates.MedicinalProductDefinitionCharacteristicSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicinalProductDefinitionCharacteristicValueSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicinalProductDefinitionContactSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicinalProductDefinitionCrossReferenceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicinalProductDefinitionNamePartSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicinalProductDefinitionNameSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicinalProductDefinitionNameUsageSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicinalProductDefinitionOperationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicinalProductDefinitionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

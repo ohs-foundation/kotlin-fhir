@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.MeasureReportGroupPopulationSerializer
-import com.google.fhir.model.r4b.serializers.MeasureReportGroupSerializer
-import com.google.fhir.model.r4b.serializers.MeasureReportGroupStratifierSerializer
-import com.google.fhir.model.r4b.serializers.MeasureReportGroupStratifierStratumComponentSerializer
-import com.google.fhir.model.r4b.serializers.MeasureReportGroupStratifierStratumPopulationSerializer
-import com.google.fhir.model.r4b.serializers.MeasureReportGroupStratifierStratumSerializer
-import com.google.fhir.model.r4b.serializers.MeasureReportSerializer
+import dev.ohs.fhir.model.r4b.serializers.MeasureReportGroupPopulationSerializer
+import dev.ohs.fhir.model.r4b.serializers.MeasureReportGroupSerializer
+import dev.ohs.fhir.model.r4b.serializers.MeasureReportGroupStratifierSerializer
+import dev.ohs.fhir.model.r4b.serializers.MeasureReportGroupStratifierStratumComponentSerializer
+import dev.ohs.fhir.model.r4b.serializers.MeasureReportGroupStratifierStratumPopulationSerializer
+import dev.ohs.fhir.model.r4b.serializers.MeasureReportGroupStratifierStratumSerializer
+import dev.ohs.fhir.model.r4b.serializers.MeasureReportSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

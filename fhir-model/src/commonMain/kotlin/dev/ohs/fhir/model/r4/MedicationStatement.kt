@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.MedicationStatementEffectiveSerializer
-import com.google.fhir.model.r4.serializers.MedicationStatementMedicationSerializer
-import com.google.fhir.model.r4.serializers.MedicationStatementSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationStatementEffectiveSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationStatementMedicationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationStatementSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -293,17 +293,15 @@ public data class MedicationStatement(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : Medication
-
-    public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) :
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       Medication
+
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Medication
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): Medication? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)
@@ -318,14 +316,14 @@ public data class MedicationStatement(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) : Effective
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Effective
 
-    public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Effective
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Effective
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r4.DateTime?,
-        periodValue: com.google.fhir.model.r4.Period?,
+        dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+        periodValue: dev.ohs.fhir.model.r4.Period?,
       ): Effective? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)

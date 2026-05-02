@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,24 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.PlanDefinition
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionActionConditionSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionActionDefinitionSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionActionDynamicValueSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionActionParticipantSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionActionRelatedActionOffsetSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionActionRelatedActionSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionActionSubjectSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionActionSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionActionTimingSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionGoalSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionGoalTargetDetailSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionGoalTargetSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionSubjectSurrogate
-import com.google.fhir.model.r4b.surrogates.PlanDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.PlanDefinition
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionActionConditionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionActionDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionActionDynamicValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionActionParticipantSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionActionRelatedActionOffsetSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionActionRelatedActionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionActionSubjectSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionActionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionActionTimingSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionGoalSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionGoalTargetDetailSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionGoalTargetSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionSubjectSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.PlanDefinitionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

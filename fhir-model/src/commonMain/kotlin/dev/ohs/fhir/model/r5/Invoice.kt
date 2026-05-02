@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.InvoiceLineItemChargeItemSerializer
-import com.google.fhir.model.r5.serializers.InvoiceLineItemSerializer
-import com.google.fhir.model.r5.serializers.InvoiceLineItemServicedSerializer
-import com.google.fhir.model.r5.serializers.InvoiceParticipantSerializer
-import com.google.fhir.model.r5.serializers.InvoicePeriodSerializer
-import com.google.fhir.model.r5.serializers.InvoiceSerializer
+import dev.ohs.fhir.model.r5.serializers.InvoiceLineItemChargeItemSerializer
+import dev.ohs.fhir.model.r5.serializers.InvoiceLineItemSerializer
+import dev.ohs.fhir.model.r5.serializers.InvoiceLineItemServicedSerializer
+import dev.ohs.fhir.model.r5.serializers.InvoiceParticipantSerializer
+import dev.ohs.fhir.model.r5.serializers.InvoicePeriodSerializer
+import dev.ohs.fhir.model.r5.serializers.InvoiceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -460,14 +460,14 @@ public data class Invoice(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Serviced
+      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Serviced
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Serviced
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Serviced
 
       public companion object {
         internal fun from(
-          dateValue: com.google.fhir.model.r5.Date?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateValue: dev.ohs.fhir.model.r5.Date?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): Serviced? {
           if (dateValue != null) return Date(dateValue)
           if (periodValue != null) return Period(periodValue)
@@ -482,17 +482,15 @@ public data class Invoice(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
-        ChargeItem
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : ChargeItem
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : ChargeItem
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        ChargeItem
 
       public companion object {
         internal fun from(
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): ChargeItem? {
           if (referenceValue != null) return Reference(referenceValue)
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
@@ -583,14 +581,14 @@ public data class Invoice(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Invoice.Period
+    public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Invoice.Period
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Invoice.Period
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Invoice.Period
 
     public companion object {
       internal fun from(
-        dateValue: com.google.fhir.model.r5.Date?,
-        periodValue: com.google.fhir.model.r5.Period?,
+        dateValue: dev.ohs.fhir.model.r5.Date?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
       ): Invoice.Period? {
         if (dateValue != null) return Date(dateValue)
         if (periodValue != null) return Period(periodValue)

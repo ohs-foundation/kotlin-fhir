@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,35 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.Contract
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.surrogates.ContractContentDefinitionSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractFriendlyContentSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractFriendlySurrogate
-import com.google.fhir.model.r4b.surrogates.ContractLegalContentSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractLegalSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractLegallyBindingSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractRuleContentSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractRuleSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractSignerSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermActionOccurrenceSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermActionSubjectSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermActionSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermAssetContextSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermAssetSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermAssetValuedItemEntitySurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermAssetValuedItemSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermOfferAnswerSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermOfferAnswerValueSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermOfferPartySurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermOfferSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermSecurityLabelSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTermTopicSurrogate
-import com.google.fhir.model.r4b.surrogates.ContractTopicSurrogate
+import dev.ohs.fhir.model.r4b.Contract
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.ContractContentDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractFriendlyContentSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractFriendlySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractLegalContentSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractLegalSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractLegallyBindingSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractRuleContentSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractRuleSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractSignerSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermActionOccurrenceSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermActionSubjectSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermActionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermAssetContextSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermAssetSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermAssetValuedItemEntitySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermAssetValuedItemSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermOfferAnswerSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermOfferAnswerValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermOfferPartySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermOfferSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermSecurityLabelSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTermTopicSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ContractTopicSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

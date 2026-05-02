@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,31 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r4b.FhirJsonTransformer
-import com.google.fhir.model.r4b.MedicationKnowledge
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesDosageSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesIndicationSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsCharacteristicSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeCostSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeDrugCharacteristicSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeDrugCharacteristicValueSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeIngredientItemSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeIngredientSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeKineticsSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeMedicineClassificationSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeMonitoringProgramSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeMonographSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgePackagingSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeRegulatoryMaxDispenseSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeRegulatoryScheduleSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeRegulatorySubstitutionSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeRegulatorySurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeRelatedMedicationKnowledgeSurrogate
-import com.google.fhir.model.r4b.surrogates.MedicationKnowledgeSurrogate
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.MedicationKnowledge
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesDosageSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesIndicationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsCharacteristicSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeAdministrationGuidelinesSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeCostSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeDrugCharacteristicSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeDrugCharacteristicValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeIngredientItemSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeIngredientSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeKineticsSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeMedicineClassificationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeMonitoringProgramSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeMonographSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgePackagingSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeRegulatoryMaxDispenseSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeRegulatoryScheduleSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeRegulatorySubstitutionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeRegulatorySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeRelatedMedicationKnowledgeSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.MedicationKnowledgeSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

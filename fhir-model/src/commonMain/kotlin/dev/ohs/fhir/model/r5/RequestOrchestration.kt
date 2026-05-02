@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionConditionSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionDefinitionSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionDynamicValueSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionInputSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionOutputSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionParticipantActorSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionParticipantSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionRelatedActionOffsetSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionRelatedActionSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationActionTimingSerializer
-import com.google.fhir.model.r5.serializers.RequestOrchestrationSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionConditionSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionDefinitionSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionDynamicValueSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionInputSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionOutputSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionParticipantActorSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionParticipantSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionRelatedActionOffsetSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionRelatedActionSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionTimingSerializer
+import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -939,14 +939,14 @@ public data class RequestOrchestration(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Duration(public val `value`: com.google.fhir.model.r5.Duration) : Offset
+        public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Offset
 
-        public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Offset
+        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Offset
 
         public companion object {
           internal fun from(
-            durationValue: com.google.fhir.model.r5.Duration?,
-            rangeValue: com.google.fhir.model.r5.Range?,
+            durationValue: dev.ohs.fhir.model.r5.Duration?,
+            rangeValue: dev.ohs.fhir.model.r5.Range?,
           ): Offset? {
             if (durationValue != null) return Duration(durationValue)
             if (rangeValue != null) return Range(rangeValue)
@@ -1104,14 +1104,14 @@ public data class RequestOrchestration(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) : Actor
+        public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Actor
 
-        public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Actor
+        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Actor
 
         public companion object {
           internal fun from(
-            canonicalValue: com.google.fhir.model.r5.Canonical?,
-            referenceValue: com.google.fhir.model.r5.Reference?,
+            canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
+            referenceValue: dev.ohs.fhir.model.r5.Reference?,
           ): Actor? {
             if (canonicalValue != null) return Canonical(canonicalValue)
             if (referenceValue != null) return Reference(referenceValue)
@@ -1372,28 +1372,28 @@ public data class RequestOrchestration(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) :
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
         Action.Timing
 
-      public data class Age(public val `value`: com.google.fhir.model.r5.Age) : Action.Timing
+      public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Action.Timing
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Action.Timing
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Action.Timing
 
-      public data class Duration(public val `value`: com.google.fhir.model.r5.Duration) :
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
         Action.Timing
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Action.Timing
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Action.Timing
 
-      public data class Timing(public val `value`: com.google.fhir.model.r5.Timing) : Action.Timing
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Action.Timing
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          ageValue: com.google.fhir.model.r5.Age?,
-          periodValue: com.google.fhir.model.r5.Period?,
-          durationValue: com.google.fhir.model.r5.Duration?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          timingValue: com.google.fhir.model.r5.Timing?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          ageValue: dev.ohs.fhir.model.r5.Age?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
+          durationValue: dev.ohs.fhir.model.r5.Duration?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          timingValue: dev.ohs.fhir.model.r5.Timing?,
         ): Action.Timing? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (ageValue != null) return Age(ageValue)
@@ -1412,15 +1412,14 @@ public data class RequestOrchestration(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r5.Canonical) :
-        Definition
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Definition
 
-      public data class Uri(public val `value`: com.google.fhir.model.r5.Uri) : Definition
+      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Definition
 
       public companion object {
         internal fun from(
-          canonicalValue: com.google.fhir.model.r5.Canonical?,
-          uriValue: com.google.fhir.model.r5.Uri?,
+          canonicalValue: dev.ohs.fhir.model.r5.Canonical?,
+          uriValue: dev.ohs.fhir.model.r5.Uri?,
         ): Definition? {
           if (canonicalValue != null) return Canonical(canonicalValue)
           if (uriValue != null) return Uri(uriValue)

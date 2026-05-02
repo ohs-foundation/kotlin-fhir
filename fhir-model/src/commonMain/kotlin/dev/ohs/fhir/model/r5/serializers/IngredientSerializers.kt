@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.Ingredient
-import com.google.fhir.model.r5.surrogates.IngredientManufacturerSurrogate
-import com.google.fhir.model.r5.surrogates.IngredientSubstanceStrengthConcentrationSurrogate
-import com.google.fhir.model.r5.surrogates.IngredientSubstanceStrengthPresentationSurrogate
-import com.google.fhir.model.r5.surrogates.IngredientSubstanceStrengthReferenceStrengthStrengthSurrogate
-import com.google.fhir.model.r5.surrogates.IngredientSubstanceStrengthReferenceStrengthSurrogate
-import com.google.fhir.model.r5.surrogates.IngredientSubstanceStrengthSurrogate
-import com.google.fhir.model.r5.surrogates.IngredientSubstanceSurrogate
-import com.google.fhir.model.r5.surrogates.IngredientSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.Ingredient
+import dev.ohs.fhir.model.r5.surrogates.IngredientManufacturerSurrogate
+import dev.ohs.fhir.model.r5.surrogates.IngredientSubstanceStrengthConcentrationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.IngredientSubstanceStrengthPresentationSurrogate
+import dev.ohs.fhir.model.r5.surrogates.IngredientSubstanceStrengthReferenceStrengthStrengthSurrogate
+import dev.ohs.fhir.model.r5.surrogates.IngredientSubstanceStrengthReferenceStrengthSurrogate
+import dev.ohs.fhir.model.r5.surrogates.IngredientSubstanceStrengthSurrogate
+import dev.ohs.fhir.model.r5.surrogates.IngredientSubstanceSurrogate
+import dev.ohs.fhir.model.r5.surrogates.IngredientSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

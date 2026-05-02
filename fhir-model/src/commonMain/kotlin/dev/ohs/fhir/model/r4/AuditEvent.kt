@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.AuditEventAgentNetworkSerializer
-import com.google.fhir.model.r4.serializers.AuditEventAgentSerializer
-import com.google.fhir.model.r4.serializers.AuditEventEntityDetailSerializer
-import com.google.fhir.model.r4.serializers.AuditEventEntityDetailValueSerializer
-import com.google.fhir.model.r4.serializers.AuditEventEntitySerializer
-import com.google.fhir.model.r4.serializers.AuditEventSerializer
-import com.google.fhir.model.r4.serializers.AuditEventSourceSerializer
+import dev.ohs.fhir.model.r4.serializers.AuditEventAgentNetworkSerializer
+import dev.ohs.fhir.model.r4.serializers.AuditEventAgentSerializer
+import dev.ohs.fhir.model.r4.serializers.AuditEventEntityDetailSerializer
+import dev.ohs.fhir.model.r4.serializers.AuditEventEntityDetailValueSerializer
+import dev.ohs.fhir.model.r4.serializers.AuditEventEntitySerializer
+import dev.ohs.fhir.model.r4.serializers.AuditEventSerializer
+import dev.ohs.fhir.model.r4.serializers.AuditEventSourceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -907,15 +907,15 @@ public data class AuditEvent(
 
         public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
-        public data class String(public val `value`: com.google.fhir.model.r4.String) : Value
+        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-        public data class Base64Binary(public val `value`: com.google.fhir.model.r4.Base64Binary) :
+        public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) :
           Value
 
         public companion object {
           internal fun from(
-            stringValue: com.google.fhir.model.r4.String?,
-            base64BinaryValue: com.google.fhir.model.r4.Base64Binary?,
+            stringValue: dev.ohs.fhir.model.r4.String?,
+            base64BinaryValue: dev.ohs.fhir.model.r4.Base64Binary?,
           ): Value? {
             if (stringValue != null) return String(stringValue)
             if (base64BinaryValue != null) return Base64Binary(base64BinaryValue)

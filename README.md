@@ -270,16 +270,16 @@ PatientSearchParam.ALL.forEach { it.extract(patient) }     // iterate all for in
 
 The codegen translates the following FHIRPath shapes into Kotlin extraction code:
 
-| Pattern                           | Example expression                            | Generated extraction                                                                                                                                                   |
-|:----------------------------------|:----------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Simple property                   | `Patient.birthDate`                           | `listOfNotNull(resource.birthDate)`                                                                                                                                    |
-| Nested path                       | `Patient.address.city`                        | `resource.address.mapNotNull { it.city }`                                                                                                                              |
-| List property                     | `Patient.identifier`                          | `resource.identifier`                                                                                                                                                  |
-| Element cast `(X.path as Type)`   | `(Patient.deceased as dateTime)`              | `listOfNotNull((resource.deceased as? Patient.Deceased.DateTime)?.value)`                                                                                              |
-| Element cast `X.path.as(Type)`    | `Condition.onset.as(dateTime)`                | `listOfNotNull((resource.onset as? Condition.Onset.DateTime)?.value)`                                                                                                  |
-| Element (no cast)                 | `Patient.deceased`                            | `listOfNotNull(resource.deceased)` — without a cast, the caller gets the `Patient.Deceased` sealed interface itself rather than the underlying `Boolean` or `DateTime` |
+| Pattern                           | Example expression                            | Generated extraction                                                                                                                                                                                                                                                                     |
+|:----------------------------------|:----------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Simple property                   | `Patient.birthDate`                           | `listOfNotNull(resource.birthDate)`                                                                                                                                                                                                                                                      |
+| Nested path                       | `Patient.address.city`                        | `resource.address.mapNotNull { it.city }`                                                                                                                                                                                                                                                |
+| List property                     | `Patient.identifier`                          | `resource.identifier`                                                                                                                                                                                                                                                                    |
+| Element cast `(X.path as Type)`   | `(Patient.deceased as dateTime)`              | `listOfNotNull((resource.deceased as? Patient.Deceased.DateTime)?.value)`                                                                                                                                                                                                                |
+| Element cast `X.path.as(Type)`    | `Condition.onset.as(dateTime)`                | `listOfNotNull((resource.onset as? Condition.Onset.DateTime)?.value)`                                                                                                                                                                                                                    |
+| Element (no cast)                 | `Patient.deceased`                            | `listOfNotNull(resource.deceased)` — without a cast, the caller gets the `Patient.Deceased` sealed interface itself rather than the underlying `Boolean` or `DateTime`                                                                                                                   |
 | `where(resolve() is Type)` filter | `Account.subject.where(resolve() is Patient)` | `resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }` — substring-matches `Reference.reference` against `Type/`, covering relative and absolute URL forms. Misses URN-form (`urn:uuid:…`), contained (`#id`), and `Reference.type`-only references |
-| `where(field='value')` filter     | `Patient.telecom.where(system='email')`       | `resource.telecom.filter { it.system?.value?.toString() == "email" }`                                                                                                  |
+| `where(field='value')` filter     | `Patient.telecom.where(system='email')`       | `resource.telecom.filter { it.system?.value?.toString() == "email" }`                                                                                                                                                                                                                    |
 
 #### Unsupported FHIRPath patterns
 
@@ -728,6 +728,7 @@ and the
 > and Maven Central.
 
 #### Maven Local
+
 To publish artifacts to your local Maven repository (`~/.m2/repository`) for local development and
 testing, run:
 
@@ -736,6 +737,7 @@ testing, run:
 ```
 
 #### Maven Central
+
 To publish a new release to Maven Central, first set up your GPG signing key and repository
 credentials to Gradle following the aforementioned official guides.
 
@@ -757,6 +759,7 @@ signing.secretKeyRingFile=/path/to/secring.gpg
 ```
 
 You can verify your signing setup by running:
+
 ```bash
 ./gradlew :fhir-model:checkSigningConfiguration
 ```

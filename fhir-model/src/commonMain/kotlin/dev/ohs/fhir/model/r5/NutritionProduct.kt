@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.NutritionProductCharacteristicSerializer
-import com.google.fhir.model.r5.serializers.NutritionProductCharacteristicValueSerializer
-import com.google.fhir.model.r5.serializers.NutritionProductIngredientSerializer
-import com.google.fhir.model.r5.serializers.NutritionProductInstanceSerializer
-import com.google.fhir.model.r5.serializers.NutritionProductNutrientSerializer
-import com.google.fhir.model.r5.serializers.NutritionProductSerializer
+import dev.ohs.fhir.model.r5.serializers.NutritionProductCharacteristicSerializer
+import dev.ohs.fhir.model.r5.serializers.NutritionProductCharacteristicValueSerializer
+import dev.ohs.fhir.model.r5.serializers.NutritionProductIngredientSerializer
+import dev.ohs.fhir.model.r5.serializers.NutritionProductInstanceSerializer
+import dev.ohs.fhir.model.r5.serializers.NutritionProductNutrientSerializer
+import dev.ohs.fhir.model.r5.serializers.NutritionProductSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -509,29 +509,28 @@ public data class NutritionProduct(
 
       public fun asBoolean(): Boolean? = this as? Boolean
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Value
-
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
-
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
-
-      public data class Base64Binary(public val `value`: com.google.fhir.model.r5.Base64Binary) :
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         Value
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) : Value
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+
+      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
+        Value
+
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
+
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          stringValue: com.google.fhir.model.r5.String?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          base64BinaryValue: com.google.fhir.model.r5.Base64Binary?,
-          attachmentValue: com.google.fhir.model.r5.Attachment?,
-          booleanValue: com.google.fhir.model.r5.Boolean?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          base64BinaryValue: dev.ohs.fhir.model.r5.Base64Binary?,
+          attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
+          booleanValue: dev.ohs.fhir.model.r5.Boolean?,
         ): Value? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (stringValue != null) return String(stringValue)

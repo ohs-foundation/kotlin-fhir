@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.fhir.codegen
+package dev.ohs.fhir.codegen
 
-import com.google.fhir.codegen.schema.Element
-import com.google.fhir.codegen.schema.getElementName
-import com.google.fhir.codegen.schema.isBackboneElement
+import dev.ohs.fhir.codegen.schema.Element
+import dev.ohs.fhir.codegen.schema.getElementName
+import dev.ohs.fhir.codegen.schema.isBackboneElement
 
 /**
  * A resolved segment of a FHIRPath expression, representing a single property access step.

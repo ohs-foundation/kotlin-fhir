@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,23 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.PlanDefinitionActionConditionSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionActionDefinitionSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionActionDynamicValueSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionActionParticipantSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionActionRelatedActionOffsetSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionActionRelatedActionSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionActionSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionActionSubjectSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionActionTimingSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionGoalSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionGoalTargetDetailSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionGoalTargetSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionSerializer
-import com.google.fhir.model.r4.serializers.PlanDefinitionSubjectSerializer
-import com.google.fhir.model.r4.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionActionConditionSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionActionDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionActionDynamicValueSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionActionParticipantSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionActionRelatedActionOffsetSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionActionRelatedActionSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionActionSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionActionSubjectSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionActionTimingSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionGoalSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionGoalTargetDetailSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionGoalTargetSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionSerializer
+import dev.ohs.fhir.model.r4.serializers.PlanDefinitionSubjectSerializer
+import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -573,19 +573,19 @@ public data class PlanDefinition(
 
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4.Quantity) : Detail
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Detail
 
-        public data class Range(public val `value`: com.google.fhir.model.r4.Range) : Detail
+        public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Detail
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r4.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
         ) : Detail
 
         public companion object {
           internal fun from(
-            quantityValue: com.google.fhir.model.r4.Quantity?,
-            rangeValue: com.google.fhir.model.r4.Range?,
-            codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
+            quantityValue: dev.ohs.fhir.model.r4.Quantity?,
+            rangeValue: dev.ohs.fhir.model.r4.Range?,
+            codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
           ): Detail? {
             if (quantityValue != null) return Quantity(quantityValue)
             if (rangeValue != null) return Range(rangeValue)
@@ -1160,14 +1160,14 @@ public data class PlanDefinition(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Duration(public val `value`: com.google.fhir.model.r4.Duration) : Offset
+        public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) : Offset
 
-        public data class Range(public val `value`: com.google.fhir.model.r4.Range) : Offset
+        public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Offset
 
         public companion object {
           internal fun from(
-            durationValue: com.google.fhir.model.r4.Duration?,
-            rangeValue: com.google.fhir.model.r4.Range?,
+            durationValue: dev.ohs.fhir.model.r4.Duration?,
+            rangeValue: dev.ohs.fhir.model.r4.Range?,
           ): Offset? {
             if (durationValue != null) return Duration(durationValue)
             if (rangeValue != null) return Range(rangeValue)
@@ -1516,16 +1516,15 @@ public data class PlanDefinition(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4.CodeableConcept
-      ) : Subject
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+        Subject
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Subject
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Subject
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r4.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r4.Reference?,
         ): Subject? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -1548,28 +1547,28 @@ public data class PlanDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4.DateTime) :
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
         Action.Timing
 
-      public data class Age(public val `value`: com.google.fhir.model.r4.Age) : Action.Timing
+      public data class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Action.Timing
 
-      public data class Period(public val `value`: com.google.fhir.model.r4.Period) : Action.Timing
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Action.Timing
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4.Duration) :
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
         Action.Timing
 
-      public data class Range(public val `value`: com.google.fhir.model.r4.Range) : Action.Timing
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Action.Timing
 
-      public data class Timing(public val `value`: com.google.fhir.model.r4.Timing) : Action.Timing
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Action.Timing
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r4.DateTime?,
-          ageValue: com.google.fhir.model.r4.Age?,
-          periodValue: com.google.fhir.model.r4.Period?,
-          durationValue: com.google.fhir.model.r4.Duration?,
-          rangeValue: com.google.fhir.model.r4.Range?,
-          timingValue: com.google.fhir.model.r4.Timing?,
+          dateTimeValue: dev.ohs.fhir.model.r4.DateTime?,
+          ageValue: dev.ohs.fhir.model.r4.Age?,
+          periodValue: dev.ohs.fhir.model.r4.Period?,
+          durationValue: dev.ohs.fhir.model.r4.Duration?,
+          rangeValue: dev.ohs.fhir.model.r4.Range?,
+          timingValue: dev.ohs.fhir.model.r4.Timing?,
         ): Action.Timing? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (ageValue != null) return Age(ageValue)
@@ -1588,15 +1587,14 @@ public data class PlanDefinition(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r4.Canonical) :
-        Definition
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Definition
 
-      public data class Uri(public val `value`: com.google.fhir.model.r4.Uri) : Definition
+      public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Definition
 
       public companion object {
         internal fun from(
-          canonicalValue: com.google.fhir.model.r4.Canonical?,
-          uriValue: com.google.fhir.model.r4.Uri?,
+          canonicalValue: dev.ohs.fhir.model.r4.Canonical?,
+          uriValue: dev.ohs.fhir.model.r4.Uri?,
         ): Definition? {
           if (canonicalValue != null) return Canonical(canonicalValue)
           if (uriValue != null) return Uri(uriValue)
@@ -1839,16 +1837,15 @@ public data class PlanDefinition(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4.CodeableConcept
-    ) : Subject
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+      Subject
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4.Reference) : Subject
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Subject
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r4.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r4.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r4.Reference?,
       ): Subject? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,24 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.ElementDefinitionBaseSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionBindingSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionConstraintSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionDefaultValueSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionExampleSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionExampleValueSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionFixedSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionMappingSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionMaxValueSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionMinValueSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionPatternSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionSlicingDiscriminatorSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionSlicingSerializer
-import com.google.fhir.model.r4b.serializers.ElementDefinitionTypeSerializer
-import com.google.fhir.model.r4b.terminologies.BindingStrength
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionBaseSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionBindingSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionConstraintSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionDefaultValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionExampleSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionExampleValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionFixedSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionMappingSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionMaxValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionMinValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionPatternSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionSlicingDiscriminatorSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionSlicingSerializer
+import dev.ohs.fhir.model.r4b.serializers.ElementDefinitionTypeSerializer
+import dev.ohs.fhir.model.r4b.terminologies.BindingStrength
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1126,186 +1126,177 @@ public data class ElementDefinition(
 
       public fun asDosage(): Dosage? = this as? Dosage
 
-      public data class Base64Binary(public val `value`: com.google.fhir.model.r4b.Base64Binary) :
+      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4b.Base64Binary) :
         Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-      public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) : Value
+      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Value
 
-      public data class Code(public val `value`: com.google.fhir.model.r4b.Code) : Value
+      public data class Code(public val `value`: dev.ohs.fhir.model.r4b.Code) : Value
 
-      public data class Date(public val `value`: com.google.fhir.model.r4b.Date) : Value
+      public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Value
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Value
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
 
-      public data class Decimal(public val `value`: com.google.fhir.model.r4b.Decimal) : Value
+      public data class Decimal(public val `value`: dev.ohs.fhir.model.r4b.Decimal) : Value
 
-      public data class Id(public val `value`: com.google.fhir.model.r4b.Id) : Value
+      public data class Id(public val `value`: dev.ohs.fhir.model.r4b.Id) : Value
 
-      public data class Instant(public val `value`: com.google.fhir.model.r4b.Instant) : Value
+      public data class Instant(public val `value`: dev.ohs.fhir.model.r4b.Instant) : Value
 
-      public data class Integer(public val `value`: com.google.fhir.model.r4b.Integer) : Value
+      public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
 
-      public data class Markdown(public val `value`: com.google.fhir.model.r4b.Markdown) : Value
+      public data class Markdown(public val `value`: dev.ohs.fhir.model.r4b.Markdown) : Value
 
-      public data class Oid(public val `value`: com.google.fhir.model.r4b.Oid) : Value
+      public data class Oid(public val `value`: dev.ohs.fhir.model.r4b.Oid) : Value
 
-      public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
-        Value
+      public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) : Value
 
-      public data class String(public val `value`: com.google.fhir.model.r4b.String) : Value
+      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
 
-      public data class Time(public val `value`: com.google.fhir.model.r4b.Time) : Value
+      public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
 
-      public data class UnsignedInt(public val `value`: com.google.fhir.model.r4b.UnsignedInt) :
-        Value
+      public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) : Value
 
-      public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Value
+      public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Value
 
-      public data class Url(public val `value`: com.google.fhir.model.r4b.Url) : Value
+      public data class Url(public val `value`: dev.ohs.fhir.model.r4b.Url) : Value
 
-      public data class Uuid(public val `value`: com.google.fhir.model.r4b.Uuid) : Value
+      public data class Uuid(public val `value`: dev.ohs.fhir.model.r4b.Uuid) : Value
 
-      public data class Address(public val `value`: com.google.fhir.model.r4b.Address) : Value
+      public data class Address(public val `value`: dev.ohs.fhir.model.r4b.Address) : Value
 
-      public data class Age(public val `value`: com.google.fhir.model.r4b.Age) : Value
+      public data class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : Value
 
-      public data class Annotation(public val `value`: com.google.fhir.model.r4b.Annotation) :
-        Value
+      public data class Annotation(public val `value`: dev.ohs.fhir.model.r4b.Annotation) : Value
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
-        Value
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Value
 
       public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Value
 
       public data class CodeableReference(
-        public val `value`: com.google.fhir.model.r4b.CodeableReference
+        public val `value`: dev.ohs.fhir.model.r4b.CodeableReference
       ) : Value
 
-      public data class Coding(public val `value`: com.google.fhir.model.r4b.Coding) : Value
+      public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : Value
 
-      public data class ContactPoint(public val `value`: com.google.fhir.model.r4b.ContactPoint) :
+      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r4b.ContactPoint) :
         Value
 
-      public data class Count(public val `value`: com.google.fhir.model.r4b.Count) : Value
+      public data class Count(public val `value`: dev.ohs.fhir.model.r4b.Count) : Value
 
-      public data class Distance(public val `value`: com.google.fhir.model.r4b.Distance) : Value
+      public data class Distance(public val `value`: dev.ohs.fhir.model.r4b.Distance) : Value
 
-      public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) : Value
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Value
 
-      public data class HumanName(public val `value`: com.google.fhir.model.r4b.HumanName) : Value
+      public data class HumanName(public val `value`: dev.ohs.fhir.model.r4b.HumanName) : Value
 
-      public data class Identifier(public val `value`: com.google.fhir.model.r4b.Identifier) :
+      public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) : Value
+
+      public data class Money(public val `value`: dev.ohs.fhir.model.r4b.Money) : Value
+
+      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Value
+
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
+
+      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
+
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Value
+
+      public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) : Value
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Value
+
+      public data class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) : Value
+
+      public data class Signature(public val `value`: dev.ohs.fhir.model.r4b.Signature) : Value
+
+      public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Value
+
+      public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r4b.ContactDetail) :
         Value
 
-      public data class Money(public val `value`: com.google.fhir.model.r4b.Money) : Value
-
-      public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Value
-
-      public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Value
-
-      public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Value
-
-      public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) : Value
-
-      public data class RatioRange(public val `value`: com.google.fhir.model.r4b.RatioRange) :
-        Value
-
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Value
-
-      public data class SampledData(public val `value`: com.google.fhir.model.r4b.SampledData) :
-        Value
-
-      public data class Signature(public val `value`: com.google.fhir.model.r4b.Signature) : Value
-
-      public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) : Value
-
-      public data class ContactDetail(public val `value`: com.google.fhir.model.r4b.ContactDetail) :
-        Value
-
-      public data class Contributor(public val `value`: com.google.fhir.model.r4b.Contributor) :
-        Value
+      public data class Contributor(public val `value`: dev.ohs.fhir.model.r4b.Contributor) : Value
 
       public data class DataRequirement(
-        public val `value`: com.google.fhir.model.r4b.DataRequirement
+        public val `value`: dev.ohs.fhir.model.r4b.DataRequirement
       ) : Value
 
-      public data class Expression(public val `value`: com.google.fhir.model.r4b.Expression) :
-        Value
+      public data class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) : Value
 
       public data class ParameterDefinition(
-        public val `value`: com.google.fhir.model.r4b.ParameterDefinition
+        public val `value`: dev.ohs.fhir.model.r4b.ParameterDefinition
       ) : Value
 
       public data class RelatedArtifact(
-        public val `value`: com.google.fhir.model.r4b.RelatedArtifact
+        public val `value`: dev.ohs.fhir.model.r4b.RelatedArtifact
       ) : Value
 
       public data class TriggerDefinition(
-        public val `value`: com.google.fhir.model.r4b.TriggerDefinition
+        public val `value`: dev.ohs.fhir.model.r4b.TriggerDefinition
       ) : Value
 
-      public data class UsageContext(public val `value`: com.google.fhir.model.r4b.UsageContext) :
+      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r4b.UsageContext) :
         Value
 
-      public data class Dosage(public val `value`: com.google.fhir.model.r4b.Dosage) : Value
+      public data class Dosage(public val `value`: dev.ohs.fhir.model.r4b.Dosage) : Value
 
       public companion object {
         internal fun from(
-          base64BinaryValue: com.google.fhir.model.r4b.Base64Binary?,
-          booleanValue: com.google.fhir.model.r4b.Boolean?,
-          canonicalValue: com.google.fhir.model.r4b.Canonical?,
-          codeValue: com.google.fhir.model.r4b.Code?,
-          dateValue: com.google.fhir.model.r4b.Date?,
-          dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-          decimalValue: com.google.fhir.model.r4b.Decimal?,
-          idValue: com.google.fhir.model.r4b.Id?,
-          instantValue: com.google.fhir.model.r4b.Instant?,
-          integerValue: com.google.fhir.model.r4b.Integer?,
-          markdownValue: com.google.fhir.model.r4b.Markdown?,
-          oidValue: com.google.fhir.model.r4b.Oid?,
-          positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-          stringValue: com.google.fhir.model.r4b.String?,
-          timeValue: com.google.fhir.model.r4b.Time?,
-          unsignedIntValue: com.google.fhir.model.r4b.UnsignedInt?,
-          uriValue: com.google.fhir.model.r4b.Uri?,
-          urlValue: com.google.fhir.model.r4b.Url?,
-          uuidValue: com.google.fhir.model.r4b.Uuid?,
-          addressValue: com.google.fhir.model.r4b.Address?,
-          ageValue: com.google.fhir.model.r4b.Age?,
-          annotationValue: com.google.fhir.model.r4b.Annotation?,
-          attachmentValue: com.google.fhir.model.r4b.Attachment?,
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          codeableReferenceValue: com.google.fhir.model.r4b.CodeableReference?,
-          codingValue: com.google.fhir.model.r4b.Coding?,
-          contactPointValue: com.google.fhir.model.r4b.ContactPoint?,
-          countValue: com.google.fhir.model.r4b.Count?,
-          distanceValue: com.google.fhir.model.r4b.Distance?,
-          durationValue: com.google.fhir.model.r4b.Duration?,
-          humanNameValue: com.google.fhir.model.r4b.HumanName?,
-          identifierValue: com.google.fhir.model.r4b.Identifier?,
-          moneyValue: com.google.fhir.model.r4b.Money?,
-          periodValue: com.google.fhir.model.r4b.Period?,
-          quantityValue: com.google.fhir.model.r4b.Quantity?,
-          rangeValue: com.google.fhir.model.r4b.Range?,
-          ratioValue: com.google.fhir.model.r4b.Ratio?,
-          ratioRangeValue: com.google.fhir.model.r4b.RatioRange?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
-          sampledDataValue: com.google.fhir.model.r4b.SampledData?,
-          signatureValue: com.google.fhir.model.r4b.Signature?,
-          timingValue: com.google.fhir.model.r4b.Timing?,
-          contactDetailValue: com.google.fhir.model.r4b.ContactDetail?,
-          contributorValue: com.google.fhir.model.r4b.Contributor?,
-          dataRequirementValue: com.google.fhir.model.r4b.DataRequirement?,
-          expressionValue: com.google.fhir.model.r4b.Expression?,
-          parameterDefinitionValue: com.google.fhir.model.r4b.ParameterDefinition?,
-          relatedArtifactValue: com.google.fhir.model.r4b.RelatedArtifact?,
-          triggerDefinitionValue: com.google.fhir.model.r4b.TriggerDefinition?,
-          usageContextValue: com.google.fhir.model.r4b.UsageContext?,
-          dosageValue: com.google.fhir.model.r4b.Dosage?,
+          base64BinaryValue: dev.ohs.fhir.model.r4b.Base64Binary?,
+          booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+          canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
+          codeValue: dev.ohs.fhir.model.r4b.Code?,
+          dateValue: dev.ohs.fhir.model.r4b.Date?,
+          dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+          decimalValue: dev.ohs.fhir.model.r4b.Decimal?,
+          idValue: dev.ohs.fhir.model.r4b.Id?,
+          instantValue: dev.ohs.fhir.model.r4b.Instant?,
+          integerValue: dev.ohs.fhir.model.r4b.Integer?,
+          markdownValue: dev.ohs.fhir.model.r4b.Markdown?,
+          oidValue: dev.ohs.fhir.model.r4b.Oid?,
+          positiveIntValue: dev.ohs.fhir.model.r4b.PositiveInt?,
+          stringValue: dev.ohs.fhir.model.r4b.String?,
+          timeValue: dev.ohs.fhir.model.r4b.Time?,
+          unsignedIntValue: dev.ohs.fhir.model.r4b.UnsignedInt?,
+          uriValue: dev.ohs.fhir.model.r4b.Uri?,
+          urlValue: dev.ohs.fhir.model.r4b.Url?,
+          uuidValue: dev.ohs.fhir.model.r4b.Uuid?,
+          addressValue: dev.ohs.fhir.model.r4b.Address?,
+          ageValue: dev.ohs.fhir.model.r4b.Age?,
+          annotationValue: dev.ohs.fhir.model.r4b.Annotation?,
+          attachmentValue: dev.ohs.fhir.model.r4b.Attachment?,
+          codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+          codeableReferenceValue: dev.ohs.fhir.model.r4b.CodeableReference?,
+          codingValue: dev.ohs.fhir.model.r4b.Coding?,
+          contactPointValue: dev.ohs.fhir.model.r4b.ContactPoint?,
+          countValue: dev.ohs.fhir.model.r4b.Count?,
+          distanceValue: dev.ohs.fhir.model.r4b.Distance?,
+          durationValue: dev.ohs.fhir.model.r4b.Duration?,
+          humanNameValue: dev.ohs.fhir.model.r4b.HumanName?,
+          identifierValue: dev.ohs.fhir.model.r4b.Identifier?,
+          moneyValue: dev.ohs.fhir.model.r4b.Money?,
+          periodValue: dev.ohs.fhir.model.r4b.Period?,
+          quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r4b.Range?,
+          ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+          ratioRangeValue: dev.ohs.fhir.model.r4b.RatioRange?,
+          referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+          sampledDataValue: dev.ohs.fhir.model.r4b.SampledData?,
+          signatureValue: dev.ohs.fhir.model.r4b.Signature?,
+          timingValue: dev.ohs.fhir.model.r4b.Timing?,
+          contactDetailValue: dev.ohs.fhir.model.r4b.ContactDetail?,
+          contributorValue: dev.ohs.fhir.model.r4b.Contributor?,
+          dataRequirementValue: dev.ohs.fhir.model.r4b.DataRequirement?,
+          expressionValue: dev.ohs.fhir.model.r4b.Expression?,
+          parameterDefinitionValue: dev.ohs.fhir.model.r4b.ParameterDefinition?,
+          relatedArtifactValue: dev.ohs.fhir.model.r4b.RelatedArtifact?,
+          triggerDefinitionValue: dev.ohs.fhir.model.r4b.TriggerDefinition?,
+          usageContextValue: dev.ohs.fhir.model.r4b.UsageContext?,
+          dosageValue: dev.ohs.fhir.model.r4b.Dosage?,
         ): Value? {
           if (base64BinaryValue != null) return Base64Binary(base64BinaryValue)
           if (booleanValue != null) return Boolean(booleanValue)
@@ -1888,195 +1879,187 @@ public data class ElementDefinition(
 
     public fun asDosage(): Dosage? = this as? Dosage
 
-    public data class Base64Binary(public val `value`: com.google.fhir.model.r4b.Base64Binary) :
+    public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4b.Base64Binary) :
       DefaultValue
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : DefaultValue
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : DefaultValue
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) :
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
       DefaultValue
 
-    public data class Code(public val `value`: com.google.fhir.model.r4b.Code) : DefaultValue
+    public data class Code(public val `value`: dev.ohs.fhir.model.r4b.Code) : DefaultValue
 
-    public data class Date(public val `value`: com.google.fhir.model.r4b.Date) : DefaultValue
+    public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : DefaultValue
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) :
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : DefaultValue
+
+    public data class Decimal(public val `value`: dev.ohs.fhir.model.r4b.Decimal) : DefaultValue
+
+    public data class Id(public val `value`: dev.ohs.fhir.model.r4b.Id) : DefaultValue
+
+    public data class Instant(public val `value`: dev.ohs.fhir.model.r4b.Instant) : DefaultValue
+
+    public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : DefaultValue
+
+    public data class Markdown(public val `value`: dev.ohs.fhir.model.r4b.Markdown) : DefaultValue
+
+    public data class Oid(public val `value`: dev.ohs.fhir.model.r4b.Oid) : DefaultValue
+
+    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
       DefaultValue
 
-    public data class Decimal(public val `value`: com.google.fhir.model.r4b.Decimal) : DefaultValue
+    public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : DefaultValue
 
-    public data class Id(public val `value`: com.google.fhir.model.r4b.Id) : DefaultValue
+    public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : DefaultValue
 
-    public data class Instant(public val `value`: com.google.fhir.model.r4b.Instant) : DefaultValue
-
-    public data class Integer(public val `value`: com.google.fhir.model.r4b.Integer) : DefaultValue
-
-    public data class Markdown(public val `value`: com.google.fhir.model.r4b.Markdown) :
+    public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) :
       DefaultValue
 
-    public data class Oid(public val `value`: com.google.fhir.model.r4b.Oid) : DefaultValue
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : DefaultValue
 
-    public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
+    public data class Url(public val `value`: dev.ohs.fhir.model.r4b.Url) : DefaultValue
+
+    public data class Uuid(public val `value`: dev.ohs.fhir.model.r4b.Uuid) : DefaultValue
+
+    public data class Address(public val `value`: dev.ohs.fhir.model.r4b.Address) : DefaultValue
+
+    public data class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : DefaultValue
+
+    public data class Annotation(public val `value`: dev.ohs.fhir.model.r4b.Annotation) :
       DefaultValue
 
-    public data class String(public val `value`: com.google.fhir.model.r4b.String) : DefaultValue
-
-    public data class Time(public val `value`: com.google.fhir.model.r4b.Time) : DefaultValue
-
-    public data class UnsignedInt(public val `value`: com.google.fhir.model.r4b.UnsignedInt) :
+    public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) :
       DefaultValue
 
-    public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : DefaultValue
-
-    public data class Url(public val `value`: com.google.fhir.model.r4b.Url) : DefaultValue
-
-    public data class Uuid(public val `value`: com.google.fhir.model.r4b.Uuid) : DefaultValue
-
-    public data class Address(public val `value`: com.google.fhir.model.r4b.Address) : DefaultValue
-
-    public data class Age(public val `value`: com.google.fhir.model.r4b.Age) : DefaultValue
-
-    public data class Annotation(public val `value`: com.google.fhir.model.r4b.Annotation) :
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       DefaultValue
-
-    public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
-      DefaultValue
-
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : DefaultValue
 
     public data class CodeableReference(
-      public val `value`: com.google.fhir.model.r4b.CodeableReference
+      public val `value`: dev.ohs.fhir.model.r4b.CodeableReference
     ) : DefaultValue
 
-    public data class Coding(public val `value`: com.google.fhir.model.r4b.Coding) : DefaultValue
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : DefaultValue
 
-    public data class ContactPoint(public val `value`: com.google.fhir.model.r4b.ContactPoint) :
+    public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r4b.ContactPoint) :
       DefaultValue
 
-    public data class Count(public val `value`: com.google.fhir.model.r4b.Count) : DefaultValue
+    public data class Count(public val `value`: dev.ohs.fhir.model.r4b.Count) : DefaultValue
 
-    public data class Distance(public val `value`: com.google.fhir.model.r4b.Distance) :
+    public data class Distance(public val `value`: dev.ohs.fhir.model.r4b.Distance) : DefaultValue
+
+    public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : DefaultValue
+
+    public data class HumanName(public val `value`: dev.ohs.fhir.model.r4b.HumanName) :
       DefaultValue
 
-    public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) :
+    public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) :
       DefaultValue
 
-    public data class HumanName(public val `value`: com.google.fhir.model.r4b.HumanName) :
+    public data class Money(public val `value`: dev.ohs.fhir.model.r4b.Money) : DefaultValue
+
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : DefaultValue
+
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : DefaultValue
+
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : DefaultValue
+
+    public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : DefaultValue
+
+    public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
       DefaultValue
 
-    public data class Identifier(public val `value`: com.google.fhir.model.r4b.Identifier) :
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
       DefaultValue
 
-    public data class Money(public val `value`: com.google.fhir.model.r4b.Money) : DefaultValue
-
-    public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : DefaultValue
-
-    public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) :
+    public data class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) :
       DefaultValue
 
-    public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : DefaultValue
-
-    public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) : DefaultValue
-
-    public data class RatioRange(public val `value`: com.google.fhir.model.r4b.RatioRange) :
+    public data class Signature(public val `value`: dev.ohs.fhir.model.r4b.Signature) :
       DefaultValue
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) :
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : DefaultValue
+
+    public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r4b.ContactDetail) :
       DefaultValue
 
-    public data class SampledData(public val `value`: com.google.fhir.model.r4b.SampledData) :
+    public data class Contributor(public val `value`: dev.ohs.fhir.model.r4b.Contributor) :
       DefaultValue
 
-    public data class Signature(public val `value`: com.google.fhir.model.r4b.Signature) :
+    public data class DataRequirement(public val `value`: dev.ohs.fhir.model.r4b.DataRequirement) :
       DefaultValue
 
-    public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) : DefaultValue
-
-    public data class ContactDetail(public val `value`: com.google.fhir.model.r4b.ContactDetail) :
-      DefaultValue
-
-    public data class Contributor(public val `value`: com.google.fhir.model.r4b.Contributor) :
-      DefaultValue
-
-    public data class DataRequirement(
-      public val `value`: com.google.fhir.model.r4b.DataRequirement
-    ) : DefaultValue
-
-    public data class Expression(public val `value`: com.google.fhir.model.r4b.Expression) :
+    public data class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) :
       DefaultValue
 
     public data class ParameterDefinition(
-      public val `value`: com.google.fhir.model.r4b.ParameterDefinition
+      public val `value`: dev.ohs.fhir.model.r4b.ParameterDefinition
     ) : DefaultValue
 
-    public data class RelatedArtifact(
-      public val `value`: com.google.fhir.model.r4b.RelatedArtifact
-    ) : DefaultValue
-
-    public data class TriggerDefinition(
-      public val `value`: com.google.fhir.model.r4b.TriggerDefinition
-    ) : DefaultValue
-
-    public data class UsageContext(public val `value`: com.google.fhir.model.r4b.UsageContext) :
+    public data class RelatedArtifact(public val `value`: dev.ohs.fhir.model.r4b.RelatedArtifact) :
       DefaultValue
 
-    public data class Dosage(public val `value`: com.google.fhir.model.r4b.Dosage) : DefaultValue
+    public data class TriggerDefinition(
+      public val `value`: dev.ohs.fhir.model.r4b.TriggerDefinition
+    ) : DefaultValue
+
+    public data class UsageContext(public val `value`: dev.ohs.fhir.model.r4b.UsageContext) :
+      DefaultValue
+
+    public data class Dosage(public val `value`: dev.ohs.fhir.model.r4b.Dosage) : DefaultValue
 
     public companion object {
       internal fun from(
-        base64BinaryValue: com.google.fhir.model.r4b.Base64Binary?,
-        booleanValue: com.google.fhir.model.r4b.Boolean?,
-        canonicalValue: com.google.fhir.model.r4b.Canonical?,
-        codeValue: com.google.fhir.model.r4b.Code?,
-        dateValue: com.google.fhir.model.r4b.Date?,
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        decimalValue: com.google.fhir.model.r4b.Decimal?,
-        idValue: com.google.fhir.model.r4b.Id?,
-        instantValue: com.google.fhir.model.r4b.Instant?,
-        integerValue: com.google.fhir.model.r4b.Integer?,
-        markdownValue: com.google.fhir.model.r4b.Markdown?,
-        oidValue: com.google.fhir.model.r4b.Oid?,
-        positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-        stringValue: com.google.fhir.model.r4b.String?,
-        timeValue: com.google.fhir.model.r4b.Time?,
-        unsignedIntValue: com.google.fhir.model.r4b.UnsignedInt?,
-        uriValue: com.google.fhir.model.r4b.Uri?,
-        urlValue: com.google.fhir.model.r4b.Url?,
-        uuidValue: com.google.fhir.model.r4b.Uuid?,
-        addressValue: com.google.fhir.model.r4b.Address?,
-        ageValue: com.google.fhir.model.r4b.Age?,
-        annotationValue: com.google.fhir.model.r4b.Annotation?,
-        attachmentValue: com.google.fhir.model.r4b.Attachment?,
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-        codeableReferenceValue: com.google.fhir.model.r4b.CodeableReference?,
-        codingValue: com.google.fhir.model.r4b.Coding?,
-        contactPointValue: com.google.fhir.model.r4b.ContactPoint?,
-        countValue: com.google.fhir.model.r4b.Count?,
-        distanceValue: com.google.fhir.model.r4b.Distance?,
-        durationValue: com.google.fhir.model.r4b.Duration?,
-        humanNameValue: com.google.fhir.model.r4b.HumanName?,
-        identifierValue: com.google.fhir.model.r4b.Identifier?,
-        moneyValue: com.google.fhir.model.r4b.Money?,
-        periodValue: com.google.fhir.model.r4b.Period?,
-        quantityValue: com.google.fhir.model.r4b.Quantity?,
-        rangeValue: com.google.fhir.model.r4b.Range?,
-        ratioValue: com.google.fhir.model.r4b.Ratio?,
-        ratioRangeValue: com.google.fhir.model.r4b.RatioRange?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
-        sampledDataValue: com.google.fhir.model.r4b.SampledData?,
-        signatureValue: com.google.fhir.model.r4b.Signature?,
-        timingValue: com.google.fhir.model.r4b.Timing?,
-        contactDetailValue: com.google.fhir.model.r4b.ContactDetail?,
-        contributorValue: com.google.fhir.model.r4b.Contributor?,
-        dataRequirementValue: com.google.fhir.model.r4b.DataRequirement?,
-        expressionValue: com.google.fhir.model.r4b.Expression?,
-        parameterDefinitionValue: com.google.fhir.model.r4b.ParameterDefinition?,
-        relatedArtifactValue: com.google.fhir.model.r4b.RelatedArtifact?,
-        triggerDefinitionValue: com.google.fhir.model.r4b.TriggerDefinition?,
-        usageContextValue: com.google.fhir.model.r4b.UsageContext?,
-        dosageValue: com.google.fhir.model.r4b.Dosage?,
+        base64BinaryValue: dev.ohs.fhir.model.r4b.Base64Binary?,
+        booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+        canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
+        codeValue: dev.ohs.fhir.model.r4b.Code?,
+        dateValue: dev.ohs.fhir.model.r4b.Date?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        decimalValue: dev.ohs.fhir.model.r4b.Decimal?,
+        idValue: dev.ohs.fhir.model.r4b.Id?,
+        instantValue: dev.ohs.fhir.model.r4b.Instant?,
+        integerValue: dev.ohs.fhir.model.r4b.Integer?,
+        markdownValue: dev.ohs.fhir.model.r4b.Markdown?,
+        oidValue: dev.ohs.fhir.model.r4b.Oid?,
+        positiveIntValue: dev.ohs.fhir.model.r4b.PositiveInt?,
+        stringValue: dev.ohs.fhir.model.r4b.String?,
+        timeValue: dev.ohs.fhir.model.r4b.Time?,
+        unsignedIntValue: dev.ohs.fhir.model.r4b.UnsignedInt?,
+        uriValue: dev.ohs.fhir.model.r4b.Uri?,
+        urlValue: dev.ohs.fhir.model.r4b.Url?,
+        uuidValue: dev.ohs.fhir.model.r4b.Uuid?,
+        addressValue: dev.ohs.fhir.model.r4b.Address?,
+        ageValue: dev.ohs.fhir.model.r4b.Age?,
+        annotationValue: dev.ohs.fhir.model.r4b.Annotation?,
+        attachmentValue: dev.ohs.fhir.model.r4b.Attachment?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+        codeableReferenceValue: dev.ohs.fhir.model.r4b.CodeableReference?,
+        codingValue: dev.ohs.fhir.model.r4b.Coding?,
+        contactPointValue: dev.ohs.fhir.model.r4b.ContactPoint?,
+        countValue: dev.ohs.fhir.model.r4b.Count?,
+        distanceValue: dev.ohs.fhir.model.r4b.Distance?,
+        durationValue: dev.ohs.fhir.model.r4b.Duration?,
+        humanNameValue: dev.ohs.fhir.model.r4b.HumanName?,
+        identifierValue: dev.ohs.fhir.model.r4b.Identifier?,
+        moneyValue: dev.ohs.fhir.model.r4b.Money?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
+        quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+        rangeValue: dev.ohs.fhir.model.r4b.Range?,
+        ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+        ratioRangeValue: dev.ohs.fhir.model.r4b.RatioRange?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+        sampledDataValue: dev.ohs.fhir.model.r4b.SampledData?,
+        signatureValue: dev.ohs.fhir.model.r4b.Signature?,
+        timingValue: dev.ohs.fhir.model.r4b.Timing?,
+        contactDetailValue: dev.ohs.fhir.model.r4b.ContactDetail?,
+        contributorValue: dev.ohs.fhir.model.r4b.Contributor?,
+        dataRequirementValue: dev.ohs.fhir.model.r4b.DataRequirement?,
+        expressionValue: dev.ohs.fhir.model.r4b.Expression?,
+        parameterDefinitionValue: dev.ohs.fhir.model.r4b.ParameterDefinition?,
+        relatedArtifactValue: dev.ohs.fhir.model.r4b.RelatedArtifact?,
+        triggerDefinitionValue: dev.ohs.fhir.model.r4b.TriggerDefinition?,
+        usageContextValue: dev.ohs.fhir.model.r4b.UsageContext?,
+        dosageValue: dev.ohs.fhir.model.r4b.Dosage?,
       ): DefaultValue? {
         if (base64BinaryValue != null) return Base64Binary(base64BinaryValue)
         if (booleanValue != null) return Boolean(booleanValue)
@@ -2238,181 +2221,171 @@ public data class ElementDefinition(
 
     public fun asDosage(): Dosage? = this as? Dosage
 
-    public data class Base64Binary(public val `value`: com.google.fhir.model.r4b.Base64Binary) :
+    public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4b.Base64Binary) : Fixed
+
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Fixed
+
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Fixed
+
+    public data class Code(public val `value`: dev.ohs.fhir.model.r4b.Code) : Fixed
+
+    public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Fixed
+
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Fixed
+
+    public data class Decimal(public val `value`: dev.ohs.fhir.model.r4b.Decimal) : Fixed
+
+    public data class Id(public val `value`: dev.ohs.fhir.model.r4b.Id) : Fixed
+
+    public data class Instant(public val `value`: dev.ohs.fhir.model.r4b.Instant) : Fixed
+
+    public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Fixed
+
+    public data class Markdown(public val `value`: dev.ohs.fhir.model.r4b.Markdown) : Fixed
+
+    public data class Oid(public val `value`: dev.ohs.fhir.model.r4b.Oid) : Fixed
+
+    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) : Fixed
+
+    public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Fixed
+
+    public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Fixed
+
+    public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) : Fixed
+
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Fixed
+
+    public data class Url(public val `value`: dev.ohs.fhir.model.r4b.Url) : Fixed
+
+    public data class Uuid(public val `value`: dev.ohs.fhir.model.r4b.Uuid) : Fixed
+
+    public data class Address(public val `value`: dev.ohs.fhir.model.r4b.Address) : Fixed
+
+    public data class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : Fixed
+
+    public data class Annotation(public val `value`: dev.ohs.fhir.model.r4b.Annotation) : Fixed
+
+    public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Fixed
+
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Fixed
-
-    public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Fixed
-
-    public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) : Fixed
-
-    public data class Code(public val `value`: com.google.fhir.model.r4b.Code) : Fixed
-
-    public data class Date(public val `value`: com.google.fhir.model.r4b.Date) : Fixed
-
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Fixed
-
-    public data class Decimal(public val `value`: com.google.fhir.model.r4b.Decimal) : Fixed
-
-    public data class Id(public val `value`: com.google.fhir.model.r4b.Id) : Fixed
-
-    public data class Instant(public val `value`: com.google.fhir.model.r4b.Instant) : Fixed
-
-    public data class Integer(public val `value`: com.google.fhir.model.r4b.Integer) : Fixed
-
-    public data class Markdown(public val `value`: com.google.fhir.model.r4b.Markdown) : Fixed
-
-    public data class Oid(public val `value`: com.google.fhir.model.r4b.Oid) : Fixed
-
-    public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
-      Fixed
-
-    public data class String(public val `value`: com.google.fhir.model.r4b.String) : Fixed
-
-    public data class Time(public val `value`: com.google.fhir.model.r4b.Time) : Fixed
-
-    public data class UnsignedInt(public val `value`: com.google.fhir.model.r4b.UnsignedInt) :
-      Fixed
-
-    public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Fixed
-
-    public data class Url(public val `value`: com.google.fhir.model.r4b.Url) : Fixed
-
-    public data class Uuid(public val `value`: com.google.fhir.model.r4b.Uuid) : Fixed
-
-    public data class Address(public val `value`: com.google.fhir.model.r4b.Address) : Fixed
-
-    public data class Age(public val `value`: com.google.fhir.model.r4b.Age) : Fixed
-
-    public data class Annotation(public val `value`: com.google.fhir.model.r4b.Annotation) : Fixed
-
-    public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) : Fixed
-
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Fixed
 
     public data class CodeableReference(
-      public val `value`: com.google.fhir.model.r4b.CodeableReference
+      public val `value`: dev.ohs.fhir.model.r4b.CodeableReference
     ) : Fixed
 
-    public data class Coding(public val `value`: com.google.fhir.model.r4b.Coding) : Fixed
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : Fixed
 
-    public data class ContactPoint(public val `value`: com.google.fhir.model.r4b.ContactPoint) :
+    public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r4b.ContactPoint) : Fixed
+
+    public data class Count(public val `value`: dev.ohs.fhir.model.r4b.Count) : Fixed
+
+    public data class Distance(public val `value`: dev.ohs.fhir.model.r4b.Distance) : Fixed
+
+    public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Fixed
+
+    public data class HumanName(public val `value`: dev.ohs.fhir.model.r4b.HumanName) : Fixed
+
+    public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) : Fixed
+
+    public data class Money(public val `value`: dev.ohs.fhir.model.r4b.Money) : Fixed
+
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Fixed
+
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Fixed
+
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Fixed
+
+    public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Fixed
+
+    public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) : Fixed
+
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Fixed
+
+    public data class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) : Fixed
+
+    public data class Signature(public val `value`: dev.ohs.fhir.model.r4b.Signature) : Fixed
+
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Fixed
+
+    public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r4b.ContactDetail) :
       Fixed
 
-    public data class Count(public val `value`: com.google.fhir.model.r4b.Count) : Fixed
+    public data class Contributor(public val `value`: dev.ohs.fhir.model.r4b.Contributor) : Fixed
 
-    public data class Distance(public val `value`: com.google.fhir.model.r4b.Distance) : Fixed
-
-    public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) : Fixed
-
-    public data class HumanName(public val `value`: com.google.fhir.model.r4b.HumanName) : Fixed
-
-    public data class Identifier(public val `value`: com.google.fhir.model.r4b.Identifier) : Fixed
-
-    public data class Money(public val `value`: com.google.fhir.model.r4b.Money) : Fixed
-
-    public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Fixed
-
-    public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Fixed
-
-    public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Fixed
-
-    public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) : Fixed
-
-    public data class RatioRange(public val `value`: com.google.fhir.model.r4b.RatioRange) : Fixed
-
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Fixed
-
-    public data class SampledData(public val `value`: com.google.fhir.model.r4b.SampledData) :
+    public data class DataRequirement(public val `value`: dev.ohs.fhir.model.r4b.DataRequirement) :
       Fixed
 
-    public data class Signature(public val `value`: com.google.fhir.model.r4b.Signature) : Fixed
-
-    public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) : Fixed
-
-    public data class ContactDetail(public val `value`: com.google.fhir.model.r4b.ContactDetail) :
-      Fixed
-
-    public data class Contributor(public val `value`: com.google.fhir.model.r4b.Contributor) :
-      Fixed
-
-    public data class DataRequirement(
-      public val `value`: com.google.fhir.model.r4b.DataRequirement
-    ) : Fixed
-
-    public data class Expression(public val `value`: com.google.fhir.model.r4b.Expression) : Fixed
+    public data class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) : Fixed
 
     public data class ParameterDefinition(
-      public val `value`: com.google.fhir.model.r4b.ParameterDefinition
+      public val `value`: dev.ohs.fhir.model.r4b.ParameterDefinition
     ) : Fixed
 
-    public data class RelatedArtifact(
-      public val `value`: com.google.fhir.model.r4b.RelatedArtifact
-    ) : Fixed
-
-    public data class TriggerDefinition(
-      public val `value`: com.google.fhir.model.r4b.TriggerDefinition
-    ) : Fixed
-
-    public data class UsageContext(public val `value`: com.google.fhir.model.r4b.UsageContext) :
+    public data class RelatedArtifact(public val `value`: dev.ohs.fhir.model.r4b.RelatedArtifact) :
       Fixed
 
-    public data class Dosage(public val `value`: com.google.fhir.model.r4b.Dosage) : Fixed
+    public data class TriggerDefinition(
+      public val `value`: dev.ohs.fhir.model.r4b.TriggerDefinition
+    ) : Fixed
+
+    public data class UsageContext(public val `value`: dev.ohs.fhir.model.r4b.UsageContext) : Fixed
+
+    public data class Dosage(public val `value`: dev.ohs.fhir.model.r4b.Dosage) : Fixed
 
     public companion object {
       internal fun from(
-        base64BinaryValue: com.google.fhir.model.r4b.Base64Binary?,
-        booleanValue: com.google.fhir.model.r4b.Boolean?,
-        canonicalValue: com.google.fhir.model.r4b.Canonical?,
-        codeValue: com.google.fhir.model.r4b.Code?,
-        dateValue: com.google.fhir.model.r4b.Date?,
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        decimalValue: com.google.fhir.model.r4b.Decimal?,
-        idValue: com.google.fhir.model.r4b.Id?,
-        instantValue: com.google.fhir.model.r4b.Instant?,
-        integerValue: com.google.fhir.model.r4b.Integer?,
-        markdownValue: com.google.fhir.model.r4b.Markdown?,
-        oidValue: com.google.fhir.model.r4b.Oid?,
-        positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-        stringValue: com.google.fhir.model.r4b.String?,
-        timeValue: com.google.fhir.model.r4b.Time?,
-        unsignedIntValue: com.google.fhir.model.r4b.UnsignedInt?,
-        uriValue: com.google.fhir.model.r4b.Uri?,
-        urlValue: com.google.fhir.model.r4b.Url?,
-        uuidValue: com.google.fhir.model.r4b.Uuid?,
-        addressValue: com.google.fhir.model.r4b.Address?,
-        ageValue: com.google.fhir.model.r4b.Age?,
-        annotationValue: com.google.fhir.model.r4b.Annotation?,
-        attachmentValue: com.google.fhir.model.r4b.Attachment?,
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-        codeableReferenceValue: com.google.fhir.model.r4b.CodeableReference?,
-        codingValue: com.google.fhir.model.r4b.Coding?,
-        contactPointValue: com.google.fhir.model.r4b.ContactPoint?,
-        countValue: com.google.fhir.model.r4b.Count?,
-        distanceValue: com.google.fhir.model.r4b.Distance?,
-        durationValue: com.google.fhir.model.r4b.Duration?,
-        humanNameValue: com.google.fhir.model.r4b.HumanName?,
-        identifierValue: com.google.fhir.model.r4b.Identifier?,
-        moneyValue: com.google.fhir.model.r4b.Money?,
-        periodValue: com.google.fhir.model.r4b.Period?,
-        quantityValue: com.google.fhir.model.r4b.Quantity?,
-        rangeValue: com.google.fhir.model.r4b.Range?,
-        ratioValue: com.google.fhir.model.r4b.Ratio?,
-        ratioRangeValue: com.google.fhir.model.r4b.RatioRange?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
-        sampledDataValue: com.google.fhir.model.r4b.SampledData?,
-        signatureValue: com.google.fhir.model.r4b.Signature?,
-        timingValue: com.google.fhir.model.r4b.Timing?,
-        contactDetailValue: com.google.fhir.model.r4b.ContactDetail?,
-        contributorValue: com.google.fhir.model.r4b.Contributor?,
-        dataRequirementValue: com.google.fhir.model.r4b.DataRequirement?,
-        expressionValue: com.google.fhir.model.r4b.Expression?,
-        parameterDefinitionValue: com.google.fhir.model.r4b.ParameterDefinition?,
-        relatedArtifactValue: com.google.fhir.model.r4b.RelatedArtifact?,
-        triggerDefinitionValue: com.google.fhir.model.r4b.TriggerDefinition?,
-        usageContextValue: com.google.fhir.model.r4b.UsageContext?,
-        dosageValue: com.google.fhir.model.r4b.Dosage?,
+        base64BinaryValue: dev.ohs.fhir.model.r4b.Base64Binary?,
+        booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+        canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
+        codeValue: dev.ohs.fhir.model.r4b.Code?,
+        dateValue: dev.ohs.fhir.model.r4b.Date?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        decimalValue: dev.ohs.fhir.model.r4b.Decimal?,
+        idValue: dev.ohs.fhir.model.r4b.Id?,
+        instantValue: dev.ohs.fhir.model.r4b.Instant?,
+        integerValue: dev.ohs.fhir.model.r4b.Integer?,
+        markdownValue: dev.ohs.fhir.model.r4b.Markdown?,
+        oidValue: dev.ohs.fhir.model.r4b.Oid?,
+        positiveIntValue: dev.ohs.fhir.model.r4b.PositiveInt?,
+        stringValue: dev.ohs.fhir.model.r4b.String?,
+        timeValue: dev.ohs.fhir.model.r4b.Time?,
+        unsignedIntValue: dev.ohs.fhir.model.r4b.UnsignedInt?,
+        uriValue: dev.ohs.fhir.model.r4b.Uri?,
+        urlValue: dev.ohs.fhir.model.r4b.Url?,
+        uuidValue: dev.ohs.fhir.model.r4b.Uuid?,
+        addressValue: dev.ohs.fhir.model.r4b.Address?,
+        ageValue: dev.ohs.fhir.model.r4b.Age?,
+        annotationValue: dev.ohs.fhir.model.r4b.Annotation?,
+        attachmentValue: dev.ohs.fhir.model.r4b.Attachment?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+        codeableReferenceValue: dev.ohs.fhir.model.r4b.CodeableReference?,
+        codingValue: dev.ohs.fhir.model.r4b.Coding?,
+        contactPointValue: dev.ohs.fhir.model.r4b.ContactPoint?,
+        countValue: dev.ohs.fhir.model.r4b.Count?,
+        distanceValue: dev.ohs.fhir.model.r4b.Distance?,
+        durationValue: dev.ohs.fhir.model.r4b.Duration?,
+        humanNameValue: dev.ohs.fhir.model.r4b.HumanName?,
+        identifierValue: dev.ohs.fhir.model.r4b.Identifier?,
+        moneyValue: dev.ohs.fhir.model.r4b.Money?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
+        quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+        rangeValue: dev.ohs.fhir.model.r4b.Range?,
+        ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+        ratioRangeValue: dev.ohs.fhir.model.r4b.RatioRange?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+        sampledDataValue: dev.ohs.fhir.model.r4b.SampledData?,
+        signatureValue: dev.ohs.fhir.model.r4b.Signature?,
+        timingValue: dev.ohs.fhir.model.r4b.Timing?,
+        contactDetailValue: dev.ohs.fhir.model.r4b.ContactDetail?,
+        contributorValue: dev.ohs.fhir.model.r4b.Contributor?,
+        dataRequirementValue: dev.ohs.fhir.model.r4b.DataRequirement?,
+        expressionValue: dev.ohs.fhir.model.r4b.Expression?,
+        parameterDefinitionValue: dev.ohs.fhir.model.r4b.ParameterDefinition?,
+        relatedArtifactValue: dev.ohs.fhir.model.r4b.RelatedArtifact?,
+        triggerDefinitionValue: dev.ohs.fhir.model.r4b.TriggerDefinition?,
+        usageContextValue: dev.ohs.fhir.model.r4b.UsageContext?,
+        dosageValue: dev.ohs.fhir.model.r4b.Dosage?,
       ): Fixed? {
         if (base64BinaryValue != null) return Base64Binary(base64BinaryValue)
         if (booleanValue != null) return Boolean(booleanValue)
@@ -2574,186 +2547,174 @@ public data class ElementDefinition(
 
     public fun asDosage(): Dosage? = this as? Dosage
 
-    public data class Base64Binary(public val `value`: com.google.fhir.model.r4b.Base64Binary) :
+    public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4b.Base64Binary) :
       Pattern
 
-    public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Pattern
+    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Pattern
 
-    public data class Canonical(public val `value`: com.google.fhir.model.r4b.Canonical) : Pattern
+    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Pattern
 
-    public data class Code(public val `value`: com.google.fhir.model.r4b.Code) : Pattern
+    public data class Code(public val `value`: dev.ohs.fhir.model.r4b.Code) : Pattern
 
-    public data class Date(public val `value`: com.google.fhir.model.r4b.Date) : Pattern
+    public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Pattern
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : Pattern
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Pattern
 
-    public data class Decimal(public val `value`: com.google.fhir.model.r4b.Decimal) : Pattern
+    public data class Decimal(public val `value`: dev.ohs.fhir.model.r4b.Decimal) : Pattern
 
-    public data class Id(public val `value`: com.google.fhir.model.r4b.Id) : Pattern
+    public data class Id(public val `value`: dev.ohs.fhir.model.r4b.Id) : Pattern
 
-    public data class Instant(public val `value`: com.google.fhir.model.r4b.Instant) : Pattern
+    public data class Instant(public val `value`: dev.ohs.fhir.model.r4b.Instant) : Pattern
 
-    public data class Integer(public val `value`: com.google.fhir.model.r4b.Integer) : Pattern
+    public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Pattern
 
-    public data class Markdown(public val `value`: com.google.fhir.model.r4b.Markdown) : Pattern
+    public data class Markdown(public val `value`: dev.ohs.fhir.model.r4b.Markdown) : Pattern
 
-    public data class Oid(public val `value`: com.google.fhir.model.r4b.Oid) : Pattern
+    public data class Oid(public val `value`: dev.ohs.fhir.model.r4b.Oid) : Pattern
 
-    public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
+    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) : Pattern
+
+    public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Pattern
+
+    public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Pattern
+
+    public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) : Pattern
+
+    public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Pattern
+
+    public data class Url(public val `value`: dev.ohs.fhir.model.r4b.Url) : Pattern
+
+    public data class Uuid(public val `value`: dev.ohs.fhir.model.r4b.Uuid) : Pattern
+
+    public data class Address(public val `value`: dev.ohs.fhir.model.r4b.Address) : Pattern
+
+    public data class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : Pattern
+
+    public data class Annotation(public val `value`: dev.ohs.fhir.model.r4b.Annotation) : Pattern
+
+    public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Pattern
+
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Pattern
-
-    public data class String(public val `value`: com.google.fhir.model.r4b.String) : Pattern
-
-    public data class Time(public val `value`: com.google.fhir.model.r4b.Time) : Pattern
-
-    public data class UnsignedInt(public val `value`: com.google.fhir.model.r4b.UnsignedInt) :
-      Pattern
-
-    public data class Uri(public val `value`: com.google.fhir.model.r4b.Uri) : Pattern
-
-    public data class Url(public val `value`: com.google.fhir.model.r4b.Url) : Pattern
-
-    public data class Uuid(public val `value`: com.google.fhir.model.r4b.Uuid) : Pattern
-
-    public data class Address(public val `value`: com.google.fhir.model.r4b.Address) : Pattern
-
-    public data class Age(public val `value`: com.google.fhir.model.r4b.Age) : Pattern
-
-    public data class Annotation(public val `value`: com.google.fhir.model.r4b.Annotation) :
-      Pattern
-
-    public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
-      Pattern
-
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r4b.CodeableConcept
-    ) : Pattern
 
     public data class CodeableReference(
-      public val `value`: com.google.fhir.model.r4b.CodeableReference
+      public val `value`: dev.ohs.fhir.model.r4b.CodeableReference
     ) : Pattern
 
-    public data class Coding(public val `value`: com.google.fhir.model.r4b.Coding) : Pattern
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : Pattern
 
-    public data class ContactPoint(public val `value`: com.google.fhir.model.r4b.ContactPoint) :
+    public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r4b.ContactPoint) :
       Pattern
 
-    public data class Count(public val `value`: com.google.fhir.model.r4b.Count) : Pattern
+    public data class Count(public val `value`: dev.ohs.fhir.model.r4b.Count) : Pattern
 
-    public data class Distance(public val `value`: com.google.fhir.model.r4b.Distance) : Pattern
+    public data class Distance(public val `value`: dev.ohs.fhir.model.r4b.Distance) : Pattern
 
-    public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) : Pattern
+    public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Pattern
 
-    public data class HumanName(public val `value`: com.google.fhir.model.r4b.HumanName) : Pattern
+    public data class HumanName(public val `value`: dev.ohs.fhir.model.r4b.HumanName) : Pattern
 
-    public data class Identifier(public val `value`: com.google.fhir.model.r4b.Identifier) :
+    public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) : Pattern
+
+    public data class Money(public val `value`: dev.ohs.fhir.model.r4b.Money) : Pattern
+
+    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Pattern
+
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Pattern
+
+    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Pattern
+
+    public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Pattern
+
+    public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) : Pattern
+
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Pattern
+
+    public data class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) : Pattern
+
+    public data class Signature(public val `value`: dev.ohs.fhir.model.r4b.Signature) : Pattern
+
+    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Pattern
+
+    public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r4b.ContactDetail) :
       Pattern
 
-    public data class Money(public val `value`: com.google.fhir.model.r4b.Money) : Pattern
+    public data class Contributor(public val `value`: dev.ohs.fhir.model.r4b.Contributor) : Pattern
 
-    public data class Period(public val `value`: com.google.fhir.model.r4b.Period) : Pattern
-
-    public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Pattern
-
-    public data class Range(public val `value`: com.google.fhir.model.r4b.Range) : Pattern
-
-    public data class Ratio(public val `value`: com.google.fhir.model.r4b.Ratio) : Pattern
-
-    public data class RatioRange(public val `value`: com.google.fhir.model.r4b.RatioRange) :
+    public data class DataRequirement(public val `value`: dev.ohs.fhir.model.r4b.DataRequirement) :
       Pattern
 
-    public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Pattern
-
-    public data class SampledData(public val `value`: com.google.fhir.model.r4b.SampledData) :
-      Pattern
-
-    public data class Signature(public val `value`: com.google.fhir.model.r4b.Signature) : Pattern
-
-    public data class Timing(public val `value`: com.google.fhir.model.r4b.Timing) : Pattern
-
-    public data class ContactDetail(public val `value`: com.google.fhir.model.r4b.ContactDetail) :
-      Pattern
-
-    public data class Contributor(public val `value`: com.google.fhir.model.r4b.Contributor) :
-      Pattern
-
-    public data class DataRequirement(
-      public val `value`: com.google.fhir.model.r4b.DataRequirement
-    ) : Pattern
-
-    public data class Expression(public val `value`: com.google.fhir.model.r4b.Expression) :
-      Pattern
+    public data class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) : Pattern
 
     public data class ParameterDefinition(
-      public val `value`: com.google.fhir.model.r4b.ParameterDefinition
+      public val `value`: dev.ohs.fhir.model.r4b.ParameterDefinition
     ) : Pattern
 
-    public data class RelatedArtifact(
-      public val `value`: com.google.fhir.model.r4b.RelatedArtifact
-    ) : Pattern
-
-    public data class TriggerDefinition(
-      public val `value`: com.google.fhir.model.r4b.TriggerDefinition
-    ) : Pattern
-
-    public data class UsageContext(public val `value`: com.google.fhir.model.r4b.UsageContext) :
+    public data class RelatedArtifact(public val `value`: dev.ohs.fhir.model.r4b.RelatedArtifact) :
       Pattern
 
-    public data class Dosage(public val `value`: com.google.fhir.model.r4b.Dosage) : Pattern
+    public data class TriggerDefinition(
+      public val `value`: dev.ohs.fhir.model.r4b.TriggerDefinition
+    ) : Pattern
+
+    public data class UsageContext(public val `value`: dev.ohs.fhir.model.r4b.UsageContext) :
+      Pattern
+
+    public data class Dosage(public val `value`: dev.ohs.fhir.model.r4b.Dosage) : Pattern
 
     public companion object {
       internal fun from(
-        base64BinaryValue: com.google.fhir.model.r4b.Base64Binary?,
-        booleanValue: com.google.fhir.model.r4b.Boolean?,
-        canonicalValue: com.google.fhir.model.r4b.Canonical?,
-        codeValue: com.google.fhir.model.r4b.Code?,
-        dateValue: com.google.fhir.model.r4b.Date?,
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        decimalValue: com.google.fhir.model.r4b.Decimal?,
-        idValue: com.google.fhir.model.r4b.Id?,
-        instantValue: com.google.fhir.model.r4b.Instant?,
-        integerValue: com.google.fhir.model.r4b.Integer?,
-        markdownValue: com.google.fhir.model.r4b.Markdown?,
-        oidValue: com.google.fhir.model.r4b.Oid?,
-        positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-        stringValue: com.google.fhir.model.r4b.String?,
-        timeValue: com.google.fhir.model.r4b.Time?,
-        unsignedIntValue: com.google.fhir.model.r4b.UnsignedInt?,
-        uriValue: com.google.fhir.model.r4b.Uri?,
-        urlValue: com.google.fhir.model.r4b.Url?,
-        uuidValue: com.google.fhir.model.r4b.Uuid?,
-        addressValue: com.google.fhir.model.r4b.Address?,
-        ageValue: com.google.fhir.model.r4b.Age?,
-        annotationValue: com.google.fhir.model.r4b.Annotation?,
-        attachmentValue: com.google.fhir.model.r4b.Attachment?,
-        codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-        codeableReferenceValue: com.google.fhir.model.r4b.CodeableReference?,
-        codingValue: com.google.fhir.model.r4b.Coding?,
-        contactPointValue: com.google.fhir.model.r4b.ContactPoint?,
-        countValue: com.google.fhir.model.r4b.Count?,
-        distanceValue: com.google.fhir.model.r4b.Distance?,
-        durationValue: com.google.fhir.model.r4b.Duration?,
-        humanNameValue: com.google.fhir.model.r4b.HumanName?,
-        identifierValue: com.google.fhir.model.r4b.Identifier?,
-        moneyValue: com.google.fhir.model.r4b.Money?,
-        periodValue: com.google.fhir.model.r4b.Period?,
-        quantityValue: com.google.fhir.model.r4b.Quantity?,
-        rangeValue: com.google.fhir.model.r4b.Range?,
-        ratioValue: com.google.fhir.model.r4b.Ratio?,
-        ratioRangeValue: com.google.fhir.model.r4b.RatioRange?,
-        referenceValue: com.google.fhir.model.r4b.Reference?,
-        sampledDataValue: com.google.fhir.model.r4b.SampledData?,
-        signatureValue: com.google.fhir.model.r4b.Signature?,
-        timingValue: com.google.fhir.model.r4b.Timing?,
-        contactDetailValue: com.google.fhir.model.r4b.ContactDetail?,
-        contributorValue: com.google.fhir.model.r4b.Contributor?,
-        dataRequirementValue: com.google.fhir.model.r4b.DataRequirement?,
-        expressionValue: com.google.fhir.model.r4b.Expression?,
-        parameterDefinitionValue: com.google.fhir.model.r4b.ParameterDefinition?,
-        relatedArtifactValue: com.google.fhir.model.r4b.RelatedArtifact?,
-        triggerDefinitionValue: com.google.fhir.model.r4b.TriggerDefinition?,
-        usageContextValue: com.google.fhir.model.r4b.UsageContext?,
-        dosageValue: com.google.fhir.model.r4b.Dosage?,
+        base64BinaryValue: dev.ohs.fhir.model.r4b.Base64Binary?,
+        booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+        canonicalValue: dev.ohs.fhir.model.r4b.Canonical?,
+        codeValue: dev.ohs.fhir.model.r4b.Code?,
+        dateValue: dev.ohs.fhir.model.r4b.Date?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        decimalValue: dev.ohs.fhir.model.r4b.Decimal?,
+        idValue: dev.ohs.fhir.model.r4b.Id?,
+        instantValue: dev.ohs.fhir.model.r4b.Instant?,
+        integerValue: dev.ohs.fhir.model.r4b.Integer?,
+        markdownValue: dev.ohs.fhir.model.r4b.Markdown?,
+        oidValue: dev.ohs.fhir.model.r4b.Oid?,
+        positiveIntValue: dev.ohs.fhir.model.r4b.PositiveInt?,
+        stringValue: dev.ohs.fhir.model.r4b.String?,
+        timeValue: dev.ohs.fhir.model.r4b.Time?,
+        unsignedIntValue: dev.ohs.fhir.model.r4b.UnsignedInt?,
+        uriValue: dev.ohs.fhir.model.r4b.Uri?,
+        urlValue: dev.ohs.fhir.model.r4b.Url?,
+        uuidValue: dev.ohs.fhir.model.r4b.Uuid?,
+        addressValue: dev.ohs.fhir.model.r4b.Address?,
+        ageValue: dev.ohs.fhir.model.r4b.Age?,
+        annotationValue: dev.ohs.fhir.model.r4b.Annotation?,
+        attachmentValue: dev.ohs.fhir.model.r4b.Attachment?,
+        codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+        codeableReferenceValue: dev.ohs.fhir.model.r4b.CodeableReference?,
+        codingValue: dev.ohs.fhir.model.r4b.Coding?,
+        contactPointValue: dev.ohs.fhir.model.r4b.ContactPoint?,
+        countValue: dev.ohs.fhir.model.r4b.Count?,
+        distanceValue: dev.ohs.fhir.model.r4b.Distance?,
+        durationValue: dev.ohs.fhir.model.r4b.Duration?,
+        humanNameValue: dev.ohs.fhir.model.r4b.HumanName?,
+        identifierValue: dev.ohs.fhir.model.r4b.Identifier?,
+        moneyValue: dev.ohs.fhir.model.r4b.Money?,
+        periodValue: dev.ohs.fhir.model.r4b.Period?,
+        quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+        rangeValue: dev.ohs.fhir.model.r4b.Range?,
+        ratioValue: dev.ohs.fhir.model.r4b.Ratio?,
+        ratioRangeValue: dev.ohs.fhir.model.r4b.RatioRange?,
+        referenceValue: dev.ohs.fhir.model.r4b.Reference?,
+        sampledDataValue: dev.ohs.fhir.model.r4b.SampledData?,
+        signatureValue: dev.ohs.fhir.model.r4b.Signature?,
+        timingValue: dev.ohs.fhir.model.r4b.Timing?,
+        contactDetailValue: dev.ohs.fhir.model.r4b.ContactDetail?,
+        contributorValue: dev.ohs.fhir.model.r4b.Contributor?,
+        dataRequirementValue: dev.ohs.fhir.model.r4b.DataRequirement?,
+        expressionValue: dev.ohs.fhir.model.r4b.Expression?,
+        parameterDefinitionValue: dev.ohs.fhir.model.r4b.ParameterDefinition?,
+        relatedArtifactValue: dev.ohs.fhir.model.r4b.RelatedArtifact?,
+        triggerDefinitionValue: dev.ohs.fhir.model.r4b.TriggerDefinition?,
+        usageContextValue: dev.ohs.fhir.model.r4b.UsageContext?,
+        dosageValue: dev.ohs.fhir.model.r4b.Dosage?,
       ): Pattern? {
         if (base64BinaryValue != null) return Base64Binary(base64BinaryValue)
         if (booleanValue != null) return Boolean(booleanValue)
@@ -2831,37 +2792,37 @@ public data class ElementDefinition(
 
     public fun asQuantity(): Quantity? = this as? Quantity
 
-    public data class Date(public val `value`: com.google.fhir.model.r4b.Date) : MinValue
+    public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : MinValue
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : MinValue
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : MinValue
 
-    public data class Instant(public val `value`: com.google.fhir.model.r4b.Instant) : MinValue
+    public data class Instant(public val `value`: dev.ohs.fhir.model.r4b.Instant) : MinValue
 
-    public data class Time(public val `value`: com.google.fhir.model.r4b.Time) : MinValue
+    public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : MinValue
 
-    public data class Decimal(public val `value`: com.google.fhir.model.r4b.Decimal) : MinValue
+    public data class Decimal(public val `value`: dev.ohs.fhir.model.r4b.Decimal) : MinValue
 
-    public data class Integer(public val `value`: com.google.fhir.model.r4b.Integer) : MinValue
+    public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : MinValue
 
-    public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
+    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
       MinValue
 
-    public data class UnsignedInt(public val `value`: com.google.fhir.model.r4b.UnsignedInt) :
+    public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) :
       MinValue
 
-    public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : MinValue
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : MinValue
 
     public companion object {
       internal fun from(
-        dateValue: com.google.fhir.model.r4b.Date?,
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        instantValue: com.google.fhir.model.r4b.Instant?,
-        timeValue: com.google.fhir.model.r4b.Time?,
-        decimalValue: com.google.fhir.model.r4b.Decimal?,
-        integerValue: com.google.fhir.model.r4b.Integer?,
-        positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-        unsignedIntValue: com.google.fhir.model.r4b.UnsignedInt?,
-        quantityValue: com.google.fhir.model.r4b.Quantity?,
+        dateValue: dev.ohs.fhir.model.r4b.Date?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        instantValue: dev.ohs.fhir.model.r4b.Instant?,
+        timeValue: dev.ohs.fhir.model.r4b.Time?,
+        decimalValue: dev.ohs.fhir.model.r4b.Decimal?,
+        integerValue: dev.ohs.fhir.model.r4b.Integer?,
+        positiveIntValue: dev.ohs.fhir.model.r4b.PositiveInt?,
+        unsignedIntValue: dev.ohs.fhir.model.r4b.UnsignedInt?,
+        quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
       ): MinValue? {
         if (dateValue != null) return Date(dateValue)
         if (dateTimeValue != null) return DateTime(dateTimeValue)
@@ -2897,37 +2858,37 @@ public data class ElementDefinition(
 
     public fun asQuantity(): Quantity? = this as? Quantity
 
-    public data class Date(public val `value`: com.google.fhir.model.r4b.Date) : MaxValue
+    public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : MaxValue
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r4b.DateTime) : MaxValue
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : MaxValue
 
-    public data class Instant(public val `value`: com.google.fhir.model.r4b.Instant) : MaxValue
+    public data class Instant(public val `value`: dev.ohs.fhir.model.r4b.Instant) : MaxValue
 
-    public data class Time(public val `value`: com.google.fhir.model.r4b.Time) : MaxValue
+    public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : MaxValue
 
-    public data class Decimal(public val `value`: com.google.fhir.model.r4b.Decimal) : MaxValue
+    public data class Decimal(public val `value`: dev.ohs.fhir.model.r4b.Decimal) : MaxValue
 
-    public data class Integer(public val `value`: com.google.fhir.model.r4b.Integer) : MaxValue
+    public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : MaxValue
 
-    public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
+    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
       MaxValue
 
-    public data class UnsignedInt(public val `value`: com.google.fhir.model.r4b.UnsignedInt) :
+    public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r4b.UnsignedInt) :
       MaxValue
 
-    public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : MaxValue
+    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : MaxValue
 
     public companion object {
       internal fun from(
-        dateValue: com.google.fhir.model.r4b.Date?,
-        dateTimeValue: com.google.fhir.model.r4b.DateTime?,
-        instantValue: com.google.fhir.model.r4b.Instant?,
-        timeValue: com.google.fhir.model.r4b.Time?,
-        decimalValue: com.google.fhir.model.r4b.Decimal?,
-        integerValue: com.google.fhir.model.r4b.Integer?,
-        positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-        unsignedIntValue: com.google.fhir.model.r4b.UnsignedInt?,
-        quantityValue: com.google.fhir.model.r4b.Quantity?,
+        dateValue: dev.ohs.fhir.model.r4b.Date?,
+        dateTimeValue: dev.ohs.fhir.model.r4b.DateTime?,
+        instantValue: dev.ohs.fhir.model.r4b.Instant?,
+        timeValue: dev.ohs.fhir.model.r4b.Time?,
+        decimalValue: dev.ohs.fhir.model.r4b.Decimal?,
+        integerValue: dev.ohs.fhir.model.r4b.Integer?,
+        positiveIntValue: dev.ohs.fhir.model.r4b.PositiveInt?,
+        unsignedIntValue: dev.ohs.fhir.model.r4b.UnsignedInt?,
+        quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
       ): MaxValue? {
         if (dateValue != null) return Date(dateValue)
         if (dateTimeValue != null) return DateTime(dateTimeValue)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.MeasureGroupPopulationSerializer
-import com.google.fhir.model.r5.serializers.MeasureGroupSerializer
-import com.google.fhir.model.r5.serializers.MeasureGroupStratifierComponentSerializer
-import com.google.fhir.model.r5.serializers.MeasureGroupStratifierSerializer
-import com.google.fhir.model.r5.serializers.MeasureGroupSubjectSerializer
-import com.google.fhir.model.r5.serializers.MeasureSerializer
-import com.google.fhir.model.r5.serializers.MeasureSubjectSerializer
-import com.google.fhir.model.r5.serializers.MeasureSupplementalDataSerializer
-import com.google.fhir.model.r5.serializers.MeasureTermSerializer
-import com.google.fhir.model.r5.serializers.MeasureVersionAlgorithmSerializer
-import com.google.fhir.model.r5.terminologies.FHIRTypes
-import com.google.fhir.model.r5.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r5.serializers.MeasureGroupPopulationSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureGroupSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureGroupStratifierComponentSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureGroupStratifierSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureGroupSubjectSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureSubjectSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureSupplementalDataSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureTermSerializer
+import dev.ohs.fhir.model.r5.serializers.MeasureVersionAlgorithmSerializer
+import dev.ohs.fhir.model.r5.terminologies.FHIRTypes
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1482,16 +1482,15 @@ public data class Measure(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Subject
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Subject
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Subject
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Subject
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Subject? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -1870,16 +1869,14 @@ public data class Measure(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) :
-      VersionAlgorithm
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: com.google.fhir.model.r5.Coding) :
-      VersionAlgorithm
+    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
-        stringValue: com.google.fhir.model.r5.String?,
-        codingValue: com.google.fhir.model.r5.Coding?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
+        codingValue: dev.ohs.fhir.model.r5.Coding?,
       ): VersionAlgorithm? {
         if (stringValue != null) return String(stringValue)
         if (codingValue != null) return Coding(codingValue)
@@ -1894,16 +1891,15 @@ public data class Measure(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(
-      public val `value`: com.google.fhir.model.r5.CodeableConcept
-    ) : Subject
+    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+      Subject
 
-    public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Subject
+    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Subject
 
     public companion object {
       internal fun from(
-        codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-        referenceValue: com.google.fhir.model.r5.Reference?,
+        codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+        referenceValue: dev.ohs.fhir.model.r5.Reference?,
       ): Subject? {
         if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
         if (referenceValue != null) return Reference(referenceValue)

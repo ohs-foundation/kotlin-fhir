@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r5.AdministrableProductDefinition
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.AdministrableProductDefinitionPropertySurrogate
-import com.google.fhir.model.r5.surrogates.AdministrableProductDefinitionPropertyValueSurrogate
-import com.google.fhir.model.r5.surrogates.AdministrableProductDefinitionRouteOfAdministrationSurrogate
-import com.google.fhir.model.r5.surrogates.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSurrogate
-import com.google.fhir.model.r5.surrogates.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSurrogate
-import com.google.fhir.model.r5.surrogates.AdministrableProductDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.AdministrableProductDefinition
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.AdministrableProductDefinitionPropertySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.AdministrableProductDefinitionPropertyValueSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.AdministrableProductDefinitionRouteOfAdministrationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.AdministrableProductDefinitionSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

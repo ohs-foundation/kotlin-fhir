@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,30 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.ClaimAccidentLocationSerializer
-import com.google.fhir.model.r5.serializers.ClaimAccidentSerializer
-import com.google.fhir.model.r5.serializers.ClaimCareTeamSerializer
-import com.google.fhir.model.r5.serializers.ClaimDiagnosisDiagnosisSerializer
-import com.google.fhir.model.r5.serializers.ClaimDiagnosisSerializer
-import com.google.fhir.model.r5.serializers.ClaimEventSerializer
-import com.google.fhir.model.r5.serializers.ClaimEventWhenSerializer
-import com.google.fhir.model.r5.serializers.ClaimInsuranceSerializer
-import com.google.fhir.model.r5.serializers.ClaimItemBodySiteSerializer
-import com.google.fhir.model.r5.serializers.ClaimItemDetailSerializer
-import com.google.fhir.model.r5.serializers.ClaimItemDetailSubDetailSerializer
-import com.google.fhir.model.r5.serializers.ClaimItemLocationSerializer
-import com.google.fhir.model.r5.serializers.ClaimItemSerializer
-import com.google.fhir.model.r5.serializers.ClaimItemServicedSerializer
-import com.google.fhir.model.r5.serializers.ClaimPayeeSerializer
-import com.google.fhir.model.r5.serializers.ClaimProcedureProcedureSerializer
-import com.google.fhir.model.r5.serializers.ClaimProcedureSerializer
-import com.google.fhir.model.r5.serializers.ClaimRelatedSerializer
-import com.google.fhir.model.r5.serializers.ClaimSerializer
-import com.google.fhir.model.r5.serializers.ClaimSupportingInfoSerializer
-import com.google.fhir.model.r5.serializers.ClaimSupportingInfoTimingSerializer
-import com.google.fhir.model.r5.serializers.ClaimSupportingInfoValueSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimAccidentLocationSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimAccidentSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimCareTeamSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimDiagnosisDiagnosisSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimDiagnosisSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimEventSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimEventWhenSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimInsuranceSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimItemBodySiteSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimItemDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimItemDetailSubDetailSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimItemLocationSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimItemSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimItemServicedSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimPayeeSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimProcedureProcedureSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimProcedureSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimRelatedSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimSupportingInfoSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimSupportingInfoTimingSerializer
+import dev.ohs.fhir.model.r5.serializers.ClaimSupportingInfoValueSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -719,14 +719,14 @@ public data class Claim(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : When
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : When
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : When
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : When
 
       public companion object {
         internal fun from(
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): When? {
           if (dateTimeValue != null) return DateTime(dateTimeValue)
           if (periodValue != null) return Period(periodValue)
@@ -1041,14 +1041,14 @@ public data class Claim(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Timing
+      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Timing
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Timing
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Timing
 
       public companion object {
         internal fun from(
-          dateValue: com.google.fhir.model.r5.Date?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateValue: dev.ohs.fhir.model.r5.Date?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): Timing? {
           if (dateValue != null) return Date(dateValue)
           if (periodValue != null) return Period(periodValue)
@@ -1071,26 +1071,26 @@ public data class Claim(
 
       public fun asIdentifier(): Identifier? = this as? Identifier
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Attachment(public val `value`: com.google.fhir.model.r5.Attachment) : Value
+      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) : Value
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
-      public data class Identifier(public val `value`: com.google.fhir.model.r5.Identifier) : Value
+      public data class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) : Value
 
       public companion object {
         internal fun from(
-          booleanValue: com.google.fhir.model.r5.Boolean?,
-          stringValue: com.google.fhir.model.r5.String?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          attachmentValue: com.google.fhir.model.r5.Attachment?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
-          identifierValue: com.google.fhir.model.r5.Identifier?,
+          booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          attachmentValue: dev.ohs.fhir.model.r5.Attachment?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
+          identifierValue: dev.ohs.fhir.model.r5.Identifier?,
         ): Value? {
           if (booleanValue != null) return Boolean(booleanValue)
           if (stringValue != null) return String(stringValue)
@@ -1272,17 +1272,15 @@ public data class Claim(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Diagnosis
-
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         Diagnosis
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Diagnosis
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Diagnosis? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -1444,17 +1442,15 @@ public data class Claim(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Procedure
-
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         Procedure
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Procedure
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Procedure? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -1837,15 +1833,14 @@ public data class Claim(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Address(public val `value`: com.google.fhir.model.r5.Address) : Location
+      public data class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Location
 
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
-        Location
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Location
 
       public companion object {
         internal fun from(
-          addressValue: com.google.fhir.model.r5.Address?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          addressValue: dev.ohs.fhir.model.r5.Address?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Location? {
           if (addressValue != null) return Address(addressValue)
           if (referenceValue != null) return Reference(referenceValue)
@@ -2878,14 +2873,14 @@ public data class Claim(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Date(public val `value`: com.google.fhir.model.r5.Date) : Serviced
+      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Serviced
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Serviced
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Serviced
 
       public companion object {
         internal fun from(
-          dateValue: com.google.fhir.model.r5.Date?,
-          periodValue: com.google.fhir.model.r5.Period?,
+          dateValue: dev.ohs.fhir.model.r5.Date?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
         ): Serviced? {
           if (dateValue != null) return Date(dateValue)
           if (periodValue != null) return Period(periodValue)
@@ -2902,20 +2897,18 @@ public data class Claim(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Location
-
-      public data class Address(public val `value`: com.google.fhir.model.r5.Address) : Location
-
-      public data class Reference(public val `value`: com.google.fhir.model.r5.Reference) :
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
         Location
+
+      public data class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Location
+
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Location
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
-          addressValue: com.google.fhir.model.r5.Address?,
-          referenceValue: com.google.fhir.model.r5.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
+          addressValue: dev.ohs.fhir.model.r5.Address?,
+          referenceValue: dev.ohs.fhir.model.r5.Reference?,
         ): Location? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (addressValue != null) return Address(addressValue)

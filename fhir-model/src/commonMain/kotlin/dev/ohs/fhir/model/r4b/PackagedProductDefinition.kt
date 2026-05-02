@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.PackagedProductDefinitionLegalStatusOfSupplySerializer
-import com.google.fhir.model.r4b.serializers.PackagedProductDefinitionPackageContainedItemSerializer
-import com.google.fhir.model.r4b.serializers.PackagedProductDefinitionPackagePropertySerializer
-import com.google.fhir.model.r4b.serializers.PackagedProductDefinitionPackagePropertyValueSerializer
-import com.google.fhir.model.r4b.serializers.PackagedProductDefinitionPackageSerializer
-import com.google.fhir.model.r4b.serializers.PackagedProductDefinitionPackageShelfLifeStoragePeriodSerializer
-import com.google.fhir.model.r4b.serializers.PackagedProductDefinitionPackageShelfLifeStorageSerializer
-import com.google.fhir.model.r4b.serializers.PackagedProductDefinitionSerializer
+import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionLegalStatusOfSupplySerializer
+import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackageContainedItemSerializer
+import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackagePropertySerializer
+import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackagePropertyValueSerializer
+import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackageSerializer
+import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackageShelfLifeStoragePeriodSerializer
+import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackageShelfLifeStorageSerializer
+import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -531,14 +531,14 @@ public data class PackagedProductDefinition(
 
         public fun asString(): String? = this as? String
 
-        public data class Duration(public val `value`: com.google.fhir.model.r4b.Duration) : Period
+        public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Period
 
-        public data class String(public val `value`: com.google.fhir.model.r4b.String) : Period
+        public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Period
 
         public companion object {
           internal fun from(
-            durationValue: com.google.fhir.model.r4b.Duration?,
-            stringValue: com.google.fhir.model.r4b.String?,
+            durationValue: dev.ohs.fhir.model.r4b.Duration?,
+            stringValue: dev.ohs.fhir.model.r4b.String?,
           ): Period? {
             if (durationValue != null) return Duration(durationValue)
             if (stringValue != null) return String(stringValue)
@@ -692,25 +692,24 @@ public data class PackagedProductDefinition(
         public fun asAttachment(): Attachment? = this as? Attachment
 
         public data class CodeableConcept(
-          public val `value`: com.google.fhir.model.r4b.CodeableConcept
+          public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
         ) : Value
 
-        public data class Quantity(public val `value`: com.google.fhir.model.r4b.Quantity) : Value
+        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-        public data class Date(public val `value`: com.google.fhir.model.r4b.Date) : Value
+        public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Value
 
-        public data class Boolean(public val `value`: com.google.fhir.model.r4b.Boolean) : Value
+        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-        public data class Attachment(public val `value`: com.google.fhir.model.r4b.Attachment) :
-          Value
+        public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Value
 
         public companion object {
           internal fun from(
-            codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-            quantityValue: com.google.fhir.model.r4b.Quantity?,
-            dateValue: com.google.fhir.model.r4b.Date?,
-            booleanValue: com.google.fhir.model.r4b.Boolean?,
-            attachmentValue: com.google.fhir.model.r4b.Attachment?,
+            codeableConceptValue: dev.ohs.fhir.model.r4b.CodeableConcept?,
+            quantityValue: dev.ohs.fhir.model.r4b.Quantity?,
+            dateValue: dev.ohs.fhir.model.r4b.Date?,
+            booleanValue: dev.ohs.fhir.model.r4b.Boolean?,
+            attachmentValue: dev.ohs.fhir.model.r4b.Attachment?,
           ): Value? {
             if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
             if (quantityValue != null) return Quantity(quantityValue)

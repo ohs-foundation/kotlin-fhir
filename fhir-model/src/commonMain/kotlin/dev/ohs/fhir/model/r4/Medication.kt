@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4b.serializers.MedicationBatchSerializer
-import com.google.fhir.model.r4b.serializers.MedicationIngredientItemSerializer
-import com.google.fhir.model.r4b.serializers.MedicationIngredientSerializer
-import com.google.fhir.model.r4b.serializers.MedicationSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationBatchSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationIngredientItemSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationIngredientSerializer
+import dev.ohs.fhir.model.r4.serializers.MedicationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -290,16 +290,15 @@ public data class Medication(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r4b.CodeableConcept
-      ) : Item
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+        Item
 
-      public data class Reference(public val `value`: com.google.fhir.model.r4b.Reference) : Item
+      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Item
 
       public companion object {
         internal fun from(
-          codeableConceptValue: com.google.fhir.model.r4b.CodeableConcept?,
-          referenceValue: com.google.fhir.model.r4b.Reference?,
+          codeableConceptValue: dev.ohs.fhir.model.r4.CodeableConcept?,
+          referenceValue: dev.ohs.fhir.model.r4.Reference?,
         ): Item? {
           if (codeableConceptValue != null) return CodeableConcept(codeableConceptValue)
           if (referenceValue != null) return Reference(referenceValue)

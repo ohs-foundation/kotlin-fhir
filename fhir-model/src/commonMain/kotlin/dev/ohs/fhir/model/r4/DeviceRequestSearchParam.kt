@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: DeviceRequest): List<T>
 
-  public data object AuthoredOn : DeviceRequestSearchParam<Any>() {
+  public data object AuthoredOn : DeviceRequestSearchParam<DateTime>() {
     public override val paramName: String = "authored-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -38,10 +38,11 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<DateTime> =
+      listOfNotNull(resource.authoredOn)
   }
 
-  public data object BasedOn : DeviceRequestSearchParam<Any>() {
+  public data object BasedOn : DeviceRequestSearchParam<Reference>() {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -197,10 +198,10 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Reference> = resource.basedOn
   }
 
-  public data object Code : DeviceRequestSearchParam<Any>() {
+  public data object Code : DeviceRequestSearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -209,10 +210,11 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<CodeableConcept> =
+      listOfNotNull((resource.code as? DeviceRequest.Code.CodeableConcept)?.value)
   }
 
-  public data object Device : DeviceRequestSearchParam<Any>() {
+  public data object Device : DeviceRequestSearchParam<Reference>() {
     public override val paramName: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -221,10 +223,11 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Device")
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Reference> =
+      listOfNotNull((resource.code as? DeviceRequest.Code.Reference)?.value)
   }
 
-  public data object Encounter : DeviceRequestSearchParam<Any>() {
+  public data object Encounter : DeviceRequestSearchParam<Reference>() {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -233,10 +236,11 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Encounter", "EpisodeOfCare")
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object EventDate : DeviceRequestSearchParam<Any>() {
+  public data object EventDate : DeviceRequestSearchParam<DateTime>() {
     public override val paramName: String = "event-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -245,10 +249,12 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<DateTime> =
+      listOfNotNull((resource.occurrence as? DeviceRequest.Occurrence.DateTime)?.value)
   }
 
-  public data object GroupIdentifier : DeviceRequestSearchParam<Any>() {
+  public data object GroupIdentifier :
+    DeviceRequestSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -257,10 +263,11 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<dev.ohs.fhir.model.r4.Identifier> =
+      listOfNotNull(resource.groupIdentifier)
   }
 
-  public data object Identifier : DeviceRequestSearchParam<Any>() {
+  public data object Identifier : DeviceRequestSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -269,10 +276,11 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.identifier
   }
 
-  public data object InstantiatesCanonical : DeviceRequestSearchParam<Any>() {
+  public data object InstantiatesCanonical : DeviceRequestSearchParam<Canonical>() {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -281,10 +289,11 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("PlanDefinition", "ActivityDefinition")
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Canonical> =
+      resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : DeviceRequestSearchParam<Any>() {
+  public data object InstantiatesUri : DeviceRequestSearchParam<Uri>() {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -293,10 +302,10 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Uri> = resource.instantiatesUri
   }
 
-  public data object Insurance : DeviceRequestSearchParam<Any>() {
+  public data object Insurance : DeviceRequestSearchParam<Reference>() {
     public override val paramName: String = "insurance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -305,7 +314,7 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("ClaimResponse", "Coverage")
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Reference> = resource.insurance
   }
 
   public data object Intent : DeviceRequestSearchParam<Any>() {
@@ -317,10 +326,10 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Any> = listOf(resource.intent)
   }
 
-  public data object Patient : DeviceRequestSearchParam<Any>() {
+  public data object Patient : DeviceRequestSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -329,10 +338,13 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient", "Group")
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Reference> =
+      listOf(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Performer : DeviceRequestSearchParam<Any>() {
+  public data object Performer : DeviceRequestSearchParam<Reference>() {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -351,10 +363,11 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Reference> =
+      listOfNotNull(resource.performer)
   }
 
-  public data object PriorRequest : DeviceRequestSearchParam<Any>() {
+  public data object PriorRequest : DeviceRequestSearchParam<Reference>() {
     public override val paramName: String = "prior-request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -510,10 +523,10 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Reference> = resource.priorRequest
   }
 
-  public data object Requester : DeviceRequestSearchParam<Any>() {
+  public data object Requester : DeviceRequestSearchParam<Reference>() {
     public override val paramName: String = "requester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -523,7 +536,8 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
     public override val target: List<String> =
       listOf("Practitioner", "Organization", "Device", "PractitionerRole")
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Reference> =
+      listOfNotNull(resource.requester)
   }
 
   public data object Status : DeviceRequestSearchParam<Any>() {
@@ -535,10 +549,10 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object Subject : DeviceRequestSearchParam<Any>() {
+  public data object Subject : DeviceRequestSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -547,7 +561,7 @@ public sealed class DeviceRequestSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Group", "Device", "Patient", "Location")
 
-    public override fun extract(resource: DeviceRequest): List<Any> = emptyList()
+    public override fun extract(resource: DeviceRequest): List<Reference> = listOf(resource.subject)
   }
 
   public companion object {

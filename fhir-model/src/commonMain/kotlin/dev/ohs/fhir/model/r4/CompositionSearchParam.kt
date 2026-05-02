@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 
@@ -29,27 +28,28 @@ public sealed class CompositionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: Composition): List<T>
 
-  public data object Attester : CompositionSearchParam<Any>() {
-    public override val paramName: String = "attester"
+  public data object Attester : CompositionSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "attester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Composition.attester.party"
+    public override val expression: kotlin.String = "Composition.attester.party"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf("Practitioner", "Organization", "Patient", "PractitionerRole", "RelatedPerson")
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<Reference> =
+      resource.attester.mapNotNull { it.party }
   }
 
-  public data object Author : CompositionSearchParam<Any>() {
-    public override val paramName: String = "author"
+  public data object Author : CompositionSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Composition.author"
+    public override val expression: kotlin.String = "Composition.author"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Practitioner",
         "Organization",
@@ -59,77 +59,80 @@ public sealed class CompositionSearchParam<T> : SearchParam {
         "RelatedPerson",
       )
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<Reference> = resource.author
   }
 
-  public data object Category : CompositionSearchParam<Any>() {
-    public override val paramName: String = "category"
+  public data object Category : CompositionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Composition.category"
+    public override val expression: kotlin.String = "Composition.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<CodeableConcept> = resource.category
   }
 
   public data object Confidentiality : CompositionSearchParam<Any>() {
-    public override val paramName: String = "confidentiality"
+    public override val paramName: kotlin.String = "confidentiality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Composition.confidentiality"
+    public override val expression: kotlin.String = "Composition.confidentiality"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<Any> =
+      listOfNotNull(resource.confidentiality)
   }
 
-  public data object Context : CompositionSearchParam<Any>() {
-    public override val paramName: String = "context"
+  public data object Context : CompositionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Composition.event.code"
+    public override val expression: kotlin.String = "Composition.event.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<CodeableConcept> =
+      resource.event.flatMap { it.code }
   }
 
-  public data object Date : CompositionSearchParam<Any>() {
-    public override val paramName: String = "date"
+  public data object Date : CompositionSearchParam<DateTime>() {
+    public override val paramName: kotlin.String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "Composition.date"
+    public override val expression: kotlin.String = "Composition.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<DateTime> = listOf(resource.date)
   }
 
-  public data object Encounter : CompositionSearchParam<Any>() {
-    public override val paramName: String = "encounter"
+  public data object Encounter : CompositionSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Composition.encounter"
+    public override val expression: kotlin.String = "Composition.encounter"
 
-    public override val target: List<String> = listOf("Encounter", "EpisodeOfCare")
+    public override val target: List<kotlin.String> = listOf("Encounter", "EpisodeOfCare")
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<Reference> =
+      listOfNotNull(resource.encounter)
   }
 
-  public data object Entry : CompositionSearchParam<Any>() {
-    public override val paramName: String = "entry"
+  public data object Entry : CompositionSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "entry"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Composition.section.entry"
+    public override val expression: kotlin.String = "Composition.section.entry"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -278,101 +281,115 @@ public sealed class CompositionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<Reference> =
+      resource.section.flatMap { it.entry }
   }
 
-  public data object Identifier : CompositionSearchParam<Any>() {
-    public override val paramName: String = "identifier"
+  public data object Identifier : CompositionSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    public override val paramName: kotlin.String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Composition.identifier"
+    public override val expression: kotlin.String = "Composition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<dev.ohs.fhir.model.r4.Identifier> =
+      listOfNotNull(resource.identifier)
   }
 
-  public data object Patient : CompositionSearchParam<Any>() {
-    public override val paramName: String = "patient"
+  public data object Patient : CompositionSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Composition.subject.where(resolve() is Patient)"
+    public override val expression: kotlin.String =
+      "Composition.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient", "Group")
+    public override val target: List<kotlin.String> = listOf("Patient", "Group")
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<Reference> =
+      listOfNotNull(resource.subject).filter {
+        it.reference?.value?.toString()?.contains("Patient/") == true
+      }
   }
 
-  public data object Period : CompositionSearchParam<Any>() {
-    public override val paramName: String = "period"
+  public data object Period : CompositionSearchParam<dev.ohs.fhir.model.r4.Period>() {
+    public override val paramName: kotlin.String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
-    public override val expression: String = "Composition.event.period"
+    public override val expression: kotlin.String = "Composition.event.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<dev.ohs.fhir.model.r4.Period> =
+      resource.event.mapNotNull { it.period }
   }
 
-  public data object RelatedId : CompositionSearchParam<Any>() {
-    public override val paramName: String = "related-id"
+  public data object RelatedId : CompositionSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    public override val paramName: kotlin.String = "related-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "(Composition.relatesTo.target as Identifier)"
+    public override val expression: kotlin.String = "(Composition.relatesTo.target as Identifier)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.relatesTo.mapNotNull {
+        (it.target as? Composition.RelatesTo.Target.Identifier)?.value
+      }
   }
 
-  public data object RelatedRef : CompositionSearchParam<Any>() {
-    public override val paramName: String = "related-ref"
+  public data object RelatedRef : CompositionSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "related-ref"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "(Composition.relatesTo.target as Reference)"
+    public override val expression: kotlin.String = "(Composition.relatesTo.target as Reference)"
 
-    public override val target: List<String> = listOf("Composition")
+    public override val target: List<kotlin.String> = listOf("Composition")
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<Reference> =
+      resource.relatesTo.mapNotNull {
+        (it.target as? Composition.RelatesTo.Target.Reference)?.value
+      }
   }
 
-  public data object Section : CompositionSearchParam<Any>() {
-    public override val paramName: String = "section"
+  public data object Section : CompositionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "section"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Composition.section.code"
+    public override val expression: kotlin.String = "Composition.section.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<CodeableConcept> =
+      resource.section.mapNotNull { it.code }
   }
 
   public data object Status : CompositionSearchParam<Any>() {
-    public override val paramName: String = "status"
+    public override val paramName: kotlin.String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Composition.status"
+    public override val expression: kotlin.String = "Composition.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : CompositionSearchParam<Any>() {
-    public override val paramName: String = "subject"
+  public data object Subject : CompositionSearchParam<Reference>() {
+    public override val paramName: kotlin.String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
-    public override val expression: String = "Composition.subject"
+    public override val expression: kotlin.String = "Composition.subject"
 
-    public override val target: List<String> =
+    public override val target: List<kotlin.String> =
       listOf(
         "Account",
         "ActivityDefinition",
@@ -521,31 +538,33 @@ public sealed class CompositionSearchParam<T> : SearchParam {
         "VisionPrescription",
       )
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<Reference> =
+      listOfNotNull(resource.subject)
   }
 
-  public data object Title : CompositionSearchParam<Any>() {
-    public override val paramName: String = "title"
+  public data object Title : CompositionSearchParam<String>() {
+    public override val paramName: kotlin.String = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
-    public override val expression: String = "Composition.title"
+    public override val expression: kotlin.String = "Composition.title"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<String> = listOf(resource.title)
   }
 
-  public data object Type : CompositionSearchParam<Any>() {
-    public override val paramName: String = "type"
+  public data object Type : CompositionSearchParam<CodeableConcept>() {
+    public override val paramName: kotlin.String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
-    public override val expression: String = "Composition.type"
+    public override val expression: kotlin.String = "Composition.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<kotlin.String> = emptyList()
 
-    public override fun extract(resource: Composition): List<Any> = emptyList()
+    public override fun extract(resource: Composition): List<CodeableConcept> =
+      listOf(resource.type)
   }
 
   public companion object {

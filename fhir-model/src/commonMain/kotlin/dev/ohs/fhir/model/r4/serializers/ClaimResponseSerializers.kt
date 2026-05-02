@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,25 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4.serializers
+package dev.ohs.fhir.model.r4.serializers
 
-import com.google.fhir.model.r4.ClaimResponse
-import com.google.fhir.model.r4.FhirJsonTransformer
-import com.google.fhir.model.r4.surrogates.ClaimResponseAddItemDetailSubDetailSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseAddItemDetailSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseAddItemLocationSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseAddItemServicedSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseAddItemSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseErrorSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseInsuranceSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseItemAdjudicationSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseItemDetailSubDetailSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseItemDetailSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseItemSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponsePaymentSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseProcessNoteSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseSurrogate
-import com.google.fhir.model.r4.surrogates.ClaimResponseTotalSurrogate
+import dev.ohs.fhir.model.r4.ClaimResponse
+import dev.ohs.fhir.model.r4.FhirJsonTransformer
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseAddItemDetailSubDetailSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseAddItemDetailSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseAddItemLocationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseAddItemServicedSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseAddItemSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseErrorSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseInsuranceSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseItemAdjudicationSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseItemDetailSubDetailSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseItemDetailSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseItemSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponsePaymentSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseProcessNoteSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseSurrogate
+import dev.ohs.fhir.model.r4.surrogates.ClaimResponseTotalSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

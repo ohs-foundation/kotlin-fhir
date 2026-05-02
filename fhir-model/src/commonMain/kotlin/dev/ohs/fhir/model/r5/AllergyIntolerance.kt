@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.AllergyIntoleranceOnsetSerializer
-import com.google.fhir.model.r5.serializers.AllergyIntoleranceParticipantSerializer
-import com.google.fhir.model.r5.serializers.AllergyIntoleranceReactionSerializer
-import com.google.fhir.model.r5.serializers.AllergyIntoleranceSerializer
+import dev.ohs.fhir.model.r5.serializers.AllergyIntoleranceOnsetSerializer
+import dev.ohs.fhir.model.r5.serializers.AllergyIntoleranceParticipantSerializer
+import dev.ohs.fhir.model.r5.serializers.AllergyIntoleranceReactionSerializer
+import dev.ohs.fhir.model.r5.serializers.AllergyIntoleranceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -724,23 +724,23 @@ public data class AllergyIntolerance(
 
     public fun asString(): String? = this as? String
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Onset
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Onset
 
-    public data class Age(public val `value`: com.google.fhir.model.r5.Age) : Onset
+    public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Onset
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Onset
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Onset
 
-    public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Onset
+    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Onset
 
-    public data class String(public val `value`: com.google.fhir.model.r5.String) : Onset
+    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Onset
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        ageValue: com.google.fhir.model.r5.Age?,
-        periodValue: com.google.fhir.model.r5.Period?,
-        rangeValue: com.google.fhir.model.r5.Range?,
-        stringValue: com.google.fhir.model.r5.String?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        ageValue: dev.ohs.fhir.model.r5.Age?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
+        rangeValue: dev.ohs.fhir.model.r5.Range?,
+        stringValue: dev.ohs.fhir.model.r5.String?,
       ): Onset? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (ageValue != null) return Age(ageValue)

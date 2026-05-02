@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: EpisodeOfCare): List<T>
 
-  public data object CareManager : EpisodeOfCareSearchParam<Any>() {
+  public data object CareManager : EpisodeOfCareSearchParam<Reference>() {
     public override val paramName: String = "care-manager"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -39,10 +39,13 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Practitioner")
 
-    public override fun extract(resource: EpisodeOfCare): List<Any> = emptyList()
+    public override fun extract(resource: EpisodeOfCare): List<Reference> =
+      listOfNotNull(resource.careManager).filter {
+        it.reference?.value?.toString()?.contains("Practitioner/") == true
+      }
   }
 
-  public data object Condition : EpisodeOfCareSearchParam<Any>() {
+  public data object Condition : EpisodeOfCareSearchParam<Reference>() {
     public override val paramName: String = "condition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -51,10 +54,11 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Condition")
 
-    public override fun extract(resource: EpisodeOfCare): List<Any> = emptyList()
+    public override fun extract(resource: EpisodeOfCare): List<Reference> =
+      resource.diagnosis.map { it.condition }
   }
 
-  public data object Date : EpisodeOfCareSearchParam<Any>() {
+  public data object Date : EpisodeOfCareSearchParam<Period>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -63,10 +67,11 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: EpisodeOfCare): List<Any> = emptyList()
+    public override fun extract(resource: EpisodeOfCare): List<Period> =
+      listOfNotNull(resource.period)
   }
 
-  public data object Identifier : EpisodeOfCareSearchParam<Any>() {
+  public data object Identifier : EpisodeOfCareSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -75,10 +80,11 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: EpisodeOfCare): List<Any> = emptyList()
+    public override fun extract(resource: EpisodeOfCare): List<dev.ohs.fhir.model.r4.Identifier> =
+      resource.identifier
   }
 
-  public data object IncomingReferral : EpisodeOfCareSearchParam<Any>() {
+  public data object IncomingReferral : EpisodeOfCareSearchParam<Reference>() {
     public override val paramName: String = "incoming-referral"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -87,10 +93,10 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("ServiceRequest")
 
-    public override fun extract(resource: EpisodeOfCare): List<Any> = emptyList()
+    public override fun extract(resource: EpisodeOfCare): List<Reference> = resource.referralRequest
   }
 
-  public data object Organization : EpisodeOfCareSearchParam<Any>() {
+  public data object Organization : EpisodeOfCareSearchParam<Reference>() {
     public override val paramName: String = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -99,10 +105,11 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Organization")
 
-    public override fun extract(resource: EpisodeOfCare): List<Any> = emptyList()
+    public override fun extract(resource: EpisodeOfCare): List<Reference> =
+      listOfNotNull(resource.managingOrganization)
   }
 
-  public data object Patient : EpisodeOfCareSearchParam<Any>() {
+  public data object Patient : EpisodeOfCareSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -111,7 +118,7 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient", "Group")
 
-    public override fun extract(resource: EpisodeOfCare): List<Any> = emptyList()
+    public override fun extract(resource: EpisodeOfCare): List<Reference> = listOf(resource.patient)
   }
 
   public data object Status : EpisodeOfCareSearchParam<Any>() {
@@ -123,10 +130,10 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: EpisodeOfCare): List<Any> = emptyList()
+    public override fun extract(resource: EpisodeOfCare): List<Any> = listOf(resource.status)
   }
 
-  public data object Type : EpisodeOfCareSearchParam<Any>() {
+  public data object Type : EpisodeOfCareSearchParam<CodeableConcept>() {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -135,7 +142,7 @@ public sealed class EpisodeOfCareSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: EpisodeOfCare): List<Any> = emptyList()
+    public override fun extract(resource: EpisodeOfCare): List<CodeableConcept> = resource.type
   }
 
   public companion object {

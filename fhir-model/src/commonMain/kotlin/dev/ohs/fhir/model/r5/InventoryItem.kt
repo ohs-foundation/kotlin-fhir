@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.InventoryItemAssociationSerializer
-import com.google.fhir.model.r5.serializers.InventoryItemCharacteristicSerializer
-import com.google.fhir.model.r5.serializers.InventoryItemCharacteristicValueSerializer
-import com.google.fhir.model.r5.serializers.InventoryItemDescriptionSerializer
-import com.google.fhir.model.r5.serializers.InventoryItemInstanceSerializer
-import com.google.fhir.model.r5.serializers.InventoryItemNameSerializer
-import com.google.fhir.model.r5.serializers.InventoryItemResponsibleOrganizationSerializer
-import com.google.fhir.model.r5.serializers.InventoryItemSerializer
+import dev.ohs.fhir.model.r5.serializers.InventoryItemAssociationSerializer
+import dev.ohs.fhir.model.r5.serializers.InventoryItemCharacteristicSerializer
+import dev.ohs.fhir.model.r5.serializers.InventoryItemCharacteristicValueSerializer
+import dev.ohs.fhir.model.r5.serializers.InventoryItemDescriptionSerializer
+import dev.ohs.fhir.model.r5.serializers.InventoryItemInstanceSerializer
+import dev.ohs.fhir.model.r5.serializers.InventoryItemNameSerializer
+import dev.ohs.fhir.model.r5.serializers.InventoryItemResponsibleOrganizationSerializer
+import dev.ohs.fhir.model.r5.serializers.InventoryItemSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -768,49 +768,48 @@ public data class InventoryItem(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class String(public val `value`: com.google.fhir.model.r5.String) : Value
+      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-      public data class Integer(public val `value`: com.google.fhir.model.r5.Integer) : Value
+      public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-      public data class Decimal(public val `value`: com.google.fhir.model.r5.Decimal) : Value
+      public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
 
-      public data class Boolean(public val `value`: com.google.fhir.model.r5.Boolean) : Value
+      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Url(public val `value`: com.google.fhir.model.r5.Url) : Value
+      public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Value
 
-      public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Value
+      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-      public data class Quantity(public val `value`: com.google.fhir.model.r5.Quantity) : Value
+      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Value
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-      public data class Ratio(public val `value`: com.google.fhir.model.r5.Ratio) : Value
+      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-      public data class Annotation(public val `value`: com.google.fhir.model.r5.Annotation) : Value
+      public data class Annotation(public val `value`: dev.ohs.fhir.model.r5.Annotation) : Value
 
-      public data class Address(public val `value`: com.google.fhir.model.r5.Address) : Value
+      public data class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Value
 
-      public data class Duration(public val `value`: com.google.fhir.model.r5.Duration) : Value
+      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Value
 
-      public data class CodeableConcept(
-        public val `value`: com.google.fhir.model.r5.CodeableConcept
-      ) : Value
+      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+        Value
 
       public companion object {
         internal fun from(
-          stringValue: com.google.fhir.model.r5.String?,
-          integerValue: com.google.fhir.model.r5.Integer?,
-          decimalValue: com.google.fhir.model.r5.Decimal?,
-          booleanValue: com.google.fhir.model.r5.Boolean?,
-          urlValue: com.google.fhir.model.r5.Url?,
-          dateTimeValue: com.google.fhir.model.r5.DateTime?,
-          quantityValue: com.google.fhir.model.r5.Quantity?,
-          rangeValue: com.google.fhir.model.r5.Range?,
-          ratioValue: com.google.fhir.model.r5.Ratio?,
-          annotationValue: com.google.fhir.model.r5.Annotation?,
-          addressValue: com.google.fhir.model.r5.Address?,
-          durationValue: com.google.fhir.model.r5.Duration?,
-          codeableConceptValue: com.google.fhir.model.r5.CodeableConcept?,
+          stringValue: dev.ohs.fhir.model.r5.String?,
+          integerValue: dev.ohs.fhir.model.r5.Integer?,
+          decimalValue: dev.ohs.fhir.model.r5.Decimal?,
+          booleanValue: dev.ohs.fhir.model.r5.Boolean?,
+          urlValue: dev.ohs.fhir.model.r5.Url?,
+          dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+          quantityValue: dev.ohs.fhir.model.r5.Quantity?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
+          ratioValue: dev.ohs.fhir.model.r5.Ratio?,
+          annotationValue: dev.ohs.fhir.model.r5.Annotation?,
+          addressValue: dev.ohs.fhir.model.r5.Address?,
+          durationValue: dev.ohs.fhir.model.r5.Duration?,
+          codeableConceptValue: dev.ohs.fhir.model.r5.CodeableConcept?,
         ): Value? {
           if (stringValue != null) return String(stringValue)
           if (integerValue != null) return Integer(integerValue)

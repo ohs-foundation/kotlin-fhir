@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.Appointment
-import com.google.fhir.model.r5.surrogates.AppointmentParticipantSurrogate
-import com.google.fhir.model.r5.surrogates.AppointmentRecurrenceTemplateMonthlyTemplateSurrogate
-import com.google.fhir.model.r5.surrogates.AppointmentRecurrenceTemplateSurrogate
-import com.google.fhir.model.r5.surrogates.AppointmentRecurrenceTemplateWeeklyTemplateSurrogate
-import com.google.fhir.model.r5.surrogates.AppointmentRecurrenceTemplateYearlyTemplateSurrogate
-import com.google.fhir.model.r5.surrogates.AppointmentSurrogate
+import dev.ohs.fhir.model.r5.Appointment
+import dev.ohs.fhir.model.r5.surrogates.AppointmentParticipantSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AppointmentRecurrenceTemplateMonthlyTemplateSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AppointmentRecurrenceTemplateSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AppointmentRecurrenceTemplateWeeklyTemplateSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AppointmentRecurrenceTemplateYearlyTemplateSurrogate
+import dev.ohs.fhir.model.r5.surrogates.AppointmentSurrogate
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor

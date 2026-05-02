@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: FamilyMemberHistory): List<T>
 
-  public data object Code : FamilyMemberHistorySearchParam<Any>() {
+  public data object Code : FamilyMemberHistorySearchParam<CodeableConcept>() {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,10 +38,11 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = emptyList()
+    public override fun extract(resource: FamilyMemberHistory): List<CodeableConcept> =
+      resource.condition.map { it.code }
   }
 
-  public data object Date : FamilyMemberHistorySearchParam<Any>() {
+  public data object Date : FamilyMemberHistorySearchParam<DateTime>() {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -50,10 +51,12 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = emptyList()
+    public override fun extract(resource: FamilyMemberHistory): List<DateTime> =
+      listOfNotNull(resource.date)
   }
 
-  public data object Identifier : FamilyMemberHistorySearchParam<Any>() {
+  public data object Identifier :
+    FamilyMemberHistorySearchParam<dev.ohs.fhir.model.r4.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -62,10 +65,12 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = emptyList()
+    public override fun extract(
+      resource: FamilyMemberHistory
+    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object InstantiatesCanonical : FamilyMemberHistorySearchParam<Any>() {
+  public data object InstantiatesCanonical : FamilyMemberHistorySearchParam<Canonical>() {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -81,10 +86,11 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
         "ActivityDefinition",
       )
 
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = emptyList()
+    public override fun extract(resource: FamilyMemberHistory): List<Canonical> =
+      resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : FamilyMemberHistorySearchParam<Any>() {
+  public data object InstantiatesUri : FamilyMemberHistorySearchParam<Uri>() {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -93,10 +99,10 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = emptyList()
+    public override fun extract(resource: FamilyMemberHistory): List<Uri> = resource.instantiatesUri
   }
 
-  public data object Patient : FamilyMemberHistorySearchParam<Any>() {
+  public data object Patient : FamilyMemberHistorySearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -105,10 +111,11 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("Patient", "Group")
 
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = emptyList()
+    public override fun extract(resource: FamilyMemberHistory): List<Reference> =
+      listOf(resource.patient)
   }
 
-  public data object Relationship : FamilyMemberHistorySearchParam<Any>() {
+  public data object Relationship : FamilyMemberHistorySearchParam<CodeableConcept>() {
     public override val paramName: String = "relationship"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -117,10 +124,11 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = emptyList()
+    public override fun extract(resource: FamilyMemberHistory): List<CodeableConcept> =
+      listOf(resource.relationship)
   }
 
-  public data object Sex : FamilyMemberHistorySearchParam<Any>() {
+  public data object Sex : FamilyMemberHistorySearchParam<CodeableConcept>() {
     public override val paramName: String = "sex"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -129,7 +137,8 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = emptyList()
+    public override fun extract(resource: FamilyMemberHistory): List<CodeableConcept> =
+      listOfNotNull(resource.sex)
   }
 
   public data object Status : FamilyMemberHistorySearchParam<Any>() {
@@ -141,7 +150,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = emptyList()
+    public override fun extract(resource: FamilyMemberHistory): List<Any> = listOf(resource.status)
   }
 
   public companion object {

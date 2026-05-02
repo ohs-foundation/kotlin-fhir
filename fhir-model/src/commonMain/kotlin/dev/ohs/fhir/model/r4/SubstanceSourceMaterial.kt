@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4
+package dev.ohs.fhir.model.r4
 
-import com.google.fhir.model.r4.serializers.SubstanceSourceMaterialFractionDescriptionSerializer
-import com.google.fhir.model.r4.serializers.SubstanceSourceMaterialOrganismAuthorSerializer
-import com.google.fhir.model.r4.serializers.SubstanceSourceMaterialOrganismHybridSerializer
-import com.google.fhir.model.r4.serializers.SubstanceSourceMaterialOrganismOrganismGeneralSerializer
-import com.google.fhir.model.r4.serializers.SubstanceSourceMaterialOrganismSerializer
-import com.google.fhir.model.r4.serializers.SubstanceSourceMaterialPartDescriptionSerializer
-import com.google.fhir.model.r4.serializers.SubstanceSourceMaterialSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSourceMaterialFractionDescriptionSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSourceMaterialOrganismAuthorSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSourceMaterialOrganismHybridSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSourceMaterialOrganismOrganismGeneralSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSourceMaterialOrganismSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSourceMaterialPartDescriptionSerializer
+import dev.ohs.fhir.model.r4.serializers.SubstanceSourceMaterialSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

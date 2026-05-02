@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.terminologies.SearchParamType
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,7 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: ClinicalUseDefinition): List<T>
 
-  public data object Contraindication : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object Contraindication : ClinicalUseDefinitionSearchParam<CodeableReference>() {
     public override val paramName: String = "contraindication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -39,10 +39,12 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<CodeableReference> =
+      listOfNotNull(resource.contraindication?.diseaseSymptomProcedure)
   }
 
-  public data object ContraindicationReference : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object ContraindicationReference :
+    ClinicalUseDefinitionSearchParam<CodeableReference>() {
     public override val paramName: String = "contraindication-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -52,10 +54,11 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<CodeableReference> =
+      listOfNotNull(resource.contraindication?.diseaseSymptomProcedure)
   }
 
-  public data object Effect : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object Effect : ClinicalUseDefinitionSearchParam<CodeableReference>() {
     public override val paramName: String = "effect"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -65,10 +68,11 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<CodeableReference> =
+      listOfNotNull(resource.undesirableEffect?.symptomConditionEffect)
   }
 
-  public data object EffectReference : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object EffectReference : ClinicalUseDefinitionSearchParam<CodeableReference>() {
     public override val paramName: String = "effect-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -78,10 +82,12 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<CodeableReference> =
+      listOfNotNull(resource.undesirableEffect?.symptomConditionEffect)
   }
 
-  public data object Identifier : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object Identifier :
+    ClinicalUseDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -90,10 +96,12 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(
+      resource: ClinicalUseDefinition
+    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Indication : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object Indication : ClinicalUseDefinitionSearchParam<CodeableReference>() {
     public override val paramName: String = "indication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -103,10 +111,11 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<CodeableReference> =
+      listOfNotNull(resource.indication?.diseaseSymptomProcedure)
   }
 
-  public data object IndicationReference : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object IndicationReference : ClinicalUseDefinitionSearchParam<CodeableReference>() {
     public override val paramName: String = "indication-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -116,10 +125,11 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<CodeableReference> =
+      listOfNotNull(resource.indication?.diseaseSymptomProcedure)
   }
 
-  public data object Interaction : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object Interaction : ClinicalUseDefinitionSearchParam<CodeableConcept>() {
     public override val paramName: String = "interaction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -128,10 +138,11 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
+      listOfNotNull(resource.interaction?.type)
   }
 
-  public data object Product : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object Product : ClinicalUseDefinitionSearchParam<Reference>() {
     public override val paramName: String = "product"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -141,10 +152,13 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = listOf("MedicinalProductDefinition")
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<Reference> =
+      resource.subject.filter {
+        it.reference?.value?.toString()?.contains("MedicinalProductDefinition/") == true
+      }
   }
 
-  public data object Subject : ClinicalUseDefinitionSearchParam<Any>() {
+  public data object Subject : ClinicalUseDefinitionSearchParam<Reference>() {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -162,7 +176,7 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
         "ActivityDefinition",
       )
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<Reference> = resource.subject
   }
 
   public data object Type : ClinicalUseDefinitionSearchParam<Any>() {
@@ -174,7 +188,7 @@ public sealed class ClinicalUseDefinitionSearchParam<T> : SearchParam {
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = emptyList()
+    public override fun extract(resource: ClinicalUseDefinition): List<Any> = listOf(resource.type)
   }
 
   public companion object {

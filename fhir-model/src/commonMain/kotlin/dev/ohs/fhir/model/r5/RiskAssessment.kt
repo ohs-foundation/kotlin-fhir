@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.serializers.RiskAssessmentOccurrenceSerializer
-import com.google.fhir.model.r5.serializers.RiskAssessmentPredictionProbabilitySerializer
-import com.google.fhir.model.r5.serializers.RiskAssessmentPredictionSerializer
-import com.google.fhir.model.r5.serializers.RiskAssessmentPredictionWhenSerializer
-import com.google.fhir.model.r5.serializers.RiskAssessmentSerializer
+import dev.ohs.fhir.model.r5.serializers.RiskAssessmentOccurrenceSerializer
+import dev.ohs.fhir.model.r5.serializers.RiskAssessmentPredictionProbabilitySerializer
+import dev.ohs.fhir.model.r5.serializers.RiskAssessmentPredictionSerializer
+import dev.ohs.fhir.model.r5.serializers.RiskAssessmentPredictionWhenSerializer
+import dev.ohs.fhir.model.r5.serializers.RiskAssessmentSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -302,14 +302,14 @@ public data class RiskAssessment(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class Decimal(public val `value`: com.google.fhir.model.r5.Decimal) : Probability
+      public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Probability
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : Probability
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Probability
 
       public companion object {
         internal fun from(
-          decimalValue: com.google.fhir.model.r5.Decimal?,
-          rangeValue: com.google.fhir.model.r5.Range?,
+          decimalValue: dev.ohs.fhir.model.r5.Decimal?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
         ): Probability? {
           if (decimalValue != null) return Decimal(decimalValue)
           if (rangeValue != null) return Range(rangeValue)
@@ -324,14 +324,14 @@ public data class RiskAssessment(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class Period(public val `value`: com.google.fhir.model.r5.Period) : When
+      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : When
 
-      public data class Range(public val `value`: com.google.fhir.model.r5.Range) : When
+      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : When
 
       public companion object {
         internal fun from(
-          periodValue: com.google.fhir.model.r5.Period?,
-          rangeValue: com.google.fhir.model.r5.Range?,
+          periodValue: dev.ohs.fhir.model.r5.Period?,
+          rangeValue: dev.ohs.fhir.model.r5.Range?,
         ): When? {
           if (periodValue != null) return Period(periodValue)
           if (rangeValue != null) return Range(rangeValue)
@@ -440,14 +440,14 @@ public data class RiskAssessment(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: com.google.fhir.model.r5.DateTime) : Occurrence
+    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: com.google.fhir.model.r5.Period) : Occurrence
+    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
     public companion object {
       internal fun from(
-        dateTimeValue: com.google.fhir.model.r5.DateTime?,
-        periodValue: com.google.fhir.model.r5.Period?,
+        dateTimeValue: dev.ohs.fhir.model.r5.DateTime?,
+        periodValue: dev.ohs.fhir.model.r5.Period?,
       ): Occurrence? {
         if (dateTimeValue != null) return DateTime(dateTimeValue)
         if (periodValue != null) return Period(periodValue)

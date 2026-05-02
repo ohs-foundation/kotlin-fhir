@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r4b.serializers
 
-import com.google.fhir.model.r5.ClinicalUseDefinition
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionContraindicationOtherTherapySurrogate
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionContraindicationSurrogate
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionIndicationDurationSurrogate
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionIndicationSurrogate
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionInteractionInteractantItemSurrogate
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionInteractionInteractantSurrogate
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionInteractionSurrogate
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionSurrogate
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionUndesirableEffectSurrogate
-import com.google.fhir.model.r5.surrogates.ClinicalUseDefinitionWarningSurrogate
+import dev.ohs.fhir.model.r4b.ClinicalUseDefinition
+import dev.ohs.fhir.model.r4b.FhirJsonTransformer
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionContraindicationOtherTherapySurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionContraindicationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionIndicationDurationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionIndicationSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionInteractionInteractantItemSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionInteractionInteractantSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionInteractionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionUndesirableEffectSurrogate
+import dev.ohs.fhir.model.r4b.surrogates.ClinicalUseDefinitionWarningSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

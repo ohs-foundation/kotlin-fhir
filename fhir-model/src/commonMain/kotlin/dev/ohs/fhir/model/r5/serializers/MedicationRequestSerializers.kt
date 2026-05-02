@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5.serializers
+package dev.ohs.fhir.model.r5.serializers
 
-import com.google.fhir.model.r5.FhirJsonTransformer
-import com.google.fhir.model.r5.MedicationRequest
-import com.google.fhir.model.r5.surrogates.MedicationRequestDispenseRequestInitialFillSurrogate
-import com.google.fhir.model.r5.surrogates.MedicationRequestDispenseRequestSurrogate
-import com.google.fhir.model.r5.surrogates.MedicationRequestSubstitutionAllowedSurrogate
-import com.google.fhir.model.r5.surrogates.MedicationRequestSubstitutionSurrogate
-import com.google.fhir.model.r5.surrogates.MedicationRequestSurrogate
+import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.MedicationRequest
+import dev.ohs.fhir.model.r5.surrogates.MedicationRequestDispenseRequestInitialFillSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicationRequestDispenseRequestSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicationRequestSubstitutionAllowedSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicationRequestSubstitutionSurrogate
+import dev.ohs.fhir.model.r5.surrogates.MedicationRequestSurrogate
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

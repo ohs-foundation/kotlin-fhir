@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r5
+package dev.ohs.fhir.model.r5
 
-import com.google.fhir.model.r5.terminologies.SearchParamType
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
@@ -29,7 +29,8 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
   /** Extracts the values for this search parameter from the given [resource]. */
   public abstract fun extract(resource: BiologicallyDerivedProductDispense): List<T>
 
-  public data object Identifier : BiologicallyDerivedProductDispenseSearchParam<Any>() {
+  public data object Identifier :
+    BiologicallyDerivedProductDispenseSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -38,11 +39,12 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
 
     public override val target: List<String> = emptyList()
 
-    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Any> =
-      emptyList()
+    public override fun extract(
+      resource: BiologicallyDerivedProductDispense
+    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Patient : BiologicallyDerivedProductDispenseSearchParam<Any>() {
+  public data object Patient : BiologicallyDerivedProductDispenseSearchParam<Reference>() {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -51,11 +53,11 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
 
     public override val target: List<String> = listOf("Patient")
 
-    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Any> =
-      emptyList()
+    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Reference> =
+      listOf(resource.patient)
   }
 
-  public data object Performer : BiologicallyDerivedProductDispenseSearchParam<Any>() {
+  public data object Performer : BiologicallyDerivedProductDispenseSearchParam<Reference>() {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -64,11 +66,11 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
 
     public override val target: List<String> = listOf("Practitioner")
 
-    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Any> =
-      emptyList()
+    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Reference> =
+      resource.performer.map { it.actor }
   }
 
-  public data object Product : BiologicallyDerivedProductDispenseSearchParam<Any>() {
+  public data object Product : BiologicallyDerivedProductDispenseSearchParam<Reference>() {
     public override val paramName: String = "product"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -77,8 +79,8 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
 
     public override val target: List<String> = listOf("BiologicallyDerivedProduct")
 
-    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Any> =
-      emptyList()
+    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Reference> =
+      listOf(resource.product)
   }
 
   public data object Status : BiologicallyDerivedProductDispenseSearchParam<Any>() {
@@ -91,7 +93,7 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: BiologicallyDerivedProductDispense): List<Any> =
-      emptyList()
+      listOf(resource.status)
   }
 
   public companion object {

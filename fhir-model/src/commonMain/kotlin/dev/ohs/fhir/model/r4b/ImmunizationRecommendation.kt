@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.ImmunizationRecommendationRecommendationDateCriterionSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationRecommendationRecommendationDoseNumberSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationRecommendationRecommendationSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationRecommendationRecommendationSeriesDosesSerializer
-import com.google.fhir.model.r4b.serializers.ImmunizationRecommendationSerializer
+import dev.ohs.fhir.model.r4b.serializers.ImmunizationRecommendationRecommendationDateCriterionSerializer
+import dev.ohs.fhir.model.r4b.serializers.ImmunizationRecommendationRecommendationDoseNumberSerializer
+import dev.ohs.fhir.model.r4b.serializers.ImmunizationRecommendationRecommendationSerializer
+import dev.ohs.fhir.model.r4b.serializers.ImmunizationRecommendationRecommendationSeriesDosesSerializer
+import dev.ohs.fhir.model.r4b.serializers.ImmunizationRecommendationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -398,15 +398,15 @@ public data class ImmunizationRecommendation(
 
       public fun asString(): String? = this as? String
 
-      public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
+      public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
         DoseNumber
 
-      public data class String(public val `value`: com.google.fhir.model.r4b.String) : DoseNumber
+      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : DoseNumber
 
       public companion object {
         internal fun from(
-          positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-          stringValue: com.google.fhir.model.r4b.String?,
+          positiveIntValue: dev.ohs.fhir.model.r4b.PositiveInt?,
+          stringValue: dev.ohs.fhir.model.r4b.String?,
         ): DoseNumber? {
           if (positiveIntValue != null) return PositiveInt(positiveIntValue)
           if (stringValue != null) return String(stringValue)
@@ -421,15 +421,15 @@ public data class ImmunizationRecommendation(
 
       public fun asString(): String? = this as? String
 
-      public data class PositiveInt(public val `value`: com.google.fhir.model.r4b.PositiveInt) :
+      public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
         SeriesDoses
 
-      public data class String(public val `value`: com.google.fhir.model.r4b.String) : SeriesDoses
+      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : SeriesDoses
 
       public companion object {
         internal fun from(
-          positiveIntValue: com.google.fhir.model.r4b.PositiveInt?,
-          stringValue: com.google.fhir.model.r4b.String?,
+          positiveIntValue: dev.ohs.fhir.model.r4b.PositiveInt?,
+          stringValue: dev.ohs.fhir.model.r4b.String?,
         ): SeriesDoses? {
           if (positiveIntValue != null) return PositiveInt(positiveIntValue)
           if (stringValue != null) return String(stringValue)

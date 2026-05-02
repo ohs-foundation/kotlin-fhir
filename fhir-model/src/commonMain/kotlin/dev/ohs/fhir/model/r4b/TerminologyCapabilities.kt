@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b
+package dev.ohs.fhir.model.r4b
 
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesClosureSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesCodeSystemSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesCodeSystemVersionFilterSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesCodeSystemVersionSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesExpansionParameterSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesExpansionSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesImplementationSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesSoftwareSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesTranslationSerializer
-import com.google.fhir.model.r4b.serializers.TerminologyCapabilitiesValidateCodeSerializer
-import com.google.fhir.model.r4b.terminologies.PublicationStatus
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesClosureSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesCodeSystemSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesCodeSystemVersionFilterSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesCodeSystemVersionSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesExpansionParameterSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesExpansionSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesImplementationSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesSoftwareSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesTranslationSerializer
+import dev.ohs.fhir.model.r4b.serializers.TerminologyCapabilitiesValidateCodeSerializer
+import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 Google LLC
+ * Copyright 2026 Open Health Stack Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,19 @@
 @file:UseSerializers(DoubleSerializer::class, LocalTimeSerializer::class)
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
 
-package com.google.fhir.model.r4b.surrogates
+package dev.ohs.fhir.model.r5.surrogates
 
-import com.google.fhir.model.r4b.Canonical
-import com.google.fhir.model.r4b.Coding
-import com.google.fhir.model.r4b.Element
-import com.google.fhir.model.r4b.Extension
-import com.google.fhir.model.r4b.FhirDateTime
-import com.google.fhir.model.r4b.Id
-import com.google.fhir.model.r4b.Instant
-import com.google.fhir.model.r4b.Meta
-import com.google.fhir.model.r4b.Uri
-import com.google.fhir.model.r4b.serializers.DoubleSerializer
-import com.google.fhir.model.r4b.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r5.Canonical
+import dev.ohs.fhir.model.r5.Coding
+import dev.ohs.fhir.model.r5.Element
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.Id
+import dev.ohs.fhir.model.r5.Instant
+import dev.ohs.fhir.model.r5.Meta
+import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.serializers.DoubleSerializer
+import dev.ohs.fhir.model.r5.serializers.LocalTimeSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List

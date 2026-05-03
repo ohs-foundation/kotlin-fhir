@@ -16,40 +16,57 @@
 
 package dev.ohs.fhir.model.test
 
-import dev.ohs.fhir.model.r4.Boolean as FhirBoolean
-import dev.ohs.fhir.model.r4.Date
-import dev.ohs.fhir.model.r4.FhirDate
+import dev.ohs.fhir.model.r4.ContactPoint
+import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.PatientSearchParam
+import dev.ohs.fhir.model.r4.String as FhirString
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlinx.datetime.LocalDate
+
+private typealias ContactPointSystem = ContactPoint.ContactPointSystem
 
 class SearchParamAllUsageTest :
   FunSpec({
-    test("ALL is required when the param name is data, not a Kotlin identifier") {
-      val patient =
-        Patient(
-          active = FhirBoolean(`value` = true),
-          birthDate = Date(`value` = FhirDate.Date(LocalDate(1990, 1, 1))),
+    test("indexing extracts (paramName, value) rows; search queries the index, not extract") {
+      val email =
+        ContactPoint(
+          system = Enumeration(`value` = ContactPointSystem.Email),
+          `value` = FhirString(`value` = "alice@example.com"),
         )
+      val phone =
+        ContactPoint(
+          system = Enumeration(`value` = ContactPointSystem.Phone),
+          `value` = FhirString(`value` = "555-1234"),
+        )
+      val alice = Patient(telecom = listOf(email, phone))
 
-      // The param name is a String, pretend it came from a URL query, a config file, an RPC
-      // payload, anywhere external. You can't write `patient.<incomingParamName>` in Kotlin.
-      val incomingParamName: String = "birthdate"
+      // ---------- INDEX TIME ----------
+      // When a Patient is saved, the server iterates every FHIR spec search param and calls
+      // extract to populate index rows. The list of params comes from ALL. generated from
+      // the spec, not hand listed. extract does the real work: for "email" it filters
+      // telecom by system (FHIRPath: Patient.telecom.where(system='email')), a computation
+      // that has no equivalent direct field on Patient.
+      val index: List<Pair<String, Any?>> =
+        PatientSearchParam.ALL.flatMap { sp ->
+          sp.extract(alice).map { value -> sp.paramName to value }
+        }
 
-      // Without ALL, you'd have to hand-roll the mapping:
-      //
-      //   when (incomingParamName) {
-      //       "active" -> listOfNotNull(patient.active)
-      //       "birthdate" -> listOfNotNull(patient.birthDate)
-      //       "gender" -> listOfNotNull(patient.gender)
-      //       // ... dozens more, kept in sync by hand every time the FHIR spec adds a search
-      //       // param ...
-      //   }
-      //
-      // ALL is that mapping, generated and always current.
-      val sp = PatientSearchParam.ALL.first { it.paramName == incomingParamName }
-      sp.extract(patient).single() shouldBe patient.birthDate
+      // ---------- SEARCH TIME ----------
+      // /Patient?email=alice@example.com the server filters the index by both the
+      // paramName ("email") and the value ("alice@example.com"). extract is never called
+      // here. Filtering an in-memory list of (paramName, value) pairs is what makes search
+      // fast and uniform across every search param the spec defines.
+      val queryParamName = "email"
+      val queryValue = "alice@example.com"
+      val matches =
+        index.filter { (paramName, value) ->
+          paramName == queryParamName &&
+            (value as? ContactPoint)?.`value`?.`value` == queryValue
+        }
+
+      // The email row matched; the phone row was rejected by the value check.
+      matches.size shouldBe 1
+      matches.first().second shouldBe email
     }
   })

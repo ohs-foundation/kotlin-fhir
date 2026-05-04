@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.GuidanceResponseModuleSerializer
 import dev.ohs.fhir.model.r4.serializers.GuidanceResponseSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -228,7 +227,6 @@ public data class GuidanceResponse(
       }
     }
 
-  @Serializable(with = GuidanceResponseModuleSerializer::class)
   public sealed interface Module {
     public fun asUri(): Uri? = this as? Uri
 

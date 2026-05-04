@@ -22,7 +22,6 @@ import dev.ohs.fhir.model.r4.serializers.SubstanceReferenceInformationClassifica
 import dev.ohs.fhir.model.r4.serializers.SubstanceReferenceInformationGeneElementSerializer
 import dev.ohs.fhir.model.r4.serializers.SubstanceReferenceInformationGeneSerializer
 import dev.ohs.fhir.model.r4.serializers.SubstanceReferenceInformationSerializer
-import dev.ohs.fhir.model.r4.serializers.SubstanceReferenceInformationTargetAmountSerializer
 import dev.ohs.fhir.model.r4.serializers.SubstanceReferenceInformationTargetSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -604,7 +603,6 @@ public data class SubstanceReferenceInformation(
         }
       }
 
-    @Serializable(with = SubstanceReferenceInformationTargetAmountSerializer::class)
     public sealed interface Amount {
       public fun asQuantity(): Quantity? = this as? Quantity
 

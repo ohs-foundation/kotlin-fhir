@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.DeviceUsageAdherenceSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceUsageSerializer
-import dev.ohs.fhir.model.r5.serializers.DeviceUsageTimingSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -345,7 +344,6 @@ public data class DeviceUsage(
     }
   }
 
-  @Serializable(with = DeviceUsageTimingSerializer::class)
   public sealed interface Timing {
     public fun asTiming(): Timing? = this as? Timing
 

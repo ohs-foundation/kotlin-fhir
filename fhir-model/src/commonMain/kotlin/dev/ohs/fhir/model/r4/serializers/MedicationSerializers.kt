@@ -263,64 +263,6 @@ internal object MedicationBatchSerializer : KSerializer<Medication.Batch> {
   }
 }
 
-internal object MedicationIngredientItemSerializer : KSerializer<Medication.Ingredient.Item> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Medication.Ingredient.Item") {
-      element("itemCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("itemReference", Reference.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Medication.Ingredient.Item) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Medication.Ingredient.Item.CodeableConcept -> {
-          encodeSerializableElement(__desc, 0, Hoisted.itemCodeableConceptSer, __d.value)
-        }
-        is Medication.Ingredient.Item.Reference -> {
-          encodeSerializableElement(__desc, 1, Hoisted.itemReferenceSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Medication.Ingredient.Item =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Medication.Ingredient.Item {
-    val __desc = descriptor
-    var itemCodeableConcept: CodeableConcept? = null
-    var itemReference: Reference? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          itemCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              __desc,
-              0,
-              Hoisted.itemCodeableConceptSer,
-              null,
-            )
-        1 ->
-          itemReference =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.itemReferenceSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding Medication.Ingredient.Item: " + __i
-          )
-      }
-    }
-    return Medication.Ingredient.Item.from(itemCodeableConcept, itemReference)!!
-  }
-
-  private object Hoisted {
-    public val itemCodeableConceptSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-
-    public val itemReferenceSer: KSerializer<Reference> = Reference.serializer()
-  }
-}
-
 internal object MedicationSerializer : KSerializer<Medication> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Medication") {

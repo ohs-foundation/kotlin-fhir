@@ -19,17 +19,14 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideDefinitionGroupingSerializer
-import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideDefinitionPageNameSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideDefinitionPageSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideDefinitionParameterSerializer
-import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideDefinitionResourceExampleSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideDefinitionResourceSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideDefinitionSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideDefinitionTemplateSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideDependsOnSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideGlobalSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideManifestPageSerializer
-import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideManifestResourceExampleSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideManifestResourceSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideManifestSerializer
 import dev.ohs.fhir.model.r4b.serializers.ImplementationGuideSerializer
@@ -929,7 +926,6 @@ public data class ImplementationGuide(
           }
         }
 
-      @Serializable(with = ImplementationGuideDefinitionResourceExampleSerializer::class)
       public sealed interface Example {
         public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -1139,7 +1135,6 @@ public data class ImplementationGuide(
           }
         }
 
-      @Serializable(with = ImplementationGuideDefinitionPageNameSerializer::class)
       public sealed interface Name {
         public fun asUrl(): Url? = this as? Url
 
@@ -1708,7 +1703,6 @@ public data class ImplementationGuide(
           }
         }
 
-      @Serializable(with = ImplementationGuideManifestResourceExampleSerializer::class)
       public sealed interface Example {
         public fun asBoolean(): Boolean? = this as? Boolean
 

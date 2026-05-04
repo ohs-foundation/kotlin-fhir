@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.NutritionProductCharacteristicSerializer
-import dev.ohs.fhir.model.r5.serializers.NutritionProductCharacteristicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionProductIngredientSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionProductInstanceSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionProductNutrientSerializer
@@ -495,7 +494,6 @@ public data class NutritionProduct(
         }
       }
 
-    @Serializable(with = NutritionProductCharacteristicValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

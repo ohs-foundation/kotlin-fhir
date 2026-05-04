@@ -29,7 +29,6 @@ import dev.ohs.fhir.model.r5.serializers.TerminologyCapabilitiesSerializer
 import dev.ohs.fhir.model.r5.serializers.TerminologyCapabilitiesSoftwareSerializer
 import dev.ohs.fhir.model.r5.serializers.TerminologyCapabilitiesTranslationSerializer
 import dev.ohs.fhir.model.r5.serializers.TerminologyCapabilitiesValidateCodeSerializer
-import dev.ohs.fhir.model.r5.serializers.TerminologyCapabilitiesVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1645,7 +1644,6 @@ public data class TerminologyCapabilities(
     }
   }
 
-  @Serializable(with = TerminologyCapabilitiesVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

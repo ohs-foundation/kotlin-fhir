@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.DiagnosticReportEffectiveSerializer
 import dev.ohs.fhir.model.r5.serializers.DiagnosticReportMediaSerializer
 import dev.ohs.fhir.model.r5.serializers.DiagnosticReportSerializer
 import dev.ohs.fhir.model.r5.serializers.DiagnosticReportSupportingInfoSerializer
@@ -567,7 +566,6 @@ public data class DiagnosticReport(
     }
   }
 
-  @Serializable(with = DiagnosticReportEffectiveSerializer::class)
   public sealed interface Effective {
     public fun asDateTime(): DateTime? = this as? DateTime
 

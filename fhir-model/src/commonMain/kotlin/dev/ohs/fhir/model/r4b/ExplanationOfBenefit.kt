@@ -18,37 +18,26 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitAccidentLocationSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitAccidentSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitAddItemDetailSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitAddItemDetailSubDetailSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitAddItemLocationSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitAddItemSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitAddItemServicedSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitBenefitBalanceFinancialAllowedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitBenefitBalanceFinancialSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitBenefitBalanceFinancialUsedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitBenefitBalanceSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitCareTeamSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitDiagnosisDiagnosisSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitDiagnosisSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitInsuranceSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitItemAdjudicationSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitItemDetailSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitItemDetailSubDetailSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitItemLocationSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitItemSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitItemServicedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitPayeeSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitPaymentSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitProcedureProcedureSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitProcedureSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitProcessNoteSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitRelatedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitSupportingInfoSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitSupportingInfoTimingSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitSupportingInfoValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.ExplanationOfBenefitTotalSerializer
 import dev.ohs.fhir.model.r4b.terminologies.NoteType
 import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
@@ -966,7 +955,6 @@ public data class ExplanationOfBenefit(
         }
       }
 
-    @Serializable(with = ExplanationOfBenefitSupportingInfoTimingSerializer::class)
     public sealed interface Timing {
       public fun asDate(): Date? = this as? Date
 
@@ -988,7 +976,6 @@ public data class ExplanationOfBenefit(
       }
     }
 
-    @Serializable(with = ExplanationOfBenefitSupportingInfoValueSerializer::class)
     public sealed interface Value {
       public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -1205,7 +1192,6 @@ public data class ExplanationOfBenefit(
         }
       }
 
-    @Serializable(with = ExplanationOfBenefitDiagnosisDiagnosisSerializer::class)
     public sealed interface Diagnosis {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1385,7 +1371,6 @@ public data class ExplanationOfBenefit(
         }
       }
 
-    @Serializable(with = ExplanationOfBenefitProcedureProcedureSerializer::class)
     public sealed interface Procedure {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1712,7 +1697,6 @@ public data class ExplanationOfBenefit(
         }
       }
 
-    @Serializable(with = ExplanationOfBenefitAccidentLocationSerializer::class)
     public sealed interface Location {
       public fun asAddress(): Address? = this as? Address
 
@@ -2689,7 +2673,6 @@ public data class ExplanationOfBenefit(
       }
     }
 
-    @Serializable(with = ExplanationOfBenefitItemServicedSerializer::class)
     public sealed interface Serviced {
       public fun asDate(): Date? = this as? Date
 
@@ -2711,7 +2694,6 @@ public data class ExplanationOfBenefit(
       }
     }
 
-    @Serializable(with = ExplanationOfBenefitItemLocationSerializer::class)
     public sealed interface Location {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -3507,7 +3489,6 @@ public data class ExplanationOfBenefit(
       }
     }
 
-    @Serializable(with = ExplanationOfBenefitAddItemServicedSerializer::class)
     public sealed interface Serviced {
       public fun asDate(): Date? = this as? Date
 
@@ -3529,7 +3510,6 @@ public data class ExplanationOfBenefit(
       }
     }
 
-    @Serializable(with = ExplanationOfBenefitAddItemLocationSerializer::class)
     public sealed interface Location {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -4306,7 +4286,6 @@ public data class ExplanationOfBenefit(
           }
         }
 
-      @Serializable(with = ExplanationOfBenefitBenefitBalanceFinancialAllowedSerializer::class)
       public sealed interface Allowed {
         public fun asUnsignedInt(): UnsignedInt? = this as? UnsignedInt
 
@@ -4335,7 +4314,6 @@ public data class ExplanationOfBenefit(
         }
       }
 
-      @Serializable(with = ExplanationOfBenefitBenefitBalanceFinancialUsedSerializer::class)
       public sealed interface Used {
         public fun asUnsignedInt(): UnsignedInt? = this as? UnsignedInt
 

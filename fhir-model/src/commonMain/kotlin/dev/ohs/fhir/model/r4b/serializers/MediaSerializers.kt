@@ -58,65 +58,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
-internal object MediaCreatedSerializer : KSerializer<Media.Created> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Media.Created") {
-      element("createdDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_createdDateTime", Element.serializer().descriptor, isOptional = true)
-      element("createdPeriod", Period.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Media.Created) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Media.Created.DateTime -> {
-          ((__d.value.value?.toString()))?.let { encodeStringElement(__desc, 0, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 1, Hoisted.elementSer, it)
-          }
-        }
-        is Media.Created.Period -> {
-          encodeSerializableElement(__desc, 2, Hoisted.createdPeriodSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Media.Created =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Media.Created {
-    val __desc = descriptor
-    var createdDateTime: KotlinString? = null
-    var _createdDateTime: Element? = null
-    var createdPeriod: Period? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> createdDateTime = decoder.decodeStringElement(__desc, 0)
-        1 ->
-          _createdDateTime =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.elementSer, null)
-        2 ->
-          createdPeriod =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.createdPeriodSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Media.Created: " + __i)
-      }
-    }
-    return Media.Created.from(
-      DateTime.of(FhirDateTime.fromString(createdDateTime), _createdDateTime),
-      createdPeriod,
-    )!!
-  }
-
-  private object Hoisted {
-    public val elementSer: KSerializer<Element> = Element.serializer()
-
-    public val createdPeriodSer: KSerializer<Period> = Period.serializer()
-  }
-}
-
 internal object MediaSerializer : KSerializer<Media> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Media") {

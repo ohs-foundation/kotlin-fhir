@@ -128,7 +128,7 @@ represented as nested data classes since they are never reused outside the Struc
 each occurrence of a choice type (e.g. in [R4](https://hl7.org/fhir/R4/formats.html#choice)), a
 single sealed interface is generated with a subclass for each type.
 
-| FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> | Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/>                                    |
+| FHIR concept <img src="images/fhir.png" alt="kotlin" style="height: 1em"/> |                  Kotlin concept <img src="images/kotlin.png" alt="kotlin" style="height: 1em"/>                   |
 |----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
 | StructureDefinition JSON file (e.g. `StructureDefinition-Patient.json`)    | Kotlin .kt file (e.g. `Patient.kt`)                                                                               |
 | StructureDefinition (e.g. `Patient`)                                       | Kotlin data class (e.g. `data class Patient`)                                                                     |
@@ -368,19 +368,16 @@ To put all this together, the
 [FHIR codegen](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen) in the Gradle
 binary plugin generates, for each FHIR resource type:
 
-- the model class (the primary class) in the root package e.g. `dev.ohs.fhir.model.r4`,
-- the surrogate classes (one for basic primitive type
-  mapping to JSON properties, plus extras for each multi-choice/polymorphic property and backbone element)
-  in the surrogate package e.g. `dev.ohs.fhir.model.r4.surrogates`, and
-- the serializer classes (to delegate serialization/deserialization to the corresponding surrogate classes) in the
-  serializer package e.g. `dev.ohs.fhir.model.r4.serializers`,
+- the model class (the primary class) in the root package e.g. `dev.ohs.fhir.model.r4`, and
+- a hand-rolled streaming `KSerializer` per type (e.g. `PatientSerializer`, plus one per
+  BackboneElement) in the serializer package e.g. `dev.ohs.fhir.model.r4.serializers`,
 
 using
-[`ModelTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/ModelTypeSpecGenerator.kt),
-[`SurrogateTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/SurrogateTypeSpecGenerator.kt),
+[`ModelFileSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/ModelFileSpecGenerator.kt)
 and
-[`SerializerTypeSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/SerializerTypeSpecGenerator.kt),
-respectively.
+[`SerializerFileSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/SerializerFileSpecGenerator.kt),
+respectively. Each generated serializer streams
+against kotlinx's `CompositeEncoder` / `CompositeDecoder` over the flat FHIR JSON wire shape.
 
 Additionally,
 the [`schema`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/schema) package in
@@ -591,6 +588,7 @@ and the
 > and Maven Central.
 
 #### Maven Local
+
 To publish artifacts to your local Maven repository (`~/.m2/repository`) for local development and
 testing, run:
 
@@ -599,6 +597,7 @@ testing, run:
 ```
 
 #### Maven Central
+
 To publish a new release to Maven Central, first set up your GPG signing key and repository
 credentials to Gradle following the aforementioned official guides.
 
@@ -620,6 +619,7 @@ signing.secretKeyRingFile=/path/to/secring.gpg
 ```
 
 You can verify your signing setup by running:
+
 ```bash
 ./gradlew :fhir-model:checkSigningConfiguration
 ```

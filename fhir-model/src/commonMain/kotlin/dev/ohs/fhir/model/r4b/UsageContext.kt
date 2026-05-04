@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.UsageContextSerializer
-import dev.ohs.fhir.model.r4b.serializers.UsageContextValueSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -68,7 +67,6 @@ public data class UsageContext(
       }
     }
 
-  @Serializable(with = UsageContextValueSerializer::class)
   public sealed interface Value {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

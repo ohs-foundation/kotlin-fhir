@@ -22,7 +22,6 @@ import dev.ohs.fhir.model.r5.serializers.GraphDefinitionLinkCompartmentSerialize
 import dev.ohs.fhir.model.r5.serializers.GraphDefinitionLinkSerializer
 import dev.ohs.fhir.model.r5.serializers.GraphDefinitionNodeSerializer
 import dev.ohs.fhir.model.r5.serializers.GraphDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.GraphDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -797,7 +796,6 @@ public data class GraphDefinition(
     }
   }
 
-  @Serializable(with = GraphDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

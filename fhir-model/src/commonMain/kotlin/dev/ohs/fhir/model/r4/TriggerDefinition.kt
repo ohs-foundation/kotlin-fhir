@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.TriggerDefinitionSerializer
-import dev.ohs.fhir.model.r4.serializers.TriggerDefinitionTimingSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -100,7 +99,6 @@ public data class TriggerDefinition(
       }
     }
 
-  @Serializable(with = TriggerDefinitionTimingSerializer::class)
   public sealed interface Timing {
     public fun asTiming(): Timing? = this as? Timing
 

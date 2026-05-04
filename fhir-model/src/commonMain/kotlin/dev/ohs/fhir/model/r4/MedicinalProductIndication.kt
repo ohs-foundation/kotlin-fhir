@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductIndicationOtherTherapyMedicationSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductIndicationOtherTherapySerializer
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductIndicationSerializer
 import kotlin.String
@@ -236,7 +235,6 @@ public data class MedicinalProductIndication(
         }
       }
 
-    @Serializable(with = MedicinalProductIndicationOtherTherapyMedicationSerializer::class)
     public sealed interface Medication {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

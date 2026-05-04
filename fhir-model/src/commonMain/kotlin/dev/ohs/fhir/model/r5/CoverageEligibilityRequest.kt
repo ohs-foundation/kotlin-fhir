@@ -19,13 +19,10 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityRequestEventSerializer
-import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityRequestEventWhenSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityRequestInsuranceSerializer
-import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityRequestItemDiagnosisDiagnosisSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityRequestItemDiagnosisSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityRequestItemSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityRequestSerializer
-import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityRequestServicedSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityRequestSupportingInfoSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -298,7 +295,6 @@ public data class CoverageEligibilityRequest(
         }
       }
 
-    @Serializable(with = CoverageEligibilityRequestEventWhenSerializer::class)
     public sealed interface When {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -832,7 +828,6 @@ public data class CoverageEligibilityRequest(
           }
         }
 
-      @Serializable(with = CoverageEligibilityRequestItemDiagnosisDiagnosisSerializer::class)
       public sealed interface Diagnosis {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1026,7 +1021,6 @@ public data class CoverageEligibilityRequest(
     }
   }
 
-  @Serializable(with = CoverageEligibilityRequestServicedSerializer::class)
   public sealed interface Serviced {
     public fun asDate(): Date? = this as? Date
 

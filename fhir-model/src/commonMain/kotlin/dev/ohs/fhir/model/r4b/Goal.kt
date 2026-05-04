@@ -19,9 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.GoalSerializer
-import dev.ohs.fhir.model.r4b.serializers.GoalStartSerializer
-import dev.ohs.fhir.model.r4b.serializers.GoalTargetDetailSerializer
-import dev.ohs.fhir.model.r4b.serializers.GoalTargetDueSerializer
 import dev.ohs.fhir.model.r4b.serializers.GoalTargetSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -333,7 +330,6 @@ public data class Goal(
         }
       }
 
-    @Serializable(with = GoalTargetDetailSerializer::class)
     public sealed interface Detail {
       public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -387,7 +383,6 @@ public data class Goal(
       }
     }
 
-    @Serializable(with = GoalTargetDueSerializer::class)
     public sealed interface Due {
       public fun asDate(): Date? = this as? Date
 
@@ -484,7 +479,6 @@ public data class Goal(
     }
   }
 
-  @Serializable(with = GoalStartSerializer::class)
   public sealed interface Start {
     public fun asDate(): Date? = this as? Date
 

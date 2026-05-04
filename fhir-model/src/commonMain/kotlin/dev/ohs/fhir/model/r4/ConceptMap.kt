@@ -24,8 +24,6 @@ import dev.ohs.fhir.model.r4.serializers.ConceptMapGroupElementTargetSerializer
 import dev.ohs.fhir.model.r4.serializers.ConceptMapGroupSerializer
 import dev.ohs.fhir.model.r4.serializers.ConceptMapGroupUnmappedSerializer
 import dev.ohs.fhir.model.r4.serializers.ConceptMapSerializer
-import dev.ohs.fhir.model.r4.serializers.ConceptMapSourceSerializer
-import dev.ohs.fhir.model.r4.serializers.ConceptMapTargetSerializer
 import dev.ohs.fhir.model.r4.terminologies.ConceptMapEquivalence
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -1189,7 +1187,6 @@ public data class ConceptMap(
     }
   }
 
-  @Serializable(with = ConceptMapSourceSerializer::class)
   public sealed interface Source {
     public fun asUri(): Uri? = this as? Uri
 
@@ -1211,7 +1208,6 @@ public data class ConceptMap(
     }
   }
 
-  @Serializable(with = ConceptMapTargetSerializer::class)
   public sealed interface Target {
     public fun asUri(): Uri? = this as? Uri
 

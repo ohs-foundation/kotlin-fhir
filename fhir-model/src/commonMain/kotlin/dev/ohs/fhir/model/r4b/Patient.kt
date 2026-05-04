@@ -20,9 +20,7 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.PatientCommunicationSerializer
 import dev.ohs.fhir.model.r4b.serializers.PatientContactSerializer
-import dev.ohs.fhir.model.r4b.serializers.PatientDeceasedSerializer
 import dev.ohs.fhir.model.r4b.serializers.PatientLinkSerializer
-import dev.ohs.fhir.model.r4b.serializers.PatientMultipleBirthSerializer
 import dev.ohs.fhir.model.r4b.serializers.PatientSerializer
 import dev.ohs.fhir.model.r4b.terminologies.AdministrativeGender
 import kotlin.String
@@ -743,7 +741,6 @@ public data class Patient(
     }
   }
 
-  @Serializable(with = PatientDeceasedSerializer::class)
   public sealed interface Deceased {
     public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -765,7 +762,6 @@ public data class Patient(
     }
   }
 
-  @Serializable(with = PatientMultipleBirthSerializer::class)
   public sealed interface MultipleBirth {
     public fun asBoolean(): Boolean? = this as? Boolean
 

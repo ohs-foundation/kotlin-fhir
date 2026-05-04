@@ -23,7 +23,6 @@ import dev.ohs.fhir.model.r5.serializers.OperationDefinitionParameterBindingSeri
 import dev.ohs.fhir.model.r5.serializers.OperationDefinitionParameterReferencedFromSerializer
 import dev.ohs.fhir.model.r5.serializers.OperationDefinitionParameterSerializer
 import dev.ohs.fhir.model.r5.serializers.OperationDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.OperationDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.BindingStrength
 import dev.ohs.fhir.model.r5.terminologies.FHIRTypes
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
@@ -1132,7 +1131,6 @@ public data class OperationDefinition(
     }
   }
 
-  @Serializable(with = OperationDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

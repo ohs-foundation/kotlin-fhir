@@ -19,9 +19,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.TaskInputSerializer
-import dev.ohs.fhir.model.r5.serializers.TaskInputValueSerializer
 import dev.ohs.fhir.model.r5.serializers.TaskOutputSerializer
-import dev.ohs.fhir.model.r5.serializers.TaskOutputValueSerializer
 import dev.ohs.fhir.model.r5.serializers.TaskPerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.TaskRestrictionSerializer
 import dev.ohs.fhir.model.r5.serializers.TaskSerializer
@@ -704,7 +702,6 @@ public data class Task(
         }
       }
 
-    @Serializable(with = TaskInputValueSerializer::class)
     public sealed interface Value {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
@@ -1172,7 +1169,6 @@ public data class Task(
         }
       }
 
-    @Serializable(with = TaskOutputValueSerializer::class)
     public sealed interface Value {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 

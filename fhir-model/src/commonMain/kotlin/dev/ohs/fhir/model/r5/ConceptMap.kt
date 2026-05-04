@@ -21,17 +21,12 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.ConceptMapAdditionalAttributeSerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementSerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetDependsOnSerializer
-import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetDependsOnValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetPropertySerializer
-import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetPropertyValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupElementTargetSerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupSerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapGroupUnmappedSerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapPropertySerializer
 import dev.ohs.fhir.model.r5.serializers.ConceptMapSerializer
-import dev.ohs.fhir.model.r5.serializers.ConceptMapSourceScopeSerializer
-import dev.ohs.fhir.model.r5.serializers.ConceptMapTargetScopeSerializer
-import dev.ohs.fhir.model.r5.serializers.ConceptMapVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.ConceptMapRelationship
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -1128,7 +1123,6 @@ public data class ConceptMap(
               }
             }
 
-          @Serializable(with = ConceptMapGroupElementTargetPropertyValueSerializer::class)
           public sealed interface Value {
             public fun asCoding(): Coding? = this as? Coding
 
@@ -1309,7 +1303,6 @@ public data class ConceptMap(
               }
             }
 
-          @Serializable(with = ConceptMapGroupElementTargetDependsOnValueSerializer::class)
           public sealed interface Value {
             public fun asCode(): Code? = this as? Code
 
@@ -1908,7 +1901,6 @@ public data class ConceptMap(
     }
   }
 
-  @Serializable(with = ConceptMapVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 
@@ -1930,7 +1922,6 @@ public data class ConceptMap(
     }
   }
 
-  @Serializable(with = ConceptMapSourceScopeSerializer::class)
   public sealed interface SourceScope {
     public fun asUri(): Uri? = this as? Uri
 
@@ -1952,7 +1943,6 @@ public data class ConceptMap(
     }
   }
 
-  @Serializable(with = ConceptMapTargetScopeSerializer::class)
   public sealed interface TargetScope {
     public fun asUri(): Uri? = this as? Uri
 

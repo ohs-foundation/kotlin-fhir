@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionPropertySerializer
-import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionPropertyValueSerializer
 import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionRouteOfAdministrationSerializer
 import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesSerializer
 import dev.ohs.fhir.model.r5.serializers.AdministrableProductDefinitionRouteOfAdministrationTargetSpeciesWithdrawalPeriodSerializer
@@ -287,7 +286,6 @@ public data class AdministrableProductDefinition(
         }
       }
 
-    @Serializable(with = AdministrableProductDefinitionPropertyValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

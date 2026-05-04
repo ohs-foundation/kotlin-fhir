@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.PopulationAgeSerializer
 import dev.ohs.fhir.model.r4.serializers.PopulationSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -91,7 +90,6 @@ public data class Population(
       }
     }
 
-  @Serializable(with = PopulationAgeSerializer::class)
   public sealed interface Age {
     public fun asRange(): Range? = this as? Range
 

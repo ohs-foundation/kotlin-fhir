@@ -92,11 +92,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
             ClassName(modelClassName.packageName, element.type.single().code.capitalized()),
             propertyName,
           )
-          fhirPathType.addCodeToConvertTypeInSurrogateToTypeInModel(
-            this,
-            modelClassName.packageName,
-            "it",
-          )
+          fhirPathType.addCodeToDecodeWireVarToModel(this, modelClassName.packageName, "it")
           add(" }, %N?.getOrNull(__i))!!\n", sidecarName)
           add("})")
         }
@@ -147,7 +143,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
       // Xhtml element in the data model can never be null but the wire representation is nullable.
       val notNullAssertionXhtml = if (type.code == "xhtml") "!!" else ""
       add("%T.of(", ClassName(modelClassName.packageName, type.code.capitalized()))
-      fhirPathType.addCodeToConvertPropertyInSurrogateToPropertyInModel(
+      fhirPathType.addCodeToDecodeWirePropertyToModel(
         this,
         modelClassName.packageName,
         propertyName,
@@ -192,7 +188,7 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
     if (FhirPathType.containsFhirTypeCode(type.code)) {
       val fhirPathType = FhirPathType.getFromFhirTypeCode(type.code)!!
       add("%T.of(", ClassName(modelClassName.packageName, type.code.capitalized()))
-      fhirPathType.addCodeToConvertPropertyInSurrogateToPropertyInModel(
+      fhirPathType.addCodeToDecodeWirePropertyToModel(
         this,
         modelClassName.packageName,
         propertyName,

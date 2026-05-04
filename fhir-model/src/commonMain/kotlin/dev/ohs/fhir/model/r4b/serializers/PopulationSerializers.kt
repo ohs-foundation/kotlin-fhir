@@ -39,60 +39,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
-internal object PopulationAgeSerializer : KSerializer<Population.Age> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Population.Age") {
-      element("ageRange", Range.serializer().descriptor, isOptional = true)
-      element("ageCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Population.Age) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Population.Age.Range -> {
-          encodeSerializableElement(__desc, 0, Hoisted.ageRangeSer, __d.value)
-        }
-        is Population.Age.CodeableConcept -> {
-          encodeSerializableElement(__desc, 1, Hoisted.ageCodeableConceptSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Population.Age =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Population.Age {
-    val __desc = descriptor
-    var ageRange: Range? = null
-    var ageCodeableConcept: CodeableConcept? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          ageRange = decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.ageRangeSer, null)
-        1 ->
-          ageCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              __desc,
-              1,
-              Hoisted.ageCodeableConceptSer,
-              null,
-            )
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Population.Age: " + __i)
-      }
-    }
-    return Population.Age.from(ageRange, ageCodeableConcept)!!
-  }
-
-  private object Hoisted {
-    public val ageRangeSer: KSerializer<Range> = Range.serializer()
-
-    public val ageCodeableConceptSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
-  }
-}
-
 internal object PopulationSerializer : KSerializer<Population> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Population") {

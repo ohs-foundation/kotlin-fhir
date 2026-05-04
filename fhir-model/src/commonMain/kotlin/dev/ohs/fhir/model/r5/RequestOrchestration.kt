@@ -19,16 +19,12 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionConditionSerializer
-import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionDefinitionSerializer
 import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionDynamicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionInputSerializer
 import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionOutputSerializer
-import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionParticipantActorSerializer
 import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionParticipantSerializer
-import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionRelatedActionOffsetSerializer
 import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionRelatedActionSerializer
 import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionSerializer
-import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationActionTimingSerializer
 import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -933,7 +929,6 @@ public data class RequestOrchestration(
           }
         }
 
-      @Serializable(with = RequestOrchestrationActionRelatedActionOffsetSerializer::class)
       public sealed interface Offset {
         public fun asDuration(): Duration? = this as? Duration
 
@@ -1098,7 +1093,6 @@ public data class RequestOrchestration(
           }
         }
 
-      @Serializable(with = RequestOrchestrationActionParticipantActorSerializer::class)
       public sealed interface Actor {
         public fun asCanonical(): Canonical? = this as? Canonical
 
@@ -1358,7 +1352,6 @@ public data class RequestOrchestration(
       }
     }
 
-    @Serializable(with = RequestOrchestrationActionTimingSerializer::class)
     public sealed interface Timing {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -1406,7 +1399,6 @@ public data class RequestOrchestration(
       }
     }
 
-    @Serializable(with = RequestOrchestrationActionDefinitionSerializer::class)
     public sealed interface Definition {
       public fun asCanonical(): Canonical? = this as? Canonical
 

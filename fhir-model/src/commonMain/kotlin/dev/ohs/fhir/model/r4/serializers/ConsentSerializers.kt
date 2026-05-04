@@ -623,56 +623,6 @@ internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.D
   }
 }
 
-internal object ConsentSourceSerializer : KSerializer<Consent.Source> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Consent.Source") {
-      element("sourceAttachment", Attachment.serializer().descriptor, isOptional = true)
-      element("sourceReference", Reference.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Consent.Source) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Consent.Source.Attachment -> {
-          encodeSerializableElement(__desc, 0, Hoisted.sourceAttachmentSer, __d.value)
-        }
-        is Consent.Source.Reference -> {
-          encodeSerializableElement(__desc, 1, Hoisted.sourceReferenceSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Consent.Source =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Consent.Source {
-    val __desc = descriptor
-    var sourceAttachment: Attachment? = null
-    var sourceReference: Reference? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          sourceAttachment =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.sourceAttachmentSer, null)
-        1 ->
-          sourceReference =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.sourceReferenceSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Consent.Source: " + __i)
-      }
-    }
-    return Consent.Source.from(sourceAttachment, sourceReference)!!
-  }
-
-  private object Hoisted {
-    public val sourceAttachmentSer: KSerializer<Attachment> = Attachment.serializer()
-
-    public val sourceReferenceSer: KSerializer<Reference> = Reference.serializer()
-  }
-}
-
 internal object ConsentSerializer : KSerializer<Consent> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Consent") {

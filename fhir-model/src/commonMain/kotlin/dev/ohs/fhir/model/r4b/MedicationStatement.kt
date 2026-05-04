@@ -18,8 +18,6 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.MedicationStatementEffectiveSerializer
-import dev.ohs.fhir.model.r4b.serializers.MedicationStatementMedicationSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationStatementSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -287,7 +285,6 @@ public data class MedicationStatement(
       }
     }
 
-  @Serializable(with = MedicationStatementMedicationSerializer::class)
   public sealed interface Medication {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -310,7 +307,6 @@ public data class MedicationStatement(
     }
   }
 
-  @Serializable(with = MedicationStatementEffectiveSerializer::class)
   public sealed interface Effective {
     public fun asDateTime(): DateTime? = this as? DateTime
 

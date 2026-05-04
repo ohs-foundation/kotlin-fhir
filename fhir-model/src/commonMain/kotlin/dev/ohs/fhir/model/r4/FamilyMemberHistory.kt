@@ -18,11 +18,7 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.FamilyMemberHistoryAgeSerializer
-import dev.ohs.fhir.model.r4.serializers.FamilyMemberHistoryBornSerializer
-import dev.ohs.fhir.model.r4.serializers.FamilyMemberHistoryConditionOnsetSerializer
 import dev.ohs.fhir.model.r4.serializers.FamilyMemberHistoryConditionSerializer
-import dev.ohs.fhir.model.r4.serializers.FamilyMemberHistoryDeceasedSerializer
 import dev.ohs.fhir.model.r4.serializers.FamilyMemberHistorySerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -346,7 +342,6 @@ public data class FamilyMemberHistory(
         }
       }
 
-    @Serializable(with = FamilyMemberHistoryConditionOnsetSerializer::class)
     public sealed interface Onset {
       public fun asAge(): Age? = this as? Age
 
@@ -463,7 +458,6 @@ public data class FamilyMemberHistory(
     }
   }
 
-  @Serializable(with = FamilyMemberHistoryBornSerializer::class)
   public sealed interface Born {
     public fun asPeriod(): Period? = this as? Period
 
@@ -491,7 +485,6 @@ public data class FamilyMemberHistory(
     }
   }
 
-  @Serializable(with = FamilyMemberHistoryAgeSerializer::class)
   public sealed interface Age {
     public fun asAge(): Age? = this as? Age
 
@@ -521,7 +514,6 @@ public data class FamilyMemberHistory(
     }
   }
 
-  @Serializable(with = FamilyMemberHistoryDeceasedSerializer::class)
   public sealed interface Deceased {
     public fun asBoolean(): Boolean? = this as? Boolean
 

@@ -23,7 +23,6 @@ import dev.ohs.fhir.model.r4.serializers.MedicinalProductNameCountryLanguageSeri
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductNameNamePartSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductNameSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductSpecialDesignationIndicationSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductSpecialDesignationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -780,7 +779,6 @@ public data class MedicinalProduct(
         }
       }
 
-    @Serializable(with = MedicinalProductSpecialDesignationIndicationSerializer::class)
     public sealed interface Indication {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

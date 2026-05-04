@@ -18,13 +18,10 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.SpecimenCollectionCollectedSerializer
-import dev.ohs.fhir.model.r5.serializers.SpecimenCollectionFastingStatusSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenCollectionSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenContainerSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenFeatureSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenProcessingSerializer
-import dev.ohs.fhir.model.r5.serializers.SpecimenProcessingTimeSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenSerializer
 import dev.ohs.fhir.model.r5.terminologies.SpecimenCombined
 import kotlin.Suppress
@@ -458,7 +455,6 @@ public data class Specimen(
         }
       }
 
-    @Serializable(with = SpecimenCollectionCollectedSerializer::class)
     public sealed interface Collected {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -480,7 +476,6 @@ public data class Specimen(
       }
     }
 
-    @Serializable(with = SpecimenCollectionFastingStatusSerializer::class)
     public sealed interface FastingStatus {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -677,7 +672,6 @@ public data class Specimen(
         }
       }
 
-    @Serializable(with = SpecimenProcessingTimeSerializer::class)
     public sealed interface Time {
       public fun asDateTime(): DateTime? = this as? DateTime
 

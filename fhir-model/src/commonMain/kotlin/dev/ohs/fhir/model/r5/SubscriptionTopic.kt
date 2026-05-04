@@ -24,7 +24,6 @@ import dev.ohs.fhir.model.r5.serializers.SubscriptionTopicNotificationShapeSeria
 import dev.ohs.fhir.model.r5.serializers.SubscriptionTopicResourceTriggerQueryCriteriaSerializer
 import dev.ohs.fhir.model.r5.serializers.SubscriptionTopicResourceTriggerSerializer
 import dev.ohs.fhir.model.r5.serializers.SubscriptionTopicSerializer
-import dev.ohs.fhir.model.r5.serializers.SubscriptionTopicVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1316,7 +1315,6 @@ public data class SubscriptionTopic(
     }
   }
 
-  @Serializable(with = SubscriptionTopicVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

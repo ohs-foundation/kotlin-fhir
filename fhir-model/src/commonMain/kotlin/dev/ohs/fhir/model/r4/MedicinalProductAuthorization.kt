@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationJurisdictionalAuthorizationSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationProcedureDateSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationProcedureSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductAuthorizationSerializer
 import kotlin.String
@@ -399,7 +398,6 @@ public data class MedicinalProductAuthorization(
         }
       }
 
-    @Serializable(with = MedicinalProductAuthorizationProcedureDateSerializer::class)
     public sealed interface Date {
       public fun asPeriod(): Period? = this as? Period
 

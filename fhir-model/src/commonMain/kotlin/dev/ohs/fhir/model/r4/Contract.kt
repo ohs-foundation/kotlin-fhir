@@ -19,30 +19,21 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.ContractContentDefinitionSerializer
-import dev.ohs.fhir.model.r4.serializers.ContractFriendlyContentSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractFriendlySerializer
-import dev.ohs.fhir.model.r4.serializers.ContractLegalContentSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractLegalSerializer
-import dev.ohs.fhir.model.r4.serializers.ContractLegallyBindingSerializer
-import dev.ohs.fhir.model.r4.serializers.ContractRuleContentSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractRuleSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractSignerSerializer
-import dev.ohs.fhir.model.r4.serializers.ContractTermActionOccurrenceSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermActionSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermActionSubjectSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermAssetContextSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermAssetSerializer
-import dev.ohs.fhir.model.r4.serializers.ContractTermAssetValuedItemEntitySerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermAssetValuedItemSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermOfferAnswerSerializer
-import dev.ohs.fhir.model.r4.serializers.ContractTermOfferAnswerValueSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermOfferPartySerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermOfferSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermSecurityLabelSerializer
 import dev.ohs.fhir.model.r4.serializers.ContractTermSerializer
-import dev.ohs.fhir.model.r4.serializers.ContractTermTopicSerializer
-import dev.ohs.fhir.model.r4.serializers.ContractTopicSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -1091,7 +1082,6 @@ public data class Contract(
             }
           }
 
-        @Serializable(with = ContractTermOfferAnswerValueSerializer::class)
         public sealed interface Value {
           public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -1708,7 +1698,6 @@ public data class Contract(
             }
           }
 
-        @Serializable(with = ContractTermAssetValuedItemEntitySerializer::class)
         public sealed interface Entity {
           public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -2238,7 +2227,6 @@ public data class Contract(
         }
       }
 
-      @Serializable(with = ContractTermActionOccurrenceSerializer::class)
       public sealed interface Occurrence {
         public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -2430,7 +2418,6 @@ public data class Contract(
       }
     }
 
-    @Serializable(with = ContractTermTopicSerializer::class)
     public sealed interface Topic {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -2752,7 +2739,6 @@ public data class Contract(
         }
       }
 
-    @Serializable(with = ContractFriendlyContentSerializer::class)
     public sealed interface Content {
       public fun asAttachment(): Attachment? = this as? Attachment
 
@@ -2883,7 +2869,6 @@ public data class Contract(
         }
       }
 
-    @Serializable(with = ContractLegalContentSerializer::class)
     public sealed interface Content {
       public fun asAttachment(): Attachment? = this as? Attachment
 
@@ -3011,7 +2996,6 @@ public data class Contract(
         }
       }
 
-    @Serializable(with = ContractRuleContentSerializer::class)
     public sealed interface Content {
       public fun asAttachment(): Attachment? = this as? Attachment
 
@@ -3087,7 +3071,6 @@ public data class Contract(
     }
   }
 
-  @Serializable(with = ContractTopicSerializer::class)
   public sealed interface Topic {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -3110,7 +3093,6 @@ public data class Contract(
     }
   }
 
-  @Serializable(with = ContractLegallyBindingSerializer::class)
   public sealed interface LegallyBinding {
     public fun asAttachment(): Attachment? = this as? Attachment
 

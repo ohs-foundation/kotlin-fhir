@@ -18,14 +18,9 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionAsNeededSerializer
 import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionDynamicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionParticipantSerializer
-import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionProductSerializer
 import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionSubjectSerializer
-import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionTimingSerializer
-import dev.ohs.fhir.model.r5.serializers.ActivityDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.RequestResourceTypes
 import kotlin.Suppress
@@ -895,7 +890,6 @@ public data class ActivityDefinition(
     }
   }
 
-  @Serializable(with = ActivityDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 
@@ -917,7 +911,6 @@ public data class ActivityDefinition(
     }
   }
 
-  @Serializable(with = ActivityDefinitionSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -946,7 +939,6 @@ public data class ActivityDefinition(
     }
   }
 
-  @Serializable(with = ActivityDefinitionTimingSerializer::class)
   public sealed interface Timing {
     public fun asTiming(): Timing? = this as? Timing
 
@@ -984,7 +976,6 @@ public data class ActivityDefinition(
     }
   }
 
-  @Serializable(with = ActivityDefinitionAsNeededSerializer::class)
   public sealed interface AsNeeded {
     public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -1007,7 +998,6 @@ public data class ActivityDefinition(
     }
   }
 
-  @Serializable(with = ActivityDefinitionProductSerializer::class)
   public sealed interface Product {
     public fun asReference(): Reference? = this as? Reference
 

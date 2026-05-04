@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.ExtensionSerializer
-import dev.ohs.fhir.model.r4b.serializers.ExtensionValueSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -72,7 +71,6 @@ public data class Extension(
       }
     }
 
-  @Serializable(with = ExtensionValueSerializer::class)
   public sealed interface Value {
     public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 

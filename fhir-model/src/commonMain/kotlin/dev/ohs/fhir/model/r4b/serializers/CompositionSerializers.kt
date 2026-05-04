@@ -498,59 +498,6 @@ internal object CompositionSectionSerializer : KSerializer<Composition.Section> 
   }
 }
 
-internal object CompositionRelatesToTargetSerializer : KSerializer<Composition.RelatesTo.Target> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Composition.RelatesTo.Target") {
-      element("targetIdentifier", Identifier.serializer().descriptor, isOptional = true)
-      element("targetReference", Reference.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Composition.RelatesTo.Target) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Composition.RelatesTo.Target.Identifier -> {
-          encodeSerializableElement(__desc, 0, Hoisted.targetIdentifierSer, __d.value)
-        }
-        is Composition.RelatesTo.Target.Reference -> {
-          encodeSerializableElement(__desc, 1, Hoisted.targetReferenceSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Composition.RelatesTo.Target =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Composition.RelatesTo.Target {
-    val __desc = descriptor
-    var targetIdentifier: Identifier? = null
-    var targetReference: Reference? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          targetIdentifier =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.targetIdentifierSer, null)
-        1 ->
-          targetReference =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.targetReferenceSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding Composition.RelatesTo.Target: " + __i
-          )
-      }
-    }
-    return Composition.RelatesTo.Target.from(targetIdentifier, targetReference)!!
-  }
-
-  private object Hoisted {
-    public val targetIdentifierSer: KSerializer<Identifier> = Identifier.serializer()
-
-    public val targetReferenceSer: KSerializer<Reference> = Reference.serializer()
-  }
-}
-
 internal object CompositionSerializer : KSerializer<Composition> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Composition") {

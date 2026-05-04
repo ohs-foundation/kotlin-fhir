@@ -21,7 +21,6 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionLegalStatusOfSupplySerializer
 import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionPackagingContainedItemSerializer
 import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionPackagingPropertySerializer
-import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionPackagingPropertyValueSerializer
 import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionPackagingSerializer
 import dev.ohs.fhir.model.r5.serializers.PackagedProductDefinitionSerializer
 import kotlin.Suppress
@@ -525,7 +524,6 @@ public data class PackagedProductDefinition(
           }
         }
 
-      @Serializable(with = PackagedProductDefinitionPackagingPropertyValueSerializer::class)
       public sealed interface Value {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

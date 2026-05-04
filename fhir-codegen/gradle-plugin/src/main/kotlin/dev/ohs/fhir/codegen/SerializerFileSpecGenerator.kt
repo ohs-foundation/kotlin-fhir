@@ -57,16 +57,7 @@ private val compositeDecoderCN = ClassName(KOTLINX_SERIALIZATION_ENCODING, "Comp
 private val listSerializerMN = MemberName(KOTLINX_SERIALIZATION_BUILTINS, "ListSerializer")
 private val nullableMN = MemberName(KOTLINX_SERIALIZATION_BUILTINS, "nullable")
 
-/**
- * Generates a [FileSpec] containing a hand-rolled `XSerializer : KSerializer<X>` per FHIR type.
- *
- * The serializer is JSON-only. It casts [Decoder]/[Encoder] to `JsonDecoder`/`JsonEncoder` and
- * parses/emits a flat FHIR-shaped `JsonObject` directly — no surrogate intermediate. The emitted
- * descriptor describes the type's real element structure (with `TypeGraphAnalyzer`-driven
- * `lazyDescriptor` wrapping to break construction-time cycles), so tooling that walks descriptors
- * (schema emitters, doc generators, error messages) gets accurate shape information even though the
- * hot encode/decode path doesn't consult it.
- */
+/** Generates a streaming `KSerializer<X>` per FHIR type over the flat wire shape. */
 class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
 
   fun generate(structureDefinition: StructureDefinition): FileSpec {
@@ -80,16 +71,9 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         builder.addType(it)
       }
     }
-    // Sealed-interface (choice-type) serializers. Each emits the nested per-arm JSON shape — the
-    // parent-level flatten pass lifts those keys up to flat FHIR wire shape.
-    structureDefinition.snapshot
-      ?.element
-      ?.filter { it.path.endsWith("[x]") }
-      ?.forEach { element ->
-        val simpleNames = element.path.replace("[x]", "").split('.').map { it.capitalized() }
-        val sealedInterfaceClassName = ClassName(modelClassName.packageName, simpleNames)
-        builder.addType(createSealedInterfaceSerializerTypeSpec(sealedInterfaceClassName, element))
-      }
+    // Choice-type sealed interfaces (e.g. Patient.Deceased) get no per-class serializer:
+    // the parent resource serializer fully inlines the per-arm keys on encode/decode, so a
+    // standalone KSerializer<Patient.Deceased> is never invoked.
     // Root model serializer.
     createModelSerializerTypeSpecs(
         modelClassName,
@@ -116,9 +100,9 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     isResource: Boolean,
     resourceTypeName: String? = null,
   ): List<TypeSpec> {
-    // One serializer per type, operating on the flat FHIR wire shape. Choice-bearing types no
-    // longer get a separate nested Internal + flatten-wrapper pair — per-arm keys are emitted
-    // directly at the parent's composite encoder on both encode and decode paths.
+    // One serializer per type, operating on the flat FHIR wire shape. Choice-bearing types do not
+    // get a separate per-arm wrapper — per-arm keys are emitted directly against the parent's
+    // composite encoder on both encode and decode paths.
     val wireFields = buildJsonWireFields(className, elements)
     return listOf(
       createStreamingSerializerTypeSpec(
@@ -177,7 +161,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
        * on the outer serializer object. Nested objects initialize via JVM class-init on first
        * property access (not with the enclosing object), so expressions that eagerly dereference a
        * still-initializing sibling's `descriptor` (e.g. `ListSerializer(Extension.serializer())`
-       * from inside `ExtensionSerializerInternal` — `ArrayListSerializer`'s constructor reads
+       * from inside `ExtensionSerializer`'s own init — `ArrayListSerializer`'s constructor reads
        * `element.descriptor`, which is null during our own init) are deferred until encode/decode
        * starts. No `Lazy` monitor — just a `getstatic` after the one-time init.
        */
@@ -302,11 +286,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     elements: List<Element>,
   ): List<WireField> {
     val propertyMapper =
-      PropertyMapper(
-        PropertyMapper.MappingContext.SURROGATE,
-        modelClassName,
-        codegenContext.valueSetMap,
-      )
+      PropertyMapper(PropertyMapper.MappingContext.WIRE, modelClassName, codegenContext.valueSetMap)
     return elements.flatMap { element ->
       propertyMapper.mapToProperties(element).map { info ->
         WireField(
@@ -709,9 +689,9 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     hoister: SerializerHoister,
   ) {
     val propertyName = element.getElementName()
-    // Choice type: emit per-arm flat keys inline against the parent's composite encoder. Mirrors
-    // `createSealedInterfaceSerializerTypeSpec` arm-encoding but writes each arm's value /
-    // sidecar to the parent's flat descriptor slot instead of a nested sub-object.
+    // Choice type: emit per-arm flat keys inline against the parent's composite encoder.
+    // Each arm's value / sidecar is written to a flat descriptor slot on the parent instead
+    // of via a nested sub-object — there is no standalone choice-type serializer.
     if (element.type != null && element.type.size > 1) {
       emitChoiceArmEncodingInline(cb, element, modelClassName, nameToIdx, hoister)
       return
@@ -893,13 +873,13 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     val elementIdx = nameToIdx["_$choiceFieldBaseName"]
     if (FhirPathType.containsFhirTypeCode(typeCode)) {
       val fpt = FhirPathType.getFromFhirTypeCode(typeCode)!!
-      val primCN = fpt.typeInSurrogateClass
+      val primCN = fpt.wireType
       // Value arm
       val valueExpr =
         CodeBlock.builder()
           .apply {
             add("(__d.value")
-            fpt.addCodeToConvertTypeInModelToTypeInSurrogate(this)
+            fpt.addCodeToEncodeModelToWire(this)
             add(")")
           }
           .build()
@@ -949,7 +929,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     val fpt = FhirPathType.getFromFhirTypeCode(typeCode)!!
     val isEnum = element.typeIsEnumeratedCode(codegenContext.valueSetMap)
     val isRequired = element.min == 1 && element.max == "1"
-    val surrCN: ClassName = fpt.typeInSurrogateClass
+    val surrCN: ClassName = fpt.wireType
     val valueIdx = nameToIdx.getValue(propertyName)
     val elementIdx = nameToIdx.getValue("_$propertyName")
     val valueType: ClassName = if (isEnum) String::class.asClassName() else surrCN
@@ -965,7 +945,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
           } else {
             add("value.%N", propertyName)
             if (!isRequired) add("?")
-            fpt.addCodeToConvertTypeInModelToTypeInSurrogate(this)
+            fpt.addCodeToEncodeModelToWire(this)
           }
           add(")")
         }
@@ -1002,7 +982,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     val typeCode = element.type!!.single().code
     val fpt = FhirPathType.getFromFhirTypeCode(typeCode)!!
     val isEnum = element.typeIsEnumeratedCode(codegenContext.valueSetMap)
-    val surrCN: ClassName = fpt.typeInSurrogateClass
+    val surrCN: ClassName = fpt.wireType
     val valueIdx = nameToIdx.getValue(propertyName)
     val elementIdx = nameToIdx.getValue("_$propertyName")
     val valueInnerType: ClassName = if (isEnum) String::class.asClassName() else surrCN
@@ -1043,7 +1023,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
       )
     } else {
       cb.add("value.%N.map·{·it", propertyName)
-      fpt.addCodeToConvertTypeInModelToTypeInSurrogate(cb)
+      fpt.addCodeToEncodeModelToWire(cb)
       cb.add("·}.takeUnless·{·it.all·{·it == null·}·}")
     }
     cb.add(
@@ -1084,302 +1064,6 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     }
     cb.unindent().add(")\n")
     return cb.build()
-  }
-
-  // ==============================================================================================
-  // Sealed-interface serializer (choice types)
-  // ==============================================================================================
-
-  /**
-   * Emits the hand-rolled sealed-interface serializer (e.g. `PatientDeceasedSerializer`) used when
-   * a `Patient.Deceased` value is serialized **standalone** (outside a Patient). Its wire shape is
-   * a nested per-arm object:
-   * ```
-   * { "deceasedBoolean": true, "_deceasedBoolean": { "id": "…" } }
-   * ```
-   *
-   * Inside a Patient the sealed value is instead emitted directly into the parent's flat shape by
-   * `emitChoiceArmEncodingInline` — this serializer is not invoked on that path.
-   *
-   * Streaming encode: `when (value)` on each arm subclass → write the arm's `(value, _sidecar)`
-   * pair via `encodeXxxElement` / `encodeSerializableElement`.
-   *
-   * Streaming decode: read each arm key into a nullable local via `decode*Element`; after
-   * `DECODE_DONE`, synthesize the sealed value via the type's companion `from(…)` factory.
-   */
-  private fun createSealedInterfaceSerializerTypeSpec(
-    className: ClassName,
-    element: Element,
-  ): TypeSpec {
-    val packageName = className.packageName
-    val elementCN = ClassName(packageName, "Element")
-    val fieldName = element.getElementName()
-    val arms = element.type!!
-    val hoister = SerializerHoister()
-
-    // Order descriptor elements as (valueKey, sidecarKey) per arm — matches plugin-gen surrogate
-    // field ordering and round-trips flatten/unflatten cleanly.
-    data class ArmSlot(
-      val valueKey: String,
-      val sidecarKey: String,
-      val type: Type,
-      val armClassName: ClassName,
-      /** Primitive type info (null for complex arms). */
-      val fpt: FhirPathType?,
-      /** Kotlin-level value type ($T for encodeXxxElement). Stdlib primitive or surrogate type. */
-      val kotlinValueType: ClassName,
-    )
-
-    val armSlots =
-      arms.map { t ->
-        val baseName = "$fieldName${t.code.capitalized()}"
-        val fpt = FhirPathType.getFromFhirTypeCode(t.code)
-        val armCN = className.nestedClass(sealedChoiceArmName(t))
-        val valueType = fpt?.typeInSurrogateClass ?: ClassName(packageName, t.code.capitalized())
-        ArmSlot(baseName, "_$baseName", t, armCN, fpt, valueType)
-      }
-
-    val descBody =
-      CodeBlock.builder()
-        .apply {
-          add("%M(%S) {\n", buildClassSerialDescriptorMN, className.simpleNames.joinToString("."))
-          indent()
-          for (slot in armSlots) {
-            add(
-              "element(%S, %L, isOptional = true)\n",
-              slot.valueKey,
-              descriptorFor(slot.kotlinValueType, className),
-            )
-            if (slot.fpt != null) {
-              add(
-                "element(%S, %T.serializer().descriptor, isOptional = true)\n",
-                slot.sidecarKey,
-                elementCN,
-              )
-            }
-          }
-          unindent()
-          add("}\n")
-        }
-        .build()
-
-    val serializeBody =
-      CodeBlock.builder()
-        .apply {
-          add("encoder.%M(descriptor) {\n", encodeStructureMN)
-          indent()
-          add("val __desc = descriptor\n")
-          add("when (val __d = value) {\n")
-          indent()
-          var indexCursor = 0
-          for (slot in armSlots) {
-            val valueIdx = indexCursor++
-            val sidecarIdx = if (slot.fpt != null) indexCursor++ else -1
-            add("is %T -> {\n", slot.armClassName)
-            indent()
-            if (slot.fpt != null) {
-              // FHIR primitive arm: write value (converted to surrogate type) + sidecar Element.
-              val valueExprCb =
-                CodeBlock.builder()
-                  .apply {
-                    add("(__d.value")
-                    slot.fpt.addCodeToConvertTypeInModelToTypeInSurrogate(this)
-                    add(")")
-                  }
-                  .build()
-              val specialized = specializedEncodeElementCall(slot.kotlinValueType)
-              if (specialized != null) {
-                add("(%L)?.let·{ %N(__desc, %L, it) }\n", valueExprCb, specialized, valueIdx)
-              } else {
-                val ser =
-                  customSerializerFor(slot.kotlinValueType, className)?.let {
-                    CodeBlock.of("%T", it)
-                  }
-                    ?: hoister.refLazy(
-                      serializerForClassName(slot.kotlinValueType),
-                      "${slot.valueKey}Ser",
-                      slot.kotlinValueType,
-                    )
-                add(
-                  "(%L)?.let·{ encodeSerializableElement(__desc, %L, %L, it) }\n",
-                  valueExprCb,
-                  valueIdx,
-                  ser,
-                )
-              }
-              val elementSer =
-                hoister.refLazy(serializerForClassName(elementCN), "elementSer", elementCN)
-              add(
-                "(__d.value.toElement())?.let·{ encodeSerializableElement(__desc, %L, %L, it) }\n",
-                sidecarIdx,
-                elementSer,
-              )
-            } else {
-              // Complex arm: single encodeSerializableElement on the arm's value.
-              val ser =
-                hoister.refLazy(
-                  serializerForClassName(slot.kotlinValueType),
-                  "${slot.valueKey}Ser",
-                  slot.kotlinValueType,
-                )
-              add("encodeSerializableElement(__desc, %L, %L, __d.value)\n", valueIdx, ser)
-            }
-            unindent()
-            add("}\n")
-          }
-          unindent()
-          add("}\n")
-          unindent()
-          add("}\n")
-        }
-        .build()
-
-    // Streaming decode body — uses `decodeElementIndex` +
-    // specialized `decodeXxxElement` calls over the nested-shape descriptor instead of walking a
-    // `JsonObject`. Called via `deserialize` → `decodeStructure { deserializeJson(this) }`.
-    val streamDeserializeBody =
-      CodeBlock.builder()
-        .apply {
-          add("val __desc = descriptor\n")
-          // Locals — one per arm value + sidecar.
-          for (slot in armSlots) {
-            val valueType = slot.kotlinValueType.copy(nullable = true)
-            if (slot.fpt != null) {
-              add("var %N: %T = null\n", slot.valueKey, valueType)
-              add("var %N: %T = null\n", slot.sidecarKey, elementCN.copy(nullable = true))
-            } else {
-              add("var %N: %T = null\n", slot.valueKey, valueType)
-            }
-          }
-          add("while (true) {\n").indent()
-          add("when (val __i = decoder.decodeElementIndex(__desc)) {\n").indent()
-          var indexCursor = 0
-          for (slot in armSlots) {
-            val valueIdx = indexCursor++
-            val specialized =
-              when (
-                slot.kotlinValueType.simpleName.takeIf {
-                  slot.kotlinValueType.packageName == "kotlin"
-                }
-              ) {
-                "String" -> "decodeStringElement"
-                "Boolean" -> "decodeBooleanElement"
-                "Int" -> "decodeIntElement"
-                "Long" -> "decodeLongElement"
-                "Double" -> "decodeDoubleElement"
-                else -> null
-              }
-            if (specialized != null) {
-              add(
-                "%L -> %N = decoder.%N(__desc, %L)\n",
-                valueIdx,
-                slot.valueKey,
-                specialized,
-                valueIdx,
-              )
-            } else {
-              val ser =
-                customSerializerFor(slot.kotlinValueType, className)?.let { CodeBlock.of("%T", it) }
-                  ?: hoister.refLazy(
-                    serializerForClassName(slot.kotlinValueType),
-                    "${slot.valueKey}Ser",
-                    slot.kotlinValueType,
-                  )
-              add(
-                "%L -> %N = decoder.decodeNullableSerializableElement(__desc, %L, %L, null)\n",
-                valueIdx,
-                slot.valueKey,
-                valueIdx,
-                ser,
-              )
-            }
-            if (slot.fpt != null) {
-              val sidecarIdx = indexCursor++
-              val elementSer =
-                hoister.refLazy(serializerForClassName(elementCN), "elementSer", elementCN)
-              add(
-                "%L -> %N = decoder.decodeNullableSerializableElement(__desc, %L, %L, null)\n",
-                sidecarIdx,
-                slot.sidecarKey,
-                sidecarIdx,
-                elementSer,
-              )
-            }
-          }
-          add("%T.DECODE_DONE -> break\n", compositeDecoderCN)
-          add(
-            "else -> throw %T(%S + __i)\n",
-            ClassName("kotlinx.serialization", "SerializationException"),
-            "Unexpected index decoding ${className.simpleNames.joinToString(".")}: ",
-          )
-          unindent().add("}\n")
-          unindent().add("}\n")
-          // Synthesize via factory.
-          add("return %T.from(\n", className)
-          indent()
-          for ((i, slot) in armSlots.withIndex()) {
-            if (slot.fpt != null) {
-              val modelPrimCN = ClassName(packageName, slot.type.code.capitalized())
-              add("%T.of(", modelPrimCN)
-              slot.fpt.addCodeToConvertPropertyInSurrogateToPropertyInModel(
-                this,
-                packageName,
-                slot.valueKey,
-              )
-              add(", %N)", slot.sidecarKey)
-            } else {
-              add("%N", slot.valueKey)
-            }
-            if (i < armSlots.lastIndex) add(",")
-            add("\n")
-          }
-          unindent()
-          add(")!!\n")
-        }
-        .build()
-
-    val builder =
-      TypeSpec.objectBuilder(className.toSerializerClassName())
-        .addModifiers(KModifier.INTERNAL)
-        .addSuperinterface(KSerializer::class.asClassName().parameterizedBy(className))
-        .addProperty(
-          PropertySpec.builder("descriptor", serialDescriptorCN)
-            .addModifiers(KModifier.OVERRIDE)
-            .initializer(descBody)
-            .build()
-        )
-        .addFunction(
-          FunSpec.builder("serialize")
-            .addModifiers(KModifier.OVERRIDE)
-            .addParameter("encoder", encoderCN)
-            .addParameter("value", className)
-            .addCode(serializeBody)
-            .build()
-        )
-        .addFunction(
-          // Stream unconditionally via `decodeStructure { deserializeJson(this) }` — same body
-          // services both StreamingJsonDecoder and JsonTreeDecoder via the CompositeDecoder API.
-          FunSpec.builder("deserialize")
-            .addModifiers(KModifier.OVERRIDE)
-            .addParameter("decoder", decoderCN)
-            .returns(className)
-            .addCode(
-              "return decoder.%M(descriptor) {\n  deserializeJson(this)\n}\n",
-              decodeStructureMN,
-            )
-            .build()
-        )
-        .addFunction(
-          FunSpec.builder("deserializeJson")
-            .addModifiers(KModifier.INTERNAL)
-            .addParameter("decoder", compositeDecoderCN)
-            .returns(className)
-            .addCode(streamDeserializeBody)
-            .build()
-        )
-    hoister.eagerPropertyDefinitions().forEach { builder.addProperty(it) }
-    hoister.deferredObjectTypeSpec()?.let { builder.addType(it) }
-    return builder.build()
   }
 
   // ==============================================================================================

@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.VirtualServiceDetailAddressSerializer
 import dev.ohs.fhir.model.r5.serializers.VirtualServiceDetailSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -101,7 +100,6 @@ public data class VirtualServiceDetail(
       }
     }
 
-  @Serializable(with = VirtualServiceDetailAddressSerializer::class)
   public sealed interface Address {
     public fun asUrl(): Url? = this as? Url
 

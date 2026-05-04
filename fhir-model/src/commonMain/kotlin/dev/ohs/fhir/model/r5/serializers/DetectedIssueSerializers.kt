@@ -243,66 +243,6 @@ internal object DetectedIssueMitigationSerializer : KSerializer<DetectedIssue.Mi
   }
 }
 
-internal object DetectedIssueIdentifiedSerializer : KSerializer<DetectedIssue.Identified> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("DetectedIssue.Identified") {
-      element("identifiedDateTime", String.serializer().descriptor, isOptional = true)
-      element("_identifiedDateTime", Element.serializer().descriptor, isOptional = true)
-      element("identifiedPeriod", Period.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: DetectedIssue.Identified) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is DetectedIssue.Identified.DateTime -> {
-          ((__d.value.value?.toString()))?.let { encodeStringElement(__desc, 0, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 1, Hoisted.elementSer, it)
-          }
-        }
-        is DetectedIssue.Identified.Period -> {
-          encodeSerializableElement(__desc, 2, Hoisted.identifiedPeriodSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): DetectedIssue.Identified =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): DetectedIssue.Identified {
-    val __desc = descriptor
-    var identifiedDateTime: String? = null
-    var _identifiedDateTime: Element? = null
-    var identifiedPeriod: Period? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> identifiedDateTime = decoder.decodeStringElement(__desc, 0)
-        1 ->
-          _identifiedDateTime =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.elementSer, null)
-        2 ->
-          identifiedPeriod =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.identifiedPeriodSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding DetectedIssue.Identified: " + __i)
-      }
-    }
-    return DetectedIssue.Identified.from(
-      DateTime.of(FhirDateTime.fromString(identifiedDateTime), _identifiedDateTime),
-      identifiedPeriod,
-    )!!
-  }
-
-  private object Hoisted {
-    public val elementSer: KSerializer<Element> = Element.serializer()
-
-    public val identifiedPeriodSer: KSerializer<Period> = Period.serializer()
-  }
-}
-
 internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DetectedIssue") {

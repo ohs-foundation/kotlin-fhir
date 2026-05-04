@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionCharacteristicSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionCharacteristicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionContactSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionCrossReferenceSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionNamePartSerializer
@@ -1127,7 +1126,6 @@ public data class MedicinalProductDefinition(
         }
       }
 
-    @Serializable(with = MedicinalProductDefinitionCharacteristicValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

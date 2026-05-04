@@ -1112,62 +1112,6 @@ internal object EvidenceCertaintySerializer : KSerializer<Evidence.Certainty> {
   }
 }
 
-internal object EvidenceCiteAsSerializer : KSerializer<Evidence.CiteAs> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Evidence.CiteAs") {
-      element("citeAsReference", Reference.serializer().descriptor, isOptional = true)
-      element("citeAsMarkdown", KotlinString.serializer().descriptor, isOptional = true)
-      element("_citeAsMarkdown", Element.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Evidence.CiteAs) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Evidence.CiteAs.Reference -> {
-          encodeSerializableElement(__desc, 0, Hoisted.citeAsReferenceSer, __d.value)
-        }
-        is Evidence.CiteAs.Markdown -> {
-          ((__d.value.value))?.let { encodeStringElement(__desc, 1, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 2, Hoisted.elementSer, it)
-          }
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Evidence.CiteAs =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Evidence.CiteAs {
-    val __desc = descriptor
-    var citeAsReference: Reference? = null
-    var citeAsMarkdown: KotlinString? = null
-    var _citeAsMarkdown: Element? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          citeAsReference =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.citeAsReferenceSer, null)
-        1 -> citeAsMarkdown = decoder.decodeStringElement(__desc, 1)
-        2 ->
-          _citeAsMarkdown =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.elementSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Evidence.CiteAs: " + __i)
-      }
-    }
-    return Evidence.CiteAs.from(citeAsReference, Markdown.of(citeAsMarkdown, _citeAsMarkdown))!!
-  }
-
-  private object Hoisted {
-    public val citeAsReferenceSer: KSerializer<Reference> = Reference.serializer()
-
-    public val elementSer: KSerializer<Element> = Element.serializer()
-  }
-}
-
 internal object EvidenceSerializer : KSerializer<Evidence> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Evidence") {

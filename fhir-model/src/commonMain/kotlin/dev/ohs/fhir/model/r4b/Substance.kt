@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.SubstanceIngredientSerializer
-import dev.ohs.fhir.model.r4b.serializers.SubstanceIngredientSubstanceSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceInstanceSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceSerializer
 import kotlin.Suppress
@@ -370,7 +369,6 @@ public data class Substance(
         }
       }
 
-    @Serializable(with = SubstanceIngredientSubstanceSerializer::class)
     public sealed interface Substance {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

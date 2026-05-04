@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.EvidenceCertaintySerializer
-import dev.ohs.fhir.model.r4b.serializers.EvidenceCiteAsSerializer
 import dev.ohs.fhir.model.r4b.serializers.EvidenceSerializer
 import dev.ohs.fhir.model.r4b.serializers.EvidenceStatisticAttributeEstimateSerializer
 import dev.ohs.fhir.model.r4b.serializers.EvidenceStatisticModelCharacteristicSerializer
@@ -1417,7 +1416,6 @@ public data class Evidence(
     }
   }
 
-  @Serializable(with = EvidenceCiteAsSerializer::class)
   public sealed interface CiteAs {
     public fun asReference(): Reference? = this as? Reference
 

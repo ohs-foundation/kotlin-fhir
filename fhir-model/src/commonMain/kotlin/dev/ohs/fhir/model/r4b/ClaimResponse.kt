@@ -20,9 +20,7 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemDetailSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemDetailSubDetailSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemLocationSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClaimResponseAddItemServicedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimResponseErrorSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimResponseInsuranceSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimResponseItemAdjudicationSerializer
@@ -1472,7 +1470,6 @@ public data class ClaimResponse(
       }
     }
 
-    @Serializable(with = ClaimResponseAddItemServicedSerializer::class)
     public sealed interface Serviced {
       public fun asDate(): Date? = this as? Date
 
@@ -1494,7 +1491,6 @@ public data class ClaimResponse(
       }
     }
 
-    @Serializable(with = ClaimResponseAddItemLocationSerializer::class)
     public sealed interface Location {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

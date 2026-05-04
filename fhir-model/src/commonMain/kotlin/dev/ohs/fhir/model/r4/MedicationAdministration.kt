@@ -18,10 +18,7 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationDosageRateSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationDosageSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationEffectiveSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationMedicationSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationPerformerSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationSerializer
 import kotlin.Suppress
@@ -494,7 +491,6 @@ public data class MedicationAdministration(
         }
       }
 
-    @Serializable(with = MedicationAdministrationDosageRateSerializer::class)
     public sealed interface Rate {
       public fun asRatio(): Ratio? = this as? Ratio
 
@@ -636,7 +632,6 @@ public data class MedicationAdministration(
     }
   }
 
-  @Serializable(with = MedicationAdministrationMedicationSerializer::class)
   public sealed interface Medication {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -659,7 +654,6 @@ public data class MedicationAdministration(
     }
   }
 
-  @Serializable(with = MedicationAdministrationEffectiveSerializer::class)
   public sealed interface Effective {
     public fun asDateTime(): DateTime? = this as? DateTime
 

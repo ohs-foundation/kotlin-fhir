@@ -139,68 +139,6 @@ internal object ClinicalImpressionFindingSerializer : KSerializer<ClinicalImpres
   }
 }
 
-internal object ClinicalImpressionEffectiveSerializer : KSerializer<ClinicalImpression.Effective> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ClinicalImpression.Effective") {
-      element("effectiveDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_effectiveDateTime", Element.serializer().descriptor, isOptional = true)
-      element("effectivePeriod", Period.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ClinicalImpression.Effective) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is ClinicalImpression.Effective.DateTime -> {
-          ((__d.value.value?.toString()))?.let { encodeStringElement(__desc, 0, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 1, Hoisted.elementSer, it)
-          }
-        }
-        is ClinicalImpression.Effective.Period -> {
-          encodeSerializableElement(__desc, 2, Hoisted.effectivePeriodSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ClinicalImpression.Effective =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): ClinicalImpression.Effective {
-    val __desc = descriptor
-    var effectiveDateTime: KotlinString? = null
-    var _effectiveDateTime: Element? = null
-    var effectivePeriod: Period? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> effectiveDateTime = decoder.decodeStringElement(__desc, 0)
-        1 ->
-          _effectiveDateTime =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.elementSer, null)
-        2 ->
-          effectivePeriod =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.effectivePeriodSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding ClinicalImpression.Effective: " + __i
-          )
-      }
-    }
-    return ClinicalImpression.Effective.from(
-      DateTime.of(FhirDateTime.fromString(effectiveDateTime), _effectiveDateTime),
-      effectivePeriod,
-    )!!
-  }
-
-  private object Hoisted {
-    public val elementSer: KSerializer<Element> = Element.serializer()
-
-    public val effectivePeriodSer: KSerializer<Period> = Period.serializer()
-  }
-}
-
 internal object ClinicalImpressionSerializer : KSerializer<ClinicalImpression> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ClinicalImpression") {

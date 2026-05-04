@@ -19,9 +19,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ProcedureFocalDeviceSerializer
-import dev.ohs.fhir.model.r5.serializers.ProcedureOccurrenceSerializer
 import dev.ohs.fhir.model.r5.serializers.ProcedurePerformerSerializer
-import dev.ohs.fhir.model.r5.serializers.ProcedureReportedSerializer
 import dev.ohs.fhir.model.r5.serializers.ProcedureSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -642,7 +640,6 @@ public data class Procedure(
     }
   }
 
-  @Serializable(with = ProcedureOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -688,7 +685,6 @@ public data class Procedure(
     }
   }
 
-  @Serializable(with = ProcedureReportedSerializer::class)
   public sealed interface Reported {
     public fun asBoolean(): Boolean? = this as? Boolean
 

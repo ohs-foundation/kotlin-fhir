@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.ProcedureFocalDeviceSerializer
-import dev.ohs.fhir.model.r4b.serializers.ProcedurePerformedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ProcedurePerformerSerializer
 import dev.ohs.fhir.model.r4b.serializers.ProcedureSerializer
 import kotlin.String
@@ -608,7 +607,6 @@ public data class Procedure(
     }
   }
 
-  @Serializable(with = ProcedurePerformedSerializer::class)
   public sealed interface Performed {
     public fun asDateTime(): DateTime? = this as? DateTime
 

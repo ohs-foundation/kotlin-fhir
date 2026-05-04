@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.AnnotationAuthorSerializer
 import dev.ohs.fhir.model.r4b.serializers.AnnotationSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -71,7 +70,6 @@ public data class Annotation(
       }
     }
 
-  @Serializable(with = AnnotationAuthorSerializer::class)
   public sealed interface Author {
     public fun asReference(): Reference? = this as? Reference
 

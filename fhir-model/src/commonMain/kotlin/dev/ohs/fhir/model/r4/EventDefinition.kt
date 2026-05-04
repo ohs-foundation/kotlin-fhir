@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.EventDefinitionSerializer
-import dev.ohs.fhir.model.r4.serializers.EventDefinitionSubjectSerializer
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -373,7 +372,6 @@ public data class EventDefinition(
       }
     }
 
-  @Serializable(with = EventDefinitionSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

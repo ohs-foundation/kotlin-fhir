@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.ProductShelfLifePeriodSerializer
 import dev.ohs.fhir.model.r5.serializers.ProductShelfLifeSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -102,7 +101,6 @@ public data class ProductShelfLife(
       }
     }
 
-  @Serializable(with = ProductShelfLifePeriodSerializer::class)
   public sealed interface Period {
     public fun asDuration(): Duration? = this as? Duration
 

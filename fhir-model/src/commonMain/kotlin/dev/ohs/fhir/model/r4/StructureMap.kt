@@ -21,10 +21,8 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.StructureMapGroupInputSerializer
 import dev.ohs.fhir.model.r4.serializers.StructureMapGroupRuleDependentSerializer
 import dev.ohs.fhir.model.r4.serializers.StructureMapGroupRuleSerializer
-import dev.ohs.fhir.model.r4.serializers.StructureMapGroupRuleSourceDefaultValueSerializer
 import dev.ohs.fhir.model.r4.serializers.StructureMapGroupRuleSourceSerializer
 import dev.ohs.fhir.model.r4.serializers.StructureMapGroupRuleTargetParameterSerializer
-import dev.ohs.fhir.model.r4.serializers.StructureMapGroupRuleTargetParameterValueSerializer
 import dev.ohs.fhir.model.r4.serializers.StructureMapGroupRuleTargetSerializer
 import dev.ohs.fhir.model.r4.serializers.StructureMapGroupSerializer
 import dev.ohs.fhir.model.r4.serializers.StructureMapSerializer
@@ -838,7 +836,6 @@ public data class StructureMap(
             }
           }
 
-        @Serializable(with = StructureMapGroupRuleSourceDefaultValueSerializer::class)
         public sealed interface DefaultValue {
           public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
@@ -1429,7 +1426,6 @@ public data class StructureMap(
               }
             }
 
-          @Serializable(with = StructureMapGroupRuleTargetParameterValueSerializer::class)
           public sealed interface Value {
             public fun asId(): Id? = this as? Id
 

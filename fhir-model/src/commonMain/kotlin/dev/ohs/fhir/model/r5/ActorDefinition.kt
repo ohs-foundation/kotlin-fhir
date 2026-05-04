@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ActorDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.ActorDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -354,7 +353,6 @@ public data class ActorDefinition(
       }
     }
 
-  @Serializable(with = ActorDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

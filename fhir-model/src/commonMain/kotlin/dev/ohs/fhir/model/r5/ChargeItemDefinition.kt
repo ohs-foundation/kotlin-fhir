@@ -21,7 +21,6 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.ChargeItemDefinitionApplicabilitySerializer
 import dev.ohs.fhir.model.r5.serializers.ChargeItemDefinitionPropertyGroupSerializer
 import dev.ohs.fhir.model.r5.serializers.ChargeItemDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.ChargeItemDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -711,7 +710,6 @@ public data class ChargeItemDefinition(
     }
   }
 
-  @Serializable(with = ChargeItemDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

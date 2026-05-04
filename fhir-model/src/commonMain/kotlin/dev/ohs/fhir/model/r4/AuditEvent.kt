@@ -21,7 +21,6 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.AuditEventAgentNetworkSerializer
 import dev.ohs.fhir.model.r4.serializers.AuditEventAgentSerializer
 import dev.ohs.fhir.model.r4.serializers.AuditEventEntityDetailSerializer
-import dev.ohs.fhir.model.r4.serializers.AuditEventEntityDetailValueSerializer
 import dev.ohs.fhir.model.r4.serializers.AuditEventEntitySerializer
 import dev.ohs.fhir.model.r4.serializers.AuditEventSerializer
 import dev.ohs.fhir.model.r4.serializers.AuditEventSourceSerializer
@@ -901,7 +900,6 @@ public data class AuditEvent(
           }
         }
 
-      @Serializable(with = AuditEventEntityDetailValueSerializer::class)
       public sealed interface Value {
         public fun asString(): String? = this as? String
 

@@ -18,13 +18,11 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.EvidenceReportCiteAsSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceReportRelatesToSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceReportRelatesToTargetSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceReportSectionSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceReportSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceReportSubjectCharacteristicSerializer
-import dev.ohs.fhir.model.r5.serializers.EvidenceReportSubjectCharacteristicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceReportSubjectSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -431,7 +429,6 @@ public data class EvidenceReport(
           }
         }
 
-      @Serializable(with = EvidenceReportSubjectCharacteristicValueSerializer::class)
       public sealed interface Value {
         public fun asReference(): Reference? = this as? Reference
 
@@ -1167,7 +1164,6 @@ public data class EvidenceReport(
     }
   }
 
-  @Serializable(with = EvidenceReportCiteAsSerializer::class)
   public sealed interface CiteAs {
     public fun asReference(): Reference? = this as? Reference
 

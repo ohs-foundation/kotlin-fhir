@@ -19,11 +19,8 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.ImmunizationEducationSerializer
-import dev.ohs.fhir.model.r4.serializers.ImmunizationOccurrenceSerializer
 import dev.ohs.fhir.model.r4.serializers.ImmunizationPerformerSerializer
-import dev.ohs.fhir.model.r4.serializers.ImmunizationProtocolAppliedDoseNumberSerializer
 import dev.ohs.fhir.model.r4.serializers.ImmunizationProtocolAppliedSerializer
-import dev.ohs.fhir.model.r4.serializers.ImmunizationProtocolAppliedSeriesDosesSerializer
 import dev.ohs.fhir.model.r4.serializers.ImmunizationReactionSerializer
 import dev.ohs.fhir.model.r4.serializers.ImmunizationSerializer
 import kotlin.Suppress
@@ -755,7 +752,6 @@ public data class Immunization(
         }
       }
 
-    @Serializable(with = ImmunizationProtocolAppliedDoseNumberSerializer::class)
     public sealed interface DoseNumber {
       public fun asPositiveInt(): PositiveInt? = this as? PositiveInt
 
@@ -778,7 +774,6 @@ public data class Immunization(
       }
     }
 
-    @Serializable(with = ImmunizationProtocolAppliedSeriesDosesSerializer::class)
     public sealed interface SeriesDoses {
       public fun asPositiveInt(): PositiveInt? = this as? PositiveInt
 
@@ -884,7 +879,6 @@ public data class Immunization(
     }
   }
 
-  @Serializable(with = ImmunizationOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 

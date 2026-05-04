@@ -55,7 +55,7 @@ internal class PropertyMapper(
   enum class MappingContext {
     MODEL,
     BUILDER,
-    SURROGATE,
+    WIRE,
   }
 
   /** Returns a [PropertyInfo] for the model or builder class. */
@@ -78,20 +78,16 @@ internal class PropertyMapper(
    *   and/or "extensions", if present.
    */
   fun mapToProperties(element: Element): List<PropertyInfo> {
-    check(mappingContext == MappingContext.SURROGATE)
+    check(mappingContext == MappingContext.WIRE)
     if (element.isBackboneElement()) {
         modelClassName
           .nestedClass(element.id.substringAfterLast('.').capitalized())
-          .withCardinalityInSurrogate(element)
+          .withWireCardinality(element)
       } else {
-        element
-          .getContentReferenceType(modelClassName.packageName)
-          ?.withCardinalityInSurrogate(element)
+        element.getContentReferenceType(modelClassName.packageName)?.withWireCardinality(element)
       }
       ?.let {
-        return listOf(
-          PropertyInfo(element.getElementName(), it, getDefaultValueInSurrogate(element))
-        )
+        return listOf(PropertyInfo(element.getElementName(), it, getWireDefaultValue(element)))
       }
 
     // Otherwise, handle each type and combine the results
@@ -112,10 +108,9 @@ internal class PropertyMapper(
               // list to contain null values for padding. See
               // https://www.hl7.org/fhir/R5/json.html#primitive.
               .copy(nullable = true)
-              .withCardinalityInSurrogate(element)
-              // The primitive element in the surrogate class should always be nullable, since it is
-              // possible to omit this field entirely if the primitive has only id and/or extensions
-              // in the companion element but no value. See
+              .withWireCardinality(element)
+              // The primitive value on the wire is always nullable: the JSON property may be
+              // omitted when only the companion `_field` (id/extensions) is present. See
               // https://www.hl7.org/fhir/R5/json.html#primitive.
               .copy(nullable = true),
             // The default value for primitive types should always be `null` for the same reason.
@@ -129,10 +124,9 @@ internal class PropertyMapper(
               // to contain null values for padding. See
               // https://www.hl7.org/fhir/R5/json.html#primitive.
               .copy(nullable = true)
-              .withCardinalityInSurrogate(element)
-              // The companion element (prefixed with an underscore) in the surrogate class should
-              // always be nullable, since it is possible to omit this field entirely in JSON if the
-              // primitive has no id and/or extensions.
+              .withWireCardinality(element)
+              // The companion `_field` (id/extensions) is always nullable on the wire: it may be
+              // omitted entirely when the primitive has no id or extensions.
               .copy(nullable = true),
             // The default value for the companion element of primitive types should always be
             // `null` for the same reason.
@@ -143,8 +137,8 @@ internal class PropertyMapper(
         listOf(
           PropertyInfo(
             propertyName,
-            baseType.withCardinalityInSurrogate(element),
-            getDefaultValueInSurrogate(element),
+            baseType.withWireCardinality(element),
+            getWireDefaultValue(element),
           )
         )
       }
@@ -181,8 +175,7 @@ internal class PropertyMapper(
         MappingContext.MODEL,
         MappingContext.BUILDER ->
           nestBuilderClass(ClassName(modelClassName.packageName, type.code.capitalized()))
-        MappingContext.SURROGATE ->
-          FhirPathType.getFromFhirTypeCode(type.code)!!.typeInSurrogateClass
+        MappingContext.WIRE -> FhirPathType.getFromFhirTypeCode(type.code)!!.wireType
       }
     }
 
@@ -245,18 +238,16 @@ internal class PropertyMapper(
     return "null"
   }
 
-  /** Returns the default value for the generated field in the surrogate class. */
-  private fun getDefaultValueInSurrogate(element: Element): String? {
+  /** Returns the default value for the wire-shaped local-var/descriptor slot. */
+  private fun getWireDefaultValue(element: Element): String? {
     if (element.max == "*" || element.min == 0) {
-      // Whilst the default value for repeated elements is empty list in the model class, it is null
-      // in the surrogate class. This is because the JSON object might omit the list altogether.
+      // Repeated elements default to empty list in the model class but to null on the wire,
+      // because the JSON object may omit the list altogether.
       return "null"
     }
     if ((element.type?.size ?: 0) > 1) {
-      // Choice of types should always be nullable since there is no guarantee that any of the
-      // choices
-      // is the provided type in the surrogate class, and therefore should always have the default
-      // value `null`.
+      // Choice of types is always nullable on the wire: only one arm appears at a time, so every
+      // arm's slot must default to null.
       return "null"
     }
     return null
@@ -390,7 +381,7 @@ internal class PropertyMapper(
    * - Otherwise, if the [Element]'s min cardinality is 0, make the type nullable.
    * - Otherwise, do nothing.
    */
-  private fun TypeName.withCardinalityInSurrogate(element: Element): TypeName {
+  private fun TypeName.withWireCardinality(element: Element): TypeName {
     return if (element.max == "*" || element.id == "xhtml.extension") {
       // The extension field of XHTML needs to be a list despite the cardinality of 0..0.
       ClassName("kotlin.collections", "List").parameterizedBy(this).copy(nullable = true)

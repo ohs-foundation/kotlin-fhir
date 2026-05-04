@@ -19,10 +19,8 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.MessageDefinitionAllowedResponseSerializer
-import dev.ohs.fhir.model.r5.serializers.MessageDefinitionEventSerializer
 import dev.ohs.fhir.model.r5.serializers.MessageDefinitionFocusSerializer
 import dev.ohs.fhir.model.r5.serializers.MessageDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.MessageDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import kotlin.Suppress
@@ -680,7 +678,6 @@ public data class MessageDefinition(
     }
   }
 
-  @Serializable(with = MessageDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 
@@ -702,7 +699,6 @@ public data class MessageDefinition(
     }
   }
 
-  @Serializable(with = MessageDefinitionEventSerializer::class)
   public sealed interface Event {
     public fun asCoding(): Coding? = this as? Coding
 

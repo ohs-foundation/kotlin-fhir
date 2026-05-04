@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.SubstanceAmountAmountSerializer
 import dev.ohs.fhir.model.r4.serializers.SubstanceAmountReferenceRangeSerializer
 import dev.ohs.fhir.model.r4.serializers.SubstanceAmountSerializer
 import kotlin.Suppress
@@ -179,7 +178,6 @@ public data class SubstanceAmount(
     }
   }
 
-  @Serializable(with = SubstanceAmountAmountSerializer::class)
   public sealed interface Amount {
     public fun asQuantity(): Quantity? = this as? Quantity
 

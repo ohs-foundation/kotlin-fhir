@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.RequirementsSerializer
 import dev.ohs.fhir.model.r5.serializers.RequirementsStatementSerializer
-import dev.ohs.fhir.model.r5.serializers.RequirementsVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -610,7 +609,6 @@ public data class Requirements(
     }
   }
 
-  @Serializable(with = RequirementsVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

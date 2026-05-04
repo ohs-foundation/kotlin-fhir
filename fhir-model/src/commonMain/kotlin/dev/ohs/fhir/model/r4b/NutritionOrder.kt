@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.NutritionOrderEnteralFormulaAdministrationRateSerializer
 import dev.ohs.fhir.model.r4b.serializers.NutritionOrderEnteralFormulaAdministrationSerializer
 import dev.ohs.fhir.model.r4b.serializers.NutritionOrderEnteralFormulaSerializer
 import dev.ohs.fhir.model.r4b.serializers.NutritionOrderOralDietNutrientSerializer
@@ -1066,7 +1065,6 @@ public data class NutritionOrder(
           }
         }
 
-      @Serializable(with = NutritionOrderEnteralFormulaAdministrationRateSerializer::class)
       public sealed interface Rate {
         public fun asQuantity(): Quantity? = this as? Quantity
 

@@ -28,21 +28,10 @@ import dev.ohs.fhir.codegen.schema.valueset.ValueSet
 /**
  * Generates [FileSpec]s for a given FHIR StructureDefinition.
  *
- * This function produces three files:
- * 1. A data model file (e.g., `Patient.kt`) containing the primary data class and any nested
- *    classes for BackboneElements.
- * 2. A surrogate file (e.g., `PatientSurrogates.kt`) in the `surrogates` package with "flattened"
- *    surrogate classes for the primary class and its nested classes for BackboneElements.
- * 3. A serializer file (e.g., `PatientSerializers.kt`) in the `serializers` package with
- *    "flattened" custom serializers for the primary class and its nested classes for
- *    BackboneElements.
- *
- * For example, the following files are generated for the FHIR `Patient` resource:
- * - `Patient.kt` containing the `Patient` data class with its nested classes for BackboneElements.
- * - `PatientSurrogates.kt` in the `surrogates` package containing surrogate classes like
- *   `PatientSurrogate`, `PatientContactSurrogate`, etc.
- * - `PatientSerializers.kt` in the `serializers` package containing custom serializers like
- *   `PatientSerializer`, `PatientContactSerializer`, etc.
+ * Produces two files per StructureDefinition:
+ * 1. A model file (e.g. `Patient.kt`) with the data class and its BackboneElement nested classes.
+ * 2. A serializer file (e.g. `PatientSerializers.kt`) under the `serializers` package with the
+ *    streaming `KSerializer<X>` for the data class and each of its BackboneElements.
  */
 class FhirCodegen(
   packageName: String,

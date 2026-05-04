@@ -18,12 +18,8 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.ResearchElementDefinitionCharacteristicDefinitionSerializer
-import dev.ohs.fhir.model.r4.serializers.ResearchElementDefinitionCharacteristicParticipantEffectiveSerializer
 import dev.ohs.fhir.model.r4.serializers.ResearchElementDefinitionCharacteristicSerializer
-import dev.ohs.fhir.model.r4.serializers.ResearchElementDefinitionCharacteristicStudyEffectiveSerializer
 import dev.ohs.fhir.model.r4.serializers.ResearchElementDefinitionSerializer
-import dev.ohs.fhir.model.r4.serializers.ResearchElementDefinitionSubjectSerializer
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -523,7 +519,6 @@ public data class ResearchElementDefinition(
         }
       }
 
-    @Serializable(with = ResearchElementDefinitionCharacteristicDefinitionSerializer::class)
     public sealed interface Definition {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -560,7 +555,6 @@ public data class ResearchElementDefinition(
       }
     }
 
-    @Serializable(with = ResearchElementDefinitionCharacteristicStudyEffectiveSerializer::class)
     public sealed interface StudyEffective {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -596,9 +590,6 @@ public data class ResearchElementDefinition(
       }
     }
 
-    @Serializable(
-      with = ResearchElementDefinitionCharacteristicParticipantEffectiveSerializer::class
-    )
     public sealed interface ParticipantEffective {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -741,7 +732,6 @@ public data class ResearchElementDefinition(
     }
   }
 
-  @Serializable(with = ResearchElementDefinitionSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

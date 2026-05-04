@@ -18,12 +18,9 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.AuditEventAgentNetworkSerializer
 import dev.ohs.fhir.model.r5.serializers.AuditEventAgentSerializer
 import dev.ohs.fhir.model.r5.serializers.AuditEventEntityDetailSerializer
-import dev.ohs.fhir.model.r5.serializers.AuditEventEntityDetailValueSerializer
 import dev.ohs.fhir.model.r5.serializers.AuditEventEntitySerializer
-import dev.ohs.fhir.model.r5.serializers.AuditEventOccurredSerializer
 import dev.ohs.fhir.model.r5.serializers.AuditEventOutcomeSerializer
 import dev.ohs.fhir.model.r5.serializers.AuditEventSerializer
 import dev.ohs.fhir.model.r5.serializers.AuditEventSourceSerializer
@@ -513,7 +510,6 @@ public data class AuditEvent(
         }
       }
 
-    @Serializable(with = AuditEventAgentNetworkSerializer::class)
     public sealed interface Network {
       public fun asReference(): Reference? = this as? Reference
 
@@ -949,7 +945,6 @@ public data class AuditEvent(
           }
         }
 
-      @Serializable(with = AuditEventEntityDetailValueSerializer::class)
       public sealed interface Value {
         public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -1195,7 +1190,6 @@ public data class AuditEvent(
     }
   }
 
-  @Serializable(with = AuditEventOccurredSerializer::class)
   public sealed interface Occurred {
     public fun asPeriod(): Period? = this as? Period
 

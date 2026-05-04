@@ -25,7 +25,6 @@ import dev.ohs.fhir.model.r4.serializers.ValueSetComposeIncludeSerializer
 import dev.ohs.fhir.model.r4.serializers.ValueSetComposeSerializer
 import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionContainsSerializer
 import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionParameterSerializer
-import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionParameterValueSerializer
 import dev.ohs.fhir.model.r4.serializers.ValueSetExpansionSerializer
 import dev.ohs.fhir.model.r4.serializers.ValueSetSerializer
 import dev.ohs.fhir.model.r4.terminologies.CommonLanguages
@@ -1402,7 +1401,6 @@ public data class ValueSet(
           }
         }
 
-      @Serializable(with = ValueSetExpansionParameterValueSerializer::class)
       public sealed interface Value {
         public fun asString(): String? = this as? String
 

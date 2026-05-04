@@ -18,9 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.ServiceRequestAsNeededSerializer
-import dev.ohs.fhir.model.r4.serializers.ServiceRequestOccurrenceSerializer
-import dev.ohs.fhir.model.r4.serializers.ServiceRequestQuantitySerializer
 import dev.ohs.fhir.model.r4.serializers.ServiceRequestSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -419,7 +416,6 @@ public data class ServiceRequest(
       }
     }
 
-  @Serializable(with = ServiceRequestQuantitySerializer::class)
   public sealed interface Quantity {
     public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -450,7 +446,6 @@ public data class ServiceRequest(
     }
   }
 
-  @Serializable(with = ServiceRequestOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -478,7 +473,6 @@ public data class ServiceRequest(
     }
   }
 
-  @Serializable(with = ServiceRequestAsNeededSerializer::class)
   public sealed interface AsNeeded {
     public fun asBoolean(): Boolean? = this as? Boolean
 

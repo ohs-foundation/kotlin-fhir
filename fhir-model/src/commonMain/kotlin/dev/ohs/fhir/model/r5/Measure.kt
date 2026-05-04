@@ -22,12 +22,9 @@ import dev.ohs.fhir.model.r5.serializers.MeasureGroupPopulationSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureGroupSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureGroupStratifierComponentSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureGroupStratifierSerializer
-import dev.ohs.fhir.model.r5.serializers.MeasureGroupSubjectSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureSerializer
-import dev.ohs.fhir.model.r5.serializers.MeasureSubjectSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureSupplementalDataSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureTermSerializer
-import dev.ohs.fhir.model.r5.serializers.MeasureVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.FHIRTypes
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -1476,7 +1473,6 @@ public data class Measure(
       }
     }
 
-    @Serializable(with = MeasureGroupSubjectSerializer::class)
     public sealed interface Subject {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1863,7 +1859,6 @@ public data class Measure(
     }
   }
 
-  @Serializable(with = MeasureVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 
@@ -1885,7 +1880,6 @@ public data class Measure(
     }
   }
 
-  @Serializable(with = MeasureSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

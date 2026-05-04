@@ -19,14 +19,10 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesDosageSerializer
-import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesIndicationSerializer
-import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsCharacteristicSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeAdministrationGuidelinesSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeCostSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeDrugCharacteristicSerializer
-import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeDrugCharacteristicValueSerializer
-import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeIngredientItemSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeIngredientSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeKineticsSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeMedicineClassificationSerializer
@@ -579,7 +575,6 @@ public data class MedicationKnowledge(
         }
       }
 
-    @Serializable(with = MedicationKnowledgeIngredientItemSerializer::class)
     public sealed interface Item {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1144,10 +1139,6 @@ public data class MedicationKnowledge(
           }
         }
 
-      @Serializable(
-        with =
-          MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsCharacteristicSerializer::class
-      )
       public sealed interface Characteristic {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1233,7 +1224,6 @@ public data class MedicationKnowledge(
       }
     }
 
-    @Serializable(with = MedicationKnowledgeAdministrationGuidelinesIndicationSerializer::class)
     public sealed interface Indication {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1633,7 +1623,6 @@ public data class MedicationKnowledge(
         }
       }
 
-    @Serializable(with = MedicationKnowledgeDrugCharacteristicValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

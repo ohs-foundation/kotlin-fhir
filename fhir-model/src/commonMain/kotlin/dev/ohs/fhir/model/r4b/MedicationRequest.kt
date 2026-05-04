@@ -20,10 +20,7 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.MedicationRequestDispenseRequestInitialFillSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationRequestDispenseRequestSerializer
-import dev.ohs.fhir.model.r4b.serializers.MedicationRequestMedicationSerializer
-import dev.ohs.fhir.model.r4b.serializers.MedicationRequestReportedSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationRequestSerializer
-import dev.ohs.fhir.model.r4b.serializers.MedicationRequestSubstitutionAllowedSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationRequestSubstitutionSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -793,7 +790,6 @@ public data class MedicationRequest(
         }
       }
 
-    @Serializable(with = MedicationRequestSubstitutionAllowedSerializer::class)
     public sealed interface Allowed {
       public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -883,7 +879,6 @@ public data class MedicationRequest(
     }
   }
 
-  @Serializable(with = MedicationRequestReportedSerializer::class)
   public sealed interface Reported {
     public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -905,7 +900,6 @@ public data class MedicationRequest(
     }
   }
 
-  @Serializable(with = MedicationRequestMedicationSerializer::class)
   public sealed interface Medication {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

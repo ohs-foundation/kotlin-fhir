@@ -488,11 +488,6 @@ private fun TypeSpec.Builder.addSealedInterfaces(
     addType(
       TypeSpec.interfaceBuilder(sealedInterfaceClassName)
         .addModifiers(KModifier.SEALED)
-        .addAnnotation(
-          AnnotationSpec.builder(Serializable::class)
-            .addMember("with = %T::class", sealedInterfaceClassName.toSerializerClassName())
-            .build()
-        )
         .apply {
           for (type in element.type!!) {
             val armName = sealedChoiceArmName(type)
@@ -519,9 +514,8 @@ private fun TypeSpec.Builder.addSealedInterfaces(
                 .build()
             )
             .apply {
-              // Add an `asDataType` function for each choice type. This function is used
-              // to deconstruct the property of the sealed interface in the data class into
-              // separate properties in the surrogate class.
+              // Add an `asDataType` function per arm. Used by the parent serializer's encode path
+              // to extract the matched arm's value into a flat wire-shape slot.
               for (type in element.type) {
                 addDataTypeFunction(type, sealedInterfaceClassName)
               }
@@ -564,27 +558,14 @@ private fun TypeSpec.Builder.addToElementFunction(
 }
 
 /**
- * Adds an `of` function in the companion object to return a FHIR primitive date type object from a
- * Kotlin primitive value and a FHIR `Element`.
+ * Adds an `of(value, element)` factory on a FHIR primitive's companion that merges the two wire
+ * fields — the primitive value and its `_field` Element sidecar (id + extensions) — into a single
+ * model object, or returns null when both are absent.
  *
- * The generated function is useful for merging the two fields in the surrogate class representing
- * the two JSON properties into a single field in the data class.
+ * For `birthDate`, the wire has `birthDate` (`LocalDate`) and `_birthDate` (`Element`); the model
+ * has a single `birthDate: Date` (the FHIR primitive carrying both).
  *
- * For example, the `birthDate` and `_birthDate` JSON properties in a patient object are
- * deserialized into two fields in the `PatientSurrogate` class:
- * - `birthDate`: `LocalDate` storing the primitive value
- * - `_birthDate`: `Element` storing the id and extensions of the FHIR data type
- *
- * N.B. The `LocalDate` type here is `kotlinx.datetime.LocalDate`.
- *
- * They are then merged into a single field in the `Patient` class:
- * - `birthDate`: `Date`
- *
- * N.B. The `Date` type here is a FHIR primitive type that contains both the primitive Kotlin value
- * and the `Element` with id and extensions.
- *
- * For this example, this function will add the following code to the FHIR primitive data type
- * `Date`:
+ * Generated example for `Date`:
  * ```
  * public companion object {
  *   public fun of(`value`: FhirDate?, element: Element?): Date? =
@@ -596,30 +577,20 @@ private fun TypeSpec.Builder.addToElementFunction(
  * }
  * ```
  *
- * The generated function is also useful for merging choice of types as separate fields in the
- * surrogate class into a single object in the data model class. For example:
+ * The generated function is also useful for merging choice of types as separate decoded local
+ * variables into a single object in the data model class. For example:
  * ```
  * Extension.Value?.from(
- *   Base64Binary.of(
- *     this@ExtensionSurrogate.valueBase64Binary,
- *     this@ExtensionSurrogate._valueBase64Binary,
- *   ),
- *   R4bBoolean.of(
- *     this@ExtensionSurrogate.valueBoolean,
- *     this@ExtensionSurrogate._valueBoolean,
- *   ),
- *   Canonical.of(
- *     this@ExtensionSurrogate.valueCanonical,
- *     this@ExtensionSurrogate._valueCanonical,
- *   ),
+ *   Base64Binary.of(valueBase64Binary, _valueBase64Binary),
+ *   R4bBoolean.of(valueBoolean, _valueBoolean),
+ *   Canonical.of(valueCanonical, _valueCanonical),
  *   ...
  * )
  * ```
  *
- * The nullability here is critical since we must generate `null` for types that do not have a value
- * in the surrogate class. As a result, only one of the data types will be non-null, and the
- * serialization code will be able to correctly serialize the in-memory value to the correct data
- * type.
+ * The nullability here is critical since we generate `null` for arms whose wire pair is absent. As
+ * a result, only one of the data types will be non-null, and the serialization code will be able to
+ * correctly serialize the in-memory value to the correct data type.
  */
 private fun TypeSpec.Builder.addOfFunction(
   className: ClassName,
@@ -643,11 +614,8 @@ private fun TypeSpec.Builder.addOfFunction(
  * Adds an `of` function in the companion object in the `Xhtml` class to return a FHIR primitive
  * date type object from a Kotlin primitive string value and a FHIR `Element`.
  *
- * The generated function is useful for merging the two fields in the surrogate class representing
- * the two JSON properties into a single field in the data class.
- *
- * The generated function is a special case of the `of` function for primitive types since the
- * `Xhtml` class cannot have extensions.
+ * Same role as [addOfFunction] — merges the wire value and `_field` Element sidecar into a single
+ * model object — but specialized for `Xhtml`, which cannot carry extensions.
  */
 private fun TypeSpec.Builder.addOfFunctionForXhtml(
   className: ClassName,
@@ -668,11 +636,9 @@ private fun TypeSpec.Builder.addOfFunctionForXhtml(
  * Adds an `of` function in the companion object in the `Decimal` class to return a FHIR primitive
  * data type object from a Kotlin primitive string value and a FHIR `Element`.
  *
- * The generated function is useful for merging the two fields in the surrogate class representing
- * the two JSON properties into a single field in the data class.
- *
- * The generated function is a special case of the `of` function for primitive types since the
- * `Decimal` class has type `BigDecimal` in the model but `Double` in the surrogate class.
+ * Same role as [addOfFunction] — merges the wire value and `_field` Element sidecar into a single
+ * model object — but specialized for `Decimal`, which is `BigDecimal` in the model and `Double` on
+ * the wire.
  */
 private fun TypeSpec.Builder.addOfFunctionForDecimal(className: ClassName): TypeSpec.Builder {
   val bigDecimal = ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal")
@@ -691,15 +657,13 @@ private fun TypeSpec.Builder.addOfFunctionForDecimal(className: ClassName): Type
 }
 
 /**
- * Adds a `from` function to return a sealed interface object from a list of parameters
- * corresponding to JSON properties of each data type in the surrogate class.
+ * Adds a `from` function to a choice-type sealed interface companion. It takes one nullable
+ * parameter per arm (the model value already merged via each arm's `of(...)`) and returns the
+ * matched arm — used during deserialization in the parent resource serializer to materialize the
+ * sealed value from its flat wire representation.
  *
- * This function is used in the surrogate class during deserialization to construct the data element
- * in the model class.
- *
- * N.B. The return type is kept nullable for the ease of code generation. The caller of the `from`
- * function in the surrogate class should check the return value is not null when necessary (e.g.
- * when the element is required).
+ * N.B. The return type is nullable for ease of code generation; the caller should null-check it
+ * when the element is required.
  *
  * For example, the following function is generated `Patient.deceased` element.
  *

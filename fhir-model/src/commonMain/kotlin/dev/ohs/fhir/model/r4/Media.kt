@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.MediaCreatedSerializer
 import dev.ohs.fhir.model.r4.serializers.MediaSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -289,7 +288,6 @@ public data class Media(
       }
     }
 
-  @Serializable(with = MediaCreatedSerializer::class)
   public sealed interface Created {
     public fun asDateTime(): DateTime? = this as? DateTime
 

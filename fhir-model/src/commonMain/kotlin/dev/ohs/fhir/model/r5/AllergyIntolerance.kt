@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.AllergyIntoleranceOnsetSerializer
 import dev.ohs.fhir.model.r5.serializers.AllergyIntoleranceParticipantSerializer
 import dev.ohs.fhir.model.r5.serializers.AllergyIntoleranceReactionSerializer
 import dev.ohs.fhir.model.r5.serializers.AllergyIntoleranceSerializer
@@ -712,7 +711,6 @@ public data class AllergyIntolerance(
     }
   }
 
-  @Serializable(with = AllergyIntoleranceOnsetSerializer::class)
   public sealed interface Onset {
     public fun asDateTime(): DateTime? = this as? DateTime
 

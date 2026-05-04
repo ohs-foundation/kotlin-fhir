@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.MolecularSequenceRelativeEditSerializer
 import dev.ohs.fhir.model.r5.serializers.MolecularSequenceRelativeSerializer
-import dev.ohs.fhir.model.r5.serializers.MolecularSequenceRelativeStartingSequenceSequenceSerializer
 import dev.ohs.fhir.model.r5.serializers.MolecularSequenceRelativeStartingSequenceSerializer
 import dev.ohs.fhir.model.r5.serializers.MolecularSequenceSerializer
 import kotlin.Suppress
@@ -360,7 +359,6 @@ public data class MolecularSequence(
           }
         }
 
-      @Serializable(with = MolecularSequenceRelativeStartingSequenceSequenceSerializer::class)
       public sealed interface Sequence {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

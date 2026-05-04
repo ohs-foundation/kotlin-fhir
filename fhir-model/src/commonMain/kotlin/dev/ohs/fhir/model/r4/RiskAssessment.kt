@@ -18,10 +18,7 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.RiskAssessmentOccurrenceSerializer
-import dev.ohs.fhir.model.r4.serializers.RiskAssessmentPredictionProbabilitySerializer
 import dev.ohs.fhir.model.r4.serializers.RiskAssessmentPredictionSerializer
-import dev.ohs.fhir.model.r4.serializers.RiskAssessmentPredictionWhenSerializer
 import dev.ohs.fhir.model.r4.serializers.RiskAssessmentSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -295,7 +292,6 @@ public data class RiskAssessment(
         }
       }
 
-    @Serializable(with = RiskAssessmentPredictionProbabilitySerializer::class)
     public sealed interface Probability {
       public fun asDecimal(): Decimal? = this as? Decimal
 
@@ -317,7 +313,6 @@ public data class RiskAssessment(
       }
     }
 
-    @Serializable(with = RiskAssessmentPredictionWhenSerializer::class)
     public sealed interface When {
       public fun asPeriod(): Period? = this as? Period
 
@@ -433,7 +428,6 @@ public data class RiskAssessment(
     }
   }
 
-  @Serializable(with = RiskAssessmentOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 

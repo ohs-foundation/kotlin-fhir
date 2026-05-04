@@ -248,66 +248,6 @@ internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
   }
 }
 
-internal object ProvenanceOccurredSerializer : KSerializer<Provenance.Occurred> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Provenance.Occurred") {
-      element("occurredPeriod", Period.serializer().descriptor, isOptional = true)
-      element("occurredDateTime", String.serializer().descriptor, isOptional = true)
-      element("_occurredDateTime", Element.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Provenance.Occurred) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Provenance.Occurred.Period -> {
-          encodeSerializableElement(__desc, 0, Hoisted.occurredPeriodSer, __d.value)
-        }
-        is Provenance.Occurred.DateTime -> {
-          ((__d.value.value?.toString()))?.let { encodeStringElement(__desc, 1, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 2, Hoisted.elementSer, it)
-          }
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Provenance.Occurred =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Provenance.Occurred {
-    val __desc = descriptor
-    var occurredPeriod: Period? = null
-    var occurredDateTime: String? = null
-    var _occurredDateTime: Element? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          occurredPeriod =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.occurredPeriodSer, null)
-        1 -> occurredDateTime = decoder.decodeStringElement(__desc, 1)
-        2 ->
-          _occurredDateTime =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.elementSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding Provenance.Occurred: " + __i)
-      }
-    }
-    return Provenance.Occurred.from(
-      occurredPeriod,
-      DateTime.of(FhirDateTime.fromString(occurredDateTime), _occurredDateTime),
-    )!!
-  }
-
-  private object Hoisted {
-    public val occurredPeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val elementSer: KSerializer<Element> = Element.serializer()
-  }
-}
-
 internal object ProvenanceSerializer : KSerializer<Provenance> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Provenance") {

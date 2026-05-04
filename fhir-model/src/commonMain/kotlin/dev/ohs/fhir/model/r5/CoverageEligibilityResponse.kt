@@ -20,14 +20,10 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseErrorSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseEventSerializer
-import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseEventWhenSerializer
-import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemBenefitAllowedSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemBenefitSerializer
-import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemBenefitUsedSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceItemSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseInsuranceSerializer
 import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseSerializer
-import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseServicedSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -303,7 +299,6 @@ public data class CoverageEligibilityResponse(
         }
       }
 
-    @Serializable(with = CoverageEligibilityResponseEventWhenSerializer::class)
     public sealed interface When {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -654,9 +649,6 @@ public data class CoverageEligibilityResponse(
             }
           }
 
-        @Serializable(
-          with = CoverageEligibilityResponseInsuranceItemBenefitAllowedSerializer::class
-        )
         public sealed interface Allowed {
           public fun asUnsignedInt(): UnsignedInt? = this as? UnsignedInt
 
@@ -685,7 +677,6 @@ public data class CoverageEligibilityResponse(
           }
         }
 
-        @Serializable(with = CoverageEligibilityResponseInsuranceItemBenefitUsedSerializer::class)
         public sealed interface Used {
           public fun asUnsignedInt(): UnsignedInt? = this as? UnsignedInt
 
@@ -1136,7 +1127,6 @@ public data class CoverageEligibilityResponse(
     }
   }
 
-  @Serializable(with = CoverageEligibilityResponseServicedSerializer::class)
   public sealed interface Serviced {
     public fun asDate(): Date? = this as? Date
 

@@ -792,65 +792,6 @@ internal object NutritionOrderEnteralFormulaAdministrationSerializer :
   }
 }
 
-internal object NutritionOrderEnteralFormulaAdministrationRateSerializer :
-  KSerializer<NutritionOrder.EnteralFormula.Administration.Rate> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("NutritionOrder.EnteralFormula.Administration.Rate") {
-      element("rateQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("rateRatio", Ratio.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(
-    encoder: Encoder,
-    `value`: NutritionOrder.EnteralFormula.Administration.Rate,
-  ) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is NutritionOrder.EnteralFormula.Administration.Rate.Quantity -> {
-          encodeSerializableElement(__desc, 0, Hoisted.rateQuantitySer, __d.value)
-        }
-        is NutritionOrder.EnteralFormula.Administration.Rate.Ratio -> {
-          encodeSerializableElement(__desc, 1, Hoisted.rateRatioSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): NutritionOrder.EnteralFormula.Administration.Rate =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(
-    decoder: CompositeDecoder
-  ): NutritionOrder.EnteralFormula.Administration.Rate {
-    val __desc = descriptor
-    var rateQuantity: Quantity? = null
-    var rateRatio: Ratio? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          rateQuantity =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.rateQuantitySer, null)
-        1 ->
-          rateRatio =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.rateRatioSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding NutritionOrder.EnteralFormula.Administration.Rate: " + __i
-          )
-      }
-    }
-    return NutritionOrder.EnteralFormula.Administration.Rate.from(rateQuantity, rateRatio)!!
-  }
-
-  private object Hoisted {
-    public val rateQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val rateRatioSer: KSerializer<Ratio> = Ratio.serializer()
-  }
-}
-
 internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("NutritionOrder") {

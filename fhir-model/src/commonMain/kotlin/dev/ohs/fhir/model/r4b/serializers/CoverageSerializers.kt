@@ -350,60 +350,6 @@ internal object CoverageCostToBeneficiaryExceptionSerializer :
   }
 }
 
-internal object CoverageCostToBeneficiaryValueSerializer :
-  KSerializer<Coverage.CostToBeneficiary.Value> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Coverage.CostToBeneficiary.Value") {
-      element("valueQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element("valueMoney", Money.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Coverage.CostToBeneficiary.Value) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Coverage.CostToBeneficiary.Value.Quantity -> {
-          encodeSerializableElement(__desc, 0, Hoisted.valueQuantitySer, __d.value)
-        }
-        is Coverage.CostToBeneficiary.Value.Money -> {
-          encodeSerializableElement(__desc, 1, Hoisted.valueMoneySer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Coverage.CostToBeneficiary.Value =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Coverage.CostToBeneficiary.Value {
-    val __desc = descriptor
-    var valueQuantity: Quantity? = null
-    var valueMoney: Money? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          valueQuantity =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.valueQuantitySer, null)
-        1 ->
-          valueMoney =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.valueMoneySer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding Coverage.CostToBeneficiary.Value: " + __i
-          )
-      }
-    }
-    return Coverage.CostToBeneficiary.Value.from(valueQuantity, valueMoney)!!
-  }
-
-  private object Hoisted {
-    public val valueQuantitySer: KSerializer<Quantity> = Quantity.serializer()
-
-    public val valueMoneySer: KSerializer<Money> = Money.serializer()
-  }
-}
-
 internal object CoverageSerializer : KSerializer<Coverage> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Coverage") {

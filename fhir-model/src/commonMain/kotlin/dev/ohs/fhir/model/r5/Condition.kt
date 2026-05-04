@@ -18,8 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.ConditionAbatementSerializer
-import dev.ohs.fhir.model.r5.serializers.ConditionOnsetSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionParticipantSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionStageSerializer
@@ -567,7 +565,6 @@ public data class Condition(
     }
   }
 
-  @Serializable(with = ConditionOnsetSerializer::class)
   public sealed interface Onset {
     public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -607,7 +604,6 @@ public data class Condition(
     }
   }
 
-  @Serializable(with = ConditionAbatementSerializer::class)
   public sealed interface Abatement {
     public fun asDateTime(): DateTime? = this as? DateTime
 

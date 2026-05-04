@@ -20,9 +20,7 @@ package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionContraindicationOtherTherapySerializer
 import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionContraindicationSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionIndicationDurationSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionIndicationSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionInteractionInteractantItemSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionInteractionInteractantSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionInteractionSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClinicalUseDefinitionSerializer
@@ -552,7 +550,6 @@ public data class ClinicalUseDefinition(
         }
       }
 
-    @Serializable(with = ClinicalUseDefinitionIndicationDurationSerializer::class)
     public sealed interface Duration {
       public fun asRange(): Range? = this as? Range
 
@@ -788,7 +785,6 @@ public data class ClinicalUseDefinition(
           }
         }
 
-      @Serializable(with = ClinicalUseDefinitionInteractionInteractantItemSerializer::class)
       public sealed interface Item {
         public fun asReference(): Reference? = this as? Reference
 

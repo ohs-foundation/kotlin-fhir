@@ -18,9 +18,7 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.ChargeItemOccurrenceSerializer
 import dev.ohs.fhir.model.r4.serializers.ChargeItemPerformerSerializer
-import dev.ohs.fhir.model.r4.serializers.ChargeItemProductSerializer
 import dev.ohs.fhir.model.r4.serializers.ChargeItemSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -434,7 +432,6 @@ public data class ChargeItem(
     }
   }
 
-  @Serializable(with = ChargeItemOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -462,7 +459,6 @@ public data class ChargeItem(
     }
   }
 
-  @Serializable(with = ChargeItemProductSerializer::class)
   public sealed interface Product {
     public fun asReference(): Reference? = this as? Reference
 

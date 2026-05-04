@@ -19,9 +19,7 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.TransportInputSerializer
-import dev.ohs.fhir.model.r5.serializers.TransportInputValueSerializer
 import dev.ohs.fhir.model.r5.serializers.TransportOutputSerializer
-import dev.ohs.fhir.model.r5.serializers.TransportOutputValueSerializer
 import dev.ohs.fhir.model.r5.serializers.TransportRestrictionSerializer
 import dev.ohs.fhir.model.r5.serializers.TransportSerializer
 import kotlin.Suppress
@@ -525,7 +523,6 @@ public data class Transport(
         }
       }
 
-    @Serializable(with = TransportInputValueSerializer::class)
     public sealed interface Value {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
@@ -993,7 +990,6 @@ public data class Transport(
         }
       }
 
-    @Serializable(with = TransportOutputValueSerializer::class)
     public sealed interface Value {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 

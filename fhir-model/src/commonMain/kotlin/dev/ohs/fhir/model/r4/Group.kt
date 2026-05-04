@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.GroupCharacteristicSerializer
-import dev.ohs.fhir.model.r4.serializers.GroupCharacteristicValueSerializer
 import dev.ohs.fhir.model.r4.serializers.GroupMemberSerializer
 import dev.ohs.fhir.model.r4.serializers.GroupSerializer
 import kotlin.Suppress
@@ -278,7 +277,6 @@ public data class Group(
         }
       }
 
-    @Serializable(with = GroupCharacteristicValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

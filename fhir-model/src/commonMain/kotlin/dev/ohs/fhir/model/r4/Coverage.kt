@@ -21,7 +21,6 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.CoverageClassSerializer
 import dev.ohs.fhir.model.r4.serializers.CoverageCostToBeneficiaryExceptionSerializer
 import dev.ohs.fhir.model.r4.serializers.CoverageCostToBeneficiarySerializer
-import dev.ohs.fhir.model.r4.serializers.CoverageCostToBeneficiaryValueSerializer
 import dev.ohs.fhir.model.r4.serializers.CoverageSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -586,7 +585,6 @@ public data class Coverage(
       }
     }
 
-    @Serializable(with = CoverageCostToBeneficiaryValueSerializer::class)
     public sealed interface Value {
       public fun asQuantity(): Quantity? = this as? Quantity
 

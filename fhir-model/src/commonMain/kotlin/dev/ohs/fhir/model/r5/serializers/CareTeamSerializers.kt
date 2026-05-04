@@ -162,59 +162,6 @@ internal object CareTeamParticipantSerializer : KSerializer<CareTeam.Participant
   }
 }
 
-internal object CareTeamParticipantCoverageSerializer : KSerializer<CareTeam.Participant.Coverage> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("CareTeam.Participant.Coverage") {
-      element("coveragePeriod", Period.serializer().descriptor, isOptional = true)
-      element("coverageTiming", Timing.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: CareTeam.Participant.Coverage) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is CareTeam.Participant.Coverage.Period -> {
-          encodeSerializableElement(__desc, 0, Hoisted.coveragePeriodSer, __d.value)
-        }
-        is CareTeam.Participant.Coverage.Timing -> {
-          encodeSerializableElement(__desc, 1, Hoisted.coverageTimingSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): CareTeam.Participant.Coverage =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): CareTeam.Participant.Coverage {
-    val __desc = descriptor
-    var coveragePeriod: Period? = null
-    var coverageTiming: Timing? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          coveragePeriod =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.coveragePeriodSer, null)
-        1 ->
-          coverageTiming =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.coverageTimingSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding CareTeam.Participant.Coverage: " + __i
-          )
-      }
-    }
-    return CareTeam.Participant.Coverage.from(coveragePeriod, coverageTiming)!!
-  }
-
-  private object Hoisted {
-    public val coveragePeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val coverageTimingSer: KSerializer<Timing> = Timing.serializer()
-  }
-}
-
 internal object CareTeamSerializer : KSerializer<CareTeam> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("CareTeam") {

@@ -43,66 +43,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
-internal object AnnotationAuthorSerializer : KSerializer<Annotation.Author> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Annotation.Author") {
-      element(
-        "authorReference",
-        lazyDescriptor { Reference.serializer().descriptor },
-        isOptional = true,
-      )
-      element("authorString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_authorString", Element.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Annotation.Author) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Annotation.Author.Reference -> {
-          encodeSerializableElement(__desc, 0, Hoisted.authorReferenceSer, __d.value)
-        }
-        is Annotation.Author.String -> {
-          ((__d.value.value))?.let { encodeStringElement(__desc, 1, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 2, Hoisted.elementSer, it)
-          }
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Annotation.Author =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Annotation.Author {
-    val __desc = descriptor
-    var authorReference: Reference? = null
-    var authorString: KotlinString? = null
-    var _authorString: Element? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          authorReference =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.authorReferenceSer, null)
-        1 -> authorString = decoder.decodeStringElement(__desc, 1)
-        2 ->
-          _authorString =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.elementSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Annotation.Author: " + __i)
-      }
-    }
-    return Annotation.Author.from(authorReference, R4bString.of(authorString, _authorString))!!
-  }
-
-  private object Hoisted {
-    public val authorReferenceSer: KSerializer<Reference> = Reference.serializer()
-
-    public val elementSer: KSerializer<Element> = Element.serializer()
-  }
-}
-
 internal object AnnotationSerializer : KSerializer<Annotation> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Annotation") {

@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.SearchParameterComponentSerializer
 import dev.ohs.fhir.model.r5.serializers.SearchParameterSerializer
-import dev.ohs.fhir.model.r5.serializers.SearchParameterVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Suppress
@@ -583,7 +582,6 @@ public data class SearchParameter(
     }
   }
 
-  @Serializable(with = SearchParameterVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

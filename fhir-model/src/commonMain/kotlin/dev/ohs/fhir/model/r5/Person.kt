@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.PersonCommunicationSerializer
-import dev.ohs.fhir.model.r5.serializers.PersonDeceasedSerializer
 import dev.ohs.fhir.model.r5.serializers.PersonLinkSerializer
 import dev.ohs.fhir.model.r5.serializers.PersonSerializer
 import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
@@ -492,7 +491,6 @@ public data class Person(
     }
   }
 
-  @Serializable(with = PersonDeceasedSerializer::class)
   public sealed interface Deceased {
     public fun asBoolean(): Boolean? = this as? Boolean
 

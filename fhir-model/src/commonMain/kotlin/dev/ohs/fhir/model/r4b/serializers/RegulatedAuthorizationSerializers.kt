@@ -193,69 +193,6 @@ internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuth
   }
 }
 
-internal object RegulatedAuthorizationCaseDateSerializer :
-  KSerializer<RegulatedAuthorization.Case.Date> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("RegulatedAuthorization.Case.Date") {
-      element("datePeriod", Period.serializer().descriptor, isOptional = true)
-      element("dateDateTime", String.serializer().descriptor, isOptional = true)
-      element("_dateDateTime", Element.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: RegulatedAuthorization.Case.Date) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is RegulatedAuthorization.Case.Date.Period -> {
-          encodeSerializableElement(__desc, 0, Hoisted.datePeriodSer, __d.value)
-        }
-        is RegulatedAuthorization.Case.Date.DateTime -> {
-          ((__d.value.value?.toString()))?.let { encodeStringElement(__desc, 1, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 2, Hoisted.elementSer, it)
-          }
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): RegulatedAuthorization.Case.Date =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): RegulatedAuthorization.Case.Date {
-    val __desc = descriptor
-    var datePeriod: Period? = null
-    var dateDateTime: String? = null
-    var _dateDateTime: Element? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          datePeriod =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.datePeriodSer, null)
-        1 -> dateDateTime = decoder.decodeStringElement(__desc, 1)
-        2 ->
-          _dateDateTime =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.elementSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException(
-            "Unexpected index decoding RegulatedAuthorization.Case.Date: " + __i
-          )
-      }
-    }
-    return RegulatedAuthorization.Case.Date.from(
-      datePeriod,
-      DateTime.of(FhirDateTime.fromString(dateDateTime), _dateDateTime),
-    )!!
-  }
-
-  private object Hoisted {
-    public val datePeriodSer: KSerializer<Period> = Period.serializer()
-
-    public val elementSer: KSerializer<Element> = Element.serializer()
-  }
-}
-
 internal object RegulatedAuthorizationSerializer : KSerializer<RegulatedAuthorization> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("RegulatedAuthorization") {

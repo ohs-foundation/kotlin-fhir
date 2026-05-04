@@ -18,12 +18,9 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductCollectionCollectedSerializer
 import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductCollectionSerializer
 import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductManipulationSerializer
-import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductManipulationTimeSerializer
 import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductProcessingSerializer
-import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductProcessingTimeSerializer
 import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductSerializer
 import dev.ohs.fhir.model.r4.serializers.BiologicallyDerivedProductStorageSerializer
 import kotlin.Suppress
@@ -264,7 +261,6 @@ public data class BiologicallyDerivedProduct(
         }
       }
 
-    @Serializable(with = BiologicallyDerivedProductCollectionCollectedSerializer::class)
     public sealed interface Collected {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -417,7 +413,6 @@ public data class BiologicallyDerivedProduct(
         }
       }
 
-    @Serializable(with = BiologicallyDerivedProductProcessingTimeSerializer::class)
     public sealed interface Time {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -565,7 +560,6 @@ public data class BiologicallyDerivedProduct(
         }
       }
 
-    @Serializable(with = BiologicallyDerivedProductManipulationTimeSerializer::class)
     public sealed interface Time {
       public fun asDateTime(): DateTime? = this as? DateTime
 

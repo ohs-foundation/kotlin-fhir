@@ -22,10 +22,8 @@ import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionMedicationSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionObservationSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionPlanSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionPreconditionSerializer
-import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionPreconditionValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionQuestionnaireSerializer
 import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.ConditionDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -663,7 +661,6 @@ public data class ConditionDefinition(
         }
       }
 
-    @Serializable(with = ConditionDefinitionPreconditionValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -971,7 +968,6 @@ public data class ConditionDefinition(
     }
   }
 
-  @Serializable(with = ConditionDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

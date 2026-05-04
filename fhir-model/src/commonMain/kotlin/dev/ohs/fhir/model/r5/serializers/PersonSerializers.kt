@@ -234,69 +234,6 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
   }
 }
 
-internal object PersonDeceasedSerializer : KSerializer<Person.Deceased> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Person.Deceased") {
-      element("deceasedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_deceasedBoolean", Element.serializer().descriptor, isOptional = true)
-      element("deceasedDateTime", String.serializer().descriptor, isOptional = true)
-      element("_deceasedDateTime", Element.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Person.Deceased) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Person.Deceased.Boolean -> {
-          ((__d.value.value))?.let { encodeBooleanElement(__desc, 0, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 1, Hoisted.elementSer, it)
-          }
-        }
-        is Person.Deceased.DateTime -> {
-          ((__d.value.value?.toString()))?.let { encodeStringElement(__desc, 2, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 3, Hoisted.elementSer, it)
-          }
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Person.Deceased =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Person.Deceased {
-    val __desc = descriptor
-    var deceasedBoolean: KotlinBoolean? = null
-    var _deceasedBoolean: Element? = null
-    var deceasedDateTime: String? = null
-    var _deceasedDateTime: Element? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> deceasedBoolean = decoder.decodeBooleanElement(__desc, 0)
-        1 ->
-          _deceasedBoolean =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.elementSer, null)
-        2 -> deceasedDateTime = decoder.decodeStringElement(__desc, 2)
-        3 ->
-          _deceasedDateTime =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.elementSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Person.Deceased: " + __i)
-      }
-    }
-    return Person.Deceased.from(
-      R5Boolean.of(deceasedBoolean, _deceasedBoolean),
-      DateTime.of(FhirDateTime.fromString(deceasedDateTime), _deceasedDateTime),
-    )!!
-  }
-
-  private object Hoisted {
-    public val elementSer: KSerializer<Element> = Element.serializer()
-  }
-}
-
 internal object PersonSerializer : KSerializer<Person> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Person") {

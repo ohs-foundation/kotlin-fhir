@@ -23,7 +23,6 @@ import dev.ohs.fhir.model.r4b.serializers.MeasureGroupSerializer
 import dev.ohs.fhir.model.r4b.serializers.MeasureGroupStratifierComponentSerializer
 import dev.ohs.fhir.model.r4b.serializers.MeasureGroupStratifierSerializer
 import dev.ohs.fhir.model.r4b.serializers.MeasureSerializer
-import dev.ohs.fhir.model.r4b.serializers.MeasureSubjectSerializer
 import dev.ohs.fhir.model.r4b.serializers.MeasureSupplementalDataSerializer
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -1211,7 +1210,6 @@ public data class Measure(
     }
   }
 
-  @Serializable(with = MeasureSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

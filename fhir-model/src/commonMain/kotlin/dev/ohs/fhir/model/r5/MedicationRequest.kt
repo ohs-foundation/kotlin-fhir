@@ -21,7 +21,6 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.MedicationRequestDispenseRequestInitialFillSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationRequestDispenseRequestSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationRequestSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicationRequestSubstitutionAllowedSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationRequestSubstitutionSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -864,7 +863,6 @@ public data class MedicationRequest(
         }
       }
 
-    @Serializable(with = MedicationRequestSubstitutionAllowedSerializer::class)
     public sealed interface Allowed {
       public fun asBoolean(): Boolean? = this as? Boolean
 

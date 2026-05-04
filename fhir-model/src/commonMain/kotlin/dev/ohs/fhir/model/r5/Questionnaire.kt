@@ -19,14 +19,10 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireItemAnswerOptionSerializer
-import dev.ohs.fhir.model.r5.serializers.QuestionnaireItemAnswerOptionValueSerializer
-import dev.ohs.fhir.model.r5.serializers.QuestionnaireItemEnableWhenAnswerSerializer
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireItemEnableWhenSerializer
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireItemInitialSerializer
-import dev.ohs.fhir.model.r5.serializers.QuestionnaireItemInitialValueSerializer
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireItemSerializer
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireSerializer
-import dev.ohs.fhir.model.r5.serializers.QuestionnaireVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import kotlin.Suppress
@@ -755,7 +751,6 @@ public data class Questionnaire(
           }
         }
 
-      @Serializable(with = QuestionnaireItemEnableWhenAnswerSerializer::class)
       public sealed interface Answer {
         public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -962,7 +957,6 @@ public data class Questionnaire(
           }
         }
 
-      @Serializable(with = QuestionnaireItemAnswerOptionValueSerializer::class)
       public sealed interface Value {
         public fun asInteger(): Integer? = this as? Integer
 
@@ -1132,7 +1126,6 @@ public data class Questionnaire(
           }
         }
 
-      @Serializable(with = QuestionnaireItemInitialValueSerializer::class)
       public sealed interface Value {
         public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -1559,7 +1552,6 @@ public data class Questionnaire(
     }
   }
 
-  @Serializable(with = QuestionnaireVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

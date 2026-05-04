@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionCapabilitySerializer
 import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionDeviceNameSerializer
-import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionManufacturerSerializer
 import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionMaterialSerializer
 import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionPropertySerializer
 import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionSerializer
@@ -963,7 +962,6 @@ public data class DeviceDefinition(
     }
   }
 
-  @Serializable(with = DeviceDefinitionManufacturerSerializer::class)
   public sealed interface Manufacturer {
     public fun asString(): String? = this as? String
 

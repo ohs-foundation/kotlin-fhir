@@ -24,12 +24,10 @@ import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleDependentSerialize
 import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleSerializer
 import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleSourceSerializer
 import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleTargetParameterSerializer
-import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleTargetParameterValueSerializer
 import dev.ohs.fhir.model.r5.serializers.StructureMapGroupRuleTargetSerializer
 import dev.ohs.fhir.model.r5.serializers.StructureMapGroupSerializer
 import dev.ohs.fhir.model.r5.serializers.StructureMapSerializer
 import dev.ohs.fhir.model.r5.serializers.StructureMapStructureSerializer
-import dev.ohs.fhir.model.r5.serializers.StructureMapVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1237,7 +1235,6 @@ public data class StructureMap(
               }
             }
 
-          @Serializable(with = StructureMapGroupRuleTargetParameterValueSerializer::class)
           public sealed interface Value {
             public fun asId(): Id? = this as? Id
 
@@ -1700,7 +1697,6 @@ public data class StructureMap(
     }
   }
 
-  @Serializable(with = StructureMapVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

@@ -63,62 +63,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
-internal object LibrarySubjectSerializer : KSerializer<Library.Subject> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Library.Subject") {
-      element("subjectCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subjectReference", Reference.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Library.Subject) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Library.Subject.CodeableConcept -> {
-          encodeSerializableElement(__desc, 0, Hoisted.subjectCodeableConceptSer, __d.value)
-        }
-        is Library.Subject.Reference -> {
-          encodeSerializableElement(__desc, 1, Hoisted.subjectReferenceSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Library.Subject =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Library.Subject {
-    val __desc = descriptor
-    var subjectCodeableConcept: CodeableConcept? = null
-    var subjectReference: Reference? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          subjectCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              __desc,
-              0,
-              Hoisted.subjectCodeableConceptSer,
-              null,
-            )
-        1 ->
-          subjectReference =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.subjectReferenceSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Library.Subject: " + __i)
-      }
-    }
-    return Library.Subject.from(subjectCodeableConcept, subjectReference)!!
-  }
-
-  private object Hoisted {
-    public val subjectCodeableConceptSer: KSerializer<CodeableConcept> =
-      CodeableConcept.serializer()
-
-    public val subjectReferenceSer: KSerializer<Reference> = Reference.serializer()
-  }
-}
-
 internal object LibrarySerializer : KSerializer<Library> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Library") {

@@ -21,7 +21,6 @@ package dev.ohs.fhir.model.r4
 import dev.ohs.fhir.model.r4.serializers.CompositionAttesterSerializer
 import dev.ohs.fhir.model.r4.serializers.CompositionEventSerializer
 import dev.ohs.fhir.model.r4.serializers.CompositionRelatesToSerializer
-import dev.ohs.fhir.model.r4.serializers.CompositionRelatesToTargetSerializer
 import dev.ohs.fhir.model.r4.serializers.CompositionSectionSerializer
 import dev.ohs.fhir.model.r4.serializers.CompositionSerializer
 import kotlin.Suppress
@@ -464,7 +463,6 @@ public data class Composition(
         }
       }
 
-    @Serializable(with = CompositionRelatesToTargetSerializer::class)
     public sealed interface Target {
       public fun asIdentifier(): Identifier? = this as? Identifier
 

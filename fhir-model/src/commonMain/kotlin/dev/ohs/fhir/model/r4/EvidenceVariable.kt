@@ -18,8 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.EvidenceVariableCharacteristicDefinitionSerializer
-import dev.ohs.fhir.model.r4.serializers.EvidenceVariableCharacteristicParticipantEffectiveSerializer
 import dev.ohs.fhir.model.r4.serializers.EvidenceVariableCharacteristicSerializer
 import dev.ohs.fhir.model.r4.serializers.EvidenceVariableSerializer
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
@@ -456,7 +454,6 @@ public data class EvidenceVariable(
         }
       }
 
-    @Serializable(with = EvidenceVariableCharacteristicDefinitionSerializer::class)
     public sealed interface Definition {
       public fun asReference(): Reference? = this as? Reference
 
@@ -507,7 +504,6 @@ public data class EvidenceVariable(
       }
     }
 
-    @Serializable(with = EvidenceVariableCharacteristicParticipantEffectiveSerializer::class)
     public sealed interface ParticipantEffective {
       public fun asDateTime(): DateTime? = this as? DateTime
 

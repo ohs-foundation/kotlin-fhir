@@ -20,9 +20,7 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.NutritionIntakeConsumedItemSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionIntakeIngredientLabelSerializer
-import dev.ohs.fhir.model.r5.serializers.NutritionIntakeOccurrenceSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionIntakePerformerSerializer
-import dev.ohs.fhir.model.r5.serializers.NutritionIntakeReportedSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionIntakeSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -666,7 +664,6 @@ public data class NutritionIntake(
     }
   }
 
-  @Serializable(with = NutritionIntakeOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -688,7 +685,6 @@ public data class NutritionIntake(
     }
   }
 
-  @Serializable(with = NutritionIntakeReportedSerializer::class)
   public sealed interface Reported {
     public fun asBoolean(): Boolean? = this as? Boolean
 

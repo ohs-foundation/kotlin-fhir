@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.CommunicationPayloadContentSerializer
 import dev.ohs.fhir.model.r4.serializers.CommunicationPayloadSerializer
 import dev.ohs.fhir.model.r4.serializers.CommunicationSerializer
 import kotlin.String
@@ -345,7 +344,6 @@ public data class Communication(
         }
       }
 
-    @Serializable(with = CommunicationPayloadContentSerializer::class)
     public sealed interface Content {
       public fun asString(): String? = this as? String
 

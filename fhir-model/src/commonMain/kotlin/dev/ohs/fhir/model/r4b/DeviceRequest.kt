@@ -18,10 +18,7 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.DeviceRequestCodeSerializer
-import dev.ohs.fhir.model.r4b.serializers.DeviceRequestOccurrenceSerializer
 import dev.ohs.fhir.model.r4b.serializers.DeviceRequestParameterSerializer
-import dev.ohs.fhir.model.r4b.serializers.DeviceRequestParameterValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.DeviceRequestSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -322,7 +319,6 @@ public data class DeviceRequest(
         }
       }
 
-    @Serializable(with = DeviceRequestParameterValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -420,7 +416,6 @@ public data class DeviceRequest(
     }
   }
 
-  @Serializable(with = DeviceRequestCodeSerializer::class)
   public sealed interface Code {
     public fun asReference(): Reference? = this as? Reference
 
@@ -443,7 +438,6 @@ public data class DeviceRequest(
     }
   }
 
-  @Serializable(with = DeviceRequestOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 

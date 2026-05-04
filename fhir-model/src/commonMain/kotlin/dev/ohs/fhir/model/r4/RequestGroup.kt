@@ -19,10 +19,8 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.RequestGroupActionConditionSerializer
-import dev.ohs.fhir.model.r4.serializers.RequestGroupActionRelatedActionOffsetSerializer
 import dev.ohs.fhir.model.r4.serializers.RequestGroupActionRelatedActionSerializer
 import dev.ohs.fhir.model.r4.serializers.RequestGroupActionSerializer
-import dev.ohs.fhir.model.r4.serializers.RequestGroupActionTimingSerializer
 import dev.ohs.fhir.model.r4.serializers.RequestGroupSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -560,7 +558,6 @@ public data class RequestGroup(
           }
         }
 
-      @Serializable(with = RequestGroupActionRelatedActionOffsetSerializer::class)
       public sealed interface Offset {
         public fun asDuration(): Duration? = this as? Duration
 
@@ -646,7 +643,6 @@ public data class RequestGroup(
       }
     }
 
-    @Serializable(with = RequestGroupActionTimingSerializer::class)
     public sealed interface Timing {
       public fun asDateTime(): DateTime? = this as? DateTime
 

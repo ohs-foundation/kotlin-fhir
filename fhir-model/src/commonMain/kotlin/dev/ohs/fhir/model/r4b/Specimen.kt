@@ -18,13 +18,9 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.SpecimenCollectionCollectedSerializer
-import dev.ohs.fhir.model.r4b.serializers.SpecimenCollectionFastingStatusSerializer
 import dev.ohs.fhir.model.r4b.serializers.SpecimenCollectionSerializer
-import dev.ohs.fhir.model.r4b.serializers.SpecimenContainerAdditiveSerializer
 import dev.ohs.fhir.model.r4b.serializers.SpecimenContainerSerializer
 import dev.ohs.fhir.model.r4b.serializers.SpecimenProcessingSerializer
-import dev.ohs.fhir.model.r4b.serializers.SpecimenProcessingTimeSerializer
 import dev.ohs.fhir.model.r4b.serializers.SpecimenSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -314,7 +310,6 @@ public data class Specimen(
         }
       }
 
-    @Serializable(with = SpecimenCollectionCollectedSerializer::class)
     public sealed interface Collected {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -336,7 +331,6 @@ public data class Specimen(
       }
     }
 
-    @Serializable(with = SpecimenCollectionFastingStatusSerializer::class)
     public sealed interface FastingStatus {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -522,7 +516,6 @@ public data class Specimen(
         }
       }
 
-    @Serializable(with = SpecimenProcessingTimeSerializer::class)
     public sealed interface Time {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -693,7 +686,6 @@ public data class Specimen(
         }
       }
 
-    @Serializable(with = SpecimenContainerAdditiveSerializer::class)
     public sealed interface Additive {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

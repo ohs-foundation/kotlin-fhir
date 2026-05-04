@@ -41,63 +41,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
-internal object ProductShelfLifePeriodSerializer : KSerializer<ProductShelfLife.Period> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("ProductShelfLife.Period") {
-      element("periodDuration", Duration.serializer().descriptor, isOptional = true)
-      element("periodString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_periodString", Element.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: ProductShelfLife.Period) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is ProductShelfLife.Period.Duration -> {
-          encodeSerializableElement(__desc, 0, Hoisted.periodDurationSer, __d.value)
-        }
-        is ProductShelfLife.Period.String -> {
-          ((__d.value.value))?.let { encodeStringElement(__desc, 1, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 2, Hoisted.elementSer, it)
-          }
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): ProductShelfLife.Period =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): ProductShelfLife.Period {
-    val __desc = descriptor
-    var periodDuration: Duration? = null
-    var periodString: KotlinString? = null
-    var _periodString: Element? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          periodDuration =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.periodDurationSer, null)
-        1 -> periodString = decoder.decodeStringElement(__desc, 1)
-        2 ->
-          _periodString =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.elementSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding ProductShelfLife.Period: " + __i)
-      }
-    }
-    return ProductShelfLife.Period.from(periodDuration, R5String.of(periodString, _periodString))!!
-  }
-
-  private object Hoisted {
-    public val periodDurationSer: KSerializer<Duration> = Duration.serializer()
-
-    public val elementSer: KSerializer<Element> = Element.serializer()
-  }
-}
-
 internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ProductShelfLife") {

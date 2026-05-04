@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.InventoryItemAssociationSerializer
 import dev.ohs.fhir.model.r5.serializers.InventoryItemCharacteristicSerializer
-import dev.ohs.fhir.model.r5.serializers.InventoryItemCharacteristicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.InventoryItemDescriptionSerializer
 import dev.ohs.fhir.model.r5.serializers.InventoryItemInstanceSerializer
 import dev.ohs.fhir.model.r5.serializers.InventoryItemNameSerializer
@@ -740,7 +739,6 @@ public data class InventoryItem(
         }
       }
 
-    @Serializable(with = InventoryItemCharacteristicValueSerializer::class)
     public sealed interface Value {
       public fun asString(): String? = this as? String
 

@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.MessageHeaderDestinationSerializer
-import dev.ohs.fhir.model.r4b.serializers.MessageHeaderEventSerializer
 import dev.ohs.fhir.model.r4b.serializers.MessageHeaderResponseSerializer
 import dev.ohs.fhir.model.r4b.serializers.MessageHeaderSerializer
 import dev.ohs.fhir.model.r4b.serializers.MessageHeaderSourceSerializer
@@ -677,7 +676,6 @@ public data class MessageHeader(
     }
   }
 
-  @Serializable(with = MessageHeaderEventSerializer::class)
   public sealed interface Event {
     public fun asCoding(): Coding? = this as? Coding
 

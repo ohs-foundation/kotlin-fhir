@@ -20,12 +20,10 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.CodeSystemConceptDesignationSerializer
 import dev.ohs.fhir.model.r5.serializers.CodeSystemConceptPropertySerializer
-import dev.ohs.fhir.model.r5.serializers.CodeSystemConceptPropertyValueSerializer
 import dev.ohs.fhir.model.r5.serializers.CodeSystemConceptSerializer
 import dev.ohs.fhir.model.r5.serializers.CodeSystemFilterSerializer
 import dev.ohs.fhir.model.r5.serializers.CodeSystemPropertySerializer
 import dev.ohs.fhir.model.r5.serializers.CodeSystemSerializer
-import dev.ohs.fhir.model.r5.serializers.CodeSystemVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1114,7 +1112,6 @@ public data class CodeSystem(
           }
         }
 
-      @Serializable(with = CodeSystemConceptPropertyValueSerializer::class)
       public sealed interface Value {
         public fun asCode(): Code? = this as? Code
 
@@ -1314,7 +1311,6 @@ public data class CodeSystem(
     }
   }
 
-  @Serializable(with = CodeSystemVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

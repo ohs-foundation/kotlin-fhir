@@ -30,7 +30,6 @@ import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionMaterialSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionPackagingDistributorSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionPackagingSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionPropertySerializer
-import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionPropertyValueSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionRegulatoryIdentifierSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceDefinitionUdiDeviceIdentifierMarketDistributionSerializer
@@ -1633,7 +1632,6 @@ public data class DeviceDefinition(
         }
       }
 
-    @Serializable(with = DeviceDefinitionPropertyValueSerializer::class)
     public sealed interface Value {
       public fun asQuantity(): Quantity? = this as? Quantity
 

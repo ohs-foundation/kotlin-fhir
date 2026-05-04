@@ -602,62 +602,6 @@ internal object MeasureSupplementalDataSerializer : KSerializer<Measure.Suppleme
   }
 }
 
-internal object MeasureSubjectSerializer : KSerializer<Measure.Subject> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("Measure.Subject") {
-      element("subjectCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subjectReference", Reference.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: Measure.Subject) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is Measure.Subject.CodeableConcept -> {
-          encodeSerializableElement(__desc, 0, Hoisted.subjectCodeableConceptSer, __d.value)
-        }
-        is Measure.Subject.Reference -> {
-          encodeSerializableElement(__desc, 1, Hoisted.subjectReferenceSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): Measure.Subject =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): Measure.Subject {
-    val __desc = descriptor
-    var subjectCodeableConcept: CodeableConcept? = null
-    var subjectReference: Reference? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          subjectCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              __desc,
-              0,
-              Hoisted.subjectCodeableConceptSer,
-              null,
-            )
-        1 ->
-          subjectReference =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.subjectReferenceSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Measure.Subject: " + __i)
-      }
-    }
-    return Measure.Subject.from(subjectCodeableConcept, subjectReference)!!
-  }
-
-  private object Hoisted {
-    public val subjectCodeableConceptSer: KSerializer<CodeableConcept> =
-      CodeableConcept.serializer()
-
-    public val subjectReferenceSer: KSerializer<Reference> = Reference.serializer()
-  }
-}
-
 internal object MeasureSerializer : KSerializer<Measure> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Measure") {

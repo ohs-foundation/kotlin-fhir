@@ -18,9 +18,7 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.MedicationAdministrationDosageRateSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationAdministrationDosageSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicationAdministrationOccurenceSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationAdministrationPerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationAdministrationSerializer
 import kotlin.Suppress
@@ -517,7 +515,6 @@ public data class MedicationAdministration(
         }
       }
 
-    @Serializable(with = MedicationAdministrationDosageRateSerializer::class)
     public sealed interface Rate {
       public fun asRatio(): Ratio? = this as? Ratio
 
@@ -661,7 +658,6 @@ public data class MedicationAdministration(
     }
   }
 
-  @Serializable(with = MedicationAdministrationOccurenceSerializer::class)
   public sealed interface Occurence {
     public fun asDateTime(): DateTime? = this as? DateTime
 

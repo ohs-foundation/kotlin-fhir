@@ -18,8 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.DosageDoseAndRateDoseSerializer
-import dev.ohs.fhir.model.r5.serializers.DosageDoseAndRateRateSerializer
 import dev.ohs.fhir.model.r5.serializers.DosageDoseAndRateSerializer
 import dev.ohs.fhir.model.r5.serializers.DosageSerializer
 import kotlin.Suppress
@@ -243,7 +241,6 @@ public data class Dosage(
         }
       }
 
-    @Serializable(with = DosageDoseAndRateDoseSerializer::class)
     public sealed interface Dose {
       public fun asRange(): Range? = this as? Range
 
@@ -265,7 +262,6 @@ public data class Dosage(
       }
     }
 
-    @Serializable(with = DosageDoseAndRateRateSerializer::class)
     public sealed interface Rate {
       public fun asRatio(): Ratio? = this as? Ratio
 

@@ -19,13 +19,10 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseErrorSerializer
-import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseInsuranceItemBenefitAllowedSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseInsuranceItemBenefitSerializer
-import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseInsuranceItemBenefitUsedSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseInsuranceItemSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseInsuranceSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseSerializer
-import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityResponseServicedSerializer
 import dev.ohs.fhir.model.r4b.terminologies.RemittanceOutcome
 import kotlin.Suppress
 import kotlin.collections.List
@@ -509,9 +506,6 @@ public data class CoverageEligibilityResponse(
             }
           }
 
-        @Serializable(
-          with = CoverageEligibilityResponseInsuranceItemBenefitAllowedSerializer::class
-        )
         public sealed interface Allowed {
           public fun asUnsignedInt(): UnsignedInt? = this as? UnsignedInt
 
@@ -540,7 +534,6 @@ public data class CoverageEligibilityResponse(
           }
         }
 
-        @Serializable(with = CoverageEligibilityResponseInsuranceItemBenefitUsedSerializer::class)
         public sealed interface Used {
           public fun asUnsignedInt(): UnsignedInt? = this as? UnsignedInt
 
@@ -970,7 +963,6 @@ public data class CoverageEligibilityResponse(
     }
   }
 
-  @Serializable(with = CoverageEligibilityResponseServicedSerializer::class)
   public sealed interface Serviced {
     public fun asDate(): Date? = this as? Date
 

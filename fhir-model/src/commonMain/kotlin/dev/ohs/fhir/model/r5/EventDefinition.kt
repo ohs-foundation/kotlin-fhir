@@ -19,8 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.EventDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.EventDefinitionSubjectSerializer
-import dev.ohs.fhir.model.r5.serializers.EventDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -440,7 +438,6 @@ public data class EventDefinition(
       }
     }
 
-  @Serializable(with = EventDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 
@@ -462,7 +459,6 @@ public data class EventDefinition(
     }
   }
 
-  @Serializable(with = EventDefinitionSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

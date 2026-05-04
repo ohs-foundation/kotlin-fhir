@@ -374,62 +374,6 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
   }
 }
 
-internal object MessageHeaderEventSerializer : KSerializer<MessageHeader.Event> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("MessageHeader.Event") {
-      element("eventCoding", Coding.serializer().descriptor, isOptional = true)
-      element("eventUri", KotlinString.serializer().descriptor, isOptional = true)
-      element("_eventUri", Element.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: MessageHeader.Event) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is MessageHeader.Event.Coding -> {
-          encodeSerializableElement(__desc, 0, Hoisted.eventCodingSer, __d.value)
-        }
-        is MessageHeader.Event.Uri -> {
-          ((__d.value.value))?.let { encodeStringElement(__desc, 1, it) }
-          (__d.value.toElement())?.let {
-            encodeSerializableElement(__desc, 2, Hoisted.elementSer, it)
-          }
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): MessageHeader.Event =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): MessageHeader.Event {
-    val __desc = descriptor
-    var eventCoding: Coding? = null
-    var eventUri: KotlinString? = null
-    var _eventUri: Element? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          eventCoding =
-            decoder.decodeNullableSerializableElement(__desc, 0, Hoisted.eventCodingSer, null)
-        1 -> eventUri = decoder.decodeStringElement(__desc, 1)
-        2 ->
-          _eventUri = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.elementSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding MessageHeader.Event: " + __i)
-      }
-    }
-    return MessageHeader.Event.from(eventCoding, Uri.of(eventUri, _eventUri))!!
-  }
-
-  private object Hoisted {
-    public val eventCodingSer: KSerializer<Coding> = Coding.serializer()
-
-    public val elementSer: KSerializer<Element> = Element.serializer()
-  }
-}
-
 internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("MessageHeader") {

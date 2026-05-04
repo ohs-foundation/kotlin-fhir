@@ -61,63 +61,6 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
-internal object EventDefinitionSubjectSerializer : KSerializer<EventDefinition.Subject> {
-  override val descriptor: SerialDescriptor =
-    buildClassSerialDescriptor("EventDefinition.Subject") {
-      element("subjectCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subjectReference", Reference.serializer().descriptor, isOptional = true)
-    }
-
-  override fun serialize(encoder: Encoder, `value`: EventDefinition.Subject) {
-    encoder.encodeStructure(descriptor) {
-      val __desc = descriptor
-      when (val __d = value) {
-        is EventDefinition.Subject.CodeableConcept -> {
-          encodeSerializableElement(__desc, 0, Hoisted.subjectCodeableConceptSer, __d.value)
-        }
-        is EventDefinition.Subject.Reference -> {
-          encodeSerializableElement(__desc, 1, Hoisted.subjectReferenceSer, __d.value)
-        }
-      }
-    }
-  }
-
-  override fun deserialize(decoder: Decoder): EventDefinition.Subject =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
-
-  internal fun deserializeJson(decoder: CompositeDecoder): EventDefinition.Subject {
-    val __desc = descriptor
-    var subjectCodeableConcept: CodeableConcept? = null
-    var subjectReference: Reference? = null
-    while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 ->
-          subjectCodeableConcept =
-            decoder.decodeNullableSerializableElement(
-              __desc,
-              0,
-              Hoisted.subjectCodeableConceptSer,
-              null,
-            )
-        1 ->
-          subjectReference =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.subjectReferenceSer, null)
-        CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding EventDefinition.Subject: " + __i)
-      }
-    }
-    return EventDefinition.Subject.from(subjectCodeableConcept, subjectReference)!!
-  }
-
-  private object Hoisted {
-    public val subjectCodeableConceptSer: KSerializer<CodeableConcept> =
-      CodeableConcept.serializer()
-
-    public val subjectReferenceSer: KSerializer<Reference> = Reference.serializer()
-  }
-}
-
 internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("EventDefinition") {

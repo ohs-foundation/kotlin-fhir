@@ -20,10 +20,8 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.DataRequirementCodeFilterSerializer
 import dev.ohs.fhir.model.r4.serializers.DataRequirementDateFilterSerializer
-import dev.ohs.fhir.model.r4.serializers.DataRequirementDateFilterValueSerializer
 import dev.ohs.fhir.model.r4.serializers.DataRequirementSerializer
 import dev.ohs.fhir.model.r4.serializers.DataRequirementSortSerializer
-import dev.ohs.fhir.model.r4.serializers.DataRequirementSubjectSerializer
 import dev.ohs.fhir.model.r4.terminologies.FHIRAllTypes
 import kotlin.Suppress
 import kotlin.collections.List
@@ -326,7 +324,6 @@ public data class DataRequirement(
         }
       }
 
-    @Serializable(with = DataRequirementDateFilterValueSerializer::class)
     public sealed interface Value {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -496,7 +493,6 @@ public data class DataRequirement(
     }
   }
 
-  @Serializable(with = DataRequirementSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.codegen
 
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
@@ -48,6 +49,15 @@ object FhirJsonFileSpecGenerator {
     return FileSpec.builder(className)
       .addType(
         TypeSpec.classBuilder(className)
+          .addAnnotation(
+            AnnotationSpec.builder(Deprecated::class)
+              .addMember(
+                "%S",
+                "No longer required. Create a kotlinx.serialization Json instance directly and " +
+                  "use it to serialize FHIR resources.",
+              )
+              .build()
+          )
           .primaryConstructor(
             FunSpec.constructorBuilder()
               .addParameter(

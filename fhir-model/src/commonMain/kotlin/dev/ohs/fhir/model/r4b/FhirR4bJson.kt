@@ -16,11 +16,15 @@
 
 package dev.ohs.fhir.model.r4b
 
+import kotlin.Deprecated
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonBuilder
 
+@Deprecated(
+  "No longer required. Create a kotlinx.serialization Json instance directly and use it to serialize FHIR resources."
+)
 public class FhirR4bJson(`init`: JsonBuilder.() -> Unit = {}) {
   private val json: Json = Json {
     prettyPrint = true

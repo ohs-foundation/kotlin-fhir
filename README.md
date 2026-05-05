@@ -488,38 +488,62 @@ fun main() {
 }
 ```
 
+### Non Json Serializers
+
+The FHIR Resource models work with any serializer, but only JSON is tested against the FHIR Spec.
+
+Other formats can change version to version due to drift in the indexing.
+
 ### Serialization and deserialization
 
-To serialize and deserialize FHIR resources, use the provided `Fhir<FHIR_VERSION>Json` class in the
-corresponding version-specific package:
+Each generated FHIR class carries a hand-rolled `KSerializer` via `@Serializable(with = ...)`, so a
+plain [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) `Json` instance can
+encode and decode FHIR resources directly:
 
 ```kotlin
-import dev.ohs.fhir.model.r4.FhirR4Json  // or dev.ohs.fhir.model.r4b.FhirR4bJson or dev.ohs.fhir.model.r5.FhirR5Json
-
-fun main() {
-    val jsonR4 = FhirR4Json()
-    val jsonR4 = FhirR4Json({ ignoreUnknownKeys = true })  // optional lambda to configure the Json object
-}
-```
-
-This class configures [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization)'s
-`Json` object to handle serialization and deserialization for FHIR resources. It takes an optional
-initializer function for the user to customize the `Json` object even further. For more details, see
-[Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md#json-configuration).
-
-Once this is correctly configured, use `encodeToString` and `decodeFromString` functions to
-serialize and deserialize:
-
-```kotlin
+import dev.ohs.fhir.model.r4.OperationOutcome
 import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Resource
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-fun main() {
-    val jsonString = jsonR4.encodeToString(patient)  // Serialization
-    val reconstructedPatient = jsonR4.decodeFromString(jsonString)  // Deserialization
-    
-    check(reconstructedPatient is Patient)
+val example = """
+    {
+      "resourceType": "Patient",
+      "id": "example",
+      "name": [
+        {
+          "use": "official",
+          "family": "Doe",
+          "given": ["Jane"]
+        }
+      ],
+      "gender": "female",
+      "birthDate": "1985-03-15"
+    }
+""".trimIndent()
+
+val json = Json {
+    // configure Json here
+    // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md#json-configuration
+    // note that most configs are ignored for FHIR resources
 }
+
+// if you know the exact FHIR type you can deserialize directly to a Patient instance
+val patient = json.decodeFromString<Patient>(example)
+
+// if you don't know the type (e.g. a FHIR Server response) deserialize as a generic FHIR Resource
+val resource = json.decodeFromString<Resource>(example)
+
+// then dispatch on the result
+when (resource) {
+    is OperationOutcome -> { /* parse error */ }
+    is Patient -> { /* parse patient */ }
+    else -> { /* other resource types */ }
+}
+
+// To serialize a FHIR resource simply call encodeToString(instance)
+val serializedPatient = json.encodeToString(patient)
 ```
 
 ## Developer Guide

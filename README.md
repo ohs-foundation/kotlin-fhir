@@ -251,7 +251,9 @@ that would otherwise be hit on FHIR fields with many possible types (e.g.,
 [ElementDefinition.pattern](https://www.hl7.org/fhir/R4B/elementdefinition-definitions.html#ElementDefinition.pattern_x_))
 because each arm is an individual descriptor slot rather than a constructor parameter.
 
-Polymorphic `Resource` dispatch (choosing `Patient` vs `Observation` vs … based on the
+By default Kotlin only add class discriminators for polymorhpic types. This doesn't quite follow
+FHIR specification as even standalone FHIR resources (i.e. `Patient`) require `resourceType`. To
+ solve this, polymorphic `Resource` dispatch (choosing `Patient` vs `Observation` vs … based on the
 `resourceType` discriminator) is handled by `ResourcePolymorphicSerializer`. Each concrete resource
 ships two serializers: the standalone `XSerializer` (descriptor includes `resourceType`, used when
 the static type is the concrete class) and `XPolymorphicSerializer` (descriptor omits
@@ -259,17 +261,20 @@ the static type is the concrete class) and `XPolymorphicSerializer` (descriptor 
 class discriminator without colliding):
 
 ```mermaid
-graph LR
-    A["Patient instance"] -->|"static type Patient"| PS["PatientSerializer<br/>writes resourceType + fields"]
-    A -->|"static type Resource"| RPS["ResourcePolymorphicSerializer<br/>(AbstractPolymorphicSerializer)"]
+graph TB
+    A["Patient instance"] -->|"json.encodeToString(patient)"| PS["PatientSerializer<br/>writes resourceType + fields"]
+    A -->|"json.encodeToString&ltResource&gt(patient)"| RPS["ResourcePolymorphicSerializer<br/>(AbstractPolymorphicSerializer)"]
     RPS -->|"byClass[Patient::class]"| PPS["PatientPolymorphicSerializer<br/>writes fields only"]
     RPS -.->|"kotlinx-json injects<br/>resourceType discriminator"| O
     PS --> O["JSON output<br/>{ resourceType, ... }"]
     PPS --> O
 ```
 
-The following diagram illustrates the deserialization of a Patient JSON. The serialization process
-is simply the reverse.
+*Figure 1: Polymorphic Serializer Routing*
+
+
+Once the correct serializer has been found, the contents are then simply serialized/deserialized directly based on
+the flat descriptors.
 
 ```mermaid
 graph LR
@@ -277,52 +282,65 @@ graph LR
     {
     #nbsp;#nbsp;gender: ...
     #nbsp;#nbsp;_gender: ...
+    #nbsp;#nbsp;deceasedBoolean: ...
+    #nbsp;#nbsp;deceasedDateTime: ...
     #nbsp;#nbsp;multipleBirthBoolean: ...
     #nbsp;#nbsp;_multipleBirthBoolean: ...
     #nbsp;#nbsp;multipleBirthInteger: ...
-    #nbsp;#nbsp;_multipleBirthInteger: ...
-    #nbsp;#nbsp;contact: [
-    #nbsp;#nbsp;#nbsp;#nbsp;{
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;name: {
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;family: ...
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;_family: ...
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;given: ...
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;}
-    #nbsp;#nbsp;#nbsp;#nbsp;#nbsp;#nbsp;telecom: [...]
-    #nbsp;#nbsp;#nbsp;#nbsp;}
-    #nbsp;#nbsp;]
+    #nbsp;#nbsp;contact: [...]
     }
     "]
     E["**Patient object**
     gender: Code
-    multipleBirth: Patient.MultipleBirth sealed interface
-    #nbsp;#nbsp;↳ .Boolean(value: Boolean) | .Integer(value: Integer)
+    deceased: Patient.Deceased
+    #nbsp;#nbsp;↳ .Boolean | .DateTime
+    multipleBirth: Patient.MultipleBirth
+    #nbsp;#nbsp;↳ .Boolean | .Integer
     contact: List&lt;Patient.Contact&gt;
     "]
 
-    subgraph Poly[ResourcePolymorphicSerializer]
-      direction LR
-      A -- read &quot;resourceType&quot; --> Dispatch{dispatch}
-    end
-    subgraph PS[PatientSerializer]
+    subgraph PS["PatientSerializer  (__off = 1)"]
       direction TB
-      Stream[&quot;decodeStructure(descriptor)<br>streaming loop over flat wire keys&quot;]
-      Stream -- read gender, _gender, arm locals, ... --> Locals[per-key locals]
-      Locals -- &quot;MultipleBirth.from(boolean, _boolean, integer, _integer)&quot; --> Seal[sealed value synthesized]
-      Locals -- &quot;PatientContactSerializer.deserialize&quot; --> BB[Patient.Contact backbone]
+      Desc["**descriptor**
+      0 → resourceType
+      ... 
+      16 → gender / 17 → _gender
+      20 → deceasedBoolean / 21 → _deceasedBoolean
+      22 → deceasedDateTime / 23 → _deceasedDateTime
+      26 → multipleBirthBoolean / 27 → _multipleBirthBoolean
+      28 → multipleBirthInteger / 29 → _multipleBirthInteger
+      31 → contact / 32 → communication / 35 → link"]
+
+      Loop["**while** (true) {
+      #nbsp;#nbsp;val __i = decoder.decodeElementIndex(descriptor)
+      #nbsp;#nbsp;if (__i == DECODE_DONE) break
+      #nbsp;#nbsp;**when** (__i - __off) {
+      #nbsp;#nbsp;#nbsp;#nbsp;-1 → resourceType discarded
+      #nbsp;#nbsp;#nbsp;#nbsp;0..33 → arm locals
+      #nbsp;#nbsp;}
+      }"]
+
+      Loop -- "JSON key → __i lookup" --> Desc
+      Desc -. "return __i" .-> Loop
+      Loop -- "when(15/16) gender, when(19..22) deceased arms, when(25..28) multipleBirth arms, ..." --> Locals[per-key locals]
+      Locals -- "MultipleBirth.from(boolean, _boolean, integer, _integer)" --> Seal[sealed values synthesized]
+      Locals -- "Deceased.from(boolean, _boolean, dateTime, _dateTime)" --> Seal
+      Locals -- "PatientContact / Communication / LinkSerializer.deserialize" --> BB[backbone elements]
     end
-    Dispatch --> PS
+
+    A --> PS
     Seal --> E
     BB --> E
     Locals --> E
 
     style A text-align:left
     style E text-align:left
-    style Poly stroke-dasharray: 5 5
+    style Desc text-align:left
+    style Loop text-align:left
     style PS stroke-dasharray: 5 5
 ```
 
-*Figure 1: Deserialization of a Patient JSON*
+*Figure 2: Deserialization of a Patient JSON*
 
 ## Implementation
 
@@ -350,7 +368,7 @@ graph LR
     C -- compiler --> H[Android]
 ```
 
-*Figure 2: Architecture diagram*
+*Figure 3: Architecture diagram*
 
 ### Definitions
 

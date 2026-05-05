@@ -19,8 +19,10 @@ package dev.ohs.fhir.model.test
 import dev.ohs.fhir.model.r4.FhirR4Json
 import dev.ohs.fhir.model.r4b.FhirR4bJson
 import dev.ohs.fhir.model.r5.FhirR5Json
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 
 private val expectedPatientJson =
@@ -77,4 +79,97 @@ class SimpleSerializationTest :
         .encodeToString(dev.ohs.fhir.model.r5.Patient.serializer(), patient)
         .shouldBe(expectedPatientJson)
     }
+
+    // Cross-path equivalence: decoding the same JSON via the polymorphic Resource path and via
+    // the standalone Patient serializer must yield equal instances. This guards the
+    // `resourceType`-at-slot-0 descriptor on the standalone path against silently diverging from
+    // what the polymorphic dispatcher produces.
+    test("R4 polymorphic Resource decode equals direct Patient decode") {
+      val viaResource = FhirR4Json().decodeFromString(expectedPatientJson)
+      val viaPatient =
+        standaloneJson.decodeFromString(
+          dev.ohs.fhir.model.r4.Patient.serializer(),
+          expectedPatientJson,
+        )
+      viaResource.shouldBe(viaPatient)
+    }
+
+    test("R4B polymorphic Resource decode equals direct Patient decode") {
+      val viaResource = FhirR4bJson().decodeFromString(expectedPatientJson)
+      val viaPatient =
+        standaloneJson.decodeFromString(
+          dev.ohs.fhir.model.r4b.Patient.serializer(),
+          expectedPatientJson,
+        )
+      viaResource.shouldBe(viaPatient)
+    }
+
+    test("R5 polymorphic Resource decode equals direct Patient decode") {
+      val viaResource = FhirR5Json().decodeFromString(expectedPatientJson)
+      val viaPatient =
+        standaloneJson.decodeFromString(
+          dev.ohs.fhir.model.r5.Patient.serializer(),
+          expectedPatientJson,
+        )
+      viaResource.shouldBe(viaPatient)
+    }
+
+    // Round-trip via the standalone path: encode -> decode -> equal to source instance.
+    test("Standalone Patient serializer round-trips in R4") {
+      val patient = dev.ohs.fhir.model.r4.Patient(id = "patient-01")
+      val encoded =
+        standaloneJson.encodeToString(dev.ohs.fhir.model.r4.Patient.serializer(), patient)
+      val decoded =
+        standaloneJson.decodeFromString(dev.ohs.fhir.model.r4.Patient.serializer(), encoded)
+      decoded.shouldBe(patient)
+    }
+
+    test("Standalone Patient serializer round-trips in R4B") {
+      val patient = dev.ohs.fhir.model.r4b.Patient(id = "patient-01")
+      val encoded =
+        standaloneJson.encodeToString(dev.ohs.fhir.model.r4b.Patient.serializer(), patient)
+      val decoded =
+        standaloneJson.decodeFromString(dev.ohs.fhir.model.r4b.Patient.serializer(), encoded)
+      decoded.shouldBe(patient)
+    }
+
+    test("Standalone Patient serializer round-trips in R5") {
+      val patient = dev.ohs.fhir.model.r5.Patient(id = "patient-01")
+      val encoded =
+        standaloneJson.encodeToString(dev.ohs.fhir.model.r5.Patient.serializer(), patient)
+      val decoded =
+        standaloneJson.decodeFromString(dev.ohs.fhir.model.r5.Patient.serializer(), encoded)
+      decoded.shouldBe(patient)
+    }
+
+    // Missing-discriminator: JSON with no `resourceType` must be rejected on both paths. The
+    // polymorphic path can't pick an arm; the standalone path's descriptor has `resourceType` at
+    // slot 0, so accepting JSON without it would mean the slot is silently optional — decoding
+    // arbitrary objects into typed FHIR resources.
+    val missingResourceType =
+      """
+      {
+          "id": "patient-01"
+      }
+      """
+        .trimIndent()
+
+    test("R4 polymorphic decode rejects JSON without resourceType") {
+      shouldThrow<SerializationException> {
+        standaloneJson.decodeFromString<dev.ohs.fhir.model.r4.Resource>(missingResourceType)
+      }
+    }
+
+    test("R4B polymorphic decode rejects JSON without resourceType") {
+      shouldThrow<SerializationException> {
+        standaloneJson.decodeFromString<dev.ohs.fhir.model.r4b.Resource>(missingResourceType)
+      }
+    }
+
+    test("R5 polymorphic decode rejects JSON without resourceType") {
+      shouldThrow<SerializationException> {
+        standaloneJson.decodeFromString<dev.ohs.fhir.model.r5.Resource>(missingResourceType)
+      }
+    }
+
   })

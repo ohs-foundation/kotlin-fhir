@@ -41,6 +41,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -138,63 +139,70 @@ internal object DocumentManifestSerializer : KSerializer<DocumentManifest> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DocumentManifest") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("masterIdentifier", Identifier.serializer().descriptor, isOptional = true)
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subject", Reference.serializer().descriptor, isOptional = true)
-      element("created", KotlinString.serializer().descriptor, isOptional = true)
-      element("_created", Element.serializer().descriptor, isOptional = true)
-      element("author", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element(
-        "recipient",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("source", KotlinString.serializer().descriptor, isOptional = true)
-      element("_source", Element.serializer().descriptor, isOptional = true)
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("content", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element(
-        "related",
-        listSerialDescriptor(lazyDescriptor { DocumentManifest.Related.serializer().descriptor }),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("masterIdentifier", Identifier.serializer().descriptor, isOptional = true)
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("subject", Reference.serializer().descriptor, isOptional = true)
+    b.element("created", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_created", Element.serializer().descriptor, isOptional = true)
+    b.element("author", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element(
+      "recipient",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("source", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_source", Element.serializer().descriptor, isOptional = true)
+    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_description", Element.serializer().descriptor, isOptional = true)
+    b.element("content", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element(
+      "related",
+      listSerialDescriptor(lazyDescriptor { DocumentManifest.Related.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): DocumentManifest =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: DocumentManifest) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "DocumentManifest")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): DocumentManifest {
@@ -309,9 +317,8 @@ internal object DocumentManifestSerializer : KSerializer<DocumentManifest> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DocumentManifest) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: DocumentManifest) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "DocumentManifest")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -395,4 +402,18 @@ internal object DocumentManifestSerializer : KSerializer<DocumentManifest> {
     public val relatedSer: KSerializer<List<DocumentManifest.Related>> =
       ListSerializer(Hoisted.relatedSerInner)
   }
+}
+
+internal object DocumentManifestPolymorphicSerializer : KSerializer<DocumentManifest> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("DocumentManifest") {
+      DocumentManifestSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: DocumentManifest) {
+    encoder.encodeStructure(descriptor) { DocumentManifestSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): DocumentManifest =
+    decoder.decodeStructure(descriptor) { DocumentManifestSerializer.deserializeJson(this) }
 }

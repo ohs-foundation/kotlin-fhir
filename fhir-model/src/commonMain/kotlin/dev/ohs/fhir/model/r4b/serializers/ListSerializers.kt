@@ -41,8 +41,9 @@ import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.ListSerializer as builtinsListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -147,7 +148,7 @@ internal object ListEntrySerializer : KSerializer<R4bList.Entry> {
     public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
 
     public val extensionSer: KSerializer<CollectionsList<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
+      builtinsListSerializer(Hoisted.extensionSerInner)
 
     public val flagSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
 
@@ -161,60 +162,67 @@ internal object ListSerializer : KSerializer<R4bList> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("List") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("mode", KotlinString.serializer().descriptor, isOptional = true)
-      element("_mode", Element.serializer().descriptor, isOptional = true)
-      element("title", KotlinString.serializer().descriptor, isOptional = true)
-      element("_title", Element.serializer().descriptor, isOptional = true)
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subject", Reference.serializer().descriptor, isOptional = true)
-      element("encounter", Reference.serializer().descriptor, isOptional = true)
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("source", Reference.serializer().descriptor, isOptional = true)
-      element("orderedBy", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-      element(
-        "entry",
-        listSerialDescriptor(lazyDescriptor { R4bList.Entry.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("emptyReason", CodeableConcept.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("mode", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_mode", Element.serializer().descriptor, isOptional = true)
+    b.element("title", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_title", Element.serializer().descriptor, isOptional = true)
+    b.element("code", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("subject", Reference.serializer().descriptor, isOptional = true)
+    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
+    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element("source", Reference.serializer().descriptor, isOptional = true)
+    b.element("orderedBy", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.element(
+      "entry",
+      listSerialDescriptor(lazyDescriptor { R4bList.Entry.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("emptyReason", CodeableConcept.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): R4bList =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: R4bList) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "List")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): R4bList {
@@ -331,9 +339,8 @@ internal object ListSerializer : KSerializer<R4bList> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: R4bList) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: R4bList) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "List")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -391,17 +398,17 @@ internal object ListSerializer : KSerializer<R4bList> {
     public val containedSerInner: KSerializer<Resource> = Resource.serializer()
 
     public val containedSer: KSerializer<CollectionsList<Resource>> =
-      ListSerializer(Hoisted.containedSerInner)
+      builtinsListSerializer(Hoisted.containedSerInner)
 
     public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
 
     public val extensionSer: KSerializer<CollectionsList<Extension>> =
-      ListSerializer(Hoisted.extensionSerInner)
+      builtinsListSerializer(Hoisted.extensionSerInner)
 
     public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
 
     public val identifierSer: KSerializer<CollectionsList<Identifier>> =
-      ListSerializer(Hoisted.identifierSerInner)
+      builtinsListSerializer(Hoisted.identifierSerInner)
 
     public val codeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
 
@@ -410,11 +417,23 @@ internal object ListSerializer : KSerializer<R4bList> {
     public val noteSerInner: KSerializer<Annotation> = Annotation.serializer()
 
     public val noteSer: KSerializer<CollectionsList<Annotation>> =
-      ListSerializer(Hoisted.noteSerInner)
+      builtinsListSerializer(Hoisted.noteSerInner)
 
     public val entrySerInner: KSerializer<R4bList.Entry> = R4bList.Entry.serializer()
 
     public val entrySer: KSerializer<CollectionsList<R4bList.Entry>> =
-      ListSerializer(Hoisted.entrySerInner)
+      builtinsListSerializer(Hoisted.entrySerInner)
   }
+}
+
+internal object ListPolymorphicSerializer : KSerializer<R4bList> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("List") { ListSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: R4bList) {
+    encoder.encodeStructure(descriptor) { ListSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): R4bList =
+    decoder.decodeStructure(descriptor) { ListSerializer.deserializeJson(this) }
 }

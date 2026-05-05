@@ -42,6 +42,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -164,7 +165,7 @@ internal object BundleEntrySerializer : KSerializer<Bundle.Entry> {
       )
       element("fullUrl", KotlinString.serializer().descriptor, isOptional = true)
       element("_fullUrl", Element.serializer().descriptor, isOptional = true)
-      element("resource", Resource.serializer().descriptor, isOptional = true)
+      element("resource", lazyDescriptor { Resource.serializer().descriptor }, isOptional = true)
       element(
         "search",
         lazyDescriptor { Bundle.Entry.Search.serializer().descriptor },
@@ -533,7 +534,7 @@ internal object BundleEntryResponseSerializer : KSerializer<Bundle.Entry.Respons
       element("_etag", Element.serializer().descriptor, isOptional = true)
       element("lastModified", KotlinString.serializer().descriptor, isOptional = true)
       element("_lastModified", Element.serializer().descriptor, isOptional = true)
-      element("outcome", Resource.serializer().descriptor, isOptional = true)
+      element("outcome", lazyDescriptor { Resource.serializer().descriptor }, isOptional = true)
     }
 
   override fun deserialize(decoder: Decoder): Bundle.Entry.Response =
@@ -637,37 +638,44 @@ internal object BundleSerializer : KSerializer<Bundle> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Bundle") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("identifier", Identifier.serializer().descriptor, isOptional = true)
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", Element.serializer().descriptor, isOptional = true)
-      element("timestamp", KotlinString.serializer().descriptor, isOptional = true)
-      element("_timestamp", Element.serializer().descriptor, isOptional = true)
-      element("total", Int.serializer().descriptor, isOptional = true)
-      element("_total", Element.serializer().descriptor, isOptional = true)
-      element(
-        "link",
-        listSerialDescriptor(lazyDescriptor { Bundle.Link.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "entry",
-        listSerialDescriptor(lazyDescriptor { Bundle.Entry.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("signature", Signature.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("identifier", Identifier.serializer().descriptor, isOptional = true)
+    b.element("type", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_type", Element.serializer().descriptor, isOptional = true)
+    b.element("timestamp", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_timestamp", Element.serializer().descriptor, isOptional = true)
+    b.element("total", Int.serializer().descriptor, isOptional = true)
+    b.element("_total", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "link",
+      listSerialDescriptor(lazyDescriptor { Bundle.Link.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "entry",
+      listSerialDescriptor(lazyDescriptor { Bundle.Entry.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("signature", Signature.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): Bundle =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Bundle) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Bundle")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Bundle {
@@ -740,9 +748,8 @@ internal object BundleSerializer : KSerializer<Bundle> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Bundle) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Bundle) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Bundle")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -794,4 +801,16 @@ internal object BundleSerializer : KSerializer<Bundle> {
 
     public val signatureSer: KSerializer<Signature> = Signature.serializer()
   }
+}
+
+internal object BundlePolymorphicSerializer : KSerializer<Bundle> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Bundle") { BundleSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Bundle) {
+    encoder.encodeStructure(descriptor) { BundleSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Bundle =
+    decoder.decodeStructure(descriptor) { BundleSerializer.deserializeJson(this) }
 }

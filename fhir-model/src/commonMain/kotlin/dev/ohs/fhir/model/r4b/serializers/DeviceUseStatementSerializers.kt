@@ -42,6 +42,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -56,69 +57,76 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DeviceUseStatement") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("status", String.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("subject", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "derivedFrom",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("timingTiming", Timing.serializer().descriptor, isOptional = true)
-      element("timingPeriod", Period.serializer().descriptor, isOptional = true)
-      element("timingDateTime", String.serializer().descriptor, isOptional = true)
-      element("_timingDateTime", Element.serializer().descriptor, isOptional = true)
-      element("recordedOn", String.serializer().descriptor, isOptional = true)
-      element("_recordedOn", Element.serializer().descriptor, isOptional = true)
-      element("source", Reference.serializer().descriptor, isOptional = true)
-      element("device", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "reasonCode",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "reasonReference",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("bodySite", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("status", String.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("subject", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "derivedFrom",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("timingTiming", Timing.serializer().descriptor, isOptional = true)
+    b.element("timingPeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("timingDateTime", String.serializer().descriptor, isOptional = true)
+    b.element("_timingDateTime", Element.serializer().descriptor, isOptional = true)
+    b.element("recordedOn", String.serializer().descriptor, isOptional = true)
+    b.element("_recordedOn", Element.serializer().descriptor, isOptional = true)
+    b.element("source", Reference.serializer().descriptor, isOptional = true)
+    b.element("device", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "reasonCode",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "reasonReference",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("bodySite", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): DeviceUseStatement =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceUseStatement) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "DeviceUseStatement")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): DeviceUseStatement {
@@ -254,9 +262,8 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceUseStatement) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: DeviceUseStatement) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "DeviceUseStatement")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -361,4 +368,18 @@ internal object DeviceUseStatementSerializer : KSerializer<DeviceUseStatement> {
 
     public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
   }
+}
+
+internal object DeviceUseStatementPolymorphicSerializer : KSerializer<DeviceUseStatement> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("DeviceUseStatement") {
+      DeviceUseStatementSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: DeviceUseStatement) {
+    encoder.encodeStructure(descriptor) { DeviceUseStatementSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): DeviceUseStatement =
+    decoder.decodeStructure(descriptor) { DeviceUseStatementSerializer.deserializeJson(this) }
 }

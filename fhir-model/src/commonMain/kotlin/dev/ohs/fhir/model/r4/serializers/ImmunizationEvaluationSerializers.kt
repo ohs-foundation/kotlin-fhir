@@ -42,6 +42,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -56,66 +57,73 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ImmunizationEvaluation") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("patient", Reference.serializer().descriptor, isOptional = true)
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("authority", Reference.serializer().descriptor, isOptional = true)
-      element("targetDisease", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("immunizationEvent", Reference.serializer().descriptor, isOptional = true)
-      element("doseStatus", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "doseStatusReason",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("series", KotlinString.serializer().descriptor, isOptional = true)
-      element("_series", Element.serializer().descriptor, isOptional = true)
-      element("doseNumberPositiveInt", Int.serializer().descriptor, isOptional = true)
-      element("_doseNumberPositiveInt", Element.serializer().descriptor, isOptional = true)
-      element("doseNumberString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_doseNumberString", Element.serializer().descriptor, isOptional = true)
-      element("seriesDosesPositiveInt", Int.serializer().descriptor, isOptional = true)
-      element("_seriesDosesPositiveInt", Element.serializer().descriptor, isOptional = true)
-      element("seriesDosesString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_seriesDosesString", Element.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("patient", Reference.serializer().descriptor, isOptional = true)
+    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element("authority", Reference.serializer().descriptor, isOptional = true)
+    b.element("targetDisease", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("immunizationEvent", Reference.serializer().descriptor, isOptional = true)
+    b.element("doseStatus", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "doseStatusReason",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_description", Element.serializer().descriptor, isOptional = true)
+    b.element("series", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_series", Element.serializer().descriptor, isOptional = true)
+    b.element("doseNumberPositiveInt", Int.serializer().descriptor, isOptional = true)
+    b.element("_doseNumberPositiveInt", Element.serializer().descriptor, isOptional = true)
+    b.element("doseNumberString", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_doseNumberString", Element.serializer().descriptor, isOptional = true)
+    b.element("seriesDosesPositiveInt", Int.serializer().descriptor, isOptional = true)
+    b.element("_seriesDosesPositiveInt", Element.serializer().descriptor, isOptional = true)
+    b.element("seriesDosesString", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_seriesDosesString", Element.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): ImmunizationEvaluation =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: ImmunizationEvaluation) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "ImmunizationEvaluation")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): ImmunizationEvaluation {
@@ -270,9 +278,8 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: ImmunizationEvaluation) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: ImmunizationEvaluation) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "ImmunizationEvaluation")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -386,4 +393,20 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
     public val doseStatusReasonSer: KSerializer<List<CodeableConcept>> =
       ListSerializer(Hoisted.targetDiseaseSer)
   }
+}
+
+internal object ImmunizationEvaluationPolymorphicSerializer : KSerializer<ImmunizationEvaluation> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("ImmunizationEvaluation") {
+      ImmunizationEvaluationSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: ImmunizationEvaluation) {
+    encoder.encodeStructure(descriptor) {
+      ImmunizationEvaluationSerializer.serializeJson(this, value)
+    }
+  }
+
+  override fun deserialize(decoder: Decoder): ImmunizationEvaluation =
+    decoder.decodeStructure(descriptor) { ImmunizationEvaluationSerializer.deserializeJson(this) }
 }

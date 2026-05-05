@@ -21,49 +21,60 @@ import dev.ohs.fhir.model.r4b.FhirR4bJson
 import dev.ohs.fhir.model.r5.FhirR5Json
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.json.Json
+
+private val expectedPatientJson =
+  """
+  {
+      "resourceType": "Patient",
+      "id": "patient-01"
+  }
+  """
+    .trimIndent()
 
 /** See https://github.com/google/kotlin-fhir/issues/66. */
 class SimpleSerializationTest :
   FunSpec({
+    // Polymorphic path: `FhirR{N}Json.encodeToString(Resource)` upcasts to `Resource` and goes
+    // through `ResourcePolymorphicSerializer` — kotlinx-json injects the discriminator.
     test("Serialized resource in R4 should have resourceType property") {
       val patient = dev.ohs.fhir.model.r4.Patient(id = "patient-01")
-      val serializedPatient = FhirR4Json().encodeToString(patient)
-      serializedPatient.shouldBe(
-        """
-        {
-            "resourceType": "Patient",
-            "id": "patient-01"
-        }
-        """
-          .trimIndent()
-      )
+      FhirR4Json().encodeToString(patient).shouldBe(expectedPatientJson)
     }
 
     test("Serialized resource in R4B should have resourceType property") {
       val patient = dev.ohs.fhir.model.r4b.Patient(id = "patient-01")
-      val serializedPatient = FhirR4bJson().encodeToString(patient)
-      serializedPatient.shouldBe(
-        """
-        {
-            "resourceType": "Patient",
-            "id": "patient-01"
-        }
-        """
-          .trimIndent()
-      )
+      FhirR4bJson().encodeToString(patient).shouldBe(expectedPatientJson)
     }
 
     test("Serialized resource in R5 should have resourceType property") {
       val patient = dev.ohs.fhir.model.r5.Patient(id = "patient-01")
-      val serializedPatient = FhirR5Json().encodeToString(patient)
-      serializedPatient.shouldBe(
-        """
-        {
-            "resourceType": "Patient",
-            "id": "patient-01"
-        }
-        """
-          .trimIndent()
-      )
+      FhirR5Json().encodeToString(patient).shouldBe(expectedPatientJson)
+    }
+
+    // Standalone path: `Patient.serializer()` resolves to `PatientSerializer` (the variant whose
+    // descriptor has `resourceType` at slot 0). The serializer writes the discriminator itself —
+    // no kotlinx-json polymorphic plumbing involved.
+    val standaloneJson = Json { prettyPrint = true }
+
+    test("Standalone Patient serializer in R4 writes resourceType first") {
+      val patient = dev.ohs.fhir.model.r4.Patient(id = "patient-01")
+      standaloneJson
+        .encodeToString(dev.ohs.fhir.model.r4.Patient.serializer(), patient)
+        .shouldBe(expectedPatientJson)
+    }
+
+    test("Standalone Patient serializer in R4B writes resourceType first") {
+      val patient = dev.ohs.fhir.model.r4b.Patient(id = "patient-01")
+      standaloneJson
+        .encodeToString(dev.ohs.fhir.model.r4b.Patient.serializer(), patient)
+        .shouldBe(expectedPatientJson)
+    }
+
+    test("Standalone Patient serializer in R5 writes resourceType first") {
+      val patient = dev.ohs.fhir.model.r5.Patient(id = "patient-01")
+      standaloneJson
+        .encodeToString(dev.ohs.fhir.model.r5.Patient.serializer(), patient)
+        .shouldBe(expectedPatientJson)
     }
   })

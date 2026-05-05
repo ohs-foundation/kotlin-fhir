@@ -42,6 +42,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -580,53 +581,60 @@ internal object PermissionSerializer : KSerializer<Permission> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Permission") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", String.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("asserter", Reference.serializer().descriptor, isOptional = true)
-      element("date", listSerialDescriptor(String.serializer().descriptor), isOptional = true)
-      element("_date", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element("validity", Period.serializer().descriptor, isOptional = true)
-      element(
-        "justification",
-        lazyDescriptor { Permission.Justification.serializer().descriptor },
-        isOptional = true,
-      )
-      element("combining", String.serializer().descriptor, isOptional = true)
-      element("_combining", Element.serializer().descriptor, isOptional = true)
-      element(
-        "rule",
-        listSerialDescriptor(lazyDescriptor { Permission.Rule.serializer().descriptor }),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", String.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("asserter", Reference.serializer().descriptor, isOptional = true)
+    b.element("date", listSerialDescriptor(String.serializer().descriptor), isOptional = true)
+    b.element("_date", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    b.element("validity", Period.serializer().descriptor, isOptional = true)
+    b.element(
+      "justification",
+      lazyDescriptor { Permission.Justification.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element("combining", String.serializer().descriptor, isOptional = true)
+    b.element("_combining", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "rule",
+      listSerialDescriptor(lazyDescriptor { Permission.Rule.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Permission =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Permission) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Permission")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Permission {
@@ -724,9 +732,8 @@ internal object PermissionSerializer : KSerializer<Permission> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Permission) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Permission) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Permission")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -801,4 +808,16 @@ internal object PermissionSerializer : KSerializer<Permission> {
 
     public val ruleSer: KSerializer<List<Permission.Rule>> = ListSerializer(Hoisted.ruleSerInner)
   }
+}
+
+internal object PermissionPolymorphicSerializer : KSerializer<Permission> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Permission") { PermissionSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Permission) {
+    encoder.encodeStructure(descriptor) { PermissionSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Permission =
+    decoder.decodeStructure(descriptor) { PermissionSerializer.deserializeJson(this) }
 }

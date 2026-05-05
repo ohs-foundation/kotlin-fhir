@@ -55,6 +55,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -2283,118 +2284,125 @@ internal object ClaimSerializer : KSerializer<Claim> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Claim") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "traceNumber",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("use", KotlinString.serializer().descriptor, isOptional = true)
-      element("_use", Element.serializer().descriptor, isOptional = true)
-      element("patient", Reference.serializer().descriptor, isOptional = true)
-      element("billablePeriod", Period.serializer().descriptor, isOptional = true)
-      element("created", KotlinString.serializer().descriptor, isOptional = true)
-      element("_created", Element.serializer().descriptor, isOptional = true)
-      element("enterer", Reference.serializer().descriptor, isOptional = true)
-      element("insurer", Reference.serializer().descriptor, isOptional = true)
-      element("provider", Reference.serializer().descriptor, isOptional = true)
-      element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("fundsReserve", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "related",
-        listSerialDescriptor(lazyDescriptor { Claim.Related.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("prescription", Reference.serializer().descriptor, isOptional = true)
-      element("originalPrescription", Reference.serializer().descriptor, isOptional = true)
-      element("payee", lazyDescriptor { Claim.Payee.serializer().descriptor }, isOptional = true)
-      element("referral", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "encounter",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("facility", Reference.serializer().descriptor, isOptional = true)
-      element("diagnosisRelatedGroup", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "event",
-        listSerialDescriptor(lazyDescriptor { Claim.Event.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "careTeam",
-        listSerialDescriptor(lazyDescriptor { Claim.CareTeam.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "supportingInfo",
-        listSerialDescriptor(lazyDescriptor { Claim.SupportingInfo.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "diagnosis",
-        listSerialDescriptor(lazyDescriptor { Claim.Diagnosis.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "procedure",
-        listSerialDescriptor(lazyDescriptor { Claim.Procedure.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "insurance",
-        listSerialDescriptor(lazyDescriptor { Claim.Insurance.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "accident",
-        lazyDescriptor { Claim.Accident.serializer().descriptor },
-        isOptional = true,
-      )
-      element("patientPaid", Money.serializer().descriptor, isOptional = true)
-      element(
-        "item",
-        listSerialDescriptor(lazyDescriptor { Claim.Item.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("total", Money.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "traceNumber",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("subType", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("use", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_use", Element.serializer().descriptor, isOptional = true)
+    b.element("patient", Reference.serializer().descriptor, isOptional = true)
+    b.element("billablePeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("created", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_created", Element.serializer().descriptor, isOptional = true)
+    b.element("enterer", Reference.serializer().descriptor, isOptional = true)
+    b.element("insurer", Reference.serializer().descriptor, isOptional = true)
+    b.element("provider", Reference.serializer().descriptor, isOptional = true)
+    b.element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("fundsReserve", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "related",
+      listSerialDescriptor(lazyDescriptor { Claim.Related.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("prescription", Reference.serializer().descriptor, isOptional = true)
+    b.element("originalPrescription", Reference.serializer().descriptor, isOptional = true)
+    b.element("payee", lazyDescriptor { Claim.Payee.serializer().descriptor }, isOptional = true)
+    b.element("referral", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "encounter",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("facility", Reference.serializer().descriptor, isOptional = true)
+    b.element("diagnosisRelatedGroup", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "event",
+      listSerialDescriptor(lazyDescriptor { Claim.Event.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "careTeam",
+      listSerialDescriptor(lazyDescriptor { Claim.CareTeam.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "supportingInfo",
+      listSerialDescriptor(lazyDescriptor { Claim.SupportingInfo.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "diagnosis",
+      listSerialDescriptor(lazyDescriptor { Claim.Diagnosis.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "procedure",
+      listSerialDescriptor(lazyDescriptor { Claim.Procedure.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "insurance",
+      listSerialDescriptor(lazyDescriptor { Claim.Insurance.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "accident",
+      lazyDescriptor { Claim.Accident.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element("patientPaid", Money.serializer().descriptor, isOptional = true)
+    b.element(
+      "item",
+      listSerialDescriptor(lazyDescriptor { Claim.Item.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("total", Money.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): Claim =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Claim) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Claim")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Claim {
@@ -2596,9 +2604,8 @@ internal object ClaimSerializer : KSerializer<Claim> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Claim) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Claim) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Claim")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -2754,4 +2761,16 @@ internal object ClaimSerializer : KSerializer<Claim> {
 
     public val itemSer: KSerializer<List<Claim.Item>> = ListSerializer(Hoisted.itemSerInner)
   }
+}
+
+internal object ClaimPolymorphicSerializer : KSerializer<Claim> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Claim") { ClaimSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Claim) {
+    encoder.encodeStructure(descriptor) { ClaimSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Claim =
+    decoder.decodeStructure(descriptor) { ClaimSerializer.deserializeJson(this) }
 }

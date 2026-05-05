@@ -43,6 +43,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -565,130 +566,137 @@ internal object EncounterSerializer : KSerializer<Encounter> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Encounter") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", String.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element(
-        "class",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "type",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "serviceType",
-        listSerialDescriptor(CodeableReference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("subject", Reference.serializer().descriptor, isOptional = true)
-      element("subjectStatus", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "episodeOfCare",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element(
-        "careTeam",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("partOf", Reference.serializer().descriptor, isOptional = true)
-      element("serviceProvider", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "participant",
-        listSerialDescriptor(lazyDescriptor { Encounter.Participant.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "appointment",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "virtualService",
-        listSerialDescriptor(VirtualServiceDetail.serializer().descriptor),
-        isOptional = true,
-      )
-      element("actualPeriod", Period.serializer().descriptor, isOptional = true)
-      element("plannedStartDate", String.serializer().descriptor, isOptional = true)
-      element("_plannedStartDate", Element.serializer().descriptor, isOptional = true)
-      element("plannedEndDate", String.serializer().descriptor, isOptional = true)
-      element("_plannedEndDate", Element.serializer().descriptor, isOptional = true)
-      element("length", Duration.serializer().descriptor, isOptional = true)
-      element(
-        "reason",
-        listSerialDescriptor(lazyDescriptor { Encounter.Reason.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "diagnosis",
-        listSerialDescriptor(lazyDescriptor { Encounter.Diagnosis.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("account", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element(
-        "dietPreference",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "specialArrangement",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "specialCourtesy",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "admission",
-        lazyDescriptor { Encounter.Admission.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "location",
-        listSerialDescriptor(lazyDescriptor { Encounter.Location.serializer().descriptor }),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", String.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "class",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "type",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "serviceType",
+      listSerialDescriptor(CodeableReference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("subject", Reference.serializer().descriptor, isOptional = true)
+    b.element("subjectStatus", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "episodeOfCare",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element(
+      "careTeam",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("partOf", Reference.serializer().descriptor, isOptional = true)
+    b.element("serviceProvider", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "participant",
+      listSerialDescriptor(lazyDescriptor { Encounter.Participant.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "appointment",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "virtualService",
+      listSerialDescriptor(VirtualServiceDetail.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("actualPeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("plannedStartDate", String.serializer().descriptor, isOptional = true)
+    b.element("_plannedStartDate", Element.serializer().descriptor, isOptional = true)
+    b.element("plannedEndDate", String.serializer().descriptor, isOptional = true)
+    b.element("_plannedEndDate", Element.serializer().descriptor, isOptional = true)
+    b.element("length", Duration.serializer().descriptor, isOptional = true)
+    b.element(
+      "reason",
+      listSerialDescriptor(lazyDescriptor { Encounter.Reason.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "diagnosis",
+      listSerialDescriptor(lazyDescriptor { Encounter.Diagnosis.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("account", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element(
+      "dietPreference",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "specialArrangement",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "specialCourtesy",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "admission",
+      lazyDescriptor { Encounter.Admission.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element(
+      "location",
+      listSerialDescriptor(lazyDescriptor { Encounter.Location.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Encounter =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Encounter) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Encounter")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Encounter {
@@ -881,9 +889,8 @@ internal object EncounterSerializer : KSerializer<Encounter> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Encounter) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Encounter) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Encounter")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -1037,4 +1044,16 @@ internal object EncounterSerializer : KSerializer<Encounter> {
     public val locationSer: KSerializer<List<Encounter.Location>> =
       ListSerializer(Hoisted.locationSerInner)
   }
+}
+
+internal object EncounterPolymorphicSerializer : KSerializer<Encounter> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Encounter") { EncounterSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Encounter) {
+    encoder.encodeStructure(descriptor) { EncounterSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Encounter =
+    decoder.decodeStructure(descriptor) { EncounterSerializer.deserializeJson(this) }
 }

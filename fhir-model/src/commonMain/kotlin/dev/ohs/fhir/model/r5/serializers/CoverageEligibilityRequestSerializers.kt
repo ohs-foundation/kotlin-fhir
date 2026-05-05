@@ -50,6 +50,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -709,87 +710,94 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("CoverageEligibilityRequest") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "purpose",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element("_purpose", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element("patient", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "event",
-        listSerialDescriptor(
-          lazyDescriptor { CoverageEligibilityRequest.Event.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element("servicedDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_servicedDate", Element.serializer().descriptor, isOptional = true)
-      element("servicedPeriod", Period.serializer().descriptor, isOptional = true)
-      element("created", KotlinString.serializer().descriptor, isOptional = true)
-      element("_created", Element.serializer().descriptor, isOptional = true)
-      element("enterer", Reference.serializer().descriptor, isOptional = true)
-      element("provider", Reference.serializer().descriptor, isOptional = true)
-      element("insurer", Reference.serializer().descriptor, isOptional = true)
-      element("facility", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "supportingInfo",
-        listSerialDescriptor(
-          lazyDescriptor { CoverageEligibilityRequest.SupportingInfo.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "insurance",
-        listSerialDescriptor(
-          lazyDescriptor { CoverageEligibilityRequest.Insurance.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "item",
-        listSerialDescriptor(
-          lazyDescriptor { CoverageEligibilityRequest.Item.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("priority", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "purpose",
+      listSerialDescriptor(KotlinString.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("_purpose", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    b.element("patient", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "event",
+      listSerialDescriptor(
+        lazyDescriptor { CoverageEligibilityRequest.Event.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element("servicedDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_servicedDate", Element.serializer().descriptor, isOptional = true)
+    b.element("servicedPeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("created", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_created", Element.serializer().descriptor, isOptional = true)
+    b.element("enterer", Reference.serializer().descriptor, isOptional = true)
+    b.element("provider", Reference.serializer().descriptor, isOptional = true)
+    b.element("insurer", Reference.serializer().descriptor, isOptional = true)
+    b.element("facility", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "supportingInfo",
+      listSerialDescriptor(
+        lazyDescriptor { CoverageEligibilityRequest.SupportingInfo.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "insurance",
+      listSerialDescriptor(
+        lazyDescriptor { CoverageEligibilityRequest.Insurance.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "item",
+      listSerialDescriptor(
+        lazyDescriptor { CoverageEligibilityRequest.Item.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): CoverageEligibilityRequest =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: CoverageEligibilityRequest) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "CoverageEligibilityRequest")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): CoverageEligibilityRequest {
@@ -941,9 +949,8 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: CoverageEligibilityRequest) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: CoverageEligibilityRequest) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "CoverageEligibilityRequest")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -1064,4 +1071,23 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
     public val itemSer: KSerializer<List<CoverageEligibilityRequest.Item>> =
       ListSerializer(Hoisted.itemSerInner)
   }
+}
+
+internal object CoverageEligibilityRequestPolymorphicSerializer :
+  KSerializer<CoverageEligibilityRequest> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("CoverageEligibilityRequest") {
+      CoverageEligibilityRequestSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: CoverageEligibilityRequest) {
+    encoder.encodeStructure(descriptor) {
+      CoverageEligibilityRequestSerializer.serializeJson(this, value)
+    }
+  }
+
+  override fun deserialize(decoder: Decoder): CoverageEligibilityRequest =
+    decoder.decodeStructure(descriptor) {
+      CoverageEligibilityRequestSerializer.deserializeJson(this)
+    }
 }

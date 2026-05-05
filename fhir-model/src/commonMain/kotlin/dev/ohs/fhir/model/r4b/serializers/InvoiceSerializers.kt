@@ -47,6 +47,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -392,73 +393,80 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Invoice") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("cancelledReason", KotlinString.serializer().descriptor, isOptional = true)
-      element("_cancelledReason", Element.serializer().descriptor, isOptional = true)
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subject", Reference.serializer().descriptor, isOptional = true)
-      element("recipient", Reference.serializer().descriptor, isOptional = true)
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element(
-        "participant",
-        listSerialDescriptor(lazyDescriptor { Invoice.Participant.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("issuer", Reference.serializer().descriptor, isOptional = true)
-      element("account", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "lineItem",
-        listSerialDescriptor(lazyDescriptor { Invoice.LineItem.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "totalPriceComponent",
-        listSerialDescriptor(
-          lazyDescriptor { Invoice.LineItem.PriceComponent.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element("totalNet", Money.serializer().descriptor, isOptional = true)
-      element("totalGross", Money.serializer().descriptor, isOptional = true)
-      element("paymentTerms", KotlinString.serializer().descriptor, isOptional = true)
-      element("_paymentTerms", Element.serializer().descriptor, isOptional = true)
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("cancelledReason", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_cancelledReason", Element.serializer().descriptor, isOptional = true)
+    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("subject", Reference.serializer().descriptor, isOptional = true)
+    b.element("recipient", Reference.serializer().descriptor, isOptional = true)
+    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "participant",
+      listSerialDescriptor(lazyDescriptor { Invoice.Participant.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("issuer", Reference.serializer().descriptor, isOptional = true)
+    b.element("account", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "lineItem",
+      listSerialDescriptor(lazyDescriptor { Invoice.LineItem.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "totalPriceComponent",
+      listSerialDescriptor(
+        lazyDescriptor { Invoice.LineItem.PriceComponent.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element("totalNet", Money.serializer().descriptor, isOptional = true)
+    b.element("totalGross", Money.serializer().descriptor, isOptional = true)
+    b.element("paymentTerms", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_paymentTerms", Element.serializer().descriptor, isOptional = true)
+    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): Invoice =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Invoice) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Invoice")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Invoice {
@@ -598,9 +606,8 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Invoice) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Invoice) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Invoice")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -708,4 +715,16 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
 
     public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
   }
+}
+
+internal object InvoicePolymorphicSerializer : KSerializer<Invoice> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Invoice") { InvoiceSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Invoice) {
+    encoder.encodeStructure(descriptor) { InvoiceSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Invoice =
+    decoder.decodeStructure(descriptor) { InvoiceSerializer.deserializeJson(this) }
 }

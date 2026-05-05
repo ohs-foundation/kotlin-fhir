@@ -38,6 +38,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -52,50 +53,57 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ResearchSubject") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("period", Period.serializer().descriptor, isOptional = true)
-      element("study", Reference.serializer().descriptor, isOptional = true)
-      element("individual", Reference.serializer().descriptor, isOptional = true)
-      element("assignedArm", KotlinString.serializer().descriptor, isOptional = true)
-      element("_assignedArm", Element.serializer().descriptor, isOptional = true)
-      element("actualArm", KotlinString.serializer().descriptor, isOptional = true)
-      element("_actualArm", Element.serializer().descriptor, isOptional = true)
-      element("consent", Reference.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("period", Period.serializer().descriptor, isOptional = true)
+    b.element("study", Reference.serializer().descriptor, isOptional = true)
+    b.element("individual", Reference.serializer().descriptor, isOptional = true)
+    b.element("assignedArm", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_assignedArm", Element.serializer().descriptor, isOptional = true)
+    b.element("actualArm", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_actualArm", Element.serializer().descriptor, isOptional = true)
+    b.element("consent", Reference.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): ResearchSubject =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: ResearchSubject) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "ResearchSubject")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): ResearchSubject {
@@ -190,9 +198,8 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: ResearchSubject) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: ResearchSubject) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "ResearchSubject")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -255,4 +262,18 @@ internal object ResearchSubjectSerializer : KSerializer<ResearchSubject> {
 
     public val studySer: KSerializer<Reference> = Reference.serializer()
   }
+}
+
+internal object ResearchSubjectPolymorphicSerializer : KSerializer<ResearchSubject> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("ResearchSubject") {
+      ResearchSubjectSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: ResearchSubject) {
+    encoder.encodeStructure(descriptor) { ResearchSubjectSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): ResearchSubject =
+    decoder.decodeStructure(descriptor) { ResearchSubjectSerializer.deserializeJson(this) }
 }

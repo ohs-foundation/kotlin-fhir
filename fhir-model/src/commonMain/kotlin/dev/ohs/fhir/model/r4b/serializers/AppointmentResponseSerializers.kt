@@ -40,6 +40,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -54,55 +55,62 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("AppointmentResponse") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("appointment", Reference.serializer().descriptor, isOptional = true)
-      element("start", KotlinString.serializer().descriptor, isOptional = true)
-      element("_start", Element.serializer().descriptor, isOptional = true)
-      element("end", KotlinString.serializer().descriptor, isOptional = true)
-      element("_end", Element.serializer().descriptor, isOptional = true)
-      element(
-        "participantType",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("actor", Reference.serializer().descriptor, isOptional = true)
-      element("participantStatus", KotlinString.serializer().descriptor, isOptional = true)
-      element("_participantStatus", Element.serializer().descriptor, isOptional = true)
-      element("comment", KotlinString.serializer().descriptor, isOptional = true)
-      element("_comment", Element.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("appointment", Reference.serializer().descriptor, isOptional = true)
+    b.element("start", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_start", Element.serializer().descriptor, isOptional = true)
+    b.element("end", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_end", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "participantType",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("actor", Reference.serializer().descriptor, isOptional = true)
+    b.element("participantStatus", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_participantStatus", Element.serializer().descriptor, isOptional = true)
+    b.element("comment", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_comment", Element.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): AppointmentResponse =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: AppointmentResponse) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "AppointmentResponse")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): AppointmentResponse {
@@ -209,9 +217,8 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: AppointmentResponse) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: AppointmentResponse) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "AppointmentResponse")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -290,4 +297,18 @@ internal object AppointmentResponseSerializer : KSerializer<AppointmentResponse>
     public val participantTypeSer: KSerializer<List<CodeableConcept>> =
       ListSerializer(Hoisted.participantTypeSerInner)
   }
+}
+
+internal object AppointmentResponsePolymorphicSerializer : KSerializer<AppointmentResponse> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("AppointmentResponse") {
+      AppointmentResponseSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: AppointmentResponse) {
+    encoder.encodeStructure(descriptor) { AppointmentResponseSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): AppointmentResponse =
+    decoder.decodeStructure(descriptor) { AppointmentResponseSerializer.deserializeJson(this) }
 }

@@ -42,6 +42,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -794,57 +795,62 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("SubstancePolymer") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("identifier", Identifier.serializer().descriptor, isOptional = true)
-      element("class", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("geometry", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "copolymerConnectivity",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("modification", KotlinString.serializer().descriptor, isOptional = true)
-      element("_modification", Element.serializer().descriptor, isOptional = true)
-      element(
-        "monomerSet",
-        listSerialDescriptor(
-          lazyDescriptor { SubstancePolymer.MonomerSet.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "repeat",
-        listSerialDescriptor(lazyDescriptor { SubstancePolymer.Repeat.serializer().descriptor }),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("identifier", Identifier.serializer().descriptor, isOptional = true)
+    b.element("class", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("geometry", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "copolymerConnectivity",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("modification", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_modification", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "monomerSet",
+      listSerialDescriptor(lazyDescriptor { SubstancePolymer.MonomerSet.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "repeat",
+      listSerialDescriptor(lazyDescriptor { SubstancePolymer.Repeat.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "SubstancePolymer")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): SubstancePolymer {
@@ -937,9 +943,8 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstancePolymer) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: SubstancePolymer) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "SubstancePolymer")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -1014,4 +1019,18 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
     public val repeatSer: KSerializer<List<SubstancePolymer.Repeat>> =
       ListSerializer(Hoisted.repeatSerInner)
   }
+}
+
+internal object SubstancePolymerPolymorphicSerializer : KSerializer<SubstancePolymer> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SubstancePolymer") {
+      SubstancePolymerSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: SubstancePolymer) {
+    encoder.encodeStructure(descriptor) { SubstancePolymerSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): SubstancePolymer =
+    decoder.decodeStructure(descriptor) { SubstancePolymerSerializer.deserializeJson(this) }
 }

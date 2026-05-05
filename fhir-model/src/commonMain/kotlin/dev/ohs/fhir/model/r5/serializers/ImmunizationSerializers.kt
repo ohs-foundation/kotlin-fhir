@@ -47,6 +47,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -456,107 +457,112 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Immunization") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("statusReason", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("vaccineCode", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("administeredProduct", CodeableReference.serializer().descriptor, isOptional = true)
-      element("manufacturer", CodeableReference.serializer().descriptor, isOptional = true)
-      element("lotNumber", KotlinString.serializer().descriptor, isOptional = true)
-      element("_lotNumber", Element.serializer().descriptor, isOptional = true)
-      element("expirationDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_expirationDate", Element.serializer().descriptor, isOptional = true)
-      element("patient", Reference.serializer().descriptor, isOptional = true)
-      element("encounter", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "supportingInformation",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("occurrenceDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
-      element("occurrenceString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_occurrenceString", Element.serializer().descriptor, isOptional = true)
-      element("primarySource", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_primarySource", Element.serializer().descriptor, isOptional = true)
-      element("informationSource", CodeableReference.serializer().descriptor, isOptional = true)
-      element("location", Reference.serializer().descriptor, isOptional = true)
-      element("site", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("route", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("doseQuantity", Quantity.serializer().descriptor, isOptional = true)
-      element(
-        "performer",
-        listSerialDescriptor(lazyDescriptor { Immunization.Performer.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-      element(
-        "reason",
-        listSerialDescriptor(CodeableReference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("isSubpotent", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_isSubpotent", Element.serializer().descriptor, isOptional = true)
-      element(
-        "subpotentReason",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "programEligibility",
-        listSerialDescriptor(
-          lazyDescriptor { Immunization.ProgramEligibility.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element("fundingSource", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "reaction",
-        listSerialDescriptor(lazyDescriptor { Immunization.Reaction.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "protocolApplied",
-        listSerialDescriptor(
-          lazyDescriptor { Immunization.ProtocolApplied.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("statusReason", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("vaccineCode", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("administeredProduct", CodeableReference.serializer().descriptor, isOptional = true)
+    b.element("manufacturer", CodeableReference.serializer().descriptor, isOptional = true)
+    b.element("lotNumber", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_lotNumber", Element.serializer().descriptor, isOptional = true)
+    b.element("expirationDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_expirationDate", Element.serializer().descriptor, isOptional = true)
+    b.element("patient", Reference.serializer().descriptor, isOptional = true)
+    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "supportingInformation",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("occurrenceDateTime", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
+    b.element("occurrenceString", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_occurrenceString", Element.serializer().descriptor, isOptional = true)
+    b.element("primarySource", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_primarySource", Element.serializer().descriptor, isOptional = true)
+    b.element("informationSource", CodeableReference.serializer().descriptor, isOptional = true)
+    b.element("location", Reference.serializer().descriptor, isOptional = true)
+    b.element("site", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("route", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("doseQuantity", Quantity.serializer().descriptor, isOptional = true)
+    b.element(
+      "performer",
+      listSerialDescriptor(lazyDescriptor { Immunization.Performer.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.element(
+      "reason",
+      listSerialDescriptor(CodeableReference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("isSubpotent", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_isSubpotent", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "subpotentReason",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "programEligibility",
+      listSerialDescriptor(
+        lazyDescriptor { Immunization.ProgramEligibility.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element("fundingSource", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "reaction",
+      listSerialDescriptor(lazyDescriptor { Immunization.Reaction.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "protocolApplied",
+      listSerialDescriptor(lazyDescriptor { Immunization.ProtocolApplied.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Immunization =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Immunization) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Immunization")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Immunization {
@@ -788,9 +794,8 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Immunization) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Immunization) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Immunization")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -980,4 +985,16 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
     public val protocolAppliedSer: KSerializer<List<Immunization.ProtocolApplied>> =
       ListSerializer(Hoisted.protocolAppliedSerInner)
   }
+}
+
+internal object ImmunizationPolymorphicSerializer : KSerializer<Immunization> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Immunization") { ImmunizationSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Immunization) {
+    encoder.encodeStructure(descriptor) { ImmunizationSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Immunization =
+    decoder.decodeStructure(descriptor) { ImmunizationSerializer.deserializeJson(this) }
 }

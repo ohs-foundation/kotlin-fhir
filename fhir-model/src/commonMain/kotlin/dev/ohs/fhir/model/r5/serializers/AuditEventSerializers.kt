@@ -53,6 +53,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -806,78 +807,85 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("AuditEvent") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "category",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("action", KotlinString.serializer().descriptor, isOptional = true)
-      element("_action", Element.serializer().descriptor, isOptional = true)
-      element("severity", KotlinString.serializer().descriptor, isOptional = true)
-      element("_severity", Element.serializer().descriptor, isOptional = true)
-      element("occurredPeriod", Period.serializer().descriptor, isOptional = true)
-      element("occurredDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_occurredDateTime", Element.serializer().descriptor, isOptional = true)
-      element("recorded", KotlinString.serializer().descriptor, isOptional = true)
-      element("_recorded", Element.serializer().descriptor, isOptional = true)
-      element(
-        "outcome",
-        lazyDescriptor { AuditEvent.Outcome.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "authorization",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("patient", Reference.serializer().descriptor, isOptional = true)
-      element("encounter", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "agent",
-        listSerialDescriptor(lazyDescriptor { AuditEvent.Agent.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "source",
-        lazyDescriptor { AuditEvent.Source.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "entity",
-        listSerialDescriptor(lazyDescriptor { AuditEvent.Entity.serializer().descriptor }),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "category",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("code", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("action", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_action", Element.serializer().descriptor, isOptional = true)
+    b.element("severity", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_severity", Element.serializer().descriptor, isOptional = true)
+    b.element("occurredPeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("occurredDateTime", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_occurredDateTime", Element.serializer().descriptor, isOptional = true)
+    b.element("recorded", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_recorded", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "outcome",
+      lazyDescriptor { AuditEvent.Outcome.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element(
+      "authorization",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("patient", Reference.serializer().descriptor, isOptional = true)
+    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "agent",
+      listSerialDescriptor(lazyDescriptor { AuditEvent.Agent.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "source",
+      lazyDescriptor { AuditEvent.Source.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element(
+      "entity",
+      listSerialDescriptor(lazyDescriptor { AuditEvent.Entity.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): AuditEvent =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: AuditEvent) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "AuditEvent")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): AuditEvent {
@@ -1012,9 +1020,8 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: AuditEvent) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: AuditEvent) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "AuditEvent")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -1119,4 +1126,16 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
     public val entitySer: KSerializer<List<AuditEvent.Entity>> =
       ListSerializer(Hoisted.entitySerInner)
   }
+}
+
+internal object AuditEventPolymorphicSerializer : KSerializer<AuditEvent> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("AuditEvent") { AuditEventSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: AuditEvent) {
+    encoder.encodeStructure(descriptor) { AuditEventSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): AuditEvent =
+    decoder.decodeStructure(descriptor) { AuditEventSerializer.deserializeJson(this) }
 }

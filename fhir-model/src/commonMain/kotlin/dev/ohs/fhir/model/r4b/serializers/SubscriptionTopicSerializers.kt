@@ -50,6 +50,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -781,118 +782,125 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("SubscriptionTopic") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("url", KotlinString.serializer().descriptor, isOptional = true)
-      element("_url", Element.serializer().descriptor, isOptional = true)
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("version", KotlinString.serializer().descriptor, isOptional = true)
-      element("_version", Element.serializer().descriptor, isOptional = true)
-      element("title", KotlinString.serializer().descriptor, isOptional = true)
-      element("_title", Element.serializer().descriptor, isOptional = true)
-      element(
-        "derivedFrom",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_derivedFrom",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("experimental", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_experimental", Element.serializer().descriptor, isOptional = true)
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("publisher", KotlinString.serializer().descriptor, isOptional = true)
-      element("_publisher", Element.serializer().descriptor, isOptional = true)
-      element(
-        "contact",
-        listSerialDescriptor(ContactDetail.serializer().descriptor),
-        isOptional = true,
-      )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element(
-        "useContext",
-        listSerialDescriptor(UsageContext.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "jurisdiction",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("purpose", KotlinString.serializer().descriptor, isOptional = true)
-      element("_purpose", Element.serializer().descriptor, isOptional = true)
-      element("copyright", KotlinString.serializer().descriptor, isOptional = true)
-      element("_copyright", Element.serializer().descriptor, isOptional = true)
-      element("approvalDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_approvalDate", Element.serializer().descriptor, isOptional = true)
-      element("lastReviewDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_lastReviewDate", Element.serializer().descriptor, isOptional = true)
-      element("effectivePeriod", Period.serializer().descriptor, isOptional = true)
-      element(
-        "resourceTrigger",
-        listSerialDescriptor(
-          lazyDescriptor { SubscriptionTopic.ResourceTrigger.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "eventTrigger",
-        listSerialDescriptor(
-          lazyDescriptor { SubscriptionTopic.EventTrigger.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "canFilterBy",
-        listSerialDescriptor(
-          lazyDescriptor { SubscriptionTopic.CanFilterBy.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "notificationShape",
-        listSerialDescriptor(
-          lazyDescriptor { SubscriptionTopic.NotificationShape.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("url", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_url", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("version", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_version", Element.serializer().descriptor, isOptional = true)
+    b.element("title", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_title", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "derivedFrom",
+      listSerialDescriptor(KotlinString.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "_derivedFrom",
+      listSerialDescriptor(Element.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("experimental", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_experimental", Element.serializer().descriptor, isOptional = true)
+    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element("publisher", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_publisher", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "contact",
+      listSerialDescriptor(ContactDetail.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_description", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "useContext",
+      listSerialDescriptor(UsageContext.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "jurisdiction",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("purpose", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_purpose", Element.serializer().descriptor, isOptional = true)
+    b.element("copyright", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_copyright", Element.serializer().descriptor, isOptional = true)
+    b.element("approvalDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_approvalDate", Element.serializer().descriptor, isOptional = true)
+    b.element("lastReviewDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_lastReviewDate", Element.serializer().descriptor, isOptional = true)
+    b.element("effectivePeriod", Period.serializer().descriptor, isOptional = true)
+    b.element(
+      "resourceTrigger",
+      listSerialDescriptor(
+        lazyDescriptor { SubscriptionTopic.ResourceTrigger.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "eventTrigger",
+      listSerialDescriptor(
+        lazyDescriptor { SubscriptionTopic.EventTrigger.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "canFilterBy",
+      listSerialDescriptor(
+        lazyDescriptor { SubscriptionTopic.CanFilterBy.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "notificationShape",
+      listSerialDescriptor(
+        lazyDescriptor { SubscriptionTopic.NotificationShape.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): SubscriptionTopic =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionTopic) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "SubscriptionTopic")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): SubscriptionTopic {
@@ -1091,9 +1099,8 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SubscriptionTopic) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: SubscriptionTopic) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "SubscriptionTopic")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -1266,4 +1273,18 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
     public val notificationShapeSer: KSerializer<List<SubscriptionTopic.NotificationShape>> =
       ListSerializer(Hoisted.notificationShapeSerInner)
   }
+}
+
+internal object SubscriptionTopicPolymorphicSerializer : KSerializer<SubscriptionTopic> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SubscriptionTopic") {
+      SubscriptionTopicSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: SubscriptionTopic) {
+    encoder.encodeStructure(descriptor) { SubscriptionTopicSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): SubscriptionTopic =
+    decoder.decodeStructure(descriptor) { SubscriptionTopicSerializer.deserializeJson(this) }
 }

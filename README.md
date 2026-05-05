@@ -252,11 +252,21 @@ that would otherwise be hit on FHIR fields with many possible types (e.g.,
 because each arm is an individual descriptor slot rather than a constructor parameter.
 
 Polymorphic `Resource` dispatch (choosing `Patient` vs `Observation` vs … based on the
-`resourceType` discriminator) is handled by `ResourcePolymorphicSerializer`. It peeks the
-discriminator via kotlinx's internal `StreamingJsonDecoder.lexer.peekLeadingMatchingValue` when
-the decoder supports it (the common case, no tree allocation) and falls back to
-`json.decodeFromJsonElement(ConcreteSerializer, tree)` when `resourceType` isn't the leading key
-or the decoder isn't streaming.
+`resourceType` discriminator) is handled by `ResourcePolymorphicSerializer`. Each concrete resource
+ships two serializers: the standalone `XSerializer` (descriptor includes `resourceType`, used when
+the static type is the concrete class) and `XPolymorphicSerializer` (descriptor omits
+`resourceType`, used as the dispatch target on the polymorphic path so kotlinx-json can inject the
+class discriminator without colliding):
+
+```mermaid
+graph LR
+    A["Patient instance"] -->|"static type Patient"| PS["PatientSerializer<br/>writes resourceType + fields"]
+    A -->|"static type Resource"| RPS["ResourcePolymorphicSerializer<br/>(AbstractPolymorphicSerializer)"]
+    RPS -->|"byClass[Patient::class]"| PPS["PatientPolymorphicSerializer<br/>writes fields only"]
+    RPS -.->|"kotlinx-json injects<br/>resourceType discriminator"| O
+    PS --> O["JSON output<br/>{ resourceType, ... }"]
+    PPS --> O
+```
 
 The following diagram illustrates the deserialization of a Patient JSON. The serialization process
 is simply the reverse.
@@ -292,7 +302,7 @@ graph LR
 
     subgraph Poly[ResourcePolymorphicSerializer]
       direction LR
-      A -- peek &quot;resourceType&quot; --> Dispatch{dispatch}
+      A -- read &quot;resourceType&quot; --> Dispatch{dispatch}
     end
     subgraph PS[PatientSerializer]
       direction TB
@@ -370,7 +380,9 @@ binary plugin generates, for each FHIR resource type:
 
 - the model class (the primary class) in the root package e.g. `dev.ohs.fhir.model.r4`, and
 - a hand-rolled streaming `KSerializer` per type (e.g. `PatientSerializer`, plus one per
-  BackboneElement) in the serializer package e.g. `dev.ohs.fhir.model.r4.serializers`,
+  BackboneElement) in the serializer package e.g. `dev.ohs.fhir.model.r4.serializers`. Resource
+  types additionally get a thin `XPolymorphicSerializer` (descriptor without `resourceType`) used
+  by `ResourcePolymorphicSerializer` for class-discriminator dispatch.
 
 using
 [`ModelFileSpecGenerator`](fhir-codegen/gradle-plugin/src/main/kotlin/dev/ohs/fhir/codegen/ModelFileSpecGenerator.kt)

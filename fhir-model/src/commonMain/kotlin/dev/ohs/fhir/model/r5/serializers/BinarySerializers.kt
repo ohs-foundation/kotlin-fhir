@@ -30,6 +30,7 @@ import kotlin.Suppress
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.CompositeDecoder
@@ -43,24 +44,31 @@ internal object BinarySerializer : KSerializer<Binary> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Binary") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("contentType", String.serializer().descriptor, isOptional = true)
-      element("_contentType", Element.serializer().descriptor, isOptional = true)
-      element("securityContext", Reference.serializer().descriptor, isOptional = true)
-      element("data", String.serializer().descriptor, isOptional = true)
-      element("_data", Element.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("contentType", String.serializer().descriptor, isOptional = true)
+    b.element("_contentType", Element.serializer().descriptor, isOptional = true)
+    b.element("securityContext", Reference.serializer().descriptor, isOptional = true)
+    b.element("data", String.serializer().descriptor, isOptional = true)
+    b.element("_data", Element.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): Binary =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Binary) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Binary")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Binary {
@@ -115,9 +123,8 @@ internal object BinarySerializer : KSerializer<Binary> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Binary) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Binary) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Binary")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -148,4 +155,16 @@ internal object BinarySerializer : KSerializer<Binary> {
 
     public val securityContextSer: KSerializer<Reference> = Reference.serializer()
   }
+}
+
+internal object BinaryPolymorphicSerializer : KSerializer<Binary> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Binary") { BinarySerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Binary) {
+    encoder.encodeStructure(descriptor) { BinarySerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Binary =
+    decoder.decodeStructure(descriptor) { BinarySerializer.deserializeJson(this) }
 }

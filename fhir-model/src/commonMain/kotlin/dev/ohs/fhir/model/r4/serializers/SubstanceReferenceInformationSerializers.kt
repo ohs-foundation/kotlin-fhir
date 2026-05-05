@@ -39,6 +39,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -531,65 +532,72 @@ internal object SubstanceReferenceInformationSerializer :
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("SubstanceReferenceInformation") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("comment", KotlinString.serializer().descriptor, isOptional = true)
-      element("_comment", Element.serializer().descriptor, isOptional = true)
-      element(
-        "gene",
-        listSerialDescriptor(
-          lazyDescriptor { SubstanceReferenceInformation.Gene.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "geneElement",
-        listSerialDescriptor(
-          lazyDescriptor { SubstanceReferenceInformation.GeneElement.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "classification",
-        listSerialDescriptor(
-          lazyDescriptor { SubstanceReferenceInformation.Classification.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "target",
-        listSerialDescriptor(
-          lazyDescriptor { SubstanceReferenceInformation.Target.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("comment", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_comment", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "gene",
+      listSerialDescriptor(
+        lazyDescriptor { SubstanceReferenceInformation.Gene.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "geneElement",
+      listSerialDescriptor(
+        lazyDescriptor { SubstanceReferenceInformation.GeneElement.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "classification",
+      listSerialDescriptor(
+        lazyDescriptor { SubstanceReferenceInformation.Classification.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "target",
+      listSerialDescriptor(
+        lazyDescriptor { SubstanceReferenceInformation.Target.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): SubstanceReferenceInformation =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "SubstanceReferenceInformation")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): SubstanceReferenceInformation {
@@ -670,9 +678,8 @@ internal object SubstanceReferenceInformationSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceReferenceInformation) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceReferenceInformation) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "SubstanceReferenceInformation")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -744,4 +751,23 @@ internal object SubstanceReferenceInformationSerializer :
     public val targetSer: KSerializer<List<SubstanceReferenceInformation.Target>> =
       ListSerializer(Hoisted.targetSerInner)
   }
+}
+
+internal object SubstanceReferenceInformationPolymorphicSerializer :
+  KSerializer<SubstanceReferenceInformation> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SubstanceReferenceInformation") {
+      SubstanceReferenceInformationSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: SubstanceReferenceInformation) {
+    encoder.encodeStructure(descriptor) {
+      SubstanceReferenceInformationSerializer.serializeJson(this, value)
+    }
+  }
+
+  override fun deserialize(decoder: Decoder): SubstanceReferenceInformation =
+    decoder.decodeStructure(descriptor) {
+      SubstanceReferenceInformationSerializer.deserializeJson(this)
+    }
 }

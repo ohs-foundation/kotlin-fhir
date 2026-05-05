@@ -48,6 +48,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -1498,118 +1499,123 @@ internal object SubstanceDefinitionSerializer : KSerializer<SubstanceDefinition>
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("SubstanceDefinition") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("version", KotlinString.serializer().descriptor, isOptional = true)
-      element("_version", Element.serializer().descriptor, isOptional = true)
-      element("status", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "classification",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("domain", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "grade",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element(
-        "informationSource",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-      element(
-        "manufacturer",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "supplier",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "moiety",
-        listSerialDescriptor(lazyDescriptor { SubstanceDefinition.Moiety.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "property",
-        listSerialDescriptor(
-          lazyDescriptor { SubstanceDefinition.Property.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "molecularWeight",
-        listSerialDescriptor(
-          lazyDescriptor { SubstanceDefinition.MolecularWeight.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "structure",
-        lazyDescriptor { SubstanceDefinition.Structure.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "code",
-        listSerialDescriptor(lazyDescriptor { SubstanceDefinition.Code.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "name",
-        listSerialDescriptor(lazyDescriptor { SubstanceDefinition.Name.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "relationship",
-        listSerialDescriptor(
-          lazyDescriptor { SubstanceDefinition.Relationship.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "sourceMaterial",
-        lazyDescriptor { SubstanceDefinition.SourceMaterial.serializer().descriptor },
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("version", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_version", Element.serializer().descriptor, isOptional = true)
+    b.element("status", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "classification",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("domain", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "grade",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_description", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "informationSource",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.element(
+      "manufacturer",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "supplier",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "moiety",
+      listSerialDescriptor(lazyDescriptor { SubstanceDefinition.Moiety.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "property",
+      listSerialDescriptor(lazyDescriptor { SubstanceDefinition.Property.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "molecularWeight",
+      listSerialDescriptor(
+        lazyDescriptor { SubstanceDefinition.MolecularWeight.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "structure",
+      lazyDescriptor { SubstanceDefinition.Structure.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element(
+      "code",
+      listSerialDescriptor(lazyDescriptor { SubstanceDefinition.Code.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "name",
+      listSerialDescriptor(lazyDescriptor { SubstanceDefinition.Name.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "relationship",
+      listSerialDescriptor(
+        lazyDescriptor { SubstanceDefinition.Relationship.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "sourceMaterial",
+      lazyDescriptor { SubstanceDefinition.SourceMaterial.serializer().descriptor },
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): SubstanceDefinition =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceDefinition) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "SubstanceDefinition")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): SubstanceDefinition {
@@ -1769,9 +1775,8 @@ internal object SubstanceDefinitionSerializer : KSerializer<SubstanceDefinition>
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceDefinition) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceDefinition) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "SubstanceDefinition")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -1925,4 +1930,18 @@ internal object SubstanceDefinitionSerializer : KSerializer<SubstanceDefinition>
     public val sourceMaterialSer: KSerializer<SubstanceDefinition.SourceMaterial> =
       SubstanceDefinition.SourceMaterial.serializer()
   }
+}
+
+internal object SubstanceDefinitionPolymorphicSerializer : KSerializer<SubstanceDefinition> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SubstanceDefinition") {
+      SubstanceDefinitionSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: SubstanceDefinition) {
+    encoder.encodeStructure(descriptor) { SubstanceDefinitionSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): SubstanceDefinition =
+    decoder.decodeStructure(descriptor) { SubstanceDefinitionSerializer.deserializeJson(this) }
 }

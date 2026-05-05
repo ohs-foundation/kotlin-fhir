@@ -48,6 +48,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -188,117 +189,124 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("DeviceRequest") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "instantiatesCanonical",
-        listSerialDescriptor(String.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_instantiatesCanonical",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "instantiatesUri",
-        listSerialDescriptor(String.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_instantiatesUri",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element(
-        "priorRequest",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("groupIdentifier", Identifier.serializer().descriptor, isOptional = true)
-      element("status", String.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("intent", String.serializer().descriptor, isOptional = true)
-      element("_intent", Element.serializer().descriptor, isOptional = true)
-      element("priority", String.serializer().descriptor, isOptional = true)
-      element("_priority", Element.serializer().descriptor, isOptional = true)
-      element("codeReference", Reference.serializer().descriptor, isOptional = true)
-      element("codeCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "parameter",
-        listSerialDescriptor(lazyDescriptor { DeviceRequest.Parameter.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("subject", Reference.serializer().descriptor, isOptional = true)
-      element("encounter", Reference.serializer().descriptor, isOptional = true)
-      element("occurrenceDateTime", String.serializer().descriptor, isOptional = true)
-      element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
-      element("occurrencePeriod", Period.serializer().descriptor, isOptional = true)
-      element("occurrenceTiming", Timing.serializer().descriptor, isOptional = true)
-      element("authoredOn", String.serializer().descriptor, isOptional = true)
-      element("_authoredOn", Element.serializer().descriptor, isOptional = true)
-      element("requester", Reference.serializer().descriptor, isOptional = true)
-      element("performerType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("performer", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "reasonCode",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "reasonReference",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "insurance",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "supportingInfo",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-      element(
-        "relevantHistory",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "instantiatesCanonical",
+      listSerialDescriptor(String.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "_instantiatesCanonical",
+      listSerialDescriptor(Element.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "instantiatesUri",
+      listSerialDescriptor(String.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "_instantiatesUri",
+      listSerialDescriptor(Element.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element(
+      "priorRequest",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("groupIdentifier", Identifier.serializer().descriptor, isOptional = true)
+    b.element("status", String.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("intent", String.serializer().descriptor, isOptional = true)
+    b.element("_intent", Element.serializer().descriptor, isOptional = true)
+    b.element("priority", String.serializer().descriptor, isOptional = true)
+    b.element("_priority", Element.serializer().descriptor, isOptional = true)
+    b.element("codeReference", Reference.serializer().descriptor, isOptional = true)
+    b.element("codeCodeableConcept", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "parameter",
+      listSerialDescriptor(lazyDescriptor { DeviceRequest.Parameter.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("subject", Reference.serializer().descriptor, isOptional = true)
+    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
+    b.element("occurrenceDateTime", String.serializer().descriptor, isOptional = true)
+    b.element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
+    b.element("occurrencePeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("occurrenceTiming", Timing.serializer().descriptor, isOptional = true)
+    b.element("authoredOn", String.serializer().descriptor, isOptional = true)
+    b.element("_authoredOn", Element.serializer().descriptor, isOptional = true)
+    b.element("requester", Reference.serializer().descriptor, isOptional = true)
+    b.element("performerType", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("performer", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "reasonCode",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "reasonReference",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "insurance",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "supportingInfo",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.element(
+      "relevantHistory",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): DeviceRequest =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceRequest) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "DeviceRequest")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): DeviceRequest {
@@ -547,9 +555,8 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceRequest) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: DeviceRequest) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "DeviceRequest")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -711,4 +718,16 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
 
     public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
   }
+}
+
+internal object DeviceRequestPolymorphicSerializer : KSerializer<DeviceRequest> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("DeviceRequest") { DeviceRequestSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: DeviceRequest) {
+    encoder.encodeStructure(descriptor) { DeviceRequestSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): DeviceRequest =
+    decoder.decodeStructure(descriptor) { DeviceRequestSerializer.deserializeJson(this) }
 }

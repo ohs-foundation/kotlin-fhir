@@ -42,6 +42,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -424,60 +425,67 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("MessageHeader") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("eventCoding", Coding.serializer().descriptor, isOptional = true)
-      element("eventCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_eventCanonical", Element.serializer().descriptor, isOptional = true)
-      element(
-        "destination",
-        listSerialDescriptor(lazyDescriptor { MessageHeader.Destination.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("sender", Reference.serializer().descriptor, isOptional = true)
-      element("author", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "source",
-        lazyDescriptor { MessageHeader.Source.serializer().descriptor },
-        isOptional = true,
-      )
-      element("responsible", Reference.serializer().descriptor, isOptional = true)
-      element("reason", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "response",
-        lazyDescriptor { MessageHeader.Response.serializer().descriptor },
-        isOptional = true,
-      )
-      element("focus", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("definition", KotlinString.serializer().descriptor, isOptional = true)
-      element("_definition", Element.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("eventCoding", Coding.serializer().descriptor, isOptional = true)
+    b.element("eventCanonical", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_eventCanonical", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "destination",
+      listSerialDescriptor(lazyDescriptor { MessageHeader.Destination.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("sender", Reference.serializer().descriptor, isOptional = true)
+    b.element("author", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "source",
+      lazyDescriptor { MessageHeader.Source.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element("responsible", Reference.serializer().descriptor, isOptional = true)
+    b.element("reason", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "response",
+      lazyDescriptor { MessageHeader.Response.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element("focus", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("definition", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_definition", Element.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): MessageHeader =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: MessageHeader) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "MessageHeader")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): MessageHeader {
@@ -584,9 +592,8 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: MessageHeader) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: MessageHeader) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "MessageHeader")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -669,4 +676,16 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
 
     public val focusSer: KSerializer<List<Reference>> = ListSerializer(Hoisted.senderSer)
   }
+}
+
+internal object MessageHeaderPolymorphicSerializer : KSerializer<MessageHeader> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("MessageHeader") { MessageHeaderSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: MessageHeader) {
+    encoder.encodeStructure(descriptor) { MessageHeaderSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): MessageHeader =
+    decoder.decodeStructure(descriptor) { MessageHeaderSerializer.deserializeJson(this) }
 }

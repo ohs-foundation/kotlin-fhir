@@ -41,6 +41,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -55,90 +56,97 @@ internal object PractitionerRoleSerializer : KSerializer<PractitionerRole> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("PractitionerRole") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("active", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_active", Element.serializer().descriptor, isOptional = true)
-      element("period", Period.serializer().descriptor, isOptional = true)
-      element("practitioner", Reference.serializer().descriptor, isOptional = true)
-      element("organization", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "code",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "specialty",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "location",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "healthcareService",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "contact",
-        listSerialDescriptor(ExtendedContactDetail.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "characteristic",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "communication",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "availability",
-        listSerialDescriptor(Availability.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "endpoint",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("active", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_active", Element.serializer().descriptor, isOptional = true)
+    b.element("period", Period.serializer().descriptor, isOptional = true)
+    b.element("practitioner", Reference.serializer().descriptor, isOptional = true)
+    b.element("organization", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "code",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "specialty",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "location",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "healthcareService",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "contact",
+      listSerialDescriptor(ExtendedContactDetail.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "characteristic",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "communication",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "availability",
+      listSerialDescriptor(Availability.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "endpoint",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): PractitionerRole =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: PractitionerRole) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "PractitionerRole")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): PractitionerRole {
@@ -259,9 +267,8 @@ internal object PractitionerRoleSerializer : KSerializer<PractitionerRole> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: PractitionerRole) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: PractitionerRole) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "PractitionerRole")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -354,4 +361,18 @@ internal object PractitionerRoleSerializer : KSerializer<PractitionerRole> {
     public val availabilitySer: KSerializer<List<Availability>> =
       ListSerializer(Hoisted.availabilitySerInner)
   }
+}
+
+internal object PractitionerRolePolymorphicSerializer : KSerializer<PractitionerRole> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("PractitionerRole") {
+      PractitionerRoleSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: PractitionerRole) {
+    encoder.encodeStructure(descriptor) { PractitionerRoleSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): PractitionerRole =
+    decoder.decodeStructure(descriptor) { PractitionerRoleSerializer.deserializeJson(this) }
 }

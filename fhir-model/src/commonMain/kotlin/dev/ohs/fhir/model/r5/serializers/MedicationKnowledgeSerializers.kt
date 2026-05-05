@@ -53,6 +53,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -2179,134 +2180,141 @@ internal object MedicationKnowledgeSerializer : KSerializer<MedicationKnowledge>
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("MedicationKnowledge") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("author", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "intendedJurisdiction",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("name", listSerialDescriptor(KotlinString.serializer().descriptor), isOptional = true)
-      element("_name", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element(
-        "relatedMedicationKnowledge",
-        listSerialDescriptor(
-          lazyDescriptor { MedicationKnowledge.RelatedMedicationKnowledge.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "associatedMedication",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "productType",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "monograph",
-        listSerialDescriptor(
-          lazyDescriptor { MedicationKnowledge.Monograph.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element("preparationInstruction", KotlinString.serializer().descriptor, isOptional = true)
-      element("_preparationInstruction", Element.serializer().descriptor, isOptional = true)
-      element(
-        "cost",
-        listSerialDescriptor(lazyDescriptor { MedicationKnowledge.Cost.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "monitoringProgram",
-        listSerialDescriptor(
-          lazyDescriptor { MedicationKnowledge.MonitoringProgram.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "indicationGuideline",
-        listSerialDescriptor(
-          lazyDescriptor { MedicationKnowledge.IndicationGuideline.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "medicineClassification",
-        listSerialDescriptor(
-          lazyDescriptor { MedicationKnowledge.MedicineClassification.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "packaging",
-        listSerialDescriptor(
-          lazyDescriptor { MedicationKnowledge.Packaging.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "clinicalUseIssue",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "storageGuideline",
-        listSerialDescriptor(
-          lazyDescriptor { MedicationKnowledge.StorageGuideline.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "regulatory",
-        listSerialDescriptor(
-          lazyDescriptor { MedicationKnowledge.Regulatory.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "definitional",
-        lazyDescriptor { MedicationKnowledge.Definitional.serializer().descriptor },
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("code", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("author", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "intendedJurisdiction",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("name", listSerialDescriptor(KotlinString.serializer().descriptor), isOptional = true)
+    b.element("_name", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    b.element(
+      "relatedMedicationKnowledge",
+      listSerialDescriptor(
+        lazyDescriptor { MedicationKnowledge.RelatedMedicationKnowledge.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "associatedMedication",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "productType",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "monograph",
+      listSerialDescriptor(
+        lazyDescriptor { MedicationKnowledge.Monograph.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element("preparationInstruction", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_preparationInstruction", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "cost",
+      listSerialDescriptor(lazyDescriptor { MedicationKnowledge.Cost.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "monitoringProgram",
+      listSerialDescriptor(
+        lazyDescriptor { MedicationKnowledge.MonitoringProgram.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "indicationGuideline",
+      listSerialDescriptor(
+        lazyDescriptor { MedicationKnowledge.IndicationGuideline.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "medicineClassification",
+      listSerialDescriptor(
+        lazyDescriptor { MedicationKnowledge.MedicineClassification.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "packaging",
+      listSerialDescriptor(
+        lazyDescriptor { MedicationKnowledge.Packaging.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "clinicalUseIssue",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "storageGuideline",
+      listSerialDescriptor(
+        lazyDescriptor { MedicationKnowledge.StorageGuideline.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "regulatory",
+      listSerialDescriptor(
+        lazyDescriptor { MedicationKnowledge.Regulatory.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "definitional",
+      lazyDescriptor { MedicationKnowledge.Definitional.serializer().descriptor },
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): MedicationKnowledge =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: MedicationKnowledge) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "MedicationKnowledge")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): MedicationKnowledge {
@@ -2506,9 +2514,8 @@ internal object MedicationKnowledgeSerializer : KSerializer<MedicationKnowledge>
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: MedicationKnowledge) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: MedicationKnowledge) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "MedicationKnowledge")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -2720,4 +2727,18 @@ internal object MedicationKnowledgeSerializer : KSerializer<MedicationKnowledge>
     public val definitionalSer: KSerializer<MedicationKnowledge.Definitional> =
       MedicationKnowledge.Definitional.serializer()
   }
+}
+
+internal object MedicationKnowledgePolymorphicSerializer : KSerializer<MedicationKnowledge> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("MedicationKnowledge") {
+      MedicationKnowledgeSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: MedicationKnowledge) {
+    encoder.encodeStructure(descriptor) { MedicationKnowledgeSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): MedicationKnowledge =
+    decoder.decodeStructure(descriptor) { MedicationKnowledgeSerializer.deserializeJson(this) }
 }

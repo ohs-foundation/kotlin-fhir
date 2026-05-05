@@ -44,6 +44,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -581,107 +582,114 @@ internal object DeviceSerializer : KSerializer<Device> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Device") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("definition", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "udiCarrier",
-        listSerialDescriptor(lazyDescriptor { Device.UdiCarrier.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element(
-        "statusReason",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("distinctIdentifier", KotlinString.serializer().descriptor, isOptional = true)
-      element("_distinctIdentifier", Element.serializer().descriptor, isOptional = true)
-      element("manufacturer", KotlinString.serializer().descriptor, isOptional = true)
-      element("_manufacturer", Element.serializer().descriptor, isOptional = true)
-      element("manufactureDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_manufactureDate", Element.serializer().descriptor, isOptional = true)
-      element("expirationDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_expirationDate", Element.serializer().descriptor, isOptional = true)
-      element("lotNumber", KotlinString.serializer().descriptor, isOptional = true)
-      element("_lotNumber", Element.serializer().descriptor, isOptional = true)
-      element("serialNumber", KotlinString.serializer().descriptor, isOptional = true)
-      element("_serialNumber", Element.serializer().descriptor, isOptional = true)
-      element(
-        "deviceName",
-        listSerialDescriptor(lazyDescriptor { Device.DeviceName.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("modelNumber", KotlinString.serializer().descriptor, isOptional = true)
-      element("_modelNumber", Element.serializer().descriptor, isOptional = true)
-      element("partNumber", KotlinString.serializer().descriptor, isOptional = true)
-      element("_partNumber", Element.serializer().descriptor, isOptional = true)
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "specialization",
-        listSerialDescriptor(lazyDescriptor { Device.Specialization.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "version",
-        listSerialDescriptor(lazyDescriptor { Device.Version.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "property",
-        listSerialDescriptor(lazyDescriptor { Device.Property.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("patient", Reference.serializer().descriptor, isOptional = true)
-      element("owner", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "contact",
-        listSerialDescriptor(ContactPoint.serializer().descriptor),
-        isOptional = true,
-      )
-      element("location", Reference.serializer().descriptor, isOptional = true)
-      element("url", KotlinString.serializer().descriptor, isOptional = true)
-      element("_url", Element.serializer().descriptor, isOptional = true)
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-      element(
-        "safety",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("parent", Reference.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("definition", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "udiCarrier",
+      listSerialDescriptor(lazyDescriptor { Device.UdiCarrier.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "statusReason",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("distinctIdentifier", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_distinctIdentifier", Element.serializer().descriptor, isOptional = true)
+    b.element("manufacturer", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_manufacturer", Element.serializer().descriptor, isOptional = true)
+    b.element("manufactureDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_manufactureDate", Element.serializer().descriptor, isOptional = true)
+    b.element("expirationDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_expirationDate", Element.serializer().descriptor, isOptional = true)
+    b.element("lotNumber", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_lotNumber", Element.serializer().descriptor, isOptional = true)
+    b.element("serialNumber", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_serialNumber", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "deviceName",
+      listSerialDescriptor(lazyDescriptor { Device.DeviceName.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("modelNumber", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_modelNumber", Element.serializer().descriptor, isOptional = true)
+    b.element("partNumber", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_partNumber", Element.serializer().descriptor, isOptional = true)
+    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "specialization",
+      listSerialDescriptor(lazyDescriptor { Device.Specialization.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "version",
+      listSerialDescriptor(lazyDescriptor { Device.Version.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "property",
+      listSerialDescriptor(lazyDescriptor { Device.Property.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("patient", Reference.serializer().descriptor, isOptional = true)
+    b.element("owner", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "contact",
+      listSerialDescriptor(ContactPoint.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("location", Reference.serializer().descriptor, isOptional = true)
+    b.element("url", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_url", Element.serializer().descriptor, isOptional = true)
+    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.element(
+      "safety",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("parent", Reference.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): Device =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Device) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Device")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Device {
@@ -885,9 +893,8 @@ internal object DeviceSerializer : KSerializer<Device> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Device) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Device) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Device")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -1045,4 +1052,16 @@ internal object DeviceSerializer : KSerializer<Device> {
 
     public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
   }
+}
+
+internal object DevicePolymorphicSerializer : KSerializer<Device> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Device") { DeviceSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Device) {
+    encoder.encodeStructure(descriptor) { DeviceSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Device =
+    decoder.decodeStructure(descriptor) { DeviceSerializer.deserializeJson(this) }
 }

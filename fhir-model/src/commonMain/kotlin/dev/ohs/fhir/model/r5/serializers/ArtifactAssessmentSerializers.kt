@@ -49,6 +49,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -276,67 +277,74 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("ArtifactAssessment") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("title", KotlinString.serializer().descriptor, isOptional = true)
-      element("_title", Element.serializer().descriptor, isOptional = true)
-      element("citeAsReference", Reference.serializer().descriptor, isOptional = true)
-      element("citeAsMarkdown", KotlinString.serializer().descriptor, isOptional = true)
-      element("_citeAsMarkdown", Element.serializer().descriptor, isOptional = true)
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("copyright", KotlinString.serializer().descriptor, isOptional = true)
-      element("_copyright", Element.serializer().descriptor, isOptional = true)
-      element("approvalDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_approvalDate", Element.serializer().descriptor, isOptional = true)
-      element("lastReviewDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_lastReviewDate", Element.serializer().descriptor, isOptional = true)
-      element("artifactReference", Reference.serializer().descriptor, isOptional = true)
-      element("artifactCanonical", KotlinString.serializer().descriptor, isOptional = true)
-      element("_artifactCanonical", Element.serializer().descriptor, isOptional = true)
-      element("artifactUri", KotlinString.serializer().descriptor, isOptional = true)
-      element("_artifactUri", Element.serializer().descriptor, isOptional = true)
-      element(
-        "content",
-        listSerialDescriptor(lazyDescriptor { ArtifactAssessment.Content.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("workflowStatus", KotlinString.serializer().descriptor, isOptional = true)
-      element("_workflowStatus", Element.serializer().descriptor, isOptional = true)
-      element("disposition", KotlinString.serializer().descriptor, isOptional = true)
-      element("_disposition", Element.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("title", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_title", Element.serializer().descriptor, isOptional = true)
+    b.element("citeAsReference", Reference.serializer().descriptor, isOptional = true)
+    b.element("citeAsMarkdown", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_citeAsMarkdown", Element.serializer().descriptor, isOptional = true)
+    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element("copyright", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_copyright", Element.serializer().descriptor, isOptional = true)
+    b.element("approvalDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_approvalDate", Element.serializer().descriptor, isOptional = true)
+    b.element("lastReviewDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_lastReviewDate", Element.serializer().descriptor, isOptional = true)
+    b.element("artifactReference", Reference.serializer().descriptor, isOptional = true)
+    b.element("artifactCanonical", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_artifactCanonical", Element.serializer().descriptor, isOptional = true)
+    b.element("artifactUri", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_artifactUri", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "content",
+      listSerialDescriptor(lazyDescriptor { ArtifactAssessment.Content.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("workflowStatus", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_workflowStatus", Element.serializer().descriptor, isOptional = true)
+    b.element("disposition", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_disposition", Element.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): ArtifactAssessment =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: ArtifactAssessment) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "ArtifactAssessment")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): ArtifactAssessment {
@@ -497,9 +505,8 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: ArtifactAssessment) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: ArtifactAssessment) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "ArtifactAssessment")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -610,4 +617,18 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
     public val contentSer: KSerializer<List<ArtifactAssessment.Content>> =
       ListSerializer(Hoisted.contentSerInner)
   }
+}
+
+internal object ArtifactAssessmentPolymorphicSerializer : KSerializer<ArtifactAssessment> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("ArtifactAssessment") {
+      ArtifactAssessmentSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: ArtifactAssessment) {
+    encoder.encodeStructure(descriptor) { ArtifactAssessmentSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): ArtifactAssessment =
+    decoder.decodeStructure(descriptor) { ArtifactAssessmentSerializer.deserializeJson(this) }
 }

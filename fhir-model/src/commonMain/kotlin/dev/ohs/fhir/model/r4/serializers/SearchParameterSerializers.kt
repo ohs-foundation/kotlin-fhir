@@ -48,6 +48,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -155,119 +156,126 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("SearchParameter") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("url", KotlinString.serializer().descriptor, isOptional = true)
-      element("_url", Element.serializer().descriptor, isOptional = true)
-      element("version", KotlinString.serializer().descriptor, isOptional = true)
-      element("_version", Element.serializer().descriptor, isOptional = true)
-      element("name", KotlinString.serializer().descriptor, isOptional = true)
-      element("_name", Element.serializer().descriptor, isOptional = true)
-      element("derivedFrom", KotlinString.serializer().descriptor, isOptional = true)
-      element("_derivedFrom", Element.serializer().descriptor, isOptional = true)
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("experimental", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_experimental", Element.serializer().descriptor, isOptional = true)
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("publisher", KotlinString.serializer().descriptor, isOptional = true)
-      element("_publisher", Element.serializer().descriptor, isOptional = true)
-      element(
-        "contact",
-        listSerialDescriptor(ContactDetail.serializer().descriptor),
-        isOptional = true,
-      )
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element(
-        "useContext",
-        listSerialDescriptor(UsageContext.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "jurisdiction",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("purpose", KotlinString.serializer().descriptor, isOptional = true)
-      element("_purpose", Element.serializer().descriptor, isOptional = true)
-      element("code", KotlinString.serializer().descriptor, isOptional = true)
-      element("_code", Element.serializer().descriptor, isOptional = true)
-      element("base", listSerialDescriptor(KotlinString.serializer().descriptor), isOptional = true)
-      element("_base", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element("type", KotlinString.serializer().descriptor, isOptional = true)
-      element("_type", Element.serializer().descriptor, isOptional = true)
-      element("expression", KotlinString.serializer().descriptor, isOptional = true)
-      element("_expression", Element.serializer().descriptor, isOptional = true)
-      element("xpath", KotlinString.serializer().descriptor, isOptional = true)
-      element("_xpath", Element.serializer().descriptor, isOptional = true)
-      element("xpathUsage", KotlinString.serializer().descriptor, isOptional = true)
-      element("_xpathUsage", Element.serializer().descriptor, isOptional = true)
-      element(
-        "target",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element("_target", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element("multipleOr", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_multipleOr", Element.serializer().descriptor, isOptional = true)
-      element("multipleAnd", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_multipleAnd", Element.serializer().descriptor, isOptional = true)
-      element(
-        "comparator",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_comparator",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifier",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element("_modifier", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element(
-        "chain",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element("_chain", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element(
-        "component",
-        listSerialDescriptor(lazyDescriptor { SearchParameter.Component.serializer().descriptor }),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("url", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_url", Element.serializer().descriptor, isOptional = true)
+    b.element("version", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_version", Element.serializer().descriptor, isOptional = true)
+    b.element("name", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_name", Element.serializer().descriptor, isOptional = true)
+    b.element("derivedFrom", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_derivedFrom", Element.serializer().descriptor, isOptional = true)
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("experimental", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_experimental", Element.serializer().descriptor, isOptional = true)
+    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element("publisher", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_publisher", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "contact",
+      listSerialDescriptor(ContactDetail.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_description", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "useContext",
+      listSerialDescriptor(UsageContext.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "jurisdiction",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("purpose", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_purpose", Element.serializer().descriptor, isOptional = true)
+    b.element("code", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_code", Element.serializer().descriptor, isOptional = true)
+    b.element("base", listSerialDescriptor(KotlinString.serializer().descriptor), isOptional = true)
+    b.element("_base", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    b.element("type", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_type", Element.serializer().descriptor, isOptional = true)
+    b.element("expression", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_expression", Element.serializer().descriptor, isOptional = true)
+    b.element("xpath", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_xpath", Element.serializer().descriptor, isOptional = true)
+    b.element("xpathUsage", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_xpathUsage", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "target",
+      listSerialDescriptor(KotlinString.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("_target", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    b.element("multipleOr", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_multipleOr", Element.serializer().descriptor, isOptional = true)
+    b.element("multipleAnd", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_multipleAnd", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "comparator",
+      listSerialDescriptor(KotlinString.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "_comparator",
+      listSerialDescriptor(Element.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifier",
+      listSerialDescriptor(KotlinString.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("_modifier", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    b.element(
+      "chain",
+      listSerialDescriptor(KotlinString.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("_chain", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    b.element(
+      "component",
+      listSerialDescriptor(lazyDescriptor { SearchParameter.Component.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): SearchParameter =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: SearchParameter) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "SearchParameter")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): SearchParameter {
@@ -514,9 +522,8 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SearchParameter) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: SearchParameter) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "SearchParameter")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -687,4 +694,18 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
     public val componentSer: KSerializer<List<SearchParameter.Component>> =
       ListSerializer(Hoisted.componentSerInner)
   }
+}
+
+internal object SearchParameterPolymorphicSerializer : KSerializer<SearchParameter> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SearchParameter") {
+      SearchParameterSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: SearchParameter) {
+    encoder.encodeStructure(descriptor) { SearchParameterSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): SearchParameter =
+    decoder.decodeStructure(descriptor) { SearchParameterSerializer.deserializeJson(this) }
 }

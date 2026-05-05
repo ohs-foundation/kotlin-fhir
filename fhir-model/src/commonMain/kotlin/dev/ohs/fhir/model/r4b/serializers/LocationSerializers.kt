@@ -48,6 +48,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -333,86 +334,93 @@ internal object LocationSerializer : KSerializer<Location> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Location") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("operationalStatus", Coding.serializer().descriptor, isOptional = true)
-      element("name", KotlinString.serializer().descriptor, isOptional = true)
-      element("_name", Element.serializer().descriptor, isOptional = true)
-      element(
-        "alias",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element("_alias", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element("description", KotlinString.serializer().descriptor, isOptional = true)
-      element("_description", Element.serializer().descriptor, isOptional = true)
-      element("mode", KotlinString.serializer().descriptor, isOptional = true)
-      element("_mode", Element.serializer().descriptor, isOptional = true)
-      element(
-        "type",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "telecom",
-        listSerialDescriptor(ContactPoint.serializer().descriptor),
-        isOptional = true,
-      )
-      element("address", Address.serializer().descriptor, isOptional = true)
-      element("physicalType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "position",
-        lazyDescriptor { Location.Position.serializer().descriptor },
-        isOptional = true,
-      )
-      element("managingOrganization", Reference.serializer().descriptor, isOptional = true)
-      element("partOf", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "hoursOfOperation",
-        listSerialDescriptor(lazyDescriptor { Location.HoursOfOperation.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("availabilityExceptions", KotlinString.serializer().descriptor, isOptional = true)
-      element("_availabilityExceptions", Element.serializer().descriptor, isOptional = true)
-      element(
-        "endpoint",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("operationalStatus", Coding.serializer().descriptor, isOptional = true)
+    b.element("name", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_name", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "alias",
+      listSerialDescriptor(KotlinString.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("_alias", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_description", Element.serializer().descriptor, isOptional = true)
+    b.element("mode", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_mode", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "type",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "telecom",
+      listSerialDescriptor(ContactPoint.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("address", Address.serializer().descriptor, isOptional = true)
+    b.element("physicalType", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "position",
+      lazyDescriptor { Location.Position.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element("managingOrganization", Reference.serializer().descriptor, isOptional = true)
+    b.element("partOf", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "hoursOfOperation",
+      listSerialDescriptor(lazyDescriptor { Location.HoursOfOperation.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("availabilityExceptions", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_availabilityExceptions", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "endpoint",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Location =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Location) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Location")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Location {
@@ -576,9 +584,8 @@ internal object LocationSerializer : KSerializer<Location> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Location) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Location) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Location")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -707,4 +714,16 @@ internal object LocationSerializer : KSerializer<Location> {
     public val endpointSer: KSerializer<List<Reference>> =
       ListSerializer(Hoisted.managingOrganizationSer)
   }
+}
+
+internal object LocationPolymorphicSerializer : KSerializer<Location> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Location") { LocationSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Location) {
+    encoder.encodeStructure(descriptor) { LocationSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Location =
+    decoder.decodeStructure(descriptor) { LocationSerializer.deserializeJson(this) }
 }

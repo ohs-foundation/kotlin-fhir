@@ -40,6 +40,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -260,83 +261,90 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("AdverseEvent") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("identifier", Identifier.serializer().descriptor, isOptional = true)
-      element("actuality", KotlinString.serializer().descriptor, isOptional = true)
-      element("_actuality", Element.serializer().descriptor, isOptional = true)
-      element(
-        "category",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("event", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subject", Reference.serializer().descriptor, isOptional = true)
-      element("encounter", Reference.serializer().descriptor, isOptional = true)
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("detected", KotlinString.serializer().descriptor, isOptional = true)
-      element("_detected", Element.serializer().descriptor, isOptional = true)
-      element("recordedDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_recordedDate", Element.serializer().descriptor, isOptional = true)
-      element(
-        "resultingCondition",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("location", Reference.serializer().descriptor, isOptional = true)
-      element("seriousness", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("severity", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("outcome", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("recorder", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "contributor",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "suspectEntity",
-        listSerialDescriptor(lazyDescriptor { AdverseEvent.SuspectEntity.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "subjectMedicalHistory",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "referenceDocument",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("study", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("identifier", Identifier.serializer().descriptor, isOptional = true)
+    b.element("actuality", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_actuality", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "category",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("event", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("subject", Reference.serializer().descriptor, isOptional = true)
+    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
+    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element("detected", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_detected", Element.serializer().descriptor, isOptional = true)
+    b.element("recordedDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_recordedDate", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "resultingCondition",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("location", Reference.serializer().descriptor, isOptional = true)
+    b.element("seriousness", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("severity", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("outcome", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("recorder", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "contributor",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "suspectEntity",
+      listSerialDescriptor(lazyDescriptor { AdverseEvent.SuspectEntity.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "subjectMedicalHistory",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "referenceDocument",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("study", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): AdverseEvent =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: AdverseEvent) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "AdverseEvent")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): AdverseEvent {
@@ -521,9 +529,8 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: AdverseEvent) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: AdverseEvent) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "AdverseEvent")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -646,4 +653,16 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
     public val suspectEntitySer: KSerializer<List<AdverseEvent.SuspectEntity>> =
       ListSerializer(Hoisted.suspectEntitySerInner)
   }
+}
+
+internal object AdverseEventPolymorphicSerializer : KSerializer<AdverseEvent> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("AdverseEvent") { AdverseEventSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: AdverseEvent) {
+    encoder.encodeStructure(descriptor) { AdverseEventSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): AdverseEvent =
+    decoder.decodeStructure(descriptor) { AdverseEventSerializer.deserializeJson(this) }
 }

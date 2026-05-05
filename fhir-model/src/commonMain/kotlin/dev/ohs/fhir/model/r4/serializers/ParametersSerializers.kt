@@ -85,6 +85,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -188,7 +189,7 @@ internal object ParametersParameterSerializer : KSerializer<Parameters.Parameter
       element("valueUsageContext", UsageContext.serializer().descriptor, isOptional = true)
       element("valueDosage", Dosage.serializer().descriptor, isOptional = true)
       element("valueMeta", Meta.serializer().descriptor, isOptional = true)
-      element("resource", Resource.serializer().descriptor, isOptional = true)
+      element("resource", lazyDescriptor { Resource.serializer().descriptor }, isOptional = true)
       element(
         "part",
         listSerialDescriptor(lazyDescriptor { Parameters.Parameter.serializer().descriptor }),
@@ -888,24 +889,31 @@ internal object ParametersSerializer : KSerializer<Parameters> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Parameters") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element(
-        "parameter",
-        listSerialDescriptor(lazyDescriptor { Parameters.Parameter.serializer().descriptor }),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "parameter",
+      listSerialDescriptor(lazyDescriptor { Parameters.Parameter.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Parameters =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Parameters) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Parameters")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Parameters {
@@ -946,9 +954,8 @@ internal object ParametersSerializer : KSerializer<Parameters> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Parameters) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Parameters) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Parameters")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -974,4 +981,16 @@ internal object ParametersSerializer : KSerializer<Parameters> {
     public val parameterSer: KSerializer<List<Parameters.Parameter>> =
       ListSerializer(Hoisted.parameterSerInner)
   }
+}
+
+internal object ParametersPolymorphicSerializer : KSerializer<Parameters> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Parameters") { ParametersSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Parameters) {
+    encoder.encodeStructure(descriptor) { ParametersSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Parameters =
+    decoder.decodeStructure(descriptor) { ParametersSerializer.deserializeJson(this) }
 }

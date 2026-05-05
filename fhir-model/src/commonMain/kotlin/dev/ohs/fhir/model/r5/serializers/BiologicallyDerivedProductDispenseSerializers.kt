@@ -42,6 +42,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -143,65 +144,72 @@ internal object BiologicallyDerivedProductDispenseSerializer :
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("BiologicallyDerivedProductDispense") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("partOf", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("originRelationshipType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("product", Reference.serializer().descriptor, isOptional = true)
-      element("patient", Reference.serializer().descriptor, isOptional = true)
-      element("matchStatus", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "performer",
-        listSerialDescriptor(
-          lazyDescriptor { BiologicallyDerivedProductDispense.Performer.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element("location", Reference.serializer().descriptor, isOptional = true)
-      element("quantity", Quantity.serializer().descriptor, isOptional = true)
-      element("preparedDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_preparedDate", Element.serializer().descriptor, isOptional = true)
-      element("whenHandedOver", KotlinString.serializer().descriptor, isOptional = true)
-      element("_whenHandedOver", Element.serializer().descriptor, isOptional = true)
-      element("destination", Reference.serializer().descriptor, isOptional = true)
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-      element("usageInstruction", KotlinString.serializer().descriptor, isOptional = true)
-      element("_usageInstruction", Element.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("partOf", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("originRelationshipType", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("product", Reference.serializer().descriptor, isOptional = true)
+    b.element("patient", Reference.serializer().descriptor, isOptional = true)
+    b.element("matchStatus", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "performer",
+      listSerialDescriptor(
+        lazyDescriptor { BiologicallyDerivedProductDispense.Performer.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element("location", Reference.serializer().descriptor, isOptional = true)
+    b.element("quantity", Quantity.serializer().descriptor, isOptional = true)
+    b.element("preparedDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_preparedDate", Element.serializer().descriptor, isOptional = true)
+    b.element("whenHandedOver", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_whenHandedOver", Element.serializer().descriptor, isOptional = true)
+    b.element("destination", Reference.serializer().descriptor, isOptional = true)
+    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.element("usageInstruction", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_usageInstruction", Element.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): BiologicallyDerivedProductDispense =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProductDispense) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "BiologicallyDerivedProductDispense")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): BiologicallyDerivedProductDispense {
@@ -358,12 +366,11 @@ internal object BiologicallyDerivedProductDispenseSerializer :
     )
   }
 
-  private fun serializeJson(
+  internal fun serializeJson(
     encoder: CompositeEncoder,
     `value`: BiologicallyDerivedProductDispense,
   ) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "BiologicallyDerivedProductDispense")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -468,4 +475,23 @@ internal object BiologicallyDerivedProductDispenseSerializer :
 
     public val noteSer: KSerializer<List<Annotation>> = ListSerializer(Hoisted.noteSerInner)
   }
+}
+
+internal object BiologicallyDerivedProductDispensePolymorphicSerializer :
+  KSerializer<BiologicallyDerivedProductDispense> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("BiologicallyDerivedProductDispense") {
+      BiologicallyDerivedProductDispenseSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: BiologicallyDerivedProductDispense) {
+    encoder.encodeStructure(descriptor) {
+      BiologicallyDerivedProductDispenseSerializer.serializeJson(this, value)
+    }
+  }
+
+  override fun deserialize(decoder: Decoder): BiologicallyDerivedProductDispense =
+    decoder.decodeStructure(descriptor) {
+      BiologicallyDerivedProductDispenseSerializer.deserializeJson(this)
+    }
 }

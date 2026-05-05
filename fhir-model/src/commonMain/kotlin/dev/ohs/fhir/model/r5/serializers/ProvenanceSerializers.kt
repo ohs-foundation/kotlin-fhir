@@ -43,6 +43,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -252,68 +253,75 @@ internal object ProvenanceSerializer : KSerializer<Provenance> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Provenance") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("target", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("occurredPeriod", Period.serializer().descriptor, isOptional = true)
-      element("occurredDateTime", String.serializer().descriptor, isOptional = true)
-      element("_occurredDateTime", Element.serializer().descriptor, isOptional = true)
-      element("recorded", String.serializer().descriptor, isOptional = true)
-      element("_recorded", Element.serializer().descriptor, isOptional = true)
-      element("policy", listSerialDescriptor(String.serializer().descriptor), isOptional = true)
-      element("_policy", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
-      element("location", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "authorization",
-        listSerialDescriptor(CodeableReference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("activity", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("patient", Reference.serializer().descriptor, isOptional = true)
-      element("encounter", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "agent",
-        listSerialDescriptor(lazyDescriptor { Provenance.Agent.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "entity",
-        listSerialDescriptor(lazyDescriptor { Provenance.Entity.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "signature",
-        listSerialDescriptor(Signature.serializer().descriptor),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("target", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("occurredPeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("occurredDateTime", String.serializer().descriptor, isOptional = true)
+    b.element("_occurredDateTime", Element.serializer().descriptor, isOptional = true)
+    b.element("recorded", String.serializer().descriptor, isOptional = true)
+    b.element("_recorded", Element.serializer().descriptor, isOptional = true)
+    b.element("policy", listSerialDescriptor(String.serializer().descriptor), isOptional = true)
+    b.element("_policy", listSerialDescriptor(Element.serializer().descriptor), isOptional = true)
+    b.element("location", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "authorization",
+      listSerialDescriptor(CodeableReference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("activity", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("patient", Reference.serializer().descriptor, isOptional = true)
+    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "agent",
+      listSerialDescriptor(lazyDescriptor { Provenance.Agent.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "entity",
+      listSerialDescriptor(lazyDescriptor { Provenance.Entity.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "signature",
+      listSerialDescriptor(Signature.serializer().descriptor),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Provenance =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Provenance) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Provenance")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Provenance {
@@ -444,9 +452,8 @@ internal object ProvenanceSerializer : KSerializer<Provenance> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Provenance) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Provenance) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Provenance")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -562,4 +569,16 @@ internal object ProvenanceSerializer : KSerializer<Provenance> {
     public val signatureSer: KSerializer<List<Signature>> =
       ListSerializer(Hoisted.signatureSerInner)
   }
+}
+
+internal object ProvenancePolymorphicSerializer : KSerializer<Provenance> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Provenance") { ProvenanceSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Provenance) {
+    encoder.encodeStructure(descriptor) { ProvenanceSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Provenance =
+    decoder.decodeStructure(descriptor) { ProvenanceSerializer.deserializeJson(this) }
 }

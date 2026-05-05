@@ -46,6 +46,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -186,73 +187,80 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("SupplyRequest") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", String.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("category", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("priority", String.serializer().descriptor, isOptional = true)
-      element("_priority", Element.serializer().descriptor, isOptional = true)
-      element("deliverFor", Reference.serializer().descriptor, isOptional = true)
-      element("item", CodeableReference.serializer().descriptor, isOptional = true)
-      element("quantity", Quantity.serializer().descriptor, isOptional = true)
-      element(
-        "parameter",
-        listSerialDescriptor(lazyDescriptor { SupplyRequest.Parameter.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("occurrenceDateTime", String.serializer().descriptor, isOptional = true)
-      element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
-      element("occurrencePeriod", Period.serializer().descriptor, isOptional = true)
-      element("occurrenceTiming", Timing.serializer().descriptor, isOptional = true)
-      element("authoredOn", String.serializer().descriptor, isOptional = true)
-      element("_authoredOn", Element.serializer().descriptor, isOptional = true)
-      element("requester", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "supplier",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "reason",
-        listSerialDescriptor(CodeableReference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("deliverFrom", Reference.serializer().descriptor, isOptional = true)
-      element("deliverTo", Reference.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", String.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("category", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("priority", String.serializer().descriptor, isOptional = true)
+    b.element("_priority", Element.serializer().descriptor, isOptional = true)
+    b.element("deliverFor", Reference.serializer().descriptor, isOptional = true)
+    b.element("item", CodeableReference.serializer().descriptor, isOptional = true)
+    b.element("quantity", Quantity.serializer().descriptor, isOptional = true)
+    b.element(
+      "parameter",
+      listSerialDescriptor(lazyDescriptor { SupplyRequest.Parameter.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("occurrenceDateTime", String.serializer().descriptor, isOptional = true)
+    b.element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
+    b.element("occurrencePeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("occurrenceTiming", Timing.serializer().descriptor, isOptional = true)
+    b.element("authoredOn", String.serializer().descriptor, isOptional = true)
+    b.element("_authoredOn", Element.serializer().descriptor, isOptional = true)
+    b.element("requester", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "supplier",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "reason",
+      listSerialDescriptor(CodeableReference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("deliverFrom", Reference.serializer().descriptor, isOptional = true)
+    b.element("deliverTo", Reference.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): SupplyRequest =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: SupplyRequest) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "SupplyRequest")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): SupplyRequest {
@@ -404,9 +412,8 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SupplyRequest) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: SupplyRequest) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "SupplyRequest")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -521,4 +528,16 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
 
     public val reasonSer: KSerializer<List<CodeableReference>> = ListSerializer(Hoisted.itemSer)
   }
+}
+
+internal object SupplyRequestPolymorphicSerializer : KSerializer<SupplyRequest> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("SupplyRequest") { SupplyRequestSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: SupplyRequest) {
+    encoder.encodeStructure(descriptor) { SupplyRequestSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): SupplyRequest =
+    decoder.decodeStructure(descriptor) { SupplyRequestSerializer.deserializeJson(this) }
 }

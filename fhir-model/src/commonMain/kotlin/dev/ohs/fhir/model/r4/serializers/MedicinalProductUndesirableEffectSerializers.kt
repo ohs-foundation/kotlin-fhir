@@ -36,6 +36,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -51,44 +52,51 @@ internal object MedicinalProductUndesirableEffectSerializer :
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("MedicinalProductUndesirableEffect") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element("subject", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("symptomConditionEffect", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("classification", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("frequencyOfOccurrence", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "population",
-        listSerialDescriptor(Population.serializer().descriptor),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("subject", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("symptomConditionEffect", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("classification", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("frequencyOfOccurrence", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "population",
+      listSerialDescriptor(Population.serializer().descriptor),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): MedicinalProductUndesirableEffect =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductUndesirableEffect) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "MedicinalProductUndesirableEffect")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): MedicinalProductUndesirableEffect {
@@ -184,9 +192,11 @@ internal object MedicinalProductUndesirableEffectSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: MedicinalProductUndesirableEffect) {
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    `value`: MedicinalProductUndesirableEffect,
+  ) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "MedicinalProductUndesirableEffect")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -247,4 +257,23 @@ internal object MedicinalProductUndesirableEffectSerializer :
     public val populationSer: KSerializer<List<Population>> =
       ListSerializer(Hoisted.populationSerInner)
   }
+}
+
+internal object MedicinalProductUndesirableEffectPolymorphicSerializer :
+  KSerializer<MedicinalProductUndesirableEffect> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("MedicinalProductUndesirableEffect") {
+      MedicinalProductUndesirableEffectSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: MedicinalProductUndesirableEffect) {
+    encoder.encodeStructure(descriptor) {
+      MedicinalProductUndesirableEffectSerializer.serializeJson(this, value)
+    }
+  }
+
+  override fun deserialize(decoder: Decoder): MedicinalProductUndesirableEffect =
+    decoder.decodeStructure(descriptor) {
+      MedicinalProductUndesirableEffectSerializer.deserializeJson(this)
+    }
 }

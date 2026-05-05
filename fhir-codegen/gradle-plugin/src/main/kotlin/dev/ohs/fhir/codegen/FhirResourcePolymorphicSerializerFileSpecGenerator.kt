@@ -25,32 +25,13 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.WildcardTypeName
 
 /**
- * Emits `ResourcePolymorphicSerializer.kt` — a hand-rolled `KSerializer<Resource>`.
- *
- * Decode has two paths:
- * 1. **Streaming peek (fast path, common case).** Calls kotlinx-json's internal
- *    `StreamingJsonDecoder.lexer.peekLeadingMatchingValue("resourceType", isLenient)` — the same
- *    API kotlinx uses for its own discriminator-first polymorphic optimization. On hit, open the
- *    JSON object via `beginStructure`, advance past `resourceType` to a mid-stream
- *    `CompositeDecoder`, then dispatch to the concrete subclass's `deserializeJson(composite)`
- *    streaming loop. No tree allocation.
- * 2. **Tree fallback.** FHIR spec permits `resourceType` anywhere in the object; for the ~1% of
- *    inputs that don't lead with it, or when the decoder isn't a `StreamingJsonDecoder`,
- *    materialize via `decodeJsonElement` and re-enter kotlinx's own `JsonTreeDecoder` via
- *    `json.decodeFromJsonElement(ConcreteSerializer, tree)` — same entry point
- *    (`deserialize(Decoder)`) as the streaming path, just with a tree-backed decoder underneath.
- *    Slower per-field than streaming, but gives path-aware kotlinx error messages for free.
- *
- * We reach the internal `StreamingJsonDecoder` / `AbstractJsonLexer` via a file-level
- * `@Suppress("INVISIBLE_REFERENCE", "INVISIBLE_MEMBER")`. kotlinx-json's `internal` members compile
- * to public JVM bytecode; the suppress tells kotlinc to stop enforcing the module-level visibility
- * check. Trade-off: kotlinx-json version drift becomes a build break rather than a graceful runtime
- * fallback.
- *
- * Encode: `when (value)` dispatching to each concrete subclass's `serialize`.
+ * Emits `ResourcePolymorphicSerializer.kt`, an `AbstractPolymorphicSerializer<Resource>` with
+ * hand-rolled name/class dispatch maps and a manually-built descriptor.
  */
 object FhirResourcePolymorphicSerializerFileSpecGenerator {
   fun generate(packageName: String, subclasses: List<ClassName>): FileSpec {
@@ -58,210 +39,158 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
     val serializersPackage = "$packageName.serializers"
     val resourceCN = ClassName(packageName, "Resource")
 
-    val kSerializerCN = ClassName("kotlinx.serialization", "KSerializer")
+    val abstractPolymorphicSerializerCN =
+      ClassName("kotlinx.serialization.internal", "AbstractPolymorphicSerializer")
+    val internalSerializationApiCN = ClassName("kotlinx.serialization", "InternalSerializationApi")
     val experimentalSerializationApiCN =
       ClassName("kotlinx.serialization", "ExperimentalSerializationApi")
-    val internalSerializationApiCN = ClassName("kotlinx.serialization", "InternalSerializationApi")
-    val serializationExceptionCN = ClassName("kotlinx.serialization", "SerializationException")
-    val polymorphicKindCN = ClassName("kotlinx.serialization.descriptors", "PolymorphicKind")
+    val deserializationStrategyCN = ClassName("kotlinx.serialization", "DeserializationStrategy")
+    val serializationStrategyCN = ClassName("kotlinx.serialization", "SerializationStrategy")
     val serialDescriptorCN = ClassName("kotlinx.serialization.descriptors", "SerialDescriptor")
-    val buildClassSerialDescriptorMN =
-      MemberName("kotlinx.serialization.descriptors", "buildClassSerialDescriptor")
+    val polymorphicKindCN = ClassName("kotlinx.serialization.descriptors", "PolymorphicKind")
+    val serialKindCN = ClassName("kotlinx.serialization.descriptors", "SerialKind")
     val buildSerialDescriptorMN =
       MemberName("kotlinx.serialization.descriptors", "buildSerialDescriptor")
-    val stringSerializerMN = MemberName("kotlinx.serialization.builtins", "serializer")
-    val decoderCN = ClassName("kotlinx.serialization.encoding", "Decoder")
+    val builtinsSerializerMN = MemberName("kotlinx.serialization.builtins", "serializer")
+    val compositeDecoderCN = ClassName("kotlinx.serialization.encoding", "CompositeDecoder")
     val encoderCN = ClassName("kotlinx.serialization.encoding", "Encoder")
-    val jsonDecoderCN = ClassName("kotlinx.serialization.json", "JsonDecoder")
-    val streamingJsonDecoderCN =
-      ClassName("kotlinx.serialization.json.internal", "StreamingJsonDecoder")
-    val jsonObjectMN = MemberName("kotlinx.serialization.json", "jsonObject")
-    val jsonPrimitiveMN = MemberName("kotlinx.serialization.json", "jsonPrimitive")
-    val contentOrNullMN = MemberName("kotlinx.serialization.json", "contentOrNull")
+    val kClassCN = ClassName("kotlin.reflect", "KClass")
+    val mapCN = ClassName("kotlin.collections", "Map")
+    val mapOfMN = MemberName("kotlin.collections", "mapOf")
+    val jsonClassDiscriminatorCN = ClassName("kotlinx.serialization.json", "JsonClassDiscriminator")
+    val stringCN = ClassName("kotlin", "String")
 
-    // --- Properties ------------------------------------------------------------------------------
+    val kSerializerOutResourceTN =
+      ClassName("kotlinx.serialization", "KSerializer")
+        .parameterizedBy(WildcardTypeName.producerOf(resourceCN))
 
+    val baseClassProp =
+      PropertySpec.builder("baseClass", kClassCN.parameterizedBy(resourceCN))
+        .addModifiers(KModifier.OVERRIDE)
+        .initializer("%T::class", resourceCN)
+        .build()
+
+    val byNameInit =
+      CodeBlock.builder()
+        .apply {
+          add("%M(\n", mapOfMN)
+          indent()
+          for (sc in sorted) {
+            val polySerCN = ClassName(serializersPackage, "${sc.simpleName}PolymorphicSerializer")
+            add("%S to %T,\n", sc.simpleName, polySerCN)
+          }
+          unindent()
+          add(")")
+        }
+        .build()
+    val byNameProp =
+      PropertySpec.builder("byName", mapCN.parameterizedBy(stringCN, kSerializerOutResourceTN))
+        .addModifiers(KModifier.PRIVATE)
+        .initializer(byNameInit)
+        .build()
+
+    val byClassInit =
+      CodeBlock.builder()
+        .apply {
+          add("%M(\n", mapOfMN)
+          indent()
+          for (sc in sorted) {
+            val concreteCN = ClassName(packageName, sc.simpleName)
+            val polySerCN = ClassName(serializersPackage, "${sc.simpleName}PolymorphicSerializer")
+            add("%T::class to %T,\n", concreteCN, polySerCN)
+          }
+          unindent()
+          add(")")
+        }
+        .build()
+    val byClassProp =
+      PropertySpec.builder(
+          "byClass",
+          mapCN.parameterizedBy(kClassCN.parameterizedBy(STAR), kSerializerOutResourceTN),
+        )
+        .addModifiers(KModifier.PRIVATE)
+        .initializer(byClassInit)
+        .build()
+
+    // Mirrors `SealedClassSerializer.descriptor`'s `type`/`value` pair shape; the
+    // `JsonClassDiscriminator` is what `Polymorphic.kt:97` reads to get `"resourceType"`.
+    val descriptorInit =
+      CodeBlock.builder()
+        .apply {
+          add("%M(%S, %T.SEALED) {\n", buildSerialDescriptorMN, "Resource", polymorphicKindCN)
+          indent()
+          add("// `SealedClassSerializer` convention: slot 0 is named \"type\" even when\n")
+          add("// `@JsonClassDiscriminator` overrides the wire key — kotlinx-json reads the\n")
+          add("// actual key from `descriptor.annotations`, not from this slot's name.\n")
+          add("element(%S, %T.%M().descriptor)\n", "type", stringCN, builtinsSerializerMN)
+          add(
+            "val valueDesc = %M(%S, %T.CONTEXTUAL) {\n",
+            buildSerialDescriptorMN,
+            "kotlinx.serialization.Sealed<Resource>",
+            serialKindCN,
+          )
+          indent()
+          add("for ((name, ser) in byName) element(name, ser.descriptor)\n")
+          unindent()
+          add("}\n")
+          add("element(%S, valueDesc)\n", "value")
+          add("annotations = listOf(%T(%S))\n", jsonClassDiscriminatorCN, "resourceType")
+          unindent()
+          add("}")
+        }
+        .build()
     val descriptorProp =
       PropertySpec.builder("descriptor", serialDescriptorCN)
         .addModifiers(KModifier.OVERRIDE)
-        .addAnnotation(
-          AnnotationSpec.builder(ClassName("kotlin", "OptIn"))
-            .addMember("%T::class", experimentalSerializationApiCN)
-            .addMember("%T::class", internalSerializationApiCN)
-            .build()
-        )
-        .initializer("%M(%S, %T.SEALED)", buildSerialDescriptorMN, "Resource", polymorphicKindCN)
+        .initializer(descriptorInit)
         .build()
 
-    val discriminatorDescriptorProp =
-      PropertySpec.builder("discriminatorDescriptor", serialDescriptorCN)
-        .addModifiers(KModifier.PRIVATE)
-        .addKdoc(
-          "Discriminator-only descriptor: `{ resourceType: String }`. Used on the streaming " +
-            "fast path to open the JSON object and advance past the leading discriminator; the " +
-            "concrete subclass continues the loop against its own flat-shape descriptor."
-        )
-        .initializer(
-          CodeBlock.builder()
-            .add("%M(%S) {\n", buildClassSerialDescriptorMN, "Resource")
-            .indent()
-            .add(
-              "element(%S, %T.%M().descriptor)\n",
-              "resourceType",
-              ClassName("kotlin", "String"),
-              stringSerializerMN,
-            )
-            .unindent()
-            .add("}\n")
-            .build()
-        )
-        .build()
-
-    // --- serialize -------------------------------------------------------------------------------
-
-    val serializeFn =
-      FunSpec.builder("serialize")
+    val findEncodeFn =
+      FunSpec.builder("findPolymorphicSerializerOrNull")
         .addModifiers(KModifier.OVERRIDE)
+        .addAnnotation(
+          AnnotationSpec.builder(Suppress::class).addMember("%S", "UNCHECKED_CAST").build()
+        )
         .addParameter("encoder", encoderCN)
         .addParameter("value", resourceCN)
+        .returns(serializationStrategyCN.parameterizedBy(resourceCN).copy(nullable = true))
+        // `byClass[…]` returns `KSerializer<out Resource>?`; the override needs the invariant
+        // `SerializationStrategy<Resource>?`. We've already looked up by `value::class`, so the
+        // cast is sound.
         .addCode(
-          CodeBlock.builder()
-            .apply {
-              add("when (value) {\n")
-              indent()
-              for (sc in sorted) {
-                val serializerCN = ClassName(serializersPackage, "${sc.simpleName}Serializer")
-                add(
-                  "is %T -> %T.serialize(encoder, value)\n",
-                  ClassName(packageName, sc.simpleName),
-                  serializerCN,
-                )
-              }
-              add(
-                "else -> throw %T(%P)\n",
-                serializationExceptionCN,
-                "Unknown Resource subtype \${value::class.simpleName}",
-              )
-              unindent()
-              add("}\n")
-            }
-            .build()
+          "return (byClass[value::class] ?: super.findPolymorphicSerializerOrNull(encoder, value))" +
+            " as %T?\n",
+          serializationStrategyCN.parameterizedBy(resourceCN),
         )
         .build()
 
-    // --- deserialize -----------------------------------------------------------------------------
-
-    val deserializeFn =
-      FunSpec.builder("deserialize")
+    val findDecodeFn =
+      FunSpec.builder("findPolymorphicSerializerOrNull")
         .addModifiers(KModifier.OVERRIDE)
-        .addParameter("decoder", decoderCN)
-        .returns(resourceCN)
+        .addParameter("decoder", compositeDecoderCN)
+        .addParameter("klassName", stringCN.copy(nullable = true))
+        .returns(deserializationStrategyCN.parameterizedBy(resourceCN).copy(nullable = true))
         .addCode(
-          CodeBlock.builder()
-            .apply {
-              add("val jd = decoder as %T\n", jsonDecoderCN)
-              add(
-                "// Streaming fast path: when the decoder is kotlinx's StreamingJsonDecoder, " +
-                  "use its\n"
-              )
-              add(
-                "// internal lexer's `peekLeadingMatchingValue` to read the discriminator " +
-                  "without\n"
-              )
-              add(
-                "// consuming state. Returns null if `resourceType` isn't the first key — " +
-                  "falls through\n"
-              )
-              add("// to the tree path.\n")
-              add("val peeked: %T? =\n", ClassName("kotlin", "String"))
-              indent()
-              add("if (jd is %T) {\n", streamingJsonDecoderCN)
-              indent()
-              add("jd.lexer.peekLeadingMatchingValue(\n")
-              indent()
-              add("%S,\n", "resourceType")
-              add("jd.json.configuration.isLenient,\n")
-              unindent()
-              add(")\n")
-              unindent()
-              add("} else null\n")
-              unindent()
-              add("if (peeked != null) {\n")
-              indent()
-              add("val composite = jd.beginStructure(discriminatorDescriptor)\n")
-              add(
-                "// Advance the lexer past `resourceType` before dispatching to the " +
-                  "concrete's loop.\n"
-              )
-              add("composite.decodeElementIndex(discriminatorDescriptor)\n")
-              add("composite.decodeStringElement(discriminatorDescriptor, 0)\n")
-              add("val result: %T = when (peeked) {\n", resourceCN)
-              indent()
-              for (sc in sorted) {
-                val serializerCN = ClassName(serializersPackage, "${sc.simpleName}Serializer")
-                add("%S -> %T.deserializeJson(composite)\n", sc.simpleName, serializerCN)
-              }
-              add(
-                "else -> throw %T(%P)\n",
-                serializationExceptionCN,
-                "Unknown Resource type \"\$peeked\"",
-              )
-              unindent()
-              add("}\n")
-              add("composite.endStructure(discriminatorDescriptor)\n")
-              add("return result\n")
-              unindent()
-              add("}\n")
-              add(
-                "// Tree fallback — resourceType not first, or non-streaming decoder. Re-enter " +
-                  "kotlinx's\n"
-              )
-              add(
-                "// JsonTreeDecoder via `decodeFromJsonElement` so the concrete subclass's " +
-                  "regular\n"
-              )
-              add(
-                "// `deserialize(Decoder)` entry runs against a tree-backed CompositeDecoder. " +
-                  "Slower\n"
-              )
-              add("// per-field than streaming but produces path-aware error messages.\n")
-              add("val tree = jd.decodeJsonElement().%M\n", jsonObjectMN)
-              add("val type = tree[%S]?.%M?.%M\n", "resourceType", jsonPrimitiveMN, contentOrNullMN)
-              indent()
-              add(
-                "?: throw %T(%S)\n",
-                serializationExceptionCN,
-                "Missing required 'resourceType' discriminator in FHIR Resource JSON",
-              )
-              unindent()
-              add("return when (type) {\n")
-              indent()
-              for (sc in sorted) {
-                val serializerCN = ClassName(serializersPackage, "${sc.simpleName}Serializer")
-                add("%S -> jd.json.decodeFromJsonElement(%T, tree)\n", sc.simpleName, serializerCN)
-              }
-              add(
-                "else -> throw %T(%P)\n",
-                serializationExceptionCN,
-                "Unknown Resource type \"\$type\"",
-              )
-              unindent()
-              add("}\n")
-            }
-            .build()
+          "return byName[klassName] ?: super.findPolymorphicSerializerOrNull(decoder, klassName)\n"
         )
         .build()
-
-    // --- Object spec -----------------------------------------------------------------------------
 
     val objectSpec =
       TypeSpec.objectBuilder("ResourcePolymorphicSerializer")
         .addModifiers(KModifier.INTERNAL)
-        .addSuperinterface(kSerializerCN.parameterizedBy(resourceCN))
+        .addAnnotation(
+          AnnotationSpec.builder(ClassName("kotlin", "OptIn"))
+            .addMember("%T::class", internalSerializationApiCN)
+            .addMember("%T::class", experimentalSerializationApiCN)
+            .build()
+        )
+        .superclass(abstractPolymorphicSerializerCN.parameterizedBy(resourceCN))
+        .addProperty(baseClassProp)
+        .addProperty(byNameProp)
+        .addProperty(byClassProp)
         .addProperty(descriptorProp)
-        .addProperty(discriminatorDescriptorProp)
-        .addFunction(serializeFn)
-        .addFunction(deserializeFn)
+        .addFunction(findEncodeFn)
+        .addFunction(findDecodeFn)
         .build()
 
     return FileSpec.builder(packageName, "ResourcePolymorphicSerializer")

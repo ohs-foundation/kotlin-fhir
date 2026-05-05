@@ -47,6 +47,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -357,91 +358,98 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("PaymentReconciliation") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("kind", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("period", Period.serializer().descriptor, isOptional = true)
-      element("created", KotlinString.serializer().descriptor, isOptional = true)
-      element("_created", Element.serializer().descriptor, isOptional = true)
-      element("enterer", Reference.serializer().descriptor, isOptional = true)
-      element("issuerType", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("paymentIssuer", Reference.serializer().descriptor, isOptional = true)
-      element("request", Reference.serializer().descriptor, isOptional = true)
-      element("requestor", Reference.serializer().descriptor, isOptional = true)
-      element("outcome", KotlinString.serializer().descriptor, isOptional = true)
-      element("_outcome", Element.serializer().descriptor, isOptional = true)
-      element("disposition", KotlinString.serializer().descriptor, isOptional = true)
-      element("_disposition", Element.serializer().descriptor, isOptional = true)
-      element("date", KotlinString.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("location", Reference.serializer().descriptor, isOptional = true)
-      element("method", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("cardBrand", KotlinString.serializer().descriptor, isOptional = true)
-      element("_cardBrand", Element.serializer().descriptor, isOptional = true)
-      element("accountNumber", KotlinString.serializer().descriptor, isOptional = true)
-      element("_accountNumber", Element.serializer().descriptor, isOptional = true)
-      element("expirationDate", KotlinString.serializer().descriptor, isOptional = true)
-      element("_expirationDate", Element.serializer().descriptor, isOptional = true)
-      element("processor", KotlinString.serializer().descriptor, isOptional = true)
-      element("_processor", Element.serializer().descriptor, isOptional = true)
-      element("referenceNumber", KotlinString.serializer().descriptor, isOptional = true)
-      element("_referenceNumber", Element.serializer().descriptor, isOptional = true)
-      element("authorization", KotlinString.serializer().descriptor, isOptional = true)
-      element("_authorization", Element.serializer().descriptor, isOptional = true)
-      element("tenderedAmount", Money.serializer().descriptor, isOptional = true)
-      element("returnedAmount", Money.serializer().descriptor, isOptional = true)
-      element("amount", Money.serializer().descriptor, isOptional = true)
-      element("paymentIdentifier", Identifier.serializer().descriptor, isOptional = true)
-      element(
-        "allocation",
-        listSerialDescriptor(
-          lazyDescriptor { PaymentReconciliation.Allocation.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element("formCode", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "processNote",
-        listSerialDescriptor(
-          lazyDescriptor { PaymentReconciliation.ProcessNote.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("kind", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("period", Period.serializer().descriptor, isOptional = true)
+    b.element("created", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_created", Element.serializer().descriptor, isOptional = true)
+    b.element("enterer", Reference.serializer().descriptor, isOptional = true)
+    b.element("issuerType", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("paymentIssuer", Reference.serializer().descriptor, isOptional = true)
+    b.element("request", Reference.serializer().descriptor, isOptional = true)
+    b.element("requestor", Reference.serializer().descriptor, isOptional = true)
+    b.element("outcome", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_outcome", Element.serializer().descriptor, isOptional = true)
+    b.element("disposition", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_disposition", Element.serializer().descriptor, isOptional = true)
+    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element("location", Reference.serializer().descriptor, isOptional = true)
+    b.element("method", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("cardBrand", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_cardBrand", Element.serializer().descriptor, isOptional = true)
+    b.element("accountNumber", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_accountNumber", Element.serializer().descriptor, isOptional = true)
+    b.element("expirationDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_expirationDate", Element.serializer().descriptor, isOptional = true)
+    b.element("processor", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_processor", Element.serializer().descriptor, isOptional = true)
+    b.element("referenceNumber", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_referenceNumber", Element.serializer().descriptor, isOptional = true)
+    b.element("authorization", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_authorization", Element.serializer().descriptor, isOptional = true)
+    b.element("tenderedAmount", Money.serializer().descriptor, isOptional = true)
+    b.element("returnedAmount", Money.serializer().descriptor, isOptional = true)
+    b.element("amount", Money.serializer().descriptor, isOptional = true)
+    b.element("paymentIdentifier", Identifier.serializer().descriptor, isOptional = true)
+    b.element(
+      "allocation",
+      listSerialDescriptor(
+        lazyDescriptor { PaymentReconciliation.Allocation.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element("formCode", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "processNote",
+      listSerialDescriptor(
+        lazyDescriptor { PaymentReconciliation.ProcessNote.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): PaymentReconciliation =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: PaymentReconciliation) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "PaymentReconciliation")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): PaymentReconciliation {
@@ -658,9 +666,8 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: PaymentReconciliation) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: PaymentReconciliation) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "PaymentReconciliation")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -796,4 +803,20 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
     public val processNoteSer: KSerializer<List<PaymentReconciliation.ProcessNote>> =
       ListSerializer(Hoisted.processNoteSerInner)
   }
+}
+
+internal object PaymentReconciliationPolymorphicSerializer : KSerializer<PaymentReconciliation> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("PaymentReconciliation") {
+      PaymentReconciliationSerializer.buildDescriptor(this)
+    }
+
+  override fun serialize(encoder: Encoder, `value`: PaymentReconciliation) {
+    encoder.encodeStructure(descriptor) {
+      PaymentReconciliationSerializer.serializeJson(this, value)
+    }
+  }
+
+  override fun deserialize(decoder: Decoder): PaymentReconciliation =
+    decoder.decodeStructure(descriptor) { PaymentReconciliationSerializer.deserializeJson(this) }
 }

@@ -44,6 +44,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -699,62 +700,69 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("MeasureReport") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", String.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("type", String.serializer().descriptor, isOptional = true)
-      element("_type", Element.serializer().descriptor, isOptional = true)
-      element("measure", String.serializer().descriptor, isOptional = true)
-      element("_measure", Element.serializer().descriptor, isOptional = true)
-      element("subject", Reference.serializer().descriptor, isOptional = true)
-      element("date", String.serializer().descriptor, isOptional = true)
-      element("_date", Element.serializer().descriptor, isOptional = true)
-      element("reporter", Reference.serializer().descriptor, isOptional = true)
-      element("period", Period.serializer().descriptor, isOptional = true)
-      element("improvementNotation", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "group",
-        listSerialDescriptor(lazyDescriptor { MeasureReport.Group.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "evaluatedResource",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", String.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("type", String.serializer().descriptor, isOptional = true)
+    b.element("_type", Element.serializer().descriptor, isOptional = true)
+    b.element("measure", String.serializer().descriptor, isOptional = true)
+    b.element("_measure", Element.serializer().descriptor, isOptional = true)
+    b.element("subject", Reference.serializer().descriptor, isOptional = true)
+    b.element("date", String.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element("reporter", Reference.serializer().descriptor, isOptional = true)
+    b.element("period", Period.serializer().descriptor, isOptional = true)
+    b.element("improvementNotation", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "group",
+      listSerialDescriptor(lazyDescriptor { MeasureReport.Group.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "evaluatedResource",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): MeasureReport =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: MeasureReport) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "MeasureReport")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): MeasureReport {
@@ -876,9 +884,8 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: MeasureReport) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: MeasureReport) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "MeasureReport")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -966,4 +973,16 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
     public val evaluatedResourceSer: KSerializer<List<Reference>> =
       ListSerializer(Hoisted.subjectSer)
   }
+}
+
+internal object MeasureReportPolymorphicSerializer : KSerializer<MeasureReport> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("MeasureReport") { MeasureReportSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: MeasureReport) {
+    encoder.encodeStructure(descriptor) { MeasureReportSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): MeasureReport =
+    decoder.decodeStructure(descriptor) { MeasureReportSerializer.deserializeJson(this) }
 }

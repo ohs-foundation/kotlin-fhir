@@ -46,6 +46,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -283,79 +284,86 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Subscription") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("name", KotlinString.serializer().descriptor, isOptional = true)
-      element("_name", Element.serializer().descriptor, isOptional = true)
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("topic", KotlinString.serializer().descriptor, isOptional = true)
-      element("_topic", Element.serializer().descriptor, isOptional = true)
-      element(
-        "contact",
-        listSerialDescriptor(ContactPoint.serializer().descriptor),
-        isOptional = true,
-      )
-      element("end", KotlinString.serializer().descriptor, isOptional = true)
-      element("_end", Element.serializer().descriptor, isOptional = true)
-      element("managingEntity", Reference.serializer().descriptor, isOptional = true)
-      element("reason", KotlinString.serializer().descriptor, isOptional = true)
-      element("_reason", Element.serializer().descriptor, isOptional = true)
-      element(
-        "filterBy",
-        listSerialDescriptor(lazyDescriptor { Subscription.FilterBy.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("channelType", Coding.serializer().descriptor, isOptional = true)
-      element("endpoint", KotlinString.serializer().descriptor, isOptional = true)
-      element("_endpoint", Element.serializer().descriptor, isOptional = true)
-      element(
-        "parameter",
-        listSerialDescriptor(lazyDescriptor { Subscription.Parameter.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("heartbeatPeriod", Int.serializer().descriptor, isOptional = true)
-      element("_heartbeatPeriod", Element.serializer().descriptor, isOptional = true)
-      element("timeout", Int.serializer().descriptor, isOptional = true)
-      element("_timeout", Element.serializer().descriptor, isOptional = true)
-      element("contentType", KotlinString.serializer().descriptor, isOptional = true)
-      element("_contentType", Element.serializer().descriptor, isOptional = true)
-      element("content", KotlinString.serializer().descriptor, isOptional = true)
-      element("_content", Element.serializer().descriptor, isOptional = true)
-      element("maxCount", Int.serializer().descriptor, isOptional = true)
-      element("_maxCount", Element.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("name", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_name", Element.serializer().descriptor, isOptional = true)
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("topic", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_topic", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "contact",
+      listSerialDescriptor(ContactPoint.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("end", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_end", Element.serializer().descriptor, isOptional = true)
+    b.element("managingEntity", Reference.serializer().descriptor, isOptional = true)
+    b.element("reason", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_reason", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "filterBy",
+      listSerialDescriptor(lazyDescriptor { Subscription.FilterBy.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("channelType", Coding.serializer().descriptor, isOptional = true)
+    b.element("endpoint", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_endpoint", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "parameter",
+      listSerialDescriptor(lazyDescriptor { Subscription.Parameter.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("heartbeatPeriod", Int.serializer().descriptor, isOptional = true)
+    b.element("_heartbeatPeriod", Element.serializer().descriptor, isOptional = true)
+    b.element("timeout", Int.serializer().descriptor, isOptional = true)
+    b.element("_timeout", Element.serializer().descriptor, isOptional = true)
+    b.element("contentType", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_contentType", Element.serializer().descriptor, isOptional = true)
+    b.element("content", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_content", Element.serializer().descriptor, isOptional = true)
+    b.element("maxCount", Int.serializer().descriptor, isOptional = true)
+    b.element("_maxCount", Element.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): Subscription =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Subscription) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Subscription")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Subscription {
@@ -518,9 +526,8 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Subscription) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Subscription) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Subscription")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -639,4 +646,16 @@ internal object SubscriptionSerializer : KSerializer<Subscription> {
     public val parameterSer: KSerializer<List<Subscription.Parameter>> =
       ListSerializer(Hoisted.parameterSerInner)
   }
+}
+
+internal object SubscriptionPolymorphicSerializer : KSerializer<Subscription> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Subscription") { SubscriptionSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Subscription) {
+    encoder.encodeStructure(descriptor) { SubscriptionSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Subscription =
+    decoder.decodeStructure(descriptor) { SubscriptionSerializer.deserializeJson(this) }
 }

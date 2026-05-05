@@ -51,6 +51,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -382,84 +383,91 @@ internal object PatientSerializer : KSerializer<Patient> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Patient") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("active", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_active", Element.serializer().descriptor, isOptional = true)
-      element("name", listSerialDescriptor(HumanName.serializer().descriptor), isOptional = true)
-      element(
-        "telecom",
-        listSerialDescriptor(ContactPoint.serializer().descriptor),
-        isOptional = true,
-      )
-      element("gender", String.serializer().descriptor, isOptional = true)
-      element("_gender", Element.serializer().descriptor, isOptional = true)
-      element("birthDate", String.serializer().descriptor, isOptional = true)
-      element("_birthDate", Element.serializer().descriptor, isOptional = true)
-      element("deceasedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_deceasedBoolean", Element.serializer().descriptor, isOptional = true)
-      element("deceasedDateTime", String.serializer().descriptor, isOptional = true)
-      element("_deceasedDateTime", Element.serializer().descriptor, isOptional = true)
-      element("address", listSerialDescriptor(Address.serializer().descriptor), isOptional = true)
-      element("maritalStatus", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("multipleBirthBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_multipleBirthBoolean", Element.serializer().descriptor, isOptional = true)
-      element("multipleBirthInteger", Int.serializer().descriptor, isOptional = true)
-      element("_multipleBirthInteger", Element.serializer().descriptor, isOptional = true)
-      element("photo", listSerialDescriptor(Attachment.serializer().descriptor), isOptional = true)
-      element(
-        "contact",
-        listSerialDescriptor(lazyDescriptor { Patient.Contact.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "communication",
-        listSerialDescriptor(lazyDescriptor { Patient.Communication.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "generalPractitioner",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
-      element("managingOrganization", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "link",
-        listSerialDescriptor(lazyDescriptor { Patient.Link.serializer().descriptor }),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("active", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_active", Element.serializer().descriptor, isOptional = true)
+    b.element("name", listSerialDescriptor(HumanName.serializer().descriptor), isOptional = true)
+    b.element(
+      "telecom",
+      listSerialDescriptor(ContactPoint.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("gender", String.serializer().descriptor, isOptional = true)
+    b.element("_gender", Element.serializer().descriptor, isOptional = true)
+    b.element("birthDate", String.serializer().descriptor, isOptional = true)
+    b.element("_birthDate", Element.serializer().descriptor, isOptional = true)
+    b.element("deceasedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_deceasedBoolean", Element.serializer().descriptor, isOptional = true)
+    b.element("deceasedDateTime", String.serializer().descriptor, isOptional = true)
+    b.element("_deceasedDateTime", Element.serializer().descriptor, isOptional = true)
+    b.element("address", listSerialDescriptor(Address.serializer().descriptor), isOptional = true)
+    b.element("maritalStatus", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("multipleBirthBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_multipleBirthBoolean", Element.serializer().descriptor, isOptional = true)
+    b.element("multipleBirthInteger", Int.serializer().descriptor, isOptional = true)
+    b.element("_multipleBirthInteger", Element.serializer().descriptor, isOptional = true)
+    b.element("photo", listSerialDescriptor(Attachment.serializer().descriptor), isOptional = true)
+    b.element(
+      "contact",
+      listSerialDescriptor(lazyDescriptor { Patient.Contact.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "communication",
+      listSerialDescriptor(lazyDescriptor { Patient.Communication.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "generalPractitioner",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("managingOrganization", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "link",
+      listSerialDescriptor(lazyDescriptor { Patient.Link.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Patient =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Patient) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Patient")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Patient {
@@ -624,9 +632,8 @@ internal object PatientSerializer : KSerializer<Patient> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Patient) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Patient) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Patient")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -776,4 +783,16 @@ internal object PatientSerializer : KSerializer<Patient> {
 
     public val linkSer: KSerializer<List<Patient.Link>> = ListSerializer(Hoisted.linkSerInner)
   }
+}
+
+internal object PatientPolymorphicSerializer : KSerializer<Patient> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Patient") { PatientSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Patient) {
+    encoder.encodeStructure(descriptor) { PatientSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Patient =
+    decoder.decodeStructure(descriptor) { PatientSerializer.deserializeJson(this) }
 }

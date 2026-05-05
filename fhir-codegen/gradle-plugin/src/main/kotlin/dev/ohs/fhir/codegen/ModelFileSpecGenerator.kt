@@ -106,10 +106,10 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
                 .build()
             )
           } else if (structureDefinition.kind == StructureDefinition.Kind.RESOURCE) {
-            // The abstract `Resource` root uses a hand-rolled content-polymorphic serializer that
-            // reads the `resourceType` discriminator from the JSON body itself (rather than relying
-            // on kotlinx's auto-injected class-discriminator, which would double-write the key
-            // because our concrete subclass serializers emit `resourceType` as a regular field).
+            // The abstract `Resource` root dispatches via `ResourcePolymorphicSerializer`: an
+            // `AbstractPolymorphicSerializer<Resource>` that maps `resourceType` to a per-subclass
+            // `XPolymorphicSerializer` (descriptor without `resourceType`, so kotlinx-json can
+            // inject the class discriminator without colliding with a same-named field).
             if (structureDefinitionName == "Resource") {
               addAnnotation(
                 AnnotationSpec.builder(Serializable::class)

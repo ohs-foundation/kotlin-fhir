@@ -50,6 +50,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -240,132 +241,139 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("Procedure") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "instantiatesCanonical",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_instantiatesCanonical",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "instantiatesUri",
-        listSerialDescriptor(KotlinString.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "_instantiatesUri",
-        listSerialDescriptor(Element.serializer().descriptor),
-        isOptional = true,
-      )
-      element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("partOf", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("statusReason", CodeableConcept.serializer().descriptor, isOptional = true)
-      element(
-        "category",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("code", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("subject", Reference.serializer().descriptor, isOptional = true)
-      element("focus", Reference.serializer().descriptor, isOptional = true)
-      element("encounter", Reference.serializer().descriptor, isOptional = true)
-      element("occurrenceDateTime", KotlinString.serializer().descriptor, isOptional = true)
-      element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
-      element("occurrencePeriod", Period.serializer().descriptor, isOptional = true)
-      element("occurrenceString", KotlinString.serializer().descriptor, isOptional = true)
-      element("_occurrenceString", Element.serializer().descriptor, isOptional = true)
-      element("occurrenceAge", Age.serializer().descriptor, isOptional = true)
-      element("occurrenceRange", Range.serializer().descriptor, isOptional = true)
-      element("occurrenceTiming", Timing.serializer().descriptor, isOptional = true)
-      element("recorded", KotlinString.serializer().descriptor, isOptional = true)
-      element("_recorded", Element.serializer().descriptor, isOptional = true)
-      element("recorder", Reference.serializer().descriptor, isOptional = true)
-      element("reportedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_reportedBoolean", Element.serializer().descriptor, isOptional = true)
-      element("reportedReference", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "performer",
-        listSerialDescriptor(lazyDescriptor { Procedure.Performer.serializer().descriptor }),
-        isOptional = true,
-      )
-      element("location", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "reason",
-        listSerialDescriptor(CodeableReference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "bodySite",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("outcome", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("report", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
-      element(
-        "complication",
-        listSerialDescriptor(CodeableReference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "followUp",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
-      element(
-        "focalDevice",
-        listSerialDescriptor(lazyDescriptor { Procedure.FocalDevice.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "used",
-        listSerialDescriptor(CodeableReference.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "supportingInfo",
-        listSerialDescriptor(Reference.serializer().descriptor),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "instantiatesCanonical",
+      listSerialDescriptor(KotlinString.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "_instantiatesCanonical",
+      listSerialDescriptor(Element.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "instantiatesUri",
+      listSerialDescriptor(KotlinString.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "_instantiatesUri",
+      listSerialDescriptor(Element.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("basedOn", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("partOf", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("statusReason", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element(
+      "category",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("code", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("subject", Reference.serializer().descriptor, isOptional = true)
+    b.element("focus", Reference.serializer().descriptor, isOptional = true)
+    b.element("encounter", Reference.serializer().descriptor, isOptional = true)
+    b.element("occurrenceDateTime", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_occurrenceDateTime", Element.serializer().descriptor, isOptional = true)
+    b.element("occurrencePeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("occurrenceString", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_occurrenceString", Element.serializer().descriptor, isOptional = true)
+    b.element("occurrenceAge", Age.serializer().descriptor, isOptional = true)
+    b.element("occurrenceRange", Range.serializer().descriptor, isOptional = true)
+    b.element("occurrenceTiming", Timing.serializer().descriptor, isOptional = true)
+    b.element("recorded", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_recorded", Element.serializer().descriptor, isOptional = true)
+    b.element("recorder", Reference.serializer().descriptor, isOptional = true)
+    b.element("reportedBoolean", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_reportedBoolean", Element.serializer().descriptor, isOptional = true)
+    b.element("reportedReference", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "performer",
+      listSerialDescriptor(lazyDescriptor { Procedure.Performer.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element("location", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "reason",
+      listSerialDescriptor(CodeableReference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "bodySite",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("outcome", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("report", listSerialDescriptor(Reference.serializer().descriptor), isOptional = true)
+    b.element(
+      "complication",
+      listSerialDescriptor(CodeableReference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "followUp",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("note", listSerialDescriptor(Annotation.serializer().descriptor), isOptional = true)
+    b.element(
+      "focalDevice",
+      listSerialDescriptor(lazyDescriptor { Procedure.FocalDevice.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "used",
+      listSerialDescriptor(CodeableReference.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "supportingInfo",
+      listSerialDescriptor(Reference.serializer().descriptor),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): Procedure =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: Procedure) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "Procedure")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): Procedure {
@@ -634,9 +642,8 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Procedure) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: Procedure) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "Procedure")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -832,4 +839,16 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
     public val focalDeviceSer: KSerializer<List<Procedure.FocalDevice>> =
       ListSerializer(Hoisted.focalDeviceSerInner)
   }
+}
+
+internal object ProcedurePolymorphicSerializer : KSerializer<Procedure> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("Procedure") { ProcedureSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: Procedure) {
+    encoder.encodeStructure(descriptor) { ProcedureSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): Procedure =
+    decoder.decodeStructure(descriptor) { ProcedureSerializer.deserializeJson(this) }
 }

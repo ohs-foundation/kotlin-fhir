@@ -54,6 +54,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -830,94 +831,99 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("InventoryItem") {
       element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
-      element("id", KotlinString.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", KotlinString.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", KotlinString.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element(
-        "category",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "code",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "name",
-        listSerialDescriptor(lazyDescriptor { InventoryItem.Name.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "responsibleOrganization",
-        listSerialDescriptor(
-          lazyDescriptor { InventoryItem.ResponsibleOrganization.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "description",
-        lazyDescriptor { InventoryItem.Description.serializer().descriptor },
-        isOptional = true,
-      )
-      element(
-        "inventoryStatus",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("baseUnit", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("netContent", Quantity.serializer().descriptor, isOptional = true)
-      element(
-        "association",
-        listSerialDescriptor(lazyDescriptor { InventoryItem.Association.serializer().descriptor }),
-        isOptional = true,
-      )
-      element(
-        "characteristic",
-        listSerialDescriptor(
-          lazyDescriptor { InventoryItem.Characteristic.serializer().descriptor }
-        ),
-        isOptional = true,
-      )
-      element(
-        "instance",
-        lazyDescriptor { InventoryItem.Instance.serializer().descriptor },
-        isOptional = true,
-      )
-      element("productReference", Reference.serializer().descriptor, isOptional = true)
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "category",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "code",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "name",
+      listSerialDescriptor(lazyDescriptor { InventoryItem.Name.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "responsibleOrganization",
+      listSerialDescriptor(
+        lazyDescriptor { InventoryItem.ResponsibleOrganization.serializer().descriptor }
+      ),
+      isOptional = true,
+    )
+    b.element(
+      "description",
+      lazyDescriptor { InventoryItem.Description.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element(
+      "inventoryStatus",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("baseUnit", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("netContent", Quantity.serializer().descriptor, isOptional = true)
+    b.element(
+      "association",
+      listSerialDescriptor(lazyDescriptor { InventoryItem.Association.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "characteristic",
+      listSerialDescriptor(lazyDescriptor { InventoryItem.Characteristic.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "instance",
+      lazyDescriptor { InventoryItem.Instance.serializer().descriptor },
+      isOptional = true,
+    )
+    b.element("productReference", Reference.serializer().descriptor, isOptional = true)
+  }
 
   override fun deserialize(decoder: Decoder): InventoryItem =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: InventoryItem) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "InventoryItem")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): InventoryItem {
@@ -1045,9 +1051,8 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: InventoryItem) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: InventoryItem) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "InventoryItem")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -1164,4 +1169,16 @@ internal object InventoryItemSerializer : KSerializer<InventoryItem> {
 
     public val productReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
+}
+
+internal object InventoryItemPolymorphicSerializer : KSerializer<InventoryItem> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("InventoryItem") { InventoryItemSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: InventoryItem) {
+    encoder.encodeStructure(descriptor) { InventoryItemSerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): InventoryItem =
+    decoder.decodeStructure(descriptor) { InventoryItemSerializer.deserializeJson(this) }
 }

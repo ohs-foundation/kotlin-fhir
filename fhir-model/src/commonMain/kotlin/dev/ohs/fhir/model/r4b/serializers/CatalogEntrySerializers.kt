@@ -43,6 +43,7 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
@@ -148,76 +149,83 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
   override val descriptor: SerialDescriptor =
     buildClassSerialDescriptor("CatalogEntry") {
       element("resourceType", String.serializer().descriptor, isOptional = false)
-      element("id", String.serializer().descriptor, isOptional = true)
-      element("meta", Meta.serializer().descriptor, isOptional = true)
-      element("implicitRules", String.serializer().descriptor, isOptional = true)
-      element("_implicitRules", Element.serializer().descriptor, isOptional = true)
-      element("language", String.serializer().descriptor, isOptional = true)
-      element("_language", Element.serializer().descriptor, isOptional = true)
-      element("text", Narrative.serializer().descriptor, isOptional = true)
-      element(
-        "contained",
-        listSerialDescriptor(Resource.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "extension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "modifierExtension",
-        listSerialDescriptor(Extension.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "identifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
-      element("orderable", KotlinBoolean.serializer().descriptor, isOptional = true)
-      element("_orderable", Element.serializer().descriptor, isOptional = true)
-      element("referencedItem", Reference.serializer().descriptor, isOptional = true)
-      element(
-        "additionalIdentifier",
-        listSerialDescriptor(Identifier.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "classification",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element("status", String.serializer().descriptor, isOptional = true)
-      element("_status", Element.serializer().descriptor, isOptional = true)
-      element("validityPeriod", Period.serializer().descriptor, isOptional = true)
-      element("validTo", String.serializer().descriptor, isOptional = true)
-      element("_validTo", Element.serializer().descriptor, isOptional = true)
-      element("lastUpdated", String.serializer().descriptor, isOptional = true)
-      element("_lastUpdated", Element.serializer().descriptor, isOptional = true)
-      element(
-        "additionalCharacteristic",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "additionalClassification",
-        listSerialDescriptor(CodeableConcept.serializer().descriptor),
-        isOptional = true,
-      )
-      element(
-        "relatedEntry",
-        listSerialDescriptor(lazyDescriptor { CatalogEntry.RelatedEntry.serializer().descriptor }),
-        isOptional = true,
-      )
+      buildDescriptor(this)
     }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", String.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", String.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", String.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("orderable", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_orderable", Element.serializer().descriptor, isOptional = true)
+    b.element("referencedItem", Reference.serializer().descriptor, isOptional = true)
+    b.element(
+      "additionalIdentifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "classification",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("status", String.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("validityPeriod", Period.serializer().descriptor, isOptional = true)
+    b.element("validTo", String.serializer().descriptor, isOptional = true)
+    b.element("_validTo", Element.serializer().descriptor, isOptional = true)
+    b.element("lastUpdated", String.serializer().descriptor, isOptional = true)
+    b.element("_lastUpdated", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "additionalCharacteristic",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "additionalClassification",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "relatedEntry",
+      listSerialDescriptor(lazyDescriptor { CatalogEntry.RelatedEntry.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
 
   override fun deserialize(decoder: Decoder): CatalogEntry =
     decoder.decodeStructure(descriptor) { deserializeJson(this) }
 
   override fun serialize(encoder: Encoder, `value`: CatalogEntry) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "CatalogEntry")
+      serializeJson(this, value)
+    }
   }
 
   internal fun deserializeJson(decoder: CompositeDecoder): CatalogEntry {
@@ -342,9 +350,8 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: CatalogEntry) {
+  internal fun serializeJson(encoder: CompositeEncoder, `value`: CatalogEntry) {
     val __desc = descriptor
-    encoder.encodeStringElement(__desc, 0, "CatalogEntry")
     (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
     (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
     ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
@@ -450,4 +457,16 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
     public val relatedEntrySer: KSerializer<List<CatalogEntry.RelatedEntry>> =
       ListSerializer(Hoisted.relatedEntrySerInner)
   }
+}
+
+internal object CatalogEntryPolymorphicSerializer : KSerializer<CatalogEntry> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("CatalogEntry") { CatalogEntrySerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: CatalogEntry) {
+    encoder.encodeStructure(descriptor) { CatalogEntrySerializer.serializeJson(this, value) }
+  }
+
+  override fun deserialize(decoder: Decoder): CatalogEntry =
+    decoder.decodeStructure(descriptor) { CatalogEntrySerializer.deserializeJson(this) }
 }

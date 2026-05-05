@@ -94,18 +94,20 @@ internal object DataRequirementCodeFilterSerializer : KSerializer<DataRequiremen
     var code: List<Coding>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> path = decoder.decodeStringElement(__desc, 2)
-        3 -> _path = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.pathSer, null)
-        4 -> searchParam = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> path = decoder.decodeStringElement(__desc, __i)
+        3 -> _path = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
+        4 -> searchParam = decoder.decodeStringElement(__desc, __i)
         5 ->
-          _searchParam = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.pathSer, null)
-        6 -> valueSet = decoder.decodeStringElement(__desc, 6)
-        7 -> _valueSet = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.pathSer, null)
-        8 -> code = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.codeSer, null)
+          _searchParam =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
+        6 -> valueSet = decoder.decodeStringElement(__desc, __i)
+        7 ->
+          _valueSet = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
+        8 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding CodeFilter: " + __i)
       }
@@ -203,25 +205,26 @@ internal object DataRequirementDateFilterSerializer : KSerializer<DataRequiremen
     var valueDuration: Duration? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> path = decoder.decodeStringElement(__desc, 2)
-        3 -> _path = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.pathSer, null)
-        4 -> searchParam = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> path = decoder.decodeStringElement(__desc, __i)
+        3 -> _path = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
+        4 -> searchParam = decoder.decodeStringElement(__desc, __i)
         5 ->
-          _searchParam = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.pathSer, null)
-        6 -> valueDateTime = decoder.decodeStringElement(__desc, 6)
+          _searchParam =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
+        6 -> valueDateTime = decoder.decodeStringElement(__desc, __i)
         7 ->
           _valueDateTime =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.pathSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
         8 ->
           valuePeriod =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.valuePeriodSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valuePeriodSer, null)
         9 ->
           valueDuration =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.valueDurationSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueDurationSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding DateFilter: " + __i)
       }
@@ -316,15 +319,15 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
     var _direction: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> path = decoder.decodeStringElement(__desc, 2)
-        3 -> _path = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.pathSer, null)
-        4 -> direction = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> path = decoder.decodeStringElement(__desc, __i)
+        3 -> _path = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
+        4 -> direction = decoder.decodeStringElement(__desc, __i)
         5 ->
-          _direction = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.pathSer, null)
+          _direction = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Sort: " + __i)
       }
@@ -448,42 +451,48 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
     var sort: List<DataRequirement.Sort>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeStringElement(__desc, 2)
-        3 -> _type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeStringElement(__desc, __i)
+        3 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         4 ->
-          profile = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.profileSer, null)
+          profile = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer, null)
         5 ->
-          _profile = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.profileSer2, null)
+          _profile =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer2, null)
         6 ->
           subjectCodeableConcept =
             decoder.decodeNullableSerializableElement(
               __desc,
-              6,
+              __i,
               Hoisted.subjectCodeableConceptSer,
               null,
             )
         7 ->
           subjectReference =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.subjectReferenceSer, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.subjectReferenceSer,
+              null,
+            )
         8 ->
           mustSupport =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.profileSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer, null)
         9 ->
           _mustSupport =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.profileSer2, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer2, null)
         10 ->
           codeFilter =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.codeFilterSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeFilterSer, null)
         11 ->
           dateFilter =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.dateFilterSer, null)
-        12 -> limit = decoder.decodeIntElement(__desc, 12)
-        13 -> _limit = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.typeSer, null)
-        14 -> sort = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.sortSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dateFilterSer, null)
+        12 -> limit = decoder.decodeIntElement(__desc, __i)
+        13 -> _limit = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        14 -> sort = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.sortSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding DataRequirement: " + __i)
       }

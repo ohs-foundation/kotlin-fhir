@@ -91,19 +91,20 @@ internal object BundleLinkSerializer : KSerializer<Bundle.Link> {
     var _url: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> relation = decoder.decodeStringElement(__desc, 3)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> relation = decoder.decodeStringElement(__desc, __i)
         4 ->
           _relation =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.relationSer, null)
-        5 -> url = decoder.decodeStringElement(__desc, 5)
-        6 -> _url = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.relationSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.relationSer, null)
+        5 -> url = decoder.decodeStringElement(__desc, __i)
+        6 ->
+          _url = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.relationSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Link: " + __i)
       }
@@ -204,24 +205,28 @@ internal object BundleEntrySerializer : KSerializer<Bundle.Entry> {
     var response: Bundle.Entry.Response? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> link = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.linkSer, null)
-        4 -> fullUrl = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> link = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.linkSer, null)
+        4 -> fullUrl = decoder.decodeStringElement(__desc, __i)
         5 ->
-          _fullUrl = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.fullUrlSer, null)
+          _fullUrl =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.fullUrlSer, null)
         6 ->
-          resource = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.resourceSer, null)
-        7 -> search = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.searchSer, null)
+          resource =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.resourceSer, null)
+        7 ->
+          search = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.searchSer, null)
         8 ->
-          request = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.requestSer, null)
+          request = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.requestSer, null)
         9 ->
-          response = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.responseSer, null)
+          response =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.responseSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Entry: " + __i)
       }
@@ -318,18 +323,18 @@ internal object BundleEntrySearchSerializer : KSerializer<Bundle.Entry.Search> {
     var _score: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> mode = decoder.decodeStringElement(__desc, 3)
-        4 -> _mode = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.modeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> mode = decoder.decodeStringElement(__desc, __i)
+        4 -> _mode = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.modeSer, null)
         5 ->
-          score = decoder.decodeNullableSerializableElement(__desc, 5, BigDecimalSerializer, null)
-        6 -> _score = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.modeSer, null)
+          score = decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        6 -> _score = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.modeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Search: " + __i)
       }
@@ -426,32 +431,33 @@ internal object BundleEntryRequestSerializer : KSerializer<Bundle.Entry.Request>
     var _ifNoneExist: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> method = decoder.decodeStringElement(__desc, 3)
-        4 -> _method = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.methodSer, null)
-        5 -> url = decoder.decodeStringElement(__desc, 5)
-        6 -> _url = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.methodSer, null)
-        7 -> ifNoneMatch = decoder.decodeStringElement(__desc, 7)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> method = decoder.decodeStringElement(__desc, __i)
+        4 ->
+          _method = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.methodSer, null)
+        5 -> url = decoder.decodeStringElement(__desc, __i)
+        6 -> _url = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.methodSer, null)
+        7 -> ifNoneMatch = decoder.decodeStringElement(__desc, __i)
         8 ->
           _ifNoneMatch =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.methodSer, null)
-        9 -> ifModifiedSince = decoder.decodeStringElement(__desc, 9)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.methodSer, null)
+        9 -> ifModifiedSince = decoder.decodeStringElement(__desc, __i)
         10 ->
           _ifModifiedSince =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.methodSer, null)
-        11 -> ifMatch = decoder.decodeStringElement(__desc, 11)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.methodSer, null)
+        11 -> ifMatch = decoder.decodeStringElement(__desc, __i)
         12 ->
-          _ifMatch = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.methodSer, null)
-        13 -> ifNoneExist = decoder.decodeStringElement(__desc, 13)
+          _ifMatch = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.methodSer, null)
+        13 -> ifNoneExist = decoder.decodeStringElement(__desc, __i)
         14 ->
           _ifNoneExist =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.methodSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.methodSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Request: " + __i)
       }
@@ -560,26 +566,28 @@ internal object BundleEntryResponseSerializer : KSerializer<Bundle.Entry.Respons
     var outcome: Resource? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> status = decoder.decodeStringElement(__desc, 3)
-        4 -> _status = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.statusSer, null)
-        5 -> location = decoder.decodeStringElement(__desc, 5)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> status = decoder.decodeStringElement(__desc, __i)
+        4 ->
+          _status = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusSer, null)
+        5 -> location = decoder.decodeStringElement(__desc, __i)
         6 ->
-          _location = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.statusSer, null)
-        7 -> etag = decoder.decodeStringElement(__desc, 7)
-        8 -> _etag = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.statusSer, null)
-        9 -> lastModified = decoder.decodeStringElement(__desc, 9)
+          _location =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusSer, null)
+        7 -> etag = decoder.decodeStringElement(__desc, __i)
+        8 -> _etag = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusSer, null)
+        9 -> lastModified = decoder.decodeStringElement(__desc, __i)
         10 ->
           _lastModified =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.statusSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusSer, null)
         11 ->
-          outcome = decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.outcomeSer, null)
+          outcome = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.outcomeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Response: " + __i)
       }
@@ -669,17 +677,21 @@ internal object BundleSerializer : KSerializer<Bundle> {
   }
 
   override fun deserialize(decoder: Decoder): Bundle =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: Bundle) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "Bundle")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): Bundle {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): Bundle {
+    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -697,39 +709,40 @@ internal object BundleSerializer : KSerializer<Bundle> {
     var entry: List<Bundle.Entry>? = null
     var signature: Signature? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.identifierSer, null)
-        8 -> type = decoder.decodeStringElement(__desc, 8)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        7 -> type = decoder.decodeStringElement(__desc, __i)
+        8 ->
           _type =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.implicitRulesSer, null)
-        10 -> timestamp = decoder.decodeStringElement(__desc, 10)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        9 -> timestamp = decoder.decodeStringElement(__desc, __i)
+        10 ->
           _timestamp =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.implicitRulesSer, null)
-        12 -> total = decoder.decodeIntElement(__desc, 12)
-        13 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        11 -> total = decoder.decodeIntElement(__desc, __i)
+        12 ->
           _total =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
-        14 -> link = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.linkSer, null)
-        15 -> entry = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.entrySer, null)
-        16 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        13 -> link = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.linkSer, null)
+        14 -> entry = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.entrySer, null)
+        15 ->
           signature =
-            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.signatureSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.signatureSer, null)
         else -> throw SerializationException("Unexpected index decoding Bundle: " + __i)
       }
     }
@@ -748,39 +761,46 @@ internal object BundleSerializer : KSerializer<Bundle> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: Bundle) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: Bundle,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
     (value.identifier)?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.identifierSer, it)
+      encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.identifierSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 7 + __off, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.timestamp?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 10, it) }
+    ((value.timestamp?.value?.toString()))?.let {
+      encoder.encodeStringElement(__desc, 9 + __off, it)
+    }
     (value.timestamp?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.total?.value))?.let { encoder.encodeIntElement(__desc, 12, it) }
+    ((value.total?.value))?.let { encoder.encodeIntElement(__desc, 11 + __off, it) }
     (value.total?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.link.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.linkSer, value.link)
+      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.linkSer, value.link)
     if (value.entry.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.entrySer, value.entry)
+      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.entrySer, value.entry)
     (value.signature)?.let {
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.signatureSer, it)
+      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.signatureSer, it)
     }
   }
 
@@ -808,9 +828,11 @@ internal object BundlePolymorphicSerializer : KSerializer<Bundle> {
     buildClassSerialDescriptor("Bundle") { BundleSerializer.buildDescriptor(this) }
 
   override fun serialize(encoder: Encoder, `value`: Bundle) {
-    encoder.encodeStructure(descriptor) { BundleSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      BundleSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): Bundle =
-    decoder.decodeStructure(descriptor) { BundleSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { BundleSerializer.deserializeJson(this, descriptor, 0) }
 }

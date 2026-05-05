@@ -163,78 +163,83 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     var _offset: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           boundsDuration =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.boundsDurationSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.boundsDurationSer, null)
         3 ->
           boundsRange =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.boundsRangeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.boundsRangeSer, null)
         4 ->
           boundsPeriod =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.boundsPeriodSer, null)
-        5 -> count = decoder.decodeIntElement(__desc, 5)
-        6 -> _count = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.countSer, null)
-        7 -> countMax = decoder.decodeIntElement(__desc, 7)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.boundsPeriodSer, null)
+        5 -> count = decoder.decodeIntElement(__desc, __i)
+        6 -> _count = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
+        7 -> countMax = decoder.decodeIntElement(__desc, __i)
         8 ->
-          _countMax = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.countSer, null)
+          _countMax = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
         9 ->
           duration =
-            decoder.decodeNullableSerializableElement(__desc, 9, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         10 ->
-          _duration = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.countSer, null)
+          _duration = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
         11 ->
           durationMax =
-            decoder.decodeNullableSerializableElement(__desc, 11, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         12 ->
           _durationMax =
-            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.countSer, null)
-        13 -> durationUnit = decoder.decodeStringElement(__desc, 13)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
+        13 -> durationUnit = decoder.decodeStringElement(__desc, __i)
         14 ->
           _durationUnit =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.countSer, null)
-        15 -> frequency = decoder.decodeIntElement(__desc, 15)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
+        15 -> frequency = decoder.decodeIntElement(__desc, __i)
         16 ->
-          _frequency = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.countSer, null)
-        17 -> frequencyMax = decoder.decodeIntElement(__desc, 17)
+          _frequency =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
+        17 -> frequencyMax = decoder.decodeIntElement(__desc, __i)
         18 ->
           _frequencyMax =
-            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.countSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
         19 ->
-          period = decoder.decodeNullableSerializableElement(__desc, 19, BigDecimalSerializer, null)
+          period =
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         20 ->
-          _period = decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.countSer, null)
+          _period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
         21 ->
           periodMax =
-            decoder.decodeNullableSerializableElement(__desc, 21, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         22 ->
-          _periodMax = decoder.decodeNullableSerializableElement(__desc, 22, Hoisted.countSer, null)
-        23 -> periodUnit = decoder.decodeStringElement(__desc, 23)
+          _periodMax =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
+        23 -> periodUnit = decoder.decodeStringElement(__desc, __i)
         24 ->
           _periodUnit =
-            decoder.decodeNullableSerializableElement(__desc, 24, Hoisted.countSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
         25 ->
           dayOfWeek =
-            decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.dayOfWeekSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dayOfWeekSer, null)
         26 ->
           _dayOfWeek =
-            decoder.decodeNullableSerializableElement(__desc, 26, Hoisted.dayOfWeekSer2, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dayOfWeekSer2, null)
         27 ->
           timeOfDay =
-            decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.timeOfDaySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.timeOfDaySer, null)
         28 ->
           _timeOfDay =
-            decoder.decodeNullableSerializableElement(__desc, 28, Hoisted.dayOfWeekSer2, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dayOfWeekSer2, null)
         29 ->
-          `when` = decoder.decodeNullableSerializableElement(__desc, 29, Hoisted.dayOfWeekSer, null)
+          `when` =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dayOfWeekSer, null)
         30 ->
-          _when = decoder.decodeNullableSerializableElement(__desc, 30, Hoisted.dayOfWeekSer2, null)
-        31 -> offset = decoder.decodeIntElement(__desc, 31)
+          _when =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dayOfWeekSer2, null)
+        31 -> offset = decoder.decodeIntElement(__desc, __i)
         32 ->
-          _offset = decoder.decodeNullableSerializableElement(__desc, 32, Hoisted.countSer, null)
+          _offset = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Repeat: " + __i)
       }
@@ -434,17 +439,19 @@ internal object TimingSerializer : KSerializer<Timing> {
     var code: CodeableConcept? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> event = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.eventSer, null)
-        4 -> _event = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.eventSer2, null)
-        5 -> repeat = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.repeatSer, null)
-        6 -> code = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> event = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eventSer, null)
+        4 ->
+          _event = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eventSer2, null)
+        5 ->
+          repeat = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.repeatSer, null)
+        6 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Timing: " + __i)
       }

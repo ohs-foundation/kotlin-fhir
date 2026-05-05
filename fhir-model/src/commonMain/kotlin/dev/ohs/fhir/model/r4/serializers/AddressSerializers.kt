@@ -108,32 +108,33 @@ internal object AddressSerializer : KSerializer<Address> {
     var period: Period? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> use = decoder.decodeStringElement(__desc, 2)
-        3 -> _use = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.useSer, null)
-        4 -> type = decoder.decodeStringElement(__desc, 4)
-        5 -> _type = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.useSer, null)
-        6 -> text = decoder.decodeStringElement(__desc, 6)
-        7 -> _text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.useSer, null)
-        8 -> line = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.lineSer, null)
-        9 -> _line = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.lineSer2, null)
-        10 -> city = decoder.decodeStringElement(__desc, 10)
-        11 -> _city = decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.useSer, null)
-        12 -> district = decoder.decodeStringElement(__desc, 12)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> use = decoder.decodeStringElement(__desc, __i)
+        3 -> _use = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        4 -> type = decoder.decodeStringElement(__desc, __i)
+        5 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        6 -> text = decoder.decodeStringElement(__desc, __i)
+        7 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        8 -> line = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lineSer, null)
+        9 -> _line = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lineSer2, null)
+        10 -> city = decoder.decodeStringElement(__desc, __i)
+        11 -> _city = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        12 -> district = decoder.decodeStringElement(__desc, __i)
         13 ->
-          _district = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.useSer, null)
-        14 -> state = decoder.decodeStringElement(__desc, 14)
-        15 -> _state = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.useSer, null)
-        16 -> postalCode = decoder.decodeStringElement(__desc, 16)
+          _district = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        14 -> state = decoder.decodeStringElement(__desc, __i)
+        15 -> _state = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        16 -> postalCode = decoder.decodeStringElement(__desc, __i)
         17 ->
-          _postalCode = decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.useSer, null)
-        18 -> country = decoder.decodeStringElement(__desc, 18)
-        19 -> _country = decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.useSer, null)
+          _postalCode = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        18 -> country = decoder.decodeStringElement(__desc, __i)
+        19 ->
+          _country = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
         20 ->
-          period = decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Address: " + __i)
       }

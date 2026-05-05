@@ -89,25 +89,25 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
     var _text: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           authorReference =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.authorReferenceSer, null)
-        3 -> authorString = decoder.decodeStringElement(__desc, 3)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorReferenceSer, null)
+        3 -> authorString = decoder.decodeStringElement(__desc, __i)
         4 ->
           _authorString =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.authorStringSer, null)
-        5 -> time = decoder.decodeStringElement(__desc, 5)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorStringSer, null)
+        5 -> time = decoder.decodeStringElement(__desc, __i)
         6 ->
           _time =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.authorStringSer, null)
-        7 -> text = decoder.decodeStringElement(__desc, 7)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorStringSer, null)
+        7 -> text = decoder.decodeStringElement(__desc, __i)
         8 ->
           _text =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.authorStringSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorStringSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Annotation: " + __i)
       }

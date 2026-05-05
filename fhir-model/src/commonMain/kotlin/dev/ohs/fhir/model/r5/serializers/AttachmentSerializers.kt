@@ -125,62 +125,64 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     var _pages: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> contentType = decoder.decodeStringElement(__desc, 2)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> contentType = decoder.decodeStringElement(__desc, __i)
         3 ->
           _contentType =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.contentTypeSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.contentTypeSer, null)
-        6 -> `data` = decoder.decodeStringElement(__desc, 6)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        6 -> `data` = decoder.decodeStringElement(__desc, __i)
         7 ->
-          _data = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.contentTypeSer, null)
-        8 -> url = decoder.decodeStringElement(__desc, 8)
+          _data =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        8 -> url = decoder.decodeStringElement(__desc, __i)
         9 ->
-          _url = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.contentTypeSer, null)
-        10 -> size = decoder.decodeStringElement(__desc, 10)
+          _url =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        10 -> size = decoder.decodeStringElement(__desc, __i)
         11 ->
           _size =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.contentTypeSer, null)
-        12 -> hash = decoder.decodeStringElement(__desc, 12)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        12 -> hash = decoder.decodeStringElement(__desc, __i)
         13 ->
           _hash =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.contentTypeSer, null)
-        14 -> title = decoder.decodeStringElement(__desc, 14)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        14 -> title = decoder.decodeStringElement(__desc, __i)
         15 ->
           _title =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.contentTypeSer, null)
-        16 -> creation = decoder.decodeStringElement(__desc, 16)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        16 -> creation = decoder.decodeStringElement(__desc, __i)
         17 ->
           _creation =
-            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.contentTypeSer, null)
-        18 -> height = decoder.decodeIntElement(__desc, 18)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        18 -> height = decoder.decodeIntElement(__desc, __i)
         19 ->
           _height =
-            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.contentTypeSer, null)
-        20 -> width = decoder.decodeIntElement(__desc, 20)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        20 -> width = decoder.decodeIntElement(__desc, __i)
         21 ->
           _width =
-            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.contentTypeSer, null)
-        22 -> frames = decoder.decodeIntElement(__desc, 22)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        22 -> frames = decoder.decodeIntElement(__desc, __i)
         23 ->
           _frames =
-            decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.contentTypeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
         24 ->
           duration =
-            decoder.decodeNullableSerializableElement(__desc, 24, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         25 ->
           _duration =
-            decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.contentTypeSer, null)
-        26 -> pages = decoder.decodeIntElement(__desc, 26)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+        26 -> pages = decoder.decodeIntElement(__desc, __i)
         27 ->
           _pages =
-            decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.contentTypeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Attachment: " + __i)
       }

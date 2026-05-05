@@ -98,24 +98,25 @@ internal object SignatureSerializer : KSerializer<Signature> {
     var _data: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.typeSer, null)
-        3 -> `when` = decoder.decodeStringElement(__desc, 3)
-        4 -> _when = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.whenSer, null)
-        5 -> who = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.whoSer, null)
-        6 -> onBehalfOf = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.whoSer, null)
-        7 -> targetFormat = decoder.decodeStringElement(__desc, 7)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        3 -> `when` = decoder.decodeStringElement(__desc, __i)
+        4 -> _when = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whenSer, null)
+        5 -> who = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whoSer, null)
+        6 ->
+          onBehalfOf = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whoSer, null)
+        7 -> targetFormat = decoder.decodeStringElement(__desc, __i)
         8 ->
           _targetFormat =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.whenSer, null)
-        9 -> sigFormat = decoder.decodeStringElement(__desc, 9)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whenSer, null)
+        9 -> sigFormat = decoder.decodeStringElement(__desc, __i)
         10 ->
-          _sigFormat = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.whenSer, null)
-        11 -> `data` = decoder.decodeStringElement(__desc, 11)
-        12 -> _data = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.whenSer, null)
+          _sigFormat = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whenSer, null)
+        11 -> `data` = decoder.decodeStringElement(__desc, __i)
+        12 -> _data = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whenSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Signature: " + __i)
       }

@@ -38,6 +38,7 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Boolean as KotlinBoolean
+import kotlin.Int
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
@@ -100,25 +101,40 @@ internal object DeviceDefinitionUdiDeviceIdentifierSerializer :
     var _jurisdiction: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> deviceIdentifier = decoder.decodeStringElement(__desc, 3)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> deviceIdentifier = decoder.decodeStringElement(__desc, __i)
         4 ->
           _deviceIdentifier =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.deviceIdentifierSer, null)
-        5 -> issuer = decoder.decodeStringElement(__desc, 5)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.deviceIdentifierSer,
+              null,
+            )
+        5 -> issuer = decoder.decodeStringElement(__desc, __i)
         6 ->
           _issuer =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.deviceIdentifierSer, null)
-        7 -> jurisdiction = decoder.decodeStringElement(__desc, 7)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.deviceIdentifierSer,
+              null,
+            )
+        7 -> jurisdiction = decoder.decodeStringElement(__desc, __i)
         8 ->
           _jurisdiction =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.deviceIdentifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.deviceIdentifierSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else ->
           throw SerializationException("Unexpected index decoding UdiDeviceIdentifier: " + __i)
@@ -206,17 +222,17 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
     var _type: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> name = decoder.decodeStringElement(__desc, 3)
-        4 -> _name = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.nameSer, null)
-        5 -> type = decoder.decodeStringElement(__desc, 5)
-        6 -> _type = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> name = decoder.decodeStringElement(__desc, __i)
+        4 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+        5 -> type = decoder.decodeStringElement(__desc, __i)
+        6 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding DeviceName: " + __i)
       }
@@ -296,21 +312,21 @@ internal object DeviceDefinitionSpecializationSerializer :
     var _version: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> systemType = decoder.decodeStringElement(__desc, 3)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> systemType = decoder.decodeStringElement(__desc, __i)
         4 ->
           _systemType =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.systemTypeSer, null)
-        5 -> version = decoder.decodeStringElement(__desc, 5)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemTypeSer, null)
+        5 -> version = decoder.decodeStringElement(__desc, __i)
         6 ->
           _version =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.systemTypeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemTypeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Specialization: " + __i)
       }
@@ -389,17 +405,17 @@ internal object DeviceDefinitionCapabilitySerializer : KSerializer<DeviceDefinit
     var description: List<CodeableConcept>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         4 ->
           description =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Capability: " + __i)
       }
@@ -481,20 +497,20 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
     var valueCode: List<CodeableConcept>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         4 ->
           valueQuantity =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.valueQuantitySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueQuantitySer, null)
         5 ->
           valueCode =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.valueCodeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueCodeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Property: " + __i)
       }
@@ -580,24 +596,24 @@ internal object DeviceDefinitionMaterialSerializer : KSerializer<DeviceDefinitio
     var _allergenicIndicator: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         3 ->
           substance =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.substanceSer, null)
-        4 -> alternate = decoder.decodeBooleanElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.substanceSer, null)
+        4 -> alternate = decoder.decodeBooleanElement(__desc, __i)
         5 ->
           _alternate =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.alternateSer, null)
-        6 -> allergenicIndicator = decoder.decodeBooleanElement(__desc, 6)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.alternateSer, null)
+        6 -> allergenicIndicator = decoder.decodeBooleanElement(__desc, __i)
         7 ->
           _allergenicIndicator =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.alternateSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.alternateSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Material: " + __i)
       }
@@ -761,17 +777,21 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
   }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "DeviceDefinition")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): DeviceDefinition {
+    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -811,123 +831,129 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
     var parentDevice: Reference? = null
     var material: List<DeviceDefinition.Material>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
-        12 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        11 ->
           udiDeviceIdentifier =
             decoder.decodeNullableSerializableElement(
               __desc,
-              12,
+              __i,
               Hoisted.udiDeviceIdentifierSer,
               null,
             )
-        13 -> manufacturerString = decoder.decodeStringElement(__desc, 13)
-        14 ->
+        12 -> manufacturerString = decoder.decodeStringElement(__desc, __i)
+        13 ->
           _manufacturerString =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.implicitRulesSer, null)
-        15 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        14 ->
           manufacturerReference =
             decoder.decodeNullableSerializableElement(
               __desc,
-              15,
+              __i,
               Hoisted.manufacturerReferenceSer,
               null,
             )
-        16 ->
+        15 ->
           deviceName =
-            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.deviceNameSer, null)
-        17 -> modelNumber = decoder.decodeStringElement(__desc, 17)
-        18 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.deviceNameSer, null)
+        16 -> modelNumber = decoder.decodeStringElement(__desc, __i)
+        17 ->
           _modelNumber =
-            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.implicitRulesSer, null)
-        19 -> type = decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.typeSer, null)
-        20 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        18 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        19 ->
           specialization =
-            decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.specializationSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.specializationSer, null)
+        20 ->
+          version = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionSer, null)
         21 ->
-          version = decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.versionSer, null)
-        22 ->
           _version =
-            decoder.decodeNullableSerializableElement(__desc, 22, Hoisted.versionSer2, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionSer2, null)
+        22 ->
+          safety = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.safetySer, null)
         23 ->
-          safety = decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.safetySer, null)
-        24 ->
           shelfLifeStorage =
-            decoder.decodeNullableSerializableElement(__desc, 24, Hoisted.shelfLifeStorageSer, null)
-        25 ->
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.shelfLifeStorageSer,
+              null,
+            )
+        24 ->
           physicalCharacteristics =
             decoder.decodeNullableSerializableElement(
               __desc,
-              25,
+              __i,
               Hoisted.physicalCharacteristicsSer,
               null,
             )
-        26 ->
+        25 ->
           languageCode =
-            decoder.decodeNullableSerializableElement(__desc, 26, Hoisted.safetySer, null)
-        27 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.safetySer, null)
+        26 ->
           capability =
-            decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.capabilitySer, null)
-        28 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.capabilitySer, null)
+        27 ->
           `property` =
-            decoder.decodeNullableSerializableElement(__desc, 28, Hoisted.propertySer, null)
-        29 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.propertySer, null)
+        28 ->
           owner =
             decoder.decodeNullableSerializableElement(
               __desc,
-              29,
+              __i,
               Hoisted.manufacturerReferenceSer,
               null,
             )
-        30 ->
-          contact = decoder.decodeNullableSerializableElement(__desc, 30, Hoisted.contactSer, null)
-        31 -> url = decoder.decodeStringElement(__desc, 31)
-        32 ->
+        29 ->
+          contact = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contactSer, null)
+        30 -> url = decoder.decodeStringElement(__desc, __i)
+        31 ->
           _url =
-            decoder.decodeNullableSerializableElement(__desc, 32, Hoisted.implicitRulesSer, null)
-        33 -> onlineInformation = decoder.decodeStringElement(__desc, 33)
-        34 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        32 -> onlineInformation = decoder.decodeStringElement(__desc, __i)
+        33 ->
           _onlineInformation =
-            decoder.decodeNullableSerializableElement(__desc, 34, Hoisted.implicitRulesSer, null)
-        35 -> note = decoder.decodeNullableSerializableElement(__desc, 35, Hoisted.noteSer, null)
-        36 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        34 -> note = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.noteSer, null)
+        35 ->
           quantity =
-            decoder.decodeNullableSerializableElement(__desc, 36, Hoisted.quantitySer, null)
-        37 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.quantitySer, null)
+        36 ->
           parentDevice =
             decoder.decodeNullableSerializableElement(
               __desc,
-              37,
+              __i,
               Hoisted.manufacturerReferenceSer,
               null,
             )
-        38 ->
+        37 ->
           material =
-            decoder.decodeNullableSerializableElement(__desc, 38, Hoisted.materialSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.materialSer, null)
         else -> throw SerializationException("Unexpected index decoding DeviceDefinition: " + __i)
       }
     }
@@ -972,100 +998,122 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: DeviceDefinition,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
     if (value.udiDeviceIdentifier.isNotEmpty())
       encoder.encodeSerializableElement(
         __desc,
-        12,
+        11 + __off,
         Hoisted.udiDeviceIdentifierSer,
         value.udiDeviceIdentifier,
       )
     when (val __d = value.manufacturer) {
       null -> {}
       is DeviceDefinition.Manufacturer.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 13, it) }
+        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 12 + __off, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 14, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.implicitRulesSer, it)
         }
       }
       is DeviceDefinition.Manufacturer.Reference -> {
-        encoder.encodeSerializableElement(__desc, 15, Hoisted.manufacturerReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          __desc,
+          14 + __off,
+          Hoisted.manufacturerReferenceSer,
+          __d.value,
+        )
       }
     }
     if (value.deviceName.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.deviceNameSer, value.deviceName)
-    ((value.modelNumber?.value))?.let { encoder.encodeStringElement(__desc, 17, it) }
+      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.deviceNameSer, value.deviceName)
+    ((value.modelNumber?.value))?.let { encoder.encodeStringElement(__desc, 16 + __off, it) }
     (value.modelNumber?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 18, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 19, Hoisted.typeSer, it) }
+    (value.type)?.let { encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.typeSer, it) }
     if (value.specialization.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 20, Hoisted.specializationSer, value.specialization)
+      encoder.encodeSerializableElement(
+        __desc,
+        19 + __off,
+        Hoisted.specializationSer,
+        value.specialization,
+      )
     (value.version.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 21, Hoisted.versionSer, it)
+      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.versionSer, it)
     }
     (value.version.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 22, Hoisted.versionSer2, it)
+      encoder.encodeSerializableElement(__desc, 21 + __off, Hoisted.versionSer2, it)
     }
     if (value.safety.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 23, Hoisted.safetySer, value.safety)
+      encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.safetySer, value.safety)
     if (value.shelfLifeStorage.isNotEmpty())
       encoder.encodeSerializableElement(
         __desc,
-        24,
+        23 + __off,
         Hoisted.shelfLifeStorageSer,
         value.shelfLifeStorage,
       )
     (value.physicalCharacteristics)?.let {
-      encoder.encodeSerializableElement(__desc, 25, Hoisted.physicalCharacteristicsSer, it)
+      encoder.encodeSerializableElement(__desc, 24 + __off, Hoisted.physicalCharacteristicsSer, it)
     }
     if (value.languageCode.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 26, Hoisted.safetySer, value.languageCode)
+      encoder.encodeSerializableElement(__desc, 25 + __off, Hoisted.safetySer, value.languageCode)
     if (value.capability.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 27, Hoisted.capabilitySer, value.capability)
+      encoder.encodeSerializableElement(__desc, 26 + __off, Hoisted.capabilitySer, value.capability)
     if (value.`property`.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 28, Hoisted.propertySer, value.`property`)
+      encoder.encodeSerializableElement(__desc, 27 + __off, Hoisted.propertySer, value.`property`)
     (value.owner)?.let {
-      encoder.encodeSerializableElement(__desc, 29, Hoisted.manufacturerReferenceSer, it)
+      encoder.encodeSerializableElement(__desc, 28 + __off, Hoisted.manufacturerReferenceSer, it)
     }
     if (value.contact.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 30, Hoisted.contactSer, value.contact)
-    ((value.url?.value))?.let { encoder.encodeStringElement(__desc, 31, it) }
+      encoder.encodeSerializableElement(__desc, 29 + __off, Hoisted.contactSer, value.contact)
+    ((value.url?.value))?.let { encoder.encodeStringElement(__desc, 30 + __off, it) }
     (value.url?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 32, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 31 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.onlineInformation?.value))?.let { encoder.encodeStringElement(__desc, 33, it) }
+    ((value.onlineInformation?.value))?.let { encoder.encodeStringElement(__desc, 32 + __off, it) }
     (value.onlineInformation?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 34, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 33 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 35, Hoisted.noteSer, value.note)
-    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 36, Hoisted.quantitySer, it) }
+      encoder.encodeSerializableElement(__desc, 34 + __off, Hoisted.noteSer, value.note)
+    (value.quantity)?.let {
+      encoder.encodeSerializableElement(__desc, 35 + __off, Hoisted.quantitySer, it)
+    }
     (value.parentDevice)?.let {
-      encoder.encodeSerializableElement(__desc, 37, Hoisted.manufacturerReferenceSer, it)
+      encoder.encodeSerializableElement(__desc, 36 + __off, Hoisted.manufacturerReferenceSer, it)
     }
     if (value.material.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 38, Hoisted.materialSer, value.material)
+      encoder.encodeSerializableElement(__desc, 37 + __off, Hoisted.materialSer, value.material)
   }
 
   private object Hoisted {
@@ -1167,9 +1215,13 @@ internal object DeviceDefinitionPolymorphicSerializer : KSerializer<DeviceDefini
     }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition) {
-    encoder.encodeStructure(descriptor) { DeviceDefinitionSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      DeviceDefinitionSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition =
-    decoder.decodeStructure(descriptor) { DeviceDefinitionSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) {
+      DeviceDefinitionSerializer.deserializeJson(this, descriptor, 0)
+    }
 }

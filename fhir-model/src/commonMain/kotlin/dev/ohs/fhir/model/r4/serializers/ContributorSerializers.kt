@@ -79,16 +79,16 @@ internal object ContributorSerializer : KSerializer<Contributor> {
     var contact: List<ContactDetail>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeStringElement(__desc, 2)
-        3 -> _type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
-        4 -> name = decoder.decodeStringElement(__desc, 4)
-        5 -> _name = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeStringElement(__desc, __i)
+        3 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        4 -> name = decoder.decodeStringElement(__desc, __i)
+        5 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         6 ->
-          contact = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.contactSer, null)
+          contact = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contactSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Contributor: " + __i)
       }

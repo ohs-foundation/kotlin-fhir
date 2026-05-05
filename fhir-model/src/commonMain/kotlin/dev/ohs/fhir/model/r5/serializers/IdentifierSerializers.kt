@@ -86,21 +86,22 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
     var assigner: Reference? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> use = decoder.decodeStringElement(__desc, 2)
-        3 -> _use = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.useSer, null)
-        4 -> type = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.typeSer, null)
-        5 -> system = decoder.decodeStringElement(__desc, 5)
-        6 -> _system = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.useSer, null)
-        7 -> `value` = decoder.decodeStringElement(__desc, 7)
-        8 -> _value = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.useSer, null)
-        9 -> period = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.periodSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> use = decoder.decodeStringElement(__desc, __i)
+        3 -> _use = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        4 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        5 -> system = decoder.decodeStringElement(__desc, __i)
+        6 -> _system = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        7 -> `value` = decoder.decodeStringElement(__desc, __i)
+        8 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        9 ->
+          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
         10 ->
           assigner =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.assignerSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.assignerSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Identifier: " + __i)
       }

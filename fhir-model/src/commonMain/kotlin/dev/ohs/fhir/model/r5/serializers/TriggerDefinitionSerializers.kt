@@ -120,36 +120,37 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
     var condition: Expression? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeStringElement(__desc, 2)
-        3 -> _type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
-        4 -> name = decoder.decodeStringElement(__desc, 4)
-        5 -> _name = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.typeSer, null)
-        6 -> code = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.codeSer, null)
-        7 -> subscriptionTopic = decoder.decodeStringElement(__desc, 7)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeStringElement(__desc, __i)
+        3 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        4 -> name = decoder.decodeStringElement(__desc, __i)
+        5 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        6 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
+        7 -> subscriptionTopic = decoder.decodeStringElement(__desc, __i)
         8 ->
           _subscriptionTopic =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         9 ->
           timingTiming =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.timingTimingSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.timingTimingSer, null)
         10 ->
           timingReference =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.timingReferenceSer, null)
-        11 -> timingDate = decoder.decodeStringElement(__desc, 11)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.timingReferenceSer, null)
+        11 -> timingDate = decoder.decodeStringElement(__desc, __i)
         12 ->
-          _timingDate = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.typeSer, null)
-        13 -> timingDateTime = decoder.decodeStringElement(__desc, 13)
+          _timingDate =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        13 -> timingDateTime = decoder.decodeStringElement(__desc, __i)
         14 ->
           _timingDateTime =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.typeSer, null)
-        15 -> `data` = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.dataSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        15 -> `data` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dataSer, null)
         16 ->
           condition =
-            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.conditionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.conditionSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding TriggerDefinition: " + __i)
       }

@@ -66,12 +66,12 @@ internal object RangeSerializer : KSerializer<Range> {
     var high: Quantity? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> low = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.lowSer, null)
-        3 -> high = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.lowSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> low = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowSer, null)
+        3 -> high = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Range: " + __i)
       }

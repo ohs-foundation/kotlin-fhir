@@ -101,29 +101,32 @@ internal object MetaSerializer : KSerializer<Meta> {
     var tag: List<Coding>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> versionId = decoder.decodeStringElement(__desc, 2)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> versionId = decoder.decodeStringElement(__desc, __i)
         3 ->
           _versionId =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.versionIdSer, null)
-        4 -> lastUpdated = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionIdSer, null)
+        4 -> lastUpdated = decoder.decodeStringElement(__desc, __i)
         5 ->
           _lastUpdated =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.versionIdSer, null)
-        6 -> source = decoder.decodeStringElement(__desc, 6)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionIdSer, null)
+        6 -> source = decoder.decodeStringElement(__desc, __i)
         7 ->
-          _source = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.versionIdSer, null)
+          _source =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionIdSer, null)
         8 ->
-          profile = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.profileSer, null)
+          profile = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer, null)
         9 ->
-          _profile = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.profileSer2, null)
+          _profile =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer2, null)
         10 ->
           security =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.securitySer, null)
-        11 -> tag = decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.securitySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.securitySer, null)
+        11 ->
+          tag = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.securitySer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Meta: " + __i)
       }

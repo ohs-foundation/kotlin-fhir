@@ -92,15 +92,15 @@ internal object InvoiceParticipantSerializer : KSerializer<Invoice.Participant> 
     var actor: Reference? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> role = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.roleSer, null)
-        4 -> actor = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.actorSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> role = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.roleSer, null)
+        4 -> actor = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.actorSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Participant: " + __i)
       }
@@ -187,22 +187,22 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
     var priceComponent: List<Invoice.LineItem.PriceComponent>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, __i)
         4 ->
           _sequence =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.sequenceSer, null)
         5 ->
           chargeItemReference =
             decoder.decodeNullableSerializableElement(
               __desc,
-              5,
+              __i,
               Hoisted.chargeItemReferenceSer,
               null,
             )
@@ -210,13 +210,13 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
           chargeItemCodeableConcept =
             decoder.decodeNullableSerializableElement(
               __desc,
-              6,
+              __i,
               Hoisted.chargeItemCodeableConceptSer,
               null,
             )
         7 ->
           priceComponent =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.priceComponentSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.priceComponentSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding LineItem: " + __i)
       }
@@ -325,20 +325,22 @@ internal object InvoiceLineItemPriceComponentSerializer :
     var amount: Money? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeStringElement(__desc, 3)
-        4 -> _type = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.typeSer, null)
-        5 -> code = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeStringElement(__desc, __i)
+        4 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        5 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
         6 ->
-          factor = decoder.decodeNullableSerializableElement(__desc, 6, BigDecimalSerializer, null)
-        7 -> _factor = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.typeSer, null)
-        8 -> amount = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.amountSer, null)
+          factor =
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        7 -> _factor = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        8 ->
+          amount = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding PriceComponent: " + __i)
       }
@@ -460,17 +462,21 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
   }
 
   override fun deserialize(decoder: Decoder): Invoice =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: Invoice) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "Invoice")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): Invoice {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): Invoice {
+    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -502,79 +508,80 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
     var _paymentTerms: Element? = null
     var note: List<Annotation>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
-        12 -> status = decoder.decodeStringElement(__desc, 12)
-        13 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        11 -> status = decoder.decodeStringElement(__desc, __i)
+        12 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
-        14 -> cancelledReason = decoder.decodeStringElement(__desc, 14)
-        15 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        13 -> cancelledReason = decoder.decodeStringElement(__desc, __i)
+        14 ->
           _cancelledReason =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.implicitRulesSer, null)
-        16 -> type = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        15 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        16 ->
+          subject = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subjectSer, null)
         17 ->
-          subject = decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.subjectSer, null)
-        18 ->
           recipient =
-            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.subjectSer, null)
-        19 -> date = decoder.decodeStringElement(__desc, 19)
-        20 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subjectSer, null)
+        18 -> date = decoder.decodeStringElement(__desc, __i)
+        19 ->
           _date =
-            decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.implicitRulesSer, null)
-        21 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        20 ->
           participant =
-            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.participantSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.participantSer, null)
+        21 ->
+          issuer = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subjectSer, null)
         22 ->
-          issuer = decoder.decodeNullableSerializableElement(__desc, 22, Hoisted.subjectSer, null)
+          account = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subjectSer, null)
         23 ->
-          account = decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.subjectSer, null)
-        24 ->
           lineItem =
-            decoder.decodeNullableSerializableElement(__desc, 24, Hoisted.lineItemSer, null)
-        25 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lineItemSer, null)
+        24 ->
           totalPriceComponent =
             decoder.decodeNullableSerializableElement(
               __desc,
-              25,
+              __i,
               Hoisted.totalPriceComponentSer,
               null,
             )
-        26 ->
+        25 ->
           totalNet =
-            decoder.decodeNullableSerializableElement(__desc, 26, Hoisted.totalNetSer, null)
-        27 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.totalNetSer, null)
+        26 ->
           totalGross =
-            decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.totalNetSer, null)
-        28 -> paymentTerms = decoder.decodeStringElement(__desc, 28)
-        29 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.totalNetSer, null)
+        27 -> paymentTerms = decoder.decodeStringElement(__desc, __i)
+        28 ->
           _paymentTerms =
-            decoder.decodeNullableSerializableElement(__desc, 29, Hoisted.implicitRulesSer, null)
-        30 -> note = decoder.decodeNullableSerializableElement(__desc, 30, Hoisted.noteSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        29 -> note = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.noteSer, null)
         else -> throw SerializationException("Unexpected index decoding Invoice: " + __i)
       }
     }
@@ -606,65 +613,90 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: Invoice) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: Invoice,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 12, it) }
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
+    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 11 + __off, it) }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.cancelledReason?.value))?.let { encoder.encodeStringElement(__desc, 14, it) }
+    ((value.cancelledReason?.value))?.let { encoder.encodeStringElement(__desc, 13 + __off, it) }
     (value.cancelledReason?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 16, Hoisted.typeSer, it) }
-    (value.subject)?.let { encoder.encodeSerializableElement(__desc, 17, Hoisted.subjectSer, it) }
-    (value.recipient)?.let { encoder.encodeSerializableElement(__desc, 18, Hoisted.subjectSer, it) }
-    ((value.date?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 19, it) }
+    (value.type)?.let { encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.typeSer, it) }
+    (value.subject)?.let {
+      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.subjectSer, it)
+    }
+    (value.recipient)?.let {
+      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.subjectSer, it)
+    }
+    ((value.date?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 18 + __off, it) }
     (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 20, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 19 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.participant.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 21, Hoisted.participantSer, value.participant)
-    (value.issuer)?.let { encoder.encodeSerializableElement(__desc, 22, Hoisted.subjectSer, it) }
-    (value.account)?.let { encoder.encodeSerializableElement(__desc, 23, Hoisted.subjectSer, it) }
+      encoder.encodeSerializableElement(
+        __desc,
+        20 + __off,
+        Hoisted.participantSer,
+        value.participant,
+      )
+    (value.issuer)?.let {
+      encoder.encodeSerializableElement(__desc, 21 + __off, Hoisted.subjectSer, it)
+    }
+    (value.account)?.let {
+      encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.subjectSer, it)
+    }
     if (value.lineItem.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 24, Hoisted.lineItemSer, value.lineItem)
+      encoder.encodeSerializableElement(__desc, 23 + __off, Hoisted.lineItemSer, value.lineItem)
     if (value.totalPriceComponent.isNotEmpty())
       encoder.encodeSerializableElement(
         __desc,
-        25,
+        24 + __off,
         Hoisted.totalPriceComponentSer,
         value.totalPriceComponent,
       )
-    (value.totalNet)?.let { encoder.encodeSerializableElement(__desc, 26, Hoisted.totalNetSer, it) }
-    (value.totalGross)?.let {
-      encoder.encodeSerializableElement(__desc, 27, Hoisted.totalNetSer, it)
+    (value.totalNet)?.let {
+      encoder.encodeSerializableElement(__desc, 25 + __off, Hoisted.totalNetSer, it)
     }
-    ((value.paymentTerms?.value))?.let { encoder.encodeStringElement(__desc, 28, it) }
+    (value.totalGross)?.let {
+      encoder.encodeSerializableElement(__desc, 26 + __off, Hoisted.totalNetSer, it)
+    }
+    ((value.paymentTerms?.value))?.let { encoder.encodeStringElement(__desc, 27 + __off, it) }
     (value.paymentTerms?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 29, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 28 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 30, Hoisted.noteSer, value.note)
+      encoder.encodeSerializableElement(__desc, 29 + __off, Hoisted.noteSer, value.note)
   }
 
   private object Hoisted {
@@ -722,9 +754,11 @@ internal object InvoicePolymorphicSerializer : KSerializer<Invoice> {
     buildClassSerialDescriptor("Invoice") { InvoiceSerializer.buildDescriptor(this) }
 
   override fun serialize(encoder: Encoder, `value`: Invoice) {
-    encoder.encodeStructure(descriptor) { InvoiceSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      InvoiceSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): Invoice =
-    decoder.decodeStructure(descriptor) { InvoiceSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { InvoiceSerializer.deserializeJson(this, descriptor, 0) }
 }

@@ -109,35 +109,38 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
     var scoring: CodeableConcept? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> height = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.heightSer, null)
-        4 -> width = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.heightSer, null)
-        5 -> depth = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.heightSer, null)
-        6 -> weight = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.heightSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 ->
+          height = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
+        4 -> width = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
+        5 -> depth = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
+        6 ->
+          weight = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
         7 ->
           nominalVolume =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.heightSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
         8 ->
           externalDiameter =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.heightSer, null)
-        9 -> shape = decoder.decodeStringElement(__desc, 9)
-        10 -> _shape = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.shapeSer, null)
-        11 -> color = decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.colorSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
+        9 -> shape = decoder.decodeStringElement(__desc, __i)
+        10 ->
+          _shape = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.shapeSer, null)
+        11 -> color = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.colorSer, null)
         12 ->
-          _color = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.colorSer2, null)
+          _color = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.colorSer2, null)
         13 ->
-          imprint = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.colorSer, null)
+          imprint = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.colorSer, null)
         14 ->
-          _imprint = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.colorSer2, null)
-        15 -> image = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.imageSer, null)
+          _imprint = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.colorSer2, null)
+        15 -> image = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.imageSer, null)
         16 ->
-          scoring = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.scoringSer, null)
+          scoring = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoringSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding ProdCharacteristic: " + __i)
       }

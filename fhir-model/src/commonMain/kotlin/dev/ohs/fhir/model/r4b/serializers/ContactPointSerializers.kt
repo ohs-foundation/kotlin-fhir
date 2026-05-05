@@ -85,20 +85,22 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
     var period: Period? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> system = decoder.decodeStringElement(__desc, 2)
-        3 -> _system = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.systemSer, null)
-        4 -> `value` = decoder.decodeStringElement(__desc, 4)
-        5 -> _value = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.systemSer, null)
-        6 -> use = decoder.decodeStringElement(__desc, 6)
-        7 -> _use = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.systemSer, null)
-        8 -> rank = decoder.decodeIntElement(__desc, 8)
-        9 -> _rank = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.systemSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> system = decoder.decodeStringElement(__desc, __i)
+        3 ->
+          _system = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemSer, null)
+        4 -> `value` = decoder.decodeStringElement(__desc, __i)
+        5 ->
+          _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemSer, null)
+        6 -> use = decoder.decodeStringElement(__desc, __i)
+        7 -> _use = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemSer, null)
+        8 -> rank = decoder.decodeIntElement(__desc, __i)
+        9 -> _rank = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemSer, null)
         10 ->
-          period = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding ContactPoint: " + __i)
       }

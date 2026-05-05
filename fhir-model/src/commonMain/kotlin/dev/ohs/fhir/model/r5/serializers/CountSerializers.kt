@@ -89,22 +89,25 @@ internal object CountSerializer : KSerializer<Count> {
     var _code: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
-          `value` = decoder.decodeNullableSerializableElement(__desc, 2, BigDecimalSerializer, null)
-        3 -> _value = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.valueSer, null)
-        4 -> comparator = decoder.decodeStringElement(__desc, 4)
+          `value` =
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        3 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+        4 -> comparator = decoder.decodeStringElement(__desc, __i)
         5 ->
-          _comparator = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.valueSer, null)
-        6 -> unit = decoder.decodeStringElement(__desc, 6)
-        7 -> _unit = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.valueSer, null)
-        8 -> system = decoder.decodeStringElement(__desc, 8)
-        9 -> _system = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.valueSer, null)
-        10 -> code = decoder.decodeStringElement(__desc, 10)
-        11 -> _code = decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.valueSer, null)
+          _comparator =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+        6 -> unit = decoder.decodeStringElement(__desc, __i)
+        7 -> _unit = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+        8 -> system = decoder.decodeStringElement(__desc, __i)
+        9 ->
+          _system = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+        10 -> code = decoder.decodeStringElement(__desc, __i)
+        11 -> _code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Count: " + __i)
       }

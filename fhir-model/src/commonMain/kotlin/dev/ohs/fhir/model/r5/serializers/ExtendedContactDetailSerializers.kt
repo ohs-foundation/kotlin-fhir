@@ -95,21 +95,22 @@ internal object ExtendedContactDetailSerializer : KSerializer<ExtendedContactDet
     var period: Period? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
-          purpose = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.purposeSer, null)
-        3 -> name = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.nameSer, null)
+          purpose = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.purposeSer, null)
+        3 -> name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
         4 ->
-          telecom = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.telecomSer, null)
+          telecom = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.telecomSer, null)
         5 ->
-          address = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.addressSer, null)
+          address = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressSer, null)
         6 ->
           organization =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.organizationSer, null)
-        7 -> period = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.periodSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.organizationSer, null)
+        7 ->
+          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else ->
           throw SerializationException("Unexpected index decoding ExtendedContactDetail: " + __i)

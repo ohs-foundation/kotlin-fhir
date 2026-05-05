@@ -72,14 +72,14 @@ internal object PeriodSerializer : KSerializer<Period> {
     var _end: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> start = decoder.decodeStringElement(__desc, 2)
-        3 -> _start = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.startSer, null)
-        4 -> end = decoder.decodeStringElement(__desc, 4)
-        5 -> _end = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.startSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> start = decoder.decodeStringElement(__desc, __i)
+        3 -> _start = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
+        4 -> end = decoder.decodeStringElement(__desc, __i)
+        5 -> _end = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Period: " + __i)
       }

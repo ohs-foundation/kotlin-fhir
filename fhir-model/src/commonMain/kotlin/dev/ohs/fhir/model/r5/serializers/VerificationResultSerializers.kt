@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.VerificationResult
+import kotlin.Int
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
@@ -114,31 +115,31 @@ internal object VerificationResultPrimarySourceSerializer :
     var pushTypeAvailable: List<CodeableConcept>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> who = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.whoSer, null)
-        4 -> type = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> who = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whoSer, null)
+        4 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         5 ->
           communicationMethod =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         6 ->
           validationStatus =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.typeSerInner, null)
-        7 -> validationDate = decoder.decodeStringElement(__desc, 7)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSerInner, null)
+        7 -> validationDate = decoder.decodeStringElement(__desc, __i)
         8 ->
           _validationDate =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.validationDateSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.validationDateSer, null)
         9 ->
           canPushUpdates =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.typeSerInner, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSerInner, null)
         10 ->
           pushTypeAvailable =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding PrimarySource: " + __i)
       }
@@ -252,39 +253,40 @@ internal object VerificationResultAttestationSerializer :
     var sourceSignature: Signature? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> who = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.whoSer, null)
-        4 -> onBehalfOf = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.whoSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> who = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whoSer, null)
+        4 ->
+          onBehalfOf = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whoSer, null)
         5 ->
           communicationMethod =
             decoder.decodeNullableSerializableElement(
               __desc,
-              5,
+              __i,
               Hoisted.communicationMethodSer,
               null,
             )
-        6 -> date = decoder.decodeStringElement(__desc, 6)
-        7 -> _date = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.dateSer, null)
-        8 -> sourceIdentityCertificate = decoder.decodeStringElement(__desc, 8)
+        6 -> date = decoder.decodeStringElement(__desc, __i)
+        7 -> _date = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dateSer, null)
+        8 -> sourceIdentityCertificate = decoder.decodeStringElement(__desc, __i)
         9 ->
           _sourceIdentityCertificate =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.dateSer, null)
-        10 -> proxyIdentityCertificate = decoder.decodeStringElement(__desc, 10)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dateSer, null)
+        10 -> proxyIdentityCertificate = decoder.decodeStringElement(__desc, __i)
         11 ->
           _proxyIdentityCertificate =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.dateSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dateSer, null)
         12 ->
           proxySignature =
-            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.proxySignatureSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.proxySignatureSer, null)
         13 ->
           sourceSignature =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.proxySignatureSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.proxySignatureSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Attestation: " + __i)
       }
@@ -391,22 +393,22 @@ internal object VerificationResultValidatorSerializer : KSerializer<Verification
     var attestationSignature: Signature? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         3 ->
           organization =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.organizationSer, null)
-        4 -> identityCertificate = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.organizationSer, null)
+        4 -> identityCertificate = decoder.decodeStringElement(__desc, __i)
         5 ->
           _identityCertificate =
             decoder.decodeNullableSerializableElement(
               __desc,
-              5,
+              __i,
               Hoisted.identityCertificateSer,
               null,
             )
@@ -414,7 +416,7 @@ internal object VerificationResultValidatorSerializer : KSerializer<Verification
           attestationSignature =
             decoder.decodeNullableSerializableElement(
               __desc,
-              6,
+              __i,
               Hoisted.attestationSignatureSer,
               null,
             )
@@ -543,17 +545,21 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
   }
 
   override fun deserialize(decoder: Decoder): VerificationResult =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "VerificationResult")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): VerificationResult {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): VerificationResult {
+    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -584,80 +590,81 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
     var attestation: VerificationResult.Attestation? = null
     var validator: List<VerificationResult.Validator>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
+          target = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.targetSer, null)
         11 ->
-          target = decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.targetSer, null)
-        12 ->
           targetLocation =
-            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.targetLocationSer, null)
-        13 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.targetLocationSer, null)
+        12 ->
           _targetLocation =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.targetLocationSer2, null)
-        14 -> need = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.needSer, null)
-        15 -> status = decoder.decodeStringElement(__desc, 15)
-        16 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.targetLocationSer2, null)
+        13 -> need = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.needSer, null)
+        14 -> status = decoder.decodeStringElement(__desc, __i)
+        15 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.implicitRulesSer, null)
-        17 -> statusDate = decoder.decodeStringElement(__desc, 17)
-        18 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        16 -> statusDate = decoder.decodeStringElement(__desc, __i)
+        17 ->
           _statusDate =
-            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.implicitRulesSer, null)
-        19 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        18 ->
           validationType =
-            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.needSer, null)
-        20 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.needSer, null)
+        19 ->
           validationProcess =
             decoder.decodeNullableSerializableElement(
               __desc,
-              20,
+              __i,
               Hoisted.validationProcessSer,
               null,
             )
-        21 ->
+        20 ->
           frequency =
-            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.frequencySer, null)
-        22 -> lastPerformed = decoder.decodeStringElement(__desc, 22)
-        23 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.frequencySer, null)
+        21 -> lastPerformed = decoder.decodeStringElement(__desc, __i)
+        22 ->
           _lastPerformed =
-            decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.implicitRulesSer, null)
-        24 -> nextScheduled = decoder.decodeStringElement(__desc, 24)
-        25 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        23 -> nextScheduled = decoder.decodeStringElement(__desc, __i)
+        24 ->
           _nextScheduled =
-            decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.implicitRulesSer, null)
-        26 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        25 ->
           failureAction =
-            decoder.decodeNullableSerializableElement(__desc, 26, Hoisted.needSer, null)
-        27 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.needSer, null)
+        26 ->
           primarySource =
-            decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.primarySourceSer, null)
-        28 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.primarySourceSer, null)
+        27 ->
           attestation =
-            decoder.decodeNullableSerializableElement(__desc, 28, Hoisted.attestationSer, null)
-        29 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.attestationSer, null)
+        28 ->
           validator =
-            decoder.decodeNullableSerializableElement(__desc, 29, Hoisted.validatorSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.validatorSer, null)
         else -> throw SerializationException("Unexpected index decoding VerificationResult: " + __i)
       }
     }
@@ -692,73 +699,94 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: VerificationResult) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: VerificationResult,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.target.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.targetSer, value.target)
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.targetSer, value.target)
     (value.targetLocation.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.targetLocationSer, it)
+      encoder.encodeSerializableElement(__desc, 11 + __off, Hoisted.targetLocationSer, it)
     }
     (value.targetLocation.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.targetLocationSer2, it)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.targetLocationSer2, it)
     }
-    (value.need)?.let { encoder.encodeSerializableElement(__desc, 14, Hoisted.needSer, it) }
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 15, it) }
+    (value.need)?.let { encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.needSer, it) }
+    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 14 + __off, it) }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.statusDate?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 17, it) }
+    ((value.statusDate?.value?.toString()))?.let {
+      encoder.encodeStringElement(__desc, 16 + __off, it)
+    }
     (value.statusDate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 18, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.implicitRulesSer, it)
     }
     (value.validationType)?.let {
-      encoder.encodeSerializableElement(__desc, 19, Hoisted.needSer, it)
+      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.needSer, it)
     }
     if (value.validationProcess.isNotEmpty())
       encoder.encodeSerializableElement(
         __desc,
-        20,
+        19 + __off,
         Hoisted.validationProcessSer,
         value.validationProcess,
       )
     (value.frequency)?.let {
-      encoder.encodeSerializableElement(__desc, 21, Hoisted.frequencySer, it)
+      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.frequencySer, it)
     }
-    ((value.lastPerformed?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 22, it) }
+    ((value.lastPerformed?.value?.toString()))?.let {
+      encoder.encodeStringElement(__desc, 21 + __off, it)
+    }
     (value.lastPerformed?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 23, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.nextScheduled?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 24, it) }
+    ((value.nextScheduled?.value?.toString()))?.let {
+      encoder.encodeStringElement(__desc, 23 + __off, it)
+    }
     (value.nextScheduled?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 25, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 24 + __off, Hoisted.implicitRulesSer, it)
     }
     (value.failureAction)?.let {
-      encoder.encodeSerializableElement(__desc, 26, Hoisted.needSer, it)
+      encoder.encodeSerializableElement(__desc, 25 + __off, Hoisted.needSer, it)
     }
     if (value.primarySource.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 27, Hoisted.primarySourceSer, value.primarySource)
+      encoder.encodeSerializableElement(
+        __desc,
+        26 + __off,
+        Hoisted.primarySourceSer,
+        value.primarySource,
+      )
     (value.attestation)?.let {
-      encoder.encodeSerializableElement(__desc, 28, Hoisted.attestationSer, it)
+      encoder.encodeSerializableElement(__desc, 27 + __off, Hoisted.attestationSer, it)
     }
     if (value.validator.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 29, Hoisted.validatorSer, value.validator)
+      encoder.encodeSerializableElement(__desc, 28 + __off, Hoisted.validatorSer, value.validator)
   }
 
   private object Hoisted {
@@ -820,9 +848,13 @@ internal object VerificationResultPolymorphicSerializer : KSerializer<Verificati
     }
 
   override fun serialize(encoder: Encoder, `value`: VerificationResult) {
-    encoder.encodeStructure(descriptor) { VerificationResultSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      VerificationResultSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): VerificationResult =
-    decoder.decodeStructure(descriptor) { VerificationResultSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) {
+      VerificationResultSerializer.deserializeJson(this, descriptor, 0)
+    }
 }

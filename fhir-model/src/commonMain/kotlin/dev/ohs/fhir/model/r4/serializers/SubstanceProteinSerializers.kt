@@ -107,27 +107,29 @@ internal object SubstanceProteinSubunitSerializer : KSerializer<SubstanceProtein
     var _cTerminalModification: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> subunit = decoder.decodeIntElement(__desc, 3)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> subunit = decoder.decodeIntElement(__desc, __i)
         4 ->
-          _subunit = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.subunitSer, null)
-        5 -> sequence = decoder.decodeStringElement(__desc, 5)
+          _subunit =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subunitSer, null)
+        5 -> sequence = decoder.decodeStringElement(__desc, __i)
         6 ->
-          _sequence = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.subunitSer, null)
-        7 -> length = decoder.decodeIntElement(__desc, 7)
+          _sequence =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subunitSer, null)
+        7 -> length = decoder.decodeIntElement(__desc, __i)
         8 ->
-          _length = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.subunitSer, null)
+          _length = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subunitSer, null)
         9 ->
           sequenceAttachment =
             decoder.decodeNullableSerializableElement(
               __desc,
-              9,
+              __i,
               Hoisted.sequenceAttachmentSer,
               null,
             )
@@ -135,26 +137,26 @@ internal object SubstanceProteinSubunitSerializer : KSerializer<SubstanceProtein
           nTerminalModificationId =
             decoder.decodeNullableSerializableElement(
               __desc,
-              10,
+              __i,
               Hoisted.nTerminalModificationIdSer,
               null,
             )
-        11 -> nTerminalModification = decoder.decodeStringElement(__desc, 11)
+        11 -> nTerminalModification = decoder.decodeStringElement(__desc, __i)
         12 ->
           _nTerminalModification =
-            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.subunitSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subunitSer, null)
         13 ->
           cTerminalModificationId =
             decoder.decodeNullableSerializableElement(
               __desc,
-              13,
+              __i,
               Hoisted.nTerminalModificationIdSer,
               null,
             )
-        14 -> cTerminalModification = decoder.decodeStringElement(__desc, 14)
+        14 -> cTerminalModification = decoder.decodeStringElement(__desc, __i)
         15 ->
           _cTerminalModification =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.subunitSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subunitSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Subunit: " + __i)
       }
@@ -277,17 +279,21 @@ internal object SubstanceProteinSerializer : KSerializer<SubstanceProtein> {
   }
 
   override fun deserialize(decoder: Decoder): SubstanceProtein =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceProtein) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "SubstanceProtein")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): SubstanceProtein {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): SubstanceProtein {
+    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -305,49 +311,55 @@ internal object SubstanceProteinSerializer : KSerializer<SubstanceProtein> {
     var _disulfideLinkage: List<Element?>? = null
     var subunit: List<SubstanceProtein.Subunit>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
           sequenceType =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.sequenceTypeSer, null)
-        12 -> numberOfSubunits = decoder.decodeIntElement(__desc, 12)
-        13 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.sequenceTypeSer, null)
+        11 -> numberOfSubunits = decoder.decodeIntElement(__desc, __i)
+        12 ->
           _numberOfSubunits =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
-        14 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        13 ->
           disulfideLinkage =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.disulfideLinkageSer, null)
-        15 ->
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.disulfideLinkageSer,
+              null,
+            )
+        14 ->
           _disulfideLinkage =
             decoder.decodeNullableSerializableElement(
               __desc,
-              15,
+              __i,
               Hoisted.disulfideLinkageSer2,
               null,
             )
-        16 ->
-          subunit = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.subunitSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+        15 ->
+          subunit = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subunitSer, null)
         else -> throw SerializationException("Unexpected index decoding SubstanceProtein: " + __i)
       }
     }
@@ -375,40 +387,50 @@ internal object SubstanceProteinSerializer : KSerializer<SubstanceProtein> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceProtein) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: SubstanceProtein,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.sequenceType)?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.sequenceTypeSer, it)
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.sequenceTypeSer, it)
     }
-    ((value.numberOfSubunits?.value))?.let { encoder.encodeIntElement(__desc, 12, it) }
+    ((value.numberOfSubunits?.value))?.let { encoder.encodeIntElement(__desc, 11 + __off, it) }
     (value.numberOfSubunits?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
     }
     (value.disulfideLinkage.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.disulfideLinkageSer, it)
+      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.disulfideLinkageSer, it)
     }
     (value.disulfideLinkage.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.disulfideLinkageSer2, it)
+      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.disulfideLinkageSer2, it)
     }
     if (value.subunit.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.subunitSer, value.subunit)
+      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.subunitSer, value.subunit)
   }
 
   private object Hoisted {
@@ -452,9 +474,13 @@ internal object SubstanceProteinPolymorphicSerializer : KSerializer<SubstancePro
     }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceProtein) {
-    encoder.encodeStructure(descriptor) { SubstanceProteinSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      SubstanceProteinSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): SubstanceProtein =
-    decoder.decodeStructure(descriptor) { SubstanceProteinSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) {
+      SubstanceProteinSerializer.deserializeJson(this, descriptor, 0)
+    }
 }

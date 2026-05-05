@@ -92,18 +92,18 @@ internal object CoveragePaymentBySerializer : KSerializer<Coverage.PaymentBy> {
     var _responsibility: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> party = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.partySer, null)
-        4 -> responsibility = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> party = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.partySer, null)
+        4 -> responsibility = decoder.decodeStringElement(__desc, __i)
         5 ->
           _responsibility =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.responsibilitySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.responsibilitySer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding PaymentBy: " + __i)
       }
@@ -181,17 +181,18 @@ internal object CoverageClassSerializer : KSerializer<Coverage.Class> {
     var _name: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
-        4 -> `value` = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.valueSer, null)
-        5 -> name = decoder.decodeStringElement(__desc, 5)
-        6 -> _name = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        4 ->
+          `value` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+        5 -> name = decoder.decodeStringElement(__desc, __i)
+        6 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Class: " + __i)
       }
@@ -287,27 +288,28 @@ internal object CoverageCostToBeneficiarySerializer : KSerializer<Coverage.CostT
     var exception: List<Coverage.CostToBeneficiary.Exception>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
-        4 -> category = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.typeSer, null)
-        5 -> network = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.typeSer, null)
-        6 -> unit = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.typeSer, null)
-        7 -> term = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        4 ->
+          category = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        5 -> network = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        6 -> unit = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        7 -> term = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         8 ->
           valueQuantity =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.valueQuantitySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueQuantitySer, null)
         9 ->
           valueMoney =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.valueMoneySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueMoneySer, null)
         10 ->
           exception =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.exceptionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.exceptionSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding CostToBeneficiary: " + __i)
       }
@@ -406,15 +408,16 @@ internal object CoverageCostToBeneficiaryExceptionSerializer :
     var period: Period? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
-        4 -> period = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.periodSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        4 ->
+          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Exception: " + __i)
       }
@@ -537,17 +540,21 @@ internal object CoverageSerializer : KSerializer<Coverage> {
   }
 
   override fun deserialize(decoder: Decoder): Coverage =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: Coverage) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "Coverage")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): Coverage {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): Coverage {
+    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -585,96 +592,97 @@ internal object CoverageSerializer : KSerializer<Coverage> {
     var contract: List<Reference>? = null
     var insurancePlan: Reference? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
-        12 -> status = decoder.decodeStringElement(__desc, 12)
-        13 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        11 -> status = decoder.decodeStringElement(__desc, __i)
+        12 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
-        14 -> kind = decoder.decodeStringElement(__desc, 14)
-        15 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        13 -> kind = decoder.decodeStringElement(__desc, __i)
+        14 ->
           _kind =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.implicitRulesSer, null)
-        16 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        15 ->
           paymentBy =
-            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.paymentBySer, null)
-        17 -> type = decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.typeSer, null)
-        18 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.paymentBySer, null)
+        16 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        17 ->
           policyHolder =
-            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.policyHolderSer, null)
-        19 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.policyHolderSer, null)
+        18 ->
           subscriber =
-            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.policyHolderSer, null)
-        20 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.policyHolderSer, null)
+        19 ->
           subscriberId =
-            decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.identifierSer, null)
-        21 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        20 ->
           beneficiary =
-            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.policyHolderSer, null)
-        22 -> dependent = decoder.decodeStringElement(__desc, 22)
-        23 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.policyHolderSer, null)
+        21 -> dependent = decoder.decodeStringElement(__desc, __i)
+        22 ->
           _dependent =
-            decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.implicitRulesSer, null)
-        24 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        23 ->
           relationship =
-            decoder.decodeNullableSerializableElement(__desc, 24, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        24 ->
+          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
         25 ->
-          period = decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.periodSer, null)
-        26 ->
           insurer =
-            decoder.decodeNullableSerializableElement(__desc, 26, Hoisted.policyHolderSer, null)
-        27 ->
-          `class` = decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.classSer, null)
-        28 -> order = decoder.decodeIntElement(__desc, 28)
-        29 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.policyHolderSer, null)
+        26 ->
+          `class` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classSer, null)
+        27 -> order = decoder.decodeIntElement(__desc, __i)
+        28 ->
           _order =
-            decoder.decodeNullableSerializableElement(__desc, 29, Hoisted.implicitRulesSer, null)
-        30 -> network = decoder.decodeStringElement(__desc, 30)
-        31 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        29 -> network = decoder.decodeStringElement(__desc, __i)
+        30 ->
           _network =
-            decoder.decodeNullableSerializableElement(__desc, 31, Hoisted.implicitRulesSer, null)
-        32 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        31 ->
           costToBeneficiary =
             decoder.decodeNullableSerializableElement(
               __desc,
-              32,
+              __i,
               Hoisted.costToBeneficiarySer,
               null,
             )
-        33 -> subrogation = decoder.decodeBooleanElement(__desc, 33)
-        34 ->
+        32 -> subrogation = decoder.decodeBooleanElement(__desc, __i)
+        33 ->
           _subrogation =
-            decoder.decodeNullableSerializableElement(__desc, 34, Hoisted.implicitRulesSer, null)
-        35 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        34 ->
           contract =
-            decoder.decodeNullableSerializableElement(__desc, 35, Hoisted.contractSer, null)
-        36 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contractSer, null)
+        35 ->
           insurancePlan =
-            decoder.decodeNullableSerializableElement(__desc, 36, Hoisted.policyHolderSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.policyHolderSer, null)
         else -> throw SerializationException("Unexpected index decoding Coverage: " + __i)
       }
     }
@@ -710,83 +718,102 @@ internal object CoverageSerializer : KSerializer<Coverage> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: Coverage) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: Coverage,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 12, it) }
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
+    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 11 + __off, it) }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.kind.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 14, it) }
+    ((value.kind.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 13 + __off, it) }
     (value.kind.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.paymentBy.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.paymentBySer, value.paymentBy)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 17, Hoisted.typeSer, it) }
+      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.paymentBySer, value.paymentBy)
+    (value.type)?.let { encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.typeSer, it) }
     (value.policyHolder)?.let {
-      encoder.encodeSerializableElement(__desc, 18, Hoisted.policyHolderSer, it)
+      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.policyHolderSer, it)
     }
     (value.subscriber)?.let {
-      encoder.encodeSerializableElement(__desc, 19, Hoisted.policyHolderSer, it)
+      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.policyHolderSer, it)
     }
     if (value.subscriberId.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 20, Hoisted.identifierSer, value.subscriberId)
+      encoder.encodeSerializableElement(
+        __desc,
+        19 + __off,
+        Hoisted.identifierSer,
+        value.subscriberId,
+      )
     (value.beneficiary)?.let {
-      encoder.encodeSerializableElement(__desc, 21, Hoisted.policyHolderSer, it)
+      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.policyHolderSer, it)
     }
-    ((value.dependent?.value))?.let { encoder.encodeStringElement(__desc, 22, it) }
+    ((value.dependent?.value))?.let { encoder.encodeStringElement(__desc, 21 + __off, it) }
     (value.dependent?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 23, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.relationship)?.let { encoder.encodeSerializableElement(__desc, 24, Hoisted.typeSer, it) }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 25, Hoisted.periodSer, it) }
+    (value.relationship)?.let {
+      encoder.encodeSerializableElement(__desc, 23 + __off, Hoisted.typeSer, it)
+    }
+    (value.period)?.let {
+      encoder.encodeSerializableElement(__desc, 24 + __off, Hoisted.periodSer, it)
+    }
     (value.insurer)?.let {
-      encoder.encodeSerializableElement(__desc, 26, Hoisted.policyHolderSer, it)
+      encoder.encodeSerializableElement(__desc, 25 + __off, Hoisted.policyHolderSer, it)
     }
     if (value.`class`.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 27, Hoisted.classSer, value.`class`)
-    ((value.order?.value))?.let { encoder.encodeIntElement(__desc, 28, it) }
+      encoder.encodeSerializableElement(__desc, 26 + __off, Hoisted.classSer, value.`class`)
+    ((value.order?.value))?.let { encoder.encodeIntElement(__desc, 27 + __off, it) }
     (value.order?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 29, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 28 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.network?.value))?.let { encoder.encodeStringElement(__desc, 30, it) }
+    ((value.network?.value))?.let { encoder.encodeStringElement(__desc, 29 + __off, it) }
     (value.network?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 31, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 30 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.costToBeneficiary.isNotEmpty())
       encoder.encodeSerializableElement(
         __desc,
-        32,
+        31 + __off,
         Hoisted.costToBeneficiarySer,
         value.costToBeneficiary,
       )
-    ((value.subrogation?.value))?.let { encoder.encodeBooleanElement(__desc, 33, it) }
+    ((value.subrogation?.value))?.let { encoder.encodeBooleanElement(__desc, 32 + __off, it) }
     (value.subrogation?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 34, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 33 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.contract.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 35, Hoisted.contractSer, value.contract)
+      encoder.encodeSerializableElement(__desc, 34 + __off, Hoisted.contractSer, value.contract)
     (value.insurancePlan)?.let {
-      encoder.encodeSerializableElement(__desc, 36, Hoisted.policyHolderSer, it)
+      encoder.encodeSerializableElement(__desc, 35 + __off, Hoisted.policyHolderSer, it)
     }
   }
 
@@ -841,9 +868,11 @@ internal object CoveragePolymorphicSerializer : KSerializer<Coverage> {
     buildClassSerialDescriptor("Coverage") { CoverageSerializer.buildDescriptor(this) }
 
   override fun serialize(encoder: Encoder, `value`: Coverage) {
-    encoder.encodeStructure(descriptor) { CoverageSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      CoverageSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): Coverage =
-    decoder.decodeStructure(descriptor) { CoverageSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { CoverageSerializer.deserializeJson(this, descriptor, 0) }
 }

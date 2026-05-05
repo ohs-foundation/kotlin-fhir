@@ -71,15 +71,15 @@ internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
     var reference: Reference? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
-          concept = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.conceptSer, null)
+          concept = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.conceptSer, null)
         3 ->
           reference =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.referenceSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding CodeableReference: " + __i)
       }

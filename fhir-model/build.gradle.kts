@@ -130,6 +130,7 @@ kotlin {
                 implementation(libs.kotest.framework.engine)
                 implementation(libs.kotlin.test)
                 implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.serialization.protobuf)
             }
         }
         val androidMain by getting

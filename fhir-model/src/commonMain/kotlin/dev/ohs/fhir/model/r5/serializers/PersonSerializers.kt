@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
 import kotlin.Boolean as KotlinBoolean
+import kotlin.Int
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -95,19 +96,20 @@ internal object PersonCommunicationSerializer : KSerializer<Person.Communication
     var _preferred: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         3 ->
-          language = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.languageSer, null)
-        4 -> preferred = decoder.decodeBooleanElement(__desc, 4)
+          language =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.languageSer, null)
+        4 -> preferred = decoder.decodeBooleanElement(__desc, __i)
         5 ->
           _preferred =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.preferredSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.preferredSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Communication: " + __i)
       }
@@ -183,18 +185,19 @@ internal object PersonLinkSerializer : KSerializer<Person.Link> {
     var _assurance: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> target = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.targetSer, null)
-        4 -> assurance = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 ->
+          target = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.targetSer, null)
+        4 -> assurance = decoder.decodeStringElement(__desc, __i)
         5 ->
           _assurance =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.assuranceSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.assuranceSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Link: " + __i)
       }
@@ -303,17 +306,21 @@ internal object PersonSerializer : KSerializer<Person> {
   }
 
   override fun deserialize(decoder: Decoder): Person =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: Person) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "Person")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): Person {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): Person {
+    val __desc = desc
     var id: String? = null
     var meta: Meta? = null
     var implicitRules: String? = null
@@ -344,73 +351,74 @@ internal object PersonSerializer : KSerializer<Person> {
     var managingOrganization: Reference? = null
     var link: List<Person.Link>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
-        12 -> active = decoder.decodeBooleanElement(__desc, 12)
-        13 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        11 -> active = decoder.decodeBooleanElement(__desc, __i)
+        12 ->
           _active =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
-        14 -> name = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.nameSer, null)
-        15 ->
-          telecom = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.telecomSer, null)
-        16 -> gender = decoder.decodeStringElement(__desc, 16)
-        17 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        13 -> name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+        14 ->
+          telecom = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.telecomSer, null)
+        15 -> gender = decoder.decodeStringElement(__desc, __i)
+        16 ->
           _gender =
-            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.implicitRulesSer, null)
-        18 -> birthDate = decoder.decodeStringElement(__desc, 18)
-        19 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        17 -> birthDate = decoder.decodeStringElement(__desc, __i)
+        18 ->
           _birthDate =
-            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.implicitRulesSer, null)
-        20 -> deceasedBoolean = decoder.decodeBooleanElement(__desc, 20)
-        21 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        19 -> deceasedBoolean = decoder.decodeBooleanElement(__desc, __i)
+        20 ->
           _deceasedBoolean =
-            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.implicitRulesSer, null)
-        22 -> deceasedDateTime = decoder.decodeStringElement(__desc, 22)
-        23 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        21 -> deceasedDateTime = decoder.decodeStringElement(__desc, __i)
+        22 ->
           _deceasedDateTime =
-            decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        23 ->
+          address = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressSer, null)
         24 ->
-          address = decoder.decodeNullableSerializableElement(__desc, 24, Hoisted.addressSer, null)
-        25 ->
           maritalStatus =
-            decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.maritalStatusSer, null)
-        26 -> photo = decoder.decodeNullableSerializableElement(__desc, 26, Hoisted.photoSer, null)
-        27 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.maritalStatusSer, null)
+        25 -> photo = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.photoSer, null)
+        26 ->
           communication =
-            decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.communicationSer, null)
-        28 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.communicationSer, null)
+        27 ->
           managingOrganization =
             decoder.decodeNullableSerializableElement(
               __desc,
-              28,
+              __i,
               Hoisted.managingOrganizationSer,
               null,
             )
-        29 -> link = decoder.decodeNullableSerializableElement(__desc, 29, Hoisted.linkSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+        28 -> link = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.linkSer, null)
         else -> throw SerializationException("Unexpected index decoding Person: " + __i)
       }
     }
@@ -443,72 +451,89 @@ internal object PersonSerializer : KSerializer<Person> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: Person) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: Person,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
-    ((value.active?.value))?.let { encoder.encodeBooleanElement(__desc, 12, it) }
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
+    ((value.active?.value))?.let { encoder.encodeBooleanElement(__desc, 11 + __off, it) }
     (value.active?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.name.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.nameSer, value.name)
+      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.nameSer, value.name)
     if (value.telecom.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.telecomSer, value.telecom)
-    ((value.gender?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 16, it) }
+      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.telecomSer, value.telecom)
+    ((value.gender?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 15 + __off, it) }
     (value.gender?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 17, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.birthDate?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 18, it) }
+    ((value.birthDate?.value?.toString()))?.let {
+      encoder.encodeStringElement(__desc, 17 + __off, it)
+    }
     (value.birthDate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 19, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.implicitRulesSer, it)
     }
     when (val __d = value.deceased) {
       null -> {}
       is Person.Deceased.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(__desc, 20, it) }
+        ((__d.value.value))?.let { encoder.encodeBooleanElement(__desc, 19 + __off, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 21, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.implicitRulesSer, it)
         }
       }
       is Person.Deceased.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 22, it) }
+        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 21 + __off, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 23, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.implicitRulesSer, it)
         }
       }
     }
     if (value.address.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 24, Hoisted.addressSer, value.address)
+      encoder.encodeSerializableElement(__desc, 23 + __off, Hoisted.addressSer, value.address)
     (value.maritalStatus)?.let {
-      encoder.encodeSerializableElement(__desc, 25, Hoisted.maritalStatusSer, it)
+      encoder.encodeSerializableElement(__desc, 24 + __off, Hoisted.maritalStatusSer, it)
     }
     if (value.photo.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 26, Hoisted.photoSer, value.photo)
+      encoder.encodeSerializableElement(__desc, 25 + __off, Hoisted.photoSer, value.photo)
     if (value.communication.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 27, Hoisted.communicationSer, value.communication)
+      encoder.encodeSerializableElement(
+        __desc,
+        26 + __off,
+        Hoisted.communicationSer,
+        value.communication,
+      )
     (value.managingOrganization)?.let {
-      encoder.encodeSerializableElement(__desc, 28, Hoisted.managingOrganizationSer, it)
+      encoder.encodeSerializableElement(__desc, 27 + __off, Hoisted.managingOrganizationSer, it)
     }
     if (value.link.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 29, Hoisted.linkSer, value.link)
+      encoder.encodeSerializableElement(__desc, 28 + __off, Hoisted.linkSer, value.link)
   }
 
   private object Hoisted {
@@ -569,9 +594,11 @@ internal object PersonPolymorphicSerializer : KSerializer<Person> {
     buildClassSerialDescriptor("Person") { PersonSerializer.buildDescriptor(this) }
 
   override fun serialize(encoder: Encoder, `value`: Person) {
-    encoder.encodeStructure(descriptor) { PersonSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      PersonSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): Person =
-    decoder.decodeStructure(descriptor) { PersonSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { PersonSerializer.deserializeJson(this, descriptor, 0) }
 }

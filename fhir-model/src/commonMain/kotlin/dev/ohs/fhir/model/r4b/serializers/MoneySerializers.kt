@@ -74,16 +74,17 @@ internal object MoneySerializer : KSerializer<Money> {
     var _currency: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
-          `value` = decoder.decodeNullableSerializableElement(__desc, 2, BigDecimalSerializer, null)
-        3 -> _value = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.valueSer, null)
-        4 -> currency = decoder.decodeStringElement(__desc, 4)
+          `value` =
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        3 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+        4 -> currency = decoder.decodeStringElement(__desc, __i)
         5 ->
-          _currency = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.valueSer, null)
+          _currency = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Money: " + __i)
       }

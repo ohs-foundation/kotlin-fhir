@@ -142,51 +142,53 @@ internal object VisionPrescriptionLensSpecificationSerializer :
     var note: List<Annotation>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         3 ->
-          product = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.productSer, null)
-        4 -> eye = decoder.decodeStringElement(__desc, 4)
-        5 -> _eye = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.eyeSer, null)
+          product = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.productSer, null)
+        4 -> eye = decoder.decodeStringElement(__desc, __i)
+        5 -> _eye = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
         6 ->
-          sphere = decoder.decodeNullableSerializableElement(__desc, 6, BigDecimalSerializer, null)
-        7 -> _sphere = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.eyeSer, null)
+          sphere =
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        7 -> _sphere = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
         8 ->
           cylinder =
-            decoder.decodeNullableSerializableElement(__desc, 8, BigDecimalSerializer, null)
-        9 -> _cylinder = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.eyeSer, null)
-        10 -> axis = decoder.decodeIntElement(__desc, 10)
-        11 -> _axis = decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.eyeSer, null)
-        12 -> prism = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.prismSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        9 ->
+          _cylinder = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
+        10 -> axis = decoder.decodeIntElement(__desc, __i)
+        11 -> _axis = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
+        12 -> prism = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.prismSer, null)
         13 ->
-          add = decoder.decodeNullableSerializableElement(__desc, 13, BigDecimalSerializer, null)
-        14 -> _add = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.eyeSer, null)
+          add = decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        14 -> _add = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
         15 ->
-          power = decoder.decodeNullableSerializableElement(__desc, 15, BigDecimalSerializer, null)
-        16 -> _power = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.eyeSer, null)
+          power = decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        16 -> _power = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
         17 ->
           backCurve =
-            decoder.decodeNullableSerializableElement(__desc, 17, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         18 ->
-          _backCurve = decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.eyeSer, null)
+          _backCurve = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
         19 ->
           diameter =
-            decoder.decodeNullableSerializableElement(__desc, 19, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         20 ->
-          _diameter = decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.eyeSer, null)
+          _diameter = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
         21 ->
           duration =
-            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.durationSer, null)
-        22 -> color = decoder.decodeStringElement(__desc, 22)
-        23 -> _color = decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.eyeSer, null)
-        24 -> brand = decoder.decodeStringElement(__desc, 24)
-        25 -> _brand = decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.eyeSer, null)
-        26 -> note = decoder.decodeNullableSerializableElement(__desc, 26, Hoisted.noteSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.durationSer, null)
+        22 -> color = decoder.decodeStringElement(__desc, __i)
+        23 -> _color = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
+        24 -> brand = decoder.decodeStringElement(__desc, __i)
+        25 -> _brand = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eyeSer, null)
+        26 -> note = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.noteSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding LensSpecification: " + __i)
       }
@@ -347,18 +349,20 @@ internal object VisionPrescriptionLensSpecificationPrismSerializer :
     var _base: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         3 ->
-          amount = decoder.decodeNullableSerializableElement(__desc, 3, BigDecimalSerializer, null)
-        4 -> _amount = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.amountSer, null)
-        5 -> base = decoder.decodeStringElement(__desc, 5)
-        6 -> _base = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.amountSer, null)
+          amount =
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        4 ->
+          _amount = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountSer, null)
+        5 -> base = decoder.decodeStringElement(__desc, __i)
+        6 -> _base = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Prism: " + __i)
       }
@@ -458,17 +462,21 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
   }
 
   override fun deserialize(decoder: Decoder): VisionPrescription =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: VisionPrescription) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "VisionPrescription")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): VisionPrescription {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): VisionPrescription {
+    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -491,60 +499,61 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
     var prescriber: Reference? = null
     var lensSpecification: List<VisionPrescription.LensSpecification>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
-        12 -> status = decoder.decodeStringElement(__desc, 12)
-        13 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        11 -> status = decoder.decodeStringElement(__desc, __i)
+        12 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
-        14 -> created = decoder.decodeStringElement(__desc, 14)
-        15 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        13 -> created = decoder.decodeStringElement(__desc, __i)
+        14 ->
           _created =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        15 ->
+          patient = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.patientSer, null)
         16 ->
-          patient = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.patientSer, null)
-        17 ->
           encounter =
-            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.patientSer, null)
-        18 -> dateWritten = decoder.decodeStringElement(__desc, 18)
-        19 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.patientSer, null)
+        17 -> dateWritten = decoder.decodeStringElement(__desc, __i)
+        18 ->
           _dateWritten =
-            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.implicitRulesSer, null)
-        20 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        19 ->
           prescriber =
-            decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.patientSer, null)
-        21 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.patientSer, null)
+        20 ->
           lensSpecification =
             decoder.decodeNullableSerializableElement(
               __desc,
-              21,
+              __i,
               Hoisted.lensSpecificationSer,
               null,
             )
-        CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding VisionPrescription: " + __i)
       }
     }
@@ -569,48 +578,64 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: VisionPrescription) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: VisionPrescription,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 12, it) }
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
+    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 11 + __off, it) }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.created.value?.toString()))?.let { encoder.encodeStringElement(__desc, 14, it) }
+    ((value.created.value?.toString()))?.let { encoder.encodeStringElement(__desc, 13 + __off, it) }
     (value.created.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.patient)?.let { encoder.encodeSerializableElement(__desc, 16, Hoisted.patientSer, it) }
-    (value.encounter)?.let { encoder.encodeSerializableElement(__desc, 17, Hoisted.patientSer, it) }
-    ((value.dateWritten.value?.toString()))?.let { encoder.encodeStringElement(__desc, 18, it) }
+    (value.patient)?.let {
+      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.patientSer, it)
+    }
+    (value.encounter)?.let {
+      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.patientSer, it)
+    }
+    ((value.dateWritten.value?.toString()))?.let {
+      encoder.encodeStringElement(__desc, 17 + __off, it)
+    }
     (value.dateWritten.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 19, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.implicitRulesSer, it)
     }
     (value.prescriber)?.let {
-      encoder.encodeSerializableElement(__desc, 20, Hoisted.patientSer, it)
+      encoder.encodeSerializableElement(__desc, 19 + __off, Hoisted.patientSer, it)
     }
     if (value.lensSpecification.isNotEmpty())
       encoder.encodeSerializableElement(
         __desc,
-        21,
+        20 + __off,
         Hoisted.lensSpecificationSer,
         value.lensSpecification,
       )
@@ -654,9 +679,13 @@ internal object VisionPrescriptionPolymorphicSerializer : KSerializer<VisionPres
     }
 
   override fun serialize(encoder: Encoder, `value`: VisionPrescription) {
-    encoder.encodeStructure(descriptor) { VisionPrescriptionSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      VisionPrescriptionSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): VisionPrescription =
-    decoder.decodeStructure(descriptor) { VisionPrescriptionSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) {
+      VisionPrescriptionSerializer.deserializeJson(this, descriptor, 0)
+    }
 }

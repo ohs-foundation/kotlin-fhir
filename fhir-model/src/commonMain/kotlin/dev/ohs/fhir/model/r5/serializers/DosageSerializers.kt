@@ -92,26 +92,26 @@ internal object DosageDoseAndRateSerializer : KSerializer<Dosage.DoseAndRate> {
     var rateQuantity: Quantity? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         3 ->
           doseRange =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.doseRangeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.doseRangeSer, null)
         4 ->
           doseQuantity =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.doseQuantitySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.doseQuantitySer, null)
         5 ->
           rateRatio =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.rateRatioSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.rateRatioSer, null)
         6 ->
           rateRange =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.doseRangeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.doseRangeSer, null)
         7 ->
           rateQuantity =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.doseQuantitySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.doseQuantitySer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding DoseAndRate: " + __i)
       }
@@ -272,42 +272,43 @@ internal object DosageSerializer : KSerializer<Dosage> {
     var maxDosePerLifetime: Quantity? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> sequence = decoder.decodeIntElement(__desc, 3)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> sequence = decoder.decodeIntElement(__desc, __i)
         4 ->
           _sequence =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.sequenceSer, null)
-        5 -> text = decoder.decodeStringElement(__desc, 5)
-        6 -> _text = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.sequenceSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.sequenceSer, null)
+        5 -> text = decoder.decodeStringElement(__desc, __i)
+        6 ->
+          _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.sequenceSer, null)
         7 ->
           additionalInstruction =
             decoder.decodeNullableSerializableElement(
               __desc,
-              7,
+              __i,
               Hoisted.additionalInstructionSer,
               null,
             )
-        8 -> patientInstruction = decoder.decodeStringElement(__desc, 8)
+        8 -> patientInstruction = decoder.decodeStringElement(__desc, __i)
         9 ->
           _patientInstruction =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.sequenceSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.sequenceSer, null)
         10 ->
-          timing = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.timingSer, null)
-        11 -> asNeeded = decoder.decodeBooleanElement(__desc, 11)
+          timing = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.timingSer, null)
+        11 -> asNeeded = decoder.decodeBooleanElement(__desc, __i)
         12 ->
           _asNeeded =
-            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.sequenceSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.sequenceSer, null)
         13 ->
           asNeededFor =
             decoder.decodeNullableSerializableElement(
               __desc,
-              13,
+              __i,
               Hoisted.additionalInstructionSer,
               null,
             )
@@ -315,7 +316,7 @@ internal object DosageSerializer : KSerializer<Dosage> {
           site =
             decoder.decodeNullableSerializableElement(
               __desc,
-              14,
+              __i,
               Hoisted.additionalInstructionSerInner,
               null,
             )
@@ -323,7 +324,7 @@ internal object DosageSerializer : KSerializer<Dosage> {
           route =
             decoder.decodeNullableSerializableElement(
               __desc,
-              15,
+              __i,
               Hoisted.additionalInstructionSerInner,
               null,
             )
@@ -331,21 +332,26 @@ internal object DosageSerializer : KSerializer<Dosage> {
           method =
             decoder.decodeNullableSerializableElement(
               __desc,
-              16,
+              __i,
               Hoisted.additionalInstructionSerInner,
               null,
             )
         17 ->
           doseAndRate =
-            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.doseAndRateSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.doseAndRateSer, null)
         18 ->
           maxDosePerPeriod =
-            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.maxDosePerPeriodSer, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.maxDosePerPeriodSer,
+              null,
+            )
         19 ->
           maxDosePerAdministration =
             decoder.decodeNullableSerializableElement(
               __desc,
-              19,
+              __i,
               Hoisted.maxDosePerAdministrationSer,
               null,
             )
@@ -353,7 +359,7 @@ internal object DosageSerializer : KSerializer<Dosage> {
           maxDosePerLifetime =
             decoder.decodeNullableSerializableElement(
               __desc,
-              20,
+              __i,
               Hoisted.maxDosePerAdministrationSer,
               null,
             )

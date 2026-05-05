@@ -86,29 +86,30 @@ internal object ExpressionSerializer : KSerializer<Expression> {
     var _reference: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> description = decoder.decodeStringElement(__desc, 2)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> description = decoder.decodeStringElement(__desc, __i)
         3 ->
           _description =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.descriptionSer, null)
-        4 -> name = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
+        4 -> name = decoder.decodeStringElement(__desc, __i)
         5 ->
-          _name = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.descriptionSer, null)
-        6 -> language = decoder.decodeStringElement(__desc, 6)
+          _name =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
+        6 -> language = decoder.decodeStringElement(__desc, __i)
         7 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.descriptionSer, null)
-        8 -> expression = decoder.decodeStringElement(__desc, 8)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
+        8 -> expression = decoder.decodeStringElement(__desc, __i)
         9 ->
           _expression =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.descriptionSer, null)
-        10 -> reference = decoder.decodeStringElement(__desc, 10)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
+        10 -> reference = decoder.decodeStringElement(__desc, __i)
         11 ->
           _reference =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Expression: " + __i)
       }

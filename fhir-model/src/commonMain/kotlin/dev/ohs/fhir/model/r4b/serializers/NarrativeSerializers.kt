@@ -72,14 +72,15 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
     var _div: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> status = decoder.decodeStringElement(__desc, 2)
-        3 -> _status = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.statusSer, null)
-        4 -> div = decoder.decodeStringElement(__desc, 4)
-        5 -> _div = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.statusSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> status = decoder.decodeStringElement(__desc, __i)
+        3 ->
+          _status = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusSer, null)
+        4 -> div = decoder.decodeStringElement(__desc, __i)
+        5 -> _div = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Narrative: " + __i)
       }

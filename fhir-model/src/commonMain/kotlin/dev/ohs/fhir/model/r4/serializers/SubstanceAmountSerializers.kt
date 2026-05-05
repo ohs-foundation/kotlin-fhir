@@ -71,15 +71,16 @@ internal object SubstanceAmountReferenceRangeSerializer :
     var highLimit: Quantity? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
-          lowLimit = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.lowLimitSer, null)
+          lowLimit =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowLimitSer, null)
         3 ->
           highLimit =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.lowLimitSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowLimitSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding ReferenceRange: " + __i)
       }
@@ -161,33 +162,33 @@ internal object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
     var referenceRange: SubstanceAmount.ReferenceRange? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         3 ->
           amountQuantity =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.amountQuantitySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountQuantitySer, null)
         4 ->
           amountRange =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.amountRangeSer, null)
-        5 -> amountString = decoder.decodeStringElement(__desc, 5)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountRangeSer, null)
+        5 -> amountString = decoder.decodeStringElement(__desc, __i)
         6 ->
           _amountString =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.amountStringSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountStringSer, null)
         7 ->
           amountType =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.amountTypeSer, null)
-        8 -> amountText = decoder.decodeStringElement(__desc, 8)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountTypeSer, null)
+        8 -> amountText = decoder.decodeStringElement(__desc, __i)
         9 ->
           _amountText =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.amountStringSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountStringSer, null)
         10 ->
           referenceRange =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.referenceRangeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceRangeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding SubstanceAmount: " + __i)
       }

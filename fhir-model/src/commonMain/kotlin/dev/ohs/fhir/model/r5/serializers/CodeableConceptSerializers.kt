@@ -74,13 +74,14 @@ internal object CodeableConceptSerializer : KSerializer<CodeableConcept> {
     var _text: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> coding = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.codingSer, null)
-        3 -> text = decoder.decodeStringElement(__desc, 3)
-        4 -> _text = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 ->
+          coding = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codingSer, null)
+        3 -> text = decoder.decodeStringElement(__desc, __i)
+        4 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding CodeableConcept: " + __i)
       }

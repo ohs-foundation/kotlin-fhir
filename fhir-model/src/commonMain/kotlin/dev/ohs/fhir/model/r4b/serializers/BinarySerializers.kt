@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4b.Element
 import dev.ohs.fhir.model.r4b.Meta
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Uri
+import kotlin.Int
 import kotlin.String
 import kotlin.Suppress
 import kotlinx.serialization.KSerializer
@@ -62,17 +63,21 @@ internal object BinarySerializer : KSerializer<Binary> {
   }
 
   override fun deserialize(decoder: Decoder): Binary =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: Binary) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "Binary")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): Binary {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): Binary {
+    val __desc = desc
     var id: String? = null
     var meta: Meta? = null
     var implicitRules: String? = null
@@ -85,30 +90,31 @@ internal object BinarySerializer : KSerializer<Binary> {
     var `data`: String? = null
     var _data: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> contentType = decoder.decodeStringElement(__desc, 7)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> contentType = decoder.decodeStringElement(__desc, __i)
+        7 ->
           _contentType =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.implicitRulesSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        8 ->
           securityContext =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.securityContextSer, null)
-        10 -> `data` = decoder.decodeStringElement(__desc, 10)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.securityContextSer, null)
+        9 -> `data` = decoder.decodeStringElement(__desc, __i)
+        10 ->
           _data =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.implicitRulesSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
         else -> throw SerializationException("Unexpected index decoding Binary: " + __i)
       }
     }
@@ -123,28 +129,33 @@ internal object BinarySerializer : KSerializer<Binary> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: Binary) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: Binary,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.contentType.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.contentType.value))?.let { encoder.encodeStringElement(__desc, 6 + __off, it) }
     (value.contentType.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.implicitRulesSer, it)
     }
     (value.securityContext)?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.securityContextSer, it)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.securityContextSer, it)
     }
-    ((value.`data`?.value))?.let { encoder.encodeStringElement(__desc, 10, it) }
+    ((value.`data`?.value))?.let { encoder.encodeStringElement(__desc, 9 + __off, it) }
     (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.implicitRulesSer, it)
     }
   }
 
@@ -162,9 +173,11 @@ internal object BinaryPolymorphicSerializer : KSerializer<Binary> {
     buildClassSerialDescriptor("Binary") { BinarySerializer.buildDescriptor(this) }
 
   override fun serialize(encoder: Encoder, `value`: Binary) {
-    encoder.encodeStructure(descriptor) { BinarySerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      BinarySerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): Binary =
-    decoder.decodeStructure(descriptor) { BinarySerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { BinarySerializer.deserializeJson(this, descriptor, 0) }
 }

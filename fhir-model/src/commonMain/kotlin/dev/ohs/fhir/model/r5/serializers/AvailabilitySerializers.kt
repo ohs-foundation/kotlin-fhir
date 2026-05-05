@@ -102,32 +102,47 @@ internal object AvailabilityAvailableTimeSerializer : KSerializer<Availability.A
     var _availableEndTime: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           daysOfWeek =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.daysOfWeekSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.daysOfWeekSer, null)
         3 ->
           _daysOfWeek =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.daysOfWeekSer2, null)
-        4 -> allDay = decoder.decodeBooleanElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.daysOfWeekSer2, null)
+        4 -> allDay = decoder.decodeBooleanElement(__desc, __i)
         5 ->
           _allDay =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.daysOfWeekSerInner2, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.daysOfWeekSerInner2,
+              null,
+            )
         6 ->
           availableStartTime =
-            decoder.decodeNullableSerializableElement(__desc, 6, LocalTimeSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, LocalTimeSerializer, null)
         7 ->
           _availableStartTime =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.daysOfWeekSerInner2, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.daysOfWeekSerInner2,
+              null,
+            )
         8 ->
           availableEndTime =
-            decoder.decodeNullableSerializableElement(__desc, 8, LocalTimeSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, LocalTimeSerializer, null)
         9 ->
           _availableEndTime =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.daysOfWeekSerInner2, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.daysOfWeekSerInner2,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding AvailableTime: " + __i)
       }
@@ -226,15 +241,16 @@ internal object AvailabilityNotAvailableTimeSerializer :
     var during: Period? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> description = decoder.decodeStringElement(__desc, 2)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> description = decoder.decodeStringElement(__desc, __i)
         3 ->
           _description =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.descriptionSer, null)
-        4 -> during = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.duringSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
+        4 ->
+          during = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.duringSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding NotAvailableTime: " + __i)
       }
@@ -309,16 +325,21 @@ internal object AvailabilitySerializer : KSerializer<Availability> {
     var notAvailableTime: List<Availability.NotAvailableTime>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           availableTime =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.availableTimeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.availableTimeSer, null)
         3 ->
           notAvailableTime =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.notAvailableTimeSer, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.notAvailableTimeSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Availability: " + __i)
       }

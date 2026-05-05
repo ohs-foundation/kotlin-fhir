@@ -116,26 +116,29 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
     var period: Period? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> use = decoder.decodeStringElement(__desc, 2)
-        3 -> _use = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.useSer, null)
-        4 -> text = decoder.decodeStringElement(__desc, 4)
-        5 -> _text = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.useSer, null)
-        6 -> family = decoder.decodeStringElement(__desc, 6)
-        7 -> _family = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.useSer, null)
-        8 -> given = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.givenSer, null)
-        9 -> _given = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.givenSer2, null)
-        10 -> prefix = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.givenSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> use = decoder.decodeStringElement(__desc, __i)
+        3 -> _use = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        4 -> text = decoder.decodeStringElement(__desc, __i)
+        5 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        6 -> family = decoder.decodeStringElement(__desc, __i)
+        7 -> _family = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+        8 -> given = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer, null)
+        9 ->
+          _given = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer2, null)
+        10 ->
+          prefix = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer, null)
         11 ->
-          _prefix = decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.givenSer2, null)
-        12 -> suffix = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.givenSer, null)
+          _prefix = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer2, null)
+        12 ->
+          suffix = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer, null)
         13 ->
-          _suffix = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.givenSer2, null)
+          _suffix = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer2, null)
         14 ->
-          period = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding HumanName: " + __i)
       }

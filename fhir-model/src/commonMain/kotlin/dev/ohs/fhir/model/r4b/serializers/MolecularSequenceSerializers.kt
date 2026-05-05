@@ -118,51 +118,51 @@ internal object MolecularSequenceReferenceSeqSerializer :
     var _windowEnd: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         3 ->
           chromosome =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.chromosomeSer, null)
-        4 -> genomeBuild = decoder.decodeStringElement(__desc, 4)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.chromosomeSer, null)
+        4 -> genomeBuild = decoder.decodeStringElement(__desc, __i)
         5 ->
           _genomeBuild =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.genomeBuildSer, null)
-        6 -> orientation = decoder.decodeStringElement(__desc, 6)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.genomeBuildSer, null)
+        6 -> orientation = decoder.decodeStringElement(__desc, __i)
         7 ->
           _orientation =
-            decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.genomeBuildSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.genomeBuildSer, null)
         8 ->
           referenceSeqId =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.chromosomeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.chromosomeSer, null)
         9 ->
           referenceSeqPointer =
             decoder.decodeNullableSerializableElement(
               __desc,
-              9,
+              __i,
               Hoisted.referenceSeqPointerSer,
               null,
             )
-        10 -> referenceSeqString = decoder.decodeStringElement(__desc, 10)
+        10 -> referenceSeqString = decoder.decodeStringElement(__desc, __i)
         11 ->
           _referenceSeqString =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.genomeBuildSer, null)
-        12 -> strand = decoder.decodeStringElement(__desc, 12)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.genomeBuildSer, null)
+        12 -> strand = decoder.decodeStringElement(__desc, __i)
         13 ->
           _strand =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.genomeBuildSer, null)
-        14 -> windowStart = decoder.decodeIntElement(__desc, 14)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.genomeBuildSer, null)
+        14 -> windowStart = decoder.decodeIntElement(__desc, __i)
         15 ->
           _windowStart =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.genomeBuildSer, null)
-        16 -> windowEnd = decoder.decodeIntElement(__desc, 16)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.genomeBuildSer, null)
+        16 -> windowEnd = decoder.decodeIntElement(__desc, __i)
         17 ->
           _windowEnd =
-            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.genomeBuildSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.genomeBuildSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding ReferenceSeq: " + __i)
       }
@@ -294,30 +294,31 @@ internal object MolecularSequenceVariantSerializer : KSerializer<MolecularSequen
     var variantPointer: Reference? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> start = decoder.decodeIntElement(__desc, 3)
-        4 -> _start = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.startSer, null)
-        5 -> end = decoder.decodeIntElement(__desc, 5)
-        6 -> _end = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.startSer, null)
-        7 -> observedAllele = decoder.decodeStringElement(__desc, 7)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> start = decoder.decodeIntElement(__desc, __i)
+        4 -> _start = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
+        5 -> end = decoder.decodeIntElement(__desc, __i)
+        6 -> _end = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
+        7 -> observedAllele = decoder.decodeStringElement(__desc, __i)
         8 ->
           _observedAllele =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.startSer, null)
-        9 -> referenceAllele = decoder.decodeStringElement(__desc, 9)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
+        9 -> referenceAllele = decoder.decodeStringElement(__desc, __i)
         10 ->
           _referenceAllele =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.startSer, null)
-        11 -> cigar = decoder.decodeStringElement(__desc, 11)
-        12 -> _cigar = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.startSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
+        11 -> cigar = decoder.decodeStringElement(__desc, __i)
+        12 ->
+          _cigar = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
         13 ->
           variantPointer =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.variantPointerSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.variantPointerSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Variant: " + __i)
       }
@@ -465,61 +466,75 @@ internal object MolecularSequenceQualitySerializer : KSerializer<MolecularSequen
     var roc: MolecularSequence.Quality.Roc? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeStringElement(__desc, 3)
-        4 -> _type = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeStringElement(__desc, __i)
+        4 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         5 ->
           standardSequence =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.standardSequenceSer, null)
-        6 -> start = decoder.decodeIntElement(__desc, 6)
-        7 -> _start = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.typeSer, null)
-        8 -> end = decoder.decodeIntElement(__desc, 8)
-        9 -> _end = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.typeSer, null)
-        10 -> score = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.scoreSer, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.standardSequenceSer,
+              null,
+            )
+        6 -> start = decoder.decodeIntElement(__desc, __i)
+        7 -> _start = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        8 -> end = decoder.decodeIntElement(__desc, __i)
+        9 -> _end = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        10 -> score = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer, null)
         11 ->
           method =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.standardSequenceSer, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.standardSequenceSer,
+              null,
+            )
         12 ->
           truthTP =
-            decoder.decodeNullableSerializableElement(__desc, 12, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         13 ->
-          _truthTP = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.typeSer, null)
+          _truthTP = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         14 ->
           queryTP =
-            decoder.decodeNullableSerializableElement(__desc, 14, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         15 ->
-          _queryTP = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.typeSer, null)
+          _queryTP = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         16 ->
           truthFN =
-            decoder.decodeNullableSerializableElement(__desc, 16, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         17 ->
-          _truthFN = decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.typeSer, null)
+          _truthFN = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         18 ->
           queryFP =
-            decoder.decodeNullableSerializableElement(__desc, 18, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         19 ->
-          _queryFP = decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.typeSer, null)
+          _queryFP = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         20 ->
-          gtFP = decoder.decodeNullableSerializableElement(__desc, 20, BigDecimalSerializer, null)
-        21 -> _gtFP = decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.typeSer, null)
+          gtFP = decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        21 -> _gtFP = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         22 ->
           precision =
-            decoder.decodeNullableSerializableElement(__desc, 22, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         23 ->
-          _precision = decoder.decodeNullableSerializableElement(__desc, 23, Hoisted.typeSer, null)
+          _precision = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         24 ->
-          recall = decoder.decodeNullableSerializableElement(__desc, 24, BigDecimalSerializer, null)
-        25 -> _recall = decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.typeSer, null)
+          recall =
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        25 ->
+          _recall = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         26 ->
-          fScore = decoder.decodeNullableSerializableElement(__desc, 26, BigDecimalSerializer, null)
-        27 -> _fScore = decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.typeSer, null)
-        28 -> roc = decoder.decodeNullableSerializableElement(__desc, 28, Hoisted.rocSer, null)
+          fScore =
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+        27 ->
+          _fScore = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        28 -> roc = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.rocSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Quality: " + __i)
       }
@@ -710,39 +725,43 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
     var _fMeasure: List<Element?>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> score = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.scoreSer, null)
-        4 -> _score = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.scoreSer2, null)
-        5 -> numTP = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.scoreSer, null)
-        6 -> _numTP = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.scoreSer2, null)
-        7 -> numFP = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.scoreSer, null)
-        8 -> _numFP = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.scoreSer2, null)
-        9 -> numFN = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.scoreSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> score = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer, null)
+        4 ->
+          _score = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer2, null)
+        5 -> numTP = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer, null)
+        6 ->
+          _numTP = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer2, null)
+        7 -> numFP = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer, null)
+        8 ->
+          _numFP = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer2, null)
+        9 -> numFN = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer, null)
         10 ->
-          _numFN = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.scoreSer2, null)
+          _numFN = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer2, null)
         11 ->
           precision =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.precisionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.precisionSer, null)
         12 ->
           _precision =
-            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.scoreSer2, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer2, null)
         13 ->
           sensitivity =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.precisionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.precisionSer, null)
         14 ->
           _sensitivity =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.scoreSer2, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer2, null)
         15 ->
           fMeasure =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.precisionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.precisionSer, null)
         16 ->
-          _fMeasure = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.scoreSer2, null)
+          _fMeasure =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoreSer2, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Roc: " + __i)
       }
@@ -907,29 +926,29 @@ internal object MolecularSequenceRepositorySerializer : KSerializer<MolecularSeq
     var _readsetId: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeStringElement(__desc, 3)
-        4 -> _type = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.typeSer, null)
-        5 -> url = decoder.decodeStringElement(__desc, 5)
-        6 -> _url = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.typeSer, null)
-        7 -> name = decoder.decodeStringElement(__desc, 7)
-        8 -> _name = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.typeSer, null)
-        9 -> datasetId = decoder.decodeStringElement(__desc, 9)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeStringElement(__desc, __i)
+        4 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        5 -> url = decoder.decodeStringElement(__desc, __i)
+        6 -> _url = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        7 -> name = decoder.decodeStringElement(__desc, __i)
+        8 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        9 -> datasetId = decoder.decodeStringElement(__desc, __i)
         10 ->
-          _datasetId = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.typeSer, null)
-        11 -> variantsetId = decoder.decodeStringElement(__desc, 11)
+          _datasetId = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        11 -> variantsetId = decoder.decodeStringElement(__desc, __i)
         12 ->
           _variantsetId =
-            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.typeSer, null)
-        13 -> readsetId = decoder.decodeStringElement(__desc, 13)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        13 -> readsetId = decoder.decodeStringElement(__desc, __i)
         14 ->
-          _readsetId = decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.typeSer, null)
+          _readsetId = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Repository: " + __i)
       }
@@ -1043,22 +1062,24 @@ internal object MolecularSequenceStructureVariantSerializer :
     var `inner`: MolecularSequence.StructureVariant.Inner? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         3 ->
           variantType =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.variantTypeSer, null)
-        4 -> exact = decoder.decodeBooleanElement(__desc, 4)
-        5 -> _exact = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.exactSer, null)
-        6 -> length = decoder.decodeIntElement(__desc, 6)
-        7 -> _length = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.exactSer, null)
-        8 -> outer = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.outerSer, null)
-        9 -> `inner` = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.innerSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.variantTypeSer, null)
+        4 -> exact = decoder.decodeBooleanElement(__desc, __i)
+        5 -> _exact = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.exactSer, null)
+        6 -> length = decoder.decodeIntElement(__desc, __i)
+        7 ->
+          _length = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.exactSer, null)
+        8 -> outer = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.outerSer, null)
+        9 ->
+          `inner` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.innerSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding StructureVariant: " + __i)
       }
@@ -1157,17 +1178,17 @@ internal object MolecularSequenceStructureVariantOuterSerializer :
     var _end: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> start = decoder.decodeIntElement(__desc, 3)
-        4 -> _start = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.startSer, null)
-        5 -> end = decoder.decodeIntElement(__desc, 5)
-        6 -> _end = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.startSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> start = decoder.decodeIntElement(__desc, __i)
+        4 -> _start = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
+        5 -> end = decoder.decodeIntElement(__desc, __i)
+        6 -> _end = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Outer: " + __i)
       }
@@ -1250,17 +1271,17 @@ internal object MolecularSequenceStructureVariantInnerSerializer :
     var _end: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> start = decoder.decodeIntElement(__desc, 3)
-        4 -> _start = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.startSer, null)
-        5 -> end = decoder.decodeIntElement(__desc, 5)
-        6 -> _end = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.startSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> start = decoder.decodeIntElement(__desc, __i)
+        4 -> _start = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
+        5 -> end = decoder.decodeIntElement(__desc, __i)
+        6 -> _end = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Inner: " + __i)
       }
@@ -1383,17 +1404,21 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
   }
 
   override fun deserialize(decoder: Decoder): MolecularSequence =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "MolecularSequence")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): MolecularSequence {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): MolecularSequence {
+    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -1425,75 +1450,82 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
     var pointer: List<Reference>? = null
     var structureVariant: List<MolecularSequence.StructureVariant>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
-        12 -> type = decoder.decodeStringElement(__desc, 12)
-        13 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        11 -> type = decoder.decodeStringElement(__desc, __i)
+        12 ->
           _type =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.implicitRulesSer, null)
-        14 -> coordinateSystem = decoder.decodeIntElement(__desc, 14)
-        15 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        13 -> coordinateSystem = decoder.decodeIntElement(__desc, __i)
+        14 ->
           _coordinateSystem =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        15 ->
+          patient = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.patientSer, null)
         16 ->
-          patient = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.patientSer, null)
+          specimen =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.patientSer, null)
         17 ->
-          specimen = decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.patientSer, null)
+          device = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.patientSer, null)
         18 ->
-          device = decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.patientSer, null)
-        19 ->
           performer =
-            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.patientSer, null)
-        20 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.patientSer, null)
+        19 ->
           quantity =
-            decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.quantitySer, null)
-        21 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.quantitySer, null)
+        20 ->
           referenceSeq =
-            decoder.decodeNullableSerializableElement(__desc, 21, Hoisted.referenceSeqSer, null)
-        22 ->
-          variant = decoder.decodeNullableSerializableElement(__desc, 22, Hoisted.variantSer, null)
-        23 -> observedSeq = decoder.decodeStringElement(__desc, 23)
-        24 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceSeqSer, null)
+        21 ->
+          variant = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.variantSer, null)
+        22 -> observedSeq = decoder.decodeStringElement(__desc, __i)
+        23 ->
           _observedSeq =
-            decoder.decodeNullableSerializableElement(__desc, 24, Hoisted.implicitRulesSer, null)
-        25 ->
-          quality = decoder.decodeNullableSerializableElement(__desc, 25, Hoisted.qualitySer, null)
-        26 -> readCoverage = decoder.decodeIntElement(__desc, 26)
-        27 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        24 ->
+          quality = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.qualitySer, null)
+        25 -> readCoverage = decoder.decodeIntElement(__desc, __i)
+        26 ->
           _readCoverage =
-            decoder.decodeNullableSerializableElement(__desc, 27, Hoisted.implicitRulesSer, null)
-        28 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        27 ->
           repository =
-            decoder.decodeNullableSerializableElement(__desc, 28, Hoisted.repositorySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.repositorySer, null)
+        28 ->
+          pointer = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pointerSer, null)
         29 ->
-          pointer = decoder.decodeNullableSerializableElement(__desc, 29, Hoisted.pointerSer, null)
-        30 ->
           structureVariant =
-            decoder.decodeNullableSerializableElement(__desc, 30, Hoisted.structureVariantSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.structureVariantSer,
+              null,
+            )
         else -> throw SerializationException("Unexpected index decoding MolecularSequence: " + __i)
       }
     }
@@ -1525,63 +1557,83 @@ internal object MolecularSequenceSerializer : KSerializer<MolecularSequence> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: MolecularSequence) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: MolecularSequence,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 12, it) }
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
+    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 11 + __off, it) }
     (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.coordinateSystem.value))?.let { encoder.encodeIntElement(__desc, 14, it) }
+    ((value.coordinateSystem.value))?.let { encoder.encodeIntElement(__desc, 13 + __off, it) }
     (value.coordinateSystem.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.patient)?.let { encoder.encodeSerializableElement(__desc, 16, Hoisted.patientSer, it) }
-    (value.specimen)?.let { encoder.encodeSerializableElement(__desc, 17, Hoisted.patientSer, it) }
-    (value.device)?.let { encoder.encodeSerializableElement(__desc, 18, Hoisted.patientSer, it) }
-    (value.performer)?.let { encoder.encodeSerializableElement(__desc, 19, Hoisted.patientSer, it) }
-    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 20, Hoisted.quantitySer, it) }
+    (value.patient)?.let {
+      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.patientSer, it)
+    }
+    (value.specimen)?.let {
+      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.patientSer, it)
+    }
+    (value.device)?.let {
+      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.patientSer, it)
+    }
+    (value.performer)?.let {
+      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.patientSer, it)
+    }
+    (value.quantity)?.let {
+      encoder.encodeSerializableElement(__desc, 19 + __off, Hoisted.quantitySer, it)
+    }
     (value.referenceSeq)?.let {
-      encoder.encodeSerializableElement(__desc, 21, Hoisted.referenceSeqSer, it)
+      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.referenceSeqSer, it)
     }
     if (value.variant.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 22, Hoisted.variantSer, value.variant)
-    ((value.observedSeq?.value))?.let { encoder.encodeStringElement(__desc, 23, it) }
+      encoder.encodeSerializableElement(__desc, 21 + __off, Hoisted.variantSer, value.variant)
+    ((value.observedSeq?.value))?.let { encoder.encodeStringElement(__desc, 22 + __off, it) }
     (value.observedSeq?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 24, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 23 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.quality.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 25, Hoisted.qualitySer, value.quality)
-    ((value.readCoverage?.value))?.let { encoder.encodeIntElement(__desc, 26, it) }
+      encoder.encodeSerializableElement(__desc, 24 + __off, Hoisted.qualitySer, value.quality)
+    ((value.readCoverage?.value))?.let { encoder.encodeIntElement(__desc, 25 + __off, it) }
     (value.readCoverage?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 27, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 26 + __off, Hoisted.implicitRulesSer, it)
     }
     if (value.repository.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 28, Hoisted.repositorySer, value.repository)
+      encoder.encodeSerializableElement(__desc, 27 + __off, Hoisted.repositorySer, value.repository)
     if (value.pointer.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 29, Hoisted.pointerSer, value.pointer)
+      encoder.encodeSerializableElement(__desc, 28 + __off, Hoisted.pointerSer, value.pointer)
     if (value.structureVariant.isNotEmpty())
       encoder.encodeSerializableElement(
         __desc,
-        30,
+        29 + __off,
         Hoisted.structureVariantSer,
         value.structureVariant,
       )
@@ -1650,9 +1702,13 @@ internal object MolecularSequencePolymorphicSerializer : KSerializer<MolecularSe
     }
 
   override fun serialize(encoder: Encoder, `value`: MolecularSequence) {
-    encoder.encodeStructure(descriptor) { MolecularSequenceSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      MolecularSequenceSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): MolecularSequence =
-    decoder.decodeStructure(descriptor) { MolecularSequenceSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) {
+      MolecularSequenceSerializer.deserializeJson(this, descriptor, 0)
+    }
 }

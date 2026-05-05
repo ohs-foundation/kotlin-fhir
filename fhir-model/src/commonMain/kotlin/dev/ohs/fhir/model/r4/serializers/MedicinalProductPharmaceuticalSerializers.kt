@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
+import kotlin.Int
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
@@ -91,15 +92,15 @@ internal object MedicinalProductPharmaceuticalCharacteristicsSerializer :
     var status: CodeableConcept? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.codeSer, null)
-        4 -> status = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
+        4 -> status = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Characteristics: " + __i)
       }
@@ -197,28 +198,28 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationSerializer :
       null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
         4 ->
           firstDose =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.firstDoseSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.firstDoseSer, null)
         5 ->
           maxSingleDose =
-            decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.firstDoseSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.firstDoseSer, null)
         6 ->
           maxDosePerDay =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.firstDoseSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.firstDoseSer, null)
         7 ->
           maxDosePerTreatmentPeriod =
             decoder.decodeNullableSerializableElement(
               __desc,
-              7,
+              __i,
               Hoisted.maxDosePerTreatmentPeriodSer,
               null,
             )
@@ -226,13 +227,13 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationSerializer :
           maxTreatmentPeriod =
             decoder.decodeNullableSerializableElement(
               __desc,
-              8,
+              __i,
               Hoisted.maxTreatmentPeriodSer,
               null,
             )
         9 ->
           targetSpecies =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.targetSpeciesSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.targetSpeciesSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else ->
           throw SerializationException("Unexpected index decoding RouteOfAdministration: " + __i)
@@ -360,17 +361,22 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpecies
       null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
         4 ->
           withdrawalPeriod =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.withdrawalPeriodSer, null)
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
+              Hoisted.withdrawalPeriodSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding TargetSpecies: " + __i)
       }
@@ -473,21 +479,23 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpecies
     var _supportingInformation: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> tissue = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.tissueSer, null)
-        4 -> `value` = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.valueSer, null)
-        5 -> supportingInformation = decoder.decodeStringElement(__desc, 5)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 ->
+          tissue = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.tissueSer, null)
+        4 ->
+          `value` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+        5 -> supportingInformation = decoder.decodeStringElement(__desc, __i)
         6 ->
           _supportingInformation =
             decoder.decodeNullableSerializableElement(
               __desc,
-              6,
+              __i,
               Hoisted.supportingInformationSer,
               null,
             )
@@ -600,17 +608,21 @@ internal object MedicinalProductPharmaceuticalSerializer :
   }
 
   override fun deserialize(decoder: Decoder): MedicinalProductPharmaceutical =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductPharmaceutical) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "MedicinalProductPharmaceutical")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): MedicinalProductPharmaceutical {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): MedicinalProductPharmaceutical {
+    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -629,65 +641,66 @@ internal object MedicinalProductPharmaceuticalSerializer :
     var characteristics: List<MedicinalProductPharmaceutical.Characteristics>? = null
     var routeOfAdministration: List<MedicinalProductPharmaceutical.RouteOfAdministration>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
-        12 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        11 ->
           administrableDoseForm =
             decoder.decodeNullableSerializableElement(
               __desc,
-              12,
+              __i,
+              Hoisted.administrableDoseFormSer,
+              null,
+            )
+        12 ->
+          unitOfPresentation =
+            decoder.decodeNullableSerializableElement(
+              __desc,
+              __i,
               Hoisted.administrableDoseFormSer,
               null,
             )
         13 ->
-          unitOfPresentation =
-            decoder.decodeNullableSerializableElement(
-              __desc,
-              13,
-              Hoisted.administrableDoseFormSer,
-              null,
-            )
-        14 ->
           ingredient =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.ingredientSer, null)
-        15 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.ingredientSer, null)
+        14 ->
           device =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.ingredientSer, null)
-        16 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.ingredientSer, null)
+        15 ->
           characteristics =
-            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.characteristicsSer, null)
-        17 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.characteristicsSer, null)
+        16 ->
           routeOfAdministration =
             decoder.decodeNullableSerializableElement(
               __desc,
-              17,
+              __i,
               Hoisted.routeOfAdministrationSer,
               null,
             )
-        CompositeDecoder.DECODE_DONE -> break
         else ->
           throw SerializationException(
             "Unexpected index decoding MedicinalProductPharmaceutical: " + __i
@@ -713,48 +726,58 @@ internal object MedicinalProductPharmaceuticalSerializer :
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: MedicinalProductPharmaceutical) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: MedicinalProductPharmaceutical,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
     (value.administrableDoseForm)?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.administrableDoseFormSer, it)
+      encoder.encodeSerializableElement(__desc, 11 + __off, Hoisted.administrableDoseFormSer, it)
     }
     (value.unitOfPresentation)?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.administrableDoseFormSer, it)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.administrableDoseFormSer, it)
     }
     if (value.ingredient.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.ingredientSer, value.ingredient)
+      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.ingredientSer, value.ingredient)
     if (value.device.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.ingredientSer, value.device)
+      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.ingredientSer, value.device)
     if (value.characteristics.isNotEmpty())
       encoder.encodeSerializableElement(
         __desc,
-        16,
+        15 + __off,
         Hoisted.characteristicsSer,
         value.characteristics,
       )
     if (value.routeOfAdministration.isNotEmpty())
       encoder.encodeSerializableElement(
         __desc,
-        17,
+        16 + __off,
         Hoisted.routeOfAdministrationSer,
         value.routeOfAdministration,
       )
@@ -815,12 +838,12 @@ internal object MedicinalProductPharmaceuticalPolymorphicSerializer :
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductPharmaceutical) {
     encoder.encodeStructure(descriptor) {
-      MedicinalProductPharmaceuticalSerializer.serializeJson(this, value)
+      MedicinalProductPharmaceuticalSerializer.serializeJson(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): MedicinalProductPharmaceutical =
     decoder.decodeStructure(descriptor) {
-      MedicinalProductPharmaceuticalSerializer.deserializeJson(this)
+      MedicinalProductPharmaceuticalSerializer.deserializeJson(this, descriptor, 0)
     }
 }

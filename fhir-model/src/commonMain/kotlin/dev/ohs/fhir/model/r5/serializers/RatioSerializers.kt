@@ -66,16 +66,16 @@ internal object RatioSerializer : KSerializer<Ratio> {
     var denominator: Quantity? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           numerator =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.numeratorSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.numeratorSer, null)
         3 ->
           denominator =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.numeratorSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.numeratorSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Ratio: " + __i)
       }

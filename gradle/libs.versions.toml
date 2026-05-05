@@ -8,6 +8,7 @@ kotlin = "2.3.20"
 kotlin-poet = "2.0.0"
 kotlinx-datetime = "0.7.1"
 kotlinx-serialization-json = "1.8.1"
+kotlinx-serialization-protobuf = "1.8.1"
 ksp = "2.3.6"
 maven-publish = "0.36.0"
 spotless = "7.0.1"
@@ -22,6 +23,7 @@ kotlin-poet = { module = "com.squareup:kotlinpoet", version.ref = "kotlin-poet" 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+kotlinx-serialization-protobuf = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-protobuf", version.ref = "kotlinx-serialization-protobuf" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }

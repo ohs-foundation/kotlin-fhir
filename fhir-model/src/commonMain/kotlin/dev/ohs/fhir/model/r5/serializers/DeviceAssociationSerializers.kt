@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Uri
+import kotlin.Int
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -88,18 +89,20 @@ internal object DeviceAssociationOperationSerializer : KSerializer<DeviceAssocia
     var period: Period? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> status = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.statusSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 ->
+          status = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusSer, null)
         4 ->
           `operator` =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.operatorSer, null)
-        5 -> period = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.periodSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.operatorSer, null)
+        5 ->
+          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding Operation: " + __i)
       }
@@ -201,17 +204,21 @@ internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
   }
 
   override fun deserialize(decoder: Decoder): DeviceAssociation =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceAssociation) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "DeviceAssociation")
-      serializeJson(this, value)
+      serializeJson(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(decoder: CompositeDecoder): DeviceAssociation {
-    val __desc = descriptor
+  internal fun deserializeJson(
+    decoder: CompositeDecoder,
+    desc: SerialDescriptor,
+    __off: Int,
+  ): DeviceAssociation {
+    val __desc = desc
     var id: String? = null
     var meta: Meta? = null
     var implicitRules: String? = null
@@ -232,53 +239,54 @@ internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
     var period: Period? = null
     var operation: List<DeviceAssociation.Operation>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> decoder.decodeStringElement(__desc, 0)
-        1 -> id = decoder.decodeStringElement(__desc, 1)
-        2 -> meta = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.metaSer, null)
-        3 -> implicitRules = decoder.decodeStringElement(__desc, 3)
-        4 ->
+      val __i = decoder.decodeElementIndex(__desc)
+      if (__i == CompositeDecoder.DECODE_DONE) break
+      when (__i - __off) {
+        -1 -> decoder.decodeStringElement(__desc, __i)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
+        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+        3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.implicitRulesSer, null)
-        5 -> language = decoder.decodeStringElement(__desc, 5)
-        6 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(__desc, __i)
+        5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.implicitRulesSer, null)
-        7 -> text = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.textSer, null)
-        8 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+        7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.containedSer, null)
-        9 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+        8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.extensionSer, null)
-        10 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.extensionSer, null)
-        11 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+        11 ->
+          device = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.deviceSer, null)
         12 ->
-          device = decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.deviceSer, null)
-        13 ->
           category =
-            decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.categorySer, null)
-        14 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySer, null)
+        13 ->
           status =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.categorySerInner, null)
-        15 ->
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySerInner, null)
+        14 ->
           statusReason =
-            decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.categorySer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySer, null)
+        15 ->
+          subject = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.deviceSer, null)
         16 ->
-          subject = decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.deviceSer, null)
-        17 ->
           bodyStructure =
-            decoder.decodeNullableSerializableElement(__desc, 17, Hoisted.deviceSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.deviceSer, null)
+        17 ->
+          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
         18 ->
-          period = decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.periodSer, null)
-        19 ->
           operation =
-            decoder.decodeNullableSerializableElement(__desc, 19, Hoisted.operationSer, null)
-        CompositeDecoder.DECODE_DONE -> break
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.operationSer, null)
         else -> throw SerializationException("Unexpected index decoding DeviceAssociation: " + __i)
       }
     }
@@ -303,42 +311,58 @@ internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
     )
   }
 
-  internal fun serializeJson(encoder: CompositeEncoder, `value`: DeviceAssociation) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 1, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+  internal fun serializeJson(
+    encoder: CompositeEncoder,
+    desc: SerialDescriptor,
+    __off: Int,
+    `value`: DeviceAssociation,
+  ) {
+    val __desc = desc
+    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
+    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
+    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.textSer, it) }
+    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        __desc,
+        9 + __off,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.identifierSer, value.identifier)
-    (value.device)?.let { encoder.encodeSerializableElement(__desc, 12, Hoisted.deviceSer, it) }
+      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
+    (value.device)?.let {
+      encoder.encodeSerializableElement(__desc, 11 + __off, Hoisted.deviceSer, it)
+    }
     if (value.category.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.categorySer, value.category)
+      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.categorySer, value.category)
     (value.status)?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.categorySerInner, it)
+      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.categorySerInner, it)
     }
     if (value.statusReason.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.categorySer, value.statusReason)
-    (value.subject)?.let { encoder.encodeSerializableElement(__desc, 16, Hoisted.deviceSer, it) }
-    (value.bodyStructure)?.let {
-      encoder.encodeSerializableElement(__desc, 17, Hoisted.deviceSer, it)
+      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.categorySer, value.statusReason)
+    (value.subject)?.let {
+      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.deviceSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 18, Hoisted.periodSer, it) }
+    (value.bodyStructure)?.let {
+      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.deviceSer, it)
+    }
+    (value.period)?.let {
+      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.periodSer, it)
+    }
     if (value.operation.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 19, Hoisted.operationSer, value.operation)
+      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.operationSer, value.operation)
   }
 
   private object Hoisted {
@@ -386,9 +410,13 @@ internal object DeviceAssociationPolymorphicSerializer : KSerializer<DeviceAssoc
     }
 
   override fun serialize(encoder: Encoder, `value`: DeviceAssociation) {
-    encoder.encodeStructure(descriptor) { DeviceAssociationSerializer.serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) {
+      DeviceAssociationSerializer.serializeJson(this, descriptor, 0, value)
+    }
   }
 
   override fun deserialize(decoder: Decoder): DeviceAssociation =
-    decoder.decodeStructure(descriptor) { DeviceAssociationSerializer.deserializeJson(this) }
+    decoder.decodeStructure(descriptor) {
+      DeviceAssociationSerializer.deserializeJson(this, descriptor, 0)
+    }
 }

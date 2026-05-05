@@ -112,52 +112,55 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
     var _data: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> origin = decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.originSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 ->
+          origin = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.originSer, null)
         3 ->
           interval =
-            decoder.decodeNullableSerializableElement(__desc, 3, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         4 ->
           _interval =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.intervalSer, null)
-        5 -> intervalUnit = decoder.decodeStringElement(__desc, 5)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
+        5 -> intervalUnit = decoder.decodeStringElement(__desc, __i)
         6 ->
           _intervalUnit =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.intervalSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
         7 ->
-          factor = decoder.decodeNullableSerializableElement(__desc, 7, BigDecimalSerializer, null)
+          factor =
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         8 ->
-          _factor = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.intervalSer, null)
+          _factor =
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
         9 ->
           lowerLimit =
-            decoder.decodeNullableSerializableElement(__desc, 9, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         10 ->
           _lowerLimit =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.intervalSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
         11 ->
           upperLimit =
-            decoder.decodeNullableSerializableElement(__desc, 11, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
         12 ->
           _upperLimit =
-            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.intervalSer, null)
-        13 -> dimensions = decoder.decodeIntElement(__desc, 13)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
+        13 -> dimensions = decoder.decodeIntElement(__desc, __i)
         14 ->
           _dimensions =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.intervalSer, null)
-        15 -> codeMap = decoder.decodeStringElement(__desc, 15)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
+        15 -> codeMap = decoder.decodeStringElement(__desc, __i)
         16 ->
           _codeMap =
-            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.intervalSer, null)
-        17 -> offsets = decoder.decodeStringElement(__desc, 17)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
+        17 -> offsets = decoder.decodeStringElement(__desc, __i)
         18 ->
           _offsets =
-            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.intervalSer, null)
-        19 -> `data` = decoder.decodeStringElement(__desc, 19)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
+        19 -> `data` = decoder.decodeStringElement(__desc, __i)
         20 ->
-          _data = decoder.decodeNullableSerializableElement(__desc, 20, Hoisted.intervalSer, null)
+          _data = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding SampledData: " + __i)
       }

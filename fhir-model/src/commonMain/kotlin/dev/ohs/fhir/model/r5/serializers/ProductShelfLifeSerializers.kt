@@ -85,26 +85,26 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
     var specialPrecautionsForStorage: List<CodeableConcept>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         4 ->
           periodDuration =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.periodDurationSer, null)
-        5 -> periodString = decoder.decodeStringElement(__desc, 5)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodDurationSer, null)
+        5 -> periodString = decoder.decodeStringElement(__desc, __i)
         6 ->
           _periodString =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.periodStringSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodStringSer, null)
         7 ->
           specialPrecautionsForStorage =
             decoder.decodeNullableSerializableElement(
               __desc,
-              7,
+              __i,
               Hoisted.specialPrecautionsForStorageSer,
               null,
             )

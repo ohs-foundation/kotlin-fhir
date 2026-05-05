@@ -108,26 +108,26 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
     var _sessionKey: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           channelType =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.channelTypeSer, null)
-        3 -> addressUrl = decoder.decodeStringElement(__desc, 3)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.channelTypeSer, null)
+        3 -> addressUrl = decoder.decodeStringElement(__desc, __i)
         4 ->
           _addressUrl =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.addressUrlSer, null)
-        5 -> addressString = decoder.decodeStringElement(__desc, 5)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressUrlSer, null)
+        5 -> addressString = decoder.decodeStringElement(__desc, __i)
         6 ->
           _addressString =
-            decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.addressUrlSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressUrlSer, null)
         7 ->
           addressContactPoint =
             decoder.decodeNullableSerializableElement(
               __desc,
-              7,
+              __i,
               Hoisted.addressContactPointSer,
               null,
             )
@@ -135,24 +135,24 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
           addressExtendedContactDetail =
             decoder.decodeNullableSerializableElement(
               __desc,
-              8,
+              __i,
               Hoisted.addressExtendedContactDetailSer,
               null,
             )
         9 ->
           additionalInfo =
-            decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.additionalInfoSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.additionalInfoSer, null)
         10 ->
           _additionalInfo =
-            decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.additionalInfoSer2, null)
-        11 -> maxParticipants = decoder.decodeIntElement(__desc, 11)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.additionalInfoSer2, null)
+        11 -> maxParticipants = decoder.decodeIntElement(__desc, __i)
         12 ->
           _maxParticipants =
-            decoder.decodeNullableSerializableElement(__desc, 12, Hoisted.addressUrlSer, null)
-        13 -> sessionKey = decoder.decodeStringElement(__desc, 13)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressUrlSer, null)
+        13 -> sessionKey = decoder.decodeStringElement(__desc, __i)
         14 ->
           _sessionKey =
-            decoder.decodeNullableSerializableElement(__desc, 14, Hoisted.addressUrlSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressUrlSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else ->
           throw SerializationException("Unexpected index decoding VirtualServiceDetail: " + __i)

@@ -101,27 +101,27 @@ internal object ParameterDefinitionSerializer : KSerializer<ParameterDefinition>
     var _profile: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> name = decoder.decodeStringElement(__desc, 2)
-        3 -> _name = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.nameSer, null)
-        4 -> use = decoder.decodeStringElement(__desc, 4)
-        5 -> _use = decoder.decodeNullableSerializableElement(__desc, 5, Hoisted.nameSer, null)
-        6 -> min = decoder.decodeIntElement(__desc, 6)
-        7 -> _min = decoder.decodeNullableSerializableElement(__desc, 7, Hoisted.nameSer, null)
-        8 -> max = decoder.decodeStringElement(__desc, 8)
-        9 -> _max = decoder.decodeNullableSerializableElement(__desc, 9, Hoisted.nameSer, null)
-        10 -> documentation = decoder.decodeStringElement(__desc, 10)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> name = decoder.decodeStringElement(__desc, __i)
+        3 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+        4 -> use = decoder.decodeStringElement(__desc, __i)
+        5 -> _use = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+        6 -> min = decoder.decodeIntElement(__desc, __i)
+        7 -> _min = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+        8 -> max = decoder.decodeStringElement(__desc, __i)
+        9 -> _max = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+        10 -> documentation = decoder.decodeStringElement(__desc, __i)
         11 ->
           _documentation =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.nameSer, null)
-        12 -> type = decoder.decodeStringElement(__desc, 12)
-        13 -> _type = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.nameSer, null)
-        14 -> profile = decoder.decodeStringElement(__desc, 14)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+        12 -> type = decoder.decodeStringElement(__desc, __i)
+        13 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+        14 -> profile = decoder.decodeStringElement(__desc, __i)
         15 ->
-          _profile = decoder.decodeNullableSerializableElement(__desc, 15, Hoisted.nameSer, null)
+          _profile = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else ->
           throw SerializationException("Unexpected index decoding ParameterDefinition: " + __i)

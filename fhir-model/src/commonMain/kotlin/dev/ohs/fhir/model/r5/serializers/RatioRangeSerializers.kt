@@ -76,19 +76,19 @@ internal object RatioRangeSerializer : KSerializer<RatioRange> {
     var denominator: Quantity? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
         2 ->
           lowNumerator =
-            decoder.decodeNullableSerializableElement(__desc, 2, Hoisted.lowNumeratorSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowNumeratorSer, null)
         3 ->
           highNumerator =
-            decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.lowNumeratorSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowNumeratorSer, null)
         4 ->
           denominator =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.lowNumeratorSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowNumeratorSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding RatioRange: " + __i)
       }

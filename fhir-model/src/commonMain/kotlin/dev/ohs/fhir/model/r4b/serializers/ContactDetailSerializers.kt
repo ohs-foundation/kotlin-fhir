@@ -74,14 +74,14 @@ internal object ContactDetailSerializer : KSerializer<ContactDetail> {
     var telecom: List<ContactPoint>? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> name = decoder.decodeStringElement(__desc, 2)
-        3 -> _name = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> name = decoder.decodeStringElement(__desc, __i)
+        3 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
         4 ->
-          telecom = decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.telecomSer, null)
+          telecom = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.telecomSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding ContactDetail: " + __i)
       }

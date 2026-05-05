@@ -122,44 +122,45 @@ internal object RelatedArtifactSerializer : KSerializer<RelatedArtifact> {
     var _publicationDate: Element? = null
     while (true) {
       when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, 0)
+        0 -> id = decoder.decodeStringElement(__desc, __i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, 1, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeStringElement(__desc, 2)
-        3 -> _type = decoder.decodeNullableSerializableElement(__desc, 3, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeStringElement(__desc, __i)
+        3 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         4 ->
           classifier =
-            decoder.decodeNullableSerializableElement(__desc, 4, Hoisted.classifierSer, null)
-        5 -> label = decoder.decodeStringElement(__desc, 5)
-        6 -> _label = decoder.decodeNullableSerializableElement(__desc, 6, Hoisted.typeSer, null)
-        7 -> display = decoder.decodeStringElement(__desc, 7)
-        8 -> _display = decoder.decodeNullableSerializableElement(__desc, 8, Hoisted.typeSer, null)
-        9 -> citation = decoder.decodeStringElement(__desc, 9)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classifierSer, null)
+        5 -> label = decoder.decodeStringElement(__desc, __i)
+        6 -> _label = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        7 -> display = decoder.decodeStringElement(__desc, __i)
+        8 ->
+          _display = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        9 -> citation = decoder.decodeStringElement(__desc, __i)
         10 ->
-          _citation = decoder.decodeNullableSerializableElement(__desc, 10, Hoisted.typeSer, null)
+          _citation = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         11 ->
           document =
-            decoder.decodeNullableSerializableElement(__desc, 11, Hoisted.documentSer, null)
-        12 -> resource = decoder.decodeStringElement(__desc, 12)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.documentSer, null)
+        12 -> resource = decoder.decodeStringElement(__desc, __i)
         13 ->
-          _resource = decoder.decodeNullableSerializableElement(__desc, 13, Hoisted.typeSer, null)
+          _resource = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         14 ->
           resourceReference =
             decoder.decodeNullableSerializableElement(
               __desc,
-              14,
+              __i,
               Hoisted.resourceReferenceSer,
               null,
             )
-        15 -> publicationStatus = decoder.decodeStringElement(__desc, 15)
+        15 -> publicationStatus = decoder.decodeStringElement(__desc, __i)
         16 ->
           _publicationStatus =
-            decoder.decodeNullableSerializableElement(__desc, 16, Hoisted.typeSer, null)
-        17 -> publicationDate = decoder.decodeStringElement(__desc, 17)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+        17 -> publicationDate = decoder.decodeStringElement(__desc, __i)
         18 ->
           _publicationDate =
-            decoder.decodeNullableSerializableElement(__desc, 18, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else -> throw SerializationException("Unexpected index decoding RelatedArtifact: " + __i)
       }

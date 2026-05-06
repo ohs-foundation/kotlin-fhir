@@ -39,8 +39,6 @@ private val skippedR4TestCaseNameToReasonMap =
     "ImplementationGuide-fhir.json" to "Invalid resources",
     "Questionnaire-qs1.json" to "Invalid resources",
     "ig-r4.json" to "Invalid resources",
-    "Observation-body-height.json" to
-      "Floating point issue https://github.com/google/kotlin-fhir/issues/60",
   )
 
 /** A map from the test case name to the reason why the test case is skipped in R4B. */
@@ -52,8 +50,6 @@ private val skippedR4BTestCaseNameToReasonMap =
     "CodeSystem-catalogType.json" to "Invalid resources",
     "ValueSet-catalogType.json" to "Invalid resources",
     "ActivityDefinition-administer-zika-virus-exposure-assessment.json" to "Invalid resources",
-    "Observation-body-height.json" to
-      "Floating point issue https://github.com/google/kotlin-fhir/issues/60",
   )
 
 /** A map from the test case name to the reason why the test case is skipped in R5. */
@@ -66,8 +62,6 @@ private val skippedR5CaseNameToReasonMap =
     "Observation-decimal.json" to "Scientific notation",
     "ChargeItemDefinition-ebm.json" to
       "Unknown code 'text/CQL' for enum ExpressionLanguage; codes are case-sensitive",
-    "Observation-body-height.json" to
-      "Floating point issue https://github.com/google/kotlin-fhir/issues/60",
   )
 
 private val plainJson = Json { prettyPrint = true }

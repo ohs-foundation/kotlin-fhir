@@ -171,5 +171,4 @@ class SimpleSerializationTest :
         standaloneJson.decodeFromString<dev.ohs.fhir.model.r5.Resource>(missingResourceType)
       }
     }
-
   })

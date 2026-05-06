@@ -251,9 +251,9 @@ that would otherwise be hit on FHIR fields with many possible types (e.g.,
 [ElementDefinition.pattern](https://www.hl7.org/fhir/R4B/elementdefinition-definitions.html#ElementDefinition.pattern_x_))
 because each arm is an individual descriptor slot rather than a constructor parameter.
 
-By default Kotlin only add class discriminators for polymorhpic types. This doesn't quite follow
+By default, Kotlin only adds class discriminators for polymorphic types. This doesn't quite follow
 FHIR specification as even standalone FHIR resources (i.e. `Patient`) require `resourceType`. To
- solve this, polymorphic `Resource` dispatch (choosing `Patient` vs `Observation` vs … based on the
+solve this, polymorphic `Resource` dispatch (choosing `Patient` vs `Observation` vs … based on the
 `resourceType` discriminator) is handled by `ResourcePolymorphicSerializer`. Each concrete resource
 ships two serializers: the standalone `XSerializer` (descriptor includes `resourceType`, used when
 the static type is the concrete class) and `XPolymorphicSerializer` (descriptor omits
@@ -271,7 +271,6 @@ graph TB
 ```
 
 *Figure 1: Polymorphic Serializer Routing*
-
 
 Once the correct serializer has been found, the contents are then simply serialized/deserialized directly based on
 the flat descriptors.

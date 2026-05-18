@@ -242,7 +242,7 @@ just walks its composite.
 
 Choice types (e.g. `Patient.multipleBirth`) are expanded into per-arm keys on the same flat
 descriptor (`multipleBirthBoolean`, `_multipleBirthBoolean`, `multipleBirthInteger`,
-`_multipleBirthInteger`, …). On encode, the parent serializer dispatches on the sealed subclass
+`_multipleBirthInteger`, …). Upon encoding, the parent serializer dispatches on the sealed subclass
 via a `when` over the arm types and writes the matched arm's keys directly into the parent's
 composite encoder. On decode, each arm key is read into a local and the sealed value is
 synthesized via the companion `from(…)` factory during model construction. This sidesteps the

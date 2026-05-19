@@ -240,16 +240,18 @@ through kotlinx's `CompositeEncoder` / `CompositeDecoder`: no intermediate surro
 `StreamingJsonDecoder` and `JsonTreeDecoder` — kotlinx picks the decoder, the generated serializer
 just walks its composite.
 
-Choice types (e.g. `Patient.multipleBirth`) are expanded into per-arm keys on the same flat
+Choice types (e.g. `Patient.multipleBirth`) are expanded into per-expansion keys on the same flat
 descriptor (`multipleBirthBoolean`, `_multipleBirthBoolean`, `multipleBirthInteger`,
 `_multipleBirthInteger`, …). Upon encoding, the parent serializer dispatches on the sealed subclass
-via a `when` over the arm types and writes the matched arm's keys directly into the parent's
-composite encoder. On decode, each arm key is read into a local and the sealed value is
-synthesized via the companion `from(…)` factory during model construction. This sidesteps the
+via a `when` over the choice type expansions and writes the matched expansion's keys directly into
+the parent's composite encoder. On decode, each expansion key is read into a local and the sealed
+value is synthesized via the companion `from(…)` factory during model construction. This sidesteps
+the
 [JVM constructor argument limit](https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-4.html#jvms-4.3.3)
 that would otherwise be hit on FHIR fields with many possible types (e.g.,
 [ElementDefinition.pattern](https://www.hl7.org/fhir/R4B/elementdefinition-definitions.html#ElementDefinition.pattern_x_))
-because each arm is an individual descriptor slot rather than a constructor parameter.
+because each choice type expansion is an individual descriptor slot rather than a constructor
+parameter.
 
 By default, Kotlin only adds class discriminators for polymorphic types. This doesn't quite follow
 FHIR specification as even standalone FHIR resources (i.e. `Patient`) require `resourceType`. To
@@ -298,7 +300,7 @@ graph LR
     contact: List&lt;Patient.Contact&gt;
     "]
 
-    subgraph PS["PatientSerializer  (__off = 1)"]
+    subgraph PS["PatientSerializer  (descriptorOffset = 1)"]
       direction TB
       Desc["**descriptor**
       0 → resourceType
@@ -311,17 +313,17 @@ graph LR
       31 → contact / 32 → communication / 35 → link"]
 
       Loop["**while** (true) {
-      #nbsp;#nbsp;val __i = decoder.decodeElementIndex(descriptor)
-      #nbsp;#nbsp;if (__i == DECODE_DONE) break
-      #nbsp;#nbsp;**when** (__i - __off) {
+      #nbsp;#nbsp;val i = decoder.decodeElementIndex(descriptor)
+      #nbsp;#nbsp;if (i == DECODE_DONE) break
+      #nbsp;#nbsp;**when** (i - descriptorOffset) {
       #nbsp;#nbsp;#nbsp;#nbsp;-1 → resourceType discarded
-      #nbsp;#nbsp;#nbsp;#nbsp;0..33 → arm locals
+      #nbsp;#nbsp;#nbsp;#nbsp;0..33 → choice type expansion locals
       #nbsp;#nbsp;}
       }"]
 
-      Loop -- "JSON key → __i lookup" --> Desc
-      Desc -. "return __i" .-> Loop
-      Loop -- "when(15/16) gender, when(19..22) deceased arms, when(25..28) multipleBirth arms, ..." --> Locals[per-key locals]
+      Loop -- "JSON key → i lookup" --> Desc
+      Desc -. "return i" .-> Loop
+      Loop -- "when(15/16) gender, when(19..22) deceased expansions, when(25..28) multipleBirth expansions, ..." --> Locals[per-key locals]
       Locals -- "MultipleBirth.from(boolean, _boolean, integer, _integer)" --> Seal[sealed values synthesized]
       Locals -- "Deceased.from(boolean, _boolean, dateTime, _dateTime)" --> Seal
       Locals -- "PatientContact / Communication / LinkSerializer.deserialize" --> BB[backbone elements]

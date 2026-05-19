@@ -67,14 +67,13 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
     }
 
   override fun deserialize(decoder: Decoder): ProductShelfLife =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: ProductShelfLife) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): ProductShelfLife {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): ProductShelfLife {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -84,32 +83,37 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
     var _periodString: Element? = null
     var specialPrecautionsForStorage: List<CodeableConcept>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
           periodDuration =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodDurationSer, null)
-        5 -> periodString = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.periodDurationSer,
+              null,
+            )
+        5 -> periodString = decoder.decodeStringElement(descriptor, i)
         6 ->
           _periodString =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodStringSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodStringSer, null)
         7 ->
           specialPrecautionsForStorage =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.specialPrecautionsForStorageSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ProductShelfLife: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ProductShelfLife: " + i)
       }
     }
     return ProductShelfLife(
@@ -123,29 +127,33 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: ProductShelfLife) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: ProductShelfLife) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
     when (val __d = value.period) {
       null -> {}
       is ProductShelfLife.Period.Duration -> {
-        encoder.encodeSerializableElement(__desc, 4, Hoisted.periodDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodDurationSer, __d.value)
       }
       is ProductShelfLife.Period.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 6, Hoisted.periodStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodStringSer, it)
         }
       }
     }
     if (value.specialPrecautionsForStorage.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         7,
         Hoisted.specialPrecautionsForStorageSer,
         value.specialPrecautionsForStorage,

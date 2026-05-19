@@ -93,14 +93,13 @@ internal object BodyStructureIncludedStructureSerializer :
     }
 
   override fun deserialize(decoder: Decoder): BodyStructure.IncludedStructure =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: BodyStructure.IncludedStructure) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): BodyStructure.IncludedStructure {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): BodyStructure.IncludedStructure {
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -111,41 +110,41 @@ internal object BodyStructureIncludedStructureSerializer :
     var spatialReference: List<Reference>? = null
     var qualifier: List<CodeableConcept>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           structure =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.structureSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.structureSer, null)
         4 ->
           laterality =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.structureSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.structureSer, null)
         5 ->
           bodyLandmarkOrientation =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.bodyLandmarkOrientationSer,
               null,
             )
         6 ->
           spatialReference =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.spatialReferenceSer,
               null,
             )
         7 ->
           qualifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.qualifierSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.qualifierSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding IncludedStructure: " + __i)
+        else -> throw SerializationException("Unexpected index decoding IncludedStructure: " + i)
       }
     }
     return BodyStructure.IncludedStructure(
@@ -160,35 +159,42 @@ internal object BodyStructureIncludedStructureSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: BodyStructure.IncludedStructure) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: BodyStructure.IncludedStructure,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.structure)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.structureSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.structureSer, it)
     }
     (value.laterality)?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.structureSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.structureSer, it)
     }
     if (value.bodyLandmarkOrientation.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         5,
         Hoisted.bodyLandmarkOrientationSer,
         value.bodyLandmarkOrientation,
       )
     if (value.spatialReference.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         6,
         Hoisted.spatialReferenceSer,
         value.spatialReference,
       )
     if (value.qualifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.qualifierSer, value.qualifier)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.qualifierSer, value.qualifier)
   }
 
   private object Hoisted {
@@ -263,19 +269,18 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer 
   override fun deserialize(
     decoder: Decoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation {
-    val __desc = descriptor
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -286,49 +291,49 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer 
       null
     var surfaceOrientation: List<CodeableConcept>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           landmarkDescription =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.landmarkDescriptionSer,
               null,
             )
         4 ->
           clockFacePosition =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.landmarkDescriptionSer,
               null,
             )
         5 ->
           distanceFromLandmark =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.distanceFromLandmarkSer,
               null,
             )
         6 ->
           surfaceOrientation =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.landmarkDescriptionSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
         else ->
-          throw SerializationException("Unexpected index decoding BodyLandmarkOrientation: " + __i)
+          throw SerializationException("Unexpected index decoding BodyLandmarkOrientation: " + i)
       }
     }
     return BodyStructure.IncludedStructure.BodyLandmarkOrientation(
@@ -342,40 +347,44 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationSerializer 
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.landmarkDescription.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         3,
         Hoisted.landmarkDescriptionSer,
         value.landmarkDescription,
       )
     if (value.clockFacePosition.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         4,
         Hoisted.landmarkDescriptionSer,
         value.clockFacePosition,
       )
     if (value.distanceFromLandmark.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         5,
         Hoisted.distanceFromLandmarkSer,
         value.distanceFromLandmark,
       )
     if (value.surfaceOrientation.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         6,
         Hoisted.landmarkDescriptionSer,
         value.surfaceOrientation,
@@ -432,40 +441,38 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFro
   override fun deserialize(
     decoder: Decoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark {
-    val __desc = descriptor
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var device: List<CodeableReference>? = null
     var `value`: List<Quantity>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
-          device = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.deviceSer, null)
+          device = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.deviceSer, null)
         4 ->
-          `value` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+          `value` = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding DistanceFromLandmark: " + __i)
+        else -> throw SerializationException("Unexpected index decoding DistanceFromLandmark: " + i)
       }
     }
     return BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark(
@@ -477,20 +484,24 @@ internal object BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFro
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: BodyStructure.IncludedStructure.BodyLandmarkOrientation.DistanceFromLandmark,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.device.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.deviceSer, value.device)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.deviceSer, value.device)
     if (value.`value`.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.valueSer, value.`value`)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueSer, value.`value`)
   }
 
   private object Hoisted {
@@ -569,21 +580,20 @@ internal object BodyStructureSerializer : KSerializer<BodyStructure> {
   }
 
   override fun deserialize(decoder: Decoder): BodyStructure =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: BodyStructure) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "BodyStructure")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): BodyStructure {
-    val __desc = desc
     var id: String? = null
     var meta: Meta? = null
     var implicitRules: String? = null
@@ -605,64 +615,66 @@ internal object BodyStructureSerializer : KSerializer<BodyStructure> {
     var image: List<Attachment>? = null
     var patient: Reference? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        11 -> active = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        11 -> active = decoder.decodeBooleanElement(descriptor, i)
         12 ->
           _active =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         13 ->
           morphology =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.morphologySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.morphologySer, null)
         14 ->
           includedStructure =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.includedStructureSer,
               null,
             )
         15 ->
           excludedStructure =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.includedStructureSer,
               null,
             )
-        16 -> description = decoder.decodeStringElement(__desc, __i)
+        16 -> description = decoder.decodeStringElement(descriptor, i)
         17 ->
           _description =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        18 -> image = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.imageSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        18 ->
+          image = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.imageSer, null)
         19 ->
-          patient = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.patientSer, null)
-        else -> throw SerializationException("Unexpected index decoding BodyStructure: " + __i)
+          patient =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.patientSer, null)
+        else -> throw SerializationException("Unexpected index decoding BodyStructure: " + i)
       }
     }
     return BodyStructure(
@@ -685,66 +697,122 @@ internal object BodyStructureSerializer : KSerializer<BodyStructure> {
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: BodyStructure,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
-    ((value.active?.value))?.let { encoder.encodeBooleanElement(__desc, 11 + __off, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        10 + descriptorOffset,
+        Hoisted.identifierSer,
+        value.identifier,
+      )
+    ((value.active?.value))?.let {
+      encoder.encodeBooleanElement(descriptor, 11 + descriptorOffset, it)
+    }
     (value.active?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     (value.morphology)?.let {
-      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.morphologySer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        13 + descriptorOffset,
+        Hoisted.morphologySer,
+        it,
+      )
     }
     if (value.includedStructure.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        14 + __off,
+        descriptor,
+        14 + descriptorOffset,
         Hoisted.includedStructureSer,
         value.includedStructure,
       )
     if (value.excludedStructure.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        15 + __off,
+        descriptor,
+        15 + descriptorOffset,
         Hoisted.includedStructureSer,
         value.excludedStructure,
       )
-    ((value.description?.value))?.let { encoder.encodeStringElement(__desc, 16 + __off, it) }
+    ((value.description?.value))?.let {
+      encoder.encodeStringElement(descriptor, 16 + descriptorOffset, it)
+    }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.image.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.imageSer, value.image)
+      encoder.encodeSerializableElement(
+        descriptor,
+        18 + descriptorOffset,
+        Hoisted.imageSer,
+        value.image,
+      )
     (value.patient)?.let {
-      encoder.encodeSerializableElement(__desc, 19 + __off, Hoisted.patientSer, it)
+      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, Hoisted.patientSer, it)
     }
   }
 
@@ -791,12 +859,12 @@ internal object BodyStructurePolymorphicSerializer : KSerializer<BodyStructure> 
 
   override fun serialize(encoder: Encoder, `value`: BodyStructure) {
     encoder.encodeStructure(descriptor) {
-      BodyStructureSerializer.serializeJson(this, descriptor, 0, value)
+      BodyStructureSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): BodyStructure =
     decoder.decodeStructure(descriptor) {
-      BodyStructureSerializer.deserializeJson(this, descriptor, 0)
+      BodyStructureSerializer.deserializeInternal(this, descriptor, 0)
     }
 }

@@ -65,14 +65,13 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
     }
 
   override fun deserialize(decoder: Decoder): MarketingStatus =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: MarketingStatus) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): MarketingStatus {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): MarketingStatus {
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -83,30 +82,32 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
     var restoreDate: String? = null
     var _restoreDate: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
-          country = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countrySer, null)
+          country =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countrySer, null)
         4 ->
           jurisdiction =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countrySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countrySer, null)
         5 ->
-          status = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countrySer, null)
+          status =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countrySer, null)
         6 ->
           dateRange =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dateRangeSer, null)
-        7 -> restoreDate = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dateRangeSer, null)
+        7 -> restoreDate = decoder.decodeStringElement(descriptor, i)
         8 ->
           _restoreDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.restoreDateSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.restoreDateSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding MarketingStatus: " + __i)
+        else -> throw SerializationException("Unexpected index decoding MarketingStatus: " + i)
       }
     }
     return MarketingStatus(
@@ -121,24 +122,30 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: MarketingStatus) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: MarketingStatus) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.country)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.countrySer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.country)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.countrySer, it)
+    }
     (value.jurisdiction)?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.countrySer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.countrySer, it)
     }
-    (value.status)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.countrySer, it) }
+    (value.status)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.countrySer, it) }
     (value.dateRange)?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.dateRangeSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.dateRangeSer, it)
     }
-    ((value.restoreDate?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.restoreDate?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.restoreDate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.restoreDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.restoreDateSer, it)
     }
   }
 

@@ -75,14 +75,13 @@ internal object SignatureSerializer : KSerializer<Signature> {
     }
 
   override fun deserialize(decoder: Decoder): Signature =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Signature) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Signature {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Signature {
     var id: String? = null
     var extension: List<Extension>? = null
     var type: List<Coding>? = null
@@ -97,28 +96,31 @@ internal object SignatureSerializer : KSerializer<Signature> {
     var `data`: String? = null
     var _data: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        3 -> `when` = decoder.decodeStringElement(__desc, __i)
-        4 -> _when = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whenSer, null)
-        5 -> who = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whoSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        3 -> `when` = decoder.decodeStringElement(descriptor, i)
+        4 -> _when = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whenSer, null)
+        5 -> who = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whoSer, null)
         6 ->
-          onBehalfOf = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whoSer, null)
-        7 -> targetFormat = decoder.decodeStringElement(__desc, __i)
+          onBehalfOf =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whoSer, null)
+        7 -> targetFormat = decoder.decodeStringElement(descriptor, i)
         8 ->
           _targetFormat =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whenSer, null)
-        9 -> sigFormat = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whenSer, null)
+        9 -> sigFormat = decoder.decodeStringElement(descriptor, i)
         10 ->
-          _sigFormat = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whenSer, null)
-        11 -> `data` = decoder.decodeStringElement(__desc, __i)
-        12 -> _data = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.whenSer, null)
+          _sigFormat =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whenSer, null)
+        11 -> `data` = decoder.decodeStringElement(descriptor, i)
+        12 ->
+          _data = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.whenSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Signature: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Signature: " + i)
       }
     }
     return Signature(
@@ -134,30 +136,29 @@ internal object SignatureSerializer : KSerializer<Signature> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Signature) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Signature) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.typeSer, value.type)
-    ((value.`when`.value?.toString()))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(descriptor, 2, Hoisted.typeSer, value.type)
+    ((value.`when`.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.`when`.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.whenSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.whenSer, it)
     }
-    (value.who)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.whoSer, it) }
-    (value.onBehalfOf)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.whoSer, it) }
-    ((value.targetFormat?.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    (value.who)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.whoSer, it) }
+    (value.onBehalfOf)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.whoSer, it) }
+    ((value.targetFormat?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.targetFormat?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.whenSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.whenSer, it)
     }
-    ((value.sigFormat?.value))?.let { encoder.encodeStringElement(__desc, 9, it) }
+    ((value.sigFormat?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.sigFormat?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.whenSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.whenSer, it)
     }
-    ((value.`data`?.value))?.let { encoder.encodeStringElement(__desc, 11, it) }
+    ((value.`data`?.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.whenSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.whenSer, it)
     }
   }
 

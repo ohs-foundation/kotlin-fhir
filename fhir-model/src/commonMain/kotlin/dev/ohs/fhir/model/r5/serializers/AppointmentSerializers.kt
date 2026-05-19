@@ -92,14 +92,13 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
     }
 
   override fun deserialize(decoder: Decoder): Appointment.Participant =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.Participant) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Appointment.Participant {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Appointment.Participant {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -111,28 +110,29 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
     var status: KotlinString? = null
     var _status: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
-          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
-        5 -> actor = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.actorSer, null)
-        6 -> required = decoder.decodeBooleanElement(__desc, __i)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+        5 ->
+          actor = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.actorSer, null)
+        6 -> required = decoder.decodeBooleanElement(descriptor, i)
         7 ->
           _required =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.requiredSer, null)
-        8 -> status = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.requiredSer, null)
+        8 -> status = decoder.decodeStringElement(descriptor, i)
         9 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.requiredSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.requiredSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Participant: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Participant: " + i)
       }
     }
     return Appointment.Participant(
@@ -147,24 +147,28 @@ internal object AppointmentParticipantSerializer : KSerializer<Appointment.Parti
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Appointment.Participant) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Appointment.Participant) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, value.type)
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.periodSer, it) }
-    (value.actor)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.actorSer, it) }
-    ((value.required?.value))?.let { encoder.encodeBooleanElement(__desc, 6, it) }
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, it) }
+    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.actorSer, it) }
+    ((value.required?.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
     (value.required?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.requiredSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.requiredSer, it)
     }
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.requiredSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.requiredSer, it)
     }
   }
 
@@ -255,14 +259,13 @@ internal object AppointmentRecurrenceTemplateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.RecurrenceTemplate) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Appointment.RecurrenceTemplate {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Appointment.RecurrenceTemplate {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -282,72 +285,112 @@ internal object AppointmentRecurrenceTemplateSerializer :
     var excludingRecurrenceId: List<Int?>? = null
     var _excludingRecurrenceId: List<Element?>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           timezone =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.timezoneSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timezoneSer, null)
         4 ->
           recurrenceType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.timezoneSer, null)
-        5 -> lastOccurrenceDate = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timezoneSer, null)
+        5 -> lastOccurrenceDate = decoder.decodeStringElement(descriptor, i)
         6 ->
           _lastOccurrenceDate =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.lastOccurrenceDateSer,
               null,
             )
-        7 -> occurrenceCount = decoder.decodeIntElement(__desc, __i)
+        7 -> occurrenceCount = decoder.decodeIntElement(descriptor, i)
         8 ->
           _occurrenceCount =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.lastOccurrenceDateSer,
               null,
             )
         9 ->
           occurrenceDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.occurrenceDateSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.occurrenceDateSer,
+              null,
+            )
         10 ->
           _occurrenceDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.occurrenceDateSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.occurrenceDateSer2,
+              null,
+            )
         11 ->
           weeklyTemplate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.weeklyTemplateSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.weeklyTemplateSer,
+              null,
+            )
         12 ->
           monthlyTemplate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.monthlyTemplateSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.monthlyTemplateSer,
+              null,
+            )
         13 ->
           yearlyTemplate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.yearlyTemplateSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.yearlyTemplateSer,
+              null,
+            )
         14 ->
           excludingDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.occurrenceDateSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.occurrenceDateSer,
+              null,
+            )
         15 ->
           _excludingDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.occurrenceDateSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.occurrenceDateSer2,
+              null,
+            )
         16 ->
           excludingRecurrenceId =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.excludingRecurrenceIdSer,
               null,
             )
         17 ->
           _excludingRecurrenceId =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.occurrenceDateSer2, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.occurrenceDateSer2,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RecurrenceTemplate: " + __i)
+        else -> throw SerializationException("Unexpected index decoding RecurrenceTemplate: " + i)
       }
     }
     return Appointment.RecurrenceTemplate(
@@ -389,53 +432,62 @@ internal object AppointmentRecurrenceTemplateSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Appointment.RecurrenceTemplate) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: Appointment.RecurrenceTemplate,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.timezone)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.timezoneSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.timezone)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.timezoneSer, it)
+    }
     (value.recurrenceType)?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.timezoneSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.timezoneSer, it)
     }
     ((value.lastOccurrenceDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(__desc, 5, it)
+      encoder.encodeStringElement(descriptor, 5, it)
     }
     (value.lastOccurrenceDate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.lastOccurrenceDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.lastOccurrenceDateSer, it)
     }
-    ((value.occurrenceCount?.value))?.let { encoder.encodeIntElement(__desc, 7, it) }
+    ((value.occurrenceCount?.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
     (value.occurrenceCount?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.lastOccurrenceDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.lastOccurrenceDateSer, it)
     }
     (value.occurrenceDate.map { it.value?.toString() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.occurrenceDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.occurrenceDateSer, it)
     }
     (value.occurrenceDate.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.occurrenceDateSer2, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.occurrenceDateSer2, it)
     }
     (value.weeklyTemplate)?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.weeklyTemplateSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.weeklyTemplateSer, it)
     }
     (value.monthlyTemplate)?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.monthlyTemplateSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.monthlyTemplateSer, it)
     }
     (value.yearlyTemplate)?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.yearlyTemplateSer, it)
+      encoder.encodeSerializableElement(descriptor, 13, Hoisted.yearlyTemplateSer, it)
     }
     (value.excludingDate.map { it.value?.toString() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.occurrenceDateSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, Hoisted.occurrenceDateSer, it)
     }
     (value.excludingDate.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.occurrenceDateSer2, it)
+      encoder.encodeSerializableElement(descriptor, 15, Hoisted.occurrenceDateSer2, it)
     }
     (value.excludingRecurrenceId.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.excludingRecurrenceIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 16, Hoisted.excludingRecurrenceIdSer, it)
     }
     (value.excludingRecurrenceId.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 17, Hoisted.occurrenceDateSer2, it)
+      encoder.encodeSerializableElement(descriptor, 17, Hoisted.occurrenceDateSer2, it)
     }
   }
 
@@ -507,16 +559,15 @@ internal object AppointmentRecurrenceTemplateWeeklyTemplateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.WeeklyTemplate =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.RecurrenceTemplate.WeeklyTemplate) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): Appointment.RecurrenceTemplate.WeeklyTemplate {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -537,44 +588,48 @@ internal object AppointmentRecurrenceTemplateWeeklyTemplateSerializer :
     var weekInterval: Int? = null
     var _weekInterval: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> monday = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> monday = decoder.decodeBooleanElement(descriptor, i)
         4 ->
-          _monday = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.mondaySer, null)
-        5 -> tuesday = decoder.decodeBooleanElement(__desc, __i)
+          _monday =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+        5 -> tuesday = decoder.decodeBooleanElement(descriptor, i)
         6 ->
-          _tuesday = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.mondaySer, null)
-        7 -> wednesday = decoder.decodeBooleanElement(__desc, __i)
+          _tuesday =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+        7 -> wednesday = decoder.decodeBooleanElement(descriptor, i)
         8 ->
           _wednesday =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.mondaySer, null)
-        9 -> thursday = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+        9 -> thursday = decoder.decodeBooleanElement(descriptor, i)
         10 ->
           _thursday =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.mondaySer, null)
-        11 -> friday = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+        11 -> friday = decoder.decodeBooleanElement(descriptor, i)
         12 ->
-          _friday = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.mondaySer, null)
-        13 -> saturday = decoder.decodeBooleanElement(__desc, __i)
+          _friday =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+        13 -> saturday = decoder.decodeBooleanElement(descriptor, i)
         14 ->
           _saturday =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.mondaySer, null)
-        15 -> sunday = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+        15 -> sunday = decoder.decodeBooleanElement(descriptor, i)
         16 ->
-          _sunday = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.mondaySer, null)
-        17 -> weekInterval = decoder.decodeIntElement(__desc, __i)
+          _sunday =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
+        17 -> weekInterval = decoder.decodeIntElement(descriptor, i)
         18 ->
           _weekInterval =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.mondaySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.mondaySer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding WeeklyTemplate: " + __i)
+        else -> throw SerializationException("Unexpected index decoding WeeklyTemplate: " + i)
       }
     }
     return Appointment.RecurrenceTemplate.WeeklyTemplate(
@@ -592,47 +647,51 @@ internal object AppointmentRecurrenceTemplateWeeklyTemplateSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Appointment.RecurrenceTemplate.WeeklyTemplate,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.monday?.value))?.let { encoder.encodeBooleanElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.monday?.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
     (value.monday?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.mondaySer, it)
     }
-    ((value.tuesday?.value))?.let { encoder.encodeBooleanElement(__desc, 5, it) }
+    ((value.tuesday?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
     (value.tuesday?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.mondaySer, it)
     }
-    ((value.wednesday?.value))?.let { encoder.encodeBooleanElement(__desc, 7, it) }
+    ((value.wednesday?.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
     (value.wednesday?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.mondaySer, it)
     }
-    ((value.thursday?.value))?.let { encoder.encodeBooleanElement(__desc, 9, it) }
+    ((value.thursday?.value))?.let { encoder.encodeBooleanElement(descriptor, 9, it) }
     (value.thursday?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.mondaySer, it)
     }
-    ((value.friday?.value))?.let { encoder.encodeBooleanElement(__desc, 11, it) }
+    ((value.friday?.value))?.let { encoder.encodeBooleanElement(descriptor, 11, it) }
     (value.friday?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.mondaySer, it)
     }
-    ((value.saturday?.value))?.let { encoder.encodeBooleanElement(__desc, 13, it) }
+    ((value.saturday?.value))?.let { encoder.encodeBooleanElement(descriptor, 13, it) }
     (value.saturday?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 14, Hoisted.mondaySer, it)
     }
-    ((value.sunday?.value))?.let { encoder.encodeBooleanElement(__desc, 15, it) }
+    ((value.sunday?.value))?.let { encoder.encodeBooleanElement(descriptor, 15, it) }
     (value.sunday?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 16, Hoisted.mondaySer, it)
     }
-    ((value.weekInterval?.value))?.let { encoder.encodeIntElement(__desc, 17, it) }
+    ((value.weekInterval?.value))?.let { encoder.encodeIntElement(descriptor, 17, it) }
     (value.weekInterval?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 18, Hoisted.mondaySer, it)
+      encoder.encodeSerializableElement(descriptor, 18, Hoisted.mondaySer, it)
     }
   }
 
@@ -670,19 +729,18 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.MonthlyTemplate =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Appointment.RecurrenceTemplate.MonthlyTemplate,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): Appointment.RecurrenceTemplate.MonthlyTemplate {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -693,30 +751,40 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
     var monthInterval: Int? = null
     var _monthInterval: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> dayOfMonth = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> dayOfMonth = decoder.decodeIntElement(descriptor, i)
         4 ->
           _dayOfMonth =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dayOfMonthSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dayOfMonthSer, null)
         5 ->
           nthWeekOfMonth =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nthWeekOfMonthSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.nthWeekOfMonthSer,
+              null,
+            )
         6 ->
           dayOfWeek =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nthWeekOfMonthSer, null)
-        7 -> monthInterval = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.nthWeekOfMonthSer,
+              null,
+            )
+        7 -> monthInterval = decoder.decodeIntElement(descriptor, i)
         8 ->
           _monthInterval =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dayOfMonthSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dayOfMonthSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding MonthlyTemplate: " + __i)
+        else -> throw SerializationException("Unexpected index decoding MonthlyTemplate: " + i)
       }
     }
     return Appointment.RecurrenceTemplate.MonthlyTemplate(
@@ -730,29 +798,33 @@ internal object AppointmentRecurrenceTemplateMonthlyTemplateSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Appointment.RecurrenceTemplate.MonthlyTemplate,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.dayOfMonth?.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.dayOfMonth?.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
     (value.dayOfMonth?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.dayOfMonthSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.dayOfMonthSer, it)
     }
     (value.nthWeekOfMonth)?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.nthWeekOfMonthSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.nthWeekOfMonthSer, it)
     }
     (value.dayOfWeek)?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.nthWeekOfMonthSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.nthWeekOfMonthSer, it)
     }
-    ((value.monthInterval.value))?.let { encoder.encodeIntElement(__desc, 7, it) }
+    ((value.monthInterval.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
     (value.monthInterval.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.dayOfMonthSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.dayOfMonthSer, it)
     }
   }
 
@@ -788,36 +860,35 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Appointment.RecurrenceTemplate.YearlyTemplate =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Appointment.RecurrenceTemplate.YearlyTemplate) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): Appointment.RecurrenceTemplate.YearlyTemplate {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var yearInterval: Int? = null
     var _yearInterval: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> yearInterval = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> yearInterval = decoder.decodeIntElement(descriptor, i)
         4 ->
           _yearInterval =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.yearIntervalSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.yearIntervalSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding YearlyTemplate: " + __i)
+        else -> throw SerializationException("Unexpected index decoding YearlyTemplate: " + i)
       }
     }
     return Appointment.RecurrenceTemplate.YearlyTemplate(
@@ -828,19 +899,23 @@ internal object AppointmentRecurrenceTemplateYearlyTemplateSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Appointment.RecurrenceTemplate.YearlyTemplate,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.yearInterval.value))?.let { encoder.encodeIntElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.yearInterval.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
     (value.yearInterval.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.yearIntervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.yearIntervalSer, it)
     }
   }
 
@@ -982,21 +1057,20 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
   }
 
   override fun deserialize(decoder: Decoder): Appointment =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: Appointment) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "Appointment")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): Appointment {
-    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -1049,151 +1123,162 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
     var _occurrenceChanged: Element? = null
     var recurrenceTemplate: List<Appointment.RecurrenceTemplate>? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        11 -> status = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        11 -> status = decoder.decodeStringElement(descriptor, i)
         12 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         13 ->
           cancellationReason =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.cancellationReasonSer,
               null,
             )
         14 ->
-          `class` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classSer, null)
+          `class` = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classSer, null)
         15 ->
           serviceCategory =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classSer, null)
         16 ->
           serviceType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.serviceTypeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.serviceTypeSer, null)
         17 ->
-          specialty = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classSer, null)
+          specialty =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classSer, null)
         18 ->
           appointmentType =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.cancellationReasonSer,
               null,
             )
         19 ->
           reason =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.serviceTypeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.serviceTypeSer, null)
         20 ->
           priority =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.cancellationReasonSer,
               null,
             )
-        21 -> description = decoder.decodeStringElement(__desc, __i)
+        21 -> description = decoder.decodeStringElement(descriptor, i)
         22 ->
           _description =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         23 ->
           replaces =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.replacesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
         24 ->
           virtualService =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.virtualServiceSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.virtualServiceSer,
+              null,
+            )
         25 ->
           supportingInformation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.replacesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
         26 ->
           previousAppointment =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.replacesSerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSerInner, null)
         27 ->
           originatingAppointment =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.replacesSerInner, null)
-        28 -> start = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSerInner, null)
+        28 -> start = decoder.decodeStringElement(descriptor, i)
         29 ->
           _start =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        30 -> end = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        30 -> end = decoder.decodeStringElement(descriptor, i)
         31 ->
           _end =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        32 -> minutesDuration = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        32 -> minutesDuration = decoder.decodeIntElement(descriptor, i)
         33 ->
           _minutesDuration =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         34 ->
           requestedPeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.requestedPeriodSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.requestedPeriodSer,
+              null,
+            )
         35 ->
-          slot = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.replacesSer, null)
+          slot = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
         36 ->
           account =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.replacesSer, null)
-        37 -> created = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
+        37 -> created = decoder.decodeStringElement(descriptor, i)
         38 ->
           _created =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        39 -> cancellationDate = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        39 -> cancellationDate = decoder.decodeStringElement(descriptor, i)
         40 ->
           _cancellationDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        41 -> note = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.noteSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        41 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
         42 ->
           patientInstruction =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.serviceTypeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.serviceTypeSer, null)
         43 ->
           basedOn =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.replacesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSer, null)
         44 ->
           subject =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.replacesSerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.replacesSerInner, null)
         45 ->
           participant =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.participantSer, null)
-        46 -> recurrenceId = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.participantSer, null)
+        46 -> recurrenceId = decoder.decodeIntElement(descriptor, i)
         47 ->
           _recurrenceId =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        48 -> occurrenceChanged = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        48 -> occurrenceChanged = decoder.decodeBooleanElement(descriptor, i)
         49 ->
           _occurrenceChanged =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         50 ->
           recurrenceTemplate =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.recurrenceTemplateSer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding Appointment: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Appointment: " + i)
       }
     }
     return Appointment(
@@ -1240,159 +1325,325 @@ internal object AppointmentSerializer : KSerializer<Appointment> {
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: Appointment,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 11 + __off, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        10 + descriptorOffset,
+        Hoisted.identifierSer,
+        value.identifier,
+      )
+    ((value.status.value?.getCode()))?.let {
+      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
+    }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     (value.cancellationReason)?.let {
-      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.cancellationReasonSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        13 + descriptorOffset,
+        Hoisted.cancellationReasonSer,
+        it,
+      )
     }
     if (value.`class`.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.classSer, value.`class`)
+      encoder.encodeSerializableElement(
+        descriptor,
+        14 + descriptorOffset,
+        Hoisted.classSer,
+        value.`class`,
+      )
     if (value.serviceCategory.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.classSer, value.serviceCategory)
+      encoder.encodeSerializableElement(
+        descriptor,
+        15 + descriptorOffset,
+        Hoisted.classSer,
+        value.serviceCategory,
+      )
     if (value.serviceType.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        16 + __off,
+        descriptor,
+        16 + descriptorOffset,
         Hoisted.serviceTypeSer,
         value.serviceType,
       )
     if (value.specialty.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.classSer, value.specialty)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17 + descriptorOffset,
+        Hoisted.classSer,
+        value.specialty,
+      )
     (value.appointmentType)?.let {
-      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.cancellationReasonSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        18 + descriptorOffset,
+        Hoisted.cancellationReasonSer,
+        it,
+      )
     }
     if (value.reason.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 19 + __off, Hoisted.serviceTypeSer, value.reason)
+      encoder.encodeSerializableElement(
+        descriptor,
+        19 + descriptorOffset,
+        Hoisted.serviceTypeSer,
+        value.reason,
+      )
     (value.priority)?.let {
-      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.cancellationReasonSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        20 + descriptorOffset,
+        Hoisted.cancellationReasonSer,
+        it,
+      )
     }
-    ((value.description?.value))?.let { encoder.encodeStringElement(__desc, 21 + __off, it) }
+    ((value.description?.value))?.let {
+      encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
+    }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        22 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.replaces.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 23 + __off, Hoisted.replacesSer, value.replaces)
+      encoder.encodeSerializableElement(
+        descriptor,
+        23 + descriptorOffset,
+        Hoisted.replacesSer,
+        value.replaces,
+      )
     if (value.virtualService.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        24 + __off,
+        descriptor,
+        24 + descriptorOffset,
         Hoisted.virtualServiceSer,
         value.virtualService,
       )
     if (value.supportingInformation.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        25 + __off,
+        descriptor,
+        25 + descriptorOffset,
         Hoisted.replacesSer,
         value.supportingInformation,
       )
     (value.previousAppointment)?.let {
-      encoder.encodeSerializableElement(__desc, 26 + __off, Hoisted.replacesSerInner, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        26 + descriptorOffset,
+        Hoisted.replacesSerInner,
+        it,
+      )
     }
     (value.originatingAppointment)?.let {
-      encoder.encodeSerializableElement(__desc, 27 + __off, Hoisted.replacesSerInner, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        27 + descriptorOffset,
+        Hoisted.replacesSerInner,
+        it,
+      )
     }
-    ((value.start?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 28 + __off, it) }
+    ((value.start?.value?.toString()))?.let {
+      encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
+    }
     (value.start?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 29 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        29 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.end?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 30 + __off, it) }
+    ((value.end?.value?.toString()))?.let {
+      encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
+    }
     (value.end?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 31 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        31 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.minutesDuration?.value))?.let { encoder.encodeIntElement(__desc, 32 + __off, it) }
+    ((value.minutesDuration?.value))?.let {
+      encoder.encodeIntElement(descriptor, 32 + descriptorOffset, it)
+    }
     (value.minutesDuration?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 33 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        33 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.requestedPeriod.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        34 + __off,
+        descriptor,
+        34 + descriptorOffset,
         Hoisted.requestedPeriodSer,
         value.requestedPeriod,
       )
     if (value.slot.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 35 + __off, Hoisted.replacesSer, value.slot)
+      encoder.encodeSerializableElement(
+        descriptor,
+        35 + descriptorOffset,
+        Hoisted.replacesSer,
+        value.slot,
+      )
     if (value.account.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 36 + __off, Hoisted.replacesSer, value.account)
+      encoder.encodeSerializableElement(
+        descriptor,
+        36 + descriptorOffset,
+        Hoisted.replacesSer,
+        value.account,
+      )
     ((value.created?.value?.toString()))?.let {
-      encoder.encodeStringElement(__desc, 37 + __off, it)
+      encoder.encodeStringElement(descriptor, 37 + descriptorOffset, it)
     }
     (value.created?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 38 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        38 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     ((value.cancellationDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(__desc, 39 + __off, it)
+      encoder.encodeStringElement(descriptor, 39 + descriptorOffset, it)
     }
     (value.cancellationDate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 40 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        40 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 41 + __off, Hoisted.noteSer, value.note)
+      encoder.encodeSerializableElement(
+        descriptor,
+        41 + descriptorOffset,
+        Hoisted.noteSer,
+        value.note,
+      )
     if (value.patientInstruction.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        42 + __off,
+        descriptor,
+        42 + descriptorOffset,
         Hoisted.serviceTypeSer,
         value.patientInstruction,
       )
     if (value.basedOn.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 43 + __off, Hoisted.replacesSer, value.basedOn)
+      encoder.encodeSerializableElement(
+        descriptor,
+        43 + descriptorOffset,
+        Hoisted.replacesSer,
+        value.basedOn,
+      )
     (value.subject)?.let {
-      encoder.encodeSerializableElement(__desc, 44 + __off, Hoisted.replacesSerInner, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        44 + descriptorOffset,
+        Hoisted.replacesSerInner,
+        it,
+      )
     }
     if (value.participant.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        45 + __off,
+        descriptor,
+        45 + descriptorOffset,
         Hoisted.participantSer,
         value.participant,
       )
-    ((value.recurrenceId?.value))?.let { encoder.encodeIntElement(__desc, 46 + __off, it) }
-    (value.recurrenceId?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 47 + __off, Hoisted.implicitRulesSer, it)
+    ((value.recurrenceId?.value))?.let {
+      encoder.encodeIntElement(descriptor, 46 + descriptorOffset, it)
     }
-    ((value.occurrenceChanged?.value))?.let { encoder.encodeBooleanElement(__desc, 48 + __off, it) }
+    (value.recurrenceId?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        47 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.occurrenceChanged?.value))?.let {
+      encoder.encodeBooleanElement(descriptor, 48 + descriptorOffset, it)
+    }
     (value.occurrenceChanged?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 49 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        49 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.recurrenceTemplate.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        50 + __off,
+        descriptor,
+        50 + descriptorOffset,
         Hoisted.recurrenceTemplateSer,
         value.recurrenceTemplate,
       )
@@ -1468,12 +1719,12 @@ internal object AppointmentPolymorphicSerializer : KSerializer<Appointment> {
 
   override fun serialize(encoder: Encoder, `value`: Appointment) {
     encoder.encodeStructure(descriptor) {
-      AppointmentSerializer.serializeJson(this, descriptor, 0, value)
+      AppointmentSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): Appointment =
     decoder.decodeStructure(descriptor) {
-      AppointmentSerializer.deserializeJson(this, descriptor, 0)
+      AppointmentSerializer.deserializeInternal(this, descriptor, 0)
     }
 }

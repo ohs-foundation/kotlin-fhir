@@ -67,14 +67,13 @@ internal object DistanceSerializer : KSerializer<Distance> {
     }
 
   override fun deserialize(decoder: Decoder): Distance =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Distance) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Distance {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Distance {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var `value`: BigDecimal? = null
@@ -88,28 +87,31 @@ internal object DistanceSerializer : KSerializer<Distance> {
     var code: KotlinString? = null
     var _code: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           `value` =
-            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
-        3 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
-        4 -> comparator = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+        3 ->
+          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
+        4 -> comparator = decoder.decodeStringElement(descriptor, i)
         5 ->
           _comparator =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
-        6 -> unit = decoder.decodeStringElement(__desc, __i)
-        7 -> _unit = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
-        8 -> system = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
+        6 -> unit = decoder.decodeStringElement(descriptor, i)
+        7 ->
+          _unit = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
+        8 -> system = decoder.decodeStringElement(descriptor, i)
         9 ->
-          _system = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
-        10 -> code = decoder.decodeStringElement(__desc, __i)
-        11 -> _code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+          _system = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
+        10 -> code = decoder.decodeStringElement(descriptor, i)
+        11 ->
+          _code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Distance: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Distance: " + i)
       }
     }
     return Distance(
@@ -124,32 +126,31 @@ internal object DistanceSerializer : KSerializer<Distance> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Distance) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Distance) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     ((value.`value`?.value))?.let {
-      encoder.encodeSerializableElement(__desc, 2, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 2, BigDecimalSerializer, it)
     }
     (value.`value`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueSer, it)
     }
-    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.comparator?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
     }
-    ((value.unit?.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.unit?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.unit?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueSer, it)
     }
-    ((value.system?.value))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    ((value.system?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.system?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueSer, it)
     }
-    ((value.code?.value))?.let { encoder.encodeStringElement(__desc, 10, it) }
+    ((value.code?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.code?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueSer, it)
     }
   }
 

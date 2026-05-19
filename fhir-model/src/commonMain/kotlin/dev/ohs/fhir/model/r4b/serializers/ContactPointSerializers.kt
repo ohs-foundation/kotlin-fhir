@@ -64,14 +64,13 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
     }
 
   override fun deserialize(decoder: Decoder): ContactPoint =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: ContactPoint) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): ContactPoint {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): ContactPoint {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var system: KotlinString? = null
@@ -84,25 +83,28 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
     var _rank: Element? = null
     var period: Period? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> system = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> system = decoder.decodeStringElement(descriptor, i)
         3 ->
-          _system = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemSer, null)
-        4 -> `value` = decoder.decodeStringElement(__desc, __i)
+          _system =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.systemSer, null)
+        4 -> `value` = decoder.decodeStringElement(descriptor, i)
         5 ->
-          _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemSer, null)
-        6 -> use = decoder.decodeStringElement(__desc, __i)
-        7 -> _use = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemSer, null)
-        8 -> rank = decoder.decodeIntElement(__desc, __i)
-        9 -> _rank = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.systemSer, null)
+          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.systemSer, null)
+        6 -> use = decoder.decodeStringElement(descriptor, i)
+        7 ->
+          _use = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.systemSer, null)
+        8 -> rank = decoder.decodeIntElement(descriptor, i)
+        9 ->
+          _rank = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.systemSer, null)
         10 ->
-          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ContactPoint: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ContactPoint: " + i)
       }
     }
     return ContactPoint(
@@ -117,28 +119,27 @@ internal object ContactPointSerializer : KSerializer<ContactPoint> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: ContactPoint) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: ContactPoint) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.system?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.system?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.system?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.systemSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.systemSer, it)
     }
-    ((value.`value`?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.`value`?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.`value`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.systemSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.systemSer, it)
     }
-    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.use?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.systemSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.systemSer, it)
     }
-    ((value.rank?.value))?.let { encoder.encodeIntElement(__desc, 8, it) }
+    ((value.rank?.value))?.let { encoder.encodeIntElement(descriptor, 8, it) }
     (value.rank?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.systemSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.systemSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 10, Hoisted.periodSer, it) }
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 10, Hoisted.periodSer, it) }
   }
 
   private object Hoisted {

@@ -76,14 +76,13 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     }
 
   override fun deserialize(decoder: Decoder): Attachment =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Attachment) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Attachment {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Attachment {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var contentType: KotlinString? = null
@@ -103,45 +102,45 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     var creation: KotlinString? = null
     var _creation: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> contentType = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> contentType = decoder.decodeStringElement(descriptor, i)
         3 ->
           _contentType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        6 -> `data` = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        6 -> `data` = decoder.decodeStringElement(descriptor, i)
         7 ->
           _data =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        8 -> url = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        8 -> url = decoder.decodeStringElement(descriptor, i)
         9 ->
           _url =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        10 -> size = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        10 -> size = decoder.decodeIntElement(descriptor, i)
         11 ->
           _size =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        12 -> hash = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        12 -> hash = decoder.decodeStringElement(descriptor, i)
         13 ->
           _hash =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        14 -> title = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        14 -> title = decoder.decodeStringElement(descriptor, i)
         15 ->
           _title =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        16 -> creation = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        16 -> creation = decoder.decodeStringElement(descriptor, i)
         17 ->
           _creation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Attachment: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Attachment: " + i)
       }
     }
     return Attachment(
@@ -158,42 +157,41 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Attachment) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Attachment) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.contentType?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.contentType?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.contentType?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentTypeSer, it)
     }
-    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.language?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.contentTypeSer, it)
     }
-    ((value.`data`?.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.`data`?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.contentTypeSer, it)
     }
-    ((value.url?.value))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.url?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.contentTypeSer, it)
     }
-    ((value.size?.value))?.let { encoder.encodeIntElement(__desc, 10, it) }
+    ((value.size?.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
     (value.size?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.contentTypeSer, it)
     }
-    ((value.hash?.value))?.let { encoder.encodeStringElement(__desc, 12, it) }
+    ((value.hash?.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.hash?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 13, Hoisted.contentTypeSer, it)
     }
-    ((value.title?.value))?.let { encoder.encodeStringElement(__desc, 14, it) }
+    ((value.title?.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
     (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 15, Hoisted.contentTypeSer, it)
     }
-    ((value.creation?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 16, it) }
+    ((value.creation?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 16, it) }
     (value.creation?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 17, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 17, Hoisted.contentTypeSer, it)
     }
   }
 

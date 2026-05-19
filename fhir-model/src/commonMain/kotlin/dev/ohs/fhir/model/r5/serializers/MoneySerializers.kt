@@ -58,14 +58,13 @@ internal object MoneySerializer : KSerializer<Money> {
     }
 
   override fun deserialize(decoder: Decoder): Money =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Money) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Money {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Money {
     var id: String? = null
     var extension: List<Extension>? = null
     var `value`: BigDecimal? = null
@@ -73,20 +72,22 @@ internal object MoneySerializer : KSerializer<Money> {
     var currency: String? = null
     var _currency: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           `value` =
-            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
-        3 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
-        4 -> currency = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
+        3 ->
+          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
+        4 -> currency = decoder.decodeStringElement(descriptor, i)
         5 ->
-          _currency = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+          _currency =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Money: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Money: " + i)
       }
     }
     return Money(
@@ -97,20 +98,19 @@ internal object MoneySerializer : KSerializer<Money> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Money) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Money) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     ((value.`value`?.value))?.let {
-      encoder.encodeSerializableElement(__desc, 2, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 2, BigDecimalSerializer, it)
     }
     (value.`value`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueSer, it)
     }
-    ((value.currency?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.currency?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.currency?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
     }
   }
 

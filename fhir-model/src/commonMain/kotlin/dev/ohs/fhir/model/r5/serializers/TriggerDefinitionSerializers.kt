@@ -93,14 +93,13 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
     }
 
   override fun deserialize(decoder: Decoder): TriggerDefinition =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: TriggerDefinition) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): TriggerDefinition {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): TriggerDefinition {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var type: KotlinString? = null
@@ -119,40 +118,46 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
     var `data`: List<DataRequirement>? = null
     var condition: Expression? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeStringElement(__desc, __i)
-        3 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        4 -> name = decoder.decodeStringElement(__desc, __i)
-        5 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        6 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
-        7 -> subscriptionTopic = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeStringElement(descriptor, i)
+        3 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 -> name = decoder.decodeStringElement(descriptor, i)
+        5 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        6 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+        7 -> subscriptionTopic = decoder.decodeStringElement(descriptor, i)
         8 ->
           _subscriptionTopic =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         9 ->
           timingTiming =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.timingTimingSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timingTimingSer, null)
         10 ->
           timingReference =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.timingReferenceSer, null)
-        11 -> timingDate = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.timingReferenceSer,
+              null,
+            )
+        11 -> timingDate = decoder.decodeStringElement(descriptor, i)
         12 ->
           _timingDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        13 -> timingDateTime = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        13 -> timingDateTime = decoder.decodeStringElement(descriptor, i)
         14 ->
           _timingDateTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        15 -> `data` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dataSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        15 ->
+          `data` = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dataSer, null)
         16 ->
           condition =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.conditionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.conditionSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding TriggerDefinition: " + __i)
+        else -> throw SerializationException("Unexpected index decoding TriggerDefinition: " + i)
       }
     }
     return TriggerDefinition(
@@ -174,49 +179,48 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: TriggerDefinition) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: TriggerDefinition) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
     }
-    ((value.name?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it)
     }
-    (value.code)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.codeSer, it) }
-    ((value.subscriptionTopic?.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, it) }
+    ((value.subscriptionTopic?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.subscriptionTopic?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, it)
     }
     when (val __d = value.timing) {
       null -> {}
       is TriggerDefinition.Timing.Timing -> {
-        encoder.encodeSerializableElement(__desc, 9, Hoisted.timingTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timingTimingSer, __d.value)
       }
       is TriggerDefinition.Timing.Reference -> {
-        encoder.encodeSerializableElement(__desc, 10, Hoisted.timingReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.timingReferenceSer, __d.value)
       }
       is TriggerDefinition.Timing.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 11, it) }
+        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 12, Hoisted.typeSer, it)
+          encoder.encodeSerializableElement(descriptor, 12, Hoisted.typeSer, it)
         }
       }
       is TriggerDefinition.Timing.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 13, it) }
+        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 14, Hoisted.typeSer, it)
+          encoder.encodeSerializableElement(descriptor, 14, Hoisted.typeSer, it)
         }
       }
     }
     if (value.`data`.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.dataSer, value.`data`)
+      encoder.encodeSerializableElement(descriptor, 15, Hoisted.dataSer, value.`data`)
     (value.condition)?.let {
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.conditionSer, it)
+      encoder.encodeSerializableElement(descriptor, 16, Hoisted.conditionSer, it)
     }
   }
 

@@ -59,31 +59,31 @@ internal object ContactDetailSerializer : KSerializer<ContactDetail> {
     }
 
   override fun deserialize(decoder: Decoder): ContactDetail =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: ContactDetail) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): ContactDetail {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): ContactDetail {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var name: KotlinString? = null
     var _name: Element? = null
     var telecom: List<ContactPoint>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> name = decoder.decodeStringElement(__desc, __i)
-        3 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> name = decoder.decodeStringElement(descriptor, i)
+        3 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
         4 ->
-          telecom = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.telecomSer, null)
+          telecom =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.telecomSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ContactDetail: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ContactDetail: " + i)
       }
     }
     return ContactDetail(
@@ -94,17 +94,16 @@ internal object ContactDetailSerializer : KSerializer<ContactDetail> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: ContactDetail) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: ContactDetail) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.name?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameSer, it)
     }
     if (value.telecom.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.telecomSer, value.telecom)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.telecomSer, value.telecom)
   }
 
   private object Hoisted {

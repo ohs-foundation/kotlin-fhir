@@ -56,14 +56,13 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
     }
 
   override fun deserialize(decoder: Decoder): Narrative =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Narrative) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Narrative {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Narrative {
     var id: String? = null
     var extension: List<Extension>? = null
     var status: String? = null
@@ -71,18 +70,20 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
     var div: String? = null
     var _div: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> status = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> status = decoder.decodeStringElement(descriptor, i)
         3 ->
-          _status = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusSer, null)
-        4 -> div = decoder.decodeStringElement(__desc, __i)
-        5 -> _div = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusSer, null)
+          _status =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusSer, null)
+        4 -> div = decoder.decodeStringElement(descriptor, i)
+        5 ->
+          _div = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Narrative: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Narrative: " + i)
       }
     }
     return Narrative(
@@ -93,18 +94,17 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Narrative) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Narrative) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.statusSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.statusSer, it)
     }
-    ((value.div.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.div.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.div.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.statusSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.statusSer, it)
     }
   }
 

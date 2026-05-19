@@ -87,14 +87,13 @@ internal object CitationSummarySerializer : KSerializer<Citation.Summary> {
     }
 
   override fun deserialize(decoder: Decoder): Citation.Summary =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.Summary) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.Summary {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.Summary {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -102,19 +101,20 @@ internal object CitationSummarySerializer : KSerializer<Citation.Summary> {
     var text: KotlinString? = null
     var _text: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> style = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.styleSer, null)
-        4 -> text = decoder.decodeStringElement(__desc, __i)
-        5 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 ->
+          style = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.styleSer, null)
+        4 -> text = decoder.decodeStringElement(descriptor, i)
+        5 -> _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Summary: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Summary: " + i)
       }
     }
     return Citation.Summary(
@@ -126,17 +126,21 @@ internal object CitationSummarySerializer : KSerializer<Citation.Summary> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.Summary) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Citation.Summary) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.style)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.styleSer, it) }
-    ((value.text.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.style)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.styleSer, it) }
+    ((value.text.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.text.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.textSer, it)
     }
   }
 
@@ -175,34 +179,33 @@ internal object CitationClassificationSerializer : KSerializer<Citation.Classifi
     }
 
   override fun deserialize(decoder: Decoder): Citation.Classification =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.Classification) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.Classification {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.Classification {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var type: CodeableConcept? = null
     var classifier: List<CodeableConcept>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
           classifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classifierSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classifierSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Classification: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Classification: " + i)
       }
     }
     return Citation.Classification(
@@ -214,16 +217,20 @@ internal object CitationClassificationSerializer : KSerializer<Citation.Classifi
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.Classification) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Citation.Classification) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
     if (value.classifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.classifierSer, value.classifier)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.classifierSer, value.classifier)
   }
 
   private object Hoisted {
@@ -259,14 +266,13 @@ internal object CitationStatusDateSerializer : KSerializer<Citation.StatusDate> 
     }
 
   override fun deserialize(decoder: Decoder): Citation.StatusDate =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.StatusDate) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.StatusDate {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.StatusDate {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -275,24 +281,25 @@ internal object CitationStatusDateSerializer : KSerializer<Citation.StatusDate> 
     var _actual: Element? = null
     var period: Period? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           activity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.activitySer, null)
-        4 -> `actual` = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.activitySer, null)
+        4 -> `actual` = decoder.decodeBooleanElement(descriptor, i)
         5 ->
-          _actual = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.actualSer, null)
+          _actual =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.actualSer, null)
         6 ->
-          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding StatusDate: " + __i)
+        else -> throw SerializationException("Unexpected index decoding StatusDate: " + i)
       }
     }
     return Citation.StatusDate(
@@ -305,19 +312,25 @@ internal object CitationStatusDateSerializer : KSerializer<Citation.StatusDate> 
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.StatusDate) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Citation.StatusDate) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.activity)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.activitySer, it) }
-    ((value.`actual`?.value))?.let { encoder.encodeBooleanElement(__desc, 4, it) }
-    (value.`actual`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.actualSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.activity)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.activitySer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.periodSer, it) }
+    ((value.`actual`?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
+    (value.`actual`?.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.actualSer, it)
+    }
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodSer, it) }
   }
 
   private object Hoisted {
@@ -433,14 +446,13 @@ internal object CitationCitedArtifactSerializer : KSerializer<Citation.CitedArti
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -461,55 +473,72 @@ internal object CitationCitedArtifactSerializer : KSerializer<Citation.CitedArti
     var contributorship: Citation.CitedArtifact.Contributorship? = null
     var note: List<Annotation>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
         4 ->
           relatedIdentifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        5 -> dateAccessed = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        5 -> dateAccessed = decoder.decodeStringElement(descriptor, i)
         6 ->
           _dateAccessed =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dateAccessedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dateAccessedSer, null)
         7 ->
-          version = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionSer, null)
+          version =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionSer, null)
         8 ->
           currentState =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.currentStateSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.currentStateSer, null)
         9 ->
           statusDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusDateSer, null)
-        10 -> title = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.titleSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusDateSer, null)
+        10 ->
+          title = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.titleSer, null)
         11 ->
           `abstract` =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.abstractSer, null)
-        12 -> part = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.partSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.abstractSer, null)
+        12 -> part = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.partSer, null)
         13 ->
           relatesTo =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.relatesToSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.relatesToSer, null)
         14 ->
           publicationForm =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.publicationFormSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.publicationFormSer,
+              null,
+            )
         15 ->
           webLocation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.webLocationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.webLocationSer, null)
         16 ->
           classification =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classificationSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.classificationSer,
+              null,
+            )
         17 ->
           contributorship =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contributorshipSer, null)
-        18 -> note = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.noteSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.contributorshipSer,
+              null,
+            )
+        18 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding CitedArtifact: " + __i)
+        else -> throw SerializationException("Unexpected index decoding CitedArtifact: " + i)
       }
     }
     return Citation.CitedArtifact(
@@ -534,49 +563,67 @@ internal object CitationCitedArtifactSerializer : KSerializer<Citation.CitedArti
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.CitedArtifact) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Citation.CitedArtifact) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.identifierSer, value.identifier)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.identifierSer, value.identifier)
     if (value.relatedIdentifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.identifierSer, value.relatedIdentifier)
-    ((value.dateAccessed?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 5, it) }
-    (value.dateAccessed?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.dateAccessedSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        4,
+        Hoisted.identifierSer,
+        value.relatedIdentifier,
+      )
+    ((value.dateAccessed?.value?.toString()))?.let {
+      encoder.encodeStringElement(descriptor, 5, it)
     }
-    (value.version)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.versionSer, it) }
+    (value.dateAccessed?.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.dateAccessedSer, it)
+    }
+    (value.version)?.let {
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.versionSer, it)
+    }
     if (value.currentState.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.currentStateSer, value.currentState)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.currentStateSer, value.currentState)
     if (value.statusDate.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.statusDateSer, value.statusDate)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.statusDateSer, value.statusDate)
     if (value.title.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.titleSer, value.title)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.titleSer, value.title)
     if (value.`abstract`.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.abstractSer, value.`abstract`)
-    (value.part)?.let { encoder.encodeSerializableElement(__desc, 12, Hoisted.partSer, it) }
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.abstractSer, value.`abstract`)
+    (value.part)?.let { encoder.encodeSerializableElement(descriptor, 12, Hoisted.partSer, it) }
     if (value.relatesTo.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.relatesToSer, value.relatesTo)
+      encoder.encodeSerializableElement(descriptor, 13, Hoisted.relatesToSer, value.relatesTo)
     if (value.publicationForm.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         14,
         Hoisted.publicationFormSer,
         value.publicationForm,
       )
     if (value.webLocation.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.webLocationSer, value.webLocation)
+      encoder.encodeSerializableElement(descriptor, 15, Hoisted.webLocationSer, value.webLocation)
     if (value.classification.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.classificationSer, value.classification)
+      encoder.encodeSerializableElement(
+        descriptor,
+        16,
+        Hoisted.classificationSer,
+        value.classification,
+      )
     (value.contributorship)?.let {
-      encoder.encodeSerializableElement(__desc, 17, Hoisted.contributorshipSer, it)
+      encoder.encodeSerializableElement(descriptor, 17, Hoisted.contributorshipSer, it)
     }
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 18, Hoisted.noteSer, value.note)
+      encoder.encodeSerializableElement(descriptor, 18, Hoisted.noteSer, value.note)
   }
 
   private object Hoisted {
@@ -675,14 +722,13 @@ internal object CitationCitedArtifactVersionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Version =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Version) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.Version {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.Version {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -690,21 +736,22 @@ internal object CitationCitedArtifactVersionSerializer :
     var _value: Element? = null
     var baseCitation: Reference? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> `value` = decoder.decodeStringElement(__desc, __i)
-        4 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> `value` = decoder.decodeStringElement(descriptor, i)
+        4 ->
+          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
         5 ->
           baseCitation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.baseCitationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.baseCitationSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Version: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Version: " + i)
       }
     }
     return Citation.CitedArtifact.Version(
@@ -716,19 +763,26 @@ internal object CitationCitedArtifactVersionSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.CitedArtifact.Version) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: Citation.CitedArtifact.Version,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.`value`.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.`value`.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.`value`.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueSer, it)
     }
     (value.baseCitation)?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.baseCitationSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.baseCitationSer, it)
     }
   }
 
@@ -766,14 +820,13 @@ internal object CitationCitedArtifactStatusDateSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.StatusDate =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.StatusDate) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.StatusDate {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.StatusDate {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -782,24 +835,25 @@ internal object CitationCitedArtifactStatusDateSerializer :
     var _actual: Element? = null
     var period: Period? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           activity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.activitySer, null)
-        4 -> `actual` = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.activitySer, null)
+        4 -> `actual` = decoder.decodeBooleanElement(descriptor, i)
         5 ->
-          _actual = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.actualSer, null)
+          _actual =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.actualSer, null)
         6 ->
-          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding StatusDate: " + __i)
+        else -> throw SerializationException("Unexpected index decoding StatusDate: " + i)
       }
     }
     return Citation.CitedArtifact.StatusDate(
@@ -812,19 +866,28 @@ internal object CitationCitedArtifactStatusDateSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.CitedArtifact.StatusDate) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: Citation.CitedArtifact.StatusDate,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.activity)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.activitySer, it) }
-    ((value.`actual`?.value))?.let { encoder.encodeBooleanElement(__desc, 4, it) }
-    (value.`actual`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.actualSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.activity)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.activitySer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.periodSer, it) }
+    ((value.`actual`?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
+    (value.`actual`?.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.actualSer, it)
+    }
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodSer, it) }
   }
 
   private object Hoisted {
@@ -866,14 +929,13 @@ internal object CitationCitedArtifactTitleSerializer : KSerializer<Citation.Cite
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Title =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Title) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.Title {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.Title {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -882,22 +944,22 @@ internal object CitationCitedArtifactTitleSerializer : KSerializer<Citation.Cite
     var text: KotlinString? = null
     var _text: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
           language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSerInner, null)
-        5 -> text = decoder.decodeStringElement(__desc, __i)
-        6 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSerInner, null)
+        5 -> text = decoder.decodeStringElement(descriptor, i)
+        6 -> _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Title: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Title: " + i)
       }
     }
     return Citation.CitedArtifact.Title(
@@ -910,19 +972,25 @@ internal object CitationCitedArtifactTitleSerializer : KSerializer<Citation.Cite
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.CitedArtifact.Title) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Citation.CitedArtifact.Title) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.type.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, value.type)
-    (value.language)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.typeSerInner, it) }
-    ((value.text.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
+    (value.language)?.let {
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSerInner, it)
+    }
+    ((value.text.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.text.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.textSer, it)
     }
   }
 
@@ -964,14 +1032,13 @@ internal object CitationCitedArtifactAbstractSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Abstract =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Abstract) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.Abstract {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.Abstract {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -982,24 +1049,25 @@ internal object CitationCitedArtifactAbstractSerializer :
     var copyright: KotlinString? = null
     var _copyright: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
-          language = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        5 -> text = decoder.decodeStringElement(__desc, __i)
-        6 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
-        7 -> copyright = decoder.decodeStringElement(__desc, __i)
+          language = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        5 -> text = decoder.decodeStringElement(descriptor, i)
+        6 -> _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+        7 -> copyright = decoder.decodeStringElement(descriptor, i)
         8 ->
-          _copyright = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+          _copyright =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Abstract: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Abstract: " + i)
       }
     }
     return Citation.CitedArtifact.Abstract(
@@ -1013,22 +1081,29 @@ internal object CitationCitedArtifactAbstractSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.CitedArtifact.Abstract) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: Citation.CitedArtifact.Abstract,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
-    (value.language)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.typeSer, it) }
-    ((value.text.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    (value.language)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
+    ((value.text.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.text.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.textSer, it)
     }
-    ((value.copyright?.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.copyright?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.copyright?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.textSer, it)
     }
   }
 
@@ -1065,14 +1140,13 @@ internal object CitationCitedArtifactPartSerializer : KSerializer<Citation.Cited
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Part =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Part) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.Part {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.Part {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1081,22 +1155,23 @@ internal object CitationCitedArtifactPartSerializer : KSerializer<Citation.Cited
     var _value: Element? = null
     var baseCitation: Reference? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        4 -> `value` = decoder.decodeStringElement(__desc, __i)
-        5 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 -> `value` = decoder.decodeStringElement(descriptor, i)
+        5 ->
+          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
         6 ->
           baseCitation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.baseCitationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.baseCitationSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Part: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Part: " + i)
       }
     }
     return Citation.CitedArtifact.Part(
@@ -1109,20 +1184,24 @@ internal object CitationCitedArtifactPartSerializer : KSerializer<Citation.Cited
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.CitedArtifact.Part) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Citation.CitedArtifact.Part) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
-    ((value.`value`?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    ((value.`value`?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.`value`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
     }
     (value.baseCitation)?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.baseCitationSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.baseCitationSer, it)
     }
   }
 
@@ -1175,14 +1254,13 @@ internal object CitationCitedArtifactRelatesToSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.RelatesTo =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.RelatesTo) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.RelatesTo {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.RelatesTo {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1200,43 +1278,46 @@ internal object CitationCitedArtifactRelatesToSerializer :
     var _resource: Element? = null
     var resourceReference: Reference? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeStringElement(__desc, __i)
-        4 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeStringElement(descriptor, i)
+        4 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         5 ->
           classifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classifierSer, null)
-        6 -> label = decoder.decodeStringElement(__desc, __i)
-        7 -> _label = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        8 -> display = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classifierSer, null)
+        6 -> label = decoder.decodeStringElement(descriptor, i)
+        7 ->
+          _label = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        8 -> display = decoder.decodeStringElement(descriptor, i)
         9 ->
-          _display = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        10 -> citation = decoder.decodeStringElement(__desc, __i)
+          _display = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        10 -> citation = decoder.decodeStringElement(descriptor, i)
         11 ->
-          _citation = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+          _citation =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         12 ->
           document =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.documentSer, null)
-        13 -> resource = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.documentSer, null)
+        13 -> resource = decoder.decodeStringElement(descriptor, i)
         14 ->
-          _resource = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+          _resource =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         15 ->
           resourceReference =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.resourceReferenceSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RelatesTo: " + __i)
+        else -> throw SerializationException("Unexpected index decoding RelatesTo: " + i)
       }
     }
     return Citation.CitedArtifact.RelatesTo(
@@ -1254,38 +1335,47 @@ internal object CitationCitedArtifactRelatesToSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Citation.CitedArtifact.RelatesTo) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: Citation.CitedArtifact.RelatesTo,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
     if (value.classifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.classifierSer, value.classifier)
-    ((value.label?.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.classifierSer, value.classifier)
+    ((value.label?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.label?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.typeSer, it)
     }
-    ((value.display?.value))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    ((value.display?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.display?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.typeSer, it)
     }
-    ((value.citation?.value))?.let { encoder.encodeStringElement(__desc, 10, it) }
+    ((value.citation?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.citation?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.typeSer, it)
     }
-    (value.document)?.let { encoder.encodeSerializableElement(__desc, 12, Hoisted.documentSer, it) }
-    ((value.resource?.value))?.let { encoder.encodeStringElement(__desc, 13, it) }
+    (value.document)?.let {
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.documentSer, it)
+    }
+    ((value.resource?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.resource?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, Hoisted.typeSer, it)
     }
     (value.resourceReference)?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.resourceReferenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 15, Hoisted.resourceReferenceSer, it)
     }
   }
 
@@ -1363,14 +1453,15 @@ internal object CitationCitedArtifactPublicationFormSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.PublicationForm =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.PublicationForm) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.PublicationForm {
-    val __desc = descriptor
+  private fun deserializeInternal(
+    decoder: CompositeDecoder
+  ): Citation.CitedArtifact.PublicationForm {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1402,71 +1493,72 @@ internal object CitationCitedArtifactPublicationFormSerializer :
     var copyright: KotlinString? = null
     var _copyright: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           publishedIn =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.publishedInSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.publishedInSer, null)
         4 ->
           citedMedium =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.citedMediumSer, null)
-        5 -> volume = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.citedMediumSer, null)
+        5 -> volume = decoder.decodeStringElement(descriptor, i)
         6 ->
-          _volume = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        7 -> issue = decoder.decodeStringElement(__desc, __i)
+          _volume =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        7 -> issue = decoder.decodeStringElement(descriptor, i)
         8 ->
-          _issue = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        9 -> articleDate = decoder.decodeStringElement(__desc, __i)
+          _issue = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        9 -> articleDate = decoder.decodeStringElement(descriptor, i)
         10 ->
           _articleDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        11 -> publicationDateText = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        11 -> publicationDateText = decoder.decodeStringElement(descriptor, i)
         12 ->
           _publicationDateText =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        13 -> publicationDateSeason = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        13 -> publicationDateSeason = decoder.decodeStringElement(descriptor, i)
         14 ->
           _publicationDateSeason =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        15 -> lastRevisionDate = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        15 -> lastRevisionDate = decoder.decodeStringElement(descriptor, i)
         16 ->
           _lastRevisionDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
         17 ->
           language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.languageSer, null)
-        18 -> accessionNumber = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.languageSer, null)
+        18 -> accessionNumber = decoder.decodeStringElement(descriptor, i)
         19 ->
           _accessionNumber =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        20 -> pageString = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        20 -> pageString = decoder.decodeStringElement(descriptor, i)
         21 ->
           _pageString =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        22 -> firstPage = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        22 -> firstPage = decoder.decodeStringElement(descriptor, i)
         23 ->
           _firstPage =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        24 -> lastPage = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        24 -> lastPage = decoder.decodeStringElement(descriptor, i)
         25 ->
           _lastPage =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        26 -> pageCount = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        26 -> pageCount = decoder.decodeStringElement(descriptor, i)
         27 ->
           _pageCount =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
-        28 -> copyright = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
+        28 -> copyright = decoder.decodeStringElement(descriptor, i)
         29 ->
           _copyright =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.volumeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.volumeSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PublicationForm: " + __i)
+        else -> throw SerializationException("Unexpected index decoding PublicationForm: " + i)
       }
     }
     return Citation.CitedArtifact.PublicationForm(
@@ -1491,73 +1583,77 @@ internal object CitationCitedArtifactPublicationFormSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Citation.CitedArtifact.PublicationForm,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.publishedIn)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.publishedInSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.publishedInSer, it)
     }
     (value.citedMedium)?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.citedMediumSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.citedMediumSer, it)
     }
-    ((value.volume?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.volume?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.volume?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.volumeSer, it)
     }
-    ((value.issue?.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.issue?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.issue?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.volumeSer, it)
     }
-    ((value.articleDate?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 9, it) }
+    ((value.articleDate?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.articleDate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.volumeSer, it)
     }
-    ((value.publicationDateText?.value))?.let { encoder.encodeStringElement(__desc, 11, it) }
+    ((value.publicationDateText?.value))?.let { encoder.encodeStringElement(descriptor, 11, it) }
     (value.publicationDateText?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.volumeSer, it)
     }
-    ((value.publicationDateSeason?.value))?.let { encoder.encodeStringElement(__desc, 13, it) }
+    ((value.publicationDateSeason?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.publicationDateSeason?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, Hoisted.volumeSer, it)
     }
     ((value.lastRevisionDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(__desc, 15, it)
+      encoder.encodeStringElement(descriptor, 15, it)
     }
     (value.lastRevisionDate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 16, Hoisted.volumeSer, it)
     }
     if (value.language.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 17, Hoisted.languageSer, value.language)
-    ((value.accessionNumber?.value))?.let { encoder.encodeStringElement(__desc, 18, it) }
+      encoder.encodeSerializableElement(descriptor, 17, Hoisted.languageSer, value.language)
+    ((value.accessionNumber?.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
     (value.accessionNumber?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 19, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 19, Hoisted.volumeSer, it)
     }
-    ((value.pageString?.value))?.let { encoder.encodeStringElement(__desc, 20, it) }
+    ((value.pageString?.value))?.let { encoder.encodeStringElement(descriptor, 20, it) }
     (value.pageString?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 21, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 21, Hoisted.volumeSer, it)
     }
-    ((value.firstPage?.value))?.let { encoder.encodeStringElement(__desc, 22, it) }
+    ((value.firstPage?.value))?.let { encoder.encodeStringElement(descriptor, 22, it) }
     (value.firstPage?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 23, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 23, Hoisted.volumeSer, it)
     }
-    ((value.lastPage?.value))?.let { encoder.encodeStringElement(__desc, 24, it) }
+    ((value.lastPage?.value))?.let { encoder.encodeStringElement(descriptor, 24, it) }
     (value.lastPage?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 25, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 25, Hoisted.volumeSer, it)
     }
-    ((value.pageCount?.value))?.let { encoder.encodeStringElement(__desc, 26, it) }
+    ((value.pageCount?.value))?.let { encoder.encodeStringElement(descriptor, 26, it) }
     (value.pageCount?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 27, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 27, Hoisted.volumeSer, it)
     }
-    ((value.copyright?.value))?.let { encoder.encodeStringElement(__desc, 28, it) }
+    ((value.copyright?.value))?.let { encoder.encodeStringElement(descriptor, 28, it) }
     (value.copyright?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 29, Hoisted.volumeSer, it)
+      encoder.encodeSerializableElement(descriptor, 29, Hoisted.volumeSer, it)
     }
   }
 
@@ -1608,19 +1704,18 @@ internal object CitationCitedArtifactPublicationFormPublishedInSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.PublicationForm.PublishedIn =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Citation.CitedArtifact.PublicationForm.PublishedIn,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): Citation.CitedArtifact.PublicationForm.PublishedIn {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1632,29 +1727,30 @@ internal object CitationCitedArtifactPublicationFormPublishedInSerializer :
     var publisherLocation: KotlinString? = null
     var _publisherLocation: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        5 -> title = decoder.decodeStringElement(__desc, __i)
-        6 -> _title = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.titleSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        5 -> title = decoder.decodeStringElement(descriptor, i)
+        6 ->
+          _title = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.titleSer, null)
         7 ->
           publisher =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.publisherSer, null)
-        8 -> publisherLocation = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.publisherSer, null)
+        8 -> publisherLocation = decoder.decodeStringElement(descriptor, i)
         9 ->
           _publisherLocation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.titleSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.titleSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PublishedIn: " + __i)
+        else -> throw SerializationException("Unexpected index decoding PublishedIn: " + i)
       }
     }
     return Citation.CitedArtifact.PublicationForm.PublishedIn(
@@ -1669,29 +1765,33 @@ internal object CitationCitedArtifactPublicationFormPublishedInSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Citation.CitedArtifact.PublicationForm.PublishedIn,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.identifierSer, value.identifier)
-    ((value.title?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.identifierSer, value.identifier)
+    ((value.title?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.titleSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.titleSer, it)
     }
     (value.publisher)?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.publisherSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.publisherSer, it)
     }
-    ((value.publisherLocation?.value))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    ((value.publisherLocation?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.publisherLocation?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.titleSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.titleSer, it)
     }
   }
 
@@ -1739,14 +1839,13 @@ internal object CitationCitedArtifactWebLocationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.WebLocation =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.WebLocation) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.WebLocation {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Citation.CitedArtifact.WebLocation {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1754,21 +1853,21 @@ internal object CitationCitedArtifactWebLocationSerializer :
     var url: KotlinString? = null
     var _url: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           classifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classifierSer, null)
-        4 -> url = decoder.decodeStringElement(__desc, __i)
-        5 -> _url = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.urlSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classifierSer, null)
+        4 -> url = decoder.decodeStringElement(descriptor, i)
+        5 -> _url = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.urlSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding WebLocation: " + __i)
+        else -> throw SerializationException("Unexpected index decoding WebLocation: " + i)
       }
     }
     return Citation.CitedArtifact.WebLocation(
@@ -1780,21 +1879,25 @@ internal object CitationCitedArtifactWebLocationSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Citation.CitedArtifact.WebLocation,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.classifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.classifierSer, value.classifier)
-    ((value.url?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.classifierSer, value.classifier)
+    ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.url?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.urlSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.urlSer, it)
     }
   }
 
@@ -1842,14 +1945,15 @@ internal object CitationCitedArtifactClassificationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Classification =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Classification) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.Classification {
-    val __desc = descriptor
+  private fun deserializeInternal(
+    decoder: CompositeDecoder
+  ): Citation.CitedArtifact.Classification {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1857,28 +1961,28 @@ internal object CitationCitedArtifactClassificationSerializer :
     var classifier: List<CodeableConcept>? = null
     var artifactAssessment: List<Reference>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
           classifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classifierSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classifierSer, null)
         5 ->
           artifactAssessment =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.artifactAssessmentSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Classification: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Classification: " + i)
       }
     }
     return Citation.CitedArtifact.Classification(
@@ -1891,22 +1995,26 @@ internal object CitationCitedArtifactClassificationSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Citation.CitedArtifact.Classification,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
     if (value.classifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.classifierSer, value.classifier)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.classifierSer, value.classifier)
     if (value.artifactAssessment.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         5,
         Hoisted.artifactAssessmentSer,
         value.artifactAssessment,
@@ -1964,14 +2072,15 @@ internal object CitationCitedArtifactContributorshipSerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Contributorship =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Contributorship) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Citation.CitedArtifact.Contributorship {
-    val __desc = descriptor
+  private fun deserializeInternal(
+    decoder: CompositeDecoder
+  ): Citation.CitedArtifact.Contributorship {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1980,23 +2089,25 @@ internal object CitationCitedArtifactContributorshipSerializer :
     var entry: List<Citation.CitedArtifact.Contributorship.Entry>? = null
     var summary: List<Citation.CitedArtifact.Contributorship.Summary>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> complete = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> complete = decoder.decodeBooleanElement(descriptor, i)
         4 ->
           _complete =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.completeSer, null)
-        5 -> entry = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.entrySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.completeSer, null)
+        5 ->
+          entry = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.entrySer, null)
         6 ->
-          summary = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.summarySer, null)
+          summary =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.summarySer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Contributorship: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Contributorship: " + i)
       }
     }
     return Citation.CitedArtifact.Contributorship(
@@ -2009,24 +2120,28 @@ internal object CitationCitedArtifactContributorshipSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Citation.CitedArtifact.Contributorship,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.complete?.value))?.let { encoder.encodeBooleanElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.complete?.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
     (value.complete?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.completeSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.completeSer, it)
     }
     if (value.entry.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.entrySer, value.entry)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.entrySer, value.entry)
     if (value.summary.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.summarySer, value.summary)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.summarySer, value.summary)
   }
 
   private object Hoisted {
@@ -2097,16 +2212,15 @@ internal object CitationCitedArtifactContributorshipEntrySerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Contributorship.Entry =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Citation.CitedArtifact.Contributorship.Entry) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): Citation.CitedArtifact.Contributorship.Entry {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -2124,73 +2238,73 @@ internal object CitationCitedArtifactContributorshipEntrySerializer :
     var rankingOrder: Int? = null
     var _rankingOrder: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           contributor =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contributorSer, null)
-        4 -> forenameInitials = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contributorSer, null)
+        4 -> forenameInitials = decoder.decodeStringElement(descriptor, i)
         5 ->
           _forenameInitials =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.forenameInitialsSer,
               null,
             )
         6 ->
           affiliation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.affiliationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.affiliationSer, null)
         7 ->
           contributionType =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.contributionTypeSer,
               null,
             )
         8 ->
           role =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.contributionTypeSerInner,
               null,
             )
         9 ->
           contributionInstance =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.contributionInstanceSer,
               null,
             )
-        10 -> correspondingContact = decoder.decodeBooleanElement(__desc, __i)
+        10 -> correspondingContact = decoder.decodeBooleanElement(descriptor, i)
         11 ->
           _correspondingContact =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.forenameInitialsSer,
               null,
             )
-        12 -> rankingOrder = decoder.decodeIntElement(__desc, __i)
+        12 -> rankingOrder = decoder.decodeIntElement(descriptor, i)
         13 ->
           _rankingOrder =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.forenameInitialsSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Entry: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Entry: " + i)
       }
     }
     return Citation.CitedArtifact.Contributorship.Entry(
@@ -2208,49 +2322,53 @@ internal object CitationCitedArtifactContributorshipEntrySerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Citation.CitedArtifact.Contributorship.Entry,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.contributor)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.contributorSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.contributorSer, it)
     }
-    ((value.forenameInitials?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.forenameInitials?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.forenameInitials?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.forenameInitialsSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.forenameInitialsSer, it)
     }
     if (value.affiliation.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.affiliationSer, value.affiliation)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.affiliationSer, value.affiliation)
     if (value.contributionType.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         7,
         Hoisted.contributionTypeSer,
         value.contributionType,
       )
     (value.role)?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.contributionTypeSerInner, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.contributionTypeSerInner, it)
     }
     if (value.contributionInstance.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         9,
         Hoisted.contributionInstanceSer,
         value.contributionInstance,
       )
-    ((value.correspondingContact?.value))?.let { encoder.encodeBooleanElement(__desc, 10, it) }
+    ((value.correspondingContact?.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
     (value.correspondingContact?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.forenameInitialsSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.forenameInitialsSer, it)
     }
-    ((value.rankingOrder?.value))?.let { encoder.encodeIntElement(__desc, 12, it) }
+    ((value.rankingOrder?.value))?.let { encoder.encodeIntElement(descriptor, 12, it) }
     (value.rankingOrder?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.forenameInitialsSer, it)
+      encoder.encodeSerializableElement(descriptor, 13, Hoisted.forenameInitialsSer, it)
     }
   }
 
@@ -2304,19 +2422,18 @@ internal object CitationCitedArtifactContributorshipEntryContributionInstanceSer
   override fun deserialize(
     decoder: Decoder
   ): Citation.CitedArtifact.Contributorship.Entry.ContributionInstance =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Citation.CitedArtifact.Contributorship.Entry.ContributionInstance,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): Citation.CitedArtifact.Contributorship.Entry.ContributionInstance {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -2324,20 +2441,19 @@ internal object CitationCitedArtifactContributorshipEntryContributionInstanceSer
     var time: KotlinString? = null
     var _time: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        4 -> time = decoder.decodeStringElement(__desc, __i)
-        5 -> _time = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.timeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 -> time = decoder.decodeStringElement(descriptor, i)
+        5 -> _time = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.timeSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding ContributionInstance: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ContributionInstance: " + i)
       }
     }
     return Citation.CitedArtifact.Contributorship.Entry.ContributionInstance(
@@ -2349,20 +2465,24 @@ internal object CitationCitedArtifactContributorshipEntryContributionInstanceSer
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Citation.CitedArtifact.Contributorship.Entry.ContributionInstance,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
-    ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.time?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.timeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.timeSer, it)
     }
   }
 
@@ -2401,19 +2521,18 @@ internal object CitationCitedArtifactContributorshipSummarySerializer :
     }
 
   override fun deserialize(decoder: Decoder): Citation.CitedArtifact.Contributorship.Summary =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: Citation.CitedArtifact.Contributorship.Summary,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): Citation.CitedArtifact.Contributorship.Summary {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -2423,21 +2542,23 @@ internal object CitationCitedArtifactContributorshipSummarySerializer :
     var `value`: KotlinString? = null
     var _value: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        4 -> style = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        5 -> source = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        6 -> `value` = decoder.decodeStringElement(__desc, __i)
-        7 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 -> style = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        5 ->
+          source = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        6 -> `value` = decoder.decodeStringElement(descriptor, i)
+        7 ->
+          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Summary: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Summary: " + i)
       }
     }
     return Citation.CitedArtifact.Contributorship.Summary(
@@ -2451,22 +2572,26 @@ internal object CitationCitedArtifactContributorshipSummarySerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: Citation.CitedArtifact.Contributorship.Summary,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
-    (value.style)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.typeSer, it) }
-    (value.source)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.typeSer, it) }
-    ((value.`value`.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    (value.style)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
+    (value.source)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
+    ((value.`value`.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.`value`.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueSer, it)
     }
   }
 
@@ -2618,21 +2743,20 @@ internal object CitationSerializer : KSerializer<Citation> {
   }
 
   override fun deserialize(decoder: Decoder): Citation =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: Citation) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "Citation")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): Citation {
-    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -2691,141 +2815,160 @@ internal object CitationSerializer : KSerializer<Citation> {
     var relatedArtifact: List<RelatedArtifact>? = null
     var citedArtifact: Citation.CitedArtifact? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        10 -> url = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        10 -> url = decoder.decodeStringElement(descriptor, i)
         11 ->
           _url =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         12 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        13 -> version = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        13 -> version = decoder.decodeStringElement(descriptor, i)
         14 ->
           _version =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        15 -> versionAlgorithmString = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        15 -> versionAlgorithmString = decoder.decodeStringElement(descriptor, i)
         16 ->
           _versionAlgorithmString =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         17 ->
           versionAlgorithmCoding =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.versionAlgorithmCodingSer,
               null,
             )
-        18 -> name = decoder.decodeStringElement(__desc, __i)
+        18 -> name = decoder.decodeStringElement(descriptor, i)
         19 ->
           _name =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        20 -> title = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        20 -> title = decoder.decodeStringElement(descriptor, i)
         21 ->
           _title =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        22 -> status = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        22 -> status = decoder.decodeStringElement(descriptor, i)
         23 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        24 -> experimental = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        24 -> experimental = decoder.decodeBooleanElement(descriptor, i)
         25 ->
           _experimental =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        26 -> date = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        26 -> date = decoder.decodeStringElement(descriptor, i)
         27 ->
           _date =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        28 -> publisher = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        28 -> publisher = decoder.decodeStringElement(descriptor, i)
         29 ->
           _publisher =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         30 ->
-          contact = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contactSer, null)
-        31 -> description = decoder.decodeStringElement(__desc, __i)
+          contact =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+        31 -> description = decoder.decodeStringElement(descriptor, i)
         32 ->
           _description =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         33 ->
           useContext =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useContextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useContextSer, null)
         34 ->
           jurisdiction =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.jurisdictionSer, null)
-        35 -> purpose = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.jurisdictionSer, null)
+        35 -> purpose = decoder.decodeStringElement(descriptor, i)
         36 ->
           _purpose =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        37 -> copyright = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        37 -> copyright = decoder.decodeStringElement(descriptor, i)
         38 ->
           _copyright =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        39 -> copyrightLabel = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        39 -> copyrightLabel = decoder.decodeStringElement(descriptor, i)
         40 ->
           _copyrightLabel =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        41 -> approvalDate = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        41 -> approvalDate = decoder.decodeStringElement(descriptor, i)
         42 ->
           _approvalDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        43 -> lastReviewDate = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        43 -> lastReviewDate = decoder.decodeStringElement(descriptor, i)
         44 ->
           _lastReviewDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         45 ->
           effectivePeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.effectivePeriodSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.effectivePeriodSer,
+              null,
+            )
         46 ->
-          author = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contactSer, null)
+          author =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
         47 ->
-          editor = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contactSer, null)
+          editor =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
         48 ->
           reviewer =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contactSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
         49 ->
           endorser =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contactSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
         50 ->
-          summary = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.summarySer, null)
+          summary =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.summarySer, null)
         51 ->
           classification =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classificationSer, null)
-        52 -> note = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.noteSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.classificationSer,
+              null,
+            )
+        52 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
         53 ->
           currentState =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.jurisdictionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.jurisdictionSer, null)
         54 ->
           statusDate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusDateSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusDateSer, null)
         55 ->
           relatedArtifact =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.relatedArtifactSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.relatedArtifactSer,
+              null,
+            )
         56 ->
           citedArtifact =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.citedArtifactSer, null)
-        else -> throw SerializationException("Unexpected index decoding Citation: " + __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.citedArtifactSer, null)
+        else -> throw SerializationException("Unexpected index decoding Citation: " + i)
       }
     }
     return Citation(
@@ -2875,165 +3018,351 @@ internal object CitationSerializer : KSerializer<Citation> {
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: Citation,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.url?.value))?.let { encoder.encodeStringElement(__desc, 10 + __off, it) }
+    ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it) }
     (value.url?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        11 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.identifierSer, value.identifier)
-    ((value.version?.value))?.let { encoder.encodeStringElement(__desc, 13 + __off, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        12 + descriptorOffset,
+        Hoisted.identifierSer,
+        value.identifier,
+      )
+    ((value.version?.value))?.let {
+      encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
+    }
     (value.version?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        14 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     when (val __d = value.versionAlgorithm) {
       null -> {}
       is Citation.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 15 + __off, it) }
+        ((__d.value.value))?.let {
+          encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
+        }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            16 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
       is Citation.VersionAlgorithm.Coding -> {
         encoder.encodeSerializableElement(
-          __desc,
-          17 + __off,
+          descriptor,
+          17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
           __d.value,
         )
       }
     }
-    ((value.name?.value))?.let { encoder.encodeStringElement(__desc, 18 + __off, it) }
+    ((value.name?.value))?.let {
+      encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
+    }
     (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 19 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        19 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.title?.value))?.let { encoder.encodeStringElement(__desc, 20 + __off, it) }
+    ((value.title?.value))?.let {
+      encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
+    }
     (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 21 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        21 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 22 + __off, it) }
+    ((value.status.value?.getCode()))?.let {
+      encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
+    }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 23 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        23 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.experimental?.value))?.let { encoder.encodeBooleanElement(__desc, 24 + __off, it) }
+    ((value.experimental?.value))?.let {
+      encoder.encodeBooleanElement(descriptor, 24 + descriptorOffset, it)
+    }
     (value.experimental?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 25 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        25 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.date?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 26 + __off, it) }
+    ((value.date?.value?.toString()))?.let {
+      encoder.encodeStringElement(descriptor, 26 + descriptorOffset, it)
+    }
     (value.date?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 27 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        27 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.publisher?.value))?.let { encoder.encodeStringElement(__desc, 28 + __off, it) }
+    ((value.publisher?.value))?.let {
+      encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
+    }
     (value.publisher?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 29 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        29 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.contact.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 30 + __off, Hoisted.contactSer, value.contact)
-    ((value.description?.value))?.let { encoder.encodeStringElement(__desc, 31 + __off, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        30 + descriptorOffset,
+        Hoisted.contactSer,
+        value.contact,
+      )
+    ((value.description?.value))?.let {
+      encoder.encodeStringElement(descriptor, 31 + descriptorOffset, it)
+    }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 32 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        32 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.useContext.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 33 + __off, Hoisted.useContextSer, value.useContext)
+      encoder.encodeSerializableElement(
+        descriptor,
+        33 + descriptorOffset,
+        Hoisted.useContextSer,
+        value.useContext,
+      )
     if (value.jurisdiction.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        34 + __off,
+        descriptor,
+        34 + descriptorOffset,
         Hoisted.jurisdictionSer,
         value.jurisdiction,
       )
-    ((value.purpose?.value))?.let { encoder.encodeStringElement(__desc, 35 + __off, it) }
+    ((value.purpose?.value))?.let {
+      encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
+    }
     (value.purpose?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 36 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        36 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.copyright?.value))?.let { encoder.encodeStringElement(__desc, 37 + __off, it) }
+    ((value.copyright?.value))?.let {
+      encoder.encodeStringElement(descriptor, 37 + descriptorOffset, it)
+    }
     (value.copyright?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 38 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        38 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.copyrightLabel?.value))?.let { encoder.encodeStringElement(__desc, 39 + __off, it) }
+    ((value.copyrightLabel?.value))?.let {
+      encoder.encodeStringElement(descriptor, 39 + descriptorOffset, it)
+    }
     (value.copyrightLabel?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 40 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        40 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     ((value.approvalDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(__desc, 41 + __off, it)
+      encoder.encodeStringElement(descriptor, 41 + descriptorOffset, it)
     }
     (value.approvalDate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 42 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        42 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     ((value.lastReviewDate?.value?.toString()))?.let {
-      encoder.encodeStringElement(__desc, 43 + __off, it)
+      encoder.encodeStringElement(descriptor, 43 + descriptorOffset, it)
     }
     (value.lastReviewDate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 44 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        44 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     (value.effectivePeriod)?.let {
-      encoder.encodeSerializableElement(__desc, 45 + __off, Hoisted.effectivePeriodSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        45 + descriptorOffset,
+        Hoisted.effectivePeriodSer,
+        it,
+      )
     }
     if (value.author.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 46 + __off, Hoisted.contactSer, value.author)
+      encoder.encodeSerializableElement(
+        descriptor,
+        46 + descriptorOffset,
+        Hoisted.contactSer,
+        value.author,
+      )
     if (value.editor.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 47 + __off, Hoisted.contactSer, value.editor)
+      encoder.encodeSerializableElement(
+        descriptor,
+        47 + descriptorOffset,
+        Hoisted.contactSer,
+        value.editor,
+      )
     if (value.reviewer.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 48 + __off, Hoisted.contactSer, value.reviewer)
+      encoder.encodeSerializableElement(
+        descriptor,
+        48 + descriptorOffset,
+        Hoisted.contactSer,
+        value.reviewer,
+      )
     if (value.endorser.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 49 + __off, Hoisted.contactSer, value.endorser)
+      encoder.encodeSerializableElement(
+        descriptor,
+        49 + descriptorOffset,
+        Hoisted.contactSer,
+        value.endorser,
+      )
     if (value.summary.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 50 + __off, Hoisted.summarySer, value.summary)
+      encoder.encodeSerializableElement(
+        descriptor,
+        50 + descriptorOffset,
+        Hoisted.summarySer,
+        value.summary,
+      )
     if (value.classification.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        51 + __off,
+        descriptor,
+        51 + descriptorOffset,
         Hoisted.classificationSer,
         value.classification,
       )
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 52 + __off, Hoisted.noteSer, value.note)
+      encoder.encodeSerializableElement(
+        descriptor,
+        52 + descriptorOffset,
+        Hoisted.noteSer,
+        value.note,
+      )
     if (value.currentState.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        53 + __off,
+        descriptor,
+        53 + descriptorOffset,
         Hoisted.jurisdictionSer,
         value.currentState,
       )
     if (value.statusDate.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 54 + __off, Hoisted.statusDateSer, value.statusDate)
+      encoder.encodeSerializableElement(
+        descriptor,
+        54 + descriptorOffset,
+        Hoisted.statusDateSer,
+        value.statusDate,
+      )
     if (value.relatedArtifact.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        55 + __off,
+        descriptor,
+        55 + descriptorOffset,
         Hoisted.relatedArtifactSer,
         value.relatedArtifact,
       )
     (value.citedArtifact)?.let {
-      encoder.encodeSerializableElement(__desc, 56 + __off, Hoisted.citedArtifactSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        56 + descriptorOffset,
+        Hoisted.citedArtifactSer,
+        it,
+      )
     }
   }
 
@@ -3114,10 +3443,12 @@ internal object CitationPolymorphicSerializer : KSerializer<Citation> {
 
   override fun serialize(encoder: Encoder, `value`: Citation) {
     encoder.encodeStructure(descriptor) {
-      CitationSerializer.serializeJson(this, descriptor, 0, value)
+      CitationSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): Citation =
-    decoder.decodeStructure(descriptor) { CitationSerializer.deserializeJson(this, descriptor, 0) }
+    decoder.decodeStructure(descriptor) {
+      CitationSerializer.deserializeInternal(this, descriptor, 0)
+    }
 }

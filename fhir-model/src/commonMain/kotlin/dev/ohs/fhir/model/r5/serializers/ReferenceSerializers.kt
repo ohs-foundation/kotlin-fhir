@@ -64,14 +64,13 @@ internal object ReferenceSerializer : KSerializer<Reference> {
     }
 
   override fun deserialize(decoder: Decoder): Reference =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Reference) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Reference {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Reference {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var reference: KotlinString? = null
@@ -82,27 +81,28 @@ internal object ReferenceSerializer : KSerializer<Reference> {
     var display: KotlinString? = null
     var _display: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> reference = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> reference = decoder.decodeStringElement(descriptor, i)
         3 ->
           _reference =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceSer, null)
-        4 -> type = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+        4 -> type = decoder.decodeStringElement(descriptor, i)
         5 ->
-          _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceSer, null)
+          _type =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
         6 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        7 -> display = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        7 -> display = decoder.decodeStringElement(descriptor, i)
         8 ->
           _display =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Reference: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Reference: " + i)
       }
     }
     return Reference(
@@ -115,25 +115,24 @@ internal object ReferenceSerializer : KSerializer<Reference> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Reference) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Reference) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.reference?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.reference?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.reference?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.referenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
     }
-    ((value.type?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.type?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.referenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, it)
     }
     (value.identifier)?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.identifierSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.identifierSer, it)
     }
-    ((value.display?.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.display?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.display?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.referenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.referenceSer, it)
     }
   }
 

@@ -57,31 +57,31 @@ internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
     }
 
   override fun deserialize(decoder: Decoder): CodeableReference =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: CodeableReference) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): CodeableReference {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): CodeableReference {
     var id: String? = null
     var extension: List<Extension>? = null
     var concept: CodeableConcept? = null
     var reference: Reference? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
-          concept = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.conceptSer, null)
+          concept =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.conceptSer, null)
         3 ->
           reference =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding CodeableReference: " + __i)
+        else -> throw SerializationException("Unexpected index decoding CodeableReference: " + i)
       }
     }
     return CodeableReference(
@@ -92,14 +92,15 @@ internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: CodeableReference) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: CodeableReference) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    (value.concept)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.conceptSer, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    (value.concept)?.let {
+      encoder.encodeSerializableElement(descriptor, 2, Hoisted.conceptSer, it)
+    }
     (value.reference)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.referenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
     }
   }
 

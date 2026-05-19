@@ -73,36 +73,47 @@ internal object MedicinalProductPackagedBatchIdentifierSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProductPackaged.BatchIdentifier =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductPackaged.BatchIdentifier) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): MedicinalProductPackaged.BatchIdentifier {
-    val __desc = descriptor
+  private fun deserializeInternal(
+    decoder: CompositeDecoder
+  ): MedicinalProductPackaged.BatchIdentifier {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var outerPackaging: Identifier? = null
     var immediatePackaging: Identifier? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           outerPackaging =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.outerPackagingSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.outerPackagingSer,
+              null,
+            )
         4 ->
           immediatePackaging =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.outerPackagingSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.outerPackagingSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding BatchIdentifier: " + __i)
+        else -> throw SerializationException("Unexpected index decoding BatchIdentifier: " + i)
       }
     }
     return MedicinalProductPackaged.BatchIdentifier(
@@ -114,21 +125,25 @@ internal object MedicinalProductPackagedBatchIdentifierSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: MedicinalProductPackaged.BatchIdentifier,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.outerPackaging)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.outerPackagingSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.outerPackagingSer, it)
     }
     (value.immediatePackaging)?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.outerPackagingSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.outerPackagingSer, it)
     }
   }
 
@@ -210,14 +225,13 @@ internal object MedicinalProductPackagedPackageItemSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicinalProductPackaged.PackageItem =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductPackaged.PackageItem) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): MedicinalProductPackaged.PackageItem {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): MedicinalProductPackaged.PackageItem {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -234,59 +248,59 @@ internal object MedicinalProductPackagedPackageItemSerializer :
     var shelfLifeStorage: List<ProductShelfLife>? = null
     var manufacturer: List<Reference>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        4 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        4 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         5 ->
           quantity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.quantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.quantitySer, null)
         6 ->
           material =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.materialSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.materialSer, null)
         7 ->
           alternateMaterial =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.materialSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.materialSer, null)
         8 ->
-          device = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.deviceSer, null)
+          device = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.deviceSer, null)
         9 ->
           manufacturedItem =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.deviceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.deviceSer, null)
         10 ->
           packageItem =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.packageItemSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.packageItemSer, null)
         11 ->
           physicalCharacteristics =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.physicalCharacteristicsSer,
               null,
             )
         12 ->
           otherCharacteristics =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.materialSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.materialSer, null)
         13 ->
           shelfLifeStorage =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.shelfLifeStorageSer,
               null,
             )
         14 ->
           manufacturer =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.deviceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.deviceSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PackageItem: " + __i)
+        else -> throw SerializationException("Unexpected index decoding PackageItem: " + i)
       }
     }
     return MedicinalProductPackaged.PackageItem(
@@ -308,44 +322,55 @@ internal object MedicinalProductPackagedPackageItemSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: MedicinalProductPackaged.PackageItem,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.identifierSer, value.identifier)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.typeSer, it) }
-    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.quantitySer, it) }
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.identifierSer, value.identifier)
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
+    (value.quantity)?.let {
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.quantitySer, it)
+    }
     if (value.material.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.materialSer, value.material)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.materialSer, value.material)
     if (value.alternateMaterial.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.materialSer, value.alternateMaterial)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.materialSer, value.alternateMaterial)
     if (value.device.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.deviceSer, value.device)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.deviceSer, value.device)
     if (value.manufacturedItem.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.deviceSer, value.manufacturedItem)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.deviceSer, value.manufacturedItem)
     if (value.packageItem.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.packageItemSer, value.packageItem)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.packageItemSer, value.packageItem)
     (value.physicalCharacteristics)?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.physicalCharacteristicsSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.physicalCharacteristicsSer, it)
     }
     if (value.otherCharacteristics.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.materialSer, value.otherCharacteristics)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12,
+        Hoisted.materialSer,
+        value.otherCharacteristics,
+      )
     if (value.shelfLifeStorage.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         13,
         Hoisted.shelfLifeStorageSer,
         value.shelfLifeStorage,
       )
     if (value.manufacturer.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.deviceSer, value.manufacturer)
+      encoder.encodeSerializableElement(descriptor, 14, Hoisted.deviceSer, value.manufacturer)
   }
 
   private object Hoisted {
@@ -453,21 +478,20 @@ internal object MedicinalProductPackagedSerializer : KSerializer<MedicinalProduc
   }
 
   override fun deserialize(decoder: Decoder): MedicinalProductPackaged =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductPackaged) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "MedicinalProductPackaged")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): MedicinalProductPackaged {
-    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -489,64 +513,75 @@ internal object MedicinalProductPackagedSerializer : KSerializer<MedicinalProduc
     var batchIdentifier: List<MedicinalProductPackaged.BatchIdentifier>? = null
     var packageItem: List<MedicinalProductPackaged.PackageItem>? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
         11 ->
-          subject = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subjectSer, null)
-        12 -> description = decoder.decodeStringElement(__desc, __i)
+          subject =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
+        12 -> description = decoder.decodeStringElement(descriptor, i)
         13 ->
           _description =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         14 ->
           legalStatusOfSupply =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.legalStatusOfSupplySer,
               null,
             )
         15 ->
           marketingStatus =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.marketingStatusSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.marketingStatusSer,
+              null,
+            )
         16 ->
           marketingAuthorization =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subjectSerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSerInner, null)
         17 ->
           manufacturer =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subjectSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subjectSer, null)
         18 ->
           batchIdentifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.batchIdentifierSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.batchIdentifierSer,
+              null,
+            )
         19 ->
           packageItem =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.packageItemSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.packageItemSer, null)
         else ->
-          throw SerializationException("Unexpected index decoding MedicinalProductPackaged: " + __i)
+          throw SerializationException("Unexpected index decoding MedicinalProductPackaged: " + i)
       }
     }
     return MedicinalProductPackaged(
@@ -570,69 +605,128 @@ internal object MedicinalProductPackagedSerializer : KSerializer<MedicinalProduc
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: MedicinalProductPackaged,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
+      encoder.encodeSerializableElement(
+        descriptor,
+        10 + descriptorOffset,
+        Hoisted.identifierSer,
+        value.identifier,
+      )
     if (value.subject.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11 + __off, Hoisted.subjectSer, value.subject)
-    ((value.description?.value))?.let { encoder.encodeStringElement(__desc, 12 + __off, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        11 + descriptorOffset,
+        Hoisted.subjectSer,
+        value.subject,
+      )
+    ((value.description?.value))?.let {
+      encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
+    }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        13 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     (value.legalStatusOfSupply)?.let {
-      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.legalStatusOfSupplySer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        14 + descriptorOffset,
+        Hoisted.legalStatusOfSupplySer,
+        it,
+      )
     }
     if (value.marketingStatus.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        15 + __off,
+        descriptor,
+        15 + descriptorOffset,
         Hoisted.marketingStatusSer,
         value.marketingStatus,
       )
     (value.marketingAuthorization)?.let {
-      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.subjectSerInner, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        16 + descriptorOffset,
+        Hoisted.subjectSerInner,
+        it,
+      )
     }
     if (value.manufacturer.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.subjectSer, value.manufacturer)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17 + descriptorOffset,
+        Hoisted.subjectSer,
+        value.manufacturer,
+      )
     if (value.batchIdentifier.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        18 + __off,
+        descriptor,
+        18 + descriptorOffset,
         Hoisted.batchIdentifierSer,
         value.batchIdentifier,
       )
     if (value.packageItem.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        19 + __off,
+        descriptor,
+        19 + descriptorOffset,
         Hoisted.packageItemSer,
         value.packageItem,
       )
@@ -693,12 +787,12 @@ internal object MedicinalProductPackagedPolymorphicSerializer :
 
   override fun serialize(encoder: Encoder, `value`: MedicinalProductPackaged) {
     encoder.encodeStructure(descriptor) {
-      MedicinalProductPackagedSerializer.serializeJson(this, descriptor, 0, value)
+      MedicinalProductPackagedSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): MedicinalProductPackaged =
     decoder.decodeStructure(descriptor) {
-      MedicinalProductPackagedSerializer.deserializeJson(this, descriptor, 0)
+      MedicinalProductPackagedSerializer.deserializeInternal(this, descriptor, 0)
     }
 }

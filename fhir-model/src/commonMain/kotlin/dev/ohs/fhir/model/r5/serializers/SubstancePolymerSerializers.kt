@@ -78,41 +78,40 @@ internal object SubstancePolymerMonomerSetSerializer : KSerializer<SubstancePoly
     }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer.MonomerSet =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.MonomerSet) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubstancePolymer.MonomerSet {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): SubstancePolymer.MonomerSet {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var ratioType: CodeableConcept? = null
     var startingMaterial: List<SubstancePolymer.MonomerSet.StartingMaterial>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           ratioType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.ratioTypeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ratioTypeSer, null)
         4 ->
           startingMaterial =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.startingMaterialSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding MonomerSet: " + __i)
+        else -> throw SerializationException("Unexpected index decoding MonomerSet: " + i)
       }
     }
     return SubstancePolymer.MonomerSet(
@@ -124,19 +123,23 @@ internal object SubstancePolymerMonomerSetSerializer : KSerializer<SubstancePoly
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstancePolymer.MonomerSet) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: SubstancePolymer.MonomerSet) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.ratioType)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.ratioTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.ratioTypeSer, it)
     }
     if (value.startingMaterial.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         4,
         Hoisted.startingMaterialSer,
         value.startingMaterial,
@@ -183,16 +186,15 @@ internal object SubstancePolymerMonomerSetStartingMaterialSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer.MonomerSet.StartingMaterial =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.MonomerSet.StartingMaterial) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): SubstancePolymer.MonomerSet.StartingMaterial {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -202,25 +204,25 @@ internal object SubstancePolymerMonomerSetStartingMaterialSerializer :
     var _isDefining: Element? = null
     var amount: Quantity? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
         4 ->
-          category = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
-        5 -> isDefining = decoder.decodeBooleanElement(__desc, __i)
+          category = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+        5 -> isDefining = decoder.decodeBooleanElement(descriptor, i)
         6 ->
           _isDefining =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.isDefiningSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.isDefiningSer, null)
         7 ->
-          amount = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountSer, null)
+          amount = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.amountSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding StartingMaterial: " + __i)
+        else -> throw SerializationException("Unexpected index decoding StartingMaterial: " + i)
       }
     }
     return SubstancePolymer.MonomerSet.StartingMaterial(
@@ -234,23 +236,27 @@ internal object SubstancePolymerMonomerSetStartingMaterialSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubstancePolymer.MonomerSet.StartingMaterial,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.code)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.codeSer, it) }
-    (value.category)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.codeSer, it) }
-    ((value.isDefining?.value))?.let { encoder.encodeBooleanElement(__desc, 5, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    (value.category)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it) }
+    ((value.isDefining?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
     (value.isDefining?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.isDefiningSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.isDefiningSer, it)
     }
-    (value.amount)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.amountSer, it) }
+    (value.amount)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.amountSer, it) }
   }
 
   private object Hoisted {
@@ -294,14 +300,13 @@ internal object SubstancePolymerRepeatSerializer : KSerializer<SubstancePolymer.
     }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer.Repeat =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.Repeat) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubstancePolymer.Repeat {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): SubstancePolymer.Repeat {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -310,36 +315,36 @@ internal object SubstancePolymerRepeatSerializer : KSerializer<SubstancePolymer.
     var repeatUnitAmountType: CodeableConcept? = null
     var repeatUnit: List<SubstancePolymer.Repeat.RepeatUnit>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> averageMolecularFormula = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> averageMolecularFormula = decoder.decodeStringElement(descriptor, i)
         4 ->
           _averageMolecularFormula =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.averageMolecularFormulaSer,
               null,
             )
         5 ->
           repeatUnitAmountType =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.repeatUnitAmountTypeSer,
               null,
             )
         6 ->
           repeatUnit =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.repeatUnitSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.repeatUnitSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Repeat: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Repeat: " + i)
       }
     }
     return SubstancePolymer.Repeat(
@@ -352,22 +357,26 @@ internal object SubstancePolymerRepeatSerializer : KSerializer<SubstancePolymer.
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstancePolymer.Repeat) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: SubstancePolymer.Repeat) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.averageMolecularFormula?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.averageMolecularFormula?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.averageMolecularFormula?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.averageMolecularFormulaSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.averageMolecularFormulaSer, it)
     }
     (value.repeatUnitAmountType)?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.repeatUnitAmountTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.repeatUnitAmountTypeSer, it)
     }
     if (value.repeatUnit.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.repeatUnitSer, value.repeatUnit)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.repeatUnitSer, value.repeatUnit)
   }
 
   private object Hoisted {
@@ -429,14 +438,13 @@ internal object SubstancePolymerRepeatRepeatUnitSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer.Repeat.RepeatUnit =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer.Repeat.RepeatUnit) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubstancePolymer.Repeat.RepeatUnit {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): SubstancePolymer.Repeat.RepeatUnit {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -451,39 +459,40 @@ internal object SubstancePolymerRepeatRepeatUnitSerializer :
       List<SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation>? =
       null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> unit = decoder.decodeStringElement(__desc, __i)
-        4 -> _unit = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.unitSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> unit = decoder.decodeStringElement(descriptor, i)
+        4 -> _unit = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitSer, null)
         5 ->
           orientation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.orientationSer, null)
-        6 -> amount = decoder.decodeIntElement(__desc, __i)
-        7 -> _amount = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.unitSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.orientationSer, null)
+        6 -> amount = decoder.decodeIntElement(descriptor, i)
+        7 ->
+          _amount = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.unitSer, null)
         8 ->
           degreeOfPolymerisation =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.degreeOfPolymerisationSer,
               null,
             )
         9 ->
           structuralRepresentation =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.structuralRepresentationSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding RepeatUnit: " + __i)
+        else -> throw SerializationException("Unexpected index decoding RepeatUnit: " + i)
       }
     }
     return SubstancePolymer.Repeat.RepeatUnit(
@@ -498,37 +507,41 @@ internal object SubstancePolymerRepeatRepeatUnitSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubstancePolymer.Repeat.RepeatUnit,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.unit?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.unit?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.unit?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.unitSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.unitSer, it)
     }
     (value.orientation)?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.orientationSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.orientationSer, it)
     }
-    ((value.amount?.value))?.let { encoder.encodeIntElement(__desc, 6, it) }
+    ((value.amount?.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
     (value.amount?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.unitSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.unitSer, it)
     }
     if (value.degreeOfPolymerisation.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         8,
         Hoisted.degreeOfPolymerisationSer,
         value.degreeOfPolymerisation,
       )
     if (value.structuralRepresentation.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         9,
         Hoisted.structuralRepresentationSer,
         value.structuralRepresentation,
@@ -590,19 +603,18 @@ internal object SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer
   override fun deserialize(
     decoder: Decoder
   ): SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -614,27 +626,28 @@ internal object SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer
     var high: Int? = null
     var _high: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        4 -> average = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 -> average = decoder.decodeIntElement(descriptor, i)
         5 ->
           _average =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.averageSer, null)
-        6 -> low = decoder.decodeIntElement(__desc, __i)
-        7 -> _low = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.averageSer, null)
-        8 -> high = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.averageSer, null)
+        6 -> low = decoder.decodeIntElement(descriptor, i)
+        7 ->
+          _low = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.averageSer, null)
+        8 -> high = decoder.decodeIntElement(descriptor, i)
         9 ->
-          _high = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.averageSer, null)
+          _high = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.averageSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else ->
-          throw SerializationException("Unexpected index decoding DegreeOfPolymerisation: " + __i)
+          throw SerializationException("Unexpected index decoding DegreeOfPolymerisation: " + i)
       }
     }
     return SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation(
@@ -648,28 +661,32 @@ internal object SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationSerializer
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubstancePolymer.Repeat.RepeatUnit.DegreeOfPolymerisation,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
-    ((value.average?.value))?.let { encoder.encodeIntElement(__desc, 4, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    ((value.average?.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
     (value.average?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.averageSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.averageSer, it)
     }
-    ((value.low?.value))?.let { encoder.encodeIntElement(__desc, 6, it) }
+    ((value.low?.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
     (value.low?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.averageSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.averageSer, it)
     }
-    ((value.high?.value))?.let { encoder.encodeIntElement(__desc, 8, it) }
+    ((value.high?.value))?.let { encoder.encodeIntElement(descriptor, 8, it) }
     (value.high?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.averageSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.averageSer, it)
     }
   }
 
@@ -710,19 +727,18 @@ internal object SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializ
   override fun deserialize(
     decoder: Decoder
   ): SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -732,26 +748,32 @@ internal object SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializ
     var format: CodeableConcept? = null
     var attachment: Attachment? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        4 -> representation = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 -> representation = decoder.decodeStringElement(descriptor, i)
         5 ->
           _representation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.representationSer, null)
-        6 -> format = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.representationSer,
+              null,
+            )
+        6 ->
+          format = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         7 ->
           attachment =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.attachmentSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.attachmentSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else ->
-          throw SerializationException("Unexpected index decoding StructuralRepresentation: " + __i)
+          throw SerializationException("Unexpected index decoding StructuralRepresentation: " + i)
       }
     }
     return SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation(
@@ -765,24 +787,28 @@ internal object SubstancePolymerRepeatRepeatUnitStructuralRepresentationSerializ
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubstancePolymer.Repeat.RepeatUnit.StructuralRepresentation,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
-    ((value.representation?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    ((value.representation?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.representation?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.representationSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.representationSer, it)
     }
-    (value.format)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.typeSer, it) }
+    (value.format)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, it) }
     (value.attachment)?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.attachmentSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.attachmentSer, it)
     }
   }
 
@@ -853,21 +879,20 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
   }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "SubstancePolymer")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): SubstancePolymer {
-    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -887,55 +912,56 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
     var monomerSet: List<SubstancePolymer.MonomerSet>? = null
     var repeat: List<SubstancePolymer.Repeat>? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
         11 ->
-          `class` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classSer, null)
+          `class` = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classSer, null)
         12 ->
-          geometry = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classSer, null)
+          geometry =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.classSer, null)
         13 ->
           copolymerConnectivity =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.copolymerConnectivitySer,
               null,
             )
-        14 -> modification = decoder.decodeStringElement(__desc, __i)
+        14 -> modification = decoder.decodeStringElement(descriptor, i)
         15 ->
           _modification =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         16 ->
           monomerSet =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.monomerSetSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.monomerSetSer, null)
         17 ->
-          repeat = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.repeatSer, null)
-        else -> throw SerializationException("Unexpected index decoding SubstancePolymer: " + __i)
+          repeat = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.repeatSer, null)
+        else -> throw SerializationException("Unexpected index decoding SubstancePolymer: " + i)
       }
     }
     return SubstancePolymer(
@@ -957,59 +983,108 @@ internal object SubstancePolymerSerializer : KSerializer<SubstancePolymer> {
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: SubstancePolymer,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
     (value.identifier)?.let {
-      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        10 + descriptorOffset,
+        Hoisted.identifierSer,
+        it,
+      )
     }
     (value.`class`)?.let {
-      encoder.encodeSerializableElement(__desc, 11 + __off, Hoisted.classSer, it)
+      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, Hoisted.classSer, it)
     }
     (value.geometry)?.let {
-      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.classSer, it)
+      encoder.encodeSerializableElement(descriptor, 12 + descriptorOffset, Hoisted.classSer, it)
     }
     if (value.copolymerConnectivity.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        13 + __off,
+        descriptor,
+        13 + descriptorOffset,
         Hoisted.copolymerConnectivitySer,
         value.copolymerConnectivity,
       )
-    ((value.modification?.value))?.let { encoder.encodeStringElement(__desc, 14 + __off, it) }
+    ((value.modification?.value))?.let {
+      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
+    }
     (value.modification?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        15 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.monomerSet.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.monomerSetSer, value.monomerSet)
+      encoder.encodeSerializableElement(
+        descriptor,
+        16 + descriptorOffset,
+        Hoisted.monomerSetSer,
+        value.monomerSet,
+      )
     if (value.repeat.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.repeatSer, value.repeat)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17 + descriptorOffset,
+        Hoisted.repeatSer,
+        value.repeat,
+      )
   }
 
   private object Hoisted {
@@ -1057,12 +1132,12 @@ internal object SubstancePolymerPolymorphicSerializer : KSerializer<SubstancePol
 
   override fun serialize(encoder: Encoder, `value`: SubstancePolymer) {
     encoder.encodeStructure(descriptor) {
-      SubstancePolymerSerializer.serializeJson(this, descriptor, 0, value)
+      SubstancePolymerSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): SubstancePolymer =
     decoder.decodeStructure(descriptor) {
-      SubstancePolymerSerializer.deserializeJson(this, descriptor, 0)
+      SubstancePolymerSerializer.deserializeInternal(this, descriptor, 0)
     }
 }

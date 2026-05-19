@@ -87,14 +87,13 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     }
 
   override fun deserialize(decoder: Decoder): Attachment =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Attachment) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Attachment {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Attachment {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var contentType: KotlinString? = null
@@ -124,67 +123,67 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     var pages: Int? = null
     var _pages: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> contentType = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> contentType = decoder.decodeStringElement(descriptor, i)
         3 ->
           _contentType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        6 -> `data` = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        6 -> `data` = decoder.decodeStringElement(descriptor, i)
         7 ->
           _data =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        8 -> url = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        8 -> url = decoder.decodeStringElement(descriptor, i)
         9 ->
           _url =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        10 -> size = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        10 -> size = decoder.decodeStringElement(descriptor, i)
         11 ->
           _size =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        12 -> hash = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        12 -> hash = decoder.decodeStringElement(descriptor, i)
         13 ->
           _hash =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        14 -> title = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        14 -> title = decoder.decodeStringElement(descriptor, i)
         15 ->
           _title =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        16 -> creation = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        16 -> creation = decoder.decodeStringElement(descriptor, i)
         17 ->
           _creation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        18 -> height = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        18 -> height = decoder.decodeIntElement(descriptor, i)
         19 ->
           _height =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        20 -> width = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        20 -> width = decoder.decodeIntElement(descriptor, i)
         21 ->
           _width =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        22 -> frames = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        22 -> frames = decoder.decodeIntElement(descriptor, i)
         23 ->
           _frames =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
         24 ->
           duration =
-            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
         25 ->
           _duration =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
-        26 -> pages = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
+        26 -> pages = decoder.decodeIntElement(descriptor, i)
         27 ->
           _pages =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contentTypeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contentTypeSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Attachment: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Attachment: " + i)
       }
     }
     return Attachment(
@@ -206,64 +205,63 @@ internal object AttachmentSerializer : KSerializer<Attachment> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Attachment) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Attachment) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.contentType?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.contentType?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.contentType?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentTypeSer, it)
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.language?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.contentTypeSer, it)
     }
-    ((value.`data`?.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.`data`?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.contentTypeSer, it)
     }
-    ((value.url?.value))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.url?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.contentTypeSer, it)
     }
-    ((value.size?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 10, it) }
+    ((value.size?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.size?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.contentTypeSer, it)
     }
-    ((value.hash?.value))?.let { encoder.encodeStringElement(__desc, 12, it) }
+    ((value.hash?.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.hash?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 13, Hoisted.contentTypeSer, it)
     }
-    ((value.title?.value))?.let { encoder.encodeStringElement(__desc, 14, it) }
+    ((value.title?.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
     (value.title?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 15, Hoisted.contentTypeSer, it)
     }
-    ((value.creation?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 16, it) }
+    ((value.creation?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 16, it) }
     (value.creation?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 17, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 17, Hoisted.contentTypeSer, it)
     }
-    ((value.height?.value))?.let { encoder.encodeIntElement(__desc, 18, it) }
+    ((value.height?.value))?.let { encoder.encodeIntElement(descriptor, 18, it) }
     (value.height?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 19, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 19, Hoisted.contentTypeSer, it)
     }
-    ((value.width?.value))?.let { encoder.encodeIntElement(__desc, 20, it) }
+    ((value.width?.value))?.let { encoder.encodeIntElement(descriptor, 20, it) }
     (value.width?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 21, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 21, Hoisted.contentTypeSer, it)
     }
-    ((value.frames?.value))?.let { encoder.encodeIntElement(__desc, 22, it) }
+    ((value.frames?.value))?.let { encoder.encodeIntElement(descriptor, 22, it) }
     (value.frames?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 23, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 23, Hoisted.contentTypeSer, it)
     }
     ((value.duration?.value))?.let {
-      encoder.encodeSerializableElement(__desc, 24, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 24, BigDecimalSerializer, it)
     }
     (value.duration?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 25, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 25, Hoisted.contentTypeSer, it)
     }
-    ((value.pages?.value))?.let { encoder.encodeIntElement(__desc, 26, it) }
+    ((value.pages?.value))?.let { encoder.encodeIntElement(descriptor, 26, it) }
     (value.pages?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 27, Hoisted.contentTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 27, Hoisted.contentTypeSer, it)
     }
   }
 

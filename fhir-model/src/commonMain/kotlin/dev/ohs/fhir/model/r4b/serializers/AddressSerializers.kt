@@ -77,14 +77,13 @@ internal object AddressSerializer : KSerializer<Address> {
     }
 
   override fun deserialize(decoder: Decoder): Address =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Address) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Address {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Address {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var use: KotlinString? = null
@@ -107,36 +106,39 @@ internal object AddressSerializer : KSerializer<Address> {
     var _country: Element? = null
     var period: Period? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> use = decoder.decodeStringElement(__desc, __i)
-        3 -> _use = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        4 -> type = decoder.decodeStringElement(__desc, __i)
-        5 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        6 -> text = decoder.decodeStringElement(__desc, __i)
-        7 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        8 -> line = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lineSer, null)
-        9 -> _line = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lineSer2, null)
-        10 -> city = decoder.decodeStringElement(__desc, __i)
-        11 -> _city = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        12 -> district = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> use = decoder.decodeStringElement(descriptor, i)
+        3 -> _use = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        4 -> type = decoder.decodeStringElement(descriptor, i)
+        5 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        6 -> text = decoder.decodeStringElement(descriptor, i)
+        7 -> _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        8 -> line = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lineSer, null)
+        9 ->
+          _line = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lineSer2, null)
+        10 -> city = decoder.decodeStringElement(descriptor, i)
+        11 -> _city = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        12 -> district = decoder.decodeStringElement(descriptor, i)
         13 ->
-          _district = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        14 -> state = decoder.decodeStringElement(__desc, __i)
-        15 -> _state = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        16 -> postalCode = decoder.decodeStringElement(__desc, __i)
+          _district = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        14 -> state = decoder.decodeStringElement(descriptor, i)
+        15 ->
+          _state = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        16 -> postalCode = decoder.decodeStringElement(descriptor, i)
         17 ->
-          _postalCode = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        18 -> country = decoder.decodeStringElement(__desc, __i)
+          _postalCode =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        18 -> country = decoder.decodeStringElement(descriptor, i)
         19 ->
-          _country = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+          _country = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
         20 ->
-          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Address: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Address: " + i)
       }
     }
     return Address(
@@ -158,50 +160,49 @@ internal object AddressSerializer : KSerializer<Address> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Address) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Address) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.use?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.useSer, it)
     }
-    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.type?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.type?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.useSer, it)
     }
-    ((value.text?.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.text?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.text?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.useSer, it)
     }
     (value.line.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.lineSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.lineSer, it)
     }
     (value.line.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.lineSer2, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.lineSer2, it)
     }
-    ((value.city?.value))?.let { encoder.encodeStringElement(__desc, 10, it) }
+    ((value.city?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.city?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.useSer, it)
     }
-    ((value.district?.value))?.let { encoder.encodeStringElement(__desc, 12, it) }
+    ((value.district?.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
     (value.district?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 13, Hoisted.useSer, it)
     }
-    ((value.state?.value))?.let { encoder.encodeStringElement(__desc, 14, it) }
+    ((value.state?.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
     (value.state?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 15, Hoisted.useSer, it)
     }
-    ((value.postalCode?.value))?.let { encoder.encodeStringElement(__desc, 16, it) }
+    ((value.postalCode?.value))?.let { encoder.encodeStringElement(descriptor, 16, it) }
     (value.postalCode?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 17, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 17, Hoisted.useSer, it)
     }
-    ((value.country?.value))?.let { encoder.encodeStringElement(__desc, 18, it) }
+    ((value.country?.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
     (value.country?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 19, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 19, Hoisted.useSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 20, Hoisted.periodSer, it) }
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 20, Hoisted.periodSer, it) }
   }
 
   private object Hoisted {

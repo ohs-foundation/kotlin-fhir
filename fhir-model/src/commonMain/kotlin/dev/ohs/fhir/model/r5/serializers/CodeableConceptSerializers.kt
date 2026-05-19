@@ -59,31 +59,30 @@ internal object CodeableConceptSerializer : KSerializer<CodeableConcept> {
     }
 
   override fun deserialize(decoder: Decoder): CodeableConcept =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: CodeableConcept) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): CodeableConcept {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): CodeableConcept {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var coding: List<Coding>? = null
     var text: KotlinString? = null
     var _text: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
-          coding = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codingSer, null)
-        3 -> text = decoder.decodeStringElement(__desc, __i)
-        4 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+          coding = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codingSer, null)
+        3 -> text = decoder.decodeStringElement(descriptor, i)
+        4 -> _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding CodeableConcept: " + __i)
+        else -> throw SerializationException("Unexpected index decoding CodeableConcept: " + i)
       }
     }
     return CodeableConcept(
@@ -94,16 +93,15 @@ internal object CodeableConceptSerializer : KSerializer<CodeableConcept> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: CodeableConcept) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: CodeableConcept) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.coding.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.codingSer, value.coding)
-    ((value.text?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(descriptor, 2, Hoisted.codingSer, value.coding)
+    ((value.text?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.text?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.textSer, it)
     }
   }
 

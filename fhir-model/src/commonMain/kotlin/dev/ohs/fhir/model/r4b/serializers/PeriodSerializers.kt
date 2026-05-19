@@ -56,14 +56,13 @@ internal object PeriodSerializer : KSerializer<Period> {
     }
 
   override fun deserialize(decoder: Decoder): Period =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Period) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Period {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Period {
     var id: String? = null
     var extension: List<Extension>? = null
     var start: String? = null
@@ -71,17 +70,18 @@ internal object PeriodSerializer : KSerializer<Period> {
     var end: String? = null
     var _end: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> start = decoder.decodeStringElement(__desc, __i)
-        3 -> _start = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
-        4 -> end = decoder.decodeStringElement(__desc, __i)
-        5 -> _end = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.startSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> start = decoder.decodeStringElement(descriptor, i)
+        3 ->
+          _start = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.startSer, null)
+        4 -> end = decoder.decodeStringElement(descriptor, i)
+        5 -> _end = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.startSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Period: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Period: " + i)
       }
     }
     return Period(
@@ -92,18 +92,17 @@ internal object PeriodSerializer : KSerializer<Period> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Period) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Period) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.start?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.start?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.start?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.startSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.startSer, it)
     }
-    ((value.end?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.end?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.end?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.startSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.startSer, it)
     }
   }
 

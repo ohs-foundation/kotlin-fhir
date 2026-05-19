@@ -81,14 +81,13 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
     }
 
   override fun deserialize(decoder: Decoder): SampledData =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SampledData) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SampledData {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): SampledData {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var origin: Quantity? = null
@@ -111,58 +110,59 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
     var `data`: KotlinString? = null
     var _data: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
-          origin = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.originSer, null)
+          origin = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.originSer, null)
         3 ->
           interval =
-            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
         4 ->
           _interval =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
-        5 -> intervalUnit = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
+        5 -> intervalUnit = decoder.decodeStringElement(descriptor, i)
         6 ->
           _intervalUnit =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
         7 ->
           factor =
-            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
         8 ->
           _factor =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
         9 ->
           lowerLimit =
-            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
         10 ->
           _lowerLimit =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
         11 ->
           upperLimit =
-            decoder.decodeNullableSerializableElement(__desc, __i, BigDecimalSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, BigDecimalSerializer, null)
         12 ->
           _upperLimit =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
-        13 -> dimensions = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
+        13 -> dimensions = decoder.decodeIntElement(descriptor, i)
         14 ->
           _dimensions =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
-        15 -> codeMap = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
+        15 -> codeMap = decoder.decodeStringElement(descriptor, i)
         16 ->
           _codeMap =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
-        17 -> offsets = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
+        17 -> offsets = decoder.decodeStringElement(descriptor, i)
         18 ->
           _offsets =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
-        19 -> `data` = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
+        19 -> `data` = decoder.decodeStringElement(descriptor, i)
         20 ->
-          _data = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.intervalSer, null)
+          _data =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.intervalSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SampledData: " + __i)
+        else -> throw SerializationException("Unexpected index decoding SampledData: " + i)
       }
     }
     return SampledData(
@@ -181,55 +181,54 @@ internal object SampledDataSerializer : KSerializer<SampledData> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SampledData) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: SampledData) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    (value.origin)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.originSer, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    (value.origin)?.let { encoder.encodeSerializableElement(descriptor, 2, Hoisted.originSer, it) }
     ((value.interval?.value))?.let {
-      encoder.encodeSerializableElement(__desc, 3, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 3, BigDecimalSerializer, it)
     }
     (value.interval?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.intervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.intervalSer, it)
     }
-    ((value.intervalUnit.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.intervalUnit.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.intervalUnit.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.intervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.intervalSer, it)
     }
     ((value.factor?.value))?.let {
-      encoder.encodeSerializableElement(__desc, 7, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 7, BigDecimalSerializer, it)
     }
     (value.factor?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.intervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.intervalSer, it)
     }
     ((value.lowerLimit?.value))?.let {
-      encoder.encodeSerializableElement(__desc, 9, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 9, BigDecimalSerializer, it)
     }
     (value.lowerLimit?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.intervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.intervalSer, it)
     }
     ((value.upperLimit?.value))?.let {
-      encoder.encodeSerializableElement(__desc, 11, BigDecimalSerializer, it)
+      encoder.encodeSerializableElement(descriptor, 11, BigDecimalSerializer, it)
     }
     (value.upperLimit?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.intervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.intervalSer, it)
     }
-    ((value.dimensions.value))?.let { encoder.encodeIntElement(__desc, 13, it) }
+    ((value.dimensions.value))?.let { encoder.encodeIntElement(descriptor, 13, it) }
     (value.dimensions.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.intervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, Hoisted.intervalSer, it)
     }
-    ((value.codeMap?.value))?.let { encoder.encodeStringElement(__desc, 15, it) }
+    ((value.codeMap?.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
     (value.codeMap?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 16, Hoisted.intervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 16, Hoisted.intervalSer, it)
     }
-    ((value.offsets?.value))?.let { encoder.encodeStringElement(__desc, 17, it) }
+    ((value.offsets?.value))?.let { encoder.encodeStringElement(descriptor, 17, it) }
     (value.offsets?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 18, Hoisted.intervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 18, Hoisted.intervalSer, it)
     }
-    ((value.`data`?.value))?.let { encoder.encodeStringElement(__desc, 19, it) }
+    ((value.`data`?.value))?.let { encoder.encodeStringElement(descriptor, 19, it) }
     (value.`data`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 20, Hoisted.intervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 20, Hoisted.intervalSer, it)
     }
   }
 

@@ -90,14 +90,13 @@ internal object ObservationTriggeredBySerializer : KSerializer<Observation.Trigg
     }
 
   override fun deserialize(decoder: Decoder): Observation.TriggeredBy =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Observation.TriggeredBy) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Observation.TriggeredBy {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Observation.TriggeredBy {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -107,23 +106,24 @@ internal object ObservationTriggeredBySerializer : KSerializer<Observation.Trigg
     var reason: KotlinString? = null
     var _reason: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           observation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.observationSer, null)
-        4 -> type = decoder.decodeStringElement(__desc, __i)
-        5 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        6 -> reason = decoder.decodeStringElement(__desc, __i)
-        7 -> _reason = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.observationSer, null)
+        4 -> type = decoder.decodeStringElement(descriptor, i)
+        5 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        6 -> reason = decoder.decodeStringElement(descriptor, i)
+        7 ->
+          _reason = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding TriggeredBy: " + __i)
+        else -> throw SerializationException("Unexpected index decoding TriggeredBy: " + i)
       }
     }
     return Observation.TriggeredBy(
@@ -136,23 +136,27 @@ internal object ObservationTriggeredBySerializer : KSerializer<Observation.Trigg
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Observation.TriggeredBy) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Observation.TriggeredBy) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.observation)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.observationSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.observationSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it)
     }
-    ((value.reason?.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.reason?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.reason?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.typeSer, it)
     }
   }
 
@@ -197,14 +201,13 @@ internal object ObservationReferenceRangeSerializer : KSerializer<Observation.Re
     }
 
   override fun deserialize(decoder: Decoder): Observation.ReferenceRange =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Observation.ReferenceRange) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Observation.ReferenceRange {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Observation.ReferenceRange {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -217,30 +220,31 @@ internal object ObservationReferenceRangeSerializer : KSerializer<Observation.Re
     var text: KotlinString? = null
     var _text: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> low = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowSer, null)
-        4 -> high = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> low = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lowSer, null)
+        4 -> high = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lowSer, null)
         5 ->
           normalValue =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.normalValueSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.normalValueSer, null)
         6 ->
           type =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.normalValueSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.normalValueSer, null)
         7 ->
           appliesTo =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.appliesToSer, null)
-        8 -> age = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.ageSer, null)
-        9 -> text = decoder.decodeStringElement(__desc, __i)
-        10 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.appliesToSer, null)
+        8 -> age = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.ageSer, null)
+        9 -> text = decoder.decodeStringElement(descriptor, i)
+        10 ->
+          _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ReferenceRange: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ReferenceRange: " + i)
       }
     }
     return Observation.ReferenceRange(
@@ -257,25 +261,31 @@ internal object ObservationReferenceRangeSerializer : KSerializer<Observation.Re
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Observation.ReferenceRange) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Observation.ReferenceRange) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.low)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.lowSer, it) }
-    (value.high)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.lowSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.low)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.lowSer, it) }
+    (value.high)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.lowSer, it) }
     (value.normalValue)?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.normalValueSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.normalValueSer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.normalValueSer, it) }
+    (value.type)?.let {
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.normalValueSer, it)
+    }
     if (value.appliesTo.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.appliesToSer, value.appliesTo)
-    (value.age)?.let { encoder.encodeSerializableElement(__desc, 8, Hoisted.ageSer, it) }
-    ((value.text?.value))?.let { encoder.encodeStringElement(__desc, 9, it) }
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.appliesToSer, value.appliesTo)
+    (value.age)?.let { encoder.encodeSerializableElement(descriptor, 8, Hoisted.ageSer, it) }
+    ((value.text?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.text?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.textSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.textSer, it)
     }
   }
 
@@ -345,14 +355,13 @@ internal object ObservationComponentSerializer : KSerializer<Observation.Compone
     }
 
   override fun deserialize(decoder: Decoder): Observation.Component =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Observation.Component) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Observation.Component {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Observation.Component {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -379,77 +388,97 @@ internal object ObservationComponentSerializer : KSerializer<Observation.Compone
     var interpretation: List<CodeableConcept>? = null
     var referenceRange: List<Observation.ReferenceRange>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
         4 ->
           valueQuantity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueQuantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
         5 ->
           valueCodeableConcept =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
-        6 -> valueString = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+        6 -> valueString = decoder.decodeStringElement(descriptor, i)
         7 ->
           _valueString =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueStringSer, null)
-        8 -> valueBoolean = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueStringSer, null)
+        8 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
         9 ->
           _valueBoolean =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueStringSer, null)
-        10 -> valueInteger = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueStringSer, null)
+        10 -> valueInteger = decoder.decodeIntElement(descriptor, i)
         11 ->
           _valueInteger =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueStringSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueStringSer, null)
         12 ->
           valueRange =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRangeSer, null)
         13 ->
           valueRatio =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueRatioSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRatioSer, null)
         14 ->
           valueSampledData =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.valueSampledDataSer,
               null,
             )
         15 ->
           valueTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, LocalTimeSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
         16 ->
           _valueTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueStringSer, null)
-        17 -> valueDateTime = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueStringSer, null)
+        17 -> valueDateTime = decoder.decodeStringElement(descriptor, i)
         18 ->
           _valueDateTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueStringSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueStringSer, null)
         19 ->
           valuePeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valuePeriodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valuePeriodSer, null)
         20 ->
           valueAttachment =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueAttachmentSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.valueAttachmentSer,
+              null,
+            )
         21 ->
           valueReference =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueReferenceSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.valueReferenceSer,
+              null,
+            )
         22 ->
           dataAbsentReason =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
         23 ->
           interpretation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.interpretationSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.interpretationSer,
+              null,
+            )
         24 ->
           referenceRange =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceRangeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.referenceRangeSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Component: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Component: " + i)
       }
     }
     return Observation.Component(
@@ -479,80 +508,94 @@ internal object ObservationComponentSerializer : KSerializer<Observation.Compone
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Observation.Component) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Observation.Component) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.code)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.codeSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
     when (val __d = value.`value`) {
       null -> {}
       is Observation.Component.Value.Quantity -> {
-        encoder.encodeSerializableElement(__desc, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
       }
       is Observation.Component.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(__desc, 5, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, __d.value)
       }
       is Observation.Component.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 7, Hoisted.valueStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(__desc, 8, it) }
+        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 9, Hoisted.valueStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(__desc, 10, it) }
+        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 11, Hoisted.valueStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.Range -> {
-        encoder.encodeSerializableElement(__desc, 12, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, __d.value)
       }
       is Observation.Component.Value.Ratio -> {
-        encoder.encodeSerializableElement(__desc, 13, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueRatioSer, __d.value)
       }
       is Observation.Component.Value.SampledData -> {
-        encoder.encodeSerializableElement(__desc, 14, Hoisted.valueSampledDataSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueSampledDataSer, __d.value)
       }
       is Observation.Component.Value.Time -> {
         ((__d.value.value))?.let {
-          encoder.encodeSerializableElement(__desc, 15, LocalTimeSerializer, it)
+          encoder.encodeSerializableElement(descriptor, 15, LocalTimeSerializer, it)
         }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 16, Hoisted.valueStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 17, it) }
+        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 18, Hoisted.valueStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 18, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.Period -> {
-        encoder.encodeSerializableElement(__desc, 19, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 19, Hoisted.valuePeriodSer, __d.value)
       }
       is Observation.Component.Value.Attachment -> {
-        encoder.encodeSerializableElement(__desc, 20, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 20, Hoisted.valueAttachmentSer, __d.value)
       }
       is Observation.Component.Value.Reference -> {
-        encoder.encodeSerializableElement(__desc, 21, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 21, Hoisted.valueReferenceSer, __d.value)
       }
     }
     (value.dataAbsentReason)?.let {
-      encoder.encodeSerializableElement(__desc, 22, Hoisted.codeSer, it)
+      encoder.encodeSerializableElement(descriptor, 22, Hoisted.codeSer, it)
     }
     if (value.interpretation.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 23, Hoisted.interpretationSer, value.interpretation)
+      encoder.encodeSerializableElement(
+        descriptor,
+        23,
+        Hoisted.interpretationSer,
+        value.interpretation,
+      )
     if (value.referenceRange.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 24, Hoisted.referenceRangeSer, value.referenceRange)
+      encoder.encodeSerializableElement(
+        descriptor,
+        24,
+        Hoisted.referenceRangeSer,
+        value.referenceRange,
+      )
   }
 
   private object Hoisted {
@@ -712,21 +755,20 @@ internal object ObservationSerializer : KSerializer<Observation> {
   }
 
   override fun deserialize(decoder: Decoder): Observation =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: Observation) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "Observation")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): Observation {
-    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -791,207 +833,234 @@ internal object ObservationSerializer : KSerializer<Observation> {
     var derivedFrom: List<Reference>? = null
     var component: List<Observation.Component>? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        11 -> instantiatesCanonical = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        11 -> instantiatesCanonical = decoder.decodeStringElement(descriptor, i)
         12 ->
           _instantiatesCanonical =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         13 ->
           instantiatesReference =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesReferenceSer,
               null,
             )
         14 ->
-          basedOn = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.basedOnSer, null)
+          basedOn =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.basedOnSer, null)
         15 ->
           triggeredBy =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.triggeredBySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.triggeredBySer, null)
         16 ->
-          partOf = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.basedOnSer, null)
-        17 -> status = decoder.decodeStringElement(__desc, __i)
+          partOf =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.basedOnSer, null)
+        17 -> status = decoder.decodeStringElement(descriptor, i)
         18 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         19 ->
           category =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
         20 ->
           code =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySerInner, null)
         21 ->
           subject =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesReferenceSer,
               null,
             )
         22 ->
-          focus = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.basedOnSer, null)
+          focus = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.basedOnSer, null)
         23 ->
           encounter =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesReferenceSer,
               null,
             )
-        24 -> effectiveDateTime = decoder.decodeStringElement(__desc, __i)
+        24 -> effectiveDateTime = decoder.decodeStringElement(descriptor, i)
         25 ->
           _effectiveDateTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         26 ->
           effectivePeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.effectivePeriodSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.effectivePeriodSer,
+              null,
+            )
         27 ->
           effectiveTiming =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.effectiveTimingSer, null)
-        28 -> effectiveInstant = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.effectiveTimingSer,
+              null,
+            )
+        28 -> effectiveInstant = decoder.decodeStringElement(descriptor, i)
         29 ->
           _effectiveInstant =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        30 -> issued = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        30 -> issued = decoder.decodeStringElement(descriptor, i)
         31 ->
           _issued =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         32 ->
           performer =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.basedOnSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.basedOnSer, null)
         33 ->
           valueQuantity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueQuantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
         34 ->
           valueCodeableConcept =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySerInner, null)
-        35 -> valueString = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySerInner, null)
+        35 -> valueString = decoder.decodeStringElement(descriptor, i)
         36 ->
           _valueString =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        37 -> valueBoolean = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        37 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
         38 ->
           _valueBoolean =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        39 -> valueInteger = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        39 -> valueInteger = decoder.decodeIntElement(descriptor, i)
         40 ->
           _valueInteger =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         41 ->
           valueRange =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRangeSer, null)
         42 ->
           valueRatio =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueRatioSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRatioSer, null)
         43 ->
           valueSampledData =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.valueSampledDataSer,
               null,
             )
         44 ->
           valueTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, LocalTimeSerializer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, LocalTimeSerializer, null)
         45 ->
           _valueTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        46 -> valueDateTime = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        46 -> valueDateTime = decoder.decodeStringElement(descriptor, i)
         47 ->
           _valueDateTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         48 ->
           valuePeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.effectivePeriodSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.effectivePeriodSer,
+              null,
+            )
         49 ->
           valueAttachment =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueAttachmentSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.valueAttachmentSer,
+              null,
+            )
         50 ->
           valueReference =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesReferenceSer,
               null,
             )
         51 ->
           dataAbsentReason =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySerInner, null)
         52 ->
           interpretation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySer, null)
-        53 -> note = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.noteSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
+        53 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
         54 ->
           bodySite =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySerInner, null)
         55 ->
           bodyStructure =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesReferenceSer,
               null,
             )
         56 ->
           method =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySerInner, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySerInner, null)
         57 ->
           specimen =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesReferenceSer,
               null,
             )
         58 ->
           device =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesReferenceSer,
               null,
             )
         59 ->
           referenceRange =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceRangeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.referenceRangeSer,
+              null,
+            )
         60 ->
           hasMember =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.basedOnSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.basedOnSer, null)
         61 ->
           derivedFrom =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.basedOnSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.basedOnSer, null)
         62 ->
           component =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.componentSer, null)
-        else -> throw SerializationException("Unexpected index decoding Observation: " + __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.componentSer, null)
+        else -> throw SerializationException("Unexpected index decoding Observation: " + i)
       }
     }
     return Observation(
@@ -1058,218 +1127,451 @@ internal object ObservationSerializer : KSerializer<Observation> {
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: Observation,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
+      encoder.encodeSerializableElement(
+        descriptor,
+        10 + descriptorOffset,
+        Hoisted.identifierSer,
+        value.identifier,
+      )
     when (val __d = value.instantiates) {
       null -> {}
       is Observation.Instantiates.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 11 + __off, it) }
+        ((__d.value.value))?.let {
+          encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
+        }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            12 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
       is Observation.Instantiates.Reference -> {
         encoder.encodeSerializableElement(
-          __desc,
-          13 + __off,
+          descriptor,
+          13 + descriptorOffset,
           Hoisted.instantiatesReferenceSer,
           __d.value,
         )
       }
     }
     if (value.basedOn.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 14 + __off, Hoisted.basedOnSer, value.basedOn)
+      encoder.encodeSerializableElement(
+        descriptor,
+        14 + descriptorOffset,
+        Hoisted.basedOnSer,
+        value.basedOn,
+      )
     if (value.triggeredBy.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        15 + __off,
+        descriptor,
+        15 + descriptorOffset,
         Hoisted.triggeredBySer,
         value.triggeredBy,
       )
     if (value.partOf.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.basedOnSer, value.partOf)
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 17 + __off, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        16 + descriptorOffset,
+        Hoisted.basedOnSer,
+        value.partOf,
+      )
+    ((value.status.value?.getCode()))?.let {
+      encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
+    }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        18 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.category.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 19 + __off, Hoisted.categorySer, value.category)
+      encoder.encodeSerializableElement(
+        descriptor,
+        19 + descriptorOffset,
+        Hoisted.categorySer,
+        value.category,
+      )
     (value.code)?.let {
-      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.categorySerInner, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        20 + descriptorOffset,
+        Hoisted.categorySerInner,
+        it,
+      )
     }
     (value.subject)?.let {
-      encoder.encodeSerializableElement(__desc, 21 + __off, Hoisted.instantiatesReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        21 + descriptorOffset,
+        Hoisted.instantiatesReferenceSer,
+        it,
+      )
     }
     if (value.focus.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.basedOnSer, value.focus)
+      encoder.encodeSerializableElement(
+        descriptor,
+        22 + descriptorOffset,
+        Hoisted.basedOnSer,
+        value.focus,
+      )
     (value.encounter)?.let {
-      encoder.encodeSerializableElement(__desc, 23 + __off, Hoisted.instantiatesReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        23 + descriptorOffset,
+        Hoisted.instantiatesReferenceSer,
+        it,
+      )
     }
     when (val __d = value.effective) {
       null -> {}
       is Observation.Effective.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 24 + __off, it) }
+        ((__d.value.value?.toString()))?.let {
+          encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
+        }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 25 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            25 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
       is Observation.Effective.Period -> {
-        encoder.encodeSerializableElement(__desc, 26 + __off, Hoisted.effectivePeriodSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          26 + descriptorOffset,
+          Hoisted.effectivePeriodSer,
+          __d.value,
+        )
       }
       is Observation.Effective.Timing -> {
-        encoder.encodeSerializableElement(__desc, 27 + __off, Hoisted.effectiveTimingSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          27 + descriptorOffset,
+          Hoisted.effectiveTimingSer,
+          __d.value,
+        )
       }
       is Observation.Effective.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 28 + __off, it) }
+        ((__d.value.value?.toString()))?.let {
+          encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
+        }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 29 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            29 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
     }
-    ((value.issued?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 30 + __off, it) }
+    ((value.issued?.value?.toString()))?.let {
+      encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
+    }
     (value.issued?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 31 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        31 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.performer.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 32 + __off, Hoisted.basedOnSer, value.performer)
+      encoder.encodeSerializableElement(
+        descriptor,
+        32 + descriptorOffset,
+        Hoisted.basedOnSer,
+        value.performer,
+      )
     when (val __d = value.`value`) {
       null -> {}
       is Observation.Value.Quantity -> {
-        encoder.encodeSerializableElement(__desc, 33 + __off, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          33 + descriptorOffset,
+          Hoisted.valueQuantitySer,
+          __d.value,
+        )
       }
       is Observation.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(__desc, 34 + __off, Hoisted.categorySerInner, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          34 + descriptorOffset,
+          Hoisted.categorySerInner,
+          __d.value,
+        )
       }
       is Observation.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 35 + __off, it) }
+        ((__d.value.value))?.let {
+          encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
+        }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 36 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            36 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
       is Observation.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(__desc, 37 + __off, it) }
+        ((__d.value.value))?.let {
+          encoder.encodeBooleanElement(descriptor, 37 + descriptorOffset, it)
+        }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 38 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            38 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
       is Observation.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(__desc, 39 + __off, it) }
+        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 39 + descriptorOffset, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 40 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            40 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
       is Observation.Value.Range -> {
-        encoder.encodeSerializableElement(__desc, 41 + __off, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          41 + descriptorOffset,
+          Hoisted.valueRangeSer,
+          __d.value,
+        )
       }
       is Observation.Value.Ratio -> {
-        encoder.encodeSerializableElement(__desc, 42 + __off, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          42 + descriptorOffset,
+          Hoisted.valueRatioSer,
+          __d.value,
+        )
       }
       is Observation.Value.SampledData -> {
         encoder.encodeSerializableElement(
-          __desc,
-          43 + __off,
+          descriptor,
+          43 + descriptorOffset,
           Hoisted.valueSampledDataSer,
           __d.value,
         )
       }
       is Observation.Value.Time -> {
         ((__d.value.value))?.let {
-          encoder.encodeSerializableElement(__desc, 44 + __off, LocalTimeSerializer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            44 + descriptorOffset,
+            LocalTimeSerializer,
+            it,
+          )
         }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 45 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            45 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
       is Observation.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 46 + __off, it) }
+        ((__d.value.value?.toString()))?.let {
+          encoder.encodeStringElement(descriptor, 46 + descriptorOffset, it)
+        }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 47 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            47 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
       is Observation.Value.Period -> {
-        encoder.encodeSerializableElement(__desc, 48 + __off, Hoisted.effectivePeriodSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          48 + descriptorOffset,
+          Hoisted.effectivePeriodSer,
+          __d.value,
+        )
       }
       is Observation.Value.Attachment -> {
-        encoder.encodeSerializableElement(__desc, 49 + __off, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          49 + descriptorOffset,
+          Hoisted.valueAttachmentSer,
+          __d.value,
+        )
       }
       is Observation.Value.Reference -> {
         encoder.encodeSerializableElement(
-          __desc,
-          50 + __off,
+          descriptor,
+          50 + descriptorOffset,
           Hoisted.instantiatesReferenceSer,
           __d.value,
         )
       }
     }
     (value.dataAbsentReason)?.let {
-      encoder.encodeSerializableElement(__desc, 51 + __off, Hoisted.categorySerInner, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        51 + descriptorOffset,
+        Hoisted.categorySerInner,
+        it,
+      )
     }
     if (value.interpretation.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        52 + __off,
+        descriptor,
+        52 + descriptorOffset,
         Hoisted.categorySer,
         value.interpretation,
       )
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 53 + __off, Hoisted.noteSer, value.note)
+      encoder.encodeSerializableElement(
+        descriptor,
+        53 + descriptorOffset,
+        Hoisted.noteSer,
+        value.note,
+      )
     (value.bodySite)?.let {
-      encoder.encodeSerializableElement(__desc, 54 + __off, Hoisted.categorySerInner, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        54 + descriptorOffset,
+        Hoisted.categorySerInner,
+        it,
+      )
     }
     (value.bodyStructure)?.let {
-      encoder.encodeSerializableElement(__desc, 55 + __off, Hoisted.instantiatesReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        55 + descriptorOffset,
+        Hoisted.instantiatesReferenceSer,
+        it,
+      )
     }
     (value.method)?.let {
-      encoder.encodeSerializableElement(__desc, 56 + __off, Hoisted.categorySerInner, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        56 + descriptorOffset,
+        Hoisted.categorySerInner,
+        it,
+      )
     }
     (value.specimen)?.let {
-      encoder.encodeSerializableElement(__desc, 57 + __off, Hoisted.instantiatesReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        57 + descriptorOffset,
+        Hoisted.instantiatesReferenceSer,
+        it,
+      )
     }
     (value.device)?.let {
-      encoder.encodeSerializableElement(__desc, 58 + __off, Hoisted.instantiatesReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        58 + descriptorOffset,
+        Hoisted.instantiatesReferenceSer,
+        it,
+      )
     }
     if (value.referenceRange.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        59 + __off,
+        descriptor,
+        59 + descriptorOffset,
         Hoisted.referenceRangeSer,
         value.referenceRange,
       )
     if (value.hasMember.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 60 + __off, Hoisted.basedOnSer, value.hasMember)
+      encoder.encodeSerializableElement(
+        descriptor,
+        60 + descriptorOffset,
+        Hoisted.basedOnSer,
+        value.hasMember,
+      )
     if (value.derivedFrom.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 61 + __off, Hoisted.basedOnSer, value.derivedFrom)
+      encoder.encodeSerializableElement(
+        descriptor,
+        61 + descriptorOffset,
+        Hoisted.basedOnSer,
+        value.derivedFrom,
+      )
     if (value.component.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 62 + __off, Hoisted.componentSer, value.component)
+      encoder.encodeSerializableElement(
+        descriptor,
+        62 + descriptorOffset,
+        Hoisted.componentSer,
+        value.component,
+      )
   }
 
   private object Hoisted {
@@ -1347,12 +1649,12 @@ internal object ObservationPolymorphicSerializer : KSerializer<Observation> {
 
   override fun serialize(encoder: Encoder, `value`: Observation) {
     encoder.encodeStructure(descriptor) {
-      ObservationSerializer.serializeJson(this, descriptor, 0, value)
+      ObservationSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): Observation =
     decoder.decodeStructure(descriptor) {
-      ObservationSerializer.deserializeJson(this, descriptor, 0)
+      ObservationSerializer.deserializeInternal(this, descriptor, 0)
     }
 }

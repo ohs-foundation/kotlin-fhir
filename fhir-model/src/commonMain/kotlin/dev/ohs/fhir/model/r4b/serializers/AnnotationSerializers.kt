@@ -70,14 +70,13 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
     }
 
   override fun deserialize(decoder: Decoder): Annotation =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Annotation) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Annotation {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Annotation {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var authorReference: Reference? = null
@@ -88,28 +87,33 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
     var text: KotlinString? = null
     var _text: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           authorReference =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorReferenceSer, null)
-        3 -> authorString = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.authorReferenceSer,
+              null,
+            )
+        3 -> authorString = decoder.decodeStringElement(descriptor, i)
         4 ->
           _authorString =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorStringSer, null)
-        5 -> time = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorStringSer, null)
+        5 -> time = decoder.decodeStringElement(descriptor, i)
         6 ->
           _time =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorStringSer, null)
-        7 -> text = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorStringSer, null)
+        7 -> text = decoder.decodeStringElement(descriptor, i)
         8 ->
           _text =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorStringSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorStringSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Annotation: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Annotation: " + i)
       }
     }
     return Annotation(
@@ -121,30 +125,29 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Annotation) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Annotation) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     when (val __d = value.author) {
       null -> {}
       is Annotation.Author.Reference -> {
-        encoder.encodeSerializableElement(__desc, 2, Hoisted.authorReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 2, Hoisted.authorReferenceSer, __d.value)
       }
       is Annotation.Author.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 4, Hoisted.authorStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 4, Hoisted.authorStringSer, it)
         }
       }
     }
-    ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.time?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.authorStringSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.authorStringSer, it)
     }
-    ((value.text.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.text.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.text.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.authorStringSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.authorStringSer, it)
     }
   }
 

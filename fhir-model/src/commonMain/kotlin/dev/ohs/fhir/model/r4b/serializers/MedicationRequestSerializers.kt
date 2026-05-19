@@ -91,14 +91,13 @@ internal object MedicationRequestDispenseRequestSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicationRequest.DispenseRequest =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: MedicationRequest.DispenseRequest) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): MedicationRequest.DispenseRequest {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): MedicationRequest.DispenseRequest {
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -111,53 +110,58 @@ internal object MedicationRequestDispenseRequestSerializer :
     var expectedSupplyDuration: Duration? = null
     var performer: Reference? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           initialFill =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.initialFillSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.initialFillSer, null)
         4 ->
           dispenseInterval =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.dispenseIntervalSer,
               null,
             )
         5 ->
           validityPeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.validityPeriodSer, null)
-        6 -> numberOfRepeatsAllowed = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.validityPeriodSer,
+              null,
+            )
+        6 -> numberOfRepeatsAllowed = decoder.decodeIntElement(descriptor, i)
         7 ->
           _numberOfRepeatsAllowed =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.numberOfRepeatsAllowedSer,
               null,
             )
         8 ->
           quantity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.quantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.quantitySer, null)
         9 ->
           expectedSupplyDuration =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.dispenseIntervalSer,
               null,
             )
         10 ->
           performer =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.performerSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.performerSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding DispenseRequest: " + __i)
+        else -> throw SerializationException("Unexpected index decoding DispenseRequest: " + i)
       }
     }
     return MedicationRequest.DispenseRequest(
@@ -174,32 +178,41 @@ internal object MedicationRequestDispenseRequestSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: MedicationRequest.DispenseRequest) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: MedicationRequest.DispenseRequest,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.initialFill)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.initialFillSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.initialFillSer, it)
     }
     (value.dispenseInterval)?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.dispenseIntervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.dispenseIntervalSer, it)
     }
     (value.validityPeriod)?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.validityPeriodSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.validityPeriodSer, it)
     }
-    ((value.numberOfRepeatsAllowed?.value))?.let { encoder.encodeIntElement(__desc, 6, it) }
+    ((value.numberOfRepeatsAllowed?.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
     (value.numberOfRepeatsAllowed?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.numberOfRepeatsAllowedSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.numberOfRepeatsAllowedSer, it)
     }
-    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 8, Hoisted.quantitySer, it) }
+    (value.quantity)?.let {
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.quantitySer, it)
+    }
     (value.expectedSupplyDuration)?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.dispenseIntervalSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.dispenseIntervalSer, it)
     }
     (value.performer)?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.performerSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.performerSer, it)
     }
   }
 
@@ -244,38 +257,37 @@ internal object MedicationRequestDispenseRequestInitialFillSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicationRequest.DispenseRequest.InitialFill =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: MedicationRequest.DispenseRequest.InitialFill) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): MedicationRequest.DispenseRequest.InitialFill {
-    val __desc = descriptor
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var quantity: Quantity? = null
     var duration: Duration? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           quantity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.quantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.quantitySer, null)
         4 ->
           duration =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.durationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.durationSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding InitialFill: " + __i)
+        else -> throw SerializationException("Unexpected index decoding InitialFill: " + i)
       }
     }
     return MedicationRequest.DispenseRequest.InitialFill(
@@ -287,18 +299,26 @@ internal object MedicationRequestDispenseRequestInitialFillSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: MedicationRequest.DispenseRequest.InitialFill,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.quantity)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.quantitySer, it) }
-    (value.duration)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.durationSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.quantity)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.quantitySer, it)
+    }
+    (value.duration)?.let {
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.durationSer, it)
+    }
   }
 
   private object Hoisted {
@@ -335,14 +355,13 @@ internal object MedicationRequestSubstitutionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): MedicationRequest.Substitution =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: MedicationRequest.Substitution) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): MedicationRequest.Substitution {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): MedicationRequest.Substitution {
     var id: String? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -351,36 +370,41 @@ internal object MedicationRequestSubstitutionSerializer :
     var allowedCodeableConcept: CodeableConcept? = null
     var reason: CodeableConcept? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> allowedBoolean = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> allowedBoolean = decoder.decodeBooleanElement(descriptor, i)
         4 ->
           _allowedBoolean =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.allowedBooleanSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.allowedBooleanSer,
+              null,
+            )
         5 ->
           allowedCodeableConcept =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.allowedCodeableConceptSer,
               null,
             )
         6 ->
           reason =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.allowedCodeableConceptSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Substitution: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Substitution: " + i)
       }
     }
     return MedicationRequest.Substitution(
@@ -396,27 +420,39 @@ internal object MedicationRequestSubstitutionSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: MedicationRequest.Substitution) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: MedicationRequest.Substitution,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     when (val __d = value.allowed) {
       null -> {}
       is MedicationRequest.Substitution.Allowed.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(__desc, 3, it) }
+        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 4, Hoisted.allowedBooleanSer, it)
+          encoder.encodeSerializableElement(descriptor, 4, Hoisted.allowedBooleanSer, it)
         }
       }
       is MedicationRequest.Substitution.Allowed.CodeableConcept -> {
-        encoder.encodeSerializableElement(__desc, 5, Hoisted.allowedCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.allowedCodeableConceptSer,
+          __d.value,
+        )
       }
     }
     (value.reason)?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.allowedCodeableConceptSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.allowedCodeableConceptSer, it)
     }
   }
 
@@ -572,21 +608,20 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
   }
 
   override fun deserialize(decoder: Decoder): MedicationRequest =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: MedicationRequest) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "MedicationRequest")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): MedicationRequest {
-    val __desc = desc
     var id: String? = null
     var meta: Meta? = null
     var implicitRules: String? = null
@@ -640,238 +675,248 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
     var detectedIssue: List<Reference>? = null
     var eventHistory: List<Reference>? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         10 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        11 -> status = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        11 -> status = decoder.decodeStringElement(descriptor, i)
         12 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         13 ->
           statusReason =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusReasonSer, null)
-        14 -> intent = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusReasonSer, null)
+        14 -> intent = decoder.decodeStringElement(descriptor, i)
         15 ->
           _intent =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         16 ->
           category =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySer, null)
-        17 -> priority = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
+        17 -> priority = decoder.decodeStringElement(descriptor, i)
         18 ->
           _priority =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        19 -> doNotPerform = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        19 -> doNotPerform = decoder.decodeBooleanElement(descriptor, i)
         20 ->
           _doNotPerform =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        21 -> reportedBoolean = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        21 -> reportedBoolean = decoder.decodeBooleanElement(descriptor, i)
         22 ->
           _reportedBoolean =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         23 ->
           reportedReference =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.reportedReferenceSer,
               null,
             )
         24 ->
           medicationCodeableConcept =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusReasonSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusReasonSer, null)
         25 ->
           medicationReference =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.reportedReferenceSer,
               null,
             )
         26 ->
           subject =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.reportedReferenceSer,
               null,
             )
         27 ->
           encounter =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.reportedReferenceSer,
               null,
             )
         28 ->
           supportingInformation =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.supportingInformationSer,
               null,
             )
-        29 -> authoredOn = decoder.decodeStringElement(__desc, __i)
+        29 -> authoredOn = decoder.decodeStringElement(descriptor, i)
         30 ->
           _authoredOn =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         31 ->
           requester =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.reportedReferenceSer,
               null,
             )
         32 ->
           performer =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.reportedReferenceSer,
               null,
             )
         33 ->
           performerType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusReasonSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusReasonSer, null)
         34 ->
           recorder =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.reportedReferenceSer,
               null,
             )
         35 ->
           reasonCode =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
         36 ->
           reasonReference =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.supportingInformationSer,
               null,
             )
         37 ->
           instantiatesCanonical =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesCanonicalSer,
               null,
             )
         38 ->
           _instantiatesCanonical =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesCanonicalSer2,
               null,
             )
         39 ->
           instantiatesUri =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesCanonicalSer,
               null,
             )
         40 ->
           _instantiatesUri =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.instantiatesCanonicalSer2,
               null,
             )
         41 ->
           basedOn =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.supportingInformationSer,
               null,
             )
         42 ->
           groupIdentifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSerInner, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.identifierSerInner,
+              null,
+            )
         43 ->
           courseOfTherapyType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.statusReasonSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.statusReasonSer, null)
         44 ->
           insurance =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.supportingInformationSer,
               null,
             )
-        45 -> note = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.noteSer, null)
+        45 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
         46 ->
           dosageInstruction =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.dosageInstructionSer,
               null,
             )
         47 ->
           dispenseRequest =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dispenseRequestSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.dispenseRequestSer,
+              null,
+            )
         48 ->
           substitution =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.substitutionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.substitutionSer, null)
         49 ->
           priorPrescription =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.reportedReferenceSer,
               null,
             )
         50 ->
           detectedIssue =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.supportingInformationSer,
               null,
             )
         51 ->
           eventHistory =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.supportingInformationSer,
               null,
             )
-        else -> throw SerializationException("Unexpected index decoding MedicationRequest: " + __i)
+        else -> throw SerializationException("Unexpected index decoding MedicationRequest: " + i)
       }
     }
     return MedicationRequest(
@@ -938,72 +983,147 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: MedicationRequest,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.identifierSer, value.identifier)
-    ((value.status.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 11 + __off, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        10 + descriptorOffset,
+        Hoisted.identifierSer,
+        value.identifier,
+      )
+    ((value.status.value?.getCode()))?.let {
+      encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
+    }
     (value.status.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     (value.statusReason)?.let {
-      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.statusReasonSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        13 + descriptorOffset,
+        Hoisted.statusReasonSer,
+        it,
+      )
     }
-    ((value.intent.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 14 + __off, it) }
+    ((value.intent.value?.getCode()))?.let {
+      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
+    }
     (value.intent.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        15 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.category.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.categorySer, value.category)
+      encoder.encodeSerializableElement(
+        descriptor,
+        16 + descriptorOffset,
+        Hoisted.categorySer,
+        value.category,
+      )
     ((value.priority?.value?.getCode()))?.let {
-      encoder.encodeStringElement(__desc, 17 + __off, it)
+      encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
     }
     (value.priority?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        18 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.doNotPerform?.value))?.let { encoder.encodeBooleanElement(__desc, 19 + __off, it) }
+    ((value.doNotPerform?.value))?.let {
+      encoder.encodeBooleanElement(descriptor, 19 + descriptorOffset, it)
+    }
     (value.doNotPerform?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        20 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     when (val __d = value.reported) {
       null -> {}
       is MedicationRequest.Reported.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(__desc, 21 + __off, it) }
+        ((__d.value.value))?.let {
+          encoder.encodeBooleanElement(descriptor, 21 + descriptorOffset, it)
+        }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.implicitRulesSer, it)
+          encoder.encodeSerializableElement(
+            descriptor,
+            22 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
         }
       }
       is MedicationRequest.Reported.Reference -> {
         encoder.encodeSerializableElement(
-          __desc,
-          23 + __off,
+          descriptor,
+          23 + descriptorOffset,
           Hoisted.reportedReferenceSer,
           __d.value,
         )
@@ -1012,118 +1132,213 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
     when (val __d = value.medication) {
       null -> {}
       is MedicationRequest.Medication.CodeableConcept -> {
-        encoder.encodeSerializableElement(__desc, 24 + __off, Hoisted.statusReasonSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          24 + descriptorOffset,
+          Hoisted.statusReasonSer,
+          __d.value,
+        )
       }
       is MedicationRequest.Medication.Reference -> {
         encoder.encodeSerializableElement(
-          __desc,
-          25 + __off,
+          descriptor,
+          25 + descriptorOffset,
           Hoisted.reportedReferenceSer,
           __d.value,
         )
       }
     }
     (value.subject)?.let {
-      encoder.encodeSerializableElement(__desc, 26 + __off, Hoisted.reportedReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        26 + descriptorOffset,
+        Hoisted.reportedReferenceSer,
+        it,
+      )
     }
     (value.encounter)?.let {
-      encoder.encodeSerializableElement(__desc, 27 + __off, Hoisted.reportedReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        27 + descriptorOffset,
+        Hoisted.reportedReferenceSer,
+        it,
+      )
     }
     if (value.supportingInformation.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        28 + __off,
+        descriptor,
+        28 + descriptorOffset,
         Hoisted.supportingInformationSer,
         value.supportingInformation,
       )
     ((value.authoredOn?.value?.toString()))?.let {
-      encoder.encodeStringElement(__desc, 29 + __off, it)
+      encoder.encodeStringElement(descriptor, 29 + descriptorOffset, it)
     }
     (value.authoredOn?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 30 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        30 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     (value.requester)?.let {
-      encoder.encodeSerializableElement(__desc, 31 + __off, Hoisted.reportedReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        31 + descriptorOffset,
+        Hoisted.reportedReferenceSer,
+        it,
+      )
     }
     (value.performer)?.let {
-      encoder.encodeSerializableElement(__desc, 32 + __off, Hoisted.reportedReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        32 + descriptorOffset,
+        Hoisted.reportedReferenceSer,
+        it,
+      )
     }
     (value.performerType)?.let {
-      encoder.encodeSerializableElement(__desc, 33 + __off, Hoisted.statusReasonSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        33 + descriptorOffset,
+        Hoisted.statusReasonSer,
+        it,
+      )
     }
     (value.recorder)?.let {
-      encoder.encodeSerializableElement(__desc, 34 + __off, Hoisted.reportedReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        34 + descriptorOffset,
+        Hoisted.reportedReferenceSer,
+        it,
+      )
     }
     if (value.reasonCode.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 35 + __off, Hoisted.categorySer, value.reasonCode)
+      encoder.encodeSerializableElement(
+        descriptor,
+        35 + descriptorOffset,
+        Hoisted.categorySer,
+        value.reasonCode,
+      )
     if (value.reasonReference.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        36 + __off,
+        descriptor,
+        36 + descriptorOffset,
         Hoisted.supportingInformationSer,
         value.reasonReference,
       )
     (value.instantiatesCanonical.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 37 + __off, Hoisted.instantiatesCanonicalSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        37 + descriptorOffset,
+        Hoisted.instantiatesCanonicalSer,
+        it,
+      )
     }
     (value.instantiatesCanonical.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 38 + __off, Hoisted.instantiatesCanonicalSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        38 + descriptorOffset,
+        Hoisted.instantiatesCanonicalSer2,
+        it,
+      )
     }
     (value.instantiatesUri.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 39 + __off, Hoisted.instantiatesCanonicalSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        39 + descriptorOffset,
+        Hoisted.instantiatesCanonicalSer,
+        it,
+      )
     }
     (value.instantiatesUri.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 40 + __off, Hoisted.instantiatesCanonicalSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        40 + descriptorOffset,
+        Hoisted.instantiatesCanonicalSer2,
+        it,
+      )
     }
     if (value.basedOn.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        41 + __off,
+        descriptor,
+        41 + descriptorOffset,
         Hoisted.supportingInformationSer,
         value.basedOn,
       )
     (value.groupIdentifier)?.let {
-      encoder.encodeSerializableElement(__desc, 42 + __off, Hoisted.identifierSerInner, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        42 + descriptorOffset,
+        Hoisted.identifierSerInner,
+        it,
+      )
     }
     (value.courseOfTherapyType)?.let {
-      encoder.encodeSerializableElement(__desc, 43 + __off, Hoisted.statusReasonSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        43 + descriptorOffset,
+        Hoisted.statusReasonSer,
+        it,
+      )
     }
     if (value.insurance.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        44 + __off,
+        descriptor,
+        44 + descriptorOffset,
         Hoisted.supportingInformationSer,
         value.insurance,
       )
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 45 + __off, Hoisted.noteSer, value.note)
+      encoder.encodeSerializableElement(
+        descriptor,
+        45 + descriptorOffset,
+        Hoisted.noteSer,
+        value.note,
+      )
     if (value.dosageInstruction.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        46 + __off,
+        descriptor,
+        46 + descriptorOffset,
         Hoisted.dosageInstructionSer,
         value.dosageInstruction,
       )
     (value.dispenseRequest)?.let {
-      encoder.encodeSerializableElement(__desc, 47 + __off, Hoisted.dispenseRequestSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        47 + descriptorOffset,
+        Hoisted.dispenseRequestSer,
+        it,
+      )
     }
     (value.substitution)?.let {
-      encoder.encodeSerializableElement(__desc, 48 + __off, Hoisted.substitutionSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        48 + descriptorOffset,
+        Hoisted.substitutionSer,
+        it,
+      )
     }
     (value.priorPrescription)?.let {
-      encoder.encodeSerializableElement(__desc, 49 + __off, Hoisted.reportedReferenceSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        49 + descriptorOffset,
+        Hoisted.reportedReferenceSer,
+        it,
+      )
     }
     if (value.detectedIssue.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        50 + __off,
+        descriptor,
+        50 + descriptorOffset,
         Hoisted.supportingInformationSer,
         value.detectedIssue,
       )
     if (value.eventHistory.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        51 + __off,
+        descriptor,
+        51 + descriptorOffset,
         Hoisted.supportingInformationSer,
         value.eventHistory,
       )
@@ -1193,12 +1408,12 @@ internal object MedicationRequestPolymorphicSerializer : KSerializer<MedicationR
 
   override fun serialize(encoder: Encoder, `value`: MedicationRequest) {
     encoder.encodeStructure(descriptor) {
-      MedicationRequestSerializer.serializeJson(this, descriptor, 0, value)
+      MedicationRequestSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): MedicationRequest =
     decoder.decodeStructure(descriptor) {
-      MedicationRequestSerializer.deserializeJson(this, descriptor, 0)
+      MedicationRequestSerializer.deserializeInternal(this, descriptor, 0)
     }
 }

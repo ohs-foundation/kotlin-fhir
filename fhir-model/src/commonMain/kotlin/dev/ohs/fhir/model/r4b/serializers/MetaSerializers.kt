@@ -67,14 +67,13 @@ internal object MetaSerializer : KSerializer<Meta> {
     }
 
   override fun deserialize(decoder: Decoder): Meta =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Meta) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Meta {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Meta {
     var id: String? = null
     var extension: List<Extension>? = null
     var versionId: String? = null
@@ -88,35 +87,36 @@ internal object MetaSerializer : KSerializer<Meta> {
     var security: List<Coding>? = null
     var tag: List<Coding>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> versionId = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> versionId = decoder.decodeStringElement(descriptor, i)
         3 ->
           _versionId =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionIdSer, null)
-        4 -> lastUpdated = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionIdSer, null)
+        4 -> lastUpdated = decoder.decodeStringElement(descriptor, i)
         5 ->
           _lastUpdated =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionIdSer, null)
-        6 -> source = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionIdSer, null)
+        6 -> source = decoder.decodeStringElement(descriptor, i)
         7 ->
           _source =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionIdSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionIdSer, null)
         8 ->
-          profile = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer, null)
+          profile =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.profileSer, null)
         9 ->
           _profile =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer2, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.profileSer2, null)
         10 ->
           security =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.securitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.securitySer, null)
         11 ->
-          tag = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.securitySer, null)
+          tag = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.securitySer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Meta: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Meta: " + i)
       }
     }
     return Meta(
@@ -134,33 +134,32 @@ internal object MetaSerializer : KSerializer<Meta> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Meta) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Meta) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.versionId?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.versionId?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.versionId?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.versionIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.versionIdSer, it)
     }
-    ((value.lastUpdated?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.lastUpdated?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.lastUpdated?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.versionIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.versionIdSer, it)
     }
-    ((value.source?.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.source?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.source?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.versionIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.versionIdSer, it)
     }
     (value.profile.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.profileSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.profileSer, it)
     }
     (value.profile.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.profileSer2, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.profileSer2, it)
     }
     if (value.security.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.securitySer, value.security)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.securitySer, value.security)
     if (value.tag.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.securitySer, value.tag)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.securitySer, value.tag)
   }
 
   private object Hoisted {

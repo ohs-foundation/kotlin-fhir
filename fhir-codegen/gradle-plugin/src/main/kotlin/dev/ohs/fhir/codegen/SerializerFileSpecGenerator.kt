@@ -73,7 +73,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
       }
     }
     // Choice-type sealed interfaces (e.g. Patient.Deceased) get no per-class serializer:
-    // the parent resource serializer fully inlines the per-arm keys on encode/decode, so a
+    // the parent resource serializer fully inlines the per-expansion keys on encode/decode, so a
     // standalone KSerializer<Patient.Deceased> is never invoked.
     // Root model serializer.
     createModelSerializerTypeSpecs(
@@ -88,12 +88,12 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
 
   /**
    * Emits one serializer object per model type (`XSerializer`). Streaming encode/decode over the
-   * flat FHIR wire shape — one descriptor slot per JSON key on the wire, including per-arm
+   * flat FHIR wire shape — one descriptor slot per JSON key on the wire, including per-expansion
    * expansions for `[x]` choice types (e.g. `deceasedBoolean` / `_deceasedBoolean` /
    * `deceasedDateTime` / `_deceasedDateTime`). Choice types are handled inline against the parent's
-   * composite encoder: `emitChoiceArmEncodingInline` writes the matched arm's keys on encode;
-   * decode reads them into per-arm locals and synthesizes the sealed value via the companion
-   * `from(…)` factory during `emitModelConstruction`.
+   * composite encoder: `emitChoiceTypeExpansionEncoding` writes the matched expansion's keys on
+   * encode; decode reads them into per-expansion locals and synthesizes the sealed value via the
+   * companion `from(…)` factory during `emitModelConstruction`.
    *
    * Resource types additionally get a thin `XPolymorphicSerializer` (`resourceType` omitted from
    * its descriptor) for use as a subclass entry in `ResourcePolymorphicSerializer`.
@@ -125,8 +125,8 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
   /**
    * Thin `XPolymorphicSerializer` whose descriptor omits `resourceType`. Forwards `serialize` /
    * `deserialize` to `XSerializer`'s shared helpers; on the polymorphic path kotlinx-json's
-   * `discriminatorHolder` consumes the `resourceType` key before `XSerializer.deserializeJson`'s
-   * slot-0 case ever fires.
+   * `discriminatorHolder` consumes the `resourceType` key before
+   * `XSerializer.deserializeInternal`'s slot-0 case ever fires.
    */
   private fun createPolymorphicSerializerTypeSpec(className: ClassName): TypeSpec {
     val xSerCN = className.toSerializerClassName()
@@ -141,8 +141,10 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         )
         .build()
     // Pass `descriptor` (XPolymorphicSerializer's own — wire fields at slots 0..N-1) and offset 0.
-    // The shared body in `XSerializer.serializeJson` / `deserializeJson` reads its slot indices as
-    // `<wireIdx> + __off`, so encode/decode use the same descriptor that `encodeStructure` /
+    // The shared body in `XSerializer.serializeInternal` / `deserializeInternal` reads its slot
+    // indices as
+    // `<wireIdx> + descriptorOffset`, so encode/decode use the same descriptor that
+    // `encodeStructure` /
     // `decodeStructure` opened — required for tag-based formats (ProtoBuf) that resolve fields by
     // descriptor slot index, not by name.
     val serializeFn =
@@ -151,7 +153,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         .addParameter("encoder", encoderCN)
         .addParameter("value", className)
         .addCode(
-          "encoder.%M(descriptor) {\n  %T.serializeJson(this, descriptor, 0, value)\n}\n",
+          "encoder.%M(descriptor) {\n  %T.serializeInternal(this, descriptor, 0, value)\n}\n",
           encodeStructureMN,
           xSerCN,
         )
@@ -162,7 +164,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         .addParameter("decoder", decoderCN)
         .returns(className)
         .addCode(
-          "return decoder.%M(descriptor) {\n  %T.deserializeJson(this, descriptor, 0)\n}\n",
+          "return decoder.%M(descriptor) {\n  %T.deserializeInternal(this, descriptor, 0)\n}\n",
           decodeStructureMN,
           xSerCN,
         )
@@ -319,10 +321,10 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
    *
    * Mapping from FHIR elements to wire fields:
    * - Primitive → `(value, _sidecar)` pair of `WireField`s.
-   * - Choice type (`foo[x]`) → per-arm pairs (`fooBoolean` + `_fooBoolean`, `fooDateTime` +
+   * - Choice type (`foo[x]`) → per-expansion pairs (`fooBoolean` + `_fooBoolean`, `fooDateTime` +
    *   `_fooDateTime`, …) expanded directly into the flat wire shape. Encode dispatches via
-   *   `emitChoiceArmEncodingInline`; decode reads arm locals and synthesizes the sealed value via
-   *   the companion `from(…)` factory in `emitModelConstruction`.
+   *   `emitChoiceTypeExpansionEncoding`; decode reads expansion locals and synthesizes the sealed
+   *   value via the companion `from(…)` factory in `emitModelConstruction`.
    * - Complex / list → single `WireField`.
    *
    * For resource types, `resourceType` is handled separately as descriptor[0] — NOT included here.
@@ -339,10 +341,10 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
 
   /**
    * Wire fields matching the FLAT FHIR JSON wire shape exactly — every top-level key that appears
-   * on the wire is a separate entry. Choice types expand to per-arm pairs (`deceasedBoolean`,
+   * on the wire is a separate entry. Choice types expand to per-expansion pairs (`deceasedBoolean`,
    * `_deceasedBoolean`, `deceasedDateTime`, …). Encode writes these slots directly via
-   * `emitChoiceArmEncodingInline`; decode reads them into locals and synthesizes the sealed value
-   * via the companion `from(…)` factory.
+   * `emitChoiceTypeExpansionEncoding`; decode reads them into locals and synthesizes the sealed
+   * value via the companion `from(…)` factory.
    */
   private fun buildJsonWireFields(
     modelClassName: ClassName,
@@ -370,7 +372,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
   /**
    * Emits `override val descriptor` as a flat `buildClassSerialDescriptor(name) { element(...) ...
    * }` reflecting the actual JSON wire shape (one element per JSON key, including `_sidecar` pairs
-   * and choice-type arms). For resource types, `resourceType` is descriptor[0].
+   * and choice type expansions). For resource types, `resourceType` is descriptor[0].
    *
    * Every element is marked `isOptional = true` — FHIR JSON omits absent keys, and streaming
    * encoders skip optional elements when we don't call `encodeXxxElement`, so this matches the wire
@@ -550,39 +552,45 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     resourceTypeName: String?,
     hoister: SerializerHoister,
   ): List<FunSpec> {
-    // For resources we share `serializeJson`/`deserializeJson` between `XSerializer` (descriptor:
+    // For resources we share `serializeInternal`/`deserializeInternal` between `XSerializer`
+    // (descriptor:
     // resourceType@0, wireFields@1..N) and `XPolymorphicSerializer` (descriptor:
     // wireFields@0..N-1).
-    // The body takes the descriptor + a wire-field offset (`__off`) at runtime; encode emits
-    // `<wireIdx> + __off` for the descriptor index, decode rebases the dispatch via
-    // `when (__i - __off)` so case labels stay constant. Non-resource types keep the simple
+    // The body takes the descriptor + a wire-field offset (`descriptorOffset`) at runtime; encode
+    // emits
+    // `<wireIdx> + descriptorOffset` for the descriptor index, decode rebases the dispatch via
+    // `when (i - descriptorOffset)` so case labels stay constant. Non-resource types keep the
+    // simple
     // unparameterized form.
     val parameterized = includeResourceType
     // Case labels in the decode `when` — always wire-field index (0-based). For non-resources
     // this also equals the absolute descriptor slot since there's no `resourceType` prefix.
     val nameToCaseLabel = wireFields.withIndex().associate { (i, f) -> f.name to i }
-    // Encode-side index expression: literal `<wireIdx>` for non-resources, `<wireIdx> + __off`
+    // Encode-side index expression: literal `<wireIdx>` for non-resources, `<wireIdx> +
+    // descriptorOffset`
     // for resources. Substituted into emit calls via `%L`.
     val nameToIdx: Map<String, CodeBlock> =
       nameToCaseLabel.mapValues { (_, i) ->
-        if (parameterized) CodeBlock.of("%L + __off", i) else CodeBlock.of("%L", i)
+        if (parameterized) CodeBlock.of("%L + descriptorOffset", i) else CodeBlock.of("%L", i)
       }
     val functions = mutableListOf<FunSpec>()
-    // `deserialize(decoder)` streams via `decodeStructure { deserializeJson(this) }`. The same body
+    // `deserialize(decoder)` streams via `decodeStructure { deserializeInternal(this) }`. The same
+    // body
     // services both `StreamingJsonDecoder` and `JsonTreeDecoder` because every read inside the
-    // `deserializeJson` loop goes through the `CompositeDecoder` interface (`decodeElementIndex`,
+    // `deserializeInternal` loop goes through the `CompositeDecoder` interface
+    // (`decodeElementIndex`,
     // `decodeXxxElement`, `decodeSerializableElement`) — kotlinx picks the decoder, we walk it.
     val deserializeBody =
       if (parameterized) {
         // Pass `descriptor` (XSerializer's, with resourceType@0) and offset 1 so the body's
         // wire-field cases land at slots 1..N.
         CodeBlock.of(
-          "return decoder.%M(descriptor) {\n  deserializeJson(this, descriptor, 1)\n}\n",
+          "return decoder.%M(descriptor) {\n  deserializeInternal(this, descriptor, 1)\n}\n",
           decodeStructureMN,
         )
       } else {
         CodeBlock.of(
-          "return decoder.%M(descriptor) {\n  deserializeJson(this)\n}\n",
+          "return decoder.%M(descriptor) {\n  deserializeInternal(this)\n}\n",
           decodeStructureMN,
         )
       }
@@ -599,13 +607,13 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         // `XPolymorphicSerializer` reuses with offset 0 — handles every other field.
         CodeBlock.of(
           "encoder.%M(descriptor) {\n  encodeStringElement(descriptor, 0, %S)\n" +
-            "  serializeJson(this, descriptor, 1, value)\n}\n",
+            "  serializeInternal(this, descriptor, 1, value)\n}\n",
           encodeStructureMN,
           resourceTypeName,
         )
       } else {
         CodeBlock.of(
-          "encoder.%M(descriptor) {\n  serializeJson(this, value)\n}\n",
+          "encoder.%M(descriptor) {\n  serializeInternal(this, value)\n}\n",
           encodeStructureMN,
         )
       }
@@ -617,7 +625,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         .addCode(serializeBody)
         .build()
     functions +=
-      buildDeserializeJsonFun(
+      buildDeserializeInternalFun(
         className,
         elements,
         wireFields,
@@ -632,15 +640,15 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
   // --- JSON decode (streaming) ------------------------------------------------------------------
 
   /**
-   * Emits `private fun deserializeJson(decoder: CompositeDecoder): X` — a while-loop over
+   * Emits `private fun deserializeInternal(decoder: CompositeDecoder): X` — a while-loop over
    * `decodeElementIndex(descriptor)` with an index-dispatching `when`. Each case reads one flat
    * wire field via `decodeXxxElement` (specialized) or `decodeNullableSerializableElement` (for
    * complex/list/sidecar types), then the loop terminates on `DECODE_DONE`.
    *
-   * After the loop, sealed-type (choice) locals are synthesized from their arm transients; then the
-   * model is constructed from the assembled locals.
+   * After the loop, sealed-type (choice) locals are synthesized from their expansion transients;
+   * then the model is constructed from the assembled locals.
    */
-  private fun buildDeserializeJsonFun(
+  private fun buildDeserializeInternalFun(
     className: ClassName,
     elements: List<Element>,
     wireFields: List<WireField>,
@@ -649,10 +657,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     hoister: SerializerHoister,
   ): FunSpec {
     val cb = CodeBlock.builder()
-    // Hoist the descriptor into a local so each `decodeElementIndex` / `decode*Element` call
-    // compiles to `aload <local>` rather than dereferencing the parameter / field every time.
-    cb.add("val __desc = %L\n", if (parameterized) "desc" else "descriptor")
-    // One local per flat wire field — choice types expand into per-arm value+sidecar locals
+    // One local per flat wire field — choice types expand into per-expansion value+sidecar locals
     // (e.g. `deceasedBoolean`, `_deceasedBoolean`, `deceasedDateTime`, `_deceasedDateTime`).
     for (f in wireFields) {
       cb.add(
@@ -664,22 +669,24 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     }
 
     if (parameterized) {
-      // Rebased dispatch: `__i - __off` makes case labels constants (wire-field index, 0-based)
+      // Rebased dispatch: `i - descriptorOffset` makes case labels constants (wire-field index,
+      // 0-based)
       // regardless of whether the descriptor has `resourceType` at slot 0 (off=1) or not (off=0).
-      // The `-1` arm fires only when off=1 and __i=0 — i.e., the standalone path saw `resourceType`
-      // as a real field; on the polymorphic path kotlinx-json's `discriminatorHolder` consumes that
-      // key before we ever see slot 0, so the arm is dead but harmless there.
+      // The `-1` branch fires only when off=1 and i=0 — i.e., the standalone path saw
+      // `resourceType` as a real field; on the polymorphic path kotlinx-json's
+      // `discriminatorHolder` consumes that key before we ever see slot 0, so the branch is dead
+      // but harmless there.
       cb.add("while (true) {\n").indent()
-      cb.add("val __i = decoder.decodeElementIndex(__desc)\n")
-      cb.add("if (__i == %T.DECODE_DONE) break\n", compositeDecoderCN)
-      cb.add("when (__i - __off) {\n").indent()
-      cb.add("-1 -> decoder.decodeStringElement(__desc, __i)\n")
+      cb.add("val i = decoder.decodeElementIndex(descriptor)\n")
+      cb.add("if (i == %T.DECODE_DONE) break\n", compositeDecoderCN)
+      cb.add("when (i - descriptorOffset) {\n").indent()
+      cb.add("-1 -> decoder.decodeStringElement(descriptor, i)\n")
       for (f in wireFields) {
         val label = nameToCaseLabel.getValue(f.name)
         cb.add("%L -> %N = %L\n", label, f.name, jsonDecodeElementCall(f, className, hoister))
       }
       cb.add(
-        "else -> throw %T(%S + __i)\n",
+        "else -> throw %T(%S + i)\n",
         ClassName("kotlinx.serialization", "SerializationException"),
         "Unexpected index decoding ${className.simpleName}: ",
       )
@@ -687,14 +694,14 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
       cb.unindent().add("}\n")
     } else {
       cb.add("while (true) {\n").indent()
-      cb.add("when (val __i = decoder.decodeElementIndex(__desc)) {\n").indent()
+      cb.add("when (val i = decoder.decodeElementIndex(descriptor)) {\n").indent()
       for (f in wireFields) {
         val label = nameToCaseLabel.getValue(f.name)
         cb.add("%L -> %N = %L\n", label, f.name, jsonDecodeElementCall(f, className, hoister))
       }
       cb.add("%T.DECODE_DONE -> break\n", compositeDecoderCN)
       cb.add(
-        "else -> throw %T(%S + __i)\n",
+        "else -> throw %T(%S + i)\n",
         ClassName("kotlinx.serialization", "SerializationException"),
         "Unexpected index decoding ${className.simpleName}: ",
       )
@@ -705,19 +712,19 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     cb.add("return ")
     cb.add(emitModelConstruction(className, elements, expandPolymorphic = true))
     val builder =
-      FunSpec.builder("deserializeJson")
+      FunSpec.builder("deserializeInternal")
         .addModifiers(if (parameterized) KModifier.INTERNAL else KModifier.PRIVATE)
         .addParameter("decoder", compositeDecoderCN)
     if (parameterized) {
-      builder.addParameter("desc", serialDescriptorCN)
-      builder.addParameter("__off", Int::class)
+      builder.addParameter("descriptor", serialDescriptorCN)
+      builder.addParameter("descriptorOffset", Int::class)
     }
     return builder.returns(className).addCode(cb.build()).build()
   }
 
   /**
    * Decode-one-element call for wire field [f] against the descriptor index just returned by
-   * `decodeElementIndex` (read from the local `__i`). Specialized `decodeXxxElement` for stdlib
+   * `decodeElementIndex` (read from the local `i`). Specialized `decodeXxxElement` for stdlib
    * primitives, `decodeNullableSerializableElement` otherwise.
    */
   private fun jsonDecodeElementCall(
@@ -725,26 +732,26 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     parentClass: ClassName,
     hoister: SerializerHoister,
   ): CodeBlock {
-    // The descriptor index always comes from `__i` — the value just returned by
-    // `decodeElementIndex`. Encoding it as a literal here (instead of `__i`) would lock the
-    // generated body to the descriptor whose slot indices match those literals; threading `__i`
+    // The descriptor index always comes from `i` — the value just returned by
+    // `decodeElementIndex`. Encoding it as a literal here (instead of `i`) would lock the
+    // generated body to the descriptor whose slot indices match those literals; threading `i`
     // keeps the body correct whether it's called against `XSerializer.descriptor` (resourceType
     // at slot 0, wire fields shifted by 1) or `XPolymorphicSerializer.descriptor` (no shift).
     val nonNull = f.typeName.copy(nullable = false)
     if (nonNull is ClassName && nonNull.packageName == "kotlin") {
       when (nonNull.simpleName) {
-        "String" -> return CodeBlock.of("decoder.decodeStringElement(__desc, __i)")
-        "Boolean" -> return CodeBlock.of("decoder.decodeBooleanElement(__desc, __i)")
-        "Int" -> return CodeBlock.of("decoder.decodeIntElement(__desc, __i)")
-        "Long" -> return CodeBlock.of("decoder.decodeLongElement(__desc, __i)")
-        "Double" -> return CodeBlock.of("decoder.decodeDoubleElement(__desc, __i)")
-        "Char" -> return CodeBlock.of("decoder.decodeCharElement(__desc, __i)")
+        "String" -> return CodeBlock.of("decoder.decodeStringElement(descriptor, i)")
+        "Boolean" -> return CodeBlock.of("decoder.decodeBooleanElement(descriptor, i)")
+        "Int" -> return CodeBlock.of("decoder.decodeIntElement(descriptor, i)")
+        "Long" -> return CodeBlock.of("decoder.decodeLongElement(descriptor, i)")
+        "Double" -> return CodeBlock.of("decoder.decodeDoubleElement(descriptor, i)")
+        "Char" -> return CodeBlock.of("decoder.decodeCharElement(descriptor, i)")
       }
     }
     val ser = serializerExpressionIn(f.typeName, parentClass, hoister, "${f.name}Ser")
     // Explicit `previousValue = null` — 4-arg form — so Kotlin emits a direct interface call
     // instead of the `decodeNullableSerializableElement$default` static synthetic bridge.
-    return CodeBlock.of("decoder.decodeNullableSerializableElement(__desc, __i, %L, null)", ser)
+    return CodeBlock.of("decoder.decodeNullableSerializableElement(descriptor, i, %L, null)", ser)
   }
 
   /**
@@ -804,7 +811,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
   // --- JSON encode (streaming) ------------------------------------------------------------------
 
   /**
-   * Emits `private fun serializeJson(encoder: CompositeEncoder, value: X)` — writes each field
+   * Emits `private fun serializeInternal(encoder: CompositeEncoder, value: X)` — writes each field
    * directly to the structure encoder via [CompositeEncoder.encodeXxxElement] /
    * [CompositeEncoder.encodeSerializableElement], with no intermediate `JsonObject` tree.
    */
@@ -816,19 +823,18 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     hoister: SerializerHoister,
   ): FunSpec {
     val cb = CodeBlock.builder()
-    cb.add("val __desc = %L\n", if (parameterized) "desc" else "descriptor")
     // `resourceType` is written by the outer `serialize` wrapper, not here — keeps this body
     // reusable from `XPolymorphicSerializer` (polymorphic path injects the discriminator itself).
     elements.forEach { element ->
       emitJsonEncodeForElement(cb, element, className, nameToIdx, hoister)
     }
     val builder =
-      FunSpec.builder("serializeJson")
+      FunSpec.builder("serializeInternal")
         .addModifiers(if (parameterized) KModifier.INTERNAL else KModifier.PRIVATE)
         .addParameter("encoder", ClassName(KOTLINX_SERIALIZATION_ENCODING, "CompositeEncoder"))
     if (parameterized) {
-      builder.addParameter("desc", serialDescriptorCN)
-      builder.addParameter("__off", Int::class)
+      builder.addParameter("descriptor", serialDescriptorCN)
+      builder.addParameter("descriptorOffset", Int::class)
     }
     return builder.addParameter("value", className).addCode(cb.build()).build()
   }
@@ -841,11 +847,11 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     hoister: SerializerHoister,
   ) {
     val propertyName = element.getElementName()
-    // Choice type: emit per-arm flat keys inline against the parent's composite encoder.
-    // Each arm's value / sidecar is written to a flat descriptor slot on the parent instead
+    // Choice type: emit per-expansion flat keys inline against the parent's composite encoder.
+    // Each expansion's value / sidecar is written to a flat descriptor slot on the parent instead
     // of via a nested sub-object — there is no standalone choice-type serializer.
     if (element.type != null && element.type.size > 1) {
-      emitChoiceArmEncodingInline(cb, element, modelClassName, nameToIdx, hoister)
+      emitChoiceTypeExpansionEncoding(cb, element, modelClassName, nameToIdx, hoister)
       return
     }
     val typeCode = element.type?.singleOrNull()?.code ?: ""
@@ -871,7 +877,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
             ClassName("kotlin.collections", "List").parameterizedBy(elemCls),
           )
         cb.add(
-          "if (value.%N.isNotEmpty()) encoder.encodeSerializableElement(__desc, %L, %L, value.%N)\n",
+          "if (value.%N.isNotEmpty()) encoder.encodeSerializableElement(descriptor, %L, %L, value.%N)\n",
           propertyName,
           idx,
           listSer,
@@ -908,7 +914,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
           "${singleType.simpleName.lowercase()}Ser",
         )
       cb.add(
-        "(value.%N)?.let·{ encoder.encodeSerializableElement(__desc, %L, %L, it) }\n",
+        "(value.%N)?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
         propertyName,
         idx,
         ser,
@@ -950,12 +956,12 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
   ) {
     val specialized = specializedEncodeElementCall(type)
     if (specialized != null) {
-      cb.add("(%L)?.let·{ %N.%N(__desc, %L, it) }\n", valueExpr, encoderExpr, specialized, idx)
+      cb.add("(%L)?.let·{ %N.%N(descriptor, %L, it) }\n", valueExpr, encoderExpr, specialized, idx)
       return
     }
     val ser = hoistedSerializerForClass(type, parentClass, hoister, nameHint)
     cb.add(
-      "(%L)?.let·{ %N.encodeSerializableElement(__desc, %L, %L, it) }\n",
+      "(%L)?.let·{ %N.encodeSerializableElement(descriptor, %L, %L, it) }\n",
       valueExpr,
       encoderExpr,
       idx,
@@ -982,11 +988,11 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
 
   /**
    * Emits the full `when (val __d = value.field) { is Arm -> … }` dispatch for a choice-type
-   * element, writing each arm's flat wire keys (e.g., `deceasedBoolean` + `_deceasedBoolean`)
+   * element, writing each expansion's flat wire keys (e.g., `deceasedBoolean` + `_deceasedBoolean`)
    * directly into the parent's composite encoder using its flat descriptor slots. Replaces the old
    * "encode nested via sealed serializer, then flatten" pipeline.
    */
-  private fun emitChoiceArmEncodingInline(
+  private fun emitChoiceTypeExpansionEncoding(
     cb: CodeBlock.Builder,
     element: Element,
     modelClassName: ClassName,
@@ -999,11 +1005,18 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     cb.indent()
     cb.add("null -> {}\n")
     for (type in element.type!!) {
-      val armCN = sealedTypeClass.nestedClass(sealedChoiceArmName(type))
-      val armBaseName = "$propertyName${type.code.capitalized()}"
-      cb.add("is %T -> {\n", armCN)
+      val expansionCN = sealedTypeClass.nestedClass(choiceTypeExpansionName(type))
+      val expansionBaseName = "$propertyName${type.code.capitalized()}"
+      cb.add("is %T -> {\n", expansionCN)
       cb.indent()
-      emitJsonEncodeChoiceArm(cb, type, armBaseName, modelClassName, nameToIdx, hoister)
+      emitJsonEncodeChoiceTypeExpansion(
+        cb,
+        type,
+        expansionBaseName,
+        modelClassName,
+        nameToIdx,
+        hoister,
+      )
       cb.unindent()
       cb.add("}\n")
     }
@@ -1011,8 +1024,11 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     cb.add("}\n")
   }
 
-  /** Writes both arm keys (`deceasedBoolean` + `_deceasedBoolean`) for a matched choice arm. */
-  private fun emitJsonEncodeChoiceArm(
+  /**
+   * Writes both expansion keys (`deceasedBoolean` + `_deceasedBoolean`) for a matched choice type
+   * expansion.
+   */
+  private fun emitJsonEncodeChoiceTypeExpansion(
     cb: CodeBlock.Builder,
     type: Type,
     choiceFieldBaseName: String,
@@ -1026,7 +1042,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     if (FhirPathType.containsFhirTypeCode(typeCode)) {
       val fpt = FhirPathType.getFromFhirTypeCode(typeCode)!!
       val primCN = fpt.wireType
-      // Value arm
+      // Value expansion
       val valueExpr =
         CodeBlock.builder()
           .apply {
@@ -1045,18 +1061,18 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
         hoister,
         "${choiceFieldBaseName}Ser",
       )
-      // Sidecar arm
+      // Sidecar expansion
       if (elementIdx != null) {
         val elementCN = ClassName(modelClassName.packageName, "Element")
         val elementSer = hoistedSerializerForClass(elementCN, modelClassName, hoister, "elementSer")
         cb.add(
-          "(__d.value.toElement())?.let·{ encoder.encodeSerializableElement(__desc, %L, %L, it) }\n",
+          "(__d.value.toElement())?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
           elementIdx,
           elementSer,
         )
       }
     } else {
-      // Complex arm — e.g. Annotation.authorReference
+      // Complex expansion — e.g. Annotation.authorReference
       val complexCN = ClassName(modelClassName.packageName, typeCode.capitalized())
       val complexSer =
         hoistedSerializerForClass(
@@ -1065,7 +1081,11 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
           hoister,
           "${complexCN.simpleName.lowercase()}Ser",
         )
-      cb.add("encoder.encodeSerializableElement(__desc, %L, %L, __d.value)\n", valueIdx, complexSer)
+      cb.add(
+        "encoder.encodeSerializableElement(descriptor, %L, %L, __d.value)\n",
+        valueIdx,
+        complexSer,
+      )
     }
   }
 
@@ -1117,7 +1137,7 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
     cb.add("(value.%N", propertyName)
     if (!isRequired) cb.add("?")
     cb.add(
-      ".toElement())?.let·{ encoder.encodeSerializableElement(__desc, %L, %L, it) }\n",
+      ".toElement())?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
       elementIdx,
       elementSer,
     )
@@ -1179,13 +1199,13 @@ class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
       cb.add("·}.takeUnless·{·it.all·{·it == null·}·}")
     }
     cb.add(
-      ")?.let·{ encoder.encodeSerializableElement(__desc, %L, %L, it) }\n",
+      ")?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
       valueIdx,
       valueListSer,
     )
     // element sidecars
     cb.add(
-      "(value.%N.map·{·it.toElement()·}.takeUnless·{·it.all·{·it == null·}·})?.let·{ encoder.encodeSerializableElement(__desc, %L, %L, it) }\n",
+      "(value.%N.map·{·it.toElement()·}.takeUnless·{·it.all·{·it == null·}·})?.let·{ encoder.encodeSerializableElement(descriptor, %L, %L, it) }\n",
       propertyName,
       elementIdx,
       elementListSer,

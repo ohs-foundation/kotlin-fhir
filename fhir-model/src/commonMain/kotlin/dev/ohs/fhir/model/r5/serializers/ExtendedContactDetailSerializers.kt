@@ -77,14 +77,13 @@ internal object ExtendedContactDetailSerializer : KSerializer<ExtendedContactDet
     }
 
   override fun deserialize(decoder: Decoder): ExtendedContactDetail =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: ExtendedContactDetail) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): ExtendedContactDetail {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): ExtendedContactDetail {
     var id: String? = null
     var extension: List<Extension>? = null
     var purpose: CodeableConcept? = null
@@ -94,26 +93,29 @@ internal object ExtendedContactDetailSerializer : KSerializer<ExtendedContactDet
     var organization: Reference? = null
     var period: Period? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
-          purpose = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.purposeSer, null)
-        3 -> name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+          purpose =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.purposeSer, null)
+        3 -> name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
         4 ->
-          telecom = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.telecomSer, null)
+          telecom =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.telecomSer, null)
         5 ->
-          address = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressSer, null)
+          address =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressSer, null)
         6 ->
           organization =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.organizationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.organizationSer, null)
         7 ->
-          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
         else ->
-          throw SerializationException("Unexpected index decoding ExtendedContactDetail: " + __i)
+          throw SerializationException("Unexpected index decoding ExtendedContactDetail: " + i)
       }
     }
     return ExtendedContactDetail(
@@ -128,21 +130,24 @@ internal object ExtendedContactDetailSerializer : KSerializer<ExtendedContactDet
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: ExtendedContactDetail) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: ExtendedContactDetail) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    (value.purpose)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.purposeSer, it) }
-    if (value.name.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.nameSer, value.name)
-    if (value.telecom.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.telecomSer, value.telecom)
-    (value.address)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.addressSer, it) }
-    (value.organization)?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.organizationSer, it)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    (value.purpose)?.let {
+      encoder.encodeSerializableElement(descriptor, 2, Hoisted.purposeSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.periodSer, it) }
+    if (value.name.isNotEmpty())
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameSer, value.name)
+    if (value.telecom.isNotEmpty())
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.telecomSer, value.telecom)
+    (value.address)?.let {
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.addressSer, it)
+    }
+    (value.organization)?.let {
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.organizationSer, it)
+    }
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.periodSer, it) }
   }
 
   private object Hoisted {

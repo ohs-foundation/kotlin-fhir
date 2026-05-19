@@ -62,14 +62,13 @@ internal object ContributorSerializer : KSerializer<Contributor> {
     }
 
   override fun deserialize(decoder: Decoder): Contributor =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Contributor) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Contributor {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Contributor {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var type: KotlinString? = null
@@ -78,19 +77,20 @@ internal object ContributorSerializer : KSerializer<Contributor> {
     var _name: Element? = null
     var contact: List<ContactDetail>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeStringElement(__desc, __i)
-        3 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        4 -> name = decoder.decodeStringElement(__desc, __i)
-        5 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeStringElement(descriptor, i)
+        3 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 -> name = decoder.decodeStringElement(descriptor, i)
+        5 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         6 ->
-          contact = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contactSer, null)
+          contact =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Contributor: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Contributor: " + i)
       }
     }
     return Contributor(
@@ -102,21 +102,20 @@ internal object ContributorSerializer : KSerializer<Contributor> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Contributor) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Contributor) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
     }
-    ((value.name.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.name.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.name.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it)
     }
     if (value.contact.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.contactSer, value.contact)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.contactSer, value.contact)
   }
 
   private object Hoisted {

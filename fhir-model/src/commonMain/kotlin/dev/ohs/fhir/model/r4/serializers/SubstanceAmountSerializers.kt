@@ -57,32 +57,31 @@ internal object SubstanceAmountReferenceRangeSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceAmount.ReferenceRange =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceAmount.ReferenceRange) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubstanceAmount.ReferenceRange {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): SubstanceAmount.ReferenceRange {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var lowLimit: Quantity? = null
     var highLimit: Quantity? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           lowLimit =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowLimitSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lowLimitSer, null)
         3 ->
           highLimit =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.lowLimitSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.lowLimitSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ReferenceRange: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ReferenceRange: " + i)
       }
     }
     return SubstanceAmount.ReferenceRange(
@@ -93,13 +92,19 @@ internal object SubstanceAmountReferenceRangeSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceAmount.ReferenceRange) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: SubstanceAmount.ReferenceRange,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    (value.lowLimit)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.lowLimitSer, it) }
-    (value.highLimit)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.lowLimitSer, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    (value.lowLimit)?.let {
+      encoder.encodeSerializableElement(descriptor, 2, Hoisted.lowLimitSer, it)
+    }
+    (value.highLimit)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.lowLimitSer, it)
+    }
   }
 
   private object Hoisted {
@@ -141,14 +146,13 @@ internal object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
     }
 
   override fun deserialize(decoder: Decoder): SubstanceAmount =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceAmount) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubstanceAmount {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): SubstanceAmount {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -161,36 +165,46 @@ internal object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
     var _amountText: Element? = null
     var referenceRange: SubstanceAmount.ReferenceRange? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           amountQuantity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountQuantitySer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.amountQuantitySer,
+              null,
+            )
         4 ->
           amountRange =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountRangeSer, null)
-        5 -> amountString = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.amountRangeSer, null)
+        5 -> amountString = decoder.decodeStringElement(descriptor, i)
         6 ->
           _amountString =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountStringSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.amountStringSer, null)
         7 ->
           amountType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountTypeSer, null)
-        8 -> amountText = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.amountTypeSer, null)
+        8 -> amountText = decoder.decodeStringElement(descriptor, i)
         9 ->
           _amountText =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.amountStringSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.amountStringSer, null)
         10 ->
           referenceRange =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceRangeSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.referenceRangeSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding SubstanceAmount: " + __i)
+        else -> throw SerializationException("Unexpected index decoding SubstanceAmount: " + i)
       }
     }
     return SubstanceAmount(
@@ -209,37 +223,41 @@ internal object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceAmount) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: SubstanceAmount) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     when (val __d = value.amount) {
       null -> {}
       is SubstanceAmount.Amount.Quantity -> {
-        encoder.encodeSerializableElement(__desc, 3, Hoisted.amountQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.amountQuantitySer, __d.value)
       }
       is SubstanceAmount.Amount.Range -> {
-        encoder.encodeSerializableElement(__desc, 4, Hoisted.amountRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountRangeSer, __d.value)
       }
       is SubstanceAmount.Amount.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 6, Hoisted.amountStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 6, Hoisted.amountStringSer, it)
         }
       }
     }
     (value.amountType)?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.amountTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.amountTypeSer, it)
     }
-    ((value.amountText?.value))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    ((value.amountText?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.amountText?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.amountStringSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.amountStringSer, it)
     }
     (value.referenceRange)?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.referenceRangeSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.referenceRangeSer, it)
     }
   }
 

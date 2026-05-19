@@ -64,14 +64,13 @@ internal object ExpressionSerializer : KSerializer<Expression> {
     }
 
   override fun deserialize(decoder: Decoder): Expression =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Expression) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Expression {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Expression {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var description: KotlinString? = null
@@ -85,33 +84,33 @@ internal object ExpressionSerializer : KSerializer<Expression> {
     var reference: KotlinString? = null
     var _reference: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> description = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> description = decoder.decodeStringElement(descriptor, i)
         3 ->
           _description =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
-        4 -> name = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+        4 -> name = decoder.decodeStringElement(descriptor, i)
         5 ->
           _name =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
-        6 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+        6 -> language = decoder.decodeStringElement(descriptor, i)
         7 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
-        8 -> expression = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+        8 -> expression = decoder.decodeStringElement(descriptor, i)
         9 ->
           _expression =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
-        10 -> reference = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
+        10 -> reference = decoder.decodeStringElement(descriptor, i)
         11 ->
           _reference =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.descriptionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.descriptionSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Expression: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Expression: " + i)
       }
     }
     return Expression(
@@ -125,30 +124,29 @@ internal object ExpressionSerializer : KSerializer<Expression> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Expression) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Expression) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.description?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.descriptionSer, it)
     }
-    ((value.name?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.descriptionSer, it)
     }
-    ((value.language.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.language.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.language.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.descriptionSer, it)
     }
-    ((value.expression?.value))?.let { encoder.encodeStringElement(__desc, 8, it) }
+    ((value.expression?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.expression?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.descriptionSer, it)
     }
-    ((value.reference?.value))?.let { encoder.encodeStringElement(__desc, 10, it) }
+    ((value.reference?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.reference?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.descriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.descriptionSer, it)
     }
   }
 

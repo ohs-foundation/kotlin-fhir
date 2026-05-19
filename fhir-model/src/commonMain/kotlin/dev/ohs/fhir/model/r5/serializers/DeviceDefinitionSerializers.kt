@@ -99,14 +99,13 @@ internal object DeviceDefinitionUdiDeviceIdentifierSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.UdiDeviceIdentifier =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.UdiDeviceIdentifier) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.UdiDeviceIdentifier {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.UdiDeviceIdentifier {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -118,52 +117,51 @@ internal object DeviceDefinitionUdiDeviceIdentifierSerializer :
     var _jurisdiction: Element? = null
     var marketDistribution: List<DeviceDefinition.UdiDeviceIdentifier.MarketDistribution>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> deviceIdentifier = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> deviceIdentifier = decoder.decodeStringElement(descriptor, i)
         4 ->
           _deviceIdentifier =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.deviceIdentifierSer,
               null,
             )
-        5 -> issuer = decoder.decodeStringElement(__desc, __i)
+        5 -> issuer = decoder.decodeStringElement(descriptor, i)
         6 ->
           _issuer =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.deviceIdentifierSer,
               null,
             )
-        7 -> jurisdiction = decoder.decodeStringElement(__desc, __i)
+        7 -> jurisdiction = decoder.decodeStringElement(descriptor, i)
         8 ->
           _jurisdiction =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.deviceIdentifierSer,
               null,
             )
         9 ->
           marketDistribution =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.marketDistributionSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding UdiDeviceIdentifier: " + __i)
+        else -> throw SerializationException("Unexpected index decoding UdiDeviceIdentifier: " + i)
       }
     }
     return DeviceDefinition.UdiDeviceIdentifier(
@@ -177,31 +175,35 @@ internal object DeviceDefinitionUdiDeviceIdentifierSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: DeviceDefinition.UdiDeviceIdentifier,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.deviceIdentifier.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.deviceIdentifier.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.deviceIdentifier.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.deviceIdentifierSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.deviceIdentifierSer, it)
     }
-    ((value.issuer.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.issuer.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.issuer.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.deviceIdentifierSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.deviceIdentifierSer, it)
     }
-    ((value.jurisdiction.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.jurisdiction.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.jurisdiction.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.deviceIdentifierSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.deviceIdentifierSer, it)
     }
     if (value.marketDistribution.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         9,
         Hoisted.marketDistributionSer,
         value.marketDistribution,
@@ -249,19 +251,18 @@ internal object DeviceDefinitionUdiDeviceIdentifierMarketDistributionSerializer 
   override fun deserialize(
     decoder: Decoder
   ): DeviceDefinition.UdiDeviceIdentifier.MarketDistribution =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: DeviceDefinition.UdiDeviceIdentifier.MarketDistribution,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): DeviceDefinition.UdiDeviceIdentifier.MarketDistribution {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -269,23 +270,28 @@ internal object DeviceDefinitionUdiDeviceIdentifierMarketDistributionSerializer 
     var subJurisdiction: KotlinString? = null
     var _subJurisdiction: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           marketPeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.marketPeriodSer, null)
-        4 -> subJurisdiction = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.marketPeriodSer, null)
+        4 -> subJurisdiction = decoder.decodeStringElement(descriptor, i)
         5 ->
           _subJurisdiction =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subJurisdictionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.subJurisdictionSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding MarketDistribution: " + __i)
+        else -> throw SerializationException("Unexpected index decoding MarketDistribution: " + i)
       }
     }
     return DeviceDefinition.UdiDeviceIdentifier.MarketDistribution(
@@ -297,22 +303,26 @@ internal object DeviceDefinitionUdiDeviceIdentifierMarketDistributionSerializer 
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: DeviceDefinition.UdiDeviceIdentifier.MarketDistribution,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.marketPeriod)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.marketPeriodSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.marketPeriodSer, it)
     }
-    ((value.subJurisdiction.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.subJurisdiction.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.subJurisdiction.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.subJurisdictionSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.subJurisdictionSer, it)
     }
   }
 
@@ -354,14 +364,15 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.RegulatoryIdentifier =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.RegulatoryIdentifier) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.RegulatoryIdentifier {
-    val __desc = descriptor
+  private fun deserializeInternal(
+    decoder: CompositeDecoder
+  ): DeviceDefinition.RegulatoryIdentifier {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -374,29 +385,29 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
     var jurisdiction: KotlinString? = null
     var _jurisdiction: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeStringElement(__desc, __i)
-        4 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        5 -> deviceIdentifier = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeStringElement(descriptor, i)
+        4 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        5 -> deviceIdentifier = decoder.decodeStringElement(descriptor, i)
         6 ->
           _deviceIdentifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        7 -> issuer = decoder.decodeStringElement(__desc, __i)
-        8 -> _issuer = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        9 -> jurisdiction = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        7 -> issuer = decoder.decodeStringElement(descriptor, i)
+        8 ->
+          _issuer = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        9 -> jurisdiction = decoder.decodeStringElement(descriptor, i)
         10 ->
           _jurisdiction =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding RegulatoryIdentifier: " + __i)
+        else -> throw SerializationException("Unexpected index decoding RegulatoryIdentifier: " + i)
       }
     }
     return DeviceDefinition.RegulatoryIdentifier(
@@ -414,31 +425,35 @@ internal object DeviceDefinitionRegulatoryIdentifierSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: DeviceDefinition.RegulatoryIdentifier,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
-    ((value.deviceIdentifier.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.deviceIdentifier.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.deviceIdentifier.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, it)
     }
-    ((value.issuer.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.issuer.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.issuer.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, it)
     }
-    ((value.jurisdiction.value))?.let { encoder.encodeStringElement(__desc, 9, it) }
+    ((value.jurisdiction.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.jurisdiction.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.typeSer, it)
     }
   }
 
@@ -473,14 +488,13 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.DeviceName =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.DeviceName) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.DeviceName {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.DeviceName {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -489,20 +503,20 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
     var type: KotlinString? = null
     var _type: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> name = decoder.decodeStringElement(__desc, __i)
-        4 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
-        5 -> type = decoder.decodeStringElement(__desc, __i)
-        6 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> name = decoder.decodeStringElement(descriptor, i)
+        4 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
+        5 -> type = decoder.decodeStringElement(descriptor, i)
+        6 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding DeviceName: " + __i)
+        else -> throw SerializationException("Unexpected index decoding DeviceName: " + i)
       }
     }
     return DeviceDefinition.DeviceName(
@@ -514,20 +528,24 @@ internal object DeviceDefinitionDeviceNameSerializer : KSerializer<DeviceDefinit
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.DeviceName) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.DeviceName) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.name.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.name.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.name.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
     }
   }
 
@@ -565,34 +583,33 @@ internal object DeviceDefinitionClassificationSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Classification =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Classification) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.Classification {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Classification {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var type: CodeableConcept? = null
     var justification: List<RelatedArtifact>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
           justification =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.justificationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.justificationSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Classification: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Classification: " + i)
       }
     }
     return DeviceDefinition.Classification(
@@ -604,16 +621,28 @@ internal object DeviceDefinitionClassificationSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.Classification) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: DeviceDefinition.Classification,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
     if (value.justification.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.justificationSer, value.justification)
+      encoder.encodeSerializableElement(
+        descriptor,
+        4,
+        Hoisted.justificationSer,
+        value.justification,
+      )
   }
 
   private object Hoisted {
@@ -661,14 +690,13 @@ internal object DeviceDefinitionConformsToSerializer : KSerializer<DeviceDefinit
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.ConformsTo =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.ConformsTo) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.ConformsTo {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.ConformsTo {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -678,29 +706,30 @@ internal object DeviceDefinitionConformsToSerializer : KSerializer<DeviceDefinit
     var _version: List<Element?>? = null
     var source: List<RelatedArtifact>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           category =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
         4 ->
           specification =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.categorySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.categorySer, null)
         5 ->
-          version = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionSer, null)
+          version =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionSer, null)
         6 ->
           _version =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionSer2, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionSer2, null)
         7 ->
-          source = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.sourceSer, null)
+          source = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sourceSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ConformsTo: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ConformsTo: " + i)
       }
     }
     return DeviceDefinition.ConformsTo(
@@ -717,25 +746,31 @@ internal object DeviceDefinitionConformsToSerializer : KSerializer<DeviceDefinit
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.ConformsTo) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.ConformsTo) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.category)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.categorySer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.category)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, it)
+    }
     (value.specification)?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.categorySer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.categorySer, it)
     }
     (value.version.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.versionSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.versionSer, it)
     }
     (value.version.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.versionSer2, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.versionSer2, it)
     }
     if (value.source.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.sourceSer, value.source)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.sourceSer, value.source)
   }
 
   private object Hoisted {
@@ -783,14 +818,13 @@ internal object DeviceDefinitionHasPartSerializer : KSerializer<DeviceDefinition
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.HasPart =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.HasPart) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.HasPart {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.HasPart {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -798,21 +832,22 @@ internal object DeviceDefinitionHasPartSerializer : KSerializer<DeviceDefinition
     var count: Int? = null
     var _count: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           reference =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.referenceSer, null)
-        4 -> count = decoder.decodeIntElement(__desc, __i)
-        5 -> _count = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+        4 -> count = decoder.decodeIntElement(descriptor, i)
+        5 ->
+          _count = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding HasPart: " + __i)
+        else -> throw SerializationException("Unexpected index decoding HasPart: " + i)
       }
     }
     return DeviceDefinition.HasPart(
@@ -824,19 +859,23 @@ internal object DeviceDefinitionHasPartSerializer : KSerializer<DeviceDefinition
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.HasPart) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.HasPart) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.reference)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.referenceSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
     }
-    ((value.count?.value))?.let { encoder.encodeIntElement(__desc, 4, it) }
+    ((value.count?.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
     (value.count?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.countSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.countSer, it)
     }
   }
 
@@ -892,14 +931,13 @@ internal object DeviceDefinitionPackagingSerializer : KSerializer<DeviceDefiniti
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Packaging =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Packaging) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.Packaging {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Packaging {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -911,36 +949,37 @@ internal object DeviceDefinitionPackagingSerializer : KSerializer<DeviceDefiniti
     var udiDeviceIdentifier: List<DeviceDefinition.UdiDeviceIdentifier>? = null
     var packaging: List<DeviceDefinition.Packaging>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
-        4 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        5 -> count = decoder.decodeIntElement(__desc, __i)
-        6 -> _count = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        4 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        5 -> count = decoder.decodeIntElement(descriptor, i)
+        6 ->
+          _count = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
         7 ->
           distributor =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.distributorSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.distributorSer, null)
         8 ->
           udiDeviceIdentifier =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.udiDeviceIdentifierSer,
               null,
             )
         9 ->
           packaging =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.packagingSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.packagingSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Packaging: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Packaging: " + i)
       }
     }
     return DeviceDefinition.Packaging(
@@ -956,32 +995,36 @@ internal object DeviceDefinitionPackagingSerializer : KSerializer<DeviceDefiniti
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.Packaging) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.Packaging) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.identifier)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.identifierSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.identifierSer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.typeSer, it) }
-    ((value.count?.value))?.let { encoder.encodeIntElement(__desc, 5, it) }
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
+    ((value.count?.value))?.let { encoder.encodeIntElement(descriptor, 5, it) }
     (value.count?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.countSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.countSer, it)
     }
     if (value.distributor.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.distributorSer, value.distributor)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.distributorSer, value.distributor)
     if (value.udiDeviceIdentifier.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         8,
         Hoisted.udiDeviceIdentifierSer,
         value.udiDeviceIdentifier,
       )
     if (value.packaging.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.packagingSer, value.packaging)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.packagingSer, value.packaging)
   }
 
   private object Hoisted {
@@ -1041,14 +1084,15 @@ internal object DeviceDefinitionPackagingDistributorSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Packaging.Distributor =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Packaging.Distributor) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.Packaging.Distributor {
-    val __desc = descriptor
+  private fun deserializeInternal(
+    decoder: CompositeDecoder
+  ): DeviceDefinition.Packaging.Distributor {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1056,26 +1100,26 @@ internal object DeviceDefinitionPackagingDistributorSerializer :
     var _name: Element? = null
     var organizationReference: List<Reference>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> name = decoder.decodeStringElement(__desc, __i)
-        4 -> _name = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.nameSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> name = decoder.decodeStringElement(descriptor, i)
+        4 -> _name = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.nameSer, null)
         5 ->
           organizationReference =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.organizationReferenceSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Distributor: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Distributor: " + i)
       }
     }
     return DeviceDefinition.Packaging.Distributor(
@@ -1087,23 +1131,27 @@ internal object DeviceDefinitionPackagingDistributorSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: DeviceDefinition.Packaging.Distributor,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.name?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.name?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.nameSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
     if (value.organizationReference.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         5,
         Hoisted.organizationReferenceSer,
         value.organizationReference,
@@ -1146,14 +1194,13 @@ internal object DeviceDefinitionVersionSerializer : KSerializer<DeviceDefinition
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Version =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Version) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.Version {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Version {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1162,22 +1209,23 @@ internal object DeviceDefinitionVersionSerializer : KSerializer<DeviceDefinition
     var `value`: KotlinString? = null
     var _value: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
           component =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.componentSer, null)
-        5 -> `value` = decoder.decodeStringElement(__desc, __i)
-        6 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.componentSer, null)
+        5 -> `value` = decoder.decodeStringElement(descriptor, i)
+        6 ->
+          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Version: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Version: " + i)
       }
     }
     return DeviceDefinition.Version(
@@ -1190,20 +1238,24 @@ internal object DeviceDefinitionVersionSerializer : KSerializer<DeviceDefinition
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.Version) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.Version) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
     (value.component)?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.componentSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.componentSer, it)
     }
-    ((value.`value`.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.`value`.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.`value`.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.valueSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueSer, it)
     }
   }
 
@@ -1249,14 +1301,13 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Property =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Property) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.Property {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Property {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1272,41 +1323,46 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
     var valueRange: Range? = null
     var valueAttachment: Attachment? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
           valueQuantity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueQuantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
         5 ->
           valueCodeableConcept =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        6 -> valueString = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        6 -> valueString = decoder.decodeStringElement(descriptor, i)
         7 ->
           _valueString =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueStringSer, null)
-        8 -> valueBoolean = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueStringSer, null)
+        8 -> valueBoolean = decoder.decodeBooleanElement(descriptor, i)
         9 ->
           _valueBoolean =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueStringSer, null)
-        10 -> valueInteger = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueStringSer, null)
+        10 -> valueInteger = decoder.decodeIntElement(descriptor, i)
         11 ->
           _valueInteger =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueStringSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueStringSer, null)
         12 ->
           valueRange =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRangeSer, null)
         13 ->
           valueAttachment =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueAttachmentSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.valueAttachmentSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Property: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Property: " + i)
       }
     }
     return DeviceDefinition.Property(
@@ -1327,45 +1383,49 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.Property) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.Property) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
     when (val __d = value.`value`) {
       null -> {}
       is DeviceDefinition.Property.Value.Quantity -> {
-        encoder.encodeSerializableElement(__desc, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
       }
       is DeviceDefinition.Property.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(__desc, 5, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, __d.value)
       }
       is DeviceDefinition.Property.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 7, Hoisted.valueStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueStringSer, it)
         }
       }
       is DeviceDefinition.Property.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(__desc, 8, it) }
+        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 9, Hoisted.valueStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueStringSer, it)
         }
       }
       is DeviceDefinition.Property.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(__desc, 10, it) }
+        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 11, Hoisted.valueStringSer, it)
+          encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueStringSer, it)
         }
       }
       is DeviceDefinition.Property.Value.Range -> {
-        encoder.encodeSerializableElement(__desc, 12, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, __d.value)
       }
       is DeviceDefinition.Property.Value.Attachment -> {
-        encoder.encodeSerializableElement(__desc, 13, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueAttachmentSer, __d.value)
       }
     }
   }
@@ -1407,36 +1467,35 @@ internal object DeviceDefinitionLinkSerializer : KSerializer<DeviceDefinition.Li
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Link =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Link) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.Link {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Link {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var relation: Coding? = null
     var relatedDevice: CodeableReference? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           relation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.relationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.relationSer, null)
         4 ->
           relatedDevice =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.relatedDeviceSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.relatedDeviceSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Link: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Link: " + i)
       }
     }
     return DeviceDefinition.Link(
@@ -1448,16 +1507,22 @@ internal object DeviceDefinitionLinkSerializer : KSerializer<DeviceDefinition.Li
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.Link) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.Link) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.relation)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.relationSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.relation)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.relationSer, it)
+    }
     (value.relatedDevice)?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.relatedDeviceSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.relatedDeviceSer, it)
     }
   }
 
@@ -1495,14 +1560,13 @@ internal object DeviceDefinitionMaterialSerializer : KSerializer<DeviceDefinitio
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Material =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Material) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.Material {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Material {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1512,27 +1576,27 @@ internal object DeviceDefinitionMaterialSerializer : KSerializer<DeviceDefinitio
     var allergenicIndicator: KotlinBoolean? = null
     var _allergenicIndicator: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           substance =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.substanceSer, null)
-        4 -> alternate = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.substanceSer, null)
+        4 -> alternate = decoder.decodeBooleanElement(descriptor, i)
         5 ->
           _alternate =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.alternateSer, null)
-        6 -> allergenicIndicator = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.alternateSer, null)
+        6 -> allergenicIndicator = decoder.decodeBooleanElement(descriptor, i)
         7 ->
           _allergenicIndicator =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.alternateSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.alternateSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Material: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Material: " + i)
       }
     }
     return DeviceDefinition.Material(
@@ -1545,23 +1609,27 @@ internal object DeviceDefinitionMaterialSerializer : KSerializer<DeviceDefinitio
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.Material) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.Material) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.substance)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.substanceSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.substanceSer, it)
     }
-    ((value.alternate?.value))?.let { encoder.encodeBooleanElement(__desc, 4, it) }
+    ((value.alternate?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.alternate?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.alternateSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.alternateSer, it)
     }
-    ((value.allergenicIndicator?.value))?.let { encoder.encodeBooleanElement(__desc, 6, it) }
+    ((value.allergenicIndicator?.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
     (value.allergenicIndicator?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.alternateSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.alternateSer, it)
     }
   }
 
@@ -1623,14 +1691,13 @@ internal object DeviceDefinitionGuidelineSerializer : KSerializer<DeviceDefiniti
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.Guideline =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.Guideline) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.Guideline {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.Guideline {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1644,49 +1711,54 @@ internal object DeviceDefinitionGuidelineSerializer : KSerializer<DeviceDefiniti
     var intendedUse: KotlinString? = null
     var _intendedUse: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           useContext =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useContextSer, null)
-        4 -> usageInstruction = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useContextSer, null)
+        4 -> usageInstruction = decoder.decodeStringElement(descriptor, i)
         5 ->
           _usageInstruction =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.usageInstructionSer,
               null,
             )
         6 ->
           relatedArtifact =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.relatedArtifactSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.relatedArtifactSer,
+              null,
+            )
         7 ->
           indication =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.indicationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.indicationSer, null)
         8 ->
           contraindication =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.indicationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.indicationSer, null)
         9 ->
           warning =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.indicationSer, null)
-        10 -> intendedUse = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.indicationSer, null)
+        10 -> intendedUse = decoder.decodeStringElement(descriptor, i)
         11 ->
           _intendedUse =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.usageInstructionSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Guideline: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Guideline: " + i)
       }
     }
     return DeviceDefinition.Guideline(
@@ -1703,35 +1775,44 @@ internal object DeviceDefinitionGuidelineSerializer : KSerializer<DeviceDefiniti
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.Guideline) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.Guideline) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     if (value.useContext.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.useContextSer, value.useContext)
-    ((value.usageInstruction?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.useContextSer, value.useContext)
+    ((value.usageInstruction?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.usageInstruction?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.usageInstructionSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.usageInstructionSer, it)
     }
     if (value.relatedArtifact.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         6,
         Hoisted.relatedArtifactSer,
         value.relatedArtifact,
       )
     if (value.indication.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.indicationSer, value.indication)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.indicationSer, value.indication)
     if (value.contraindication.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.indicationSer, value.contraindication)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8,
+        Hoisted.indicationSer,
+        value.contraindication,
+      )
     if (value.warning.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.indicationSer, value.warning)
-    ((value.intendedUse?.value))?.let { encoder.encodeStringElement(__desc, 10, it) }
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.indicationSer, value.warning)
+    ((value.intendedUse?.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
     (value.intendedUse?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.usageInstructionSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.usageInstructionSer, it)
     }
   }
 
@@ -1783,14 +1864,13 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.CorrectiveAction =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.CorrectiveAction) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.CorrectiveAction {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.CorrectiveAction {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1800,24 +1880,25 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
     var _scope: Element? = null
     var period: Period? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> recall = decoder.decodeBooleanElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> recall = decoder.decodeBooleanElement(descriptor, i)
         4 ->
-          _recall = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.recallSer, null)
-        5 -> scope = decoder.decodeStringElement(__desc, __i)
+          _recall =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.recallSer, null)
+        5 -> scope = decoder.decodeStringElement(descriptor, i)
         6 ->
-          _scope = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.recallSer, null)
+          _scope = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.recallSer, null)
         7 ->
-          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding CorrectiveAction: " + __i)
+        else -> throw SerializationException("Unexpected index decoding CorrectiveAction: " + i)
       }
     }
     return DeviceDefinition.CorrectiveAction(
@@ -1833,22 +1914,29 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.CorrectiveAction) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: DeviceDefinition.CorrectiveAction,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.recall.value))?.let { encoder.encodeBooleanElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.recall.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
     (value.recall.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.recallSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.recallSer, it)
     }
-    ((value.scope?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.scope?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.scope?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.recallSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.recallSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.periodSer, it) }
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.periodSer, it) }
   }
 
   private object Hoisted {
@@ -1888,14 +1976,13 @@ internal object DeviceDefinitionChargeItemSerializer : KSerializer<DeviceDefinit
     }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition.ChargeItem =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition.ChargeItem) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DeviceDefinition.ChargeItem {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DeviceDefinition.ChargeItem {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -1904,26 +1991,37 @@ internal object DeviceDefinitionChargeItemSerializer : KSerializer<DeviceDefinit
     var effectivePeriod: Period? = null
     var useContext: List<UsageContext>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           chargeItemCode =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.chargeItemCodeSer, null)
-        4 -> count = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.chargeItemCodeSer,
+              null,
+            )
+        4 ->
+          count = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.countSer, null)
         5 ->
           effectivePeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.effectivePeriodSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.effectivePeriodSer,
+              null,
+            )
         6 ->
           useContext =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useContextSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useContextSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ChargeItem: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ChargeItem: " + i)
       }
     }
     return DeviceDefinition.ChargeItem(
@@ -1937,22 +2035,26 @@ internal object DeviceDefinitionChargeItemSerializer : KSerializer<DeviceDefinit
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DeviceDefinition.ChargeItem) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DeviceDefinition.ChargeItem) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.chargeItemCode)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.chargeItemCodeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.chargeItemCodeSer, it)
     }
-    (value.count)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.countSer, it) }
+    (value.count)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.countSer, it) }
     (value.effectivePeriod)?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.effectivePeriodSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.effectivePeriodSer, it)
     }
     if (value.useContext.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.useContextSer, value.useContext)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.useContextSer, value.useContext)
   }
 
   private object Hoisted {
@@ -2127,21 +2229,20 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
   }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "DeviceDefinition")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): DeviceDefinition {
-    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -2183,137 +2284,145 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
     var correctiveAction: DeviceDefinition.CorrectiveAction? = null
     var chargeItem: List<DeviceDefinition.ChargeItem>? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        10 -> description = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        10 -> description = decoder.decodeStringElement(descriptor, i)
         11 ->
           _description =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         12 ->
           identifier =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.identifierSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
         13 ->
           udiDeviceIdentifier =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.udiDeviceIdentifierSer,
               null,
             )
         14 ->
           regulatoryIdentifier =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.regulatoryIdentifierSer,
               null,
             )
-        15 -> partNumber = decoder.decodeStringElement(__desc, __i)
+        15 -> partNumber = decoder.decodeStringElement(descriptor, i)
         16 ->
           _partNumber =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         17 ->
           manufacturer =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.manufacturerSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.manufacturerSer, null)
         18 ->
           deviceName =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.deviceNameSer, null)
-        19 -> modelNumber = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.deviceNameSer, null)
+        19 -> modelNumber = decoder.decodeStringElement(descriptor, i)
         20 ->
           _modelNumber =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         21 ->
           classification =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.classificationSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.classificationSer,
+              null,
+            )
         22 ->
           conformsTo =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.conformsToSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.conformsToSer, null)
         23 ->
-          hasPart = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.hasPartSer, null)
+          hasPart =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.hasPartSer, null)
         24 ->
           packaging =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.packagingSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.packagingSer, null)
         25 ->
-          version = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.versionSer, null)
+          version =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.versionSer, null)
         26 ->
-          safety = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.safetySer, null)
+          safety = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.safetySer, null)
         27 ->
           shelfLifeStorage =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.shelfLifeStorageSer,
               null,
             )
         28 ->
           languageCode =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.safetySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.safetySer, null)
         29 ->
           `property` =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.propertySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.propertySer, null)
         30 ->
           owner =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.manufacturerSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.manufacturerSer, null)
         31 ->
-          contact = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.contactSer, null)
-        32 -> link = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.linkSer, null)
-        33 -> note = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.noteSer, null)
+          contact =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+        32 -> link = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.linkSer, null)
+        33 -> note = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.noteSer, null)
         34 ->
           material =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.materialSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.materialSer, null)
         35 ->
           productionIdentifierInUDI =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.productionIdentifierInUDISer,
               null,
             )
         36 ->
           _productionIdentifierInUDI =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.productionIdentifierInUDISer2,
               null,
             )
         37 ->
           guideline =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.guidelineSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.guidelineSer, null)
         38 ->
           correctiveAction =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.correctiveActionSer,
               null,
             )
         39 ->
           chargeItem =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.chargeItemSer, null)
-        else -> throw SerializationException("Unexpected index decoding DeviceDefinition: " + __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.chargeItemSer, null)
+        else -> throw SerializationException("Unexpected index decoding DeviceDefinition: " + i)
       }
     }
     return DeviceDefinition(
@@ -2364,114 +2473,237 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: DeviceDefinition,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.description?.value))?.let { encoder.encodeStringElement(__desc, 10 + __off, it) }
+    ((value.description?.value))?.let {
+      encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it)
+    }
     (value.description?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        11 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.identifier.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.identifierSer, value.identifier)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12 + descriptorOffset,
+        Hoisted.identifierSer,
+        value.identifier,
+      )
     if (value.udiDeviceIdentifier.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        13 + __off,
+        descriptor,
+        13 + descriptorOffset,
         Hoisted.udiDeviceIdentifierSer,
         value.udiDeviceIdentifier,
       )
     if (value.regulatoryIdentifier.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        14 + __off,
+        descriptor,
+        14 + descriptorOffset,
         Hoisted.regulatoryIdentifierSer,
         value.regulatoryIdentifier,
       )
-    ((value.partNumber?.value))?.let { encoder.encodeStringElement(__desc, 15 + __off, it) }
+    ((value.partNumber?.value))?.let {
+      encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
+    }
     (value.partNumber?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 16 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        16 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     (value.manufacturer)?.let {
-      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.manufacturerSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17 + descriptorOffset,
+        Hoisted.manufacturerSer,
+        it,
+      )
     }
     if (value.deviceName.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.deviceNameSer, value.deviceName)
-    ((value.modelNumber?.value))?.let { encoder.encodeStringElement(__desc, 19 + __off, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        18 + descriptorOffset,
+        Hoisted.deviceNameSer,
+        value.deviceName,
+      )
+    ((value.modelNumber?.value))?.let {
+      encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
+    }
     (value.modelNumber?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        20 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.classification.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        21 + __off,
+        descriptor,
+        21 + descriptorOffset,
         Hoisted.classificationSer,
         value.classification,
       )
     if (value.conformsTo.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.conformsToSer, value.conformsTo)
+      encoder.encodeSerializableElement(
+        descriptor,
+        22 + descriptorOffset,
+        Hoisted.conformsToSer,
+        value.conformsTo,
+      )
     if (value.hasPart.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 23 + __off, Hoisted.hasPartSer, value.hasPart)
+      encoder.encodeSerializableElement(
+        descriptor,
+        23 + descriptorOffset,
+        Hoisted.hasPartSer,
+        value.hasPart,
+      )
     if (value.packaging.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 24 + __off, Hoisted.packagingSer, value.packaging)
+      encoder.encodeSerializableElement(
+        descriptor,
+        24 + descriptorOffset,
+        Hoisted.packagingSer,
+        value.packaging,
+      )
     if (value.version.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 25 + __off, Hoisted.versionSer, value.version)
+      encoder.encodeSerializableElement(
+        descriptor,
+        25 + descriptorOffset,
+        Hoisted.versionSer,
+        value.version,
+      )
     if (value.safety.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 26 + __off, Hoisted.safetySer, value.safety)
+      encoder.encodeSerializableElement(
+        descriptor,
+        26 + descriptorOffset,
+        Hoisted.safetySer,
+        value.safety,
+      )
     if (value.shelfLifeStorage.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        27 + __off,
+        descriptor,
+        27 + descriptorOffset,
         Hoisted.shelfLifeStorageSer,
         value.shelfLifeStorage,
       )
     if (value.languageCode.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 28 + __off, Hoisted.safetySer, value.languageCode)
+      encoder.encodeSerializableElement(
+        descriptor,
+        28 + descriptorOffset,
+        Hoisted.safetySer,
+        value.languageCode,
+      )
     if (value.`property`.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 29 + __off, Hoisted.propertySer, value.`property`)
+      encoder.encodeSerializableElement(
+        descriptor,
+        29 + descriptorOffset,
+        Hoisted.propertySer,
+        value.`property`,
+      )
     (value.owner)?.let {
-      encoder.encodeSerializableElement(__desc, 30 + __off, Hoisted.manufacturerSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        30 + descriptorOffset,
+        Hoisted.manufacturerSer,
+        it,
+      )
     }
     if (value.contact.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 31 + __off, Hoisted.contactSer, value.contact)
+      encoder.encodeSerializableElement(
+        descriptor,
+        31 + descriptorOffset,
+        Hoisted.contactSer,
+        value.contact,
+      )
     if (value.link.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 32 + __off, Hoisted.linkSer, value.link)
+      encoder.encodeSerializableElement(
+        descriptor,
+        32 + descriptorOffset,
+        Hoisted.linkSer,
+        value.link,
+      )
     if (value.note.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 33 + __off, Hoisted.noteSer, value.note)
+      encoder.encodeSerializableElement(
+        descriptor,
+        33 + descriptorOffset,
+        Hoisted.noteSer,
+        value.note,
+      )
     if (value.material.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 34 + __off, Hoisted.materialSer, value.material)
+      encoder.encodeSerializableElement(
+        descriptor,
+        34 + descriptorOffset,
+        Hoisted.materialSer,
+        value.material,
+      )
     (value.productionIdentifierInUDI
         .map { it.value?.getCode() }
         .takeUnless { it.all { it == null } })
       ?.let {
         encoder.encodeSerializableElement(
-          __desc,
-          35 + __off,
+          descriptor,
+          35 + descriptorOffset,
           Hoisted.productionIdentifierInUDISer,
           it,
         )
@@ -2479,20 +2711,30 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
     (value.productionIdentifierInUDI.map { it.toElement() }.takeUnless { it.all { it == null } })
       ?.let {
         encoder.encodeSerializableElement(
-          __desc,
-          36 + __off,
+          descriptor,
+          36 + descriptorOffset,
           Hoisted.productionIdentifierInUDISer2,
           it,
         )
       }
     (value.guideline)?.let {
-      encoder.encodeSerializableElement(__desc, 37 + __off, Hoisted.guidelineSer, it)
+      encoder.encodeSerializableElement(descriptor, 37 + descriptorOffset, Hoisted.guidelineSer, it)
     }
     (value.correctiveAction)?.let {
-      encoder.encodeSerializableElement(__desc, 38 + __off, Hoisted.correctiveActionSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        38 + descriptorOffset,
+        Hoisted.correctiveActionSer,
+        it,
+      )
     }
     if (value.chargeItem.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 39 + __off, Hoisted.chargeItemSer, value.chargeItem)
+      encoder.encodeSerializableElement(
+        descriptor,
+        39 + descriptorOffset,
+        Hoisted.chargeItemSer,
+        value.chargeItem,
+      )
   }
 
   private object Hoisted {
@@ -2633,12 +2875,12 @@ internal object DeviceDefinitionPolymorphicSerializer : KSerializer<DeviceDefini
 
   override fun serialize(encoder: Encoder, `value`: DeviceDefinition) {
     encoder.encodeStructure(descriptor) {
-      DeviceDefinitionSerializer.serializeJson(this, descriptor, 0, value)
+      DeviceDefinitionSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): DeviceDefinition =
     decoder.decodeStructure(descriptor) {
-      DeviceDefinitionSerializer.deserializeJson(this, descriptor, 0)
+      DeviceDefinitionSerializer.deserializeInternal(this, descriptor, 0)
     }
 }

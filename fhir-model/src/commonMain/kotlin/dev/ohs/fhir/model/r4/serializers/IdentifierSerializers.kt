@@ -65,14 +65,13 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
     }
 
   override fun deserialize(decoder: Decoder): Identifier =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Identifier) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Identifier {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Identifier {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var use: KotlinString? = null
@@ -85,25 +84,26 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
     var period: Period? = null
     var assigner: Reference? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> use = decoder.decodeStringElement(__desc, __i)
-        3 -> _use = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        4 -> type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        5 -> system = decoder.decodeStringElement(__desc, __i)
-        6 -> _system = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        7 -> `value` = decoder.decodeStringElement(__desc, __i)
-        8 -> _value = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> use = decoder.decodeStringElement(descriptor, i)
+        3 -> _use = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        4 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        5 -> system = decoder.decodeStringElement(descriptor, i)
+        6 ->
+          _system = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        7 -> `value` = decoder.decodeStringElement(descriptor, i)
+        8 -> _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
         9 ->
-          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
         10 ->
           assigner =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.assignerSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.assignerSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Identifier: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Identifier: " + i)
       }
     }
     return Identifier(
@@ -118,26 +118,27 @@ internal object IdentifierSerializer : KSerializer<Identifier> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Identifier) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Identifier) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.use?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.useSer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.typeSer, it) }
-    ((value.system?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
+    ((value.system?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.system?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.useSer, it)
     }
-    ((value.`value`?.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.`value`?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.`value`?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.useSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 9, Hoisted.periodSer, it) }
-    (value.assigner)?.let { encoder.encodeSerializableElement(__desc, 10, Hoisted.assignerSer, it) }
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 9, Hoisted.periodSer, it) }
+    (value.assigner)?.let {
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.assignerSer, it)
+    }
   }
 
   private object Hoisted {

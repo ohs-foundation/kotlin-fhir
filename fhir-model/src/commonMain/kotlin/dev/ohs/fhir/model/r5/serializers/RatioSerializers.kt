@@ -52,32 +52,31 @@ internal object RatioSerializer : KSerializer<Ratio> {
     }
 
   override fun deserialize(decoder: Decoder): Ratio =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: Ratio) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): Ratio {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): Ratio {
     var id: String? = null
     var extension: List<Extension>? = null
     var numerator: Quantity? = null
     var denominator: Quantity? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           numerator =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.numeratorSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.numeratorSer, null)
         3 ->
           denominator =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.numeratorSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.numeratorSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Ratio: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Ratio: " + i)
       }
     }
     return Ratio(
@@ -88,16 +87,15 @@ internal object RatioSerializer : KSerializer<Ratio> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: Ratio) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: Ratio) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     (value.numerator)?.let {
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.numeratorSer, it)
+      encoder.encodeSerializableElement(descriptor, 2, Hoisted.numeratorSer, it)
     }
     (value.denominator)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.numeratorSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.numeratorSer, it)
     }
   }
 

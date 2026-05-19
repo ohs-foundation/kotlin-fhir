@@ -70,16 +70,15 @@ internal object SubstanceSourceMaterialFractionDescriptionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.FractionDescription =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.FractionDescription) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): SubstanceSourceMaterial.FractionDescription {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -87,24 +86,23 @@ internal object SubstanceSourceMaterialFractionDescriptionSerializer :
     var _fraction: Element? = null
     var materialType: CodeableConcept? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> fraction = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> fraction = decoder.decodeStringElement(descriptor, i)
         4 ->
           _fraction =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.fractionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.fractionSer, null)
         5 ->
           materialType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.materialTypeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.materialTypeSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding FractionDescription: " + __i)
+        else -> throw SerializationException("Unexpected index decoding FractionDescription: " + i)
       }
     }
     return SubstanceSourceMaterial.FractionDescription(
@@ -116,22 +114,26 @@ internal object SubstanceSourceMaterialFractionDescriptionSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubstanceSourceMaterial.FractionDescription,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.fraction?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.fraction?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.fraction?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.fractionSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.fractionSer, it)
     }
     (value.materialType)?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.materialTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.materialTypeSer, it)
     }
   }
 
@@ -188,14 +190,13 @@ internal object SubstanceSourceMaterialOrganismSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.Organism) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubstanceSourceMaterial.Organism {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): SubstanceSourceMaterial.Organism {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -209,40 +210,47 @@ internal object SubstanceSourceMaterialOrganismSerializer :
     var hybrid: SubstanceSourceMaterial.Organism.Hybrid? = null
     var organismGeneral: SubstanceSourceMaterial.Organism.OrganismGeneral? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
-          family = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.familySer, null)
-        4 -> genus = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.familySer, null)
+          family = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.familySer, null)
+        4 ->
+          genus = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.familySer, null)
         5 ->
-          species = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.familySer, null)
+          species =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.familySer, null)
         6 ->
           intraspecificType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.familySer, null)
-        7 -> intraspecificDescription = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.familySer, null)
+        7 -> intraspecificDescription = decoder.decodeStringElement(descriptor, i)
         8 ->
           _intraspecificDescription =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.intraspecificDescriptionSer,
               null,
             )
         9 ->
-          author = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorSer, null)
+          author = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorSer, null)
         10 ->
-          hybrid = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.hybridSer, null)
+          hybrid = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.hybridSer, null)
         11 ->
           organismGeneral =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.organismGeneralSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.organismGeneralSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Organism: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Organism: " + i)
       }
     }
     return SubstanceSourceMaterial.Organism(
@@ -260,28 +268,37 @@ internal object SubstanceSourceMaterialOrganismSerializer :
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: SubstanceSourceMaterial.Organism) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(
+    encoder: CompositeEncoder,
+    `value`: SubstanceSourceMaterial.Organism,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.family)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.familySer, it) }
-    (value.genus)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.familySer, it) }
-    (value.species)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.familySer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.family)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.familySer, it) }
+    (value.genus)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.familySer, it) }
+    (value.species)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.familySer, it) }
     (value.intraspecificType)?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.familySer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.familySer, it)
     }
-    ((value.intraspecificDescription?.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.intraspecificDescription?.value))?.let {
+      encoder.encodeStringElement(descriptor, 7, it)
+    }
     (value.intraspecificDescription?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.intraspecificDescriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.intraspecificDescriptionSer, it)
     }
     if (value.author.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.authorSer, value.author)
-    (value.hybrid)?.let { encoder.encodeSerializableElement(__desc, 10, Hoisted.hybridSer, it) }
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.authorSer, value.author)
+    (value.hybrid)?.let { encoder.encodeSerializableElement(descriptor, 10, Hoisted.hybridSer, it) }
     (value.organismGeneral)?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.organismGeneralSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.organismGeneralSer, it)
     }
   }
 
@@ -330,14 +347,15 @@ internal object SubstanceSourceMaterialOrganismAuthorSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism.Author =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.Organism.Author) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubstanceSourceMaterial.Organism.Author {
-    val __desc = descriptor
+  private fun deserializeInternal(
+    decoder: CompositeDecoder
+  ): SubstanceSourceMaterial.Organism.Author {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -345,28 +363,28 @@ internal object SubstanceSourceMaterialOrganismAuthorSerializer :
     var authorDescription: KotlinString? = null
     var _authorDescription: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
           authorType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.authorTypeSer, null)
-        4 -> authorDescription = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.authorTypeSer, null)
+        4 -> authorDescription = decoder.decodeStringElement(descriptor, i)
         5 ->
           _authorDescription =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.authorDescriptionSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Author: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Author: " + i)
       }
     }
     return SubstanceSourceMaterial.Organism.Author(
@@ -378,22 +396,26 @@ internal object SubstanceSourceMaterialOrganismAuthorSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubstanceSourceMaterial.Organism.Author,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
     (value.authorType)?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.authorTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.authorTypeSer, it)
     }
-    ((value.authorDescription?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.authorDescription?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.authorDescription?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.authorDescriptionSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.authorDescriptionSer, it)
     }
   }
 
@@ -436,14 +458,15 @@ internal object SubstanceSourceMaterialOrganismHybridSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism.Hybrid =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.Organism.Hybrid) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubstanceSourceMaterial.Organism.Hybrid {
-    val __desc = descriptor
+  private fun deserializeInternal(
+    decoder: CompositeDecoder
+  ): SubstanceSourceMaterial.Organism.Hybrid {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -457,55 +480,55 @@ internal object SubstanceSourceMaterialOrganismHybridSerializer :
     var _paternalOrganismName: Element? = null
     var hybridType: CodeableConcept? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> maternalOrganismId = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> maternalOrganismId = decoder.decodeStringElement(descriptor, i)
         4 ->
           _maternalOrganismId =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.maternalOrganismIdSer,
               null,
             )
-        5 -> maternalOrganismName = decoder.decodeStringElement(__desc, __i)
+        5 -> maternalOrganismName = decoder.decodeStringElement(descriptor, i)
         6 ->
           _maternalOrganismName =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.maternalOrganismIdSer,
               null,
             )
-        7 -> paternalOrganismId = decoder.decodeStringElement(__desc, __i)
+        7 -> paternalOrganismId = decoder.decodeStringElement(descriptor, i)
         8 ->
           _paternalOrganismId =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.maternalOrganismIdSer,
               null,
             )
-        9 -> paternalOrganismName = decoder.decodeStringElement(__desc, __i)
+        9 -> paternalOrganismName = decoder.decodeStringElement(descriptor, i)
         10 ->
           _paternalOrganismName =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.maternalOrganismIdSer,
               null,
             )
         11 ->
           hybridType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.hybridTypeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.hybridTypeSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Hybrid: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Hybrid: " + i)
       }
     }
     return SubstanceSourceMaterial.Organism.Hybrid(
@@ -520,34 +543,38 @@ internal object SubstanceSourceMaterialOrganismHybridSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubstanceSourceMaterial.Organism.Hybrid,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.maternalOrganismId?.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.maternalOrganismId?.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.maternalOrganismId?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.maternalOrganismIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.maternalOrganismIdSer, it)
     }
-    ((value.maternalOrganismName?.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.maternalOrganismName?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.maternalOrganismName?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.maternalOrganismIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.maternalOrganismIdSer, it)
     }
-    ((value.paternalOrganismId?.value))?.let { encoder.encodeStringElement(__desc, 7, it) }
+    ((value.paternalOrganismId?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.paternalOrganismId?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.maternalOrganismIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.maternalOrganismIdSer, it)
     }
-    ((value.paternalOrganismName?.value))?.let { encoder.encodeStringElement(__desc, 9, it) }
+    ((value.paternalOrganismName?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.paternalOrganismName?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.maternalOrganismIdSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.maternalOrganismIdSer, it)
     }
     (value.hybridType)?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.hybridTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.hybridTypeSer, it)
     }
   }
 
@@ -585,19 +612,18 @@ internal object SubstanceSourceMaterialOrganismOrganismGeneralSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.Organism.OrganismGeneral =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(
     encoder: Encoder,
     `value`: SubstanceSourceMaterial.Organism.OrganismGeneral,
   ) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(
+  private fun deserializeInternal(
     decoder: CompositeDecoder
   ): SubstanceSourceMaterial.Organism.OrganismGeneral {
-    val __desc = descriptor
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -606,24 +632,27 @@ internal object SubstanceSourceMaterialOrganismOrganismGeneralSerializer :
     var `class`: CodeableConcept? = null
     var order: CodeableConcept? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
-          kingdom = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.kingdomSer, null)
+          kingdom =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.kingdomSer, null)
         4 ->
-          phylum = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.kingdomSer, null)
+          phylum =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.kingdomSer, null)
         5 ->
-          `class` = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.kingdomSer, null)
+          `class` =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.kingdomSer, null)
         6 ->
-          order = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.kingdomSer, null)
+          order = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.kingdomSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding OrganismGeneral: " + __i)
+        else -> throw SerializationException("Unexpected index decoding OrganismGeneral: " + i)
       }
     }
     return SubstanceSourceMaterial.Organism.OrganismGeneral(
@@ -637,20 +666,28 @@ internal object SubstanceSourceMaterialOrganismOrganismGeneralSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubstanceSourceMaterial.Organism.OrganismGeneral,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.kingdom)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.kingdomSer, it) }
-    (value.phylum)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.kingdomSer, it) }
-    (value.`class`)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.kingdomSer, it) }
-    (value.order)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.kingdomSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.kingdom)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.kingdomSer, it)
+    }
+    (value.phylum)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.kingdomSer, it) }
+    (value.`class`)?.let {
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.kingdomSer, it)
+    }
+    (value.order)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.kingdomSer, it) }
   }
 
   private object Hoisted {
@@ -683,34 +720,35 @@ internal object SubstanceSourceMaterialPartDescriptionSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial.PartDescription =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial.PartDescription) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubstanceSourceMaterial.PartDescription {
-    val __desc = descriptor
+  private fun deserializeInternal(
+    decoder: CompositeDecoder
+  ): SubstanceSourceMaterial.PartDescription {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
     var part: CodeableConcept? = null
     var partLocation: CodeableConcept? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> part = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.partSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> part = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.partSer, null)
         4 ->
           partLocation =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.partSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.partSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding PartDescription: " + __i)
+        else -> throw SerializationException("Unexpected index decoding PartDescription: " + i)
       }
     }
     return SubstanceSourceMaterial.PartDescription(
@@ -722,18 +760,24 @@ internal object SubstanceSourceMaterialPartDescriptionSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubstanceSourceMaterial.PartDescription,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.part)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.partSer, it) }
-    (value.partLocation)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.partSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.part)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.partSer, it) }
+    (value.partLocation)?.let {
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.partSer, it)
+    }
   }
 
   private object Hoisted {
@@ -835,21 +879,20 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
   }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "SubstanceSourceMaterial")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): SubstanceSourceMaterial {
-    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -877,128 +920,138 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
     var organism: SubstanceSourceMaterial.Organism? = null
     var partDescription: List<SubstanceSourceMaterial.PartDescription>? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         10 ->
           sourceMaterialClass =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.sourceMaterialClassSer,
               null,
             )
         11 ->
           sourceMaterialType =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.sourceMaterialClassSer,
               null,
             )
         12 ->
           sourceMaterialState =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.sourceMaterialClassSer,
               null,
             )
         13 ->
           organismId =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.organismIdSer, null)
-        14 -> organismName = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.organismIdSer, null)
+        14 -> organismName = decoder.decodeStringElement(descriptor, i)
         15 ->
           _organismName =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         16 ->
           parentSubstanceId =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.parentSubstanceIdSer,
               null,
             )
         17 ->
           parentSubstanceName =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.parentSubstanceNameSer,
               null,
             )
         18 ->
           _parentSubstanceName =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.parentSubstanceNameSer2,
               null,
             )
         19 ->
           countryOfOrigin =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.countryOfOriginSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.countryOfOriginSer,
+              null,
+            )
         20 ->
           geographicalLocation =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.parentSubstanceNameSer,
               null,
             )
         21 ->
           _geographicalLocation =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.parentSubstanceNameSer2,
               null,
             )
         22 ->
           developmentStage =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.sourceMaterialClassSer,
               null,
             )
         23 ->
           fractionDescription =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.fractionDescriptionSer,
               null,
             )
         24 ->
           organism =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.organismSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.organismSer, null)
         25 ->
           partDescription =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.partDescriptionSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.partDescriptionSer,
+              null,
+            )
         else ->
-          throw SerializationException("Unexpected index decoding SubstanceSourceMaterial: " + __i)
+          throw SerializationException("Unexpected index decoding SubstanceSourceMaterial: " + i)
       }
     }
     return SubstanceSourceMaterial(
@@ -1042,94 +1095,173 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: SubstanceSourceMaterial,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
     (value.sourceMaterialClass)?.let {
-      encoder.encodeSerializableElement(__desc, 10 + __off, Hoisted.sourceMaterialClassSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        10 + descriptorOffset,
+        Hoisted.sourceMaterialClassSer,
+        it,
+      )
     }
     (value.sourceMaterialType)?.let {
-      encoder.encodeSerializableElement(__desc, 11 + __off, Hoisted.sourceMaterialClassSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        11 + descriptorOffset,
+        Hoisted.sourceMaterialClassSer,
+        it,
+      )
     }
     (value.sourceMaterialState)?.let {
-      encoder.encodeSerializableElement(__desc, 12 + __off, Hoisted.sourceMaterialClassSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        12 + descriptorOffset,
+        Hoisted.sourceMaterialClassSer,
+        it,
+      )
     }
     (value.organismId)?.let {
-      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.organismIdSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        13 + descriptorOffset,
+        Hoisted.organismIdSer,
+        it,
+      )
     }
-    ((value.organismName?.value))?.let { encoder.encodeStringElement(__desc, 14 + __off, it) }
+    ((value.organismName?.value))?.let {
+      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
+    }
     (value.organismName?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        15 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.parentSubstanceId.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        16 + __off,
+        descriptor,
+        16 + descriptorOffset,
         Hoisted.parentSubstanceIdSer,
         value.parentSubstanceId,
       )
     (value.parentSubstanceName.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.parentSubstanceNameSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17 + descriptorOffset,
+        Hoisted.parentSubstanceNameSer,
+        it,
+      )
     }
     (value.parentSubstanceName.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 18 + __off, Hoisted.parentSubstanceNameSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        18 + descriptorOffset,
+        Hoisted.parentSubstanceNameSer2,
+        it,
+      )
     }
     if (value.countryOfOrigin.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        19 + __off,
+        descriptor,
+        19 + descriptorOffset,
         Hoisted.countryOfOriginSer,
         value.countryOfOrigin,
       )
     (value.geographicalLocation.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.parentSubstanceNameSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        20 + descriptorOffset,
+        Hoisted.parentSubstanceNameSer,
+        it,
+      )
     }
     (value.geographicalLocation.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 21 + __off, Hoisted.parentSubstanceNameSer2, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        21 + descriptorOffset,
+        Hoisted.parentSubstanceNameSer2,
+        it,
+      )
     }
     (value.developmentStage)?.let {
-      encoder.encodeSerializableElement(__desc, 22 + __off, Hoisted.sourceMaterialClassSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        22 + descriptorOffset,
+        Hoisted.sourceMaterialClassSer,
+        it,
+      )
     }
     if (value.fractionDescription.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        23 + __off,
+        descriptor,
+        23 + descriptorOffset,
         Hoisted.fractionDescriptionSer,
         value.fractionDescription,
       )
     (value.organism)?.let {
-      encoder.encodeSerializableElement(__desc, 24 + __off, Hoisted.organismSer, it)
+      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, Hoisted.organismSer, it)
     }
     if (value.partDescription.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        25 + __off,
+        descriptor,
+        25 + descriptorOffset,
         Hoisted.partDescriptionSer,
         value.partDescription,
       )
@@ -1197,12 +1329,12 @@ internal object SubstanceSourceMaterialPolymorphicSerializer :
 
   override fun serialize(encoder: Encoder, `value`: SubstanceSourceMaterial) {
     encoder.encodeStructure(descriptor) {
-      SubstanceSourceMaterialSerializer.serializeJson(this, descriptor, 0, value)
+      SubstanceSourceMaterialSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): SubstanceSourceMaterial =
     decoder.decodeStructure(descriptor) {
-      SubstanceSourceMaterialSerializer.deserializeJson(this, descriptor, 0)
+      SubstanceSourceMaterialSerializer.deserializeInternal(this, descriptor, 0)
     }
 }

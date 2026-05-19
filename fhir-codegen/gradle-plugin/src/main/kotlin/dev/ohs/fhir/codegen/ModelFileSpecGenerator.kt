@@ -490,9 +490,9 @@ private fun TypeSpec.Builder.addSealedInterfaces(
         .addModifiers(KModifier.SEALED)
         .apply {
           for (type in element.type!!) {
-            val armName = sealedChoiceArmName(type)
+            val expansionName = choiceTypeExpansionName(type)
             addType(
-              TypeSpec.classBuilder(armName)
+              TypeSpec.classBuilder(expansionName)
                 .addModifiers(KModifier.DATA)
                 .primaryConstructor(
                   FunSpec.constructorBuilder()
@@ -514,8 +514,9 @@ private fun TypeSpec.Builder.addSealedInterfaces(
                 .build()
             )
             .apply {
-              // Add an `asDataType` function per arm. Used by the parent serializer's encode path
-              // to extract the matched arm's value into a flat wire-shape slot.
+              // Add an `asDataType` function per choice type expansion. Used by the parent
+              // serializer's encode path to extract the matched expansion's value into a flat
+              // wire-shape slot.
               for (type in element.type) {
                 addDataTypeFunction(type, sealedInterfaceClassName)
               }
@@ -588,9 +589,9 @@ private fun TypeSpec.Builder.addToElementFunction(
  * )
  * ```
  *
- * The nullability here is critical since we generate `null` for arms whose wire pair is absent. As
- * a result, only one of the data types will be non-null, and the serialization code will be able to
- * correctly serialize the in-memory value to the correct data type.
+ * The nullability here is critical since we generate `null` for choice type expansions whose wire
+ * pair is absent. As a result, only one of the data types will be non-null, and the serialization
+ * code will be able to correctly serialize the in-memory value to the correct data type.
  */
 private fun TypeSpec.Builder.addOfFunction(
   className: ClassName,
@@ -658,9 +659,9 @@ private fun TypeSpec.Builder.addOfFunctionForDecimal(className: ClassName): Type
 
 /**
  * Adds a `from` function to a choice-type sealed interface companion. It takes one nullable
- * parameter per arm (the model value already merged via each arm's `of(...)`) and returns the
- * matched arm — used during deserialization in the parent resource serializer to materialize the
- * sealed value from its flat wire representation.
+ * parameter per choice type expansion (the model value already merged via each expansion's
+ * `of(...)`) and returns the matched expansion — used during deserialization in the parent resource
+ * serializer to materialize the sealed value from its flat wire representation.
  *
  * N.B. The return type is nullable for ease of code generation; the caller should null-check it
  * when the element is required.
@@ -701,7 +702,7 @@ private fun TypeSpec.Builder.addFromFunction(
               .add(
                 "if(%N != null) return %T(%N) \n",
                 "${type.code.replaceFirstChar { it.lowercase() }}Value",
-                sealedInterfaceClassName.nestedClass(sealedChoiceArmName(type)),
+                sealedInterfaceClassName.nestedClass(choiceTypeExpansionName(type)),
                 "${type.code.replaceFirstChar { it.lowercase() }}Value",
               )
               .build()
@@ -717,13 +718,13 @@ private fun TypeSpec.Builder.addDataTypeFunction(type: Type, sealedInterfaceClas
   addFunction(
     FunSpec.builder("as${type.code.capitalized()}")
       .returns(
-        sealedInterfaceClassName.nestedClass(sealedChoiceArmName(type)).copy(nullable = true)
+        sealedInterfaceClassName.nestedClass(choiceTypeExpansionName(type)).copy(nullable = true)
       )
       .addCode(
         CodeBlock.builder()
           .add(
             "return this as? %T",
-            sealedInterfaceClassName.nestedClass(sealedChoiceArmName(type)),
+            sealedInterfaceClassName.nestedClass(choiceTypeExpansionName(type)),
           )
           .build()
       )
@@ -731,9 +732,10 @@ private fun TypeSpec.Builder.addDataTypeFunction(type: Type, sealedInterfaceClas
   )
 
 /**
- * Returns the nested-class name used for a sealed choice-type arm — e.g. `Patient.Deceased.Boolean`
- * for the `boolean` arm. The subclass is NOT `@Serializable`; the enclosing sealed interface's
- * hand-rolled custom serializer handles all encode/decode, so there is no synthesized `$serializer`
- * that could trip over the lexical name clash (`value: Boolean` resolving to the subclass).
+ * Returns the nested-class name used for a sealed choice type expansion — e.g.
+ * `Patient.Deceased.Boolean` for the `boolean` expansion. The subclass is NOT `@Serializable`; the
+ * enclosing sealed interface's hand-rolled custom serializer handles all encode/decode, so there is
+ * no synthesized `$serializer` that could trip over the lexical name clash (`value: Boolean`
+ * resolving to the subclass).
  */
-internal fun sealedChoiceArmName(type: Type): String = type.code.capitalized()
+internal fun choiceTypeExpansionName(type: Type): String = type.code.capitalized()

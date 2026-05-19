@@ -82,14 +82,13 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
     }
 
   override fun deserialize(decoder: Decoder): ProdCharacteristic =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: ProdCharacteristic) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): ProdCharacteristic {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): ProdCharacteristic {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -108,41 +107,47 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
     var image: List<Attachment>? = null
     var scoring: CodeableConcept? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         3 ->
-          height = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
-        4 -> width = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
-        5 -> depth = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
+          height = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
+        4 ->
+          width = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
+        5 ->
+          depth = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
         6 ->
-          weight = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
+          weight = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
         7 ->
           nominalVolume =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
         8 ->
           externalDiameter =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.heightSer, null)
-        9 -> shape = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.heightSer, null)
+        9 -> shape = decoder.decodeStringElement(descriptor, i)
         10 ->
-          _shape = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.shapeSer, null)
-        11 -> color = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.colorSer, null)
+          _shape = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.shapeSer, null)
+        11 ->
+          color = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.colorSer, null)
         12 ->
-          _color = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.colorSer2, null)
+          _color = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.colorSer2, null)
         13 ->
-          imprint = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.colorSer, null)
+          imprint = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.colorSer, null)
         14 ->
-          _imprint = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.colorSer2, null)
-        15 -> image = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.imageSer, null)
+          _imprint =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.colorSer2, null)
+        15 ->
+          image = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.imageSer, null)
         16 ->
-          scoring = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.scoringSer, null)
+          scoring =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.scoringSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ProdCharacteristic: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ProdCharacteristic: " + i)
       }
     }
     return ProdCharacteristic(
@@ -169,42 +174,48 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: ProdCharacteristic) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: ProdCharacteristic) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    (value.height)?.let { encoder.encodeSerializableElement(__desc, 3, Hoisted.heightSer, it) }
-    (value.width)?.let { encoder.encodeSerializableElement(__desc, 4, Hoisted.heightSer, it) }
-    (value.depth)?.let { encoder.encodeSerializableElement(__desc, 5, Hoisted.heightSer, it) }
-    (value.weight)?.let { encoder.encodeSerializableElement(__desc, 6, Hoisted.heightSer, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.height)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.heightSer, it) }
+    (value.width)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.heightSer, it) }
+    (value.depth)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.heightSer, it) }
+    (value.weight)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.heightSer, it) }
     (value.nominalVolume)?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.heightSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.heightSer, it)
     }
     (value.externalDiameter)?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.heightSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.heightSer, it)
     }
-    ((value.shape?.value))?.let { encoder.encodeStringElement(__desc, 9, it) }
+    ((value.shape?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.shape?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.shapeSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.shapeSer, it)
     }
     (value.color.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.colorSer, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.colorSer, it)
     }
     (value.color.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.colorSer2, it)
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.colorSer2, it)
     }
     (value.imprint.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.colorSer, it)
+      encoder.encodeSerializableElement(descriptor, 13, Hoisted.colorSer, it)
     }
     (value.imprint.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.colorSer2, it)
+      encoder.encodeSerializableElement(descriptor, 14, Hoisted.colorSer2, it)
     }
     if (value.image.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.imageSer, value.image)
-    (value.scoring)?.let { encoder.encodeSerializableElement(__desc, 16, Hoisted.scoringSer, it) }
+      encoder.encodeSerializableElement(descriptor, 15, Hoisted.imageSer, value.image)
+    (value.scoring)?.let {
+      encoder.encodeSerializableElement(descriptor, 16, Hoisted.scoringSer, it)
+    }
   }
 
   private object Hoisted {

@@ -91,14 +91,13 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
     }
 
   override fun deserialize(decoder: Decoder): HumanName =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: HumanName) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): HumanName {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): HumanName {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var use: KotlinString? = null
@@ -115,32 +114,36 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
     var _suffix: List<Element?>? = null
     var period: Period? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> use = decoder.decodeStringElement(__desc, __i)
-        3 -> _use = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        4 -> text = decoder.decodeStringElement(__desc, __i)
-        5 -> _text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        6 -> family = decoder.decodeStringElement(__desc, __i)
-        7 -> _family = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.useSer, null)
-        8 -> given = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> use = decoder.decodeStringElement(descriptor, i)
+        3 -> _use = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        4 -> text = decoder.decodeStringElement(descriptor, i)
+        5 -> _text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        6 -> family = decoder.decodeStringElement(descriptor, i)
+        7 ->
+          _family = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useSer, null)
+        8 ->
+          given = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer, null)
         9 ->
-          _given = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer2, null)
+          _given = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer2, null)
         10 ->
-          prefix = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer, null)
+          prefix = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer, null)
         11 ->
-          _prefix = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer2, null)
+          _prefix =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer2, null)
         12 ->
-          suffix = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer, null)
+          suffix = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer, null)
         13 ->
-          _suffix = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.givenSer2, null)
+          _suffix =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.givenSer2, null)
         14 ->
-          period = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.periodSer, null)
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding HumanName: " + __i)
+        else -> throw SerializationException("Unexpected index decoding HumanName: " + i)
       }
     }
     return HumanName(
@@ -165,42 +168,41 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: HumanName) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: HumanName) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.use?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.use?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.useSer, it)
     }
-    ((value.text?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.text?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.text?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.useSer, it)
     }
-    ((value.family?.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.family?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.family?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.useSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.useSer, it)
     }
     (value.given.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.givenSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.givenSer, it)
     }
     (value.given.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.givenSer2, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.givenSer2, it)
     }
     (value.prefix.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.givenSer, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.givenSer, it)
     }
     (value.prefix.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.givenSer2, it)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.givenSer2, it)
     }
     (value.suffix.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.givenSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.givenSer, it)
     }
     (value.suffix.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 13, Hoisted.givenSer2, it)
+      encoder.encodeSerializableElement(descriptor, 13, Hoisted.givenSer2, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(__desc, 14, Hoisted.periodSer, it) }
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 14, Hoisted.periodSer, it) }
   }
 
   private object Hoisted {

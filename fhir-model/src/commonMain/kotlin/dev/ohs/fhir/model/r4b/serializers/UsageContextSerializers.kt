@@ -71,14 +71,13 @@ internal object UsageContextSerializer : KSerializer<UsageContext> {
     }
 
   override fun deserialize(decoder: Decoder): UsageContext =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: UsageContext) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): UsageContext {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): UsageContext {
     var id: String? = null
     var extension: List<Extension>? = null
     var code: Coding? = null
@@ -87,31 +86,36 @@ internal object UsageContextSerializer : KSerializer<UsageContext> {
     var valueRange: Range? = null
     var valueReference: Reference? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
         3 ->
           valueCodeableConcept =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.valueCodeableConceptSer,
               null,
             )
         4 ->
           valueQuantity =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueQuantitySer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
         5 ->
           valueRange =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueRangeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRangeSer, null)
         6 ->
           valueReference =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueReferenceSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.valueReferenceSer,
+              null,
+            )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding UsageContext: " + __i)
+        else -> throw SerializationException("Unexpected index decoding UsageContext: " + i)
       }
     }
     return UsageContext(
@@ -123,25 +127,24 @@ internal object UsageContextSerializer : KSerializer<UsageContext> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: UsageContext) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: UsageContext) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    (value.code)?.let { encoder.encodeSerializableElement(__desc, 2, Hoisted.codeSer, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 2, Hoisted.codeSer, it) }
     when (val __d = value.`value`) {
       null -> {}
       is UsageContext.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(__desc, 3, Hoisted.valueCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueCodeableConceptSer, __d.value)
       }
       is UsageContext.Value.Quantity -> {
-        encoder.encodeSerializableElement(__desc, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
       }
       is UsageContext.Value.Range -> {
-        encoder.encodeSerializableElement(__desc, 5, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueRangeSer, __d.value)
       }
       is UsageContext.Value.Reference -> {
-        encoder.encodeSerializableElement(__desc, 6, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueReferenceSer, __d.value)
       }
     }
   }

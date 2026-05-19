@@ -83,14 +83,13 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
     }
 
   override fun deserialize(decoder: Decoder): VirtualServiceDetail =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: VirtualServiceDetail) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): VirtualServiceDetail {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): VirtualServiceDetail {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var channelType: Coding? = null
@@ -107,55 +106,64 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
     var sessionKey: KotlinString? = null
     var _sessionKey: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           channelType =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.channelTypeSer, null)
-        3 -> addressUrl = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.channelTypeSer, null)
+        3 -> addressUrl = decoder.decodeStringElement(descriptor, i)
         4 ->
           _addressUrl =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressUrlSer, null)
-        5 -> addressString = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressUrlSer, null)
+        5 -> addressString = decoder.decodeStringElement(descriptor, i)
         6 ->
           _addressString =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressUrlSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressUrlSer, null)
         7 ->
           addressContactPoint =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.addressContactPointSer,
               null,
             )
         8 ->
           addressExtendedContactDetail =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.addressExtendedContactDetailSer,
               null,
             )
         9 ->
           additionalInfo =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.additionalInfoSer, null)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.additionalInfoSer,
+              null,
+            )
         10 ->
           _additionalInfo =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.additionalInfoSer2, null)
-        11 -> maxParticipants = decoder.decodeIntElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.additionalInfoSer2,
+              null,
+            )
+        11 -> maxParticipants = decoder.decodeIntElement(descriptor, i)
         12 ->
           _maxParticipants =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressUrlSer, null)
-        13 -> sessionKey = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressUrlSer, null)
+        13 -> sessionKey = decoder.decodeStringElement(descriptor, i)
         14 ->
           _sessionKey =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.addressUrlSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.addressUrlSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else ->
-          throw SerializationException("Unexpected index decoding VirtualServiceDetail: " + __i)
+        else -> throw SerializationException("Unexpected index decoding VirtualServiceDetail: " + i)
       }
     }
     return VirtualServiceDetail(
@@ -179,34 +187,33 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: VirtualServiceDetail) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: VirtualServiceDetail) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     (value.channelType)?.let {
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.channelTypeSer, it)
+      encoder.encodeSerializableElement(descriptor, 2, Hoisted.channelTypeSer, it)
     }
     when (val __d = value.address) {
       null -> {}
       is VirtualServiceDetail.Address.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 4, Hoisted.addressUrlSer, it)
+          encoder.encodeSerializableElement(descriptor, 4, Hoisted.addressUrlSer, it)
         }
       }
       is VirtualServiceDetail.Address.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(__desc, 5, it) }
+        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 6, Hoisted.addressUrlSer, it)
+          encoder.encodeSerializableElement(descriptor, 6, Hoisted.addressUrlSer, it)
         }
       }
       is VirtualServiceDetail.Address.ContactPoint -> {
-        encoder.encodeSerializableElement(__desc, 7, Hoisted.addressContactPointSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.addressContactPointSer, __d.value)
       }
       is VirtualServiceDetail.Address.ExtendedContactDetail -> {
         encoder.encodeSerializableElement(
-          __desc,
+          descriptor,
           8,
           Hoisted.addressExtendedContactDetailSer,
           __d.value,
@@ -214,18 +221,18 @@ internal object VirtualServiceDetailSerializer : KSerializer<VirtualServiceDetai
       }
     }
     (value.additionalInfo.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.additionalInfoSer, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.additionalInfoSer, it)
     }
     (value.additionalInfo.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.additionalInfoSer2, it)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.additionalInfoSer2, it)
     }
-    ((value.maxParticipants?.value))?.let { encoder.encodeIntElement(__desc, 11, it) }
+    ((value.maxParticipants?.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
     (value.maxParticipants?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.addressUrlSer, it)
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.addressUrlSer, it)
     }
-    ((value.sessionKey?.value))?.let { encoder.encodeStringElement(__desc, 13, it) }
+    ((value.sessionKey?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
     (value.sessionKey?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.addressUrlSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, Hoisted.addressUrlSer, it)
     }
   }
 

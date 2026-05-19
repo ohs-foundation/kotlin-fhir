@@ -80,14 +80,13 @@ internal object SubscriptionStatusNotificationEventSerializer :
     }
 
   override fun deserialize(decoder: Decoder): SubscriptionStatus.NotificationEvent =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionStatus.NotificationEvent) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): SubscriptionStatus.NotificationEvent {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): SubscriptionStatus.NotificationEvent {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var modifierExtension: List<Extension>? = null
@@ -98,33 +97,34 @@ internal object SubscriptionStatusNotificationEventSerializer :
     var focus: Reference? = null
     var additionalContext: List<Reference>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         2 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        3 -> eventNumber = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> eventNumber = decoder.decodeStringElement(descriptor, i)
         4 ->
           _eventNumber =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eventNumberSer, null)
-        5 -> timestamp = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eventNumberSer, null)
+        5 -> timestamp = decoder.decodeStringElement(descriptor, i)
         6 ->
           _timestamp =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.eventNumberSer, null)
-        7 -> focus = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.focusSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.eventNumberSer, null)
+        7 ->
+          focus = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.focusSer, null)
         8 ->
           additionalContext =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.additionalContextSer,
               null,
             )
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding NotificationEvent: " + __i)
+        else -> throw SerializationException("Unexpected index decoding NotificationEvent: " + i)
       }
     }
     return SubscriptionStatus.NotificationEvent(
@@ -138,28 +138,32 @@ internal object SubscriptionStatusNotificationEventSerializer :
     )
   }
 
-  private fun serializeJson(
+  private fun serializeInternal(
     encoder: CompositeEncoder,
     `value`: SubscriptionStatus.NotificationEvent,
   ) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     if (value.modifierExtension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 2, Hoisted.extensionSer, value.modifierExtension)
-    ((value.eventNumber.value))?.let { encoder.encodeStringElement(__desc, 3, it) }
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.eventNumber.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
     (value.eventNumber.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.eventNumberSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.eventNumberSer, it)
     }
-    ((value.timestamp?.value?.toString()))?.let { encoder.encodeStringElement(__desc, 5, it) }
+    ((value.timestamp?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.timestamp?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 6, Hoisted.eventNumberSer, it)
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.eventNumberSer, it)
     }
-    (value.focus)?.let { encoder.encodeSerializableElement(__desc, 7, Hoisted.focusSer, it) }
+    (value.focus)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.focusSer, it) }
     if (value.additionalContext.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
+        descriptor,
         8,
         Hoisted.additionalContextSer,
         value.additionalContext,
@@ -238,21 +242,20 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
   }
 
   override fun deserialize(decoder: Decoder): SubscriptionStatus =
-    decoder.decodeStructure(descriptor) { deserializeJson(this, descriptor, 1) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionStatus) {
     encoder.encodeStructure(descriptor) {
       encodeStringElement(descriptor, 0, "SubscriptionStatus")
-      serializeJson(this, descriptor, 1, value)
+      serializeInternal(this, descriptor, 1, value)
     }
   }
 
-  internal fun deserializeJson(
+  internal fun deserializeInternal(
     decoder: CompositeDecoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
   ): SubscriptionStatus {
-    val __desc = desc
     var id: KotlinString? = null
     var meta: Meta? = null
     var implicitRules: KotlinString? = null
@@ -275,59 +278,60 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
     var _topic: Element? = null
     var error: List<CodeableConcept>? = null
     while (true) {
-      val __i = decoder.decodeElementIndex(__desc)
-      if (__i == CompositeDecoder.DECODE_DONE) break
-      when (__i - __off) {
-        -1 -> decoder.decodeStringElement(__desc, __i)
-        0 -> id = decoder.decodeStringElement(__desc, __i)
-        1 -> meta = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.metaSer, null)
-        2 -> implicitRules = decoder.decodeStringElement(__desc, __i)
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
         3 ->
           _implicitRules =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        4 -> language = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
         5 ->
           _language =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        6 -> text = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.textSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
         7 ->
           contained =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.containedSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
         8 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
         9 ->
           modifierExtension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        10 -> status = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        10 -> status = decoder.decodeStringElement(descriptor, i)
         11 ->
           _status =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        12 -> type = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        12 -> type = decoder.decodeStringElement(descriptor, i)
         13 ->
           _type =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        14 -> eventsSinceSubscriptionStart = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        14 -> eventsSinceSubscriptionStart = decoder.decodeStringElement(descriptor, i)
         15 ->
           _eventsSinceSubscriptionStart =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
         16 ->
           notificationEvent =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.notificationEventSer,
               null,
             )
         17 ->
           subscription =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.subscriptionSer, null)
-        18 -> topic = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.subscriptionSer, null)
+        18 -> topic = decoder.decodeStringElement(descriptor, i)
         19 ->
           _topic =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.implicitRulesSer, null)
-        20 -> error = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.errorSer, null)
-        else -> throw SerializationException("Unexpected index decoding SubscriptionStatus: " + __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        20 ->
+          error = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.errorSer, null)
+        else -> throw SerializationException("Unexpected index decoding SubscriptionStatus: " + i)
       }
     }
     return SubscriptionStatus(
@@ -354,65 +358,128 @@ internal object SubscriptionStatusSerializer : KSerializer<SubscriptionStatus> {
     )
   }
 
-  internal fun serializeJson(
+  internal fun serializeInternal(
     encoder: CompositeEncoder,
-    desc: SerialDescriptor,
-    __off: Int,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
     `value`: SubscriptionStatus,
   ) {
-    val __desc = desc
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0 + __off, it) }
-    (value.meta)?.let { encoder.encodeSerializableElement(__desc, 1 + __off, Hoisted.metaSer, it) }
-    ((value.implicitRules?.value))?.let { encoder.encodeStringElement(__desc, 2 + __off, it) }
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
     (value.implicitRules?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    ((value.language?.value))?.let { encoder.encodeStringElement(__desc, 4 + __off, it) }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
     (value.language?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
-    (value.text)?.let { encoder.encodeSerializableElement(__desc, 6 + __off, Hoisted.textSer, it) }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
     if (value.contained.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 7 + __off, Hoisted.containedSer, value.contained)
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8 + __off, Hoisted.extensionSer, value.extension)
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
     if (value.modifierExtension.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        9 + __off,
+        descriptor,
+        9 + descriptorOffset,
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    ((value.status?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 10 + __off, it) }
-    (value.status?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 11 + __off, Hoisted.implicitRulesSer, it)
+    ((value.status?.value?.getCode()))?.let {
+      encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it)
     }
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 12 + __off, it) }
+    (value.status?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        11 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.type.value?.getCode()))?.let {
+      encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
+    }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 13 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        13 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     ((value.eventsSinceSubscriptionStart?.value))?.let {
-      encoder.encodeStringElement(__desc, 14 + __off, it)
+      encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
     (value.eventsSinceSubscriptionStart?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 15 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        15 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.notificationEvent.isNotEmpty())
       encoder.encodeSerializableElement(
-        __desc,
-        16 + __off,
+        descriptor,
+        16 + descriptorOffset,
         Hoisted.notificationEventSer,
         value.notificationEvent,
       )
     (value.subscription)?.let {
-      encoder.encodeSerializableElement(__desc, 17 + __off, Hoisted.subscriptionSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        17 + descriptorOffset,
+        Hoisted.subscriptionSer,
+        it,
+      )
     }
-    ((value.topic?.value))?.let { encoder.encodeStringElement(__desc, 18 + __off, it) }
+    ((value.topic?.value))?.let {
+      encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
+    }
     (value.topic?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 19 + __off, Hoisted.implicitRulesSer, it)
+      encoder.encodeSerializableElement(
+        descriptor,
+        19 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
     }
     if (value.error.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 20 + __off, Hoisted.errorSer, value.error)
+      encoder.encodeSerializableElement(
+        descriptor,
+        20 + descriptorOffset,
+        Hoisted.errorSer,
+        value.error,
+      )
   }
 
   private object Hoisted {
@@ -453,12 +520,12 @@ internal object SubscriptionStatusPolymorphicSerializer : KSerializer<Subscripti
 
   override fun serialize(encoder: Encoder, `value`: SubscriptionStatus) {
     encoder.encodeStructure(descriptor) {
-      SubscriptionStatusSerializer.serializeJson(this, descriptor, 0, value)
+      SubscriptionStatusSerializer.serializeInternal(this, descriptor, 0, value)
     }
   }
 
   override fun deserialize(decoder: Decoder): SubscriptionStatus =
     decoder.decodeStructure(descriptor) {
-      SubscriptionStatusSerializer.deserializeJson(this, descriptor, 0)
+      SubscriptionStatusSerializer.deserializeInternal(this, descriptor, 0)
     }
 }

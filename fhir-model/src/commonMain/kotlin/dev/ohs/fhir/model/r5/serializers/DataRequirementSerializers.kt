@@ -75,14 +75,13 @@ internal object DataRequirementCodeFilterSerializer : KSerializer<DataRequiremen
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement.CodeFilter =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement.CodeFilter) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DataRequirement.CodeFilter {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement.CodeFilter {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var path: KotlinString? = null
@@ -93,23 +92,24 @@ internal object DataRequirementCodeFilterSerializer : KSerializer<DataRequiremen
     var _valueSet: Element? = null
     var code: List<Coding>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> path = decoder.decodeStringElement(__desc, __i)
-        3 -> _path = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
-        4 -> searchParam = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> path = decoder.decodeStringElement(descriptor, i)
+        3 -> _path = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+        4 -> searchParam = decoder.decodeStringElement(descriptor, i)
         5 ->
           _searchParam =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
-        6 -> valueSet = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+        6 -> valueSet = decoder.decodeStringElement(descriptor, i)
         7 ->
-          _valueSet = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
-        8 -> code = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeSer, null)
+          _valueSet =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+        8 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding CodeFilter: " + __i)
+        else -> throw SerializationException("Unexpected index decoding CodeFilter: " + i)
       }
     }
     return DataRequirement.CodeFilter(
@@ -122,25 +122,24 @@ internal object DataRequirementCodeFilterSerializer : KSerializer<DataRequiremen
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DataRequirement.CodeFilter) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DataRequirement.CodeFilter) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.path?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.path?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.path?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.pathSer, it)
     }
-    ((value.searchParam?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.searchParam?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.searchParam?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.pathSer, it)
     }
-    ((value.valueSet?.value))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.valueSet?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.valueSet?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.pathSer, it)
     }
     if (value.code.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.codeSer, value.code)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.codeSer, value.code)
   }
 
   private object Hoisted {
@@ -185,14 +184,13 @@ internal object DataRequirementDateFilterSerializer : KSerializer<DataRequiremen
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement.DateFilter =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement.DateFilter) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DataRequirement.DateFilter {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement.DateFilter {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var path: KotlinString? = null
@@ -204,29 +202,29 @@ internal object DataRequirementDateFilterSerializer : KSerializer<DataRequiremen
     var valuePeriod: Period? = null
     var valueDuration: Duration? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> path = decoder.decodeStringElement(__desc, __i)
-        3 -> _path = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
-        4 -> searchParam = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> path = decoder.decodeStringElement(descriptor, i)
+        3 -> _path = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+        4 -> searchParam = decoder.decodeStringElement(descriptor, i)
         5 ->
           _searchParam =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
-        6 -> valueDateTime = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+        6 -> valueDateTime = decoder.decodeStringElement(descriptor, i)
         7 ->
           _valueDateTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
         8 ->
           valuePeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valuePeriodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valuePeriodSer, null)
         9 ->
           valueDuration =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueDurationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueDurationSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding DateFilter: " + __i)
+        else -> throw SerializationException("Unexpected index decoding DateFilter: " + i)
       }
     }
     return DataRequirement.DateFilter(
@@ -243,32 +241,31 @@ internal object DataRequirementDateFilterSerializer : KSerializer<DataRequiremen
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DataRequirement.DateFilter) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DataRequirement.DateFilter) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.path?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.path?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.path?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.pathSer, it)
     }
-    ((value.searchParam?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.searchParam?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.searchParam?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.pathSer, it)
     }
     when (val __d = value.`value`) {
       null -> {}
       is DataRequirement.DateFilter.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 6, it) }
+        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 7, Hoisted.pathSer, it)
+          encoder.encodeSerializableElement(descriptor, 7, Hoisted.pathSer, it)
         }
       }
       is DataRequirement.DateFilter.Value.Period -> {
-        encoder.encodeSerializableElement(__desc, 8, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.valuePeriodSer, __d.value)
       }
       is DataRequirement.DateFilter.Value.Duration -> {
-        encoder.encodeSerializableElement(__desc, 9, Hoisted.valueDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueDurationSer, __d.value)
       }
     }
   }
@@ -317,14 +314,13 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement.ValueFilter =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement.ValueFilter) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DataRequirement.ValueFilter {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement.ValueFilter {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var path: KotlinString? = null
@@ -338,33 +334,33 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
     var valuePeriod: Period? = null
     var valueDuration: Duration? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> path = decoder.decodeStringElement(__desc, __i)
-        3 -> _path = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
-        4 -> searchParam = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> path = decoder.decodeStringElement(descriptor, i)
+        3 -> _path = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+        4 -> searchParam = decoder.decodeStringElement(descriptor, i)
         5 ->
           _searchParam =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
-        6 -> comparator = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+        6 -> comparator = decoder.decodeStringElement(descriptor, i)
         7 ->
           _comparator =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
-        8 -> valueDateTime = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+        8 -> valueDateTime = decoder.decodeStringElement(descriptor, i)
         9 ->
           _valueDateTime =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
         10 ->
           valuePeriod =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valuePeriodSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valuePeriodSer, null)
         11 ->
           valueDuration =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueDurationSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueDurationSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding ValueFilter: " + __i)
+        else -> throw SerializationException("Unexpected index decoding ValueFilter: " + i)
       }
     }
     return DataRequirement.ValueFilter(
@@ -385,36 +381,35 @@ internal object DataRequirementValueFilterSerializer : KSerializer<DataRequireme
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DataRequirement.ValueFilter) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DataRequirement.ValueFilter) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.path?.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.path?.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.path?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.pathSer, it)
     }
-    ((value.searchParam?.value))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.searchParam?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.searchParam?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.pathSer, it)
     }
-    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 6, it) }
+    ((value.comparator?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.comparator?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 7, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 7, Hoisted.pathSer, it)
     }
     when (val __d = value.`value`) {
       null -> {}
       is DataRequirement.ValueFilter.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(__desc, 8, it) }
+        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 8, it) }
         (__d.value.toElement())?.let {
-          encoder.encodeSerializableElement(__desc, 9, Hoisted.pathSer, it)
+          encoder.encodeSerializableElement(descriptor, 9, Hoisted.pathSer, it)
         }
       }
       is DataRequirement.ValueFilter.Value.Period -> {
-        encoder.encodeSerializableElement(__desc, 10, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valuePeriodSer, __d.value)
       }
       is DataRequirement.ValueFilter.Value.Duration -> {
-        encoder.encodeSerializableElement(__desc, 11, Hoisted.valueDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueDurationSer, __d.value)
       }
     }
   }
@@ -449,14 +444,13 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement.Sort =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement.Sort) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DataRequirement.Sort {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement.Sort {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var path: KotlinString? = null
@@ -464,18 +458,19 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
     var direction: KotlinString? = null
     var _direction: Element? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> path = decoder.decodeStringElement(__desc, __i)
-        3 -> _path = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
-        4 -> direction = decoder.decodeStringElement(__desc, __i)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> path = decoder.decodeStringElement(descriptor, i)
+        3 -> _path = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
+        4 -> direction = decoder.decodeStringElement(descriptor, i)
         5 ->
-          _direction = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.pathSer, null)
+          _direction =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.pathSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding Sort: " + __i)
+        else -> throw SerializationException("Unexpected index decoding Sort: " + i)
       }
     }
     return DataRequirement.Sort(
@@ -486,18 +481,17 @@ internal object DataRequirementSortSerializer : KSerializer<DataRequirement.Sort
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DataRequirement.Sort) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DataRequirement.Sort) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.path.value))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.path.value))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.path.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.pathSer, it)
     }
-    ((value.direction.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 4, it) }
+    ((value.direction.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.direction.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.pathSer, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.pathSer, it)
     }
   }
 
@@ -579,14 +573,13 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
     }
 
   override fun deserialize(decoder: Decoder): DataRequirement =
-    decoder.decodeStructure(descriptor) { deserializeJson(this) }
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: DataRequirement) {
-    encoder.encodeStructure(descriptor) { serializeJson(this, value) }
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  private fun deserializeJson(decoder: CompositeDecoder): DataRequirement {
-    val __desc = descriptor
+  private fun deserializeInternal(decoder: CompositeDecoder): DataRequirement {
     var id: KotlinString? = null
     var extension: List<Extension>? = null
     var type: KotlinString? = null
@@ -604,54 +597,56 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
     var _limit: Element? = null
     var sort: List<DataRequirement.Sort>? = null
     while (true) {
-      when (val __i = decoder.decodeElementIndex(__desc)) {
-        0 -> id = decoder.decodeStringElement(__desc, __i)
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
         1 ->
           extension =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.extensionSer, null)
-        2 -> type = decoder.decodeStringElement(__desc, __i)
-        3 -> _type = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> type = decoder.decodeStringElement(descriptor, i)
+        3 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
         4 ->
-          profile = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer, null)
+          profile =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.profileSer, null)
         5 ->
           _profile =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer2, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.profileSer2, null)
         6 ->
           subjectCodeableConcept =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.subjectCodeableConceptSer,
               null,
             )
         7 ->
           subjectReference =
             decoder.decodeNullableSerializableElement(
-              __desc,
-              __i,
+              descriptor,
+              i,
               Hoisted.subjectReferenceSer,
               null,
             )
         8 ->
           mustSupport =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.profileSer, null)
         9 ->
           _mustSupport =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.profileSer2, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.profileSer2, null)
         10 ->
           codeFilter =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.codeFilterSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeFilterSer, null)
         11 ->
           dateFilter =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.dateFilterSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.dateFilterSer, null)
         12 ->
           valueFilter =
-            decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.valueFilterSer, null)
-        13 -> limit = decoder.decodeIntElement(__desc, __i)
-        14 -> _limit = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.typeSer, null)
-        15 -> sort = decoder.decodeNullableSerializableElement(__desc, __i, Hoisted.sortSer, null)
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueFilterSer, null)
+        13 -> limit = decoder.decodeIntElement(descriptor, i)
+        14 ->
+          _limit = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        15 -> sort = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.sortSer, null)
         CompositeDecoder.DECODE_DONE -> break
-        else -> throw SerializationException("Unexpected index decoding DataRequirement: " + __i)
+        else -> throw SerializationException("Unexpected index decoding DataRequirement: " + i)
       }
     }
     return DataRequirement(
@@ -675,48 +670,52 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
     )
   }
 
-  private fun serializeJson(encoder: CompositeEncoder, `value`: DataRequirement) {
-    val __desc = descriptor
-    (value.id)?.let { encoder.encodeStringElement(__desc, 0, it) }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: DataRequirement) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 1, Hoisted.extensionSer, value.extension)
-    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(__desc, 2, it) }
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 2, it) }
     (value.type.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 3, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it)
     }
     (value.profile.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 4, Hoisted.profileSer, it)
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.profileSer, it)
     }
     (value.profile.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 5, Hoisted.profileSer2, it)
+      encoder.encodeSerializableElement(descriptor, 5, Hoisted.profileSer2, it)
     }
     when (val __d = value.subject) {
       null -> {}
       is DataRequirement.Subject.CodeableConcept -> {
-        encoder.encodeSerializableElement(__desc, 6, Hoisted.subjectCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          6,
+          Hoisted.subjectCodeableConceptSer,
+          __d.value,
+        )
       }
       is DataRequirement.Subject.Reference -> {
-        encoder.encodeSerializableElement(__desc, 7, Hoisted.subjectReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.subjectReferenceSer, __d.value)
       }
     }
     (value.mustSupport.map { it.value }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 8, Hoisted.profileSer, it)
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.profileSer, it)
     }
     (value.mustSupport.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
-      encoder.encodeSerializableElement(__desc, 9, Hoisted.profileSer2, it)
+      encoder.encodeSerializableElement(descriptor, 9, Hoisted.profileSer2, it)
     }
     if (value.codeFilter.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 10, Hoisted.codeFilterSer, value.codeFilter)
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.codeFilterSer, value.codeFilter)
     if (value.dateFilter.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 11, Hoisted.dateFilterSer, value.dateFilter)
+      encoder.encodeSerializableElement(descriptor, 11, Hoisted.dateFilterSer, value.dateFilter)
     if (value.valueFilter.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 12, Hoisted.valueFilterSer, value.valueFilter)
-    ((value.limit?.value))?.let { encoder.encodeIntElement(__desc, 13, it) }
+      encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueFilterSer, value.valueFilter)
+    ((value.limit?.value))?.let { encoder.encodeIntElement(descriptor, 13, it) }
     (value.limit?.toElement())?.let {
-      encoder.encodeSerializableElement(__desc, 14, Hoisted.typeSer, it)
+      encoder.encodeSerializableElement(descriptor, 14, Hoisted.typeSer, it)
     }
     if (value.sort.isNotEmpty())
-      encoder.encodeSerializableElement(__desc, 15, Hoisted.sortSer, value.sort)
+      encoder.encodeSerializableElement(descriptor, 15, Hoisted.sortSer, value.sort)
   }
 
   private object Hoisted {

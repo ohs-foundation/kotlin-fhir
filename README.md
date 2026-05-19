@@ -242,9 +242,7 @@ just walks its composite.
 
 Choice types (e.g. `Patient.multipleBirth`) are expanded into per-expansion keys on the same flat
 descriptor (`multipleBirthBoolean`, `_multipleBirthBoolean`, `multipleBirthInteger`,
-`_multipleBirthInteger`, …). Upon encoding, the parent serializer dispatches on the sealed subclass
-via a `when` over the choice type expansions and writes the matched expansion's keys directly into
-the parent's composite encoder. On decode, each expansion key is read into a local and the sealed
+`_multipleBirthInteger`, …). On decode, each expansion key is read into a local and the sealed
 value is synthesized via the companion `from(…)` factory during model construction. This sidesteps
 the
 [JVM constructor argument limit](https://docs.oracle.com/javase/specs/jvms/se19/html/jvms-4.html#jvms-4.3.3)
@@ -253,14 +251,15 @@ that would otherwise be hit on FHIR fields with many possible types (e.g.,
 because each choice type expansion is an individual descriptor slot rather than a constructor
 parameter.
 
-By default, Kotlin only adds class discriminators for polymorphic types. This doesn't quite follow
-FHIR specification as even standalone FHIR resources (i.e. `Patient`) require `resourceType`. To
-solve this, polymorphic `Resource` dispatch (choosing `Patient` vs `Observation` vs … based on the
-`resourceType` discriminator) is handled by `ResourcePolymorphicSerializer`. Each concrete resource
-ships two serializers: the standalone `XSerializer` (descriptor includes `resourceType`, used when
-the static type is the concrete class) and `XPolymorphicSerializer` (descriptor omits
-`resourceType`, used as the dispatch target on the polymorphic path so kotlinx-json can inject the
-class discriminator without colliding):
+There are two ways to serialize a resource, and the caller picks which by the static type of the
+value handed to kotlinx. When the static type is the concrete class (i.e.
+`json.encodeToString(patient)`), kotlinx dispatches directly to `PatientSerializer`, whose
+descriptor includes `resourceType` at slot 0 and which writes it itself.
+
+When the static type is `Resource` (i.e. `json.encodeToString<Resource>(patient)`), kotlinx routes through
+`ResourcePolymorphicSerializer`, which looks up the concrete subclass and delegates to
+`PatientPolymorphicSerializer`. On this path kotlinx-json itself injects `resourceType` as the
+class discriminator, so `PatientPolymorphicSerializer`'s descriptor must omit `resourceType`.
 
 ```mermaid
 graph TB
@@ -274,8 +273,8 @@ graph TB
 
 *Figure 1: Polymorphic Serializer Routing*
 
-Once the correct serializer has been found, the contents are then simply serialized/deserialized directly based on
-the flat descriptors.
+This parallel serialization approach is due to a mismatch in how Kotlinx serialization encodes class discriminators versus FHIR Standards.
+FHIR requires all `Resource` type classes to contain `resourceType`, but Kotlin only adds it when the underlying static inline Type is `Resource`.
 
 ```mermaid
 graph LR
@@ -317,13 +316,13 @@ graph LR
       #nbsp;#nbsp;if (i == DECODE_DONE) break
       #nbsp;#nbsp;**when** (i - descriptorOffset) {
       #nbsp;#nbsp;#nbsp;#nbsp;-1 → resourceType discarded
-      #nbsp;#nbsp;#nbsp;#nbsp;0..33 → choice type expansion locals
+      #nbsp;#nbsp;#nbsp;#nbsp;0..33 → per-key wire locals
       #nbsp;#nbsp;}
       }"]
 
       Loop -- "JSON key → i lookup" --> Desc
       Desc -. "return i" .-> Loop
-      Loop -- "when(15/16) gender, when(19..22) deceased expansions, when(25..28) multipleBirth expansions, ..." --> Locals[per-key locals]
+      Loop -- "when(16/17) gender, when(20..23) deceased expansions, when(26..29) multipleBirth expansions, ..." --> Locals[per-key locals]
       Locals -- "MultipleBirth.from(boolean, _boolean, integer, _integer)" --> Seal[sealed values synthesized]
       Locals -- "Deceased.from(boolean, _boolean, dateTime, _dateTime)" --> Seal
       Locals -- "PatientContact / Communication / LinkSerializer.deserialize" --> BB[backbone elements]

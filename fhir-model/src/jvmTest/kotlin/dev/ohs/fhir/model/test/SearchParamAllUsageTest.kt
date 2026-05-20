@@ -19,8 +19,8 @@ package dev.ohs.fhir.model.test
 import dev.ohs.fhir.model.r4.ContactPoint
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Patient
-import dev.ohs.fhir.model.r4.PatientSearchParam
 import dev.ohs.fhir.model.r4.String as FhirString
+import dev.ohs.fhir.model.r4.search.PatientSearchParam
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
@@ -61,8 +61,7 @@ class SearchParamAllUsageTest :
       val queryValue = "alice@example.com"
       val matches =
         index.filter { (paramName, value) ->
-          paramName == queryParamName &&
-            (value as? ContactPoint)?.`value`?.`value` == queryValue
+          paramName == queryParamName && (value as? ContactPoint)?.`value`?.`value` == queryValue
         }
 
       // The email row matched; the phone row was rejected by the value check.

@@ -80,7 +80,7 @@ class SearchParamTest :
       )
       .forEach { testSuite ->
         val searchParamsByResource = loadSearchParams(testSuite.corePackageSubdirectory)
-        val searchParamInterface = Class.forName("${testSuite.modelPackage}.SearchParam")
+        val searchParamInterface = Class.forName("${testSuite.modelPackage}.search.SearchParam")
 
         context("${testSuite.fhirVersion} search params should match definitions") {
           searchParamsByResource.forEach { (resourceName, expectedParams) ->
@@ -97,7 +97,7 @@ class SearchParamTest :
             // Load the per-resource search param sealed class
             val searchParamClass =
               try {
-                Class.forName("${testSuite.modelPackage}.${resourceName}SearchParam").kotlin
+                Class.forName("${testSuite.modelPackage}.search.${resourceName}SearchParam").kotlin
               } catch (_: ClassNotFoundException) {
                 null
               }

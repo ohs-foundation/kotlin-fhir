@@ -66,7 +66,8 @@ object ResourceSearchParamFileSpecGenerator {
     searchParams: List<SearchParameterDefinition>,
     elementsByType: Map<String, List<Element>>,
   ): FileSpec {
-    val searchParamInterfaceClassName = ClassName(packageName, "SearchParam")
+    val searchPackageName = "$packageName.search"
+    val searchParamInterfaceClassName = ClassName(searchPackageName, "SearchParam")
     val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
     val resourceClassName = ClassName(packageName, resourceName)
     val sealedClassName = "${resourceName}SearchParam"
@@ -107,7 +108,7 @@ object ResourceSearchParamFileSpecGenerator {
           // Add companion with ALL list
           val allListType =
             List::class.asClassName()
-              .parameterizedBy(ClassName(packageName, sealedClassName).parameterizedBy(STAR))
+              .parameterizedBy(ClassName(searchPackageName, sealedClassName).parameterizedBy(STAR))
           addType(
             TypeSpec.companionObjectBuilder()
               .addProperty(
@@ -124,7 +125,7 @@ object ResourceSearchParamFileSpecGenerator {
         }
         .build()
 
-    return FileSpec.builder(packageName, sealedClassName)
+    return FileSpec.builder(searchPackageName, sealedClassName)
       .addSuppressAnnotation()
       .addType(sealedClass)
       .build()
@@ -139,7 +140,7 @@ object ResourceSearchParamFileSpecGenerator {
     resolver: FhirPathExpressionResolver,
   ): TypeSpec {
     val objectName = searchParam.code.toDataObjectName()
-    val sealedClassName = ClassName(packageName, "${resourceName}SearchParam")
+    val sealedClassName = ClassName("$packageName.search", "${resourceName}SearchParam")
 
     val resourceExpression = searchParam.extractExpressionForResource(resourceName)
     val pattern = parseSearchParamExpression(resourceExpression, resourceName, resolver)

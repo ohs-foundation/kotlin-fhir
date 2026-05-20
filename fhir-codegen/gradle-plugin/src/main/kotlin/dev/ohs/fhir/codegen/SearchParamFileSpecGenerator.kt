@@ -35,7 +35,7 @@ object SearchParamFileSpecGenerator {
   fun generate(packageName: String): FileSpec {
     val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
 
-    return FileSpec.builder(packageName, "SearchParam")
+    return FileSpec.builder("$packageName.search", "SearchParam")
       .addType(
         TypeSpec.interfaceBuilder("SearchParam")
           .addModifiers(KModifier.PUBLIC, KModifier.SEALED)

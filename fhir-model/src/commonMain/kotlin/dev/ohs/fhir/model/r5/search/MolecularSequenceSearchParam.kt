@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MolecularSequence] resource type. */
-public sealed class MolecularSequenceSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MolecularSequence): List<T>
+public object MolecularSequenceSearchParam {
+  /** All search parameters for the MolecularSequence resource type. */
+  public val ALL: List<SearchParam<MolecularSequence, *>> =
+    listOf(Focus, Identifier, Patient, Subject, Type)
 
-  public data object Focus : MolecularSequenceSearchParam<Reference>() {
+  public data object Focus : SearchParam<MolecularSequence, Reference> {
     public override val paramName: String = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -203,7 +204,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
     public override fun extract(resource: MolecularSequence): List<Reference> = resource.focus
   }
 
-  public data object Identifier : MolecularSequenceSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<MolecularSequence, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -217,7 +218,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Patient : MolecularSequenceSearchParam<Reference>() {
+  public data object Patient : SearchParam<MolecularSequence, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -232,7 +233,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Subject : MolecularSequenceSearchParam<Reference>() {
+  public data object Subject : SearchParam<MolecularSequence, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -246,7 +247,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.subject)
   }
 
-  public data object Type : MolecularSequenceSearchParam<Any>() {
+  public data object Type : SearchParam<MolecularSequence, Any> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -257,11 +258,5 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MolecularSequence): List<Any> =
       listOfNotNull(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the MolecularSequence resource type. */
-    public val ALL: List<MolecularSequenceSearchParam<*>> =
-      listOf(Focus, Identifier, Patient, Subject, Type)
   }
 }

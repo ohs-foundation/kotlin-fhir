@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DetectedIssue] resource type. */
-public sealed class DetectedIssueSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DetectedIssue): List<T>
+public object DetectedIssueSearchParam {
+  /** All search parameters for the DetectedIssue resource type. */
+  public val ALL: List<SearchParam<DetectedIssue, *>> =
+    listOf(Author, Code, Identified, Identifier, Implicated, Patient)
 
-  public data object Author : DetectedIssueSearchParam<Reference>() {
+  public data object Author : SearchParam<DetectedIssue, Reference> {
     public override val paramName: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -44,7 +45,7 @@ public sealed class DetectedIssueSearchParam<T> : SearchParam {
       listOfNotNull(resource.author)
   }
 
-  public data object Code : DetectedIssueSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<DetectedIssue, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -57,7 +58,7 @@ public sealed class DetectedIssueSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Identified : DetectedIssueSearchParam<DetectedIssue.Identified>() {
+  public data object Identified : SearchParam<DetectedIssue, DetectedIssue.Identified> {
     public override val paramName: String = "identified"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -70,7 +71,7 @@ public sealed class DetectedIssueSearchParam<T> : SearchParam {
       listOfNotNull(resource.identified)
   }
 
-  public data object Identifier : DetectedIssueSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<DetectedIssue, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -83,7 +84,7 @@ public sealed class DetectedIssueSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Implicated : DetectedIssueSearchParam<Reference>() {
+  public data object Implicated : SearchParam<DetectedIssue, Reference> {
     public override val paramName: String = "implicated"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -237,7 +238,7 @@ public sealed class DetectedIssueSearchParam<T> : SearchParam {
     public override fun extract(resource: DetectedIssue): List<Reference> = resource.implicated
   }
 
-  public data object Patient : DetectedIssueSearchParam<Reference>() {
+  public data object Patient : SearchParam<DetectedIssue, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -248,11 +249,5 @@ public sealed class DetectedIssueSearchParam<T> : SearchParam {
 
     public override fun extract(resource: DetectedIssue): List<Reference> =
       listOfNotNull(resource.patient)
-  }
-
-  public companion object {
-    /** All search parameters for the DetectedIssue resource type. */
-    public val ALL: List<DetectedIssueSearchParam<*>> =
-      listOf(Author, Code, Identified, Identifier, Implicated, Patient)
   }
 }

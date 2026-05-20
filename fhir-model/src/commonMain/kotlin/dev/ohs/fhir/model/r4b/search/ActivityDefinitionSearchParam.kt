@@ -36,11 +36,35 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ActivityDefinition] resource type. */
-public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ActivityDefinition): List<T>
+public object ActivityDefinitionSearchParam {
+  /** All search parameters for the ActivityDefinition resource type. */
+  public val ALL: List<SearchParam<ActivityDefinition, *>> =
+    listOf(
+      ComposedOf,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      DependsOn,
+      DerivedFrom,
+      Description,
+      Effective,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Predecessor,
+      Publisher,
+      Status,
+      Successor,
+      Title,
+      Topic,
+      Url,
+      Version,
+    )
 
-  public data object ComposedOf : ActivityDefinitionSearchParam<Canonical>() {
+  public data object ComposedOf : SearchParam<ActivityDefinition, Canonical> {
     public override val paramName: KotlinString = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -198,7 +222,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Context : ActivityDefinitionSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<ActivityDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -212,7 +236,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : ActivityDefinitionSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<ActivityDefinition, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -226,7 +250,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : ActivityDefinitionSearchParam<Coding>() {
+  public data object ContextType : SearchParam<ActivityDefinition, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -239,7 +263,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ActivityDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<ActivityDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -252,7 +276,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object ContextTypeValue : ActivityDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<ActivityDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -265,7 +289,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object Date : ActivityDefinitionSearchParam<DateTime>() {
+  public data object Date : SearchParam<ActivityDefinition, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -278,7 +302,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object DependsOn : ActivityDefinitionSearchParam<Canonical>() {
+  public data object DependsOn : SearchParam<ActivityDefinition, Canonical> {
     public override val paramName: KotlinString = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -436,7 +460,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object DerivedFrom : ActivityDefinitionSearchParam<Canonical>() {
+  public data object DerivedFrom : SearchParam<ActivityDefinition, Canonical> {
     public override val paramName: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -594,7 +618,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Description : ActivityDefinitionSearchParam<Markdown>() {
+  public data object Description : SearchParam<ActivityDefinition, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -607,7 +631,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Effective : ActivityDefinitionSearchParam<Period>() {
+  public data object Effective : SearchParam<ActivityDefinition, Period> {
     public override val paramName: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -621,7 +645,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ActivityDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<ActivityDefinition, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -635,7 +659,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Jurisdiction : ActivityDefinitionSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<ActivityDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -648,7 +672,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Name : ActivityDefinitionSearchParam<R4bString>() {
+  public data object Name : SearchParam<ActivityDefinition, R4bString> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -661,7 +685,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Predecessor : ActivityDefinitionSearchParam<Canonical>() {
+  public data object Predecessor : SearchParam<ActivityDefinition, Canonical> {
     public override val paramName: KotlinString = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -819,7 +843,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Publisher : ActivityDefinitionSearchParam<R4bString>() {
+  public data object Publisher : SearchParam<ActivityDefinition, R4bString> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -832,7 +856,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : ActivityDefinitionSearchParam<Any>() {
+  public data object Status : SearchParam<ActivityDefinition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -844,7 +868,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ActivityDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Successor : ActivityDefinitionSearchParam<Canonical>() {
+  public data object Successor : SearchParam<ActivityDefinition, Canonical> {
     public override val paramName: KotlinString = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -1002,7 +1026,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Title : ActivityDefinitionSearchParam<R4bString>() {
+  public data object Title : SearchParam<ActivityDefinition, R4bString> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -1015,7 +1039,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Topic : ActivityDefinitionSearchParam<CodeableConcept>() {
+  public data object Topic : SearchParam<ActivityDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1028,7 +1052,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       resource.topic
   }
 
-  public data object Url : ActivityDefinitionSearchParam<Uri>() {
+  public data object Url : SearchParam<ActivityDefinition, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -1041,7 +1065,7 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.url)
   }
 
-  public data object Version : ActivityDefinitionSearchParam<R4bString>() {
+  public data object Version : SearchParam<ActivityDefinition, R4bString> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1052,34 +1076,5 @@ public sealed class ActivityDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ActivityDefinition): List<R4bString> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the ActivityDefinition resource type. */
-    public val ALL: List<ActivityDefinitionSearchParam<*>> =
-      listOf(
-        ComposedOf,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        DependsOn,
-        DerivedFrom,
-        Description,
-        Effective,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Predecessor,
-        Publisher,
-        Status,
-        Successor,
-        Title,
-        Topic,
-        Url,
-        Version,
-      )
   }
 }

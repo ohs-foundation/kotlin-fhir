@@ -29,11 +29,21 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Substance] resource type. */
-public sealed class SubstanceSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Substance): List<T>
+public object SubstanceSearchParam {
+  /** All search parameters for the Substance resource type. */
+  public val ALL: List<SearchParam<Substance, *>> =
+    listOf(
+      Category,
+      Code,
+      ContainerIdentifier,
+      Expiry,
+      Identifier,
+      Quantity,
+      Status,
+      SubstanceReference,
+    )
 
-  public data object Category : SubstanceSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<Substance, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +55,7 @@ public sealed class SubstanceSearchParam<T> : SearchParam {
     public override fun extract(resource: Substance): List<CodeableConcept> = resource.category
   }
 
-  public data object Code : SubstanceSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<Substance, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +68,7 @@ public sealed class SubstanceSearchParam<T> : SearchParam {
   }
 
   public data object ContainerIdentifier :
-    SubstanceSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<Substance, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "container-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -71,7 +81,7 @@ public sealed class SubstanceSearchParam<T> : SearchParam {
       resource.instance.mapNotNull { it.identifier }
   }
 
-  public data object Expiry : SubstanceSearchParam<DateTime>() {
+  public data object Expiry : SearchParam<Substance, DateTime> {
     public override val paramName: String = "expiry"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -84,7 +94,7 @@ public sealed class SubstanceSearchParam<T> : SearchParam {
       resource.instance.mapNotNull { it.expiry }
   }
 
-  public data object Identifier : SubstanceSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<Substance, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -97,7 +107,7 @@ public sealed class SubstanceSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Quantity : SubstanceSearchParam<dev.ohs.fhir.model.r4b.Quantity>() {
+  public data object Quantity : SearchParam<Substance, dev.ohs.fhir.model.r4b.Quantity> {
     public override val paramName: String = "quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -110,7 +120,7 @@ public sealed class SubstanceSearchParam<T> : SearchParam {
       resource.instance.mapNotNull { it.quantity }
   }
 
-  public data object Status : SubstanceSearchParam<Any>() {
+  public data object Status : SearchParam<Substance, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -122,7 +132,7 @@ public sealed class SubstanceSearchParam<T> : SearchParam {
     public override fun extract(resource: Substance): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object SubstanceReference : SubstanceSearchParam<Reference>() {
+  public data object SubstanceReference : SearchParam<Substance, Reference> {
     public override val paramName: String = "substance-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -135,20 +145,5 @@ public sealed class SubstanceSearchParam<T> : SearchParam {
       resource.ingredient.mapNotNull {
         (it.substance as? Substance.Ingredient.Substance.Reference)?.value
       }
-  }
-
-  public companion object {
-    /** All search parameters for the Substance resource type. */
-    public val ALL: List<SubstanceSearchParam<*>> =
-      listOf(
-        Category,
-        Code,
-        ContainerIdentifier,
-        Expiry,
-        Identifier,
-        Quantity,
-        Status,
-        SubstanceReference,
-      )
   }
 }

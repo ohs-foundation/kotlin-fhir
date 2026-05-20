@@ -25,7 +25,6 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
@@ -36,10 +35,13 @@ import dev.ohs.fhir.codegen.searchparam.SearchParamTypeResolver
 import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
 
 /**
- * Generates per-resource search parameter sealed classes.
+ * Generates per-resource search parameter container objects.
  *
- * For each resource type (e.g. Patient), produces a `{Resource}SearchParam` sealed class where each
- * search parameter is a `data object` carrying both metadata and an `extract` function.
+ * For each resource type (e.g. Patient), produces a `{Resource}SearchParam` plain `object`
+ * containing one `data object` per search parameter. Each data object directly implements
+ * [SearchParam]`<Resource, T>` with the concrete resource type and a value type `T` derived from
+ * the search parameter's FHIRPath expression. The container also exposes an `ALL` list of every
+ * search parameter for that resource.
  *
  * This object orchestrates KotlinPoet type/file building. The actual work of interpreting the
  * search parameter's FHIRPath expression and generating the `extract` body is split across the
@@ -70,27 +72,15 @@ object ResourceSearchParamFileSpecGenerator {
     val searchParamInterfaceClassName = ClassName(searchPackageName, "SearchParam")
     val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
     val resourceClassName = ClassName(packageName, resourceName)
-    val sealedClassName = "${resourceName}SearchParam"
-    val typeVariable = TypeVariableName("T")
-    val listOfT = List::class.asClassName().parameterizedBy(typeVariable)
+    val containerObjectName = "${resourceName}SearchParam"
 
     val resolver = FhirPathExpressionResolver(elementsByType)
     val dedupedParams = searchParams.distinctBy { it.code }.sortedBy { it.code }
 
-    val sealedClass =
-      TypeSpec.classBuilder(sealedClassName)
-        .addModifiers(KModifier.PUBLIC, KModifier.SEALED)
-        .addTypeVariable(typeVariable)
-        .addSuperinterface(searchParamInterfaceClassName)
+    val containerObject =
+      TypeSpec.objectBuilder(containerObjectName)
+        .addModifiers(KModifier.PUBLIC)
         .addKdoc("Search parameters for the [%T] resource type.", resourceClassName)
-        .addFunction(
-          FunSpec.builder("extract")
-            .addModifiers(KModifier.PUBLIC, KModifier.ABSTRACT)
-            .addParameter("resource", resourceClassName)
-            .returns(listOfT)
-            .addKdoc("Extracts the values for this search parameter from the given [resource].")
-            .build()
-        )
         .apply {
           for (searchParam in dedupedParams) {
             addType(
@@ -99,35 +89,33 @@ object ResourceSearchParamFileSpecGenerator {
                 packageName,
                 resourceName,
                 resourceClassName,
+                searchParamInterfaceClassName,
                 searchParamTypeClassName,
                 resolver,
               )
             )
           }
 
-          // Add companion with ALL list
           val allListType =
             List::class.asClassName()
-              .parameterizedBy(ClassName(searchPackageName, sealedClassName).parameterizedBy(STAR))
-          addType(
-            TypeSpec.companionObjectBuilder()
-              .addProperty(
-                PropertySpec.builder("ALL", allListType)
-                  .addModifiers(KModifier.PUBLIC)
-                  .addKdoc("All search parameters for the %L resource type.", resourceName)
-                  .initializer(
-                    "listOf(${dedupedParams.joinToString(", ") { it.code.toDataObjectName() }})"
-                  )
-                  .build()
+              .parameterizedBy(
+                searchParamInterfaceClassName.parameterizedBy(resourceClassName, STAR)
+              )
+          addProperty(
+            PropertySpec.builder("ALL", allListType)
+              .addModifiers(KModifier.PUBLIC)
+              .addKdoc("All search parameters for the %L resource type.", resourceName)
+              .initializer(
+                "listOf(${dedupedParams.joinToString(", ") { it.code.toDataObjectName() }})"
               )
               .build()
           )
         }
         .build()
 
-    return FileSpec.builder(searchPackageName, sealedClassName)
+    return FileSpec.builder(searchPackageName, containerObjectName)
       .addSuppressAnnotation()
-      .addType(sealedClass)
+      .addType(containerObject)
       .build()
   }
 
@@ -136,22 +124,22 @@ object ResourceSearchParamFileSpecGenerator {
     packageName: String,
     resourceName: String,
     resourceClassName: ClassName,
+    searchParamInterfaceClassName: ClassName,
     searchParamTypeClassName: ClassName,
     resolver: FhirPathExpressionResolver,
   ): TypeSpec {
     val objectName = searchParam.code.toDataObjectName()
-    val sealedClassName = ClassName("$packageName.search", "${resourceName}SearchParam")
 
     val resourceExpression = searchParam.extractExpressionForResource(resourceName)
     val pattern = parseSearchParamExpression(resourceExpression, resourceName, resolver)
-    val (typeParamClassName, extractionCode) = render(pattern, packageName, resourceName)
+    val (valueTypeName, extractionCode) = render(pattern, packageName, resourceName)
 
-    val parentType = sealedClassName.parameterizedBy(typeParamClassName)
-    val returnType = List::class.asClassName().parameterizedBy(typeParamClassName)
+    val parentType = searchParamInterfaceClassName.parameterizedBy(resourceClassName, valueTypeName)
+    val returnType = List::class.asClassName().parameterizedBy(valueTypeName)
 
     return TypeSpec.objectBuilder(objectName)
       .addModifiers(KModifier.PUBLIC, KModifier.DATA)
-      .superclass(parentType)
+      .addSuperinterface(parentType)
       .addProperty(
         PropertySpec.builder("paramName", String::class)
           .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)

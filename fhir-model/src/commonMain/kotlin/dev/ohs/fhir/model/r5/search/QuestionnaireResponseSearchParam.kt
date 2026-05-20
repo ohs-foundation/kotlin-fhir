@@ -29,11 +29,25 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [QuestionnaireResponse] resource type. */
-public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: QuestionnaireResponse): List<T>
+public object QuestionnaireResponseSearchParam {
+  /** All search parameters for the QuestionnaireResponse resource type. */
+  public val ALL: List<SearchParam<QuestionnaireResponse, *>> =
+    listOf(
+      Author,
+      Authored,
+      BasedOn,
+      Encounter,
+      Identifier,
+      ItemSubject,
+      PartOf,
+      Patient,
+      Questionnaire,
+      Source,
+      Status,
+      Subject,
+    )
 
-  public data object Author : QuestionnaireResponseSearchParam<Reference>() {
+  public data object Author : SearchParam<QuestionnaireResponse, Reference> {
     public override val paramName: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -54,7 +68,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.author)
   }
 
-  public data object Authored : QuestionnaireResponseSearchParam<DateTime>() {
+  public data object Authored : SearchParam<QuestionnaireResponse, DateTime> {
     public override val paramName: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -67,7 +81,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.authored)
   }
 
-  public data object BasedOn : QuestionnaireResponseSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<QuestionnaireResponse, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -79,7 +93,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
     public override fun extract(resource: QuestionnaireResponse): List<Reference> = resource.basedOn
   }
 
-  public data object Encounter : QuestionnaireResponseSearchParam<Reference>() {
+  public data object Encounter : SearchParam<QuestionnaireResponse, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -93,7 +107,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    QuestionnaireResponseSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<QuestionnaireResponse, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -107,7 +121,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object ItemSubject : QuestionnaireResponseSearchParam<Any>() {
+  public data object ItemSubject : SearchParam<QuestionnaireResponse, Any> {
     public override val paramName: String = "item-subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -280,7 +294,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
     public override fun extract(resource: QuestionnaireResponse): List<Any> = emptyList()
   }
 
-  public data object PartOf : QuestionnaireResponseSearchParam<Reference>() {
+  public data object PartOf : SearchParam<QuestionnaireResponse, Reference> {
     public override val paramName: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -292,7 +306,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
     public override fun extract(resource: QuestionnaireResponse): List<Reference> = resource.partOf
   }
 
-  public data object Patient : QuestionnaireResponseSearchParam<Reference>() {
+  public data object Patient : SearchParam<QuestionnaireResponse, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -308,7 +322,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Questionnaire : QuestionnaireResponseSearchParam<Canonical>() {
+  public data object Questionnaire : SearchParam<QuestionnaireResponse, Canonical> {
     public override val paramName: String = "questionnaire"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -321,7 +335,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
       listOf(resource.questionnaire)
   }
 
-  public data object Source : QuestionnaireResponseSearchParam<Reference>() {
+  public data object Source : SearchParam<QuestionnaireResponse, Reference> {
     public override val paramName: String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -342,7 +356,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.source)
   }
 
-  public data object Status : QuestionnaireResponseSearchParam<Any>() {
+  public data object Status : SearchParam<QuestionnaireResponse, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -355,7 +369,7 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
       listOf(resource.status)
   }
 
-  public data object Subject : QuestionnaireResponseSearchParam<Reference>() {
+  public data object Subject : SearchParam<QuestionnaireResponse, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -526,24 +540,5 @@ public sealed class QuestionnaireResponseSearchParam<T> : SearchParam {
 
     public override fun extract(resource: QuestionnaireResponse): List<Reference> =
       listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the QuestionnaireResponse resource type. */
-    public val ALL: List<QuestionnaireResponseSearchParam<*>> =
-      listOf(
-        Author,
-        Authored,
-        BasedOn,
-        Encounter,
-        Identifier,
-        ItemSubject,
-        PartOf,
-        Patient,
-        Questionnaire,
-        Source,
-        Status,
-        Subject,
-      )
   }
 }

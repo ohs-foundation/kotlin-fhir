@@ -35,11 +35,32 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [SearchParameter] resource type. */
-public sealed class SearchParameterSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: SearchParameter): List<T>
+public object SearchParameterSearchParam {
+  /** All search parameters for the SearchParameter resource type. */
+  public val ALL: List<SearchParam<SearchParameter, *>> =
+    listOf(
+      Base,
+      Code,
+      Component,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      DerivedFrom,
+      Description,
+      Jurisdiction,
+      Name,
+      Publisher,
+      Status,
+      Target,
+      Type,
+      Url,
+      Version,
+    )
 
-  public data object Base : SearchParameterSearchParam<Any>() {
+  public data object Base : SearchParam<SearchParameter, Any> {
     public override val paramName: KotlinString = "base"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -51,7 +72,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
     public override fun extract(resource: SearchParameter): List<Any> = resource.base
   }
 
-  public data object Code : SearchParameterSearchParam<Any>() {
+  public data object Code : SearchParam<SearchParameter, Any> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -63,7 +84,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
     public override fun extract(resource: SearchParameter): List<Any> = listOf(resource.code)
   }
 
-  public data object Component : SearchParameterSearchParam<Canonical>() {
+  public data object Component : SearchParam<SearchParameter, Canonical> {
     public override val paramName: KotlinString = "component"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -76,7 +97,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
       resource.component.map { it.definition }
   }
 
-  public data object Context : SearchParameterSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<SearchParameter, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -90,7 +111,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : SearchParameterSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<SearchParameter, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -103,7 +124,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : SearchParameterSearchParam<Coding>() {
+  public data object ContextType : SearchParam<SearchParameter, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -116,7 +137,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : SearchParameterSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<SearchParameter, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -128,7 +149,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
     public override fun extract(resource: SearchParameter): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : SearchParameterSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<SearchParameter, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -140,7 +161,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
     public override fun extract(resource: SearchParameter): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : SearchParameterSearchParam<DateTime>() {
+  public data object Date : SearchParam<SearchParameter, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -153,7 +174,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object DerivedFrom : SearchParameterSearchParam<Canonical>() {
+  public data object DerivedFrom : SearchParam<SearchParameter, Canonical> {
     public override val paramName: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -166,7 +187,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
       listOfNotNull(resource.derivedFrom)
   }
 
-  public data object Description : SearchParameterSearchParam<Markdown>() {
+  public data object Description : SearchParam<SearchParameter, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -179,7 +200,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
       listOf(resource.description)
   }
 
-  public data object Jurisdiction : SearchParameterSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<SearchParameter, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -192,7 +213,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Name : SearchParameterSearchParam<R4bString>() {
+  public data object Name : SearchParam<SearchParameter, R4bString> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -204,7 +225,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
     public override fun extract(resource: SearchParameter): List<R4bString> = listOf(resource.name)
   }
 
-  public data object Publisher : SearchParameterSearchParam<R4bString>() {
+  public data object Publisher : SearchParam<SearchParameter, R4bString> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -217,7 +238,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : SearchParameterSearchParam<Any>() {
+  public data object Status : SearchParam<SearchParameter, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -229,7 +250,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
     public override fun extract(resource: SearchParameter): List<Any> = listOf(resource.status)
   }
 
-  public data object Target : SearchParameterSearchParam<Any>() {
+  public data object Target : SearchParam<SearchParameter, Any> {
     public override val paramName: KotlinString = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -241,7 +262,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
     public override fun extract(resource: SearchParameter): List<Any> = resource.target
   }
 
-  public data object Type : SearchParameterSearchParam<Any>() {
+  public data object Type : SearchParam<SearchParameter, Any> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -253,7 +274,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
     public override fun extract(resource: SearchParameter): List<Any> = listOf(resource.type)
   }
 
-  public data object Url : SearchParameterSearchParam<Uri>() {
+  public data object Url : SearchParam<SearchParameter, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -265,7 +286,7 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
     public override fun extract(resource: SearchParameter): List<Uri> = listOf(resource.url)
   }
 
-  public data object Version : SearchParameterSearchParam<R4bString>() {
+  public data object Version : SearchParam<SearchParameter, R4bString> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -276,31 +297,5 @@ public sealed class SearchParameterSearchParam<T> : SearchParam {
 
     public override fun extract(resource: SearchParameter): List<R4bString> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the SearchParameter resource type. */
-    public val ALL: List<SearchParameterSearchParam<*>> =
-      listOf(
-        Base,
-        Code,
-        Component,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        DerivedFrom,
-        Description,
-        Jurisdiction,
-        Name,
-        Publisher,
-        Status,
-        Target,
-        Type,
-        Url,
-        Version,
-      )
   }
 }

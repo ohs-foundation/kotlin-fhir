@@ -35,11 +35,32 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MessageDefinition] resource type. */
-public sealed class MessageDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MessageDefinition): List<T>
+public object MessageDefinitionSearchParam {
+  /** All search parameters for the MessageDefinition resource type. */
+  public val ALL: List<SearchParam<MessageDefinition, *>> =
+    listOf(
+      Category,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Event,
+      Focus,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Parent,
+      Publisher,
+      Status,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Category : MessageDefinitionSearchParam<Any>() {
+  public data object Category : SearchParam<MessageDefinition, Any> {
     public override val paramName: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -52,7 +73,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.category)
   }
 
-  public data object Context : MessageDefinitionSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<MessageDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -66,7 +87,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : MessageDefinitionSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<MessageDefinition, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -80,7 +101,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : MessageDefinitionSearchParam<Coding>() {
+  public data object ContextType : SearchParam<MessageDefinition, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -93,7 +114,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : MessageDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<MessageDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -106,7 +127,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object ContextTypeValue : MessageDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<MessageDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -119,7 +140,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object Date : MessageDefinitionSearchParam<DateTime>() {
+  public data object Date : SearchParam<MessageDefinition, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -131,7 +152,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: MessageDefinition): List<DateTime> = listOf(resource.date)
   }
 
-  public data object Description : MessageDefinitionSearchParam<Markdown>() {
+  public data object Description : SearchParam<MessageDefinition, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -144,7 +165,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Event : MessageDefinitionSearchParam<MessageDefinition.Event>() {
+  public data object Event : SearchParam<MessageDefinition, MessageDefinition.Event> {
     public override val paramName: KotlinString = "event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -157,7 +178,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       listOf(resource.event)
   }
 
-  public data object Focus : MessageDefinitionSearchParam<Any>() {
+  public data object Focus : SearchParam<MessageDefinition, Any> {
     public override val paramName: KotlinString = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -171,7 +192,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    MessageDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<MessageDefinition, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -185,7 +206,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Jurisdiction : MessageDefinitionSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<MessageDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -198,7 +219,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Name : MessageDefinitionSearchParam<R4bString>() {
+  public data object Name : SearchParam<MessageDefinition, R4bString> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -211,7 +232,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Parent : MessageDefinitionSearchParam<Canonical>() {
+  public data object Parent : SearchParam<MessageDefinition, Canonical> {
     public override val paramName: KotlinString = "parent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -223,7 +244,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: MessageDefinition): List<Canonical> = resource.parent
   }
 
-  public data object Publisher : MessageDefinitionSearchParam<R4bString>() {
+  public data object Publisher : SearchParam<MessageDefinition, R4bString> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -236,7 +257,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : MessageDefinitionSearchParam<Any>() {
+  public data object Status : SearchParam<MessageDefinition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -248,7 +269,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: MessageDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : MessageDefinitionSearchParam<R4bString>() {
+  public data object Title : SearchParam<MessageDefinition, R4bString> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -261,7 +282,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : MessageDefinitionSearchParam<Uri>() {
+  public data object Url : SearchParam<MessageDefinition, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -274,7 +295,7 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.url)
   }
 
-  public data object Version : MessageDefinitionSearchParam<R4bString>() {
+  public data object Version : SearchParam<MessageDefinition, R4bString> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -285,31 +306,5 @@ public sealed class MessageDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MessageDefinition): List<R4bString> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the MessageDefinition resource type. */
-    public val ALL: List<MessageDefinitionSearchParam<*>> =
-      listOf(
-        Category,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Event,
-        Focus,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Parent,
-        Publisher,
-        Status,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

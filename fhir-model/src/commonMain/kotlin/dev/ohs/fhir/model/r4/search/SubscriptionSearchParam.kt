@@ -28,11 +28,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Subscription] resource type. */
-public sealed class SubscriptionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Subscription): List<T>
+public object SubscriptionSearchParam {
+  /** All search parameters for the Subscription resource type. */
+  public val ALL: List<SearchParam<Subscription, *>> =
+    listOf(Contact, Criteria, Payload, Status, Type, Url)
 
-  public data object Contact : SubscriptionSearchParam<ContactPoint>() {
+  public data object Contact : SearchParam<Subscription, ContactPoint> {
     public override val paramName: KotlinString = "contact"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +45,7 @@ public sealed class SubscriptionSearchParam<T> : SearchParam {
     public override fun extract(resource: Subscription): List<ContactPoint> = resource.contact
   }
 
-  public data object Criteria : SubscriptionSearchParam<R4String>() {
+  public data object Criteria : SearchParam<Subscription, R4String> {
     public override val paramName: KotlinString = "criteria"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -56,7 +57,7 @@ public sealed class SubscriptionSearchParam<T> : SearchParam {
     public override fun extract(resource: Subscription): List<R4String> = listOf(resource.criteria)
   }
 
-  public data object Payload : SubscriptionSearchParam<Any>() {
+  public data object Payload : SearchParam<Subscription, Any> {
     public override val paramName: KotlinString = "payload"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -69,7 +70,7 @@ public sealed class SubscriptionSearchParam<T> : SearchParam {
       listOfNotNull(resource.channel.payload)
   }
 
-  public data object Status : SubscriptionSearchParam<Any>() {
+  public data object Status : SearchParam<Subscription, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -81,7 +82,7 @@ public sealed class SubscriptionSearchParam<T> : SearchParam {
     public override fun extract(resource: Subscription): List<Any> = listOf(resource.status)
   }
 
-  public data object Type : SubscriptionSearchParam<Any>() {
+  public data object Type : SearchParam<Subscription, Any> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -93,7 +94,7 @@ public sealed class SubscriptionSearchParam<T> : SearchParam {
     public override fun extract(resource: Subscription): List<Any> = listOf(resource.channel.type)
   }
 
-  public data object Url : SubscriptionSearchParam<dev.ohs.fhir.model.r4.Url>() {
+  public data object Url : SearchParam<Subscription, dev.ohs.fhir.model.r4.Url> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -104,11 +105,5 @@ public sealed class SubscriptionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Subscription): List<dev.ohs.fhir.model.r4.Url> =
       listOfNotNull(resource.channel.endpoint)
-  }
-
-  public companion object {
-    /** All search parameters for the Subscription resource type. */
-    public val ALL: List<SubscriptionSearchParam<*>> =
-      listOf(Contact, Criteria, Payload, Status, Type, Url)
   }
 }

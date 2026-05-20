@@ -28,11 +28,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DeviceMetric] resource type. */
-public sealed class DeviceMetricSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DeviceMetric): List<T>
+public object DeviceMetricSearchParam {
+  /** All search parameters for the DeviceMetric resource type. */
+  public val ALL: List<SearchParam<DeviceMetric, *>> =
+    listOf(Category, Identifier, Parent, Source, Type)
 
-  public data object Category : DeviceMetricSearchParam<Any>() {
+  public data object Category : SearchParam<DeviceMetric, Any> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +45,7 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
     public override fun extract(resource: DeviceMetric): List<Any> = listOf(resource.category)
   }
 
-  public data object Identifier : DeviceMetricSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<DeviceMetric, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -57,7 +58,7 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Parent : DeviceMetricSearchParam<Reference>() {
+  public data object Parent : SearchParam<DeviceMetric, Reference> {
     public override val paramName: String = "parent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -70,7 +71,7 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
       listOfNotNull(resource.parent)
   }
 
-  public data object Source : DeviceMetricSearchParam<Reference>() {
+  public data object Source : SearchParam<DeviceMetric, Reference> {
     public override val paramName: String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -83,7 +84,7 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
       listOfNotNull(resource.source)
   }
 
-  public data object Type : DeviceMetricSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<DeviceMetric, CodeableConcept> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -94,11 +95,5 @@ public sealed class DeviceMetricSearchParam<T> : SearchParam {
 
     public override fun extract(resource: DeviceMetric): List<CodeableConcept> =
       listOf(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the DeviceMetric resource type. */
-    public val ALL: List<DeviceMetricSearchParam<*>> =
-      listOf(Category, Identifier, Parent, Source, Type)
   }
 }

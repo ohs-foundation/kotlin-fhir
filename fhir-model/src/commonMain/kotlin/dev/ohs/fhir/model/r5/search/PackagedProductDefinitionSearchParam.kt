@@ -28,11 +28,24 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [PackagedProductDefinition] resource type. */
-public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: PackagedProductDefinition): List<T>
+public object PackagedProductDefinitionSearchParam {
+  /** All search parameters for the PackagedProductDefinition resource type. */
+  public val ALL: List<SearchParam<PackagedProductDefinition, *>> =
+    listOf(
+      Biological,
+      ContainedItem,
+      Device,
+      Identifier,
+      ManufacturedItem,
+      Medication,
+      Name,
+      Nutrition,
+      Package,
+      PackageFor,
+      Status,
+    )
 
-  public data object Biological : PackagedProductDefinitionSearchParam<Reference>() {
+  public data object Biological : SearchParam<PackagedProductDefinition, Reference> {
     public override val paramName: KotlinString = "biological"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -53,7 +66,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
       (resource.packaging?.containedItem ?: emptyList()).map { it.item }.mapNotNull { it.reference }
   }
 
-  public data object ContainedItem : PackagedProductDefinitionSearchParam<Reference>() {
+  public data object ContainedItem : SearchParam<PackagedProductDefinition, Reference> {
     public override val paramName: KotlinString = "contained-item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,7 +87,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
       (resource.packaging?.containedItem ?: emptyList()).map { it.item }.mapNotNull { it.reference }
   }
 
-  public data object Device : PackagedProductDefinitionSearchParam<Reference>() {
+  public data object Device : SearchParam<PackagedProductDefinition, Reference> {
     public override val paramName: KotlinString = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -96,7 +109,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    PackagedProductDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<PackagedProductDefinition, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -110,7 +123,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object ManufacturedItem : PackagedProductDefinitionSearchParam<Reference>() {
+  public data object ManufacturedItem : SearchParam<PackagedProductDefinition, Reference> {
     public override val paramName: KotlinString = "manufactured-item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -131,7 +144,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
       (resource.packaging?.containedItem ?: emptyList()).map { it.item }.mapNotNull { it.reference }
   }
 
-  public data object Medication : PackagedProductDefinitionSearchParam<Reference>() {
+  public data object Medication : SearchParam<PackagedProductDefinition, Reference> {
     public override val paramName: KotlinString = "medication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -152,7 +165,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
       (resource.packaging?.containedItem ?: emptyList()).map { it.item }.mapNotNull { it.reference }
   }
 
-  public data object Name : PackagedProductDefinitionSearchParam<R5String>() {
+  public data object Name : SearchParam<PackagedProductDefinition, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -165,7 +178,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Nutrition : PackagedProductDefinitionSearchParam<Reference>() {
+  public data object Nutrition : SearchParam<PackagedProductDefinition, Reference> {
     public override val paramName: KotlinString = "nutrition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -186,7 +199,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
       (resource.packaging?.containedItem ?: emptyList()).map { it.item }.mapNotNull { it.reference }
   }
 
-  public data object Package : PackagedProductDefinitionSearchParam<Reference>() {
+  public data object Package : SearchParam<PackagedProductDefinition, Reference> {
     public override val paramName: KotlinString = "package"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -207,7 +220,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
       (resource.packaging?.containedItem ?: emptyList()).map { it.item }.mapNotNull { it.reference }
   }
 
-  public data object PackageFor : PackagedProductDefinitionSearchParam<Reference>() {
+  public data object PackageFor : SearchParam<PackagedProductDefinition, Reference> {
     public override val paramName: KotlinString = "package-for"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -220,7 +233,7 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
       resource.packageFor
   }
 
-  public data object Status : PackagedProductDefinitionSearchParam<CodeableConcept>() {
+  public data object Status : SearchParam<PackagedProductDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -231,23 +244,5 @@ public sealed class PackagedProductDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: PackagedProductDefinition): List<CodeableConcept> =
       listOfNotNull(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the PackagedProductDefinition resource type. */
-    public val ALL: List<PackagedProductDefinitionSearchParam<*>> =
-      listOf(
-        Biological,
-        ContainedItem,
-        Device,
-        Identifier,
-        ManufacturedItem,
-        Medication,
-        Name,
-        Nutrition,
-        Package,
-        PackageFor,
-        Status,
-      )
   }
 }

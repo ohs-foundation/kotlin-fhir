@@ -32,11 +32,22 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [EvidenceReport] resource type. */
-public sealed class EvidenceReportSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: EvidenceReport): List<T>
+public object EvidenceReportSearchParam {
+  /** All search parameters for the EvidenceReport resource type. */
+  public val ALL: List<SearchParam<EvidenceReport, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Identifier,
+      Publisher,
+      Status,
+      Url,
+    )
 
-  public data object Context : EvidenceReportSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<EvidenceReport, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,7 +61,7 @@ public sealed class EvidenceReportSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : EvidenceReportSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<EvidenceReport, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -63,7 +74,7 @@ public sealed class EvidenceReportSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : EvidenceReportSearchParam<Coding>() {
+  public data object ContextType : SearchParam<EvidenceReport, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -76,7 +87,7 @@ public sealed class EvidenceReportSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : EvidenceReportSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<EvidenceReport, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -88,7 +99,7 @@ public sealed class EvidenceReportSearchParam<T> : SearchParam {
     public override fun extract(resource: EvidenceReport): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : EvidenceReportSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<EvidenceReport, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -100,7 +111,7 @@ public sealed class EvidenceReportSearchParam<T> : SearchParam {
     public override fun extract(resource: EvidenceReport): List<UsageContext> = resource.useContext
   }
 
-  public data object Identifier : EvidenceReportSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<EvidenceReport, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -113,7 +124,7 @@ public sealed class EvidenceReportSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Publisher : EvidenceReportSearchParam<R4bString>() {
+  public data object Publisher : SearchParam<EvidenceReport, R4bString> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -126,7 +137,7 @@ public sealed class EvidenceReportSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : EvidenceReportSearchParam<Any>() {
+  public data object Status : SearchParam<EvidenceReport, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -138,7 +149,7 @@ public sealed class EvidenceReportSearchParam<T> : SearchParam {
     public override fun extract(resource: EvidenceReport): List<Any> = listOf(resource.status)
   }
 
-  public data object Url : EvidenceReportSearchParam<Uri>() {
+  public data object Url : SearchParam<EvidenceReport, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -148,21 +159,5 @@ public sealed class EvidenceReportSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<Uri> = listOfNotNull(resource.url)
-  }
-
-  public companion object {
-    /** All search parameters for the EvidenceReport resource type. */
-    public val ALL: List<EvidenceReportSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Identifier,
-        Publisher,
-        Status,
-        Url,
-      )
   }
 }

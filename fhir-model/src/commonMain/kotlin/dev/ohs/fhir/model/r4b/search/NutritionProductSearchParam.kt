@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [NutritionProduct] resource type. */
-public sealed class NutritionProductSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: NutritionProduct): List<T>
+public object NutritionProductSearchParam {
+  /** All search parameters for the NutritionProduct resource type. */
+  public val ALL: List<SearchParam<NutritionProduct, *>> = listOf(Identifier, Status)
 
-  public data object Identifier : NutritionProductSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<NutritionProduct, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +44,7 @@ public sealed class NutritionProductSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.instance?.identifier ?: emptyList()
   }
 
-  public data object Status : NutritionProductSearchParam<Any>() {
+  public data object Status : SearchParam<NutritionProduct, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -54,10 +54,5 @@ public sealed class NutritionProductSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: NutritionProduct): List<Any> = listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the NutritionProduct resource type. */
-    public val ALL: List<NutritionProductSearchParam<*>> = listOf(Identifier, Status)
   }
 }

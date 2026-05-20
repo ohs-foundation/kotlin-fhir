@@ -222,24 +222,31 @@ The following FHIR value sets are excluded from Kotlin enum generation.
 
 ### Search Parameters
 
-The codegen reads `SearchParameter-*.json` files from the FHIR core packages and generates per-resource sealed class hierarchies that bundle search parameter metadata with typed value extraction. This provides compile-time safe, discoverable access to FHIR search parameters.
+The codegen reads `SearchParameter-*.json` files from the FHIR core packages and generates per-resource containers of typed search parameter `data object`s. This provides compile-time safe, discoverable access to FHIR search parameters.
 
-A `SearchParam` sealed interface is generated in the `search` subpackage of each version package (e.g. `dev.ohs.fhir.model.r4.search`) with four metadata properties:
+A `SearchParam<R, T>` sealed interface is generated in the `search` subpackage of each version package (e.g. `dev.ohs.fhir.model.r4.search`). It carries the metadata for a search parameter and the typed `extract` function:
 
-| Property     | Type              | Description                                                  |
-|:-------------|:------------------|:-------------------------------------------------------------|
-| `paramName`  | `String`          | The search parameter name as used in search URLs.            |
-| `type`       | `SearchParamType` | The search parameter type (number, date, string, token, …).  |
-| `expression` | `String`          | The FHIRPath expression that extracts values for this param. |
-| `target`     | `List<String>`    | Target resource types for reference search parameters.       |
+| Member       | Type                       | Description                                                                       |
+|:-------------|:---------------------------|:----------------------------------------------------------------------------------|
+| `paramName`  | `String`                   | The search parameter name as used in search URLs.                                 |
+| `type`       | `SearchParamType`          | The search parameter type (number, date, string, token, …).                       |
+| `expression` | `String`                   | The FHIRPath expression that extracts values for this param.                      |
+| `target`     | `List<String>`             | Target resource types for reference search parameters.                            |
+| `extract`    | `(resource: R) -> List<T>` | Pulls the values of type `T` out of a resource of type `R` for this search param. |
 
-For each resource type that has search parameters, a `{Resource}SearchParam<T>` sealed class is generated. Each search parameter is a `data object` that extends the sealed class and adds a typed `extract(resource): List<T>` function. A companion `ALL` property exposes every search parameter for the resource. For example, `PatientSearchParam` looks like:
+For each resource type that has search parameters, a `{Resource}SearchParam` container `object` is generated. Each search parameter is a nested `data object` that implements `SearchParam<{Resource}, T>` with the value type `T` derived from the FHIRPath expression. An `ALL` property exposes every search parameter for the resource. For example, `PatientSearchParam` looks like:
 
 ```kotlin
-sealed class PatientSearchParam<T> : SearchParam {
-  abstract fun extract(resource: Patient): List<T>
+sealed interface SearchParam<in R : Resource, out T> {
+  val paramName: String
+  val type: SearchParamType
+  val expression: String
+  val target: List<String>
+  fun extract(resource: R): List<T>
+}
 
-  data object Birthdate : PatientSearchParam<Date>() {
+object PatientSearchParam {
+  data object Birthdate : SearchParam<Patient, Date> {
     override val paramName = "birthdate"
     override val type = SearchParamType.fromCode("date")
     override val expression = "Patient.birthDate"
@@ -247,7 +254,7 @@ sealed class PatientSearchParam<T> : SearchParam {
     override fun extract(resource: Patient) = listOfNotNull(resource.birthDate)
   }
 
-  data object GeneralPractitioner : PatientSearchParam<Reference>() {
+  data object GeneralPractitioner : SearchParam<Patient, Reference> {
     override val paramName = "general-practitioner"
     override val type = SearchParamType.fromCode("reference")
     override val expression = "Patient.generalPractitioner"
@@ -256,9 +263,7 @@ sealed class PatientSearchParam<T> : SearchParam {
   }
   // ... one data object per search parameter
 
-  companion object {
-    val ALL: List<PatientSearchParam<*>> = listOf(Birthdate, GeneralPractitioner, /* ... */)
-  }
+  val ALL: List<SearchParam<Patient, *>> = listOf(Birthdate, GeneralPractitioner, /* ... */)
 }
 
 // Usage:

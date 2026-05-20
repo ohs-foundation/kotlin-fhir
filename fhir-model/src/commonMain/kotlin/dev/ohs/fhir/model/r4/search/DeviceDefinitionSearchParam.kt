@@ -27,11 +27,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DeviceDefinition] resource type. */
-public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DeviceDefinition): List<T>
+public object DeviceDefinitionSearchParam {
+  /** All search parameters for the DeviceDefinition resource type. */
+  public val ALL: List<SearchParam<DeviceDefinition, *>> = listOf(Identifier, Parent, Type)
 
-  public data object Identifier : DeviceDefinitionSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<DeviceDefinition, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +45,7 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Parent : DeviceDefinitionSearchParam<Reference>() {
+  public data object Parent : SearchParam<DeviceDefinition, Reference> {
     public override val paramName: String = "parent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -58,7 +58,7 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.parentDevice)
   }
 
-  public data object Type : DeviceDefinitionSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<DeviceDefinition, CodeableConcept> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -69,10 +69,5 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: DeviceDefinition): List<CodeableConcept> =
       listOfNotNull(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the DeviceDefinition resource type. */
-    public val ALL: List<DeviceDefinitionSearchParam<*>> = listOf(Identifier, Parent, Type)
   }
 }

@@ -32,11 +32,33 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Practitioner] resource type. */
-public sealed class PractitionerSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Practitioner): List<T>
+public object PractitionerSearchParam {
+  /** All search parameters for the Practitioner resource type. */
+  public val ALL: List<SearchParam<Practitioner, *>> =
+    listOf(
+      Active,
+      Address,
+      AddressCity,
+      AddressCountry,
+      AddressPostalcode,
+      AddressState,
+      AddressUse,
+      Communication,
+      DeathDate,
+      Deceased,
+      Email,
+      Family,
+      Gender,
+      Given,
+      Identifier,
+      Name,
+      Phone,
+      Phonetic,
+      QualificationPeriod,
+      Telecom,
+    )
 
-  public data object Active : PractitionerSearchParam<Boolean>() {
+  public data object Active : SearchParam<Practitioner, Boolean> {
     public override val paramName: KotlinString = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -49,7 +71,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       listOfNotNull(resource.active)
   }
 
-  public data object Address : PractitionerSearchParam<dev.ohs.fhir.model.r5.Address>() {
+  public data object Address : SearchParam<Practitioner, dev.ohs.fhir.model.r5.Address> {
     public override val paramName: KotlinString = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -62,7 +84,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.address
   }
 
-  public data object AddressCity : PractitionerSearchParam<R5String>() {
+  public data object AddressCity : SearchParam<Practitioner, R5String> {
     public override val paramName: KotlinString = "address-city"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -75,7 +97,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.city }
   }
 
-  public data object AddressCountry : PractitionerSearchParam<R5String>() {
+  public data object AddressCountry : SearchParam<Practitioner, R5String> {
     public override val paramName: KotlinString = "address-country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -88,7 +110,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.country }
   }
 
-  public data object AddressPostalcode : PractitionerSearchParam<R5String>() {
+  public data object AddressPostalcode : SearchParam<Practitioner, R5String> {
     public override val paramName: KotlinString = "address-postalcode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -101,7 +123,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.postalCode }
   }
 
-  public data object AddressState : PractitionerSearchParam<R5String>() {
+  public data object AddressState : SearchParam<Practitioner, R5String> {
     public override val paramName: KotlinString = "address-state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -114,7 +136,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.state }
   }
 
-  public data object AddressUse : PractitionerSearchParam<Any>() {
+  public data object AddressUse : SearchParam<Practitioner, Any> {
     public override val paramName: KotlinString = "address-use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -127,7 +149,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.use }
   }
 
-  public data object Communication : PractitionerSearchParam<CodeableConcept>() {
+  public data object Communication : SearchParam<Practitioner, CodeableConcept> {
     public override val paramName: KotlinString = "communication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -140,7 +162,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.communication.map { it.language }
   }
 
-  public data object DeathDate : PractitionerSearchParam<Any>() {
+  public data object DeathDate : SearchParam<Practitioner, Any> {
     public override val paramName: KotlinString = "death-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -152,7 +174,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
     public override fun extract(resource: Practitioner): List<Any> = emptyList()
   }
 
-  public data object Deceased : PractitionerSearchParam<Any>() {
+  public data object Deceased : SearchParam<Practitioner, Any> {
     public override val paramName: KotlinString = "deceased"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -165,7 +187,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
     public override fun extract(resource: Practitioner): List<Any> = emptyList()
   }
 
-  public data object Email : PractitionerSearchParam<ContactPoint>() {
+  public data object Email : SearchParam<Practitioner, ContactPoint> {
     public override val paramName: KotlinString = "email"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -178,7 +200,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.telecom.filter { it.system?.value?.toString() == "email" }
   }
 
-  public data object Family : PractitionerSearchParam<R5String>() {
+  public data object Family : SearchParam<Practitioner, R5String> {
     public override val paramName: KotlinString = "family"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -191,7 +213,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.name.mapNotNull { it.family }
   }
 
-  public data object Gender : PractitionerSearchParam<Any>() {
+  public data object Gender : SearchParam<Practitioner, Any> {
     public override val paramName: KotlinString = "gender"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -203,7 +225,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
     public override fun extract(resource: Practitioner): List<Any> = listOfNotNull(resource.gender)
   }
 
-  public data object Given : PractitionerSearchParam<R5String>() {
+  public data object Given : SearchParam<Practitioner, R5String> {
     public override val paramName: KotlinString = "given"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -216,7 +238,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.name.flatMap { it.given }
   }
 
-  public data object Identifier : PractitionerSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Practitioner, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -229,7 +251,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Name : PractitionerSearchParam<HumanName>() {
+  public data object Name : SearchParam<Practitioner, HumanName> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -241,7 +263,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
     public override fun extract(resource: Practitioner): List<HumanName> = resource.name
   }
 
-  public data object Phone : PractitionerSearchParam<ContactPoint>() {
+  public data object Phone : SearchParam<Practitioner, ContactPoint> {
     public override val paramName: KotlinString = "phone"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -254,7 +276,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.telecom.filter { it.system?.value?.toString() == "phone" }
   }
 
-  public data object Phonetic : PractitionerSearchParam<HumanName>() {
+  public data object Phonetic : SearchParam<Practitioner, HumanName> {
     public override val paramName: KotlinString = "phonetic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -266,7 +288,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
     public override fun extract(resource: Practitioner): List<HumanName> = resource.name
   }
 
-  public data object QualificationPeriod : PractitionerSearchParam<Period>() {
+  public data object QualificationPeriod : SearchParam<Practitioner, Period> {
     public override val paramName: KotlinString = "qualification-period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -279,7 +301,7 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
       resource.qualification.mapNotNull { it.period }
   }
 
-  public data object Telecom : PractitionerSearchParam<ContactPoint>() {
+  public data object Telecom : SearchParam<Practitioner, ContactPoint> {
     public override val paramName: KotlinString = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -289,32 +311,5 @@ public sealed class PractitionerSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: Practitioner): List<ContactPoint> = resource.telecom
-  }
-
-  public companion object {
-    /** All search parameters for the Practitioner resource type. */
-    public val ALL: List<PractitionerSearchParam<*>> =
-      listOf(
-        Active,
-        Address,
-        AddressCity,
-        AddressCountry,
-        AddressPostalcode,
-        AddressState,
-        AddressUse,
-        Communication,
-        DeathDate,
-        Deceased,
-        Email,
-        Family,
-        Gender,
-        Given,
-        Identifier,
-        Name,
-        Phone,
-        Phonetic,
-        QualificationPeriod,
-        Telecom,
-      )
   }
 }

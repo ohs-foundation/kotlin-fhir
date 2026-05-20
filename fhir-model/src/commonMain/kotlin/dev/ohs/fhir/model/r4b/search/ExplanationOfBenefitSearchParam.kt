@@ -29,11 +29,30 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ExplanationOfBenefit] resource type. */
-public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ExplanationOfBenefit): List<T>
+public object ExplanationOfBenefitSearchParam {
+  /** All search parameters for the ExplanationOfBenefit resource type. */
+  public val ALL: List<SearchParam<ExplanationOfBenefit, *>> =
+    listOf(
+      CareTeam,
+      Claim,
+      Coverage,
+      Created,
+      DetailUdi,
+      Disposition,
+      Encounter,
+      Enterer,
+      Facility,
+      Identifier,
+      ItemUdi,
+      Patient,
+      Payee,
+      ProcedureUdi,
+      Provider,
+      Status,
+      SubdetailUdi,
+    )
 
-  public data object CareTeam : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object CareTeam : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "care-team"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -47,7 +66,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       resource.careTeam.map { it.provider }
   }
 
-  public data object Claim : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object Claim : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "claim"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -60,7 +79,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       listOfNotNull(resource.claim)
   }
 
-  public data object Coverage : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object Coverage : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "coverage"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -73,7 +92,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       resource.insurance.map { it.coverage }
   }
 
-  public data object Created : ExplanationOfBenefitSearchParam<DateTime>() {
+  public data object Created : SearchParam<ExplanationOfBenefit, DateTime> {
     public override val paramName: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -86,7 +105,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       listOf(resource.created)
   }
 
-  public data object DetailUdi : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object DetailUdi : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "detail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -99,7 +118,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       resource.item.flatMap { it.detail }.flatMap { it.udi }
   }
 
-  public data object Disposition : ExplanationOfBenefitSearchParam<R4bString>() {
+  public data object Disposition : SearchParam<ExplanationOfBenefit, R4bString> {
     public override val paramName: KotlinString = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -112,7 +131,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       listOfNotNull(resource.disposition)
   }
 
-  public data object Encounter : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object Encounter : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -125,7 +144,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       resource.item.flatMap { it.encounter }
   }
 
-  public data object Enterer : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object Enterer : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -138,7 +157,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       listOfNotNull(resource.enterer)
   }
 
-  public data object Facility : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object Facility : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -152,7 +171,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ExplanationOfBenefitSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<ExplanationOfBenefit, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -166,7 +185,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object ItemUdi : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object ItemUdi : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "item-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -179,7 +198,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       resource.item.flatMap { it.udi }
   }
 
-  public data object Patient : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object Patient : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -192,7 +211,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       listOf(resource.patient)
   }
 
-  public data object Payee : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object Payee : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "payee"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -206,7 +225,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       listOfNotNull(resource.payee?.party)
   }
 
-  public data object ProcedureUdi : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object ProcedureUdi : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "procedure-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -219,7 +238,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       resource.procedure.flatMap { it.udi }
   }
 
-  public data object Provider : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object Provider : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -233,7 +252,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
       listOf(resource.provider)
   }
 
-  public data object Status : ExplanationOfBenefitSearchParam<Any>() {
+  public data object Status : SearchParam<ExplanationOfBenefit, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -245,7 +264,7 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
     public override fun extract(resource: ExplanationOfBenefit): List<Any> = listOf(resource.status)
   }
 
-  public data object SubdetailUdi : ExplanationOfBenefitSearchParam<Reference>() {
+  public data object SubdetailUdi : SearchParam<ExplanationOfBenefit, Reference> {
     public override val paramName: KotlinString = "subdetail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -256,29 +275,5 @@ public sealed class ExplanationOfBenefitSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       resource.item.flatMap { it.detail }.flatMap { it.subDetail }.flatMap { it.udi }
-  }
-
-  public companion object {
-    /** All search parameters for the ExplanationOfBenefit resource type. */
-    public val ALL: List<ExplanationOfBenefitSearchParam<*>> =
-      listOf(
-        CareTeam,
-        Claim,
-        Coverage,
-        Created,
-        DetailUdi,
-        Disposition,
-        Encounter,
-        Enterer,
-        Facility,
-        Identifier,
-        ItemUdi,
-        Patient,
-        Payee,
-        ProcedureUdi,
-        Provider,
-        Status,
-        SubdetailUdi,
-      )
   }
 }

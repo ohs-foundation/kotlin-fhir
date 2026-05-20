@@ -27,12 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [EnrollmentResponse] resource type. */
-public sealed class EnrollmentResponseSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: EnrollmentResponse): List<T>
+public object EnrollmentResponseSearchParam {
+  /** All search parameters for the EnrollmentResponse resource type. */
+  public val ALL: List<SearchParam<EnrollmentResponse, *>> = listOf(Identifier, Request, Status)
 
   public data object Identifier :
-    EnrollmentResponseSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<EnrollmentResponse, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -46,7 +46,7 @@ public sealed class EnrollmentResponseSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Request : EnrollmentResponseSearchParam<Reference>() {
+  public data object Request : SearchParam<EnrollmentResponse, Reference> {
     public override val paramName: String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -59,7 +59,7 @@ public sealed class EnrollmentResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.request)
   }
 
-  public data object Status : EnrollmentResponseSearchParam<Any>() {
+  public data object Status : SearchParam<EnrollmentResponse, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -70,10 +70,5 @@ public sealed class EnrollmentResponseSearchParam<T> : SearchParam {
 
     public override fun extract(resource: EnrollmentResponse): List<Any> =
       listOfNotNull(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the EnrollmentResponse resource type. */
-    public val ALL: List<EnrollmentResponseSearchParam<*>> = listOf(Identifier, Request, Status)
   }
 }

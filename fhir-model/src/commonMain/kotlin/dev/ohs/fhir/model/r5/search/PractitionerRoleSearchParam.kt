@@ -30,11 +30,28 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [PractitionerRole] resource type. */
-public sealed class PractitionerRoleSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: PractitionerRole): List<T>
+public object PractitionerRoleSearchParam {
+  /** All search parameters for the PractitionerRole resource type. */
+  public val ALL: List<SearchParam<PractitionerRole, *>> =
+    listOf(
+      Active,
+      Characteristic,
+      Communication,
+      Date,
+      Email,
+      Endpoint,
+      Identifier,
+      Location,
+      Organization,
+      Phone,
+      Practitioner,
+      Role,
+      Service,
+      Specialty,
+      Telecom,
+    )
 
-  public data object Active : PractitionerRoleSearchParam<Boolean>() {
+  public data object Active : SearchParam<PractitionerRole, Boolean> {
     public override val paramName: String = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -47,7 +64,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       listOfNotNull(resource.active)
   }
 
-  public data object Characteristic : PractitionerRoleSearchParam<CodeableConcept>() {
+  public data object Characteristic : SearchParam<PractitionerRole, CodeableConcept> {
     public override val paramName: String = "characteristic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -60,7 +77,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       resource.characteristic
   }
 
-  public data object Communication : PractitionerRoleSearchParam<CodeableConcept>() {
+  public data object Communication : SearchParam<PractitionerRole, CodeableConcept> {
     public override val paramName: String = "communication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -73,7 +90,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       resource.communication
   }
 
-  public data object Date : PractitionerRoleSearchParam<Period>() {
+  public data object Date : SearchParam<PractitionerRole, Period> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -86,7 +103,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       listOfNotNull(resource.period)
   }
 
-  public data object Email : PractitionerRoleSearchParam<ContactPoint>() {
+  public data object Email : SearchParam<PractitionerRole, ContactPoint> {
     public override val paramName: String = "email"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -100,7 +117,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       resource.contact.flatMap { it.telecom }.filter { it.system?.value?.toString() == "email" }
   }
 
-  public data object Endpoint : PractitionerRoleSearchParam<Reference>() {
+  public data object Endpoint : SearchParam<PractitionerRole, Reference> {
     public override val paramName: String = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -112,7 +129,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
     public override fun extract(resource: PractitionerRole): List<Reference> = resource.endpoint
   }
 
-  public data object Identifier : PractitionerRoleSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<PractitionerRole, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -126,7 +143,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Location : PractitionerRoleSearchParam<Reference>() {
+  public data object Location : SearchParam<PractitionerRole, Reference> {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -138,7 +155,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
     public override fun extract(resource: PractitionerRole): List<Reference> = resource.location
   }
 
-  public data object Organization : PractitionerRoleSearchParam<Reference>() {
+  public data object Organization : SearchParam<PractitionerRole, Reference> {
     public override val paramName: String = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -151,7 +168,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       listOfNotNull(resource.organization)
   }
 
-  public data object Phone : PractitionerRoleSearchParam<ContactPoint>() {
+  public data object Phone : SearchParam<PractitionerRole, ContactPoint> {
     public override val paramName: String = "phone"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -165,7 +182,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       resource.contact.flatMap { it.telecom }.filter { it.system?.value?.toString() == "phone" }
   }
 
-  public data object Practitioner : PractitionerRoleSearchParam<Reference>() {
+  public data object Practitioner : SearchParam<PractitionerRole, Reference> {
     public override val paramName: String = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -178,7 +195,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       listOfNotNull(resource.practitioner)
   }
 
-  public data object Role : PractitionerRoleSearchParam<CodeableConcept>() {
+  public data object Role : SearchParam<PractitionerRole, CodeableConcept> {
     public override val paramName: String = "role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -190,7 +207,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
     public override fun extract(resource: PractitionerRole): List<CodeableConcept> = resource.code
   }
 
-  public data object Service : PractitionerRoleSearchParam<Reference>() {
+  public data object Service : SearchParam<PractitionerRole, Reference> {
     public override val paramName: String = "service"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -203,7 +220,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       resource.healthcareService
   }
 
-  public data object Specialty : PractitionerRoleSearchParam<CodeableConcept>() {
+  public data object Specialty : SearchParam<PractitionerRole, CodeableConcept> {
     public override val paramName: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -216,7 +233,7 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
       resource.specialty
   }
 
-  public data object Telecom : PractitionerRoleSearchParam<ContactPoint>() {
+  public data object Telecom : SearchParam<PractitionerRole, ContactPoint> {
     public override val paramName: String = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -227,27 +244,5 @@ public sealed class PractitionerRoleSearchParam<T> : SearchParam {
 
     public override fun extract(resource: PractitionerRole): List<ContactPoint> =
       resource.contact.flatMap { it.telecom }
-  }
-
-  public companion object {
-    /** All search parameters for the PractitionerRole resource type. */
-    public val ALL: List<PractitionerRoleSearchParam<*>> =
-      listOf(
-        Active,
-        Characteristic,
-        Communication,
-        Date,
-        Email,
-        Endpoint,
-        Identifier,
-        Location,
-        Organization,
-        Phone,
-        Practitioner,
-        Role,
-        Service,
-        Specialty,
-        Telecom,
-      )
   }
 }

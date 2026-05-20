@@ -34,11 +34,37 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [CapabilityStatement] resource type. */
-public sealed class CapabilityStatementSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: CapabilityStatement): List<T>
+public object CapabilityStatementSearchParam {
+  /** All search parameters for the CapabilityStatement resource type. */
+  public val ALL: List<SearchParam<CapabilityStatement, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Fhirversion,
+      Format,
+      Guide,
+      Identifier,
+      Jurisdiction,
+      Mode,
+      Name,
+      Publisher,
+      Resource,
+      ResourceProfile,
+      SecurityService,
+      Software,
+      Status,
+      SupportedProfile,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Context : CapabilityStatementSearchParam<Any>() {
+  public data object Context : SearchParam<CapabilityStatement, Any> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -51,7 +77,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
     public override fun extract(resource: CapabilityStatement): List<Any> = emptyList()
   }
 
-  public data object ContextQuantity : CapabilityStatementSearchParam<Any>() {
+  public data object ContextQuantity : SearchParam<CapabilityStatement, Any> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -64,7 +90,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
     public override fun extract(resource: CapabilityStatement): List<Any> = emptyList()
   }
 
-  public data object ContextType : CapabilityStatementSearchParam<Coding>() {
+  public data object ContextType : SearchParam<CapabilityStatement, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -77,7 +103,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : CapabilityStatementSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<CapabilityStatement, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -90,7 +116,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object ContextTypeValue : CapabilityStatementSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<CapabilityStatement, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -103,7 +129,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object Date : CapabilityStatementSearchParam<DateTime>() {
+  public data object Date : SearchParam<CapabilityStatement, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -116,7 +142,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       listOf(resource.date)
   }
 
-  public data object Description : CapabilityStatementSearchParam<Markdown>() {
+  public data object Description : SearchParam<CapabilityStatement, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -129,7 +155,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Fhirversion : CapabilityStatementSearchParam<Any>() {
+  public data object Fhirversion : SearchParam<CapabilityStatement, Any> {
     public override val paramName: KotlinString = "fhirversion"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -142,7 +168,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       listOf(resource.fhirVersion)
   }
 
-  public data object Format : CapabilityStatementSearchParam<Any>() {
+  public data object Format : SearchParam<CapabilityStatement, Any> {
     public override val paramName: KotlinString = "format"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -154,7 +180,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
     public override fun extract(resource: CapabilityStatement): List<Any> = resource.format
   }
 
-  public data object Guide : CapabilityStatementSearchParam<Canonical>() {
+  public data object Guide : SearchParam<CapabilityStatement, Canonical> {
     public override val paramName: KotlinString = "guide"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -168,7 +194,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    CapabilityStatementSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<CapabilityStatement, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -182,7 +208,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Jurisdiction : CapabilityStatementSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<CapabilityStatement, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -195,7 +221,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Mode : CapabilityStatementSearchParam<Any>() {
+  public data object Mode : SearchParam<CapabilityStatement, Any> {
     public override val paramName: KotlinString = "mode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -208,7 +234,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       resource.rest.map { it.mode }
   }
 
-  public data object Name : CapabilityStatementSearchParam<R5String>() {
+  public data object Name : SearchParam<CapabilityStatement, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -221,7 +247,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Publisher : CapabilityStatementSearchParam<R5String>() {
+  public data object Publisher : SearchParam<CapabilityStatement, R5String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -234,7 +260,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Resource : CapabilityStatementSearchParam<Any>() {
+  public data object Resource : SearchParam<CapabilityStatement, Any> {
     public override val paramName: KotlinString = "resource"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -247,7 +273,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       resource.rest.flatMap { it.resource }.map { it.type }
   }
 
-  public data object ResourceProfile : CapabilityStatementSearchParam<Canonical>() {
+  public data object ResourceProfile : SearchParam<CapabilityStatement, Canonical> {
     public override val paramName: KotlinString = "resource-profile"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -260,7 +286,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       resource.rest.flatMap { it.resource }.mapNotNull { it.profile }
   }
 
-  public data object SecurityService : CapabilityStatementSearchParam<CodeableConcept>() {
+  public data object SecurityService : SearchParam<CapabilityStatement, CodeableConcept> {
     public override val paramName: KotlinString = "security-service"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -273,7 +299,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       resource.rest.mapNotNull { it.security }.flatMap { it.service }
   }
 
-  public data object Software : CapabilityStatementSearchParam<R5String>() {
+  public data object Software : SearchParam<CapabilityStatement, R5String> {
     public override val paramName: KotlinString = "software"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -286,7 +312,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       listOfNotNull(resource.software?.name)
   }
 
-  public data object Status : CapabilityStatementSearchParam<Any>() {
+  public data object Status : SearchParam<CapabilityStatement, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -298,7 +324,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
     public override fun extract(resource: CapabilityStatement): List<Any> = listOf(resource.status)
   }
 
-  public data object SupportedProfile : CapabilityStatementSearchParam<Canonical>() {
+  public data object SupportedProfile : SearchParam<CapabilityStatement, Canonical> {
     public override val paramName: KotlinString = "supported-profile"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -312,7 +338,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       resource.rest.flatMap { it.resource }.flatMap { it.supportedProfile }
   }
 
-  public data object Title : CapabilityStatementSearchParam<R5String>() {
+  public data object Title : SearchParam<CapabilityStatement, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -325,7 +351,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : CapabilityStatementSearchParam<Uri>() {
+  public data object Url : SearchParam<CapabilityStatement, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -338,7 +364,7 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
       listOfNotNull(resource.url)
   }
 
-  public data object Version : CapabilityStatementSearchParam<R5String>() {
+  public data object Version : SearchParam<CapabilityStatement, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -349,36 +375,5 @@ public sealed class CapabilityStatementSearchParam<T> : SearchParam {
 
     public override fun extract(resource: CapabilityStatement): List<R5String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the CapabilityStatement resource type. */
-    public val ALL: List<CapabilityStatementSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Fhirversion,
-        Format,
-        Guide,
-        Identifier,
-        Jurisdiction,
-        Mode,
-        Name,
-        Publisher,
-        Resource,
-        ResourceProfile,
-        SecurityService,
-        Software,
-        Status,
-        SupportedProfile,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

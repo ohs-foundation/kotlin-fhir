@@ -33,11 +33,47 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DocumentReference] resource type. */
-public sealed class DocumentReferenceSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DocumentReference): List<T>
+public object DocumentReferenceSearchParam {
+  /** All search parameters for the DocumentReference resource type. */
+  public val ALL: List<SearchParam<DocumentReference, *>> =
+    listOf(
+      Attester,
+      Author,
+      BasedOn,
+      Bodysite,
+      BodysiteReference,
+      Category,
+      Contenttype,
+      Context,
+      Creation,
+      Custodian,
+      Date,
+      Description,
+      DocStatus,
+      EventCode,
+      EventReference,
+      Facility,
+      FormatCanonical,
+      FormatCode,
+      FormatUri,
+      Identifier,
+      Language,
+      Location,
+      Modality,
+      Patient,
+      Period,
+      Relatesto,
+      Relation,
+      Relationship,
+      SecurityLabel,
+      Setting,
+      Status,
+      Subject,
+      Type,
+      Version,
+    )
 
-  public data object Attester : DocumentReferenceSearchParam<Reference>() {
+  public data object Attester : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "attester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -51,7 +87,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.attester.mapNotNull { it.party }
   }
 
-  public data object Author : DocumentReferenceSearchParam<Reference>() {
+  public data object Author : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -72,7 +108,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentReference): List<Reference> = resource.author
   }
 
-  public data object BasedOn : DocumentReferenceSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -102,7 +138,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentReference): List<Reference> = resource.basedOn
   }
 
-  public data object Bodysite : DocumentReferenceSearchParam<CodeableConcept>() {
+  public data object Bodysite : SearchParam<DocumentReference, CodeableConcept> {
     public override val paramName: KotlinString = "bodysite"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -115,7 +151,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.bodySite.mapNotNull { it.concept }
   }
 
-  public data object BodysiteReference : DocumentReferenceSearchParam<Reference>() {
+  public data object BodysiteReference : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "bodysite-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -128,7 +164,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.bodySite.mapNotNull { it.reference }
   }
 
-  public data object Category : DocumentReferenceSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<DocumentReference, CodeableConcept> {
     public override val paramName: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -141,7 +177,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.category
   }
 
-  public data object Contenttype : DocumentReferenceSearchParam<Any>() {
+  public data object Contenttype : SearchParam<DocumentReference, Any> {
     public override val paramName: KotlinString = "contenttype"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -155,7 +191,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.content.map { it.attachment }.mapNotNull { it.contentType }
   }
 
-  public data object Context : DocumentReferenceSearchParam<Reference>() {
+  public data object Context : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -168,7 +204,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentReference): List<Reference> = resource.context
   }
 
-  public data object Creation : DocumentReferenceSearchParam<DateTime>() {
+  public data object Creation : SearchParam<DocumentReference, DateTime> {
     public override val paramName: KotlinString = "creation"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -181,7 +217,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.content.map { it.attachment }.mapNotNull { it.creation }
   }
 
-  public data object Custodian : DocumentReferenceSearchParam<Reference>() {
+  public data object Custodian : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "custodian"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -194,7 +230,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.custodian)
   }
 
-  public data object Date : DocumentReferenceSearchParam<Instant>() {
+  public data object Date : SearchParam<DocumentReference, Instant> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -207,7 +243,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Description : DocumentReferenceSearchParam<Markdown>() {
+  public data object Description : SearchParam<DocumentReference, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -220,7 +256,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object DocStatus : DocumentReferenceSearchParam<Any>() {
+  public data object DocStatus : SearchParam<DocumentReference, Any> {
     public override val paramName: KotlinString = "doc-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -233,7 +269,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.docStatus)
   }
 
-  public data object EventCode : DocumentReferenceSearchParam<CodeableConcept>() {
+  public data object EventCode : SearchParam<DocumentReference, CodeableConcept> {
     public override val paramName: KotlinString = "event-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -246,7 +282,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.event.mapNotNull { it.concept }
   }
 
-  public data object EventReference : DocumentReferenceSearchParam<Reference>() {
+  public data object EventReference : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "event-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -419,7 +455,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.event.mapNotNull { it.reference }
   }
 
-  public data object Facility : DocumentReferenceSearchParam<CodeableConcept>() {
+  public data object Facility : SearchParam<DocumentReference, CodeableConcept> {
     public override val paramName: KotlinString = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -432,7 +468,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.facilityType)
   }
 
-  public data object FormatCanonical : DocumentReferenceSearchParam<Any>() {
+  public data object FormatCanonical : SearchParam<DocumentReference, Any> {
     public override val paramName: KotlinString = "format-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -485,7 +521,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentReference): List<Any> = emptyList()
   }
 
-  public data object FormatCode : DocumentReferenceSearchParam<Any>() {
+  public data object FormatCode : SearchParam<DocumentReference, Any> {
     public override val paramName: KotlinString = "format-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -498,7 +534,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentReference): List<Any> = emptyList()
   }
 
-  public data object FormatUri : DocumentReferenceSearchParam<Any>() {
+  public data object FormatUri : SearchParam<DocumentReference, Any> {
     public override val paramName: KotlinString = "format-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -511,7 +547,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentReference): List<Any> = emptyList()
   }
 
-  public data object Identifier : DocumentReferenceSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<DocumentReference, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -525,7 +561,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Language : DocumentReferenceSearchParam<Any>() {
+  public data object Language : SearchParam<DocumentReference, Any> {
     public override val paramName: KotlinString = "language"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -538,7 +574,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.content.map { it.attachment }.mapNotNull { it.language }
   }
 
-  public data object Location : DocumentReferenceSearchParam<Url>() {
+  public data object Location : SearchParam<DocumentReference, Url> {
     public override val paramName: KotlinString = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -551,7 +587,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.content.map { it.attachment }.mapNotNull { it.url }
   }
 
-  public data object Modality : DocumentReferenceSearchParam<CodeableConcept>() {
+  public data object Modality : SearchParam<DocumentReference, CodeableConcept> {
     public override val paramName: KotlinString = "modality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -564,7 +600,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.modality
   }
 
-  public data object Patient : DocumentReferenceSearchParam<Reference>() {
+  public data object Patient : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -580,7 +616,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Period : DocumentReferenceSearchParam<dev.ohs.fhir.model.r5.Period>() {
+  public data object Period : SearchParam<DocumentReference, dev.ohs.fhir.model.r5.Period> {
     public override val paramName: KotlinString = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -593,7 +629,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.period)
   }
 
-  public data object Relatesto : DocumentReferenceSearchParam<Reference>() {
+  public data object Relatesto : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "relatesto"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -606,7 +642,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.relatesTo.map { it.target }
   }
 
-  public data object Relation : DocumentReferenceSearchParam<CodeableConcept>() {
+  public data object Relation : SearchParam<DocumentReference, CodeableConcept> {
     public override val paramName: KotlinString = "relation"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -619,7 +655,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.relatesTo.map { it.code }
   }
 
-  public data object Relationship : DocumentReferenceSearchParam<DocumentReference.RelatesTo>() {
+  public data object Relationship : SearchParam<DocumentReference, DocumentReference.RelatesTo> {
     public override val paramName: KotlinString = "relationship"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -632,7 +668,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.relatesTo
   }
 
-  public data object SecurityLabel : DocumentReferenceSearchParam<CodeableConcept>() {
+  public data object SecurityLabel : SearchParam<DocumentReference, CodeableConcept> {
     public override val paramName: KotlinString = "security-label"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -645,7 +681,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       resource.securityLabel
   }
 
-  public data object Setting : DocumentReferenceSearchParam<CodeableConcept>() {
+  public data object Setting : SearchParam<DocumentReference, CodeableConcept> {
     public override val paramName: KotlinString = "setting"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -658,7 +694,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.practiceSetting)
   }
 
-  public data object Status : DocumentReferenceSearchParam<Any>() {
+  public data object Status : SearchParam<DocumentReference, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -670,7 +706,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentReference): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : DocumentReferenceSearchParam<Reference>() {
+  public data object Subject : SearchParam<DocumentReference, Reference> {
     public override val paramName: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -843,7 +879,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.subject)
   }
 
-  public data object Type : DocumentReferenceSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<DocumentReference, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -856,7 +892,7 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.type)
   }
 
-  public data object Version : DocumentReferenceSearchParam<R5String>() {
+  public data object Version : SearchParam<DocumentReference, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -867,46 +903,5 @@ public sealed class DocumentReferenceSearchParam<T> : SearchParam {
 
     public override fun extract(resource: DocumentReference): List<R5String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the DocumentReference resource type. */
-    public val ALL: List<DocumentReferenceSearchParam<*>> =
-      listOf(
-        Attester,
-        Author,
-        BasedOn,
-        Bodysite,
-        BodysiteReference,
-        Category,
-        Contenttype,
-        Context,
-        Creation,
-        Custodian,
-        Date,
-        Description,
-        DocStatus,
-        EventCode,
-        EventReference,
-        Facility,
-        FormatCanonical,
-        FormatCode,
-        FormatUri,
-        Identifier,
-        Language,
-        Location,
-        Modality,
-        Patient,
-        Period,
-        Relatesto,
-        Relation,
-        Relationship,
-        SecurityLabel,
-        Setting,
-        Status,
-        Subject,
-        Type,
-        Version,
-      )
   }
 }

@@ -34,11 +34,32 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [TestScript] resource type. */
-public sealed class TestScriptSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: TestScript): List<T>
+public object TestScriptSearchParam {
+  /** All search parameters for the TestScript resource type. */
+  public val ALL: List<SearchParam<TestScript, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Publisher,
+      ScopeArtifact,
+      ScopeArtifactConformance,
+      ScopeArtifactPhase,
+      Status,
+      TestscriptCapability,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Context : TestScriptSearchParam<Any>() {
+  public data object Context : SearchParam<TestScript, Any> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -51,7 +72,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<Any> = emptyList()
   }
 
-  public data object ContextQuantity : TestScriptSearchParam<Any>() {
+  public data object ContextQuantity : SearchParam<TestScript, Any> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -63,7 +84,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<Any> = emptyList()
   }
 
-  public data object ContextType : TestScriptSearchParam<Coding>() {
+  public data object ContextType : SearchParam<TestScript, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -76,7 +97,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : TestScriptSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<TestScript, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -88,7 +109,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : TestScriptSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<TestScript, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -100,7 +121,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : TestScriptSearchParam<DateTime>() {
+  public data object Date : SearchParam<TestScript, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -112,7 +133,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object Description : TestScriptSearchParam<Markdown>() {
+  public data object Description : SearchParam<TestScript, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -125,7 +146,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Identifier : TestScriptSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<TestScript, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -138,7 +159,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Jurisdiction : TestScriptSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<TestScript, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -150,7 +171,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<CodeableConcept> = resource.jurisdiction
   }
 
-  public data object Name : TestScriptSearchParam<R5String>() {
+  public data object Name : SearchParam<TestScript, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -162,7 +183,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<R5String> = listOf(resource.name)
   }
 
-  public data object Publisher : TestScriptSearchParam<R5String>() {
+  public data object Publisher : SearchParam<TestScript, R5String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -175,7 +196,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object ScopeArtifact : TestScriptSearchParam<Canonical>() {
+  public data object ScopeArtifact : SearchParam<TestScript, Canonical> {
     public override val paramName: KotlinString = "scope-artifact"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -348,7 +369,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
       resource.scope.map { it.artifact }
   }
 
-  public data object ScopeArtifactConformance : TestScriptSearchParam<TestScript.Scope>() {
+  public data object ScopeArtifactConformance : SearchParam<TestScript, TestScript.Scope> {
     public override val paramName: KotlinString = "scope-artifact-conformance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -360,7 +381,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<TestScript.Scope> = resource.scope
   }
 
-  public data object ScopeArtifactPhase : TestScriptSearchParam<TestScript.Scope>() {
+  public data object ScopeArtifactPhase : SearchParam<TestScript, TestScript.Scope> {
     public override val paramName: KotlinString = "scope-artifact-phase"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -372,7 +393,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<TestScript.Scope> = resource.scope
   }
 
-  public data object Status : TestScriptSearchParam<Any>() {
+  public data object Status : SearchParam<TestScript, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -384,7 +405,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<Any> = listOf(resource.status)
   }
 
-  public data object TestscriptCapability : TestScriptSearchParam<R5String>() {
+  public data object TestscriptCapability : SearchParam<TestScript, R5String> {
     public override val paramName: KotlinString = "testscript-capability"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -397,7 +418,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
       (resource.metadata?.capability ?: emptyList()).mapNotNull { it.description }
   }
 
-  public data object Title : TestScriptSearchParam<R5String>() {
+  public data object Title : SearchParam<TestScript, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -410,7 +431,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : TestScriptSearchParam<Uri>() {
+  public data object Url : SearchParam<TestScript, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -422,7 +443,7 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
     public override fun extract(resource: TestScript): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : TestScriptSearchParam<R5String>() {
+  public data object Version : SearchParam<TestScript, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -433,31 +454,5 @@ public sealed class TestScriptSearchParam<T> : SearchParam {
 
     public override fun extract(resource: TestScript): List<R5String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the TestScript resource type. */
-    public val ALL: List<TestScriptSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Publisher,
-        ScopeArtifact,
-        ScopeArtifactConformance,
-        ScopeArtifactPhase,
-        Status,
-        TestscriptCapability,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

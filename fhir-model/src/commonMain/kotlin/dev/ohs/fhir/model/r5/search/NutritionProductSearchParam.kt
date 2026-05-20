@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [NutritionProduct] resource type. */
-public sealed class NutritionProductSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: NutritionProduct): List<T>
+public object NutritionProductSearchParam {
+  /** All search parameters for the NutritionProduct resource type. */
+  public val ALL: List<SearchParam<NutritionProduct, *>> =
+    listOf(Code, Identifier, LotNumber, SerialNumber, Status)
 
-  public data object Code : NutritionProductSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<NutritionProduct, CodeableConcept> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +45,7 @@ public sealed class NutritionProductSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Identifier : NutritionProductSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<NutritionProduct, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +59,7 @@ public sealed class NutritionProductSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.instance.flatMap { it.identifier }
   }
 
-  public data object LotNumber : NutritionProductSearchParam<R5String>() {
+  public data object LotNumber : SearchParam<NutritionProduct, R5String> {
     public override val paramName: KotlinString = "lot-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -72,7 +73,7 @@ public sealed class NutritionProductSearchParam<T> : SearchParam {
   }
 
   public data object SerialNumber :
-    NutritionProductSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<NutritionProduct, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "serial-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,7 +87,7 @@ public sealed class NutritionProductSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.instance.flatMap { it.identifier }
   }
 
-  public data object Status : NutritionProductSearchParam<CodeableConcept>() {
+  public data object Status : SearchParam<NutritionProduct, CodeableConcept> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -97,11 +98,5 @@ public sealed class NutritionProductSearchParam<T> : SearchParam {
 
     public override fun extract(resource: NutritionProduct): List<CodeableConcept> =
       resource.category
-  }
-
-  public companion object {
-    /** All search parameters for the NutritionProduct resource type. */
-    public val ALL: List<NutritionProductSearchParam<*>> =
-      listOf(Code, Identifier, LotNumber, SerialNumber, Status)
   }
 }

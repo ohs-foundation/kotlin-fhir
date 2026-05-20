@@ -28,11 +28,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [TestPlan] resource type. */
-public sealed class TestPlanSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: TestPlan): List<T>
+public object TestPlanSearchParam {
+  /** All search parameters for the TestPlan resource type. */
+  public val ALL: List<SearchParam<TestPlan, *>> = listOf(Identifier, Scope, Status, Url)
 
-  public data object Identifier : TestPlanSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<TestPlan, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +45,7 @@ public sealed class TestPlanSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Scope : TestPlanSearchParam<Reference>() {
+  public data object Scope : SearchParam<TestPlan, Reference> {
     public override val paramName: String = "scope"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -217,7 +217,7 @@ public sealed class TestPlanSearchParam<T> : SearchParam {
     public override fun extract(resource: TestPlan): List<Reference> = resource.scope
   }
 
-  public data object Status : TestPlanSearchParam<Any>() {
+  public data object Status : SearchParam<TestPlan, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -229,7 +229,7 @@ public sealed class TestPlanSearchParam<T> : SearchParam {
     public override fun extract(resource: TestPlan): List<Any> = listOf(resource.status)
   }
 
-  public data object Url : TestPlanSearchParam<Uri>() {
+  public data object Url : SearchParam<TestPlan, Uri> {
     public override val paramName: String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -239,10 +239,5 @@ public sealed class TestPlanSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: TestPlan): List<Uri> = listOfNotNull(resource.url)
-  }
-
-  public companion object {
-    /** All search parameters for the TestPlan resource type. */
-    public val ALL: List<TestPlanSearchParam<*>> = listOf(Identifier, Scope, Status, Url)
   }
 }

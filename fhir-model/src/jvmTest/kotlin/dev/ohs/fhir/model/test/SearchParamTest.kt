@@ -21,7 +21,6 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import java.io.File
 import kotlin.reflect.KProperty1
-import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.full.memberProperties
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -94,7 +93,7 @@ class SearchParamTest :
             if (resourceClass == null) return@forEach
             if (java.lang.reflect.Modifier.isAbstract(resourceClass.java.modifiers)) return@forEach
 
-            // Load the per-resource search param sealed class
+            // Load the per-resource search param container object
             val searchParamClass =
               try {
                 Class.forName("${testSuite.modelPackage}.search.${resourceName}SearchParam").kotlin
@@ -103,18 +102,17 @@ class SearchParamTest :
               }
             if (searchParamClass == null) return@forEach
 
-            val companion = searchParamClass.companionObjectInstance ?: return@forEach
+            val containerInstance = searchParamClass.objectInstance ?: return@forEach
 
             @Suppress("UNCHECKED_CAST")
-            val companionProperties =
-              companion::class.memberProperties as Collection<KProperty1<Any, *>>
+            val containerProperties =
+              containerInstance::class.memberProperties as Collection<KProperty1<Any, *>>
 
-            // Get the ALL list from the companion
-            val allProperty = companionProperties.firstOrNull { it.name == "ALL" }
+            val allProperty = containerProperties.firstOrNull { it.name == "ALL" }
             if (allProperty == null) return@forEach
 
             @Suppress("UNCHECKED_CAST")
-            val allSearchParams = allProperty.get(companion) as List<Any>
+            val allSearchParams = allProperty.get(containerInstance) as List<Any>
 
             // Build a map from data object name to search param instance
             val searchParamsByName = allSearchParams.associateBy { it::class.simpleName!! }

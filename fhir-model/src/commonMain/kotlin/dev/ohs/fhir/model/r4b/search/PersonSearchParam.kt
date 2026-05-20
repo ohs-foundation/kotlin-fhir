@@ -31,11 +31,32 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Person] resource type. */
-public sealed class PersonSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Person): List<T>
+public object PersonSearchParam {
+  /** All search parameters for the Person resource type. */
+  public val ALL: List<SearchParam<Person, *>> =
+    listOf(
+      Address,
+      AddressCity,
+      AddressCountry,
+      AddressPostalcode,
+      AddressState,
+      AddressUse,
+      Birthdate,
+      Email,
+      Gender,
+      Identifier,
+      Link,
+      Name,
+      Organization,
+      Patient,
+      Phone,
+      Phonetic,
+      Practitioner,
+      Relatedperson,
+      Telecom,
+    )
 
-  public data object Address : PersonSearchParam<dev.ohs.fhir.model.r4b.Address>() {
+  public data object Address : SearchParam<Person, dev.ohs.fhir.model.r4b.Address> {
     public override val paramName: KotlinString = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -48,7 +69,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       resource.address
   }
 
-  public data object AddressCity : PersonSearchParam<R4bString>() {
+  public data object AddressCity : SearchParam<Person, R4bString> {
     public override val paramName: KotlinString = "address-city"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -61,7 +82,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.city }
   }
 
-  public data object AddressCountry : PersonSearchParam<R4bString>() {
+  public data object AddressCountry : SearchParam<Person, R4bString> {
     public override val paramName: KotlinString = "address-country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -74,7 +95,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.country }
   }
 
-  public data object AddressPostalcode : PersonSearchParam<R4bString>() {
+  public data object AddressPostalcode : SearchParam<Person, R4bString> {
     public override val paramName: KotlinString = "address-postalcode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -87,7 +108,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.postalCode }
   }
 
-  public data object AddressState : PersonSearchParam<R4bString>() {
+  public data object AddressState : SearchParam<Person, R4bString> {
     public override val paramName: KotlinString = "address-state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -100,7 +121,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.state }
   }
 
-  public data object AddressUse : PersonSearchParam<Any>() {
+  public data object AddressUse : SearchParam<Person, Any> {
     public override val paramName: KotlinString = "address-use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -113,7 +134,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.use }
   }
 
-  public data object Birthdate : PersonSearchParam<Date>() {
+  public data object Birthdate : SearchParam<Person, Date> {
     public override val paramName: KotlinString = "birthdate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -125,7 +146,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
     public override fun extract(resource: Person): List<Date> = listOfNotNull(resource.birthDate)
   }
 
-  public data object Email : PersonSearchParam<ContactPoint>() {
+  public data object Email : SearchParam<Person, ContactPoint> {
     public override val paramName: KotlinString = "email"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -138,7 +159,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       resource.telecom.filter { it.system?.value?.toString() == "email" }
   }
 
-  public data object Gender : PersonSearchParam<Any>() {
+  public data object Gender : SearchParam<Person, Any> {
     public override val paramName: KotlinString = "gender"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -150,7 +171,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
     public override fun extract(resource: Person): List<Any> = listOfNotNull(resource.gender)
   }
 
-  public data object Identifier : PersonSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<Person, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -163,7 +184,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Link : PersonSearchParam<Reference>() {
+  public data object Link : SearchParam<Person, Reference> {
     public override val paramName: KotlinString = "link"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -176,7 +197,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
     public override fun extract(resource: Person): List<Reference> = resource.link.map { it.target }
   }
 
-  public data object Name : PersonSearchParam<HumanName>() {
+  public data object Name : SearchParam<Person, HumanName> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -188,7 +209,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
     public override fun extract(resource: Person): List<HumanName> = resource.name
   }
 
-  public data object Organization : PersonSearchParam<Reference>() {
+  public data object Organization : SearchParam<Person, Reference> {
     public override val paramName: KotlinString = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -201,7 +222,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       listOfNotNull(resource.managingOrganization)
   }
 
-  public data object Patient : PersonSearchParam<Reference>() {
+  public data object Patient : SearchParam<Person, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -216,7 +237,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
         .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
   }
 
-  public data object Phone : PersonSearchParam<ContactPoint>() {
+  public data object Phone : SearchParam<Person, ContactPoint> {
     public override val paramName: KotlinString = "phone"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -229,7 +250,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
       resource.telecom.filter { it.system?.value?.toString() == "phone" }
   }
 
-  public data object Phonetic : PersonSearchParam<HumanName>() {
+  public data object Phonetic : SearchParam<Person, HumanName> {
     public override val paramName: KotlinString = "phonetic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -241,7 +262,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
     public override fun extract(resource: Person): List<HumanName> = resource.name
   }
 
-  public data object Practitioner : PersonSearchParam<Reference>() {
+  public data object Practitioner : SearchParam<Person, Reference> {
     public override val paramName: KotlinString = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -257,7 +278,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
         .filter { it.reference?.value?.toString()?.contains("Practitioner/") == true }
   }
 
-  public data object Relatedperson : PersonSearchParam<Reference>() {
+  public data object Relatedperson : SearchParam<Person, Reference> {
     public override val paramName: KotlinString = "relatedperson"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -273,7 +294,7 @@ public sealed class PersonSearchParam<T> : SearchParam {
         .filter { it.reference?.value?.toString()?.contains("RelatedPerson/") == true }
   }
 
-  public data object Telecom : PersonSearchParam<ContactPoint>() {
+  public data object Telecom : SearchParam<Person, ContactPoint> {
     public override val paramName: KotlinString = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -283,31 +304,5 @@ public sealed class PersonSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: Person): List<ContactPoint> = resource.telecom
-  }
-
-  public companion object {
-    /** All search parameters for the Person resource type. */
-    public val ALL: List<PersonSearchParam<*>> =
-      listOf(
-        Address,
-        AddressCity,
-        AddressCountry,
-        AddressPostalcode,
-        AddressState,
-        AddressUse,
-        Birthdate,
-        Email,
-        Gender,
-        Identifier,
-        Link,
-        Name,
-        Organization,
-        Patient,
-        Phone,
-        Phonetic,
-        Practitioner,
-        Relatedperson,
-        Telecom,
-      )
   }
 }

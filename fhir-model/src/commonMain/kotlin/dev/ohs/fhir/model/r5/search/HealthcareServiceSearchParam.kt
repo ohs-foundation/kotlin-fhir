@@ -29,11 +29,28 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [HealthcareService] resource type. */
-public sealed class HealthcareServiceSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: HealthcareService): List<T>
+public object HealthcareServiceSearchParam {
+  /** All search parameters for the HealthcareService resource type. */
+  public val ALL: List<SearchParam<HealthcareService, *>> =
+    listOf(
+      Active,
+      Characteristic,
+      Communication,
+      CoverageArea,
+      Eligibility,
+      Endpoint,
+      Identifier,
+      Location,
+      Name,
+      OfferedIn,
+      Organization,
+      Program,
+      ServiceCategory,
+      ServiceType,
+      Specialty,
+    )
 
-  public data object Active : HealthcareServiceSearchParam<Boolean>() {
+  public data object Active : SearchParam<HealthcareService, Boolean> {
     public override val paramName: KotlinString = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -46,7 +63,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
       listOfNotNull(resource.active)
   }
 
-  public data object Characteristic : HealthcareServiceSearchParam<CodeableConcept>() {
+  public data object Characteristic : SearchParam<HealthcareService, CodeableConcept> {
     public override val paramName: KotlinString = "characteristic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -59,7 +76,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
       resource.characteristic
   }
 
-  public data object Communication : HealthcareServiceSearchParam<CodeableConcept>() {
+  public data object Communication : SearchParam<HealthcareService, CodeableConcept> {
     public override val paramName: KotlinString = "communication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -72,7 +89,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
       resource.communication
   }
 
-  public data object CoverageArea : HealthcareServiceSearchParam<Reference>() {
+  public data object CoverageArea : SearchParam<HealthcareService, Reference> {
     public override val paramName: KotlinString = "coverage-area"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -85,7 +102,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
       resource.coverageArea
   }
 
-  public data object Eligibility : HealthcareServiceSearchParam<CodeableConcept>() {
+  public data object Eligibility : SearchParam<HealthcareService, CodeableConcept> {
     public override val paramName: KotlinString = "eligibility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,7 +115,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
       resource.eligibility.mapNotNull { it.code }
   }
 
-  public data object Endpoint : HealthcareServiceSearchParam<Reference>() {
+  public data object Endpoint : SearchParam<HealthcareService, Reference> {
     public override val paramName: KotlinString = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -110,7 +127,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
     public override fun extract(resource: HealthcareService): List<Reference> = resource.endpoint
   }
 
-  public data object Identifier : HealthcareServiceSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<HealthcareService, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -124,7 +141,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Location : HealthcareServiceSearchParam<Reference>() {
+  public data object Location : SearchParam<HealthcareService, Reference> {
     public override val paramName: KotlinString = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -136,7 +153,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
     public override fun extract(resource: HealthcareService): List<Reference> = resource.location
   }
 
-  public data object Name : HealthcareServiceSearchParam<R5String>() {
+  public data object Name : SearchParam<HealthcareService, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -149,7 +166,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object OfferedIn : HealthcareServiceSearchParam<Reference>() {
+  public data object OfferedIn : SearchParam<HealthcareService, Reference> {
     public override val paramName: KotlinString = "offered-in"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -161,7 +178,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
     public override fun extract(resource: HealthcareService): List<Reference> = resource.offeredIn
   }
 
-  public data object Organization : HealthcareServiceSearchParam<Reference>() {
+  public data object Organization : SearchParam<HealthcareService, Reference> {
     public override val paramName: KotlinString = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -174,7 +191,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
       listOfNotNull(resource.providedBy)
   }
 
-  public data object Program : HealthcareServiceSearchParam<CodeableConcept>() {
+  public data object Program : SearchParam<HealthcareService, CodeableConcept> {
     public override val paramName: KotlinString = "program"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -187,7 +204,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
       resource.program
   }
 
-  public data object ServiceCategory : HealthcareServiceSearchParam<CodeableConcept>() {
+  public data object ServiceCategory : SearchParam<HealthcareService, CodeableConcept> {
     public override val paramName: KotlinString = "service-category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -200,7 +217,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
       resource.category
   }
 
-  public data object ServiceType : HealthcareServiceSearchParam<CodeableConcept>() {
+  public data object ServiceType : SearchParam<HealthcareService, CodeableConcept> {
     public override val paramName: KotlinString = "service-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -212,7 +229,7 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
     public override fun extract(resource: HealthcareService): List<CodeableConcept> = resource.type
   }
 
-  public data object Specialty : HealthcareServiceSearchParam<CodeableConcept>() {
+  public data object Specialty : SearchParam<HealthcareService, CodeableConcept> {
     public override val paramName: KotlinString = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -223,27 +240,5 @@ public sealed class HealthcareServiceSearchParam<T> : SearchParam {
 
     public override fun extract(resource: HealthcareService): List<CodeableConcept> =
       resource.specialty
-  }
-
-  public companion object {
-    /** All search parameters for the HealthcareService resource type. */
-    public val ALL: List<HealthcareServiceSearchParam<*>> =
-      listOf(
-        Active,
-        Characteristic,
-        Communication,
-        CoverageArea,
-        Eligibility,
-        Endpoint,
-        Identifier,
-        Location,
-        Name,
-        OfferedIn,
-        Organization,
-        Program,
-        ServiceCategory,
-        ServiceType,
-        Specialty,
-      )
   }
 }

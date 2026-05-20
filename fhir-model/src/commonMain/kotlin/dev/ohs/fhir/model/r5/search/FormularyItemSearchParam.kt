@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [FormularyItem] resource type. */
-public sealed class FormularyItemSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: FormularyItem): List<T>
+public object FormularyItemSearchParam {
+  /** All search parameters for the FormularyItem resource type. */
+  public val ALL: List<SearchParam<FormularyItem, *>> = listOf(Code, Identifier)
 
-  public data object Code : FormularyItemSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<FormularyItem, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -43,7 +43,7 @@ public sealed class FormularyItemSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Identifier : FormularyItemSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<FormularyItem, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -54,10 +54,5 @@ public sealed class FormularyItemSearchParam<T> : SearchParam {
 
     public override fun extract(resource: FormularyItem): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
-  }
-
-  public companion object {
-    /** All search parameters for the FormularyItem resource type. */
-    public val ALL: List<FormularyItemSearchParam<*>> = listOf(Code, Identifier)
   }
 }

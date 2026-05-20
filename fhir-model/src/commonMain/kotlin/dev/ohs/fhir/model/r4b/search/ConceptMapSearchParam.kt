@@ -35,11 +35,39 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ConceptMap] resource type. */
-public sealed class ConceptMapSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ConceptMap): List<T>
+public object ConceptMapSearchParam {
+  /** All search parameters for the ConceptMap resource type. */
+  public val ALL: List<SearchParam<ConceptMap, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Dependson,
+      Description,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Other,
+      Product,
+      Publisher,
+      Source,
+      SourceCode,
+      SourceSystem,
+      SourceUri,
+      Status,
+      Target,
+      TargetCode,
+      TargetSystem,
+      TargetUri,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Context : ConceptMapSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<ConceptMap, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -53,7 +81,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : ConceptMapSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<ConceptMap, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -66,7 +94,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : ConceptMapSearchParam<Coding>() {
+  public data object ContextType : SearchParam<ConceptMap, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -79,7 +107,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ConceptMapSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<ConceptMap, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -91,7 +119,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
     public override fun extract(resource: ConceptMap): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : ConceptMapSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<ConceptMap, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -103,7 +131,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
     public override fun extract(resource: ConceptMap): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : ConceptMapSearchParam<DateTime>() {
+  public data object Date : SearchParam<ConceptMap, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -115,7 +143,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
     public override fun extract(resource: ConceptMap): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object Dependson : ConceptMapSearchParam<Uri>() {
+  public data object Dependson : SearchParam<ConceptMap, Uri> {
     public override val paramName: KotlinString = "dependson"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -133,7 +161,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
         .map { it.property }
   }
 
-  public data object Description : ConceptMapSearchParam<Markdown>() {
+  public data object Description : SearchParam<ConceptMap, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -146,7 +174,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Identifier : ConceptMapSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<ConceptMap, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -159,7 +187,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       listOfNotNull(resource.identifier)
   }
 
-  public data object Jurisdiction : ConceptMapSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<ConceptMap, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -171,7 +199,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
     public override fun extract(resource: ConceptMap): List<CodeableConcept> = resource.jurisdiction
   }
 
-  public data object Name : ConceptMapSearchParam<R4bString>() {
+  public data object Name : SearchParam<ConceptMap, R4bString> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -184,7 +212,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Other : ConceptMapSearchParam<Canonical>() {
+  public data object Other : SearchParam<ConceptMap, Canonical> {
     public override val paramName: KotlinString = "other"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -197,7 +225,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       resource.group.mapNotNull { it.unmapped }.mapNotNull { it.url }
   }
 
-  public data object Product : ConceptMapSearchParam<Any>() {
+  public data object Product : SearchParam<ConceptMap, Any> {
     public override val paramName: KotlinString = "product"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -210,7 +238,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
     public override fun extract(resource: ConceptMap): List<Any> = emptyList()
   }
 
-  public data object Publisher : ConceptMapSearchParam<R4bString>() {
+  public data object Publisher : SearchParam<ConceptMap, R4bString> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -223,7 +251,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Source : ConceptMapSearchParam<Canonical>() {
+  public data object Source : SearchParam<ConceptMap, Canonical> {
     public override val paramName: KotlinString = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -236,7 +264,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       listOfNotNull((resource.source as? ConceptMap.Source.Canonical)?.value)
   }
 
-  public data object SourceCode : ConceptMapSearchParam<Any>() {
+  public data object SourceCode : SearchParam<ConceptMap, Any> {
     public override val paramName: KotlinString = "source-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -249,7 +277,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       resource.group.flatMap { it.element }.mapNotNull { it.code }
   }
 
-  public data object SourceSystem : ConceptMapSearchParam<Uri>() {
+  public data object SourceSystem : SearchParam<ConceptMap, Uri> {
     public override val paramName: KotlinString = "source-system"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -262,7 +290,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       resource.group.mapNotNull { it.source }
   }
 
-  public data object SourceUri : ConceptMapSearchParam<Uri>() {
+  public data object SourceUri : SearchParam<ConceptMap, Uri> {
     public override val paramName: KotlinString = "source-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -275,7 +303,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       listOfNotNull((resource.source as? ConceptMap.Source.Uri)?.value)
   }
 
-  public data object Status : ConceptMapSearchParam<Any>() {
+  public data object Status : SearchParam<ConceptMap, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -287,7 +315,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
     public override fun extract(resource: ConceptMap): List<Any> = listOf(resource.status)
   }
 
-  public data object Target : ConceptMapSearchParam<Canonical>() {
+  public data object Target : SearchParam<ConceptMap, Canonical> {
     public override val paramName: KotlinString = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -300,7 +328,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       listOfNotNull((resource.target as? ConceptMap.Target.Canonical)?.value)
   }
 
-  public data object TargetCode : ConceptMapSearchParam<Any>() {
+  public data object TargetCode : SearchParam<ConceptMap, Any> {
     public override val paramName: KotlinString = "target-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -313,7 +341,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       resource.group.flatMap { it.element }.flatMap { it.target }.mapNotNull { it.code }
   }
 
-  public data object TargetSystem : ConceptMapSearchParam<Uri>() {
+  public data object TargetSystem : SearchParam<ConceptMap, Uri> {
     public override val paramName: KotlinString = "target-system"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -326,7 +354,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       resource.group.mapNotNull { it.target }
   }
 
-  public data object TargetUri : ConceptMapSearchParam<Uri>() {
+  public data object TargetUri : SearchParam<ConceptMap, Uri> {
     public override val paramName: KotlinString = "target-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -339,7 +367,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       listOfNotNull((resource.target as? ConceptMap.Target.Uri)?.value)
   }
 
-  public data object Title : ConceptMapSearchParam<R4bString>() {
+  public data object Title : SearchParam<ConceptMap, R4bString> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -352,7 +380,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : ConceptMapSearchParam<Uri>() {
+  public data object Url : SearchParam<ConceptMap, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -364,7 +392,7 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
     public override fun extract(resource: ConceptMap): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : ConceptMapSearchParam<R4bString>() {
+  public data object Version : SearchParam<ConceptMap, R4bString> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -375,38 +403,5 @@ public sealed class ConceptMapSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ConceptMap): List<R4bString> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the ConceptMap resource type. */
-    public val ALL: List<ConceptMapSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Dependson,
-        Description,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Other,
-        Product,
-        Publisher,
-        Source,
-        SourceCode,
-        SourceSystem,
-        SourceUri,
-        Status,
-        Target,
-        TargetCode,
-        TargetSystem,
-        TargetUri,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

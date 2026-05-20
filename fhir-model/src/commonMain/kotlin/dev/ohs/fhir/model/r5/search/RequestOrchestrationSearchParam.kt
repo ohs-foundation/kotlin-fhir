@@ -31,11 +31,28 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [RequestOrchestration] resource type. */
-public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: RequestOrchestration): List<T>
+public object RequestOrchestrationSearchParam {
+  /** All search parameters for the RequestOrchestration resource type. */
+  public val ALL: List<SearchParam<RequestOrchestration, *>> =
+    listOf(
+      Author,
+      Authored,
+      BasedOn,
+      Code,
+      Encounter,
+      GroupIdentifier,
+      Identifier,
+      InstantiatesCanonical,
+      InstantiatesUri,
+      Intent,
+      Participant,
+      Patient,
+      Priority,
+      Status,
+      Subject,
+    )
 
-  public data object Author : RequestOrchestrationSearchParam<Reference>() {
+  public data object Author : SearchParam<RequestOrchestration, Reference> {
     public override val paramName: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -48,7 +65,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
       listOfNotNull(resource.author)
   }
 
-  public data object Authored : RequestOrchestrationSearchParam<DateTime>() {
+  public data object Authored : SearchParam<RequestOrchestration, DateTime> {
     public override val paramName: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -61,7 +78,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
       listOfNotNull(resource.authoredOn)
   }
 
-  public data object BasedOn : RequestOrchestrationSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<RequestOrchestration, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -233,7 +250,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
     public override fun extract(resource: RequestOrchestration): List<Reference> = resource.basedOn
   }
 
-  public data object Code : RequestOrchestrationSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<RequestOrchestration, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -246,7 +263,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Encounter : RequestOrchestrationSearchParam<Reference>() {
+  public data object Encounter : SearchParam<RequestOrchestration, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -260,7 +277,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
   }
 
   public data object GroupIdentifier :
-    RequestOrchestrationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<RequestOrchestration, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -275,7 +292,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    RequestOrchestrationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<RequestOrchestration, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -289,7 +306,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object InstantiatesCanonical : RequestOrchestrationSearchParam<Canonical>() {
+  public data object InstantiatesCanonical : SearchParam<RequestOrchestration, Canonical> {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -342,7 +359,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
       resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : RequestOrchestrationSearchParam<Uri>() {
+  public data object InstantiatesUri : SearchParam<RequestOrchestration, Uri> {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -355,7 +372,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
       resource.instantiatesUri
   }
 
-  public data object Intent : RequestOrchestrationSearchParam<Any>() {
+  public data object Intent : SearchParam<RequestOrchestration, Any> {
     public override val paramName: String = "intent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -367,7 +384,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
     public override fun extract(resource: RequestOrchestration): List<Any> = listOf(resource.intent)
   }
 
-  public data object Participant : RequestOrchestrationSearchParam<Any>() {
+  public data object Participant : SearchParam<RequestOrchestration, Any> {
     public override val paramName: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -395,7 +412,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
     public override fun extract(resource: RequestOrchestration): List<Any> = emptyList()
   }
 
-  public data object Patient : RequestOrchestrationSearchParam<Reference>() {
+  public data object Patient : SearchParam<RequestOrchestration, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -411,7 +428,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Priority : RequestOrchestrationSearchParam<Any>() {
+  public data object Priority : SearchParam<RequestOrchestration, Any> {
     public override val paramName: String = "priority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -424,7 +441,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
       listOfNotNull(resource.priority)
   }
 
-  public data object Status : RequestOrchestrationSearchParam<Any>() {
+  public data object Status : SearchParam<RequestOrchestration, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -436,7 +453,7 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
     public override fun extract(resource: RequestOrchestration): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : RequestOrchestrationSearchParam<Reference>() {
+  public data object Subject : SearchParam<RequestOrchestration, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -459,27 +476,5 @@ public sealed class RequestOrchestrationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: RequestOrchestration): List<Reference> =
       listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the RequestOrchestration resource type. */
-    public val ALL: List<RequestOrchestrationSearchParam<*>> =
-      listOf(
-        Author,
-        Authored,
-        BasedOn,
-        Code,
-        Encounter,
-        GroupIdentifier,
-        Identifier,
-        InstantiatesCanonical,
-        InstantiatesUri,
-        Intent,
-        Participant,
-        Patient,
-        Priority,
-        Status,
-        Subject,
-      )
   }
 }

@@ -36,11 +36,35 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Measure] resource type. */
-public sealed class MeasureSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Measure): List<T>
+public object MeasureSearchParam {
+  /** All search parameters for the Measure resource type. */
+  public val ALL: List<SearchParam<Measure, *>> =
+    listOf(
+      ComposedOf,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      DependsOn,
+      DerivedFrom,
+      Description,
+      Effective,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Predecessor,
+      Publisher,
+      Status,
+      Successor,
+      Title,
+      Topic,
+      Url,
+      Version,
+    )
 
-  public data object ComposedOf : MeasureSearchParam<Canonical>() {
+  public data object ComposedOf : SearchParam<Measure, Canonical> {
     public override val paramName: KotlinString = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -203,7 +227,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Context : MeasureSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<Measure, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -216,7 +240,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : MeasureSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<Measure, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -229,7 +253,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : MeasureSearchParam<Coding>() {
+  public data object ContextType : SearchParam<Measure, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -242,7 +266,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : MeasureSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<Measure, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -254,7 +278,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override fun extract(resource: Measure): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : MeasureSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<Measure, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -266,7 +290,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override fun extract(resource: Measure): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : MeasureSearchParam<DateTime>() {
+  public data object Date : SearchParam<Measure, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -278,7 +302,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override fun extract(resource: Measure): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object DependsOn : MeasureSearchParam<Canonical>() {
+  public data object DependsOn : SearchParam<Measure, Canonical> {
     public override val paramName: KotlinString = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -441,7 +465,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object DerivedFrom : MeasureSearchParam<Canonical>() {
+  public data object DerivedFrom : SearchParam<Measure, Canonical> {
     public override val paramName: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -604,7 +628,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Description : MeasureSearchParam<Markdown>() {
+  public data object Description : SearchParam<Measure, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -617,7 +641,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Effective : MeasureSearchParam<Period>() {
+  public data object Effective : SearchParam<Measure, Period> {
     public override val paramName: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -630,7 +654,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
       listOfNotNull(resource.effectivePeriod)
   }
 
-  public data object Identifier : MeasureSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<Measure, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -643,7 +667,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Jurisdiction : MeasureSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<Measure, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -655,7 +679,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override fun extract(resource: Measure): List<CodeableConcept> = resource.jurisdiction
   }
 
-  public data object Name : MeasureSearchParam<R4String>() {
+  public data object Name : SearchParam<Measure, R4String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -667,7 +691,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override fun extract(resource: Measure): List<R4String> = listOfNotNull(resource.name)
   }
 
-  public data object Predecessor : MeasureSearchParam<Canonical>() {
+  public data object Predecessor : SearchParam<Measure, Canonical> {
     public override val paramName: KotlinString = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -830,7 +854,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Publisher : MeasureSearchParam<R4String>() {
+  public data object Publisher : SearchParam<Measure, R4String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -843,7 +867,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : MeasureSearchParam<Any>() {
+  public data object Status : SearchParam<Measure, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -855,7 +879,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override fun extract(resource: Measure): List<Any> = listOf(resource.status)
   }
 
-  public data object Successor : MeasureSearchParam<Canonical>() {
+  public data object Successor : SearchParam<Measure, Canonical> {
     public override val paramName: KotlinString = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -1018,7 +1042,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Title : MeasureSearchParam<R4String>() {
+  public data object Title : SearchParam<Measure, R4String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -1030,7 +1054,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override fun extract(resource: Measure): List<R4String> = listOfNotNull(resource.title)
   }
 
-  public data object Topic : MeasureSearchParam<CodeableConcept>() {
+  public data object Topic : SearchParam<Measure, CodeableConcept> {
     public override val paramName: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1042,7 +1066,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override fun extract(resource: Measure): List<CodeableConcept> = resource.topic
   }
 
-  public data object Url : MeasureSearchParam<Uri>() {
+  public data object Url : SearchParam<Measure, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -1054,7 +1078,7 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override fun extract(resource: Measure): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : MeasureSearchParam<R4String>() {
+  public data object Version : SearchParam<Measure, R4String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1064,34 +1088,5 @@ public sealed class MeasureSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: Measure): List<R4String> = listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the Measure resource type. */
-    public val ALL: List<MeasureSearchParam<*>> =
-      listOf(
-        ComposedOf,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        DependsOn,
-        DerivedFrom,
-        Description,
-        Effective,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Predecessor,
-        Publisher,
-        Status,
-        Successor,
-        Title,
-        Topic,
-        Url,
-        Version,
-      )
   }
 }

@@ -30,11 +30,34 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Condition] resource type. */
-public sealed class ConditionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Condition): List<T>
+public object ConditionSearchParam {
+  /** All search parameters for the Condition resource type. */
+  public val ALL: List<SearchParam<Condition, *>> =
+    listOf(
+      AbatementAge,
+      AbatementDate,
+      AbatementString,
+      Asserter,
+      BodySite,
+      Category,
+      ClinicalStatus,
+      Code,
+      Encounter,
+      Evidence,
+      EvidenceDetail,
+      Identifier,
+      OnsetAge,
+      OnsetDate,
+      OnsetInfo,
+      Patient,
+      RecordedDate,
+      Severity,
+      Stage,
+      Subject,
+      VerificationStatus,
+    )
 
-  public data object AbatementAge : ConditionSearchParam<Age>() {
+  public data object AbatementAge : SearchParam<Condition, Age> {
     public override val paramName: KotlinString = "abatement-age"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -47,7 +70,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull((resource.abatement as? Condition.Abatement.Age)?.value)
   }
 
-  public data object AbatementDate : ConditionSearchParam<DateTime>() {
+  public data object AbatementDate : SearchParam<Condition, DateTime> {
     public override val paramName: KotlinString = "abatement-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -60,7 +83,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull((resource.abatement as? Condition.Abatement.DateTime)?.value)
   }
 
-  public data object AbatementString : ConditionSearchParam<R4String>() {
+  public data object AbatementString : SearchParam<Condition, R4String> {
     public override val paramName: KotlinString = "abatement-string"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -73,7 +96,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull((resource.abatement as? Condition.Abatement.String)?.value)
   }
 
-  public data object Asserter : ConditionSearchParam<Reference>() {
+  public data object Asserter : SearchParam<Condition, Reference> {
     public override val paramName: KotlinString = "asserter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -87,7 +110,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull(resource.asserter)
   }
 
-  public data object BodySite : ConditionSearchParam<CodeableConcept>() {
+  public data object BodySite : SearchParam<Condition, CodeableConcept> {
     public override val paramName: KotlinString = "body-site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -99,7 +122,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
     public override fun extract(resource: Condition): List<CodeableConcept> = resource.bodySite
   }
 
-  public data object Category : ConditionSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<Condition, CodeableConcept> {
     public override val paramName: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -111,7 +134,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
     public override fun extract(resource: Condition): List<CodeableConcept> = resource.category
   }
 
-  public data object ClinicalStatus : ConditionSearchParam<CodeableConcept>() {
+  public data object ClinicalStatus : SearchParam<Condition, CodeableConcept> {
     public override val paramName: KotlinString = "clinical-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -124,7 +147,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull(resource.clinicalStatus)
   }
 
-  public data object Code : ConditionSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<Condition, CodeableConcept> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -137,7 +160,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Encounter : ConditionSearchParam<Reference>() {
+  public data object Encounter : SearchParam<Condition, Reference> {
     public override val paramName: KotlinString = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -150,7 +173,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Evidence : ConditionSearchParam<CodeableConcept>() {
+  public data object Evidence : SearchParam<Condition, CodeableConcept> {
     public override val paramName: KotlinString = "evidence"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -163,7 +186,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       resource.evidence.flatMap { it.code }
   }
 
-  public data object EvidenceDetail : ConditionSearchParam<Reference>() {
+  public data object EvidenceDetail : SearchParam<Condition, Reference> {
     public override val paramName: KotlinString = "evidence-detail"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -323,7 +346,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       resource.evidence.flatMap { it.detail }
   }
 
-  public data object Identifier : ConditionSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<Condition, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -336,7 +359,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object OnsetAge : ConditionSearchParam<Age>() {
+  public data object OnsetAge : SearchParam<Condition, Age> {
     public override val paramName: KotlinString = "onset-age"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -349,7 +372,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull((resource.onset as? Condition.Onset.Age)?.value)
   }
 
-  public data object OnsetDate : ConditionSearchParam<DateTime>() {
+  public data object OnsetDate : SearchParam<Condition, DateTime> {
     public override val paramName: KotlinString = "onset-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -362,7 +385,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull((resource.onset as? Condition.Onset.DateTime)?.value)
   }
 
-  public data object OnsetInfo : ConditionSearchParam<R4String>() {
+  public data object OnsetInfo : SearchParam<Condition, R4String> {
     public override val paramName: KotlinString = "onset-info"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -375,7 +398,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull((resource.onset as? Condition.Onset.String)?.value)
   }
 
-  public data object Patient : ConditionSearchParam<Reference>() {
+  public data object Patient : SearchParam<Condition, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -390,7 +413,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       }
   }
 
-  public data object RecordedDate : ConditionSearchParam<DateTime>() {
+  public data object RecordedDate : SearchParam<Condition, DateTime> {
     public override val paramName: KotlinString = "recorded-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -403,7 +426,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull(resource.recordedDate)
   }
 
-  public data object Severity : ConditionSearchParam<CodeableConcept>() {
+  public data object Severity : SearchParam<Condition, CodeableConcept> {
     public override val paramName: KotlinString = "severity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -416,7 +439,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       listOfNotNull(resource.severity)
   }
 
-  public data object Stage : ConditionSearchParam<CodeableConcept>() {
+  public data object Stage : SearchParam<Condition, CodeableConcept> {
     public override val paramName: KotlinString = "stage"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -429,7 +452,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
       resource.stage.mapNotNull { it.summary }
   }
 
-  public data object Subject : ConditionSearchParam<Reference>() {
+  public data object Subject : SearchParam<Condition, Reference> {
     public override val paramName: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -441,7 +464,7 @@ public sealed class ConditionSearchParam<T> : SearchParam {
     public override fun extract(resource: Condition): List<Reference> = listOf(resource.subject)
   }
 
-  public data object VerificationStatus : ConditionSearchParam<CodeableConcept>() {
+  public data object VerificationStatus : SearchParam<Condition, CodeableConcept> {
     public override val paramName: KotlinString = "verification-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -452,33 +475,5 @@ public sealed class ConditionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Condition): List<CodeableConcept> =
       listOfNotNull(resource.verificationStatus)
-  }
-
-  public companion object {
-    /** All search parameters for the Condition resource type. */
-    public val ALL: List<ConditionSearchParam<*>> =
-      listOf(
-        AbatementAge,
-        AbatementDate,
-        AbatementString,
-        Asserter,
-        BodySite,
-        Category,
-        ClinicalStatus,
-        Code,
-        Encounter,
-        Evidence,
-        EvidenceDetail,
-        Identifier,
-        OnsetAge,
-        OnsetDate,
-        OnsetInfo,
-        Patient,
-        RecordedDate,
-        Severity,
-        Stage,
-        Subject,
-        VerificationStatus,
-      )
   }
 }

@@ -26,11 +26,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [GuidanceResponse] resource type. */
-public sealed class GuidanceResponseSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: GuidanceResponse): List<T>
+public object GuidanceResponseSearchParam {
+  /** All search parameters for the GuidanceResponse resource type. */
+  public val ALL: List<SearchParam<GuidanceResponse, *>> =
+    listOf(Identifier, Patient, Request, Subject)
 
-  public data object Identifier : GuidanceResponseSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<GuidanceResponse, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +45,7 @@ public sealed class GuidanceResponseSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Patient : GuidanceResponseSearchParam<Reference>() {
+  public data object Patient : SearchParam<GuidanceResponse, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -59,7 +60,7 @@ public sealed class GuidanceResponseSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Request : GuidanceResponseSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Request : SearchParam<GuidanceResponse, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -73,7 +74,7 @@ public sealed class GuidanceResponseSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = listOfNotNull(resource.requestIdentifier)
   }
 
-  public data object Subject : GuidanceResponseSearchParam<Reference>() {
+  public data object Subject : SearchParam<GuidanceResponse, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -84,11 +85,5 @@ public sealed class GuidanceResponseSearchParam<T> : SearchParam {
 
     public override fun extract(resource: GuidanceResponse): List<Reference> =
       listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the GuidanceResponse resource type. */
-    public val ALL: List<GuidanceResponseSearchParam<*>> =
-      listOf(Identifier, Patient, Request, Subject)
   }
 }

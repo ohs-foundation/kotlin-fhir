@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [EncounterHistory] resource type. */
-public sealed class EncounterHistorySearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: EncounterHistory): List<T>
+public object EncounterHistorySearchParam {
+  /** All search parameters for the EncounterHistory resource type. */
+  public val ALL: List<SearchParam<EncounterHistory, *>> =
+    listOf(Encounter, Identifier, Patient, Status, Subject)
 
-  public data object Encounter : EncounterHistorySearchParam<Reference>() {
+  public data object Encounter : SearchParam<EncounterHistory, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -44,7 +45,7 @@ public sealed class EncounterHistorySearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : EncounterHistorySearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<EncounterHistory, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +59,7 @@ public sealed class EncounterHistorySearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Patient : EncounterHistorySearchParam<Reference>() {
+  public data object Patient : SearchParam<EncounterHistory, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -73,7 +74,7 @@ public sealed class EncounterHistorySearchParam<T> : SearchParam {
       }
   }
 
-  public data object Status : EncounterHistorySearchParam<Any>() {
+  public data object Status : SearchParam<EncounterHistory, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -85,7 +86,7 @@ public sealed class EncounterHistorySearchParam<T> : SearchParam {
     public override fun extract(resource: EncounterHistory): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : EncounterHistorySearchParam<Reference>() {
+  public data object Subject : SearchParam<EncounterHistory, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -96,11 +97,5 @@ public sealed class EncounterHistorySearchParam<T> : SearchParam {
 
     public override fun extract(resource: EncounterHistory): List<Reference> =
       listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the EncounterHistory resource type. */
-    public val ALL: List<EncounterHistorySearchParam<*>> =
-      listOf(Encounter, Identifier, Patient, Status, Subject)
   }
 }

@@ -27,11 +27,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProduct] resource type. */
-public sealed class MedicinalProductSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MedicinalProduct): List<T>
+public object MedicinalProductSearchParam {
+  /** All search parameters for the MedicinalProduct resource type. */
+  public val ALL: List<SearchParam<MedicinalProduct, *>> = listOf(Identifier, Name, NameLanguage)
 
-  public data object Identifier : MedicinalProductSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<MedicinalProduct, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +45,7 @@ public sealed class MedicinalProductSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Name : MedicinalProductSearchParam<R4String>() {
+  public data object Name : SearchParam<MedicinalProduct, R4String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -58,7 +58,7 @@ public sealed class MedicinalProductSearchParam<T> : SearchParam {
       resource.name.map { it.productName }
   }
 
-  public data object NameLanguage : MedicinalProductSearchParam<CodeableConcept>() {
+  public data object NameLanguage : SearchParam<MedicinalProduct, CodeableConcept> {
     public override val paramName: KotlinString = "name-language"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -69,10 +69,5 @@ public sealed class MedicinalProductSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MedicinalProduct): List<CodeableConcept> =
       resource.name.flatMap { it.countryLanguage }.map { it.language }
-  }
-
-  public companion object {
-    /** All search parameters for the MedicinalProduct resource type. */
-    public val ALL: List<MedicinalProductSearchParam<*>> = listOf(Identifier, Name, NameLanguage)
   }
 }

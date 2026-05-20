@@ -26,11 +26,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ManufacturedItemDefinition] resource type. */
-public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ManufacturedItemDefinition): List<T>
+public object ManufacturedItemDefinitionSearchParam {
+  /** All search parameters for the ManufacturedItemDefinition resource type. */
+  public val ALL: List<SearchParam<ManufacturedItemDefinition, *>> =
+    listOf(DoseForm, Identifier, Ingredient)
 
-  public data object DoseForm : ManufacturedItemDefinitionSearchParam<CodeableConcept>() {
+  public data object DoseForm : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
     public override val paramName: String = "dose-form"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +45,7 @@ public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ManufacturedItemDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<ManufacturedItemDefinition, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +59,7 @@ public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Ingredient : ManufacturedItemDefinitionSearchParam<CodeableConcept>() {
+  public data object Ingredient : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
     public override val paramName: String = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -69,11 +70,5 @@ public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
       resource.ingredient
-  }
-
-  public companion object {
-    /** All search parameters for the ManufacturedItemDefinition resource type. */
-    public val ALL: List<ManufacturedItemDefinitionSearchParam<*>> =
-      listOf(DoseForm, Identifier, Ingredient)
   }
 }

@@ -29,11 +29,29 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [AllergyIntolerance] resource type. */
-public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: AllergyIntolerance): List<T>
+public object AllergyIntoleranceSearchParam {
+  /** All search parameters for the AllergyIntolerance resource type. */
+  public val ALL: List<SearchParam<AllergyIntolerance, *>> =
+    listOf(
+      Asserter,
+      Category,
+      ClinicalStatus,
+      Code,
+      Criticality,
+      Date,
+      Identifier,
+      LastDate,
+      Manifestation,
+      Onset,
+      Patient,
+      Recorder,
+      Route,
+      Severity,
+      Type,
+      VerificationStatus,
+    )
 
-  public data object Asserter : AllergyIntoleranceSearchParam<Reference>() {
+  public data object Asserter : SearchParam<AllergyIntolerance, Reference> {
     public override val paramName: String = "asserter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -47,7 +65,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       listOfNotNull(resource.asserter)
   }
 
-  public data object Category : AllergyIntoleranceSearchParam<Any>() {
+  public data object Category : SearchParam<AllergyIntolerance, Any> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -59,7 +77,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
     public override fun extract(resource: AllergyIntolerance): List<Any> = resource.category
   }
 
-  public data object ClinicalStatus : AllergyIntoleranceSearchParam<CodeableConcept>() {
+  public data object ClinicalStatus : SearchParam<AllergyIntolerance, CodeableConcept> {
     public override val paramName: String = "clinical-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -72,7 +90,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       listOfNotNull(resource.clinicalStatus)
   }
 
-  public data object Code : AllergyIntoleranceSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<AllergyIntolerance, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -85,7 +103,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Criticality : AllergyIntoleranceSearchParam<Any>() {
+  public data object Criticality : SearchParam<AllergyIntolerance, Any> {
     public override val paramName: String = "criticality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,7 +116,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       listOfNotNull(resource.criticality)
   }
 
-  public data object Date : AllergyIntoleranceSearchParam<DateTime>() {
+  public data object Date : SearchParam<AllergyIntolerance, DateTime> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -112,7 +130,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    AllergyIntoleranceSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<AllergyIntolerance, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -126,7 +144,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object LastDate : AllergyIntoleranceSearchParam<DateTime>() {
+  public data object LastDate : SearchParam<AllergyIntolerance, DateTime> {
     public override val paramName: String = "last-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -139,7 +157,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       listOfNotNull(resource.lastOccurrence)
   }
 
-  public data object Manifestation : AllergyIntoleranceSearchParam<CodeableConcept>() {
+  public data object Manifestation : SearchParam<AllergyIntolerance, CodeableConcept> {
     public override val paramName: String = "manifestation"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -152,7 +170,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       resource.reaction.flatMap { it.manifestation }
   }
 
-  public data object Onset : AllergyIntoleranceSearchParam<DateTime>() {
+  public data object Onset : SearchParam<AllergyIntolerance, DateTime> {
     public override val paramName: String = "onset"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -165,7 +183,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       resource.reaction.mapNotNull { it.onset }
   }
 
-  public data object Patient : AllergyIntoleranceSearchParam<Reference>() {
+  public data object Patient : SearchParam<AllergyIntolerance, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -178,7 +196,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       listOf(resource.patient)
   }
 
-  public data object Recorder : AllergyIntoleranceSearchParam<Reference>() {
+  public data object Recorder : SearchParam<AllergyIntolerance, Reference> {
     public override val paramName: String = "recorder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -192,7 +210,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       listOfNotNull(resource.recorder)
   }
 
-  public data object Route : AllergyIntoleranceSearchParam<CodeableConcept>() {
+  public data object Route : SearchParam<AllergyIntolerance, CodeableConcept> {
     public override val paramName: String = "route"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -205,7 +223,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       resource.reaction.mapNotNull { it.exposureRoute }
   }
 
-  public data object Severity : AllergyIntoleranceSearchParam<Any>() {
+  public data object Severity : SearchParam<AllergyIntolerance, Any> {
     public override val paramName: String = "severity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -218,7 +236,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       resource.reaction.mapNotNull { it.severity }
   }
 
-  public data object Type : AllergyIntoleranceSearchParam<Any>() {
+  public data object Type : SearchParam<AllergyIntolerance, Any> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -231,7 +249,7 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
       listOfNotNull(resource.type)
   }
 
-  public data object VerificationStatus : AllergyIntoleranceSearchParam<CodeableConcept>() {
+  public data object VerificationStatus : SearchParam<AllergyIntolerance, CodeableConcept> {
     public override val paramName: String = "verification-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -242,28 +260,5 @@ public sealed class AllergyIntoleranceSearchParam<T> : SearchParam {
 
     public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
       listOfNotNull(resource.verificationStatus)
-  }
-
-  public companion object {
-    /** All search parameters for the AllergyIntolerance resource type. */
-    public val ALL: List<AllergyIntoleranceSearchParam<*>> =
-      listOf(
-        Asserter,
-        Category,
-        ClinicalStatus,
-        Code,
-        Criticality,
-        Date,
-        Identifier,
-        LastDate,
-        Manifestation,
-        Onset,
-        Patient,
-        Recorder,
-        Route,
-        Severity,
-        Type,
-        VerificationStatus,
-      )
   }
 }

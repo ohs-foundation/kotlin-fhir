@@ -30,11 +30,27 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [OrganizationAffiliation] resource type. */
-public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: OrganizationAffiliation): List<T>
+public object OrganizationAffiliationSearchParam {
+  /** All search parameters for the OrganizationAffiliation resource type. */
+  public val ALL: List<SearchParam<OrganizationAffiliation, *>> =
+    listOf(
+      Active,
+      Date,
+      Email,
+      Endpoint,
+      Identifier,
+      Location,
+      Network,
+      ParticipatingOrganization,
+      Phone,
+      PrimaryOrganization,
+      Role,
+      Service,
+      Specialty,
+      Telecom,
+    )
 
-  public data object Active : OrganizationAffiliationSearchParam<Boolean>() {
+  public data object Active : SearchParam<OrganizationAffiliation, Boolean> {
     public override val paramName: String = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -47,7 +63,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       listOfNotNull(resource.active)
   }
 
-  public data object Date : OrganizationAffiliationSearchParam<Period>() {
+  public data object Date : SearchParam<OrganizationAffiliation, Period> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -60,7 +76,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       listOfNotNull(resource.period)
   }
 
-  public data object Email : OrganizationAffiliationSearchParam<ContactPoint>() {
+  public data object Email : SearchParam<OrganizationAffiliation, ContactPoint> {
     public override val paramName: String = "email"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -73,7 +89,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       resource.telecom.filter { it.system?.value?.toString() == "email" }
   }
 
-  public data object Endpoint : OrganizationAffiliationSearchParam<Reference>() {
+  public data object Endpoint : SearchParam<OrganizationAffiliation, Reference> {
     public override val paramName: String = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -87,7 +103,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    OrganizationAffiliationSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<OrganizationAffiliation, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -101,7 +117,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Location : OrganizationAffiliationSearchParam<Reference>() {
+  public data object Location : SearchParam<OrganizationAffiliation, Reference> {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -114,7 +130,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       resource.location
   }
 
-  public data object Network : OrganizationAffiliationSearchParam<Reference>() {
+  public data object Network : SearchParam<OrganizationAffiliation, Reference> {
     public override val paramName: String = "network"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -127,7 +143,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       resource.network
   }
 
-  public data object ParticipatingOrganization : OrganizationAffiliationSearchParam<Reference>() {
+  public data object ParticipatingOrganization : SearchParam<OrganizationAffiliation, Reference> {
     public override val paramName: String = "participating-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -140,7 +156,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       listOfNotNull(resource.participatingOrganization)
   }
 
-  public data object Phone : OrganizationAffiliationSearchParam<ContactPoint>() {
+  public data object Phone : SearchParam<OrganizationAffiliation, ContactPoint> {
     public override val paramName: String = "phone"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -153,7 +169,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       resource.telecom.filter { it.system?.value?.toString() == "phone" }
   }
 
-  public data object PrimaryOrganization : OrganizationAffiliationSearchParam<Reference>() {
+  public data object PrimaryOrganization : SearchParam<OrganizationAffiliation, Reference> {
     public override val paramName: String = "primary-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -166,7 +182,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       listOfNotNull(resource.organization)
   }
 
-  public data object Role : OrganizationAffiliationSearchParam<CodeableConcept>() {
+  public data object Role : SearchParam<OrganizationAffiliation, CodeableConcept> {
     public override val paramName: String = "role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -179,7 +195,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       resource.code
   }
 
-  public data object Service : OrganizationAffiliationSearchParam<Reference>() {
+  public data object Service : SearchParam<OrganizationAffiliation, Reference> {
     public override val paramName: String = "service"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -192,7 +208,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       resource.healthcareService
   }
 
-  public data object Specialty : OrganizationAffiliationSearchParam<CodeableConcept>() {
+  public data object Specialty : SearchParam<OrganizationAffiliation, CodeableConcept> {
     public override val paramName: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -205,7 +221,7 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
       resource.specialty
   }
 
-  public data object Telecom : OrganizationAffiliationSearchParam<ContactPoint>() {
+  public data object Telecom : SearchParam<OrganizationAffiliation, ContactPoint> {
     public override val paramName: String = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -216,26 +232,5 @@ public sealed class OrganizationAffiliationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
       resource.telecom
-  }
-
-  public companion object {
-    /** All search parameters for the OrganizationAffiliation resource type. */
-    public val ALL: List<OrganizationAffiliationSearchParam<*>> =
-      listOf(
-        Active,
-        Date,
-        Email,
-        Endpoint,
-        Identifier,
-        Location,
-        Network,
-        ParticipatingOrganization,
-        Phone,
-        PrimaryOrganization,
-        Role,
-        Service,
-        Specialty,
-        Telecom,
-      )
   }
 }

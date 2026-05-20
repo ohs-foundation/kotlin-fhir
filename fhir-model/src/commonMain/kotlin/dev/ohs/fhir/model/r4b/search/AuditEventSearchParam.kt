@@ -32,11 +32,31 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [AuditEvent] resource type. */
-public sealed class AuditEventSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: AuditEvent): List<T>
+public object AuditEventSearchParam {
+  /** All search parameters for the AuditEvent resource type. */
+  public val ALL: List<SearchParam<AuditEvent, *>> =
+    listOf(
+      Action,
+      Address,
+      Agent,
+      AgentName,
+      AgentRole,
+      Altid,
+      Date,
+      Entity,
+      EntityName,
+      EntityRole,
+      EntityType,
+      Outcome,
+      Patient,
+      Policy,
+      Site,
+      Source,
+      Subtype,
+      Type,
+    )
 
-  public data object Action : AuditEventSearchParam<Any>() {
+  public data object Action : SearchParam<AuditEvent, Any> {
     public override val paramName: KotlinString = "action"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -48,7 +68,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
     public override fun extract(resource: AuditEvent): List<Any> = listOfNotNull(resource.action)
   }
 
-  public data object Address : AuditEventSearchParam<R4bString>() {
+  public data object Address : SearchParam<AuditEvent, R4bString> {
     public override val paramName: KotlinString = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -61,7 +81,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.agent.mapNotNull { it.network }.mapNotNull { it.address }
   }
 
-  public data object Agent : AuditEventSearchParam<Reference>() {
+  public data object Agent : SearchParam<AuditEvent, Reference> {
     public override val paramName: KotlinString = "agent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -82,7 +102,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.agent.mapNotNull { it.who }
   }
 
-  public data object AgentName : AuditEventSearchParam<R4bString>() {
+  public data object AgentName : SearchParam<AuditEvent, R4bString> {
     public override val paramName: KotlinString = "agent-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -95,7 +115,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.agent.mapNotNull { it.name }
   }
 
-  public data object AgentRole : AuditEventSearchParam<CodeableConcept>() {
+  public data object AgentRole : SearchParam<AuditEvent, CodeableConcept> {
     public override val paramName: KotlinString = "agent-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -108,7 +128,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.agent.flatMap { it.role }
   }
 
-  public data object Altid : AuditEventSearchParam<R4bString>() {
+  public data object Altid : SearchParam<AuditEvent, R4bString> {
     public override val paramName: KotlinString = "altid"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -121,7 +141,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.agent.mapNotNull { it.altId }
   }
 
-  public data object Date : AuditEventSearchParam<Instant>() {
+  public data object Date : SearchParam<AuditEvent, Instant> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -133,7 +153,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
     public override fun extract(resource: AuditEvent): List<Instant> = listOf(resource.recorded)
   }
 
-  public data object Entity : AuditEventSearchParam<Reference>() {
+  public data object Entity : SearchParam<AuditEvent, Reference> {
     public override val paramName: KotlinString = "entity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -288,7 +308,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.entity.mapNotNull { it.what }
   }
 
-  public data object EntityName : AuditEventSearchParam<R4bString>() {
+  public data object EntityName : SearchParam<AuditEvent, R4bString> {
     public override val paramName: KotlinString = "entity-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -301,7 +321,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.entity.mapNotNull { it.name }
   }
 
-  public data object EntityRole : AuditEventSearchParam<Coding>() {
+  public data object EntityRole : SearchParam<AuditEvent, Coding> {
     public override val paramName: KotlinString = "entity-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -314,7 +334,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.entity.mapNotNull { it.role }
   }
 
-  public data object EntityType : AuditEventSearchParam<Coding>() {
+  public data object EntityType : SearchParam<AuditEvent, Coding> {
     public override val paramName: KotlinString = "entity-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -327,7 +347,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.entity.mapNotNull { it.type }
   }
 
-  public data object Outcome : AuditEventSearchParam<Any>() {
+  public data object Outcome : SearchParam<AuditEvent, Any> {
     public override val paramName: KotlinString = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -339,7 +359,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
     public override fun extract(resource: AuditEvent): List<Any> = listOfNotNull(resource.outcome)
   }
 
-  public data object Patient : AuditEventSearchParam<Reference>() {
+  public data object Patient : SearchParam<AuditEvent, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -355,7 +375,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
         .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
   }
 
-  public data object Policy : AuditEventSearchParam<Uri>() {
+  public data object Policy : SearchParam<AuditEvent, Uri> {
     public override val paramName: KotlinString = "policy"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -368,7 +388,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       resource.agent.flatMap { it.policy }
   }
 
-  public data object Site : AuditEventSearchParam<R4bString>() {
+  public data object Site : SearchParam<AuditEvent, R4bString> {
     public override val paramName: KotlinString = "site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -381,7 +401,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       listOfNotNull(resource.source.site)
   }
 
-  public data object Source : AuditEventSearchParam<Reference>() {
+  public data object Source : SearchParam<AuditEvent, Reference> {
     public override val paramName: KotlinString = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -402,7 +422,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
       listOf(resource.source.observer)
   }
 
-  public data object Subtype : AuditEventSearchParam<Coding>() {
+  public data object Subtype : SearchParam<AuditEvent, Coding> {
     public override val paramName: KotlinString = "subtype"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -414,7 +434,7 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
     public override fun extract(resource: AuditEvent): List<Coding> = resource.subtype
   }
 
-  public data object Type : AuditEventSearchParam<Coding>() {
+  public data object Type : SearchParam<AuditEvent, Coding> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -424,30 +444,5 @@ public sealed class AuditEventSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: AuditEvent): List<Coding> = listOf(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the AuditEvent resource type. */
-    public val ALL: List<AuditEventSearchParam<*>> =
-      listOf(
-        Action,
-        Address,
-        Agent,
-        AgentName,
-        AgentRole,
-        Altid,
-        Date,
-        Entity,
-        EntityName,
-        EntityRole,
-        EntityType,
-        Outcome,
-        Patient,
-        Policy,
-        Site,
-        Source,
-        Subtype,
-        Type,
-      )
   }
 }

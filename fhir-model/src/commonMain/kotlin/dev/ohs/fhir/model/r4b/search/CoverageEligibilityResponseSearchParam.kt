@@ -29,11 +29,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [CoverageEligibilityResponse] resource type. */
-public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: CoverageEligibilityResponse): List<T>
+public object CoverageEligibilityResponseSearchParam {
+  /** All search parameters for the CoverageEligibilityResponse resource type. */
+  public val ALL: List<SearchParam<CoverageEligibilityResponse, *>> =
+    listOf(Created, Disposition, Identifier, Insurer, Outcome, Patient, Request, Requestor, Status)
 
-  public data object Created : CoverageEligibilityResponseSearchParam<DateTime>() {
+  public data object Created : SearchParam<CoverageEligibilityResponse, DateTime> {
     public override val paramName: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -46,7 +47,7 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
       listOf(resource.created)
   }
 
-  public data object Disposition : CoverageEligibilityResponseSearchParam<R4bString>() {
+  public data object Disposition : SearchParam<CoverageEligibilityResponse, R4bString> {
     public override val paramName: KotlinString = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -60,7 +61,7 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    CoverageEligibilityResponseSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<CoverageEligibilityResponse, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,7 +75,7 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Insurer : CoverageEligibilityResponseSearchParam<Reference>() {
+  public data object Insurer : SearchParam<CoverageEligibilityResponse, Reference> {
     public override val paramName: KotlinString = "insurer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -87,7 +88,7 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
       listOf(resource.insurer)
   }
 
-  public data object Outcome : CoverageEligibilityResponseSearchParam<Any>() {
+  public data object Outcome : SearchParam<CoverageEligibilityResponse, Any> {
     public override val paramName: KotlinString = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -100,7 +101,7 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
       listOf(resource.outcome)
   }
 
-  public data object Patient : CoverageEligibilityResponseSearchParam<Reference>() {
+  public data object Patient : SearchParam<CoverageEligibilityResponse, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -113,7 +114,7 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
       listOf(resource.patient)
   }
 
-  public data object Request : CoverageEligibilityResponseSearchParam<Reference>() {
+  public data object Request : SearchParam<CoverageEligibilityResponse, Reference> {
     public override val paramName: KotlinString = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -126,7 +127,7 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
       listOf(resource.request)
   }
 
-  public data object Requestor : CoverageEligibilityResponseSearchParam<Reference>() {
+  public data object Requestor : SearchParam<CoverageEligibilityResponse, Reference> {
     public override val paramName: KotlinString = "requestor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -140,7 +141,7 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.requestor)
   }
 
-  public data object Status : CoverageEligibilityResponseSearchParam<Any>() {
+  public data object Status : SearchParam<CoverageEligibilityResponse, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -151,21 +152,5 @@ public sealed class CoverageEligibilityResponseSearchParam<T> : SearchParam {
 
     public override fun extract(resource: CoverageEligibilityResponse): List<Any> =
       listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the CoverageEligibilityResponse resource type. */
-    public val ALL: List<CoverageEligibilityResponseSearchParam<*>> =
-      listOf(
-        Created,
-        Disposition,
-        Identifier,
-        Insurer,
-        Outcome,
-        Patient,
-        Request,
-        Requestor,
-        Status,
-      )
   }
 }

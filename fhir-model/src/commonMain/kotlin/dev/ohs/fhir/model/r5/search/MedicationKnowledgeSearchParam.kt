@@ -29,11 +29,29 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicationKnowledge] resource type. */
-public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MedicationKnowledge): List<T>
+public object MedicationKnowledgeSearchParam {
+  /** All search parameters for the MedicationKnowledge resource type. */
+  public val ALL: List<SearchParam<MedicationKnowledge, *>> =
+    listOf(
+      Classification,
+      ClassificationType,
+      Code,
+      Doseform,
+      Identifier,
+      Ingredient,
+      IngredientCode,
+      MonitoringProgramName,
+      MonitoringProgramType,
+      Monograph,
+      MonographType,
+      PackagingCost,
+      PackagingCostConcept,
+      ProductType,
+      SourceCost,
+      Status,
+    )
 
-  public data object Classification : MedicationKnowledgeSearchParam<CodeableConcept>() {
+  public data object Classification : SearchParam<MedicationKnowledge, CodeableConcept> {
     public override val paramName: KotlinString = "classification"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -47,7 +65,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       resource.medicineClassification.flatMap { it.classification }
   }
 
-  public data object ClassificationType : MedicationKnowledgeSearchParam<CodeableConcept>() {
+  public data object ClassificationType : SearchParam<MedicationKnowledge, CodeableConcept> {
     public override val paramName: KotlinString = "classification-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -60,7 +78,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       resource.medicineClassification.map { it.type }
   }
 
-  public data object Code : MedicationKnowledgeSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<MedicationKnowledge, CodeableConcept> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -73,7 +91,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Doseform : MedicationKnowledgeSearchParam<CodeableConcept>() {
+  public data object Doseform : SearchParam<MedicationKnowledge, CodeableConcept> {
     public override val paramName: KotlinString = "doseform"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -87,7 +105,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    MedicationKnowledgeSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<MedicationKnowledge, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -101,7 +119,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Ingredient : MedicationKnowledgeSearchParam<Reference>() {
+  public data object Ingredient : SearchParam<MedicationKnowledge, Reference> {
     public override val paramName: KotlinString = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -115,7 +133,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       (resource.definitional?.ingredient ?: emptyList()).map { it.item }.mapNotNull { it.reference }
   }
 
-  public data object IngredientCode : MedicationKnowledgeSearchParam<CodeableConcept>() {
+  public data object IngredientCode : SearchParam<MedicationKnowledge, CodeableConcept> {
     public override val paramName: KotlinString = "ingredient-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -129,7 +147,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       (resource.definitional?.ingredient ?: emptyList()).map { it.item }.mapNotNull { it.concept }
   }
 
-  public data object MonitoringProgramName : MedicationKnowledgeSearchParam<R5String>() {
+  public data object MonitoringProgramName : SearchParam<MedicationKnowledge, R5String> {
     public override val paramName: KotlinString = "monitoring-program-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -142,7 +160,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       resource.monitoringProgram.mapNotNull { it.name }
   }
 
-  public data object MonitoringProgramType : MedicationKnowledgeSearchParam<CodeableConcept>() {
+  public data object MonitoringProgramType : SearchParam<MedicationKnowledge, CodeableConcept> {
     public override val paramName: KotlinString = "monitoring-program-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -155,7 +173,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       resource.monitoringProgram.mapNotNull { it.type }
   }
 
-  public data object Monograph : MedicationKnowledgeSearchParam<Reference>() {
+  public data object Monograph : SearchParam<MedicationKnowledge, Reference> {
     public override val paramName: KotlinString = "monograph"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -168,7 +186,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       resource.monograph.mapNotNull { it.source }
   }
 
-  public data object MonographType : MedicationKnowledgeSearchParam<CodeableConcept>() {
+  public data object MonographType : SearchParam<MedicationKnowledge, CodeableConcept> {
     public override val paramName: KotlinString = "monograph-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -181,7 +199,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       resource.monograph.mapNotNull { it.type }
   }
 
-  public data object PackagingCost : MedicationKnowledgeSearchParam<Any>() {
+  public data object PackagingCost : SearchParam<MedicationKnowledge, Any> {
     public override val paramName: KotlinString = "packaging-cost"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -193,7 +211,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
     public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
   }
 
-  public data object PackagingCostConcept : MedicationKnowledgeSearchParam<Any>() {
+  public data object PackagingCostConcept : SearchParam<MedicationKnowledge, Any> {
     public override val paramName: KotlinString = "packaging-cost-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -205,7 +223,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
     public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
   }
 
-  public data object ProductType : MedicationKnowledgeSearchParam<CodeableConcept>() {
+  public data object ProductType : SearchParam<MedicationKnowledge, CodeableConcept> {
     public override val paramName: KotlinString = "product-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -218,7 +236,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       resource.productType
   }
 
-  public data object SourceCost : MedicationKnowledgeSearchParam<R5String>() {
+  public data object SourceCost : SearchParam<MedicationKnowledge, R5String> {
     public override val paramName: KotlinString = "source-cost"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -231,7 +249,7 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
       resource.cost.mapNotNull { it.source }
   }
 
-  public data object Status : MedicationKnowledgeSearchParam<Any>() {
+  public data object Status : SearchParam<MedicationKnowledge, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -242,28 +260,5 @@ public sealed class MedicationKnowledgeSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MedicationKnowledge): List<Any> =
       listOfNotNull(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the MedicationKnowledge resource type. */
-    public val ALL: List<MedicationKnowledgeSearchParam<*>> =
-      listOf(
-        Classification,
-        ClassificationType,
-        Code,
-        Doseform,
-        Identifier,
-        Ingredient,
-        IngredientCode,
-        MonitoringProgramName,
-        MonitoringProgramType,
-        Monograph,
-        MonographType,
-        PackagingCost,
-        PackagingCostConcept,
-        ProductType,
-        SourceCost,
-        Status,
-      )
   }
 }

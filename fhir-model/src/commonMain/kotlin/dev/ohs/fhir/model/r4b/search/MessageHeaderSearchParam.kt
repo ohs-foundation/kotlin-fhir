@@ -30,11 +30,27 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MessageHeader] resource type. */
-public sealed class MessageHeaderSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MessageHeader): List<T>
+public object MessageHeaderSearchParam {
+  /** All search parameters for the MessageHeader resource type. */
+  public val ALL: List<SearchParam<MessageHeader, *>> =
+    listOf(
+      Author,
+      Code,
+      Destination,
+      DestinationUri,
+      Enterer,
+      Event,
+      Focus,
+      Receiver,
+      ResponseId,
+      Responsible,
+      Sender,
+      Source,
+      SourceUri,
+      Target,
+    )
 
-  public data object Author : MessageHeaderSearchParam<Reference>() {
+  public data object Author : SearchParam<MessageHeader, Reference> {
     public override val paramName: KotlinString = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -47,7 +63,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       listOfNotNull(resource.author)
   }
 
-  public data object Code : MessageHeaderSearchParam<Any>() {
+  public data object Code : SearchParam<MessageHeader, Any> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -60,7 +76,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       listOfNotNull(resource.response?.code)
   }
 
-  public data object Destination : MessageHeaderSearchParam<R4bString>() {
+  public data object Destination : SearchParam<MessageHeader, R4bString> {
     public override val paramName: KotlinString = "destination"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -73,7 +89,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       resource.destination.mapNotNull { it.name }
   }
 
-  public data object DestinationUri : MessageHeaderSearchParam<Url>() {
+  public data object DestinationUri : SearchParam<MessageHeader, Url> {
     public override val paramName: KotlinString = "destination-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -86,7 +102,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       resource.destination.map { it.endpoint }
   }
 
-  public data object Enterer : MessageHeaderSearchParam<Reference>() {
+  public data object Enterer : SearchParam<MessageHeader, Reference> {
     public override val paramName: KotlinString = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -99,7 +115,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       listOfNotNull(resource.enterer)
   }
 
-  public data object Event : MessageHeaderSearchParam<MessageHeader.Event>() {
+  public data object Event : SearchParam<MessageHeader, MessageHeader.Event> {
     public override val paramName: KotlinString = "event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -112,7 +128,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       listOf(resource.event)
   }
 
-  public data object Focus : MessageHeaderSearchParam<Reference>() {
+  public data object Focus : SearchParam<MessageHeader, Reference> {
     public override val paramName: KotlinString = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -266,7 +282,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
     public override fun extract(resource: MessageHeader): List<Reference> = resource.focus
   }
 
-  public data object Receiver : MessageHeaderSearchParam<Reference>() {
+  public data object Receiver : SearchParam<MessageHeader, Reference> {
     public override val paramName: KotlinString = "receiver"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -280,7 +296,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       resource.destination.mapNotNull { it.receiver }
   }
 
-  public data object ResponseId : MessageHeaderSearchParam<Id>() {
+  public data object ResponseId : SearchParam<MessageHeader, Id> {
     public override val paramName: KotlinString = "response-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -293,7 +309,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       listOfNotNull(resource.response?.identifier)
   }
 
-  public data object Responsible : MessageHeaderSearchParam<Reference>() {
+  public data object Responsible : SearchParam<MessageHeader, Reference> {
     public override val paramName: KotlinString = "responsible"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -307,7 +323,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       listOfNotNull(resource.responsible)
   }
 
-  public data object Sender : MessageHeaderSearchParam<Reference>() {
+  public data object Sender : SearchParam<MessageHeader, Reference> {
     public override val paramName: KotlinString = "sender"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -321,7 +337,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       listOfNotNull(resource.sender)
   }
 
-  public data object Source : MessageHeaderSearchParam<R4bString>() {
+  public data object Source : SearchParam<MessageHeader, R4bString> {
     public override val paramName: KotlinString = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -334,7 +350,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       listOfNotNull(resource.source.name)
   }
 
-  public data object SourceUri : MessageHeaderSearchParam<Url>() {
+  public data object SourceUri : SearchParam<MessageHeader, Url> {
     public override val paramName: KotlinString = "source-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -347,7 +363,7 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
       listOf(resource.source.endpoint)
   }
 
-  public data object Target : MessageHeaderSearchParam<Reference>() {
+  public data object Target : SearchParam<MessageHeader, Reference> {
     public override val paramName: KotlinString = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -358,26 +374,5 @@ public sealed class MessageHeaderSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MessageHeader): List<Reference> =
       resource.destination.mapNotNull { it.target }
-  }
-
-  public companion object {
-    /** All search parameters for the MessageHeader resource type. */
-    public val ALL: List<MessageHeaderSearchParam<*>> =
-      listOf(
-        Author,
-        Code,
-        Destination,
-        DestinationUri,
-        Enterer,
-        Event,
-        Focus,
-        Receiver,
-        ResponseId,
-        Responsible,
-        Sender,
-        Source,
-        SourceUri,
-        Target,
-      )
   }
 }

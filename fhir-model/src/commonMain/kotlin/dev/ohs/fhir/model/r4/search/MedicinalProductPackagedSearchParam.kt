@@ -26,12 +26,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductPackaged] resource type. */
-public sealed class MedicinalProductPackagedSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MedicinalProductPackaged): List<T>
+public object MedicinalProductPackagedSearchParam {
+  /** All search parameters for the MedicinalProductPackaged resource type. */
+  public val ALL: List<SearchParam<MedicinalProductPackaged, *>> = listOf(Identifier, Subject)
 
   public data object Identifier :
-    MedicinalProductPackagedSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<MedicinalProductPackaged, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +45,7 @@ public sealed class MedicinalProductPackagedSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Subject : MedicinalProductPackagedSearchParam<Reference>() {
+  public data object Subject : SearchParam<MedicinalProductPackaged, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -56,10 +56,5 @@ public sealed class MedicinalProductPackagedSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MedicinalProductPackaged): List<Reference> =
       resource.subject
-  }
-
-  public companion object {
-    /** All search parameters for the MedicinalProductPackaged resource type. */
-    public val ALL: List<MedicinalProductPackagedSearchParam<*>> = listOf(Identifier, Subject)
   }
 }

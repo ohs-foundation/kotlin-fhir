@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Flag] resource type. */
-public sealed class FlagSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Flag): List<T>
+public object FlagSearchParam {
+  /** All search parameters for the Flag resource type. */
+  public val ALL: List<SearchParam<Flag, *>> =
+    listOf(Author, Date, Encounter, Identifier, Patient, Subject)
 
-  public data object Author : FlagSearchParam<Reference>() {
+  public data object Author : SearchParam<Flag, Reference> {
     public override val paramName: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -44,7 +45,7 @@ public sealed class FlagSearchParam<T> : SearchParam {
     public override fun extract(resource: Flag): List<Reference> = listOfNotNull(resource.author)
   }
 
-  public data object Date : FlagSearchParam<Period>() {
+  public data object Date : SearchParam<Flag, Period> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -56,7 +57,7 @@ public sealed class FlagSearchParam<T> : SearchParam {
     public override fun extract(resource: Flag): List<Period> = listOfNotNull(resource.period)
   }
 
-  public data object Encounter : FlagSearchParam<Reference>() {
+  public data object Encounter : SearchParam<Flag, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -68,7 +69,7 @@ public sealed class FlagSearchParam<T> : SearchParam {
     public override fun extract(resource: Flag): List<Reference> = listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : FlagSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<Flag, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -81,7 +82,7 @@ public sealed class FlagSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Patient : FlagSearchParam<Reference>() {
+  public data object Patient : SearchParam<Flag, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -96,7 +97,7 @@ public sealed class FlagSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Subject : FlagSearchParam<Reference>() {
+  public data object Subject : SearchParam<Flag, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -116,11 +117,5 @@ public sealed class FlagSearchParam<T> : SearchParam {
       )
 
     public override fun extract(resource: Flag): List<Reference> = listOf(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the Flag resource type. */
-    public val ALL: List<FlagSearchParam<*>> =
-      listOf(Author, Date, Encounter, Identifier, Patient, Subject)
   }
 }

@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [SpecimenDefinition] resource type. */
-public sealed class SpecimenDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: SpecimenDefinition): List<T>
+public object SpecimenDefinitionSearchParam {
+  /** All search parameters for the SpecimenDefinition resource type. */
+  public val ALL: List<SearchParam<SpecimenDefinition, *>> = listOf(Container, Identifier, Type)
 
-  public data object Container : SpecimenDefinitionSearchParam<CodeableConcept>() {
+  public data object Container : SearchParam<SpecimenDefinition, CodeableConcept> {
     public override val paramName: String = "container"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +44,7 @@ public sealed class SpecimenDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    SpecimenDefinitionSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<SpecimenDefinition, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +58,7 @@ public sealed class SpecimenDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = listOfNotNull(resource.identifier)
   }
 
-  public data object Type : SpecimenDefinitionSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<SpecimenDefinition, CodeableConcept> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -69,10 +69,5 @@ public sealed class SpecimenDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
       listOfNotNull(resource.typeCollected)
-  }
-
-  public companion object {
-    /** All search parameters for the SpecimenDefinition resource type. */
-    public val ALL: List<SpecimenDefinitionSearchParam<*>> = listOf(Container, Identifier, Type)
   }
 }

@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Transport] resource type. */
-public sealed class TransportSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Transport): List<T>
+public object TransportSearchParam {
+  /** All search parameters for the Transport resource type. */
+  public val ALL: List<SearchParam<Transport, *>> = listOf(Identifier, Status)
 
-  public data object Identifier : TransportSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Transport, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -43,7 +43,7 @@ public sealed class TransportSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Status : TransportSearchParam<Any>() {
+  public data object Status : SearchParam<Transport, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -53,10 +53,5 @@ public sealed class TransportSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: Transport): List<Any> = listOfNotNull(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the Transport resource type. */
-    public val ALL: List<TransportSearchParam<*>> = listOf(Identifier, Status)
   }
 }

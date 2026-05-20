@@ -28,11 +28,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Basic] resource type. */
-public sealed class BasicSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Basic): List<T>
+public object BasicSearchParam {
+  /** All search parameters for the Basic resource type. */
+  public val ALL: List<SearchParam<Basic, *>> =
+    listOf(Author, Code, Created, Identifier, Patient, Subject)
 
-  public data object Author : BasicSearchParam<Reference>() {
+  public data object Author : SearchParam<Basic, Reference> {
     public override val paramName: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -45,7 +46,7 @@ public sealed class BasicSearchParam<T> : SearchParam {
     public override fun extract(resource: Basic): List<Reference> = listOfNotNull(resource.author)
   }
 
-  public data object Code : BasicSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<Basic, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -57,7 +58,7 @@ public sealed class BasicSearchParam<T> : SearchParam {
     public override fun extract(resource: Basic): List<CodeableConcept> = listOf(resource.code)
   }
 
-  public data object Created : BasicSearchParam<Date>() {
+  public data object Created : SearchParam<Basic, Date> {
     public override val paramName: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -69,7 +70,7 @@ public sealed class BasicSearchParam<T> : SearchParam {
     public override fun extract(resource: Basic): List<Date> = listOfNotNull(resource.created)
   }
 
-  public data object Identifier : BasicSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<Basic, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -82,7 +83,7 @@ public sealed class BasicSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Patient : BasicSearchParam<Reference>() {
+  public data object Patient : SearchParam<Basic, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -97,7 +98,7 @@ public sealed class BasicSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Subject : BasicSearchParam<Reference>() {
+  public data object Subject : SearchParam<Basic, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -249,11 +250,5 @@ public sealed class BasicSearchParam<T> : SearchParam {
       )
 
     public override fun extract(resource: Basic): List<Reference> = listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the Basic resource type. */
-    public val ALL: List<BasicSearchParam<*>> =
-      listOf(Author, Code, Created, Identifier, Patient, Subject)
   }
 }

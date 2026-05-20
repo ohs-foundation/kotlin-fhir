@@ -28,11 +28,25 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Specimen] resource type. */
-public sealed class SpecimenSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Specimen): List<T>
+public object SpecimenSearchParam {
+  /** All search parameters for the Specimen resource type. */
+  public val ALL: List<SearchParam<Specimen, *>> =
+    listOf(
+      Accession,
+      Bodysite,
+      Collected,
+      Collector,
+      ContainerDevice,
+      Identifier,
+      Parent,
+      Patient,
+      Procedure,
+      Status,
+      Subject,
+      Type,
+    )
 
-  public data object Accession : SpecimenSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Accession : SearchParam<Specimen, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "accession"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +59,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
       listOfNotNull(resource.accessionIdentifier)
   }
 
-  public data object Bodysite : SpecimenSearchParam<Reference>() {
+  public data object Bodysite : SearchParam<Specimen, Reference> {
     public override val paramName: String = "bodysite"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -58,7 +72,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
       listOfNotNull(resource.collection?.bodySite?.reference)
   }
 
-  public data object Collected : SpecimenSearchParam<Any>() {
+  public data object Collected : SearchParam<Specimen, Any> {
     public override val paramName: String = "collected"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -70,7 +84,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
     public override fun extract(resource: Specimen): List<Any> = emptyList()
   }
 
-  public data object Collector : SpecimenSearchParam<Reference>() {
+  public data object Collector : SearchParam<Specimen, Reference> {
     public override val paramName: String = "collector"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -84,7 +98,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
       listOfNotNull(resource.collection?.collector)
   }
 
-  public data object ContainerDevice : SpecimenSearchParam<Reference>() {
+  public data object ContainerDevice : SearchParam<Specimen, Reference> {
     public override val paramName: String = "container-device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -99,7 +113,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
         .filter { it.reference?.value?.toString()?.contains("Device/") == true }
   }
 
-  public data object Identifier : SpecimenSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Specimen, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -112,7 +126,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Parent : SpecimenSearchParam<Reference>() {
+  public data object Parent : SearchParam<Specimen, Reference> {
     public override val paramName: String = "parent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -124,7 +138,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
     public override fun extract(resource: Specimen): List<Reference> = resource.parent
   }
 
-  public data object Patient : SpecimenSearchParam<Reference>() {
+  public data object Patient : SearchParam<Specimen, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -139,7 +153,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Procedure : SpecimenSearchParam<Reference>() {
+  public data object Procedure : SearchParam<Specimen, Reference> {
     public override val paramName: String = "procedure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -152,7 +166,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
       listOfNotNull(resource.collection?.procedure)
   }
 
-  public data object Status : SpecimenSearchParam<Any>() {
+  public data object Status : SearchParam<Specimen, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -164,7 +178,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
     public override fun extract(resource: Specimen): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object Subject : SpecimenSearchParam<Reference>() {
+  public data object Subject : SearchParam<Specimen, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -178,7 +192,7 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
       listOfNotNull(resource.subject)
   }
 
-  public data object Type : SpecimenSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<Specimen, CodeableConcept> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -189,24 +203,5 @@ public sealed class SpecimenSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Specimen): List<CodeableConcept> =
       listOfNotNull(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the Specimen resource type. */
-    public val ALL: List<SpecimenSearchParam<*>> =
-      listOf(
-        Accession,
-        Bodysite,
-        Collected,
-        Collector,
-        ContainerDevice,
-        Identifier,
-        Parent,
-        Patient,
-        Procedure,
-        Status,
-        Subject,
-        Type,
-      )
   }
 }

@@ -29,11 +29,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ImmunizationEvaluation] resource type. */
-public sealed class ImmunizationEvaluationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ImmunizationEvaluation): List<T>
+public object ImmunizationEvaluationSearchParam {
+  /** All search parameters for the ImmunizationEvaluation resource type. */
+  public val ALL: List<SearchParam<ImmunizationEvaluation, *>> =
+    listOf(Date, DoseStatus, Identifier, ImmunizationEvent, Patient, Status, TargetDisease)
 
-  public data object Date : ImmunizationEvaluationSearchParam<DateTime>() {
+  public data object Date : SearchParam<ImmunizationEvaluation, DateTime> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -46,7 +47,7 @@ public sealed class ImmunizationEvaluationSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object DoseStatus : ImmunizationEvaluationSearchParam<CodeableConcept>() {
+  public data object DoseStatus : SearchParam<ImmunizationEvaluation, CodeableConcept> {
     public override val paramName: String = "dose-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -60,7 +61,7 @@ public sealed class ImmunizationEvaluationSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ImmunizationEvaluationSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<ImmunizationEvaluation, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,7 +75,7 @@ public sealed class ImmunizationEvaluationSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object ImmunizationEvent : ImmunizationEvaluationSearchParam<Reference>() {
+  public data object ImmunizationEvent : SearchParam<ImmunizationEvaluation, Reference> {
     public override val paramName: String = "immunization-event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -87,7 +88,7 @@ public sealed class ImmunizationEvaluationSearchParam<T> : SearchParam {
       listOf(resource.immunizationEvent)
   }
 
-  public data object Patient : ImmunizationEvaluationSearchParam<Reference>() {
+  public data object Patient : SearchParam<ImmunizationEvaluation, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -100,7 +101,7 @@ public sealed class ImmunizationEvaluationSearchParam<T> : SearchParam {
       listOf(resource.patient)
   }
 
-  public data object Status : ImmunizationEvaluationSearchParam<Any>() {
+  public data object Status : SearchParam<ImmunizationEvaluation, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -113,7 +114,7 @@ public sealed class ImmunizationEvaluationSearchParam<T> : SearchParam {
       listOf(resource.status)
   }
 
-  public data object TargetDisease : ImmunizationEvaluationSearchParam<CodeableConcept>() {
+  public data object TargetDisease : SearchParam<ImmunizationEvaluation, CodeableConcept> {
     public override val paramName: String = "target-disease"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -124,11 +125,5 @@ public sealed class ImmunizationEvaluationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ImmunizationEvaluation): List<CodeableConcept> =
       listOf(resource.targetDisease)
-  }
-
-  public companion object {
-    /** All search parameters for the ImmunizationEvaluation resource type. */
-    public val ALL: List<ImmunizationEvaluationSearchParam<*>> =
-      listOf(Date, DoseStatus, Identifier, ImmunizationEvent, Patient, Status, TargetDisease)
   }
 }

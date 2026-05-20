@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [RegulatedAuthorization] resource type. */
-public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: RegulatedAuthorization): List<T>
+public object RegulatedAuthorizationSearchParam {
+  /** All search parameters for the RegulatedAuthorization resource type. */
+  public val ALL: List<SearchParam<RegulatedAuthorization, *>> =
+    listOf(Case, CaseType, Holder, Identifier, Region, Status, Subject)
 
-  public data object Case : RegulatedAuthorizationSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Case : SearchParam<RegulatedAuthorization, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "case"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +46,7 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = listOfNotNull(resource.case?.identifier)
   }
 
-  public data object CaseType : RegulatedAuthorizationSearchParam<CodeableConcept>() {
+  public data object CaseType : SearchParam<RegulatedAuthorization, CodeableConcept> {
     public override val paramName: String = "case-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +59,7 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.case?.type)
   }
 
-  public data object Holder : RegulatedAuthorizationSearchParam<Reference>() {
+  public data object Holder : SearchParam<RegulatedAuthorization, Reference> {
     public override val paramName: String = "holder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -72,7 +73,7 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    RegulatedAuthorizationSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<RegulatedAuthorization, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,7 +87,7 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Region : RegulatedAuthorizationSearchParam<CodeableConcept>() {
+  public data object Region : SearchParam<RegulatedAuthorization, CodeableConcept> {
     public override val paramName: String = "region"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -99,7 +100,7 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
       resource.region
   }
 
-  public data object Status : RegulatedAuthorizationSearchParam<CodeableConcept>() {
+  public data object Status : SearchParam<RegulatedAuthorization, CodeableConcept> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -112,7 +113,7 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.status)
   }
 
-  public data object Subject : RegulatedAuthorizationSearchParam<Reference>() {
+  public data object Subject : SearchParam<RegulatedAuthorization, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -138,11 +139,5 @@ public sealed class RegulatedAuthorizationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: RegulatedAuthorization): List<Reference> =
       resource.subject
-  }
-
-  public companion object {
-    /** All search parameters for the RegulatedAuthorization resource type. */
-    public val ALL: List<RegulatedAuthorizationSearchParam<*>> =
-      listOf(Case, CaseType, Holder, Identifier, Region, Status, Subject)
   }
 }

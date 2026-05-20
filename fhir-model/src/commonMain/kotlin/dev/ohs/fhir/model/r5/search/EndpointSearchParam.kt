@@ -29,11 +29,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Endpoint] resource type. */
-public sealed class EndpointSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Endpoint): List<T>
+public object EndpointSearchParam {
+  /** All search parameters for the Endpoint resource type. */
+  public val ALL: List<SearchParam<Endpoint, *>> =
+    listOf(ConnectionType, Identifier, Name, Organization, PayloadType, Status)
 
-  public data object ConnectionType : EndpointSearchParam<CodeableConcept>() {
+  public data object ConnectionType : SearchParam<Endpoint, CodeableConcept> {
     public override val paramName: KotlinString = "connection-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +46,7 @@ public sealed class EndpointSearchParam<T> : SearchParam {
     public override fun extract(resource: Endpoint): List<CodeableConcept> = resource.connectionType
   }
 
-  public data object Identifier : EndpointSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Endpoint, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +59,7 @@ public sealed class EndpointSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Name : EndpointSearchParam<R5String>() {
+  public data object Name : SearchParam<Endpoint, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -70,7 +71,7 @@ public sealed class EndpointSearchParam<T> : SearchParam {
     public override fun extract(resource: Endpoint): List<R5String> = listOfNotNull(resource.name)
   }
 
-  public data object Organization : EndpointSearchParam<Reference>() {
+  public data object Organization : SearchParam<Endpoint, Reference> {
     public override val paramName: KotlinString = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -83,7 +84,7 @@ public sealed class EndpointSearchParam<T> : SearchParam {
       listOfNotNull(resource.managingOrganization)
   }
 
-  public data object PayloadType : EndpointSearchParam<CodeableConcept>() {
+  public data object PayloadType : SearchParam<Endpoint, CodeableConcept> {
     public override val paramName: KotlinString = "payload-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -96,7 +97,7 @@ public sealed class EndpointSearchParam<T> : SearchParam {
       resource.payload.flatMap { it.type }
   }
 
-  public data object Status : EndpointSearchParam<Any>() {
+  public data object Status : SearchParam<Endpoint, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -106,11 +107,5 @@ public sealed class EndpointSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: Endpoint): List<Any> = listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the Endpoint resource type. */
-    public val ALL: List<EndpointSearchParam<*>> =
-      listOf(ConnectionType, Identifier, Name, Organization, PayloadType, Status)
   }
 }

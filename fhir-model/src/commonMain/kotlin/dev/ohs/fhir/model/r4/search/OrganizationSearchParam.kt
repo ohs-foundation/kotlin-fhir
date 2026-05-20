@@ -30,11 +30,26 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Organization] resource type. */
-public sealed class OrganizationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Organization): List<T>
+public object OrganizationSearchParam {
+  /** All search parameters for the Organization resource type. */
+  public val ALL: List<SearchParam<Organization, *>> =
+    listOf(
+      Active,
+      Address,
+      AddressCity,
+      AddressCountry,
+      AddressPostalcode,
+      AddressState,
+      AddressUse,
+      Endpoint,
+      Identifier,
+      Name,
+      Partof,
+      Phonetic,
+      Type,
+    )
 
-  public data object Active : OrganizationSearchParam<Boolean>() {
+  public data object Active : SearchParam<Organization, Boolean> {
     public override val paramName: KotlinString = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -47,7 +62,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.active)
   }
 
-  public data object Address : OrganizationSearchParam<dev.ohs.fhir.model.r4.Address>() {
+  public data object Address : SearchParam<Organization, dev.ohs.fhir.model.r4.Address> {
     public override val paramName: KotlinString = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -60,7 +75,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       resource.address
   }
 
-  public data object AddressCity : OrganizationSearchParam<R4String>() {
+  public data object AddressCity : SearchParam<Organization, R4String> {
     public override val paramName: KotlinString = "address-city"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -73,7 +88,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.city }
   }
 
-  public data object AddressCountry : OrganizationSearchParam<R4String>() {
+  public data object AddressCountry : SearchParam<Organization, R4String> {
     public override val paramName: KotlinString = "address-country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -86,7 +101,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.country }
   }
 
-  public data object AddressPostalcode : OrganizationSearchParam<R4String>() {
+  public data object AddressPostalcode : SearchParam<Organization, R4String> {
     public override val paramName: KotlinString = "address-postalcode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -99,7 +114,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.postalCode }
   }
 
-  public data object AddressState : OrganizationSearchParam<R4String>() {
+  public data object AddressState : SearchParam<Organization, R4String> {
     public override val paramName: KotlinString = "address-state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -112,7 +127,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.state }
   }
 
-  public data object AddressUse : OrganizationSearchParam<Any>() {
+  public data object AddressUse : SearchParam<Organization, Any> {
     public override val paramName: KotlinString = "address-use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -125,7 +140,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       resource.address.mapNotNull { it.use }
   }
 
-  public data object Endpoint : OrganizationSearchParam<Reference>() {
+  public data object Endpoint : SearchParam<Organization, Reference> {
     public override val paramName: KotlinString = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -137,7 +152,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
     public override fun extract(resource: Organization): List<Reference> = resource.endpoint
   }
 
-  public data object Identifier : OrganizationSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<Organization, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -150,7 +165,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Name : OrganizationSearchParam<R4String>() {
+  public data object Name : SearchParam<Organization, R4String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -163,7 +178,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Partof : OrganizationSearchParam<Reference>() {
+  public data object Partof : SearchParam<Organization, Reference> {
     public override val paramName: KotlinString = "partof"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -176,7 +191,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.partOf)
   }
 
-  public data object Phonetic : OrganizationSearchParam<R4String>() {
+  public data object Phonetic : SearchParam<Organization, R4String> {
     public override val paramName: KotlinString = "phonetic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -189,7 +204,7 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Type : OrganizationSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<Organization, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -199,25 +214,5 @@ public sealed class OrganizationSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: Organization): List<CodeableConcept> = resource.type
-  }
-
-  public companion object {
-    /** All search parameters for the Organization resource type. */
-    public val ALL: List<OrganizationSearchParam<*>> =
-      listOf(
-        Active,
-        Address,
-        AddressCity,
-        AddressCountry,
-        AddressPostalcode,
-        AddressState,
-        AddressUse,
-        Endpoint,
-        Identifier,
-        Name,
-        Partof,
-        Phonetic,
-        Type,
-      )
   }
 }

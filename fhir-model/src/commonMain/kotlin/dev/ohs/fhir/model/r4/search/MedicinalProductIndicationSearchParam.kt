@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductIndication] resource type. */
-public sealed class MedicinalProductIndicationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MedicinalProductIndication): List<T>
+public object MedicinalProductIndicationSearchParam {
+  /** All search parameters for the MedicinalProductIndication resource type. */
+  public val ALL: List<SearchParam<MedicinalProductIndication, *>> = listOf(Subject)
 
-  public data object Subject : MedicinalProductIndicationSearchParam<Reference>() {
+  public data object Subject : SearchParam<MedicinalProductIndication, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -41,10 +41,5 @@ public sealed class MedicinalProductIndicationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MedicinalProductIndication): List<Reference> =
       resource.subject
-  }
-
-  public companion object {
-    /** All search parameters for the MedicinalProductIndication resource type. */
-    public val ALL: List<MedicinalProductIndicationSearchParam<*>> = listOf(Subject)
   }
 }

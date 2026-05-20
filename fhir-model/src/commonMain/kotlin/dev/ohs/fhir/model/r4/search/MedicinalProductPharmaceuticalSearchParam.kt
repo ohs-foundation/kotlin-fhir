@@ -26,12 +26,13 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductPharmaceutical] resource type. */
-public sealed class MedicinalProductPharmaceuticalSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MedicinalProductPharmaceutical): List<T>
+public object MedicinalProductPharmaceuticalSearchParam {
+  /** All search parameters for the MedicinalProductPharmaceutical resource type. */
+  public val ALL: List<SearchParam<MedicinalProductPharmaceutical, *>> =
+    listOf(Identifier, Route, TargetSpecies)
 
   public data object Identifier :
-    MedicinalProductPharmaceuticalSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<MedicinalProductPharmaceutical, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +46,7 @@ public sealed class MedicinalProductPharmaceuticalSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Route : MedicinalProductPharmaceuticalSearchParam<CodeableConcept>() {
+  public data object Route : SearchParam<MedicinalProductPharmaceutical, CodeableConcept> {
     public override val paramName: String = "route"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -59,7 +60,7 @@ public sealed class MedicinalProductPharmaceuticalSearchParam<T> : SearchParam {
       resource.routeOfAdministration.map { it.code }
   }
 
-  public data object TargetSpecies : MedicinalProductPharmaceuticalSearchParam<CodeableConcept>() {
+  public data object TargetSpecies : SearchParam<MedicinalProductPharmaceutical, CodeableConcept> {
     public override val paramName: String = "target-species"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -71,11 +72,5 @@ public sealed class MedicinalProductPharmaceuticalSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MedicinalProductPharmaceutical): List<CodeableConcept> =
       resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }
-  }
-
-  public companion object {
-    /** All search parameters for the MedicinalProductPharmaceutical resource type. */
-    public val ALL: List<MedicinalProductPharmaceuticalSearchParam<*>> =
-      listOf(Identifier, Route, TargetSpecies)
   }
 }

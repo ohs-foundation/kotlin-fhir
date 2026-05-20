@@ -34,11 +34,30 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Requirements] resource type. */
-public sealed class RequirementsSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Requirements): List<T>
+public object RequirementsSearchParam {
+  /** All search parameters for the Requirements resource type. */
+  public val ALL: List<SearchParam<Requirements, *>> =
+    listOf(
+      Actor,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      DerivedFrom,
+      Description,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Publisher,
+      Status,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Actor : RequirementsSearchParam<Canonical>() {
+  public data object Actor : SearchParam<Requirements, Canonical> {
     public override val paramName: KotlinString = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -50,7 +69,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
     public override fun extract(resource: Requirements): List<Canonical> = resource.actor
   }
 
-  public data object Context : RequirementsSearchParam<Any>() {
+  public data object Context : SearchParam<Requirements, Any> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -63,7 +82,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
     public override fun extract(resource: Requirements): List<Any> = emptyList()
   }
 
-  public data object ContextQuantity : RequirementsSearchParam<Any>() {
+  public data object ContextQuantity : SearchParam<Requirements, Any> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -76,7 +95,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
     public override fun extract(resource: Requirements): List<Any> = emptyList()
   }
 
-  public data object ContextType : RequirementsSearchParam<Coding>() {
+  public data object ContextType : SearchParam<Requirements, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -89,7 +108,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : RequirementsSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<Requirements, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -101,7 +120,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
     public override fun extract(resource: Requirements): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : RequirementsSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<Requirements, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -113,7 +132,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
     public override fun extract(resource: Requirements): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : RequirementsSearchParam<DateTime>() {
+  public data object Date : SearchParam<Requirements, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -126,7 +145,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object DerivedFrom : RequirementsSearchParam<Canonical>() {
+  public data object DerivedFrom : SearchParam<Requirements, Canonical> {
     public override val paramName: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -138,7 +157,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
     public override fun extract(resource: Requirements): List<Canonical> = resource.derivedFrom
   }
 
-  public data object Description : RequirementsSearchParam<Markdown>() {
+  public data object Description : SearchParam<Requirements, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -151,7 +170,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Identifier : RequirementsSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Requirements, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -164,7 +183,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Jurisdiction : RequirementsSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<Requirements, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -177,7 +196,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Name : RequirementsSearchParam<R5String>() {
+  public data object Name : SearchParam<Requirements, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -190,7 +209,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Publisher : RequirementsSearchParam<R5String>() {
+  public data object Publisher : SearchParam<Requirements, R5String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -203,7 +222,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : RequirementsSearchParam<Any>() {
+  public data object Status : SearchParam<Requirements, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -215,7 +234,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
     public override fun extract(resource: Requirements): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : RequirementsSearchParam<R5String>() {
+  public data object Title : SearchParam<Requirements, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -228,7 +247,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : RequirementsSearchParam<Uri>() {
+  public data object Url : SearchParam<Requirements, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -240,7 +259,7 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
     public override fun extract(resource: Requirements): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : RequirementsSearchParam<R5String>() {
+  public data object Version : SearchParam<Requirements, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -251,29 +270,5 @@ public sealed class RequirementsSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Requirements): List<R5String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the Requirements resource type. */
-    public val ALL: List<RequirementsSearchParam<*>> =
-      listOf(
-        Actor,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        DerivedFrom,
-        Description,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Publisher,
-        Status,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

@@ -30,11 +30,26 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Provenance] resource type. */
-public sealed class ProvenanceSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Provenance): List<T>
+public object ProvenanceSearchParam {
+  /** All search parameters for the Provenance resource type. */
+  public val ALL: List<SearchParam<Provenance, *>> =
+    listOf(
+      Activity,
+      Agent,
+      AgentRole,
+      AgentType,
+      BasedOn,
+      Encounter,
+      Entity,
+      Location,
+      Patient,
+      Recorded,
+      SignatureType,
+      Target,
+      When,
+    )
 
-  public data object Activity : ProvenanceSearchParam<CodeableConcept>() {
+  public data object Activity : SearchParam<Provenance, CodeableConcept> {
     public override val paramName: String = "activity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -47,7 +62,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       listOfNotNull(resource.activity)
   }
 
-  public data object Agent : ProvenanceSearchParam<Reference>() {
+  public data object Agent : SearchParam<Provenance, Reference> {
     public override val paramName: String = "agent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -69,7 +84,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       resource.agent.map { it.who }
   }
 
-  public data object AgentRole : ProvenanceSearchParam<CodeableConcept>() {
+  public data object AgentRole : SearchParam<Provenance, CodeableConcept> {
     public override val paramName: String = "agent-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -82,7 +97,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       resource.agent.flatMap { it.role }
   }
 
-  public data object AgentType : ProvenanceSearchParam<CodeableConcept>() {
+  public data object AgentType : SearchParam<Provenance, CodeableConcept> {
     public override val paramName: String = "agent-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -95,7 +110,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       resource.agent.mapNotNull { it.type }
   }
 
-  public data object BasedOn : ProvenanceSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<Provenance, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -116,7 +131,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
     public override fun extract(resource: Provenance): List<Reference> = resource.basedOn
   }
 
-  public data object Encounter : ProvenanceSearchParam<Reference>() {
+  public data object Encounter : SearchParam<Provenance, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -129,7 +144,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Entity : ProvenanceSearchParam<Reference>() {
+  public data object Entity : SearchParam<Provenance, Reference> {
     public override val paramName: String = "entity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -302,7 +317,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       resource.entity.map { it.what }
   }
 
-  public data object Location : ProvenanceSearchParam<Reference>() {
+  public data object Location : SearchParam<Provenance, Reference> {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -315,7 +330,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       listOfNotNull(resource.location)
   }
 
-  public data object Patient : ProvenanceSearchParam<Reference>() {
+  public data object Patient : SearchParam<Provenance, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -328,7 +343,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       listOfNotNull(resource.patient)
   }
 
-  public data object Recorded : ProvenanceSearchParam<Instant>() {
+  public data object Recorded : SearchParam<Provenance, Instant> {
     public override val paramName: String = "recorded"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -341,7 +356,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       listOfNotNull(resource.recorded)
   }
 
-  public data object SignatureType : ProvenanceSearchParam<Coding>() {
+  public data object SignatureType : SearchParam<Provenance, Coding> {
     public override val paramName: String = "signature-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -354,7 +369,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
       resource.signature.flatMap { it.type }
   }
 
-  public data object Target : ProvenanceSearchParam<Reference>() {
+  public data object Target : SearchParam<Provenance, Reference> {
     public override val paramName: String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -526,7 +541,7 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
     public override fun extract(resource: Provenance): List<Reference> = resource.target
   }
 
-  public data object When : ProvenanceSearchParam<Any>() {
+  public data object When : SearchParam<Provenance, Any> {
     public override val paramName: String = "when"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -536,25 +551,5 @@ public sealed class ProvenanceSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: Provenance): List<Any> = emptyList()
-  }
-
-  public companion object {
-    /** All search parameters for the Provenance resource type. */
-    public val ALL: List<ProvenanceSearchParam<*>> =
-      listOf(
-        Activity,
-        Agent,
-        AgentRole,
-        AgentType,
-        BasedOn,
-        Encounter,
-        Entity,
-        Location,
-        Patient,
-        Recorded,
-        SignatureType,
-        Target,
-        When,
-      )
   }
 }

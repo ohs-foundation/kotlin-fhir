@@ -28,11 +28,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [CoverageEligibilityRequest] resource type. */
-public sealed class CoverageEligibilityRequestSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: CoverageEligibilityRequest): List<T>
+public object CoverageEligibilityRequestSearchParam {
+  /** All search parameters for the CoverageEligibilityRequest resource type. */
+  public val ALL: List<SearchParam<CoverageEligibilityRequest, *>> =
+    listOf(Created, Enterer, Facility, Identifier, Patient, Provider, Status)
 
-  public data object Created : CoverageEligibilityRequestSearchParam<DateTime>() {
+  public data object Created : SearchParam<CoverageEligibilityRequest, DateTime> {
     public override val paramName: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -45,7 +46,7 @@ public sealed class CoverageEligibilityRequestSearchParam<T> : SearchParam {
       listOf(resource.created)
   }
 
-  public data object Enterer : CoverageEligibilityRequestSearchParam<Reference>() {
+  public data object Enterer : SearchParam<CoverageEligibilityRequest, Reference> {
     public override val paramName: String = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -58,7 +59,7 @@ public sealed class CoverageEligibilityRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.enterer)
   }
 
-  public data object Facility : CoverageEligibilityRequestSearchParam<Reference>() {
+  public data object Facility : SearchParam<CoverageEligibilityRequest, Reference> {
     public override val paramName: String = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -72,7 +73,7 @@ public sealed class CoverageEligibilityRequestSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    CoverageEligibilityRequestSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<CoverageEligibilityRequest, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,7 +87,7 @@ public sealed class CoverageEligibilityRequestSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Patient : CoverageEligibilityRequestSearchParam<Reference>() {
+  public data object Patient : SearchParam<CoverageEligibilityRequest, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -99,7 +100,7 @@ public sealed class CoverageEligibilityRequestSearchParam<T> : SearchParam {
       listOf(resource.patient)
   }
 
-  public data object Provider : CoverageEligibilityRequestSearchParam<Reference>() {
+  public data object Provider : SearchParam<CoverageEligibilityRequest, Reference> {
     public override val paramName: String = "provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -113,7 +114,7 @@ public sealed class CoverageEligibilityRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.provider)
   }
 
-  public data object Status : CoverageEligibilityRequestSearchParam<Any>() {
+  public data object Status : SearchParam<CoverageEligibilityRequest, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -124,11 +125,5 @@ public sealed class CoverageEligibilityRequestSearchParam<T> : SearchParam {
 
     public override fun extract(resource: CoverageEligibilityRequest): List<Any> =
       listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the CoverageEligibilityRequest resource type. */
-    public val ALL: List<CoverageEligibilityRequestSearchParam<*>> =
-      listOf(Created, Enterer, Facility, Identifier, Patient, Provider, Status)
   }
 }

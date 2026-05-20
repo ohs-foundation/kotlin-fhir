@@ -35,11 +35,29 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Citation] resource type. */
-public sealed class CitationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Citation): List<T>
+public object CitationSearchParam {
+  /** All search parameters for the Citation resource type. */
+  public val ALL: List<SearchParam<Citation, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Effective,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Publisher,
+      Status,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Context : CitationSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<Citation, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -52,7 +70,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : CitationSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<Citation, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -65,7 +83,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : CitationSearchParam<Coding>() {
+  public data object ContextType : SearchParam<Citation, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -78,7 +96,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : CitationSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<Citation, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -90,7 +108,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
     public override fun extract(resource: Citation): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : CitationSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<Citation, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -102,7 +120,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
     public override fun extract(resource: Citation): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : CitationSearchParam<DateTime>() {
+  public data object Date : SearchParam<Citation, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -114,7 +132,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
     public override fun extract(resource: Citation): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object Description : CitationSearchParam<Markdown>() {
+  public data object Description : SearchParam<Citation, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -127,7 +145,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Effective : CitationSearchParam<Period>() {
+  public data object Effective : SearchParam<Citation, Period> {
     public override val paramName: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -140,7 +158,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
       listOfNotNull(resource.effectivePeriod)
   }
 
-  public data object Identifier : CitationSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<Citation, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -153,7 +171,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Jurisdiction : CitationSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<Citation, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -165,7 +183,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
     public override fun extract(resource: Citation): List<CodeableConcept> = resource.jurisdiction
   }
 
-  public data object Name : CitationSearchParam<R4bString>() {
+  public data object Name : SearchParam<Citation, R4bString> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -177,7 +195,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
     public override fun extract(resource: Citation): List<R4bString> = listOfNotNull(resource.name)
   }
 
-  public data object Publisher : CitationSearchParam<R4bString>() {
+  public data object Publisher : SearchParam<Citation, R4bString> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -190,7 +208,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : CitationSearchParam<Any>() {
+  public data object Status : SearchParam<Citation, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -202,7 +220,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
     public override fun extract(resource: Citation): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : CitationSearchParam<R4bString>() {
+  public data object Title : SearchParam<Citation, R4bString> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -214,7 +232,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
     public override fun extract(resource: Citation): List<R4bString> = listOfNotNull(resource.title)
   }
 
-  public data object Url : CitationSearchParam<Uri>() {
+  public data object Url : SearchParam<Citation, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -226,7 +244,7 @@ public sealed class CitationSearchParam<T> : SearchParam {
     public override fun extract(resource: Citation): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : CitationSearchParam<R4bString>() {
+  public data object Version : SearchParam<Citation, R4bString> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -237,28 +255,5 @@ public sealed class CitationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Citation): List<R4bString> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the Citation resource type. */
-    public val ALL: List<CitationSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Effective,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Publisher,
-        Status,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

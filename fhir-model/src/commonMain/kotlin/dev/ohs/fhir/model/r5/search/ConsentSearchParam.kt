@@ -31,11 +31,31 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Consent] resource type. */
-public sealed class ConsentSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Consent): List<T>
+public object ConsentSearchParam {
+  /** All search parameters for the Consent resource type. */
+  public val ALL: List<SearchParam<Consent, *>> =
+    listOf(
+      Action,
+      Actor,
+      Category,
+      Controller,
+      Data,
+      Date,
+      Grantee,
+      Identifier,
+      Manager,
+      Patient,
+      Period,
+      Purpose,
+      SecurityLabel,
+      SourceReference,
+      Status,
+      Subject,
+      Verified,
+      VerifiedDate,
+    )
 
-  public data object Action : ConsentSearchParam<CodeableConcept>() {
+  public data object Action : SearchParam<Consent, CodeableConcept> {
     public override val paramName: String = "action"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -48,7 +68,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       resource.provision.flatMap { it.action }
   }
 
-  public data object Actor : ConsentSearchParam<Reference>() {
+  public data object Actor : SearchParam<Consent, Reference> {
     public override val paramName: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -71,7 +91,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       resource.provision.flatMap { it.actor }.mapNotNull { it.reference }
   }
 
-  public data object Category : ConsentSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<Consent, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -83,7 +103,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
     public override fun extract(resource: Consent): List<CodeableConcept> = resource.category
   }
 
-  public data object Controller : ConsentSearchParam<Reference>() {
+  public data object Controller : SearchParam<Consent, Reference> {
     public override val paramName: String = "controller"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -96,7 +116,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
     public override fun extract(resource: Consent): List<Reference> = resource.controller
   }
 
-  public data object Data : ConsentSearchParam<Reference>() {
+  public data object Data : SearchParam<Consent, Reference> {
     public override val paramName: String = "data"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -269,7 +289,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       resource.provision.flatMap { it.data }.map { it.reference }
   }
 
-  public data object Date : ConsentSearchParam<dev.ohs.fhir.model.r5.Date>() {
+  public data object Date : SearchParam<Consent, dev.ohs.fhir.model.r5.Date> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -282,7 +302,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Grantee : ConsentSearchParam<Reference>() {
+  public data object Grantee : SearchParam<Consent, Reference> {
     public override val paramName: String = "grantee"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -303,7 +323,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
     public override fun extract(resource: Consent): List<Reference> = resource.grantee
   }
 
-  public data object Identifier : ConsentSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Consent, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -316,7 +336,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Manager : ConsentSearchParam<Reference>() {
+  public data object Manager : SearchParam<Consent, Reference> {
     public override val paramName: String = "manager"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -329,7 +349,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
     public override fun extract(resource: Consent): List<Reference> = resource.manager
   }
 
-  public data object Patient : ConsentSearchParam<Reference>() {
+  public data object Patient : SearchParam<Consent, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -344,7 +364,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Period : ConsentSearchParam<dev.ohs.fhir.model.r5.Period>() {
+  public data object Period : SearchParam<Consent, dev.ohs.fhir.model.r5.Period> {
     public override val paramName: String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -357,7 +377,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       resource.provision.mapNotNull { it.period }
   }
 
-  public data object Purpose : ConsentSearchParam<Coding>() {
+  public data object Purpose : SearchParam<Consent, Coding> {
     public override val paramName: String = "purpose"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -370,7 +390,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       resource.provision.flatMap { it.purpose }
   }
 
-  public data object SecurityLabel : ConsentSearchParam<Coding>() {
+  public data object SecurityLabel : SearchParam<Consent, Coding> {
     public override val paramName: String = "security-label"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -383,7 +403,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       resource.provision.flatMap { it.securityLabel }
   }
 
-  public data object SourceReference : ConsentSearchParam<Reference>() {
+  public data object SourceReference : SearchParam<Consent, Reference> {
     public override val paramName: String = "source-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -396,7 +416,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
     public override fun extract(resource: Consent): List<Reference> = resource.sourceReference
   }
 
-  public data object Status : ConsentSearchParam<Any>() {
+  public data object Status : SearchParam<Consent, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -408,7 +428,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
     public override fun extract(resource: Consent): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : ConsentSearchParam<Reference>() {
+  public data object Subject : SearchParam<Consent, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -421,7 +441,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       listOfNotNull(resource.subject)
   }
 
-  public data object Verified : ConsentSearchParam<Boolean>() {
+  public data object Verified : SearchParam<Consent, Boolean> {
     public override val paramName: String = "verified"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -434,7 +454,7 @@ public sealed class ConsentSearchParam<T> : SearchParam {
       resource.verification.map { it.verified }
   }
 
-  public data object VerifiedDate : ConsentSearchParam<DateTime>() {
+  public data object VerifiedDate : SearchParam<Consent, DateTime> {
     public override val paramName: String = "verified-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -445,30 +465,5 @@ public sealed class ConsentSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Consent): List<DateTime> =
       resource.verification.flatMap { it.verificationDate }
-  }
-
-  public companion object {
-    /** All search parameters for the Consent resource type. */
-    public val ALL: List<ConsentSearchParam<*>> =
-      listOf(
-        Action,
-        Actor,
-        Category,
-        Controller,
-        Data,
-        Date,
-        Grantee,
-        Identifier,
-        Manager,
-        Patient,
-        Period,
-        Purpose,
-        SecurityLabel,
-        SourceReference,
-        Status,
-        Subject,
-        Verified,
-        VerifiedDate,
-      )
   }
 }

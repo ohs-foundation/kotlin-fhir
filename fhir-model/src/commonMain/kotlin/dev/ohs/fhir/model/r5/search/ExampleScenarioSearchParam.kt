@@ -32,11 +32,26 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ExampleScenario] resource type. */
-public sealed class ExampleScenarioSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ExampleScenario): List<T>
+public object ExampleScenarioSearchParam {
+  /** All search parameters for the ExampleScenario resource type. */
+  public val ALL: List<SearchParam<ExampleScenario, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Publisher,
+      Status,
+      Url,
+      Version,
+    )
 
-  public data object Context : ExampleScenarioSearchParam<Any>() {
+  public data object Context : SearchParam<ExampleScenario, Any> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -49,7 +64,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
     public override fun extract(resource: ExampleScenario): List<Any> = emptyList()
   }
 
-  public data object ContextQuantity : ExampleScenarioSearchParam<Any>() {
+  public data object ContextQuantity : SearchParam<ExampleScenario, Any> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -62,7 +77,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
     public override fun extract(resource: ExampleScenario): List<Any> = emptyList()
   }
 
-  public data object ContextType : ExampleScenarioSearchParam<Coding>() {
+  public data object ContextType : SearchParam<ExampleScenario, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -75,7 +90,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ExampleScenarioSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<ExampleScenario, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -87,7 +102,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
     public override fun extract(resource: ExampleScenario): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : ExampleScenarioSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<ExampleScenario, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -99,7 +114,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
     public override fun extract(resource: ExampleScenario): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : ExampleScenarioSearchParam<DateTime>() {
+  public data object Date : SearchParam<ExampleScenario, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -112,7 +127,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Identifier : ExampleScenarioSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<ExampleScenario, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -125,7 +140,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Jurisdiction : ExampleScenarioSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<ExampleScenario, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -138,7 +153,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Name : ExampleScenarioSearchParam<R5String>() {
+  public data object Name : SearchParam<ExampleScenario, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -151,7 +166,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Publisher : ExampleScenarioSearchParam<R5String>() {
+  public data object Publisher : SearchParam<ExampleScenario, R5String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -164,7 +179,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : ExampleScenarioSearchParam<Any>() {
+  public data object Status : SearchParam<ExampleScenario, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -176,7 +191,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
     public override fun extract(resource: ExampleScenario): List<Any> = listOf(resource.status)
   }
 
-  public data object Url : ExampleScenarioSearchParam<Uri>() {
+  public data object Url : SearchParam<ExampleScenario, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -188,7 +203,7 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
     public override fun extract(resource: ExampleScenario): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : ExampleScenarioSearchParam<R5String>() {
+  public data object Version : SearchParam<ExampleScenario, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -199,25 +214,5 @@ public sealed class ExampleScenarioSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ExampleScenario): List<R5String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the ExampleScenario resource type. */
-    public val ALL: List<ExampleScenarioSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Publisher,
-        Status,
-        Url,
-        Version,
-      )
   }
 }

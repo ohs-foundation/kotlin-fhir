@@ -34,11 +34,28 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ChargeItemDefinition] resource type. */
-public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ChargeItemDefinition): List<T>
+public object ChargeItemDefinitionSearchParam {
+  /** All search parameters for the ChargeItemDefinition resource type. */
+  public val ALL: List<SearchParam<ChargeItemDefinition, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Effective,
+      Identifier,
+      Jurisdiction,
+      Publisher,
+      Status,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Context : ChargeItemDefinitionSearchParam<Any>() {
+  public data object Context : SearchParam<ChargeItemDefinition, Any> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -51,7 +68,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
   }
 
-  public data object ContextQuantity : ChargeItemDefinitionSearchParam<Any>() {
+  public data object ContextQuantity : SearchParam<ChargeItemDefinition, Any> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -64,7 +81,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
   }
 
-  public data object ContextType : ChargeItemDefinitionSearchParam<Coding>() {
+  public data object ContextType : SearchParam<ChargeItemDefinition, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -77,7 +94,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ChargeItemDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<ChargeItemDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -90,7 +107,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object ContextTypeValue : ChargeItemDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<ChargeItemDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -103,7 +120,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object Date : ChargeItemDefinitionSearchParam<DateTime>() {
+  public data object Date : SearchParam<ChargeItemDefinition, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -116,7 +133,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Description : ChargeItemDefinitionSearchParam<Markdown>() {
+  public data object Description : SearchParam<ChargeItemDefinition, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -129,7 +146,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Effective : ChargeItemDefinitionSearchParam<Period>() {
+  public data object Effective : SearchParam<ChargeItemDefinition, Period> {
     public override val paramName: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -144,7 +161,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ChargeItemDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<ChargeItemDefinition, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -158,7 +175,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Jurisdiction : ChargeItemDefinitionSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<ChargeItemDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -171,7 +188,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Publisher : ChargeItemDefinitionSearchParam<R5String>() {
+  public data object Publisher : SearchParam<ChargeItemDefinition, R5String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -184,7 +201,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : ChargeItemDefinitionSearchParam<Any>() {
+  public data object Status : SearchParam<ChargeItemDefinition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -196,7 +213,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ChargeItemDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : ChargeItemDefinitionSearchParam<R5String>() {
+  public data object Title : SearchParam<ChargeItemDefinition, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -209,7 +226,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : ChargeItemDefinitionSearchParam<Uri>() {
+  public data object Url : SearchParam<ChargeItemDefinition, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -222,7 +239,7 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.url)
   }
 
-  public data object Version : ChargeItemDefinitionSearchParam<R5String>() {
+  public data object Version : SearchParam<ChargeItemDefinition, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -233,27 +250,5 @@ public sealed class ChargeItemDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ChargeItemDefinition): List<R5String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the ChargeItemDefinition resource type. */
-    public val ALL: List<ChargeItemDefinitionSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Effective,
-        Identifier,
-        Jurisdiction,
-        Publisher,
-        Status,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

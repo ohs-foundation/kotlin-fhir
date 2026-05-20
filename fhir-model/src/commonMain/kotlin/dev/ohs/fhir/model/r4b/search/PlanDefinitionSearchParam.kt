@@ -36,11 +36,37 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [PlanDefinition] resource type. */
-public sealed class PlanDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: PlanDefinition): List<T>
+public object PlanDefinitionSearchParam {
+  /** All search parameters for the PlanDefinition resource type. */
+  public val ALL: List<SearchParam<PlanDefinition, *>> =
+    listOf(
+      ComposedOf,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Definition,
+      DependsOn,
+      DerivedFrom,
+      Description,
+      Effective,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Predecessor,
+      Publisher,
+      Status,
+      Successor,
+      Title,
+      Topic,
+      Type,
+      Url,
+      Version,
+    )
 
-  public data object ComposedOf : PlanDefinitionSearchParam<Canonical>() {
+  public data object ComposedOf : SearchParam<PlanDefinition, Canonical> {
     public override val paramName: KotlinString = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -198,7 +224,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Context : PlanDefinitionSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<PlanDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -212,7 +238,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : PlanDefinitionSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<PlanDefinition, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -225,7 +251,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : PlanDefinitionSearchParam<Coding>() {
+  public data object ContextType : SearchParam<PlanDefinition, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -238,7 +264,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : PlanDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<PlanDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -250,7 +276,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: PlanDefinition): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : PlanDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<PlanDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -262,7 +288,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: PlanDefinition): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : PlanDefinitionSearchParam<DateTime>() {
+  public data object Date : SearchParam<PlanDefinition, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -275,7 +301,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Definition : PlanDefinitionSearchParam<PlanDefinition.Action.Definition>() {
+  public data object Definition : SearchParam<PlanDefinition, PlanDefinition.Action.Definition> {
     public override val paramName: KotlinString = "definition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -289,7 +315,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       resource.action.mapNotNull { it.definition }
   }
 
-  public data object DependsOn : PlanDefinitionSearchParam<Canonical>() {
+  public data object DependsOn : SearchParam<PlanDefinition, Canonical> {
     public override val paramName: KotlinString = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -447,7 +473,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object DerivedFrom : PlanDefinitionSearchParam<Canonical>() {
+  public data object DerivedFrom : SearchParam<PlanDefinition, Canonical> {
     public override val paramName: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -605,7 +631,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Description : PlanDefinitionSearchParam<Markdown>() {
+  public data object Description : SearchParam<PlanDefinition, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -618,7 +644,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Effective : PlanDefinitionSearchParam<Period>() {
+  public data object Effective : SearchParam<PlanDefinition, Period> {
     public override val paramName: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -631,7 +657,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.effectivePeriod)
   }
 
-  public data object Identifier : PlanDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<PlanDefinition, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -644,7 +670,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Jurisdiction : PlanDefinitionSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<PlanDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -657,7 +683,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Name : PlanDefinitionSearchParam<R4bString>() {
+  public data object Name : SearchParam<PlanDefinition, R4bString> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -670,7 +696,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Predecessor : PlanDefinitionSearchParam<Canonical>() {
+  public data object Predecessor : SearchParam<PlanDefinition, Canonical> {
     public override val paramName: KotlinString = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -828,7 +854,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Publisher : PlanDefinitionSearchParam<R4bString>() {
+  public data object Publisher : SearchParam<PlanDefinition, R4bString> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -841,7 +867,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : PlanDefinitionSearchParam<Any>() {
+  public data object Status : SearchParam<PlanDefinition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -853,7 +879,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: PlanDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Successor : PlanDefinitionSearchParam<Canonical>() {
+  public data object Successor : SearchParam<PlanDefinition, Canonical> {
     public override val paramName: KotlinString = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -1011,7 +1037,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Title : PlanDefinitionSearchParam<R4bString>() {
+  public data object Title : SearchParam<PlanDefinition, R4bString> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -1024,7 +1050,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Topic : PlanDefinitionSearchParam<CodeableConcept>() {
+  public data object Topic : SearchParam<PlanDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1036,7 +1062,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: PlanDefinition): List<CodeableConcept> = resource.topic
   }
 
-  public data object Type : PlanDefinitionSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<PlanDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1049,7 +1075,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.type)
   }
 
-  public data object Url : PlanDefinitionSearchParam<Uri>() {
+  public data object Url : SearchParam<PlanDefinition, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -1061,7 +1087,7 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: PlanDefinition): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : PlanDefinitionSearchParam<R4bString>() {
+  public data object Version : SearchParam<PlanDefinition, R4bString> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1072,36 +1098,5 @@ public sealed class PlanDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: PlanDefinition): List<R4bString> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the PlanDefinition resource type. */
-    public val ALL: List<PlanDefinitionSearchParam<*>> =
-      listOf(
-        ComposedOf,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Definition,
-        DependsOn,
-        DerivedFrom,
-        Description,
-        Effective,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Predecessor,
-        Publisher,
-        Status,
-        Successor,
-        Title,
-        Topic,
-        Type,
-        Url,
-        Version,
-      )
   }
 }

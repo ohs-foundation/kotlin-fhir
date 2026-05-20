@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Permission] resource type. */
-public sealed class PermissionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Permission): List<T>
+public object PermissionSearchParam {
+  /** All search parameters for the Permission resource type. */
+  public val ALL: List<SearchParam<Permission, *>> = listOf(Status)
 
-  public data object Status : PermissionSearchParam<Any>() {
+  public data object Status : SearchParam<Permission, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -40,10 +40,5 @@ public sealed class PermissionSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: Permission): List<Any> = listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the Permission resource type. */
-    public val ALL: List<PermissionSearchParam<*>> = listOf(Status)
   }
 }

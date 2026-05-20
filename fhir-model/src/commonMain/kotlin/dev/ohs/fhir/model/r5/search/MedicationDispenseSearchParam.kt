@@ -29,11 +29,30 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicationDispense] resource type. */
-public sealed class MedicationDispenseSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MedicationDispense): List<T>
+public object MedicationDispenseSearchParam {
+  /** All search parameters for the MedicationDispense resource type. */
+  public val ALL: List<SearchParam<MedicationDispense, *>> =
+    listOf(
+      Code,
+      Destination,
+      Encounter,
+      Identifier,
+      Location,
+      Medication,
+      Patient,
+      Performer,
+      Prescription,
+      Receiver,
+      Recorded,
+      Responsibleparty,
+      Status,
+      Subject,
+      Type,
+      Whenhandedover,
+      Whenprepared,
+    )
 
-  public data object Code : MedicationDispenseSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<MedicationDispense, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -46,7 +65,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       listOfNotNull(resource.medication.concept)
   }
 
-  public data object Destination : MedicationDispenseSearchParam<Reference>() {
+  public data object Destination : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "destination"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -59,7 +78,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       listOfNotNull(resource.destination)
   }
 
-  public data object Encounter : MedicationDispenseSearchParam<Reference>() {
+  public data object Encounter : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -73,7 +92,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    MedicationDispenseSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<MedicationDispense, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -87,7 +106,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Location : MedicationDispenseSearchParam<Reference>() {
+  public data object Location : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -100,7 +119,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       listOfNotNull(resource.location)
   }
 
-  public data object Medication : MedicationDispenseSearchParam<Reference>() {
+  public data object Medication : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "medication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -113,7 +132,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       listOfNotNull(resource.medication.reference)
   }
 
-  public data object Patient : MedicationDispenseSearchParam<Reference>() {
+  public data object Patient : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -129,7 +148,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Performer : MedicationDispenseSearchParam<Reference>() {
+  public data object Performer : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -151,7 +170,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       resource.performer.map { it.actor }
   }
 
-  public data object Prescription : MedicationDispenseSearchParam<Reference>() {
+  public data object Prescription : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "prescription"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -164,7 +183,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       resource.authorizingPrescription
   }
 
-  public data object Receiver : MedicationDispenseSearchParam<Reference>() {
+  public data object Receiver : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "receiver"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -177,7 +196,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
     public override fun extract(resource: MedicationDispense): List<Reference> = resource.receiver
   }
 
-  public data object Recorded : MedicationDispenseSearchParam<DateTime>() {
+  public data object Recorded : SearchParam<MedicationDispense, DateTime> {
     public override val paramName: String = "recorded"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -190,7 +209,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       listOfNotNull(resource.recorded)
   }
 
-  public data object Responsibleparty : MedicationDispenseSearchParam<Reference>() {
+  public data object Responsibleparty : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "responsibleparty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -204,7 +223,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       listOfNotNull(resource.substitution?.responsibleParty)
   }
 
-  public data object Status : MedicationDispenseSearchParam<Any>() {
+  public data object Status : SearchParam<MedicationDispense, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -216,7 +235,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
     public override fun extract(resource: MedicationDispense): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : MedicationDispenseSearchParam<Reference>() {
+  public data object Subject : SearchParam<MedicationDispense, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -229,7 +248,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       listOf(resource.subject)
   }
 
-  public data object Type : MedicationDispenseSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<MedicationDispense, CodeableConcept> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -242,7 +261,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       listOfNotNull(resource.type)
   }
 
-  public data object Whenhandedover : MedicationDispenseSearchParam<DateTime>() {
+  public data object Whenhandedover : SearchParam<MedicationDispense, DateTime> {
     public override val paramName: String = "whenhandedover"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -255,7 +274,7 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
       listOfNotNull(resource.whenHandedOver)
   }
 
-  public data object Whenprepared : MedicationDispenseSearchParam<DateTime>() {
+  public data object Whenprepared : SearchParam<MedicationDispense, DateTime> {
     public override val paramName: String = "whenprepared"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -266,29 +285,5 @@ public sealed class MedicationDispenseSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MedicationDispense): List<DateTime> =
       listOfNotNull(resource.whenPrepared)
-  }
-
-  public companion object {
-    /** All search parameters for the MedicationDispense resource type. */
-    public val ALL: List<MedicationDispenseSearchParam<*>> =
-      listOf(
-        Code,
-        Destination,
-        Encounter,
-        Identifier,
-        Location,
-        Medication,
-        Patient,
-        Performer,
-        Prescription,
-        Receiver,
-        Recorded,
-        Responsibleparty,
-        Status,
-        Subject,
-        Type,
-        Whenhandedover,
-        Whenprepared,
-      )
   }
 }

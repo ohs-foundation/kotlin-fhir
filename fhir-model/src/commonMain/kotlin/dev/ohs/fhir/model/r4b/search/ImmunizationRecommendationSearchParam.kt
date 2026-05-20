@@ -28,11 +28,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ImmunizationRecommendation] resource type. */
-public sealed class ImmunizationRecommendationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ImmunizationRecommendation): List<T>
+public object ImmunizationRecommendationSearchParam {
+  /** All search parameters for the ImmunizationRecommendation resource type. */
+  public val ALL: List<SearchParam<ImmunizationRecommendation, *>> =
+    listOf(Date, Identifier, Information, Patient, Status, Support, TargetDisease, VaccineType)
 
-  public data object Date : ImmunizationRecommendationSearchParam<DateTime>() {
+  public data object Date : SearchParam<ImmunizationRecommendation, DateTime> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -46,7 +47,7 @@ public sealed class ImmunizationRecommendationSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ImmunizationRecommendationSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<ImmunizationRecommendation, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -60,7 +61,7 @@ public sealed class ImmunizationRecommendationSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Information : ImmunizationRecommendationSearchParam<Reference>() {
+  public data object Information : SearchParam<ImmunizationRecommendation, Reference> {
     public override val paramName: String = "information"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -216,7 +217,7 @@ public sealed class ImmunizationRecommendationSearchParam<T> : SearchParam {
       resource.recommendation.flatMap { it.supportingPatientInformation }
   }
 
-  public data object Patient : ImmunizationRecommendationSearchParam<Reference>() {
+  public data object Patient : SearchParam<ImmunizationRecommendation, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -229,7 +230,7 @@ public sealed class ImmunizationRecommendationSearchParam<T> : SearchParam {
       listOf(resource.patient)
   }
 
-  public data object Status : ImmunizationRecommendationSearchParam<CodeableConcept>() {
+  public data object Status : SearchParam<ImmunizationRecommendation, CodeableConcept> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -243,7 +244,7 @@ public sealed class ImmunizationRecommendationSearchParam<T> : SearchParam {
       resource.recommendation.map { it.forecastStatus }
   }
 
-  public data object Support : ImmunizationRecommendationSearchParam<Reference>() {
+  public data object Support : SearchParam<ImmunizationRecommendation, Reference> {
     public override val paramName: String = "support"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -257,7 +258,7 @@ public sealed class ImmunizationRecommendationSearchParam<T> : SearchParam {
       resource.recommendation.flatMap { it.supportingImmunization }
   }
 
-  public data object TargetDisease : ImmunizationRecommendationSearchParam<CodeableConcept>() {
+  public data object TargetDisease : SearchParam<ImmunizationRecommendation, CodeableConcept> {
     public override val paramName: String = "target-disease"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -271,7 +272,7 @@ public sealed class ImmunizationRecommendationSearchParam<T> : SearchParam {
       resource.recommendation.mapNotNull { it.targetDisease }
   }
 
-  public data object VaccineType : ImmunizationRecommendationSearchParam<CodeableConcept>() {
+  public data object VaccineType : SearchParam<ImmunizationRecommendation, CodeableConcept> {
     public override val paramName: String = "vaccine-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -282,11 +283,5 @@ public sealed class ImmunizationRecommendationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ImmunizationRecommendation): List<CodeableConcept> =
       resource.recommendation.flatMap { it.vaccineCode }
-  }
-
-  public companion object {
-    /** All search parameters for the ImmunizationRecommendation resource type. */
-    public val ALL: List<ImmunizationRecommendationSearchParam<*>> =
-      listOf(Date, Identifier, Information, Patient, Status, Support, TargetDisease, VaccineType)
   }
 }

@@ -28,11 +28,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [BodyStructure] resource type. */
-public sealed class BodyStructureSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: BodyStructure): List<T>
+public object BodyStructureSearchParam {
+  /** All search parameters for the BodyStructure resource type. */
+  public val ALL: List<SearchParam<BodyStructure, *>> =
+    listOf(Excluded_structure, Identifier, Included_structure, Morphology, Patient)
 
-  public data object Excluded_structure : BodyStructureSearchParam<Any>() {
+  public data object Excluded_structure : SearchParam<BodyStructure, Any> {
     public override val paramName: String = "excluded_structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +45,7 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
     public override fun extract(resource: BodyStructure): List<Any> = emptyList()
   }
 
-  public data object Identifier : BodyStructureSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<BodyStructure, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -57,7 +58,7 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Included_structure : BodyStructureSearchParam<CodeableConcept>() {
+  public data object Included_structure : SearchParam<BodyStructure, CodeableConcept> {
     public override val paramName: String = "included_structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -70,7 +71,7 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
       resource.includedStructure.map { it.structure }
   }
 
-  public data object Morphology : BodyStructureSearchParam<CodeableConcept>() {
+  public data object Morphology : SearchParam<BodyStructure, CodeableConcept> {
     public override val paramName: String = "morphology"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -83,7 +84,7 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
       listOfNotNull(resource.morphology)
   }
 
-  public data object Patient : BodyStructureSearchParam<Reference>() {
+  public data object Patient : SearchParam<BodyStructure, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -93,11 +94,5 @@ public sealed class BodyStructureSearchParam<T> : SearchParam {
     public override val target: List<String> = listOf("Patient")
 
     public override fun extract(resource: BodyStructure): List<Reference> = listOf(resource.patient)
-  }
-
-  public companion object {
-    /** All search parameters for the BodyStructure resource type. */
-    public val ALL: List<BodyStructureSearchParam<*>> =
-      listOf(Excluded_structure, Identifier, Included_structure, Morphology, Patient)
   }
 }

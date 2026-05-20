@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicinalProductAuthorization] resource type. */
-public sealed class MedicinalProductAuthorizationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MedicinalProductAuthorization): List<T>
+public object MedicinalProductAuthorizationSearchParam {
+  /** All search parameters for the MedicinalProductAuthorization resource type. */
+  public val ALL: List<SearchParam<MedicinalProductAuthorization, *>> =
+    listOf(Country, Holder, Identifier, Status, Subject)
 
-  public data object Country : MedicinalProductAuthorizationSearchParam<CodeableConcept>() {
+  public data object Country : SearchParam<MedicinalProductAuthorization, CodeableConcept> {
     public override val paramName: String = "country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +45,7 @@ public sealed class MedicinalProductAuthorizationSearchParam<T> : SearchParam {
       resource.country
   }
 
-  public data object Holder : MedicinalProductAuthorizationSearchParam<Reference>() {
+  public data object Holder : SearchParam<MedicinalProductAuthorization, Reference> {
     public override val paramName: String = "holder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -58,7 +59,7 @@ public sealed class MedicinalProductAuthorizationSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    MedicinalProductAuthorizationSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<MedicinalProductAuthorization, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -72,7 +73,7 @@ public sealed class MedicinalProductAuthorizationSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Status : MedicinalProductAuthorizationSearchParam<CodeableConcept>() {
+  public data object Status : SearchParam<MedicinalProductAuthorization, CodeableConcept> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -85,7 +86,7 @@ public sealed class MedicinalProductAuthorizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.status)
   }
 
-  public data object Subject : MedicinalProductAuthorizationSearchParam<Reference>() {
+  public data object Subject : SearchParam<MedicinalProductAuthorization, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -97,11 +98,5 @@ public sealed class MedicinalProductAuthorizationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MedicinalProductAuthorization): List<Reference> =
       listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the MedicinalProductAuthorization resource type. */
-    public val ALL: List<MedicinalProductAuthorizationSearchParam<*>> =
-      listOf(Country, Holder, Identifier, Status, Subject)
   }
 }

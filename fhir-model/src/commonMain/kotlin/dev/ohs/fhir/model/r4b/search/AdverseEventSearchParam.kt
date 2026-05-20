@@ -29,11 +29,25 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [AdverseEvent] resource type. */
-public sealed class AdverseEventSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: AdverseEvent): List<T>
+public object AdverseEventSearchParam {
+  /** All search parameters for the AdverseEvent resource type. */
+  public val ALL: List<SearchParam<AdverseEvent, *>> =
+    listOf(
+      Actuality,
+      Category,
+      Date,
+      Event,
+      Location,
+      Recorder,
+      Resultingcondition,
+      Seriousness,
+      Severity,
+      Study,
+      Subject,
+      Substance,
+    )
 
-  public data object Actuality : AdverseEventSearchParam<Any>() {
+  public data object Actuality : SearchParam<AdverseEvent, Any> {
     public override val paramName: String = "actuality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +59,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
     public override fun extract(resource: AdverseEvent): List<Any> = listOf(resource.actuality)
   }
 
-  public data object Category : AdverseEventSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<AdverseEvent, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -57,7 +71,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
     public override fun extract(resource: AdverseEvent): List<CodeableConcept> = resource.category
   }
 
-  public data object Date : AdverseEventSearchParam<DateTime>() {
+  public data object Date : SearchParam<AdverseEvent, DateTime> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -70,7 +84,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Event : AdverseEventSearchParam<CodeableConcept>() {
+  public data object Event : SearchParam<AdverseEvent, CodeableConcept> {
     public override val paramName: String = "event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -83,7 +97,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
       listOfNotNull(resource.event)
   }
 
-  public data object Location : AdverseEventSearchParam<Reference>() {
+  public data object Location : SearchParam<AdverseEvent, Reference> {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -96,7 +110,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
       listOfNotNull(resource.location)
   }
 
-  public data object Recorder : AdverseEventSearchParam<Reference>() {
+  public data object Recorder : SearchParam<AdverseEvent, Reference> {
     public override val paramName: String = "recorder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -110,7 +124,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
       listOfNotNull(resource.recorder)
   }
 
-  public data object Resultingcondition : AdverseEventSearchParam<Reference>() {
+  public data object Resultingcondition : SearchParam<AdverseEvent, Reference> {
     public override val paramName: String = "resultingcondition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -123,7 +137,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
       resource.resultingCondition
   }
 
-  public data object Seriousness : AdverseEventSearchParam<CodeableConcept>() {
+  public data object Seriousness : SearchParam<AdverseEvent, CodeableConcept> {
     public override val paramName: String = "seriousness"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -136,7 +150,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
       listOfNotNull(resource.seriousness)
   }
 
-  public data object Severity : AdverseEventSearchParam<CodeableConcept>() {
+  public data object Severity : SearchParam<AdverseEvent, CodeableConcept> {
     public override val paramName: String = "severity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -149,7 +163,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
       listOfNotNull(resource.severity)
   }
 
-  public data object Study : AdverseEventSearchParam<Reference>() {
+  public data object Study : SearchParam<AdverseEvent, Reference> {
     public override val paramName: String = "study"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -161,7 +175,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
     public override fun extract(resource: AdverseEvent): List<Reference> = resource.study
   }
 
-  public data object Subject : AdverseEventSearchParam<Reference>() {
+  public data object Subject : SearchParam<AdverseEvent, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -174,7 +188,7 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
     public override fun extract(resource: AdverseEvent): List<Reference> = listOf(resource.subject)
   }
 
-  public data object Substance : AdverseEventSearchParam<Reference>() {
+  public data object Substance : SearchParam<AdverseEvent, Reference> {
     public override val paramName: String = "substance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -194,24 +208,5 @@ public sealed class AdverseEventSearchParam<T> : SearchParam {
 
     public override fun extract(resource: AdverseEvent): List<Reference> =
       resource.suspectEntity.map { it.instance }
-  }
-
-  public companion object {
-    /** All search parameters for the AdverseEvent resource type. */
-    public val ALL: List<AdverseEventSearchParam<*>> =
-      listOf(
-        Actuality,
-        Category,
-        Date,
-        Event,
-        Location,
-        Recorder,
-        Resultingcondition,
-        Seriousness,
-        Severity,
-        Study,
-        Subject,
-        Substance,
-      )
   }
 }

@@ -31,11 +31,22 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [FamilyMemberHistory] resource type. */
-public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: FamilyMemberHistory): List<T>
+public object FamilyMemberHistorySearchParam {
+  /** All search parameters for the FamilyMemberHistory resource type. */
+  public val ALL: List<SearchParam<FamilyMemberHistory, *>> =
+    listOf(
+      Code,
+      Date,
+      Identifier,
+      InstantiatesCanonical,
+      InstantiatesUri,
+      Patient,
+      Relationship,
+      Sex,
+      Status,
+    )
 
-  public data object Code : FamilyMemberHistorySearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<FamilyMemberHistory, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -48,7 +59,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
       resource.condition.map { it.code }
   }
 
-  public data object Date : FamilyMemberHistorySearchParam<DateTime>() {
+  public data object Date : SearchParam<FamilyMemberHistory, DateTime> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -62,7 +73,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    FamilyMemberHistorySearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<FamilyMemberHistory, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -76,7 +87,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object InstantiatesCanonical : FamilyMemberHistorySearchParam<Canonical>() {
+  public data object InstantiatesCanonical : SearchParam<FamilyMemberHistory, Canonical> {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -96,7 +107,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
       resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : FamilyMemberHistorySearchParam<Uri>() {
+  public data object InstantiatesUri : SearchParam<FamilyMemberHistory, Uri> {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -108,7 +119,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
     public override fun extract(resource: FamilyMemberHistory): List<Uri> = resource.instantiatesUri
   }
 
-  public data object Patient : FamilyMemberHistorySearchParam<Reference>() {
+  public data object Patient : SearchParam<FamilyMemberHistory, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -121,7 +132,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
       listOf(resource.patient)
   }
 
-  public data object Relationship : FamilyMemberHistorySearchParam<CodeableConcept>() {
+  public data object Relationship : SearchParam<FamilyMemberHistory, CodeableConcept> {
     public override val paramName: String = "relationship"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -134,7 +145,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
       listOf(resource.relationship)
   }
 
-  public data object Sex : FamilyMemberHistorySearchParam<CodeableConcept>() {
+  public data object Sex : SearchParam<FamilyMemberHistory, CodeableConcept> {
     public override val paramName: String = "sex"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -147,7 +158,7 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
       listOfNotNull(resource.sex)
   }
 
-  public data object Status : FamilyMemberHistorySearchParam<Any>() {
+  public data object Status : SearchParam<FamilyMemberHistory, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -157,21 +168,5 @@ public sealed class FamilyMemberHistorySearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: FamilyMemberHistory): List<Any> = listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the FamilyMemberHistory resource type. */
-    public val ALL: List<FamilyMemberHistorySearchParam<*>> =
-      listOf(
-        Code,
-        Date,
-        Identifier,
-        InstantiatesCanonical,
-        InstantiatesUri,
-        Patient,
-        Relationship,
-        Sex,
-        Status,
-      )
   }
 }

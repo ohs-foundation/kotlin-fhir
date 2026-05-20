@@ -29,11 +29,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [CareTeam] resource type. */
-public sealed class CareTeamSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: CareTeam): List<T>
+public object CareTeamSearchParam {
+  /** All search parameters for the CareTeam resource type. */
+  public val ALL: List<SearchParam<CareTeam, *>> =
+    listOf(Category, Date, Encounter, Identifier, Participant, Patient, Status, Subject)
 
-  public data object Category : CareTeamSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<CareTeam, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +46,7 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
     public override fun extract(resource: CareTeam): List<CodeableConcept> = resource.category
   }
 
-  public data object Date : CareTeamSearchParam<Period>() {
+  public data object Date : SearchParam<CareTeam, Period> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -57,7 +58,7 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
     public override fun extract(resource: CareTeam): List<Period> = listOfNotNull(resource.period)
   }
 
-  public data object Encounter : CareTeamSearchParam<Reference>() {
+  public data object Encounter : SearchParam<CareTeam, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -70,7 +71,7 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : CareTeamSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<CareTeam, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -83,7 +84,7 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Participant : CareTeamSearchParam<Reference>() {
+  public data object Participant : SearchParam<CareTeam, Reference> {
     public override val paramName: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -104,7 +105,7 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
       resource.participant.mapNotNull { it.member }
   }
 
-  public data object Patient : CareTeamSearchParam<Reference>() {
+  public data object Patient : SearchParam<CareTeam, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -119,7 +120,7 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Status : CareTeamSearchParam<Any>() {
+  public data object Status : SearchParam<CareTeam, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -131,7 +132,7 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
     public override fun extract(resource: CareTeam): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object Subject : CareTeamSearchParam<Reference>() {
+  public data object Subject : SearchParam<CareTeam, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -142,11 +143,5 @@ public sealed class CareTeamSearchParam<T> : SearchParam {
 
     public override fun extract(resource: CareTeam): List<Reference> =
       listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the CareTeam resource type. */
-    public val ALL: List<CareTeamSearchParam<*>> =
-      listOf(Category, Date, Encounter, Identifier, Participant, Patient, Status, Subject)
   }
 }

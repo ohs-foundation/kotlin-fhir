@@ -29,11 +29,27 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [InsurancePlan] resource type. */
-public sealed class InsurancePlanSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: InsurancePlan): List<T>
+public object InsurancePlanSearchParam {
+  /** All search parameters for the InsurancePlan resource type. */
+  public val ALL: List<SearchParam<InsurancePlan, *>> =
+    listOf(
+      Address,
+      AddressCity,
+      AddressCountry,
+      AddressPostalcode,
+      AddressState,
+      AddressUse,
+      AdministeredBy,
+      Endpoint,
+      Identifier,
+      Name,
+      OwnedBy,
+      Phonetic,
+      Status,
+      Type,
+    )
 
-  public data object Address : InsurancePlanSearchParam<dev.ohs.fhir.model.r4b.Address>() {
+  public data object Address : SearchParam<InsurancePlan, dev.ohs.fhir.model.r4b.Address> {
     public override val paramName: KotlinString = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -46,7 +62,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       resource.contact.mapNotNull { it.address }
   }
 
-  public data object AddressCity : InsurancePlanSearchParam<R4bString>() {
+  public data object AddressCity : SearchParam<InsurancePlan, R4bString> {
     public override val paramName: KotlinString = "address-city"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -59,7 +75,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       resource.contact.mapNotNull { it.address }.mapNotNull { it.city }
   }
 
-  public data object AddressCountry : InsurancePlanSearchParam<R4bString>() {
+  public data object AddressCountry : SearchParam<InsurancePlan, R4bString> {
     public override val paramName: KotlinString = "address-country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -72,7 +88,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       resource.contact.mapNotNull { it.address }.mapNotNull { it.country }
   }
 
-  public data object AddressPostalcode : InsurancePlanSearchParam<R4bString>() {
+  public data object AddressPostalcode : SearchParam<InsurancePlan, R4bString> {
     public override val paramName: KotlinString = "address-postalcode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -85,7 +101,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       resource.contact.mapNotNull { it.address }.mapNotNull { it.postalCode }
   }
 
-  public data object AddressState : InsurancePlanSearchParam<R4bString>() {
+  public data object AddressState : SearchParam<InsurancePlan, R4bString> {
     public override val paramName: KotlinString = "address-state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -98,7 +114,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       resource.contact.mapNotNull { it.address }.mapNotNull { it.state }
   }
 
-  public data object AddressUse : InsurancePlanSearchParam<Any>() {
+  public data object AddressUse : SearchParam<InsurancePlan, Any> {
     public override val paramName: KotlinString = "address-use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -111,7 +127,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       resource.contact.mapNotNull { it.address }.mapNotNull { it.use }
   }
 
-  public data object AdministeredBy : InsurancePlanSearchParam<Reference>() {
+  public data object AdministeredBy : SearchParam<InsurancePlan, Reference> {
     public override val paramName: KotlinString = "administered-by"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -124,7 +140,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       listOfNotNull(resource.administeredBy)
   }
 
-  public data object Endpoint : InsurancePlanSearchParam<Reference>() {
+  public data object Endpoint : SearchParam<InsurancePlan, Reference> {
     public override val paramName: KotlinString = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -136,7 +152,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: InsurancePlan): List<Reference> = resource.endpoint
   }
 
-  public data object Identifier : InsurancePlanSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<InsurancePlan, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -149,7 +165,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Name : InsurancePlanSearchParam<Any>() {
+  public data object Name : SearchParam<InsurancePlan, Any> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -161,7 +177,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: InsurancePlan): List<Any> = emptyList()
   }
 
-  public data object OwnedBy : InsurancePlanSearchParam<Reference>() {
+  public data object OwnedBy : SearchParam<InsurancePlan, Reference> {
     public override val paramName: KotlinString = "owned-by"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -174,7 +190,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       listOfNotNull(resource.ownedBy)
   }
 
-  public data object Phonetic : InsurancePlanSearchParam<R4bString>() {
+  public data object Phonetic : SearchParam<InsurancePlan, R4bString> {
     public override val paramName: KotlinString = "phonetic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -187,7 +203,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Status : InsurancePlanSearchParam<Any>() {
+  public data object Status : SearchParam<InsurancePlan, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -199,7 +215,7 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: InsurancePlan): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object Type : InsurancePlanSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<InsurancePlan, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -209,26 +225,5 @@ public sealed class InsurancePlanSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<CodeableConcept> = resource.type
-  }
-
-  public companion object {
-    /** All search parameters for the InsurancePlan resource type. */
-    public val ALL: List<InsurancePlanSearchParam<*>> =
-      listOf(
-        Address,
-        AddressCity,
-        AddressCountry,
-        AddressPostalcode,
-        AddressState,
-        AddressUse,
-        AdministeredBy,
-        Endpoint,
-        Identifier,
-        Name,
-        OwnedBy,
-        Phonetic,
-        Status,
-        Type,
-      )
   }
 }

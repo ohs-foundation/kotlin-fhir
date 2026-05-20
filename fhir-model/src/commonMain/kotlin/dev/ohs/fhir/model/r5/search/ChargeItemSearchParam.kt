@@ -31,11 +31,31 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ChargeItem] resource type. */
-public sealed class ChargeItemSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ChargeItem): List<T>
+public object ChargeItemSearchParam {
+  /** All search parameters for the ChargeItem resource type. */
+  public val ALL: List<SearchParam<ChargeItem, *>> =
+    listOf(
+      Account,
+      Code,
+      Encounter,
+      EnteredDate,
+      Enterer,
+      FactorOverride,
+      Identifier,
+      Occurrence,
+      Patient,
+      PerformerActor,
+      PerformerFunction,
+      PerformingOrganization,
+      PriceOverride,
+      Quantity,
+      RequestingOrganization,
+      Service,
+      Status,
+      Subject,
+    )
 
-  public data object Account : ChargeItemSearchParam<Reference>() {
+  public data object Account : SearchParam<ChargeItem, Reference> {
     public override val paramName: String = "account"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -47,7 +67,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
     public override fun extract(resource: ChargeItem): List<Reference> = resource.account
   }
 
-  public data object Code : ChargeItemSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<ChargeItem, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -59,7 +79,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
     public override fun extract(resource: ChargeItem): List<CodeableConcept> = listOf(resource.code)
   }
 
-  public data object Encounter : ChargeItemSearchParam<Reference>() {
+  public data object Encounter : SearchParam<ChargeItem, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -72,7 +92,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object EnteredDate : ChargeItemSearchParam<DateTime>() {
+  public data object EnteredDate : SearchParam<ChargeItem, DateTime> {
     public override val paramName: String = "entered-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -85,7 +105,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       listOfNotNull(resource.enteredDate)
   }
 
-  public data object Enterer : ChargeItemSearchParam<Reference>() {
+  public data object Enterer : SearchParam<ChargeItem, Reference> {
     public override val paramName: String = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -106,7 +126,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       listOfNotNull(resource.enterer)
   }
 
-  public data object FactorOverride : ChargeItemSearchParam<Decimal>() {
+  public data object FactorOverride : SearchParam<ChargeItem, Decimal> {
     public override val paramName: String = "factor-override"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
@@ -119,7 +139,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       listOfNotNull(resource.totalPriceComponent?.factor)
   }
 
-  public data object Identifier : ChargeItemSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<ChargeItem, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -132,7 +152,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Occurrence : ChargeItemSearchParam<Any>() {
+  public data object Occurrence : SearchParam<ChargeItem, Any> {
     public override val paramName: String = "occurrence"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -144,7 +164,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
     public override fun extract(resource: ChargeItem): List<Any> = emptyList()
   }
 
-  public data object Patient : ChargeItemSearchParam<Reference>() {
+  public data object Patient : SearchParam<ChargeItem, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -159,7 +179,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       }
   }
 
-  public data object PerformerActor : ChargeItemSearchParam<Reference>() {
+  public data object PerformerActor : SearchParam<ChargeItem, Reference> {
     public override val paramName: String = "performer-actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -182,7 +202,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       resource.performer.map { it.actor }
   }
 
-  public data object PerformerFunction : ChargeItemSearchParam<CodeableConcept>() {
+  public data object PerformerFunction : SearchParam<ChargeItem, CodeableConcept> {
     public override val paramName: String = "performer-function"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -195,7 +215,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       resource.performer.mapNotNull { it.function }
   }
 
-  public data object PerformingOrganization : ChargeItemSearchParam<Reference>() {
+  public data object PerformingOrganization : SearchParam<ChargeItem, Reference> {
     public override val paramName: String = "performing-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -208,7 +228,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       listOfNotNull(resource.performingOrganization)
   }
 
-  public data object PriceOverride : ChargeItemSearchParam<Money>() {
+  public data object PriceOverride : SearchParam<ChargeItem, Money> {
     public override val paramName: String = "price-override"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -221,7 +241,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       listOfNotNull(resource.totalPriceComponent?.amount)
   }
 
-  public data object Quantity : ChargeItemSearchParam<dev.ohs.fhir.model.r5.Quantity>() {
+  public data object Quantity : SearchParam<ChargeItem, dev.ohs.fhir.model.r5.Quantity> {
     public override val paramName: String = "quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -234,7 +254,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       listOfNotNull(resource.quantity)
   }
 
-  public data object RequestingOrganization : ChargeItemSearchParam<Reference>() {
+  public data object RequestingOrganization : SearchParam<ChargeItem, Reference> {
     public override val paramName: String = "requesting-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -247,7 +267,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       listOfNotNull(resource.requestingOrganization)
   }
 
-  public data object Service : ChargeItemSearchParam<Reference>() {
+  public data object Service : SearchParam<ChargeItem, Reference> {
     public override val paramName: String = "service"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -272,7 +292,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
       resource.service.mapNotNull { it.reference }
   }
 
-  public data object Status : ChargeItemSearchParam<Any>() {
+  public data object Status : SearchParam<ChargeItem, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -284,7 +304,7 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
     public override fun extract(resource: ChargeItem): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : ChargeItemSearchParam<Reference>() {
+  public data object Subject : SearchParam<ChargeItem, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -294,30 +314,5 @@ public sealed class ChargeItemSearchParam<T> : SearchParam {
     public override val target: List<String> = listOf("Group", "Patient")
 
     public override fun extract(resource: ChargeItem): List<Reference> = listOf(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the ChargeItem resource type. */
-    public val ALL: List<ChargeItemSearchParam<*>> =
-      listOf(
-        Account,
-        Code,
-        Encounter,
-        EnteredDate,
-        Enterer,
-        FactorOverride,
-        Identifier,
-        Occurrence,
-        Patient,
-        PerformerActor,
-        PerformerFunction,
-        PerformingOrganization,
-        PriceOverride,
-        Quantity,
-        RequestingOrganization,
-        Service,
-        Status,
-        Subject,
-      )
   }
 }

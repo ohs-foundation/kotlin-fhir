@@ -29,11 +29,21 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Goal] resource type. */
-public sealed class GoalSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Goal): List<T>
+public object GoalSearchParam {
+  /** All search parameters for the Goal resource type. */
+  public val ALL: List<SearchParam<Goal, *>> =
+    listOf(
+      AchievementStatus,
+      Category,
+      Identifier,
+      LifecycleStatus,
+      Patient,
+      StartDate,
+      Subject,
+      TargetDate,
+    )
 
-  public data object AchievementStatus : GoalSearchParam<CodeableConcept>() {
+  public data object AchievementStatus : SearchParam<Goal, CodeableConcept> {
     public override val paramName: String = "achievement-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -46,7 +56,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
       listOfNotNull(resource.achievementStatus)
   }
 
-  public data object Category : GoalSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<Goal, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +68,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
     public override fun extract(resource: Goal): List<CodeableConcept> = resource.category
   }
 
-  public data object Identifier : GoalSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<Goal, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -71,7 +81,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object LifecycleStatus : GoalSearchParam<Any>() {
+  public data object LifecycleStatus : SearchParam<Goal, Any> {
     public override val paramName: String = "lifecycle-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -83,7 +93,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
     public override fun extract(resource: Goal): List<Any> = listOf(resource.lifecycleStatus)
   }
 
-  public data object Patient : GoalSearchParam<Reference>() {
+  public data object Patient : SearchParam<Goal, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,7 +108,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
       }
   }
 
-  public data object StartDate : GoalSearchParam<Date>() {
+  public data object StartDate : SearchParam<Goal, Date> {
     public override val paramName: String = "start-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -111,7 +121,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
       listOfNotNull((resource.start as? Goal.Start.Date)?.value)
   }
 
-  public data object Subject : GoalSearchParam<Reference>() {
+  public data object Subject : SearchParam<Goal, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -123,7 +133,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
     public override fun extract(resource: Goal): List<Reference> = listOf(resource.subject)
   }
 
-  public data object TargetDate : GoalSearchParam<Date>() {
+  public data object TargetDate : SearchParam<Goal, Date> {
     public override val paramName: String = "target-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -134,20 +144,5 @@ public sealed class GoalSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Goal): List<Date> =
       resource.target.mapNotNull { (it.due as? Goal.Target.Due.Date)?.value }
-  }
-
-  public companion object {
-    /** All search parameters for the Goal resource type. */
-    public val ALL: List<GoalSearchParam<*>> =
-      listOf(
-        AchievementStatus,
-        Category,
-        Identifier,
-        LifecycleStatus,
-        Patient,
-        StartDate,
-        Subject,
-        TargetDate,
-      )
   }
 }

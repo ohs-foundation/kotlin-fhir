@@ -31,11 +31,26 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DocumentManifest] resource type. */
-public sealed class DocumentManifestSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DocumentManifest): List<T>
+public object DocumentManifestSearchParam {
+  /** All search parameters for the DocumentManifest resource type. */
+  public val ALL: List<SearchParam<DocumentManifest, *>> =
+    listOf(
+      Author,
+      Created,
+      Description,
+      Identifier,
+      Item,
+      Patient,
+      Recipient,
+      RelatedId,
+      RelatedRef,
+      Source,
+      Status,
+      Subject,
+      Type,
+    )
 
-  public data object Author : DocumentManifestSearchParam<Reference>() {
+  public data object Author : SearchParam<DocumentManifest, Reference> {
     public override val paramName: KotlinString = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -55,7 +70,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentManifest): List<Reference> = resource.author
   }
 
-  public data object Created : DocumentManifestSearchParam<DateTime>() {
+  public data object Created : SearchParam<DocumentManifest, DateTime> {
     public override val paramName: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -68,7 +83,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
       listOfNotNull(resource.created)
   }
 
-  public data object Description : DocumentManifestSearchParam<R4bString>() {
+  public data object Description : SearchParam<DocumentManifest, R4bString> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -81,7 +96,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Identifier : DocumentManifestSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<DocumentManifest, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -95,7 +110,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = listOfNotNull(resource.masterIdentifier)
   }
 
-  public data object Item : DocumentManifestSearchParam<Reference>() {
+  public data object Item : SearchParam<DocumentManifest, Reference> {
     public override val paramName: KotlinString = "item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -249,7 +264,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentManifest): List<Reference> = resource.content
   }
 
-  public data object Patient : DocumentManifestSearchParam<Reference>() {
+  public data object Patient : SearchParam<DocumentManifest, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -265,7 +280,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Recipient : DocumentManifestSearchParam<Reference>() {
+  public data object Recipient : SearchParam<DocumentManifest, Reference> {
     public override val paramName: KotlinString = "recipient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -278,7 +293,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentManifest): List<Reference> = resource.recipient
   }
 
-  public data object RelatedId : DocumentManifestSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object RelatedId : SearchParam<DocumentManifest, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "related-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -292,7 +307,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.related.mapNotNull { it.identifier }
   }
 
-  public data object RelatedRef : DocumentManifestSearchParam<Reference>() {
+  public data object RelatedRef : SearchParam<DocumentManifest, Reference> {
     public override val paramName: KotlinString = "related-ref"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -447,7 +462,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
       resource.related.mapNotNull { it.ref }
   }
 
-  public data object Source : DocumentManifestSearchParam<Uri>() {
+  public data object Source : SearchParam<DocumentManifest, Uri> {
     public override val paramName: KotlinString = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -460,7 +475,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
       listOfNotNull(resource.source)
   }
 
-  public data object Status : DocumentManifestSearchParam<Any>() {
+  public data object Status : SearchParam<DocumentManifest, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -472,7 +487,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
     public override fun extract(resource: DocumentManifest): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : DocumentManifestSearchParam<Reference>() {
+  public data object Subject : SearchParam<DocumentManifest, Reference> {
     public override val paramName: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -486,7 +501,7 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
       listOfNotNull(resource.subject)
   }
 
-  public data object Type : DocumentManifestSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<DocumentManifest, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -497,25 +512,5 @@ public sealed class DocumentManifestSearchParam<T> : SearchParam {
 
     public override fun extract(resource: DocumentManifest): List<CodeableConcept> =
       listOfNotNull(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the DocumentManifest resource type. */
-    public val ALL: List<DocumentManifestSearchParam<*>> =
-      listOf(
-        Author,
-        Created,
-        Description,
-        Identifier,
-        Item,
-        Patient,
-        Recipient,
-        RelatedId,
-        RelatedRef,
-        Source,
-        Status,
-        Subject,
-        Type,
-      )
   }
 }

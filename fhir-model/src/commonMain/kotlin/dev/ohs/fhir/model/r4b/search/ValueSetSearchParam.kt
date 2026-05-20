@@ -34,11 +34,31 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ValueSet] resource type. */
-public sealed class ValueSetSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ValueSet): List<T>
+public object ValueSetSearchParam {
+  /** All search parameters for the ValueSet resource type. */
+  public val ALL: List<SearchParam<ValueSet, *>> =
+    listOf(
+      Code,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Expansion,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Publisher,
+      Reference,
+      Status,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Code : ValueSetSearchParam<Any>() {
+  public data object Code : SearchParam<ValueSet, Any> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -51,7 +71,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
       (resource.expansion?.contains ?: emptyList()).mapNotNull { it.code }
   }
 
-  public data object Context : ValueSetSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<ValueSet, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -64,7 +84,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : ValueSetSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<ValueSet, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -77,7 +97,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : ValueSetSearchParam<Coding>() {
+  public data object ContextType : SearchParam<ValueSet, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -90,7 +110,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ValueSetSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<ValueSet, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -102,7 +122,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
     public override fun extract(resource: ValueSet): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : ValueSetSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<ValueSet, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -114,7 +134,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
     public override fun extract(resource: ValueSet): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : ValueSetSearchParam<DateTime>() {
+  public data object Date : SearchParam<ValueSet, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -126,7 +146,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
     public override fun extract(resource: ValueSet): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object Description : ValueSetSearchParam<Markdown>() {
+  public data object Description : SearchParam<ValueSet, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -139,7 +159,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Expansion : ValueSetSearchParam<Uri>() {
+  public data object Expansion : SearchParam<ValueSet, Uri> {
     public override val paramName: KotlinString = "expansion"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -152,7 +172,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
       listOfNotNull(resource.expansion?.identifier)
   }
 
-  public data object Identifier : ValueSetSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<ValueSet, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -165,7 +185,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Jurisdiction : ValueSetSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<ValueSet, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -177,7 +197,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
     public override fun extract(resource: ValueSet): List<CodeableConcept> = resource.jurisdiction
   }
 
-  public data object Name : ValueSetSearchParam<R4bString>() {
+  public data object Name : SearchParam<ValueSet, R4bString> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -189,7 +209,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
     public override fun extract(resource: ValueSet): List<R4bString> = listOfNotNull(resource.name)
   }
 
-  public data object Publisher : ValueSetSearchParam<R4bString>() {
+  public data object Publisher : SearchParam<ValueSet, R4bString> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -202,7 +222,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Reference : ValueSetSearchParam<Uri>() {
+  public data object Reference : SearchParam<ValueSet, Uri> {
     public override val paramName: KotlinString = "reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -215,7 +235,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
       (resource.compose?.include ?: emptyList()).mapNotNull { it.system }
   }
 
-  public data object Status : ValueSetSearchParam<Any>() {
+  public data object Status : SearchParam<ValueSet, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -227,7 +247,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
     public override fun extract(resource: ValueSet): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : ValueSetSearchParam<R4bString>() {
+  public data object Title : SearchParam<ValueSet, R4bString> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -239,7 +259,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
     public override fun extract(resource: ValueSet): List<R4bString> = listOfNotNull(resource.title)
   }
 
-  public data object Url : ValueSetSearchParam<Uri>() {
+  public data object Url : SearchParam<ValueSet, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -251,7 +271,7 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
     public override fun extract(resource: ValueSet): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : ValueSetSearchParam<R4bString>() {
+  public data object Version : SearchParam<ValueSet, R4bString> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -262,30 +282,5 @@ public sealed class ValueSetSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ValueSet): List<R4bString> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the ValueSet resource type. */
-    public val ALL: List<ValueSetSearchParam<*>> =
-      listOf(
-        Code,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Expansion,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Publisher,
-        Reference,
-        Status,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

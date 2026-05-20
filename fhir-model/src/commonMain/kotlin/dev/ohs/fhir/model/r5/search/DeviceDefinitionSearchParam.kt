@@ -28,11 +28,20 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DeviceDefinition] resource type. */
-public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DeviceDefinition): List<T>
+public object DeviceDefinitionSearchParam {
+  /** All search parameters for the DeviceDefinition resource type. */
+  public val ALL: List<SearchParam<DeviceDefinition, *>> =
+    listOf(
+      DeviceName,
+      Identifier,
+      Manufacturer,
+      Organization,
+      Specification,
+      SpecificationVersion,
+      Type,
+    )
 
-  public data object DeviceName : DeviceDefinitionSearchParam<R5String>() {
+  public data object DeviceName : SearchParam<DeviceDefinition, R5String> {
     public override val paramName: KotlinString = "device-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -45,7 +54,7 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
       resource.deviceName.map { it.name }
   }
 
-  public data object Identifier : DeviceDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<DeviceDefinition, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -59,7 +68,7 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Manufacturer : DeviceDefinitionSearchParam<Reference>() {
+  public data object Manufacturer : SearchParam<DeviceDefinition, Reference> {
     public override val paramName: KotlinString = "manufacturer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -72,7 +81,7 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.manufacturer)
   }
 
-  public data object Organization : DeviceDefinitionSearchParam<Reference>() {
+  public data object Organization : SearchParam<DeviceDefinition, Reference> {
     public override val paramName: KotlinString = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -85,7 +94,7 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.owner)
   }
 
-  public data object Specification : DeviceDefinitionSearchParam<CodeableConcept>() {
+  public data object Specification : SearchParam<DeviceDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "specification"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -99,7 +108,7 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object SpecificationVersion :
-    DeviceDefinitionSearchParam<DeviceDefinition.ConformsTo>() {
+    SearchParam<DeviceDefinition, DeviceDefinition.ConformsTo> {
     public override val paramName: KotlinString = "specification-version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -112,7 +121,7 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
       resource.conformsTo
   }
 
-  public data object Type : DeviceDefinitionSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<DeviceDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -123,19 +132,5 @@ public sealed class DeviceDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: DeviceDefinition): List<CodeableConcept> =
       resource.conformsTo.mapNotNull { it.category }
-  }
-
-  public companion object {
-    /** All search parameters for the DeviceDefinition resource type. */
-    public val ALL: List<DeviceDefinitionSearchParam<*>> =
-      listOf(
-        DeviceName,
-        Identifier,
-        Manufacturer,
-        Organization,
-        Specification,
-        SpecificationVersion,
-        Type,
-      )
   }
 }

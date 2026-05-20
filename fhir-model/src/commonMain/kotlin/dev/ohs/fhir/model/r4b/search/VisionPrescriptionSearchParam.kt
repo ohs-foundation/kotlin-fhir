@@ -28,11 +28,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [VisionPrescription] resource type. */
-public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: VisionPrescription): List<T>
+public object VisionPrescriptionSearchParam {
+  /** All search parameters for the VisionPrescription resource type. */
+  public val ALL: List<SearchParam<VisionPrescription, *>> =
+    listOf(Datewritten, Encounter, Identifier, Patient, Prescriber, Status)
 
-  public data object Datewritten : VisionPrescriptionSearchParam<DateTime>() {
+  public data object Datewritten : SearchParam<VisionPrescription, DateTime> {
     public override val paramName: String = "datewritten"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -45,7 +46,7 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
       listOf(resource.dateWritten)
   }
 
-  public data object Encounter : VisionPrescriptionSearchParam<Reference>() {
+  public data object Encounter : SearchParam<VisionPrescription, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -59,7 +60,7 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    VisionPrescriptionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<VisionPrescription, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -73,7 +74,7 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Patient : VisionPrescriptionSearchParam<Reference>() {
+  public data object Patient : SearchParam<VisionPrescription, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -86,7 +87,7 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
       listOf(resource.patient)
   }
 
-  public data object Prescriber : VisionPrescriptionSearchParam<Reference>() {
+  public data object Prescriber : SearchParam<VisionPrescription, Reference> {
     public override val paramName: String = "prescriber"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -99,7 +100,7 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
       listOf(resource.prescriber)
   }
 
-  public data object Status : VisionPrescriptionSearchParam<Any>() {
+  public data object Status : SearchParam<VisionPrescription, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -109,11 +110,5 @@ public sealed class VisionPrescriptionSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: VisionPrescription): List<Any> = listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the VisionPrescription resource type. */
-    public val ALL: List<VisionPrescriptionSearchParam<*>> =
-      listOf(Datewritten, Encounter, Identifier, Patient, Prescriber, Status)
   }
 }

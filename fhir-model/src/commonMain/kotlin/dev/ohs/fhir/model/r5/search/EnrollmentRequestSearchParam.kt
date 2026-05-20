@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [EnrollmentRequest] resource type. */
-public sealed class EnrollmentRequestSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: EnrollmentRequest): List<T>
+public object EnrollmentRequestSearchParam {
+  /** All search parameters for the EnrollmentRequest resource type. */
+  public val ALL: List<SearchParam<EnrollmentRequest, *>> =
+    listOf(Identifier, Patient, Status, Subject)
 
-  public data object Identifier : EnrollmentRequestSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<EnrollmentRequest, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +46,7 @@ public sealed class EnrollmentRequestSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Patient : EnrollmentRequestSearchParam<Reference>() {
+  public data object Patient : SearchParam<EnrollmentRequest, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -58,7 +59,7 @@ public sealed class EnrollmentRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.candidate)
   }
 
-  public data object Status : EnrollmentRequestSearchParam<Any>() {
+  public data object Status : SearchParam<EnrollmentRequest, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -71,7 +72,7 @@ public sealed class EnrollmentRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.status)
   }
 
-  public data object Subject : EnrollmentRequestSearchParam<Reference>() {
+  public data object Subject : SearchParam<EnrollmentRequest, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -82,11 +83,5 @@ public sealed class EnrollmentRequestSearchParam<T> : SearchParam {
 
     public override fun extract(resource: EnrollmentRequest): List<Reference> =
       listOfNotNull(resource.candidate)
-  }
-
-  public companion object {
-    /** All search parameters for the EnrollmentRequest resource type. */
-    public val ALL: List<EnrollmentRequestSearchParam<*>> =
-      listOf(Identifier, Patient, Status, Subject)
   }
 }

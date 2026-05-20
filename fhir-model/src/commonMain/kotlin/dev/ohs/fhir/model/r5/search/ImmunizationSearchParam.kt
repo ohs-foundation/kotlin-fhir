@@ -30,11 +30,29 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Immunization] resource type. */
-public sealed class ImmunizationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Immunization): List<T>
+public object ImmunizationSearchParam {
+  /** All search parameters for the Immunization resource type. */
+  public val ALL: List<SearchParam<Immunization, *>> =
+    listOf(
+      Date,
+      Identifier,
+      Location,
+      LotNumber,
+      Manufacturer,
+      Patient,
+      Performer,
+      Reaction,
+      ReactionDate,
+      ReasonCode,
+      ReasonReference,
+      Series,
+      Status,
+      StatusReason,
+      TargetDisease,
+      VaccineCode,
+    )
 
-  public data object Date : ImmunizationSearchParam<Any>() {
+  public data object Date : SearchParam<Immunization, Any> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -46,7 +64,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
     public override fun extract(resource: Immunization): List<Any> = emptyList()
   }
 
-  public data object Identifier : ImmunizationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Immunization, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -59,7 +77,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Location : ImmunizationSearchParam<Reference>() {
+  public data object Location : SearchParam<Immunization, Reference> {
     public override val paramName: KotlinString = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -72,7 +90,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.location)
   }
 
-  public data object LotNumber : ImmunizationSearchParam<R5String>() {
+  public data object LotNumber : SearchParam<Immunization, R5String> {
     public override val paramName: KotlinString = "lot-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -85,7 +103,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.lotNumber)
   }
 
-  public data object Manufacturer : ImmunizationSearchParam<Reference>() {
+  public data object Manufacturer : SearchParam<Immunization, Reference> {
     public override val paramName: KotlinString = "manufacturer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,7 +116,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.manufacturer?.reference)
   }
 
-  public data object Patient : ImmunizationSearchParam<Reference>() {
+  public data object Patient : SearchParam<Immunization, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -110,7 +128,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
     public override fun extract(resource: Immunization): List<Reference> = listOf(resource.patient)
   }
 
-  public data object Performer : ImmunizationSearchParam<Reference>() {
+  public data object Performer : SearchParam<Immunization, Reference> {
     public override val paramName: KotlinString = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -124,7 +142,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       resource.performer.map { it.actor }
   }
 
-  public data object Reaction : ImmunizationSearchParam<Reference>() {
+  public data object Reaction : SearchParam<Immunization, Reference> {
     public override val paramName: KotlinString = "reaction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -137,7 +155,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       resource.reaction.mapNotNull { it.manifestation }.mapNotNull { it.reference }
   }
 
-  public data object ReactionDate : ImmunizationSearchParam<DateTime>() {
+  public data object ReactionDate : SearchParam<Immunization, DateTime> {
     public override val paramName: KotlinString = "reaction-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -150,7 +168,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       resource.reaction.mapNotNull { it.date }
   }
 
-  public data object ReasonCode : ImmunizationSearchParam<CodeableConcept>() {
+  public data object ReasonCode : SearchParam<Immunization, CodeableConcept> {
     public override val paramName: KotlinString = "reason-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -163,7 +181,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       resource.reason.mapNotNull { it.concept }
   }
 
-  public data object ReasonReference : ImmunizationSearchParam<Reference>() {
+  public data object ReasonReference : SearchParam<Immunization, Reference> {
     public override val paramName: KotlinString = "reason-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -177,7 +195,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       resource.reason.mapNotNull { it.reference }
   }
 
-  public data object Series : ImmunizationSearchParam<R5String>() {
+  public data object Series : SearchParam<Immunization, R5String> {
     public override val paramName: KotlinString = "series"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -190,7 +208,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       resource.protocolApplied.mapNotNull { it.series }
   }
 
-  public data object Status : ImmunizationSearchParam<Any>() {
+  public data object Status : SearchParam<Immunization, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -202,7 +220,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
     public override fun extract(resource: Immunization): List<Any> = listOf(resource.status)
   }
 
-  public data object StatusReason : ImmunizationSearchParam<CodeableConcept>() {
+  public data object StatusReason : SearchParam<Immunization, CodeableConcept> {
     public override val paramName: KotlinString = "status-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -215,7 +233,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       listOfNotNull(resource.statusReason)
   }
 
-  public data object TargetDisease : ImmunizationSearchParam<CodeableConcept>() {
+  public data object TargetDisease : SearchParam<Immunization, CodeableConcept> {
     public override val paramName: KotlinString = "target-disease"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -228,7 +246,7 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
       resource.protocolApplied.flatMap { it.targetDisease }
   }
 
-  public data object VaccineCode : ImmunizationSearchParam<CodeableConcept>() {
+  public data object VaccineCode : SearchParam<Immunization, CodeableConcept> {
     public override val paramName: KotlinString = "vaccine-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -239,28 +257,5 @@ public sealed class ImmunizationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Immunization): List<CodeableConcept> =
       listOf(resource.vaccineCode)
-  }
-
-  public companion object {
-    /** All search parameters for the Immunization resource type. */
-    public val ALL: List<ImmunizationSearchParam<*>> =
-      listOf(
-        Date,
-        Identifier,
-        Location,
-        LotNumber,
-        Manufacturer,
-        Patient,
-        Performer,
-        Reaction,
-        ReactionDate,
-        ReasonCode,
-        ReasonReference,
-        Series,
-        Status,
-        StatusReason,
-        TargetDisease,
-        VaccineCode,
-      )
   }
 }

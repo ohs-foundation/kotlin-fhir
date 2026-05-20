@@ -29,11 +29,23 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Account] resource type. */
-public sealed class AccountSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Account): List<T>
+public object AccountSearchParam {
+  /** All search parameters for the Account resource type. */
+  public val ALL: List<SearchParam<Account, *>> =
+    listOf(
+      Guarantor,
+      Identifier,
+      Name,
+      Owner,
+      Patient,
+      Period,
+      Relatedaccount,
+      Status,
+      Subject,
+      Type,
+    )
 
-  public data object Guarantor : AccountSearchParam<Reference>() {
+  public data object Guarantor : SearchParam<Account, Reference> {
     public override val paramName: KotlinString = "guarantor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -47,7 +59,7 @@ public sealed class AccountSearchParam<T> : SearchParam {
       resource.guarantor.map { it.party }
   }
 
-  public data object Identifier : AccountSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Account, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -60,7 +72,7 @@ public sealed class AccountSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Name : AccountSearchParam<R5String>() {
+  public data object Name : SearchParam<Account, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -72,7 +84,7 @@ public sealed class AccountSearchParam<T> : SearchParam {
     public override fun extract(resource: Account): List<R5String> = listOfNotNull(resource.name)
   }
 
-  public data object Owner : AccountSearchParam<Reference>() {
+  public data object Owner : SearchParam<Account, Reference> {
     public override val paramName: KotlinString = "owner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -84,7 +96,7 @@ public sealed class AccountSearchParam<T> : SearchParam {
     public override fun extract(resource: Account): List<Reference> = listOfNotNull(resource.owner)
   }
 
-  public data object Patient : AccountSearchParam<Reference>() {
+  public data object Patient : SearchParam<Account, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -97,7 +109,7 @@ public sealed class AccountSearchParam<T> : SearchParam {
       resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
   }
 
-  public data object Period : AccountSearchParam<dev.ohs.fhir.model.r5.Period>() {
+  public data object Period : SearchParam<Account, dev.ohs.fhir.model.r5.Period> {
     public override val paramName: KotlinString = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -110,7 +122,7 @@ public sealed class AccountSearchParam<T> : SearchParam {
       listOfNotNull(resource.servicePeriod)
   }
 
-  public data object Relatedaccount : AccountSearchParam<Reference>() {
+  public data object Relatedaccount : SearchParam<Account, Reference> {
     public override val paramName: KotlinString = "relatedaccount"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -123,7 +135,7 @@ public sealed class AccountSearchParam<T> : SearchParam {
       resource.relatedAccount.map { it.account }
   }
 
-  public data object Status : AccountSearchParam<Any>() {
+  public data object Status : SearchParam<Account, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -135,7 +147,7 @@ public sealed class AccountSearchParam<T> : SearchParam {
     public override fun extract(resource: Account): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : AccountSearchParam<Reference>() {
+  public data object Subject : SearchParam<Account, Reference> {
     public override val paramName: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -156,7 +168,7 @@ public sealed class AccountSearchParam<T> : SearchParam {
     public override fun extract(resource: Account): List<Reference> = resource.subject
   }
 
-  public data object Type : AccountSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<Account, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -167,22 +179,5 @@ public sealed class AccountSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Account): List<CodeableConcept> =
       listOfNotNull(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the Account resource type. */
-    public val ALL: List<AccountSearchParam<*>> =
-      listOf(
-        Guarantor,
-        Identifier,
-        Name,
-        Owner,
-        Patient,
-        Period,
-        Relatedaccount,
-        Status,
-        Subject,
-        Type,
-      )
   }
 }

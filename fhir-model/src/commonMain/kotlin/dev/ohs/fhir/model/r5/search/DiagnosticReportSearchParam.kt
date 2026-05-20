@@ -29,11 +29,30 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DiagnosticReport] resource type. */
-public sealed class DiagnosticReportSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DiagnosticReport): List<T>
+public object DiagnosticReportSearchParam {
+  /** All search parameters for the DiagnosticReport resource type. */
+  public val ALL: List<SearchParam<DiagnosticReport, *>> =
+    listOf(
+      BasedOn,
+      Category,
+      Code,
+      Conclusion,
+      Date,
+      Encounter,
+      Identifier,
+      Issued,
+      Media,
+      Patient,
+      Performer,
+      Result,
+      ResultsInterpreter,
+      Specimen,
+      Status,
+      Study,
+      Subject,
+    )
 
-  public data object BasedOn : DiagnosticReportSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -52,7 +71,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
     public override fun extract(resource: DiagnosticReport): List<Reference> = resource.basedOn
   }
 
-  public data object Category : DiagnosticReportSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<DiagnosticReport, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -65,7 +84,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
       resource.category
   }
 
-  public data object Code : DiagnosticReportSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<DiagnosticReport, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -78,7 +97,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
       listOf(resource.code)
   }
 
-  public data object Conclusion : DiagnosticReportSearchParam<CodeableConcept>() {
+  public data object Conclusion : SearchParam<DiagnosticReport, CodeableConcept> {
     public override val paramName: String = "conclusion"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -91,7 +110,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
       resource.conclusionCode
   }
 
-  public data object Date : DiagnosticReportSearchParam<Any>() {
+  public data object Date : SearchParam<DiagnosticReport, Any> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -103,7 +122,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
     public override fun extract(resource: DiagnosticReport): List<Any> = emptyList()
   }
 
-  public data object Encounter : DiagnosticReportSearchParam<Reference>() {
+  public data object Encounter : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -116,7 +135,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : DiagnosticReportSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<DiagnosticReport, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -130,7 +149,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Issued : DiagnosticReportSearchParam<Instant>() {
+  public data object Issued : SearchParam<DiagnosticReport, Instant> {
     public override val paramName: String = "issued"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -143,7 +162,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
       listOfNotNull(resource.issued)
   }
 
-  public data object Media : DiagnosticReportSearchParam<Reference>() {
+  public data object Media : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "media"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -156,7 +175,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
       resource.media.map { it.link }
   }
 
-  public data object Patient : DiagnosticReportSearchParam<Reference>() {
+  public data object Patient : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -171,7 +190,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Performer : DiagnosticReportSearchParam<Reference>() {
+  public data object Performer : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -184,7 +203,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
     public override fun extract(resource: DiagnosticReport): List<Reference> = resource.performer
   }
 
-  public data object Result : DiagnosticReportSearchParam<Reference>() {
+  public data object Result : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "result"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -196,7 +215,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
     public override fun extract(resource: DiagnosticReport): List<Reference> = resource.result
   }
 
-  public data object ResultsInterpreter : DiagnosticReportSearchParam<Reference>() {
+  public data object ResultsInterpreter : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "results-interpreter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -210,7 +229,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
       resource.resultsInterpreter
   }
 
-  public data object Specimen : DiagnosticReportSearchParam<Reference>() {
+  public data object Specimen : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "specimen"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -222,7 +241,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
     public override fun extract(resource: DiagnosticReport): List<Reference> = resource.specimen
   }
 
-  public data object Status : DiagnosticReportSearchParam<Any>() {
+  public data object Status : SearchParam<DiagnosticReport, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -234,7 +253,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
     public override fun extract(resource: DiagnosticReport): List<Any> = listOf(resource.status)
   }
 
-  public data object Study : DiagnosticReportSearchParam<Reference>() {
+  public data object Study : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "study"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -246,7 +265,7 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
     public override fun extract(resource: DiagnosticReport): List<Reference> = resource.study
   }
 
-  public data object Subject : DiagnosticReportSearchParam<Reference>() {
+  public data object Subject : SearchParam<DiagnosticReport, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -268,29 +287,5 @@ public sealed class DiagnosticReportSearchParam<T> : SearchParam {
 
     public override fun extract(resource: DiagnosticReport): List<Reference> =
       listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the DiagnosticReport resource type. */
-    public val ALL: List<DiagnosticReportSearchParam<*>> =
-      listOf(
-        BasedOn,
-        Category,
-        Code,
-        Conclusion,
-        Date,
-        Encounter,
-        Identifier,
-        Issued,
-        Media,
-        Patient,
-        Performer,
-        Result,
-        ResultsInterpreter,
-        Specimen,
-        Status,
-        Study,
-        Subject,
-      )
   }
 }

@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [SupplyDelivery] resource type. */
-public sealed class SupplyDeliverySearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: SupplyDelivery): List<T>
+public object SupplyDeliverySearchParam {
+  /** All search parameters for the SupplyDelivery resource type. */
+  public val ALL: List<SearchParam<SupplyDelivery, *>> =
+    listOf(Identifier, Patient, Receiver, Status, Supplier)
 
-  public data object Identifier : SupplyDeliverySearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<SupplyDelivery, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +45,7 @@ public sealed class SupplyDeliverySearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Patient : SupplyDeliverySearchParam<Reference>() {
+  public data object Patient : SearchParam<SupplyDelivery, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -57,7 +58,7 @@ public sealed class SupplyDeliverySearchParam<T> : SearchParam {
       listOfNotNull(resource.patient)
   }
 
-  public data object Receiver : SupplyDeliverySearchParam<Reference>() {
+  public data object Receiver : SearchParam<SupplyDelivery, Reference> {
     public override val paramName: String = "receiver"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -69,7 +70,7 @@ public sealed class SupplyDeliverySearchParam<T> : SearchParam {
     public override fun extract(resource: SupplyDelivery): List<Reference> = resource.receiver
   }
 
-  public data object Status : SupplyDeliverySearchParam<Any>() {
+  public data object Status : SearchParam<SupplyDelivery, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -82,7 +83,7 @@ public sealed class SupplyDeliverySearchParam<T> : SearchParam {
       listOfNotNull(resource.status)
   }
 
-  public data object Supplier : SupplyDeliverySearchParam<Reference>() {
+  public data object Supplier : SearchParam<SupplyDelivery, Reference> {
     public override val paramName: String = "supplier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -94,11 +95,5 @@ public sealed class SupplyDeliverySearchParam<T> : SearchParam {
 
     public override fun extract(resource: SupplyDelivery): List<Reference> =
       listOfNotNull(resource.supplier)
-  }
-
-  public companion object {
-    /** All search parameters for the SupplyDelivery resource type. */
-    public val ALL: List<SupplyDeliverySearchParam<*>> =
-      listOf(Identifier, Patient, Receiver, Status, Supplier)
   }
 }

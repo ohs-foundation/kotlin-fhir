@@ -29,11 +29,30 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Claim] resource type. */
-public sealed class ClaimSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Claim): List<T>
+public object ClaimSearchParam {
+  /** All search parameters for the Claim resource type. */
+  public val ALL: List<SearchParam<Claim, *>> =
+    listOf(
+      CareTeam,
+      Created,
+      DetailUdi,
+      Encounter,
+      Enterer,
+      Facility,
+      Identifier,
+      Insurer,
+      ItemUdi,
+      Patient,
+      Payee,
+      Priority,
+      ProcedureUdi,
+      Provider,
+      Status,
+      SubdetailUdi,
+      Use,
+    )
 
-  public data object CareTeam : ClaimSearchParam<Reference>() {
+  public data object CareTeam : SearchParam<Claim, Reference> {
     public override val paramName: String = "care-team"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -47,7 +66,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
       resource.careTeam.map { it.provider }
   }
 
-  public data object Created : ClaimSearchParam<DateTime>() {
+  public data object Created : SearchParam<Claim, DateTime> {
     public override val paramName: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -59,7 +78,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
     public override fun extract(resource: Claim): List<DateTime> = listOf(resource.created)
   }
 
-  public data object DetailUdi : ClaimSearchParam<Reference>() {
+  public data object DetailUdi : SearchParam<Claim, Reference> {
     public override val paramName: String = "detail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -72,7 +91,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
       resource.item.flatMap { it.detail }.flatMap { it.udi }
   }
 
-  public data object Encounter : ClaimSearchParam<Reference>() {
+  public data object Encounter : SearchParam<Claim, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -85,7 +104,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
       resource.item.flatMap { it.encounter }
   }
 
-  public data object Enterer : ClaimSearchParam<Reference>() {
+  public data object Enterer : SearchParam<Claim, Reference> {
     public override val paramName: String = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,7 +117,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
     public override fun extract(resource: Claim): List<Reference> = listOfNotNull(resource.enterer)
   }
 
-  public data object Facility : ClaimSearchParam<Reference>() {
+  public data object Facility : SearchParam<Claim, Reference> {
     public override val paramName: String = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -110,7 +129,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
     public override fun extract(resource: Claim): List<Reference> = listOfNotNull(resource.facility)
   }
 
-  public data object Identifier : ClaimSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Claim, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -123,7 +142,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Insurer : ClaimSearchParam<Reference>() {
+  public data object Insurer : SearchParam<Claim, Reference> {
     public override val paramName: String = "insurer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -135,7 +154,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
     public override fun extract(resource: Claim): List<Reference> = listOfNotNull(resource.insurer)
   }
 
-  public data object ItemUdi : ClaimSearchParam<Reference>() {
+  public data object ItemUdi : SearchParam<Claim, Reference> {
     public override val paramName: String = "item-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -147,7 +166,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
     public override fun extract(resource: Claim): List<Reference> = resource.item.flatMap { it.udi }
   }
 
-  public data object Patient : ClaimSearchParam<Reference>() {
+  public data object Patient : SearchParam<Claim, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -159,7 +178,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
     public override fun extract(resource: Claim): List<Reference> = listOf(resource.patient)
   }
 
-  public data object Payee : ClaimSearchParam<Reference>() {
+  public data object Payee : SearchParam<Claim, Reference> {
     public override val paramName: String = "payee"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -173,7 +192,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
       listOfNotNull(resource.payee?.party)
   }
 
-  public data object Priority : ClaimSearchParam<CodeableConcept>() {
+  public data object Priority : SearchParam<Claim, CodeableConcept> {
     public override val paramName: String = "priority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -186,7 +205,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
       listOfNotNull(resource.priority)
   }
 
-  public data object ProcedureUdi : ClaimSearchParam<Reference>() {
+  public data object ProcedureUdi : SearchParam<Claim, Reference> {
     public override val paramName: String = "procedure-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -199,7 +218,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
       resource.procedure.flatMap { it.udi }
   }
 
-  public data object Provider : ClaimSearchParam<Reference>() {
+  public data object Provider : SearchParam<Claim, Reference> {
     public override val paramName: String = "provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -212,7 +231,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
     public override fun extract(resource: Claim): List<Reference> = listOfNotNull(resource.provider)
   }
 
-  public data object Status : ClaimSearchParam<Any>() {
+  public data object Status : SearchParam<Claim, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -224,7 +243,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
     public override fun extract(resource: Claim): List<Any> = listOf(resource.status)
   }
 
-  public data object SubdetailUdi : ClaimSearchParam<Reference>() {
+  public data object SubdetailUdi : SearchParam<Claim, Reference> {
     public override val paramName: String = "subdetail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -237,7 +256,7 @@ public sealed class ClaimSearchParam<T> : SearchParam {
       resource.item.flatMap { it.detail }.flatMap { it.subDetail }.flatMap { it.udi }
   }
 
-  public data object Use : ClaimSearchParam<Any>() {
+  public data object Use : SearchParam<Claim, Any> {
     public override val paramName: String = "use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -247,29 +266,5 @@ public sealed class ClaimSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: Claim): List<Any> = listOf(resource.use)
-  }
-
-  public companion object {
-    /** All search parameters for the Claim resource type. */
-    public val ALL: List<ClaimSearchParam<*>> =
-      listOf(
-        CareTeam,
-        Created,
-        DetailUdi,
-        Encounter,
-        Enterer,
-        Facility,
-        Identifier,
-        Insurer,
-        ItemUdi,
-        Patient,
-        Payee,
-        Priority,
-        ProcedureUdi,
-        Provider,
-        Status,
-        SubdetailUdi,
-        Use,
-      )
   }
 }

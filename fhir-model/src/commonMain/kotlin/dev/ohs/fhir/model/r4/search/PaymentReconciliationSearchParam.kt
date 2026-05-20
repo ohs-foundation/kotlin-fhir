@@ -29,11 +29,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [PaymentReconciliation] resource type. */
-public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: PaymentReconciliation): List<T>
+public object PaymentReconciliationSearchParam {
+  /** All search parameters for the PaymentReconciliation resource type. */
+  public val ALL: List<SearchParam<PaymentReconciliation, *>> =
+    listOf(Created, Disposition, Identifier, Outcome, PaymentIssuer, Request, Requestor, Status)
 
-  public data object Created : PaymentReconciliationSearchParam<DateTime>() {
+  public data object Created : SearchParam<PaymentReconciliation, DateTime> {
     public override val paramName: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -46,7 +47,7 @@ public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
       listOf(resource.created)
   }
 
-  public data object Disposition : PaymentReconciliationSearchParam<R4String>() {
+  public data object Disposition : SearchParam<PaymentReconciliation, R4String> {
     public override val paramName: KotlinString = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -60,7 +61,7 @@ public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    PaymentReconciliationSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<PaymentReconciliation, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,7 +75,7 @@ public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Outcome : PaymentReconciliationSearchParam<Any>() {
+  public data object Outcome : SearchParam<PaymentReconciliation, Any> {
     public override val paramName: KotlinString = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -87,7 +88,7 @@ public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
       listOfNotNull(resource.outcome)
   }
 
-  public data object PaymentIssuer : PaymentReconciliationSearchParam<Reference>() {
+  public data object PaymentIssuer : SearchParam<PaymentReconciliation, Reference> {
     public override val paramName: KotlinString = "payment-issuer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -100,7 +101,7 @@ public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
       listOfNotNull(resource.paymentIssuer)
   }
 
-  public data object Request : PaymentReconciliationSearchParam<Reference>() {
+  public data object Request : SearchParam<PaymentReconciliation, Reference> {
     public override val paramName: KotlinString = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -113,7 +114,7 @@ public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
       listOfNotNull(resource.request)
   }
 
-  public data object Requestor : PaymentReconciliationSearchParam<Reference>() {
+  public data object Requestor : SearchParam<PaymentReconciliation, Reference> {
     public override val paramName: KotlinString = "requestor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -127,7 +128,7 @@ public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
       listOfNotNull(resource.requestor)
   }
 
-  public data object Status : PaymentReconciliationSearchParam<Any>() {
+  public data object Status : SearchParam<PaymentReconciliation, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -138,11 +139,5 @@ public sealed class PaymentReconciliationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: PaymentReconciliation): List<Any> =
       listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the PaymentReconciliation resource type. */
-    public val ALL: List<PaymentReconciliationSearchParam<*>> =
-      listOf(Created, Disposition, Identifier, Outcome, PaymentIssuer, Request, Requestor, Status)
   }
 }

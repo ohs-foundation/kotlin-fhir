@@ -29,11 +29,23 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Contract] resource type. */
-public sealed class ContractSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Contract): List<T>
+public object ContractSearchParam {
+  /** All search parameters for the Contract resource type. */
+  public val ALL: List<SearchParam<Contract, *>> =
+    listOf(
+      Authority,
+      Domain,
+      Identifier,
+      Instantiates,
+      Issued,
+      Patient,
+      Signer,
+      Status,
+      Subject,
+      Url,
+    )
 
-  public data object Authority : ContractSearchParam<Reference>() {
+  public data object Authority : SearchParam<Contract, Reference> {
     public override val paramName: String = "authority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -45,7 +57,7 @@ public sealed class ContractSearchParam<T> : SearchParam {
     public override fun extract(resource: Contract): List<Reference> = resource.authority
   }
 
-  public data object Domain : ContractSearchParam<Reference>() {
+  public data object Domain : SearchParam<Contract, Reference> {
     public override val paramName: String = "domain"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -57,7 +69,7 @@ public sealed class ContractSearchParam<T> : SearchParam {
     public override fun extract(resource: Contract): List<Reference> = resource.domain
   }
 
-  public data object Identifier : ContractSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Contract, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -70,7 +82,7 @@ public sealed class ContractSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Instantiates : ContractSearchParam<Uri>() {
+  public data object Instantiates : SearchParam<Contract, Uri> {
     public override val paramName: String = "instantiates"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -83,7 +95,7 @@ public sealed class ContractSearchParam<T> : SearchParam {
       listOfNotNull(resource.instantiatesUri)
   }
 
-  public data object Issued : ContractSearchParam<DateTime>() {
+  public data object Issued : SearchParam<Contract, DateTime> {
     public override val paramName: String = "issued"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -95,7 +107,7 @@ public sealed class ContractSearchParam<T> : SearchParam {
     public override fun extract(resource: Contract): List<DateTime> = listOfNotNull(resource.issued)
   }
 
-  public data object Patient : ContractSearchParam<Reference>() {
+  public data object Patient : SearchParam<Contract, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -108,7 +120,7 @@ public sealed class ContractSearchParam<T> : SearchParam {
       resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
   }
 
-  public data object Signer : ContractSearchParam<Reference>() {
+  public data object Signer : SearchParam<Contract, Reference> {
     public override val paramName: String = "signer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -122,7 +134,7 @@ public sealed class ContractSearchParam<T> : SearchParam {
       resource.signer.map { it.party }
   }
 
-  public data object Status : ContractSearchParam<Any>() {
+  public data object Status : SearchParam<Contract, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -134,7 +146,7 @@ public sealed class ContractSearchParam<T> : SearchParam {
     public override fun extract(resource: Contract): List<Any> = listOfNotNull(resource.status)
   }
 
-  public data object Subject : ContractSearchParam<Reference>() {
+  public data object Subject : SearchParam<Contract, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -306,7 +318,7 @@ public sealed class ContractSearchParam<T> : SearchParam {
     public override fun extract(resource: Contract): List<Reference> = resource.subject
   }
 
-  public data object Url : ContractSearchParam<Uri>() {
+  public data object Url : SearchParam<Contract, Uri> {
     public override val paramName: String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -316,22 +328,5 @@ public sealed class ContractSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: Contract): List<Uri> = listOfNotNull(resource.url)
-  }
-
-  public companion object {
-    /** All search parameters for the Contract resource type. */
-    public val ALL: List<ContractSearchParam<*>> =
-      listOf(
-        Authority,
-        Domain,
-        Identifier,
-        Instantiates,
-        Issued,
-        Patient,
-        Signer,
-        Status,
-        Subject,
-        Url,
-      )
   }
 }

@@ -30,11 +30,31 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Composition] resource type. */
-public sealed class CompositionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Composition): List<T>
+public object CompositionSearchParam {
+  /** All search parameters for the Composition resource type. */
+  public val ALL: List<SearchParam<Composition, *>> =
+    listOf(
+      Attester,
+      Author,
+      Category,
+      Confidentiality,
+      Context,
+      Date,
+      Encounter,
+      Entry,
+      Identifier,
+      Patient,
+      Period,
+      RelatedId,
+      RelatedRef,
+      Section,
+      Status,
+      Subject,
+      Title,
+      Type,
+    )
 
-  public data object Attester : CompositionSearchParam<Reference>() {
+  public data object Attester : SearchParam<Composition, Reference> {
     public override val paramName: KotlinString = "attester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -48,7 +68,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       resource.attester.mapNotNull { it.party }
   }
 
-  public data object Author : CompositionSearchParam<Reference>() {
+  public data object Author : SearchParam<Composition, Reference> {
     public override val paramName: KotlinString = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -68,7 +88,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
     public override fun extract(resource: Composition): List<Reference> = resource.author
   }
 
-  public data object Category : CompositionSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<Composition, CodeableConcept> {
     public override val paramName: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -80,7 +100,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
     public override fun extract(resource: Composition): List<CodeableConcept> = resource.category
   }
 
-  public data object Confidentiality : CompositionSearchParam<Any>() {
+  public data object Confidentiality : SearchParam<Composition, Any> {
     public override val paramName: KotlinString = "confidentiality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -93,7 +113,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       listOfNotNull(resource.confidentiality)
   }
 
-  public data object Context : CompositionSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<Composition, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -106,7 +126,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       resource.event.flatMap { it.code }
   }
 
-  public data object Date : CompositionSearchParam<DateTime>() {
+  public data object Date : SearchParam<Composition, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -118,7 +138,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
     public override fun extract(resource: Composition): List<DateTime> = listOf(resource.date)
   }
 
-  public data object Encounter : CompositionSearchParam<Reference>() {
+  public data object Encounter : SearchParam<Composition, Reference> {
     public override val paramName: KotlinString = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -131,7 +151,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Entry : CompositionSearchParam<Reference>() {
+  public data object Entry : SearchParam<Composition, Reference> {
     public override val paramName: KotlinString = "entry"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -286,7 +306,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       resource.section.flatMap { it.entry }
   }
 
-  public data object Identifier : CompositionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<Composition, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -299,7 +319,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       listOfNotNull(resource.identifier)
   }
 
-  public data object Patient : CompositionSearchParam<Reference>() {
+  public data object Patient : SearchParam<Composition, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -314,7 +334,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Period : CompositionSearchParam<dev.ohs.fhir.model.r4b.Period>() {
+  public data object Period : SearchParam<Composition, dev.ohs.fhir.model.r4b.Period> {
     public override val paramName: KotlinString = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -327,7 +347,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       resource.event.mapNotNull { it.period }
   }
 
-  public data object RelatedId : CompositionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object RelatedId : SearchParam<Composition, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "related-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -342,7 +362,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       }
   }
 
-  public data object RelatedRef : CompositionSearchParam<Reference>() {
+  public data object RelatedRef : SearchParam<Composition, Reference> {
     public override val paramName: KotlinString = "related-ref"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -357,7 +377,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Section : CompositionSearchParam<CodeableConcept>() {
+  public data object Section : SearchParam<Composition, CodeableConcept> {
     public override val paramName: KotlinString = "section"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -370,7 +390,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       resource.section.mapNotNull { it.code }
   }
 
-  public data object Status : CompositionSearchParam<Any>() {
+  public data object Status : SearchParam<Composition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -382,7 +402,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
     public override fun extract(resource: Composition): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : CompositionSearchParam<Reference>() {
+  public data object Subject : SearchParam<Composition, Reference> {
     public override val paramName: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -537,7 +557,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
       listOfNotNull(resource.subject)
   }
 
-  public data object Title : CompositionSearchParam<R4bString>() {
+  public data object Title : SearchParam<Composition, R4bString> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -549,7 +569,7 @@ public sealed class CompositionSearchParam<T> : SearchParam {
     public override fun extract(resource: Composition): List<R4bString> = listOf(resource.title)
   }
 
-  public data object Type : CompositionSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<Composition, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -560,30 +580,5 @@ public sealed class CompositionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Composition): List<CodeableConcept> =
       listOf(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the Composition resource type. */
-    public val ALL: List<CompositionSearchParam<*>> =
-      listOf(
-        Attester,
-        Author,
-        Category,
-        Confidentiality,
-        Context,
-        Date,
-        Encounter,
-        Entry,
-        Identifier,
-        Patient,
-        Period,
-        RelatedId,
-        RelatedRef,
-        Section,
-        Status,
-        Subject,
-        Title,
-        Type,
-      )
   }
 }

@@ -35,11 +35,37 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Library] resource type. */
-public sealed class LibrarySearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Library): List<T>
+public object LibrarySearchParam {
+  /** All search parameters for the Library resource type. */
+  public val ALL: List<SearchParam<Library, *>> =
+    listOf(
+      ComposedOf,
+      ContentType,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      DependsOn,
+      DerivedFrom,
+      Description,
+      Effective,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Predecessor,
+      Publisher,
+      Status,
+      Successor,
+      Title,
+      Topic,
+      Type,
+      Url,
+      Version,
+    )
 
-  public data object ComposedOf : LibrarySearchParam<Canonical>() {
+  public data object ComposedOf : SearchParam<Library, Canonical> {
     public override val paramName: KotlinString = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -215,7 +241,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object ContentType : LibrarySearchParam<Any>() {
+  public data object ContentType : SearchParam<Library, Any> {
     public override val paramName: KotlinString = "content-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -228,7 +254,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
       resource.content.mapNotNull { it.contentType }
   }
 
-  public data object Context : LibrarySearchParam<Any>() {
+  public data object Context : SearchParam<Library, Any> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -241,7 +267,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<Any> = emptyList()
   }
 
-  public data object ContextQuantity : LibrarySearchParam<Any>() {
+  public data object ContextQuantity : SearchParam<Library, Any> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -253,7 +279,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<Any> = emptyList()
   }
 
-  public data object ContextType : LibrarySearchParam<Coding>() {
+  public data object ContextType : SearchParam<Library, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -266,7 +292,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : LibrarySearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<Library, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -278,7 +304,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : LibrarySearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<Library, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -290,7 +316,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : LibrarySearchParam<DateTime>() {
+  public data object Date : SearchParam<Library, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -302,7 +328,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object DependsOn : LibrarySearchParam<Canonical>() {
+  public data object DependsOn : SearchParam<Library, Canonical> {
     public override val paramName: KotlinString = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -478,7 +504,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object DerivedFrom : LibrarySearchParam<Canonical>() {
+  public data object DerivedFrom : SearchParam<Library, Canonical> {
     public override val paramName: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -654,7 +680,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Description : LibrarySearchParam<Markdown>() {
+  public data object Description : SearchParam<Library, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -667,7 +693,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Effective : LibrarySearchParam<Period>() {
+  public data object Effective : SearchParam<Library, Period> {
     public override val paramName: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -680,7 +706,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
       listOfNotNull(resource.effectivePeriod)
   }
 
-  public data object Identifier : LibrarySearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Library, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -693,7 +719,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Jurisdiction : LibrarySearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<Library, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -705,7 +731,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<CodeableConcept> = resource.jurisdiction
   }
 
-  public data object Name : LibrarySearchParam<R5String>() {
+  public data object Name : SearchParam<Library, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -717,7 +743,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<R5String> = listOfNotNull(resource.name)
   }
 
-  public data object Predecessor : LibrarySearchParam<Canonical>() {
+  public data object Predecessor : SearchParam<Library, Canonical> {
     public override val paramName: KotlinString = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -893,7 +919,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Publisher : LibrarySearchParam<R5String>() {
+  public data object Publisher : SearchParam<Library, R5String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -906,7 +932,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : LibrarySearchParam<Any>() {
+  public data object Status : SearchParam<Library, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -918,7 +944,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<Any> = listOf(resource.status)
   }
 
-  public data object Successor : LibrarySearchParam<Canonical>() {
+  public data object Successor : SearchParam<Library, Canonical> {
     public override val paramName: KotlinString = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -1094,7 +1120,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
         .mapNotNull { it.resource }
   }
 
-  public data object Title : LibrarySearchParam<R5String>() {
+  public data object Title : SearchParam<Library, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -1106,7 +1132,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<R5String> = listOfNotNull(resource.title)
   }
 
-  public data object Topic : LibrarySearchParam<CodeableConcept>() {
+  public data object Topic : SearchParam<Library, CodeableConcept> {
     public override val paramName: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1118,7 +1144,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<CodeableConcept> = resource.topic
   }
 
-  public data object Type : LibrarySearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<Library, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1130,7 +1156,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<CodeableConcept> = listOf(resource.type)
   }
 
-  public data object Url : LibrarySearchParam<Uri>() {
+  public data object Url : SearchParam<Library, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -1142,7 +1168,7 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override fun extract(resource: Library): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : LibrarySearchParam<R5String>() {
+  public data object Version : SearchParam<Library, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -1152,36 +1178,5 @@ public sealed class LibrarySearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: Library): List<R5String> = listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the Library resource type. */
-    public val ALL: List<LibrarySearchParam<*>> =
-      listOf(
-        ComposedOf,
-        ContentType,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        DependsOn,
-        DerivedFrom,
-        Description,
-        Effective,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Predecessor,
-        Publisher,
-        Status,
-        Successor,
-        Title,
-        Topic,
-        Type,
-        Url,
-        Version,
-      )
   }
 }

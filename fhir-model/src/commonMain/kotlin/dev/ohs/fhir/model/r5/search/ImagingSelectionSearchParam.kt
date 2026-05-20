@@ -30,11 +30,24 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ImagingSelection] resource type. */
-public sealed class ImagingSelectionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ImagingSelection): List<T>
+public object ImagingSelectionSearchParam {
+  /** All search parameters for the ImagingSelection resource type. */
+  public val ALL: List<SearchParam<ImagingSelection, *>> =
+    listOf(
+      BasedOn,
+      BodySite,
+      BodyStructure,
+      Code,
+      DerivedFrom,
+      Identifier,
+      Issued,
+      Patient,
+      Status,
+      StudyUid,
+      Subject,
+    )
 
-  public data object BasedOn : ImagingSelectionSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<ImagingSelection, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -47,7 +60,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingSelection): List<Reference> = resource.basedOn
   }
 
-  public data object BodySite : ImagingSelectionSearchParam<CodeableConcept>() {
+  public data object BodySite : SearchParam<ImagingSelection, CodeableConcept> {
     public override val paramName: String = "body-site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -60,7 +73,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
       listOfNotNull(resource.bodySite?.concept)
   }
 
-  public data object BodyStructure : ImagingSelectionSearchParam<Reference>() {
+  public data object BodyStructure : SearchParam<ImagingSelection, Reference> {
     public override val paramName: String = "body-structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -73,7 +86,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
       listOfNotNull(resource.bodySite?.reference)
   }
 
-  public data object Code : ImagingSelectionSearchParam<Any>() {
+  public data object Code : SearchParam<ImagingSelection, Any> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -85,7 +98,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingSelection): List<Any> = listOf(resource.status)
   }
 
-  public data object DerivedFrom : ImagingSelectionSearchParam<Reference>() {
+  public data object DerivedFrom : SearchParam<ImagingSelection, Reference> {
     public override val paramName: String = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -97,7 +110,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingSelection): List<Reference> = resource.derivedFrom
   }
 
-  public data object Identifier : ImagingSelectionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<ImagingSelection, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -111,7 +124,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Issued : ImagingSelectionSearchParam<Instant>() {
+  public data object Issued : SearchParam<ImagingSelection, Instant> {
     public override val paramName: String = "issued"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -124,7 +137,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
       listOfNotNull(resource.issued)
   }
 
-  public data object Patient : ImagingSelectionSearchParam<Reference>() {
+  public data object Patient : SearchParam<ImagingSelection, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -139,7 +152,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Status : ImagingSelectionSearchParam<Any>() {
+  public data object Status : SearchParam<ImagingSelection, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -151,7 +164,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingSelection): List<Any> = listOf(resource.status)
   }
 
-  public data object StudyUid : ImagingSelectionSearchParam<Id>() {
+  public data object StudyUid : SearchParam<ImagingSelection, Id> {
     public override val paramName: String = "study-uid"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -164,7 +177,7 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
       listOfNotNull(resource.studyUid)
   }
 
-  public data object Subject : ImagingSelectionSearchParam<Reference>() {
+  public data object Subject : SearchParam<ImagingSelection, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -187,23 +200,5 @@ public sealed class ImagingSelectionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ImagingSelection): List<Reference> =
       listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the ImagingSelection resource type. */
-    public val ALL: List<ImagingSelectionSearchParam<*>> =
-      listOf(
-        BasedOn,
-        BodySite,
-        BodyStructure,
-        Code,
-        DerivedFrom,
-        Identifier,
-        Issued,
-        Patient,
-        Status,
-        StudyUid,
-        Subject,
-      )
   }
 }

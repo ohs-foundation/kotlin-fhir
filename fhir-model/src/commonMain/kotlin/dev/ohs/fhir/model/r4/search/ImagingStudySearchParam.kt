@@ -31,11 +31,30 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ImagingStudy] resource type. */
-public sealed class ImagingStudySearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ImagingStudy): List<T>
+public object ImagingStudySearchParam {
+  /** All search parameters for the ImagingStudy resource type. */
+  public val ALL: List<SearchParam<ImagingStudy, *>> =
+    listOf(
+      Basedon,
+      Bodysite,
+      DicomClass,
+      Encounter,
+      Endpoint,
+      Identifier,
+      Instance,
+      Interpreter,
+      Modality,
+      Patient,
+      Performer,
+      Reason,
+      Referrer,
+      Series,
+      Started,
+      Status,
+      Subject,
+    )
 
-  public data object Basedon : ImagingStudySearchParam<Reference>() {
+  public data object Basedon : SearchParam<ImagingStudy, Reference> {
     public override val paramName: String = "basedon"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -48,7 +67,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingStudy): List<Reference> = resource.basedOn
   }
 
-  public data object Bodysite : ImagingStudySearchParam<Coding>() {
+  public data object Bodysite : SearchParam<ImagingStudy, Coding> {
     public override val paramName: String = "bodysite"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -61,7 +80,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       resource.series.mapNotNull { it.bodySite }
   }
 
-  public data object DicomClass : ImagingStudySearchParam<Coding>() {
+  public data object DicomClass : SearchParam<ImagingStudy, Coding> {
     public override val paramName: String = "dicom-class"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,7 +93,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       resource.series.flatMap { it.instance }.map { it.sopClass }
   }
 
-  public data object Encounter : ImagingStudySearchParam<Reference>() {
+  public data object Encounter : SearchParam<ImagingStudy, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -87,7 +106,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Endpoint : ImagingStudySearchParam<Reference>() {
+  public data object Endpoint : SearchParam<ImagingStudy, Reference> {
     public override val paramName: String = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -99,7 +118,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingStudy): List<Reference> = resource.endpoint
   }
 
-  public data object Identifier : ImagingStudySearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<ImagingStudy, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -112,7 +131,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Instance : ImagingStudySearchParam<Id>() {
+  public data object Instance : SearchParam<ImagingStudy, Id> {
     public override val paramName: String = "instance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -125,7 +144,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       resource.series.flatMap { it.instance }.map { it.uid }
   }
 
-  public data object Interpreter : ImagingStudySearchParam<Reference>() {
+  public data object Interpreter : SearchParam<ImagingStudy, Reference> {
     public override val paramName: String = "interpreter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -137,7 +156,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingStudy): List<Reference> = resource.interpreter
   }
 
-  public data object Modality : ImagingStudySearchParam<Coding>() {
+  public data object Modality : SearchParam<ImagingStudy, Coding> {
     public override val paramName: String = "modality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -150,7 +169,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       resource.series.map { it.modality }
   }
 
-  public data object Patient : ImagingStudySearchParam<Reference>() {
+  public data object Patient : SearchParam<ImagingStudy, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -165,7 +184,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       }
   }
 
-  public data object Performer : ImagingStudySearchParam<Reference>() {
+  public data object Performer : SearchParam<ImagingStudy, Reference> {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -187,7 +206,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       resource.series.flatMap { it.performer }.map { it.actor }
   }
 
-  public data object Reason : ImagingStudySearchParam<CodeableConcept>() {
+  public data object Reason : SearchParam<ImagingStudy, CodeableConcept> {
     public override val paramName: String = "reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -199,7 +218,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingStudy): List<CodeableConcept> = resource.reasonCode
   }
 
-  public data object Referrer : ImagingStudySearchParam<Reference>() {
+  public data object Referrer : SearchParam<ImagingStudy, Reference> {
     public override val paramName: String = "referrer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -212,7 +231,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       listOfNotNull(resource.referrer)
   }
 
-  public data object Series : ImagingStudySearchParam<Id>() {
+  public data object Series : SearchParam<ImagingStudy, Id> {
     public override val paramName: String = "series"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -224,7 +243,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingStudy): List<Id> = resource.series.map { it.uid }
   }
 
-  public data object Started : ImagingStudySearchParam<DateTime>() {
+  public data object Started : SearchParam<ImagingStudy, DateTime> {
     public override val paramName: String = "started"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -237,7 +256,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
       listOfNotNull(resource.started)
   }
 
-  public data object Status : ImagingStudySearchParam<Any>() {
+  public data object Status : SearchParam<ImagingStudy, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -249,7 +268,7 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ImagingStudy): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : ImagingStudySearchParam<Reference>() {
+  public data object Subject : SearchParam<ImagingStudy, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -259,29 +278,5 @@ public sealed class ImagingStudySearchParam<T> : SearchParam {
     public override val target: List<String> = listOf("Group", "Device", "Patient")
 
     public override fun extract(resource: ImagingStudy): List<Reference> = listOf(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the ImagingStudy resource type. */
-    public val ALL: List<ImagingStudySearchParam<*>> =
-      listOf(
-        Basedon,
-        Bodysite,
-        DicomClass,
-        Encounter,
-        Endpoint,
-        Identifier,
-        Instance,
-        Interpreter,
-        Modality,
-        Patient,
-        Performer,
-        Reason,
-        Referrer,
-        Series,
-        Started,
-        Status,
-        Subject,
-      )
   }
 }

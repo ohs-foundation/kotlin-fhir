@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [GenomicStudy] resource type. */
-public sealed class GenomicStudySearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: GenomicStudy): List<T>
+public object GenomicStudySearchParam {
+  /** All search parameters for the GenomicStudy resource type. */
+  public val ALL: List<SearchParam<GenomicStudy, *>> =
+    listOf(Focus, Identifier, Patient, Status, Subject)
 
-  public data object Focus : GenomicStudySearchParam<Reference>() {
+  public data object Focus : SearchParam<GenomicStudy, Reference> {
     public override val paramName: String = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -204,7 +205,7 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
       resource.analysis.flatMap { it.focus }
   }
 
-  public data object Identifier : GenomicStudySearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<GenomicStudy, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -217,7 +218,7 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Patient : GenomicStudySearchParam<Reference>() {
+  public data object Patient : SearchParam<GenomicStudy, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -232,7 +233,7 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
       }
   }
 
-  public data object Status : GenomicStudySearchParam<Any>() {
+  public data object Status : SearchParam<GenomicStudy, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -244,7 +245,7 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
     public override fun extract(resource: GenomicStudy): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : GenomicStudySearchParam<Reference>() {
+  public data object Subject : SearchParam<GenomicStudy, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -255,11 +256,5 @@ public sealed class GenomicStudySearchParam<T> : SearchParam {
       listOf("NutritionProduct", "Group", "BiologicallyDerivedProduct", "Substance", "Patient")
 
     public override fun extract(resource: GenomicStudy): List<Reference> = listOf(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the GenomicStudy resource type. */
-    public val ALL: List<GenomicStudySearchParam<*>> =
-      listOf(Focus, Identifier, Patient, Status, Subject)
   }
 }

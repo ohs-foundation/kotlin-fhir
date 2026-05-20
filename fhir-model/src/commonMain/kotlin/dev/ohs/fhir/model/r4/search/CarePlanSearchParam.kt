@@ -31,11 +31,33 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [CarePlan] resource type. */
-public sealed class CarePlanSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: CarePlan): List<T>
+public object CarePlanSearchParam {
+  /** All search parameters for the CarePlan resource type. */
+  public val ALL: List<SearchParam<CarePlan, *>> =
+    listOf(
+      ActivityCode,
+      ActivityDate,
+      ActivityReference,
+      BasedOn,
+      CareTeam,
+      Category,
+      Condition,
+      Date,
+      Encounter,
+      Goal,
+      Identifier,
+      InstantiatesCanonical,
+      InstantiatesUri,
+      Intent,
+      PartOf,
+      Patient,
+      Performer,
+      Replaces,
+      Status,
+      Subject,
+    )
 
-  public data object ActivityCode : CarePlanSearchParam<CodeableConcept>() {
+  public data object ActivityCode : SearchParam<CarePlan, CodeableConcept> {
     public override val paramName: String = "activity-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -48,7 +70,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
       resource.activity.mapNotNull { it.detail }.mapNotNull { it.code }
   }
 
-  public data object ActivityDate : CarePlanSearchParam<CarePlan.Activity.Detail.Scheduled>() {
+  public data object ActivityDate : SearchParam<CarePlan, CarePlan.Activity.Detail.Scheduled> {
     public override val paramName: String = "activity-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -61,7 +83,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
       resource.activity.mapNotNull { it.detail }.mapNotNull { it.scheduled }
   }
 
-  public data object ActivityReference : CarePlanSearchParam<Reference>() {
+  public data object ActivityReference : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "activity-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -85,7 +107,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
       resource.activity.mapNotNull { it.reference }
   }
 
-  public data object BasedOn : CarePlanSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -97,7 +119,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Reference> = resource.basedOn
   }
 
-  public data object CareTeam : CarePlanSearchParam<Reference>() {
+  public data object CareTeam : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "care-team"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -109,7 +131,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Reference> = resource.careTeam
   }
 
-  public data object Category : CarePlanSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<CarePlan, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -121,7 +143,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<CodeableConcept> = resource.category
   }
 
-  public data object Condition : CarePlanSearchParam<Reference>() {
+  public data object Condition : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "condition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -133,7 +155,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Reference> = resource.addresses
   }
 
-  public data object Date : CarePlanSearchParam<Period>() {
+  public data object Date : SearchParam<CarePlan, Period> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -145,7 +167,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Period> = listOfNotNull(resource.period)
   }
 
-  public data object Encounter : CarePlanSearchParam<Reference>() {
+  public data object Encounter : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -158,7 +180,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Goal : CarePlanSearchParam<Reference>() {
+  public data object Goal : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "goal"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -170,7 +192,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Reference> = resource.goal
   }
 
-  public data object Identifier : CarePlanSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<CarePlan, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -183,7 +205,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object InstantiatesCanonical : CarePlanSearchParam<Canonical>() {
+  public data object InstantiatesCanonical : SearchParam<CarePlan, Canonical> {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -203,7 +225,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
       resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : CarePlanSearchParam<Uri>() {
+  public data object InstantiatesUri : SearchParam<CarePlan, Uri> {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -215,7 +237,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Uri> = resource.instantiatesUri
   }
 
-  public data object Intent : CarePlanSearchParam<Any>() {
+  public data object Intent : SearchParam<CarePlan, Any> {
     public override val paramName: String = "intent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -227,7 +249,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Any> = listOf(resource.intent)
   }
 
-  public data object PartOf : CarePlanSearchParam<Reference>() {
+  public data object PartOf : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -239,7 +261,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Reference> = resource.partOf
   }
 
-  public data object Patient : CarePlanSearchParam<Reference>() {
+  public data object Patient : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -254,7 +276,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Performer : CarePlanSearchParam<Reference>() {
+  public data object Performer : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -277,7 +299,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
       resource.activity.mapNotNull { it.detail }.flatMap { it.performer }
   }
 
-  public data object Replaces : CarePlanSearchParam<Reference>() {
+  public data object Replaces : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "replaces"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -289,7 +311,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Reference> = resource.replaces
   }
 
-  public data object Status : CarePlanSearchParam<Any>() {
+  public data object Status : SearchParam<CarePlan, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -301,7 +323,7 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override fun extract(resource: CarePlan): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : CarePlanSearchParam<Reference>() {
+  public data object Subject : SearchParam<CarePlan, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -311,32 +333,5 @@ public sealed class CarePlanSearchParam<T> : SearchParam {
     public override val target: List<String> = listOf("Group", "Patient")
 
     public override fun extract(resource: CarePlan): List<Reference> = listOf(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the CarePlan resource type. */
-    public val ALL: List<CarePlanSearchParam<*>> =
-      listOf(
-        ActivityCode,
-        ActivityDate,
-        ActivityReference,
-        BasedOn,
-        CareTeam,
-        Category,
-        Condition,
-        Date,
-        Encounter,
-        Goal,
-        Identifier,
-        InstantiatesCanonical,
-        InstantiatesUri,
-        Intent,
-        PartOf,
-        Patient,
-        Performer,
-        Replaces,
-        Status,
-        Subject,
-      )
   }
 }

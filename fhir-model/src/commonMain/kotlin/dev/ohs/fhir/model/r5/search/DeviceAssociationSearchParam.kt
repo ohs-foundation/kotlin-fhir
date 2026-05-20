@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DeviceAssociation] resource type. */
-public sealed class DeviceAssociationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DeviceAssociation): List<T>
+public object DeviceAssociationSearchParam {
+  /** All search parameters for the DeviceAssociation resource type. */
+  public val ALL: List<SearchParam<DeviceAssociation, *>> =
+    listOf(Device, Identifier, Operator, Patient, Status, Subject)
 
-  public data object Device : DeviceAssociationSearchParam<Reference>() {
+  public data object Device : SearchParam<DeviceAssociation, Reference> {
     public override val paramName: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -44,7 +45,7 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
       listOf(resource.device)
   }
 
-  public data object Identifier : DeviceAssociationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<DeviceAssociation, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +59,7 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Operator : DeviceAssociationSearchParam<Reference>() {
+  public data object Operator : SearchParam<DeviceAssociation, Reference> {
     public override val paramName: String = "operator"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -71,7 +72,7 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
       resource.operation.flatMap { it.operator }
   }
 
-  public data object Patient : DeviceAssociationSearchParam<Reference>() {
+  public data object Patient : SearchParam<DeviceAssociation, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -86,7 +87,7 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Status : DeviceAssociationSearchParam<CodeableConcept>() {
+  public data object Status : SearchParam<DeviceAssociation, CodeableConcept> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -99,7 +100,7 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
       listOf(resource.status)
   }
 
-  public data object Subject : DeviceAssociationSearchParam<Reference>() {
+  public data object Subject : SearchParam<DeviceAssociation, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -112,11 +113,5 @@ public sealed class DeviceAssociationSearchParam<T> : SearchParam {
       listOfNotNull(resource.subject).filter {
         it.reference?.value?.toString()?.contains("Patient/") == true
       }
-  }
-
-  public companion object {
-    /** All search parameters for the DeviceAssociation resource type. */
-    public val ALL: List<DeviceAssociationSearchParam<*>> =
-      listOf(Device, Identifier, Operator, Patient, Status, Subject)
   }
 }

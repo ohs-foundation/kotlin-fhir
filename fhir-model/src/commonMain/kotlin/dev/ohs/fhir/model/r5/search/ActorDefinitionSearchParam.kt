@@ -33,11 +33,28 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ActorDefinition] resource type. */
-public sealed class ActorDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ActorDefinition): List<T>
+public object ActorDefinitionSearchParam {
+  /** All search parameters for the ActorDefinition resource type. */
+  public val ALL: List<SearchParam<ActorDefinition, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Identifier,
+      Jurisdiction,
+      Publisher,
+      Status,
+      Title,
+      Type,
+      Url,
+      Version,
+    )
 
-  public data object Context : ActorDefinitionSearchParam<Any>() {
+  public data object Context : SearchParam<ActorDefinition, Any> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,7 +67,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ActorDefinition): List<Any> = emptyList()
   }
 
-  public data object ContextQuantity : ActorDefinitionSearchParam<Any>() {
+  public data object ContextQuantity : SearchParam<ActorDefinition, Any> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -63,7 +80,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ActorDefinition): List<Any> = emptyList()
   }
 
-  public data object ContextType : ActorDefinitionSearchParam<Coding>() {
+  public data object ContextType : SearchParam<ActorDefinition, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -76,7 +93,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ActorDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<ActorDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -88,7 +105,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ActorDefinition): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : ActorDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<ActorDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -100,7 +117,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ActorDefinition): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : ActorDefinitionSearchParam<DateTime>() {
+  public data object Date : SearchParam<ActorDefinition, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -113,7 +130,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Description : ActorDefinitionSearchParam<Markdown>() {
+  public data object Description : SearchParam<ActorDefinition, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -126,7 +143,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Identifier : ActorDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<ActorDefinition, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -139,7 +156,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Jurisdiction : ActorDefinitionSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<ActorDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -152,7 +169,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Publisher : ActorDefinitionSearchParam<R5String>() {
+  public data object Publisher : SearchParam<ActorDefinition, R5String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -165,7 +182,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : ActorDefinitionSearchParam<Any>() {
+  public data object Status : SearchParam<ActorDefinition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -177,7 +194,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ActorDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : ActorDefinitionSearchParam<R5String>() {
+  public data object Title : SearchParam<ActorDefinition, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -190,7 +207,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Type : ActorDefinitionSearchParam<Any>() {
+  public data object Type : SearchParam<ActorDefinition, Any> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -202,7 +219,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ActorDefinition): List<Any> = listOf(resource.type)
   }
 
-  public data object Url : ActorDefinitionSearchParam<Uri>() {
+  public data object Url : SearchParam<ActorDefinition, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -214,7 +231,7 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ActorDefinition): List<Uri> = listOfNotNull(resource.url)
   }
 
-  public data object Version : ActorDefinitionSearchParam<R5String>() {
+  public data object Version : SearchParam<ActorDefinition, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -225,27 +242,5 @@ public sealed class ActorDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ActorDefinition): List<R5String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the ActorDefinition resource type. */
-    public val ALL: List<ActorDefinitionSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Identifier,
-        Jurisdiction,
-        Publisher,
-        Status,
-        Title,
-        Type,
-        Url,
-        Version,
-      )
   }
 }

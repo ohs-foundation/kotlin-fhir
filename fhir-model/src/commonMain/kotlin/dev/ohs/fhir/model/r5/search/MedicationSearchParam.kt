@@ -30,11 +30,23 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Medication] resource type. */
-public sealed class MedicationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Medication): List<T>
+public object MedicationSearchParam {
+  /** All search parameters for the Medication resource type. */
+  public val ALL: List<SearchParam<Medication, *>> =
+    listOf(
+      Code,
+      ExpirationDate,
+      Form,
+      Identifier,
+      Ingredient,
+      IngredientCode,
+      LotNumber,
+      Marketingauthorizationholder,
+      SerialNumber,
+      Status,
+    )
 
-  public data object Code : MedicationSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<Medication, CodeableConcept> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -47,7 +59,7 @@ public sealed class MedicationSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object ExpirationDate : MedicationSearchParam<DateTime>() {
+  public data object ExpirationDate : SearchParam<Medication, DateTime> {
     public override val paramName: KotlinString = "expiration-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -60,7 +72,7 @@ public sealed class MedicationSearchParam<T> : SearchParam {
       listOfNotNull(resource.batch?.expirationDate)
   }
 
-  public data object Form : MedicationSearchParam<Any>() {
+  public data object Form : SearchParam<Medication, Any> {
     public override val paramName: KotlinString = "form"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -72,7 +84,7 @@ public sealed class MedicationSearchParam<T> : SearchParam {
     public override fun extract(resource: Medication): List<Any> = emptyList()
   }
 
-  public data object Identifier : MedicationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Medication, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -85,7 +97,7 @@ public sealed class MedicationSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Ingredient : MedicationSearchParam<Reference>() {
+  public data object Ingredient : SearchParam<Medication, Reference> {
     public override val paramName: KotlinString = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -98,7 +110,7 @@ public sealed class MedicationSearchParam<T> : SearchParam {
       resource.ingredient.map { it.item }.mapNotNull { it.reference }
   }
 
-  public data object IngredientCode : MedicationSearchParam<CodeableConcept>() {
+  public data object IngredientCode : SearchParam<Medication, CodeableConcept> {
     public override val paramName: KotlinString = "ingredient-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -111,7 +123,7 @@ public sealed class MedicationSearchParam<T> : SearchParam {
       resource.ingredient.map { it.item }.mapNotNull { it.concept }
   }
 
-  public data object LotNumber : MedicationSearchParam<R5String>() {
+  public data object LotNumber : SearchParam<Medication, R5String> {
     public override val paramName: KotlinString = "lot-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -124,7 +136,7 @@ public sealed class MedicationSearchParam<T> : SearchParam {
       listOfNotNull(resource.batch?.lotNumber)
   }
 
-  public data object Marketingauthorizationholder : MedicationSearchParam<Reference>() {
+  public data object Marketingauthorizationholder : SearchParam<Medication, Reference> {
     public override val paramName: KotlinString = "marketingauthorizationholder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -137,7 +149,7 @@ public sealed class MedicationSearchParam<T> : SearchParam {
       listOfNotNull(resource.marketingAuthorizationHolder)
   }
 
-  public data object SerialNumber : MedicationSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object SerialNumber : SearchParam<Medication, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "serial-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -150,7 +162,7 @@ public sealed class MedicationSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Status : MedicationSearchParam<Any>() {
+  public data object Status : SearchParam<Medication, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -160,22 +172,5 @@ public sealed class MedicationSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: Medication): List<Any> = listOfNotNull(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the Medication resource type. */
-    public val ALL: List<MedicationSearchParam<*>> =
-      listOf(
-        Code,
-        ExpirationDate,
-        Form,
-        Identifier,
-        Ingredient,
-        IngredientCode,
-        LotNumber,
-        Marketingauthorizationholder,
-        SerialNumber,
-        Status,
-      )
   }
 }

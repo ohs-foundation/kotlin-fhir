@@ -27,12 +27,13 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [BiologicallyDerivedProductDispense] resource type. */
-public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: BiologicallyDerivedProductDispense): List<T>
+public object BiologicallyDerivedProductDispenseSearchParam {
+  /** All search parameters for the BiologicallyDerivedProductDispense resource type. */
+  public val ALL: List<SearchParam<BiologicallyDerivedProductDispense, *>> =
+    listOf(Identifier, Patient, Performer, Product, Status)
 
   public data object Identifier :
-    BiologicallyDerivedProductDispenseSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<BiologicallyDerivedProductDispense, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -46,7 +47,7 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Patient : BiologicallyDerivedProductDispenseSearchParam<Reference>() {
+  public data object Patient : SearchParam<BiologicallyDerivedProductDispense, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -59,7 +60,7 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
       listOf(resource.patient)
   }
 
-  public data object Performer : BiologicallyDerivedProductDispenseSearchParam<Reference>() {
+  public data object Performer : SearchParam<BiologicallyDerivedProductDispense, Reference> {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -72,7 +73,7 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
       resource.performer.map { it.actor }
   }
 
-  public data object Product : BiologicallyDerivedProductDispenseSearchParam<Reference>() {
+  public data object Product : SearchParam<BiologicallyDerivedProductDispense, Reference> {
     public override val paramName: String = "product"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -85,7 +86,7 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
       listOf(resource.product)
   }
 
-  public data object Status : BiologicallyDerivedProductDispenseSearchParam<Any>() {
+  public data object Status : SearchParam<BiologicallyDerivedProductDispense, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -96,11 +97,5 @@ public sealed class BiologicallyDerivedProductDispenseSearchParam<T> : SearchPar
 
     public override fun extract(resource: BiologicallyDerivedProductDispense): List<Any> =
       listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the BiologicallyDerivedProductDispense resource type. */
-    public val ALL: List<BiologicallyDerivedProductDispenseSearchParam<*>> =
-      listOf(Identifier, Patient, Performer, Product, Status)
   }
 }

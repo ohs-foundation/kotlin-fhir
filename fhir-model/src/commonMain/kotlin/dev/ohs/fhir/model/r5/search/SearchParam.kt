@@ -16,12 +16,13 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String
 import kotlin.collections.List
 
 /** Base type for typed FHIR search parameters. */
-public sealed interface SearchParam {
+public sealed interface SearchParam<in R : Resource, out T> {
   /** The name of the search parameter as used in search URLs. */
   public val paramName: String
 
@@ -33,4 +34,7 @@ public sealed interface SearchParam {
 
   /** The target resource types for reference search parameters. */
   public val target: List<String>
+
+  /** Extracts the values for this search parameter from the given [resource]. */
+  public fun extract(resource: R): List<T>
 }

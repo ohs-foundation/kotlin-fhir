@@ -35,11 +35,29 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [EffectEvidenceSynthesis] resource type. */
-public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: EffectEvidenceSynthesis): List<T>
+public object EffectEvidenceSynthesisSearchParam {
+  /** All search parameters for the EffectEvidenceSynthesis resource type. */
+  public val ALL: List<SearchParam<EffectEvidenceSynthesis, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Effective,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Publisher,
+      Status,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Context : EffectEvidenceSynthesisSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<EffectEvidenceSynthesis, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -53,7 +71,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : EffectEvidenceSynthesisSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<EffectEvidenceSynthesis, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -67,7 +85,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : EffectEvidenceSynthesisSearchParam<Coding>() {
+  public data object ContextType : SearchParam<EffectEvidenceSynthesis, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -80,7 +98,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : EffectEvidenceSynthesisSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<EffectEvidenceSynthesis, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -93,7 +111,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object ContextTypeValue : EffectEvidenceSynthesisSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<EffectEvidenceSynthesis, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -106,7 +124,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object Date : EffectEvidenceSynthesisSearchParam<DateTime>() {
+  public data object Date : SearchParam<EffectEvidenceSynthesis, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -119,7 +137,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Description : EffectEvidenceSynthesisSearchParam<Markdown>() {
+  public data object Description : SearchParam<EffectEvidenceSynthesis, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -132,7 +150,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Effective : EffectEvidenceSynthesisSearchParam<Period>() {
+  public data object Effective : SearchParam<EffectEvidenceSynthesis, Period> {
     public override val paramName: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -146,7 +164,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    EffectEvidenceSynthesisSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<EffectEvidenceSynthesis, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -160,7 +178,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Jurisdiction : EffectEvidenceSynthesisSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<EffectEvidenceSynthesis, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -173,7 +191,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Name : EffectEvidenceSynthesisSearchParam<R4String>() {
+  public data object Name : SearchParam<EffectEvidenceSynthesis, R4String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -186,7 +204,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Publisher : EffectEvidenceSynthesisSearchParam<R4String>() {
+  public data object Publisher : SearchParam<EffectEvidenceSynthesis, R4String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -199,7 +217,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : EffectEvidenceSynthesisSearchParam<Any>() {
+  public data object Status : SearchParam<EffectEvidenceSynthesis, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -212,7 +230,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       listOf(resource.status)
   }
 
-  public data object Title : EffectEvidenceSynthesisSearchParam<R4String>() {
+  public data object Title : SearchParam<EffectEvidenceSynthesis, R4String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -225,7 +243,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : EffectEvidenceSynthesisSearchParam<Uri>() {
+  public data object Url : SearchParam<EffectEvidenceSynthesis, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -238,7 +256,7 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
       listOfNotNull(resource.url)
   }
 
-  public data object Version : EffectEvidenceSynthesisSearchParam<R4String>() {
+  public data object Version : SearchParam<EffectEvidenceSynthesis, R4String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -249,28 +267,5 @@ public sealed class EffectEvidenceSynthesisSearchParam<T> : SearchParam {
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<R4String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the EffectEvidenceSynthesis resource type. */
-    public val ALL: List<EffectEvidenceSynthesisSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Effective,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Publisher,
-        Status,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

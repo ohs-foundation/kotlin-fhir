@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [SubstanceDefinition] resource type. */
-public sealed class SubstanceDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: SubstanceDefinition): List<T>
+public object SubstanceDefinitionSearchParam {
+  /** All search parameters for the SubstanceDefinition resource type. */
+  public val ALL: List<SearchParam<SubstanceDefinition, *>> =
+    listOf(Classification, Code, Domain, Identifier, Name)
 
-  public data object Classification : SubstanceDefinitionSearchParam<CodeableConcept>() {
+  public data object Classification : SearchParam<SubstanceDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "classification"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +45,7 @@ public sealed class SubstanceDefinitionSearchParam<T> : SearchParam {
       resource.classification
   }
 
-  public data object Code : SubstanceDefinitionSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<SubstanceDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -57,7 +58,7 @@ public sealed class SubstanceDefinitionSearchParam<T> : SearchParam {
       resource.code.mapNotNull { it.code }
   }
 
-  public data object Domain : SubstanceDefinitionSearchParam<CodeableConcept>() {
+  public data object Domain : SearchParam<SubstanceDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "domain"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -71,7 +72,7 @@ public sealed class SubstanceDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    SubstanceDefinitionSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<SubstanceDefinition, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -85,7 +86,7 @@ public sealed class SubstanceDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Name : SubstanceDefinitionSearchParam<R4bString>() {
+  public data object Name : SearchParam<SubstanceDefinition, R4bString> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -96,11 +97,5 @@ public sealed class SubstanceDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: SubstanceDefinition): List<R4bString> =
       resource.name.map { it.name }
-  }
-
-  public companion object {
-    /** All search parameters for the SubstanceDefinition resource type. */
-    public val ALL: List<SubstanceDefinitionSearchParam<*>> =
-      listOf(Classification, Code, Domain, Identifier, Name)
   }
 }

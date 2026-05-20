@@ -29,11 +29,30 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Appointment] resource type. */
-public sealed class AppointmentSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Appointment): List<T>
+public object AppointmentSearchParam {
+  /** All search parameters for the Appointment resource type. */
+  public val ALL: List<SearchParam<Appointment, *>> =
+    listOf(
+      Actor,
+      AppointmentType,
+      BasedOn,
+      Date,
+      Identifier,
+      Location,
+      PartStatus,
+      Patient,
+      Practitioner,
+      ReasonCode,
+      ReasonReference,
+      ServiceCategory,
+      ServiceType,
+      Slot,
+      Specialty,
+      Status,
+      SupportingInfo,
+    )
 
-  public data object Actor : AppointmentSearchParam<Reference>() {
+  public data object Actor : SearchParam<Appointment, Reference> {
     public override val paramName: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -55,7 +74,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
       resource.participant.mapNotNull { it.actor }
   }
 
-  public data object AppointmentType : AppointmentSearchParam<CodeableConcept>() {
+  public data object AppointmentType : SearchParam<Appointment, CodeableConcept> {
     public override val paramName: String = "appointment-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -68,7 +87,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
       listOfNotNull(resource.appointmentType)
   }
 
-  public data object BasedOn : AppointmentSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<Appointment, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -80,7 +99,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
     public override fun extract(resource: Appointment): List<Reference> = resource.basedOn
   }
 
-  public data object Date : AppointmentSearchParam<Instant>() {
+  public data object Date : SearchParam<Appointment, Instant> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -93,7 +112,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
       listOfNotNull(resource.start)
   }
 
-  public data object Identifier : AppointmentSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<Appointment, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -106,7 +125,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Location : AppointmentSearchParam<Reference>() {
+  public data object Location : SearchParam<Appointment, Reference> {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -122,7 +141,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
         .filter { it.reference?.value?.toString()?.contains("Location/") == true }
   }
 
-  public data object PartStatus : AppointmentSearchParam<Any>() {
+  public data object PartStatus : SearchParam<Appointment, Any> {
     public override val paramName: String = "part-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -135,7 +154,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
       resource.participant.map { it.status }
   }
 
-  public data object Patient : AppointmentSearchParam<Reference>() {
+  public data object Patient : SearchParam<Appointment, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -151,7 +170,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
         .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
   }
 
-  public data object Practitioner : AppointmentSearchParam<Reference>() {
+  public data object Practitioner : SearchParam<Appointment, Reference> {
     public override val paramName: String = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -167,7 +186,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
         .filter { it.reference?.value?.toString()?.contains("Practitioner/") == true }
   }
 
-  public data object ReasonCode : AppointmentSearchParam<CodeableConcept>() {
+  public data object ReasonCode : SearchParam<Appointment, CodeableConcept> {
     public override val paramName: String = "reason-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -179,7 +198,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
     public override fun extract(resource: Appointment): List<CodeableConcept> = resource.reasonCode
   }
 
-  public data object ReasonReference : AppointmentSearchParam<Reference>() {
+  public data object ReasonReference : SearchParam<Appointment, Reference> {
     public override val paramName: String = "reason-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -192,7 +211,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
     public override fun extract(resource: Appointment): List<Reference> = resource.reasonReference
   }
 
-  public data object ServiceCategory : AppointmentSearchParam<CodeableConcept>() {
+  public data object ServiceCategory : SearchParam<Appointment, CodeableConcept> {
     public override val paramName: String = "service-category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -205,7 +224,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
       resource.serviceCategory
   }
 
-  public data object ServiceType : AppointmentSearchParam<CodeableConcept>() {
+  public data object ServiceType : SearchParam<Appointment, CodeableConcept> {
     public override val paramName: String = "service-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -217,7 +236,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
     public override fun extract(resource: Appointment): List<CodeableConcept> = resource.serviceType
   }
 
-  public data object Slot : AppointmentSearchParam<Reference>() {
+  public data object Slot : SearchParam<Appointment, Reference> {
     public override val paramName: String = "slot"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -229,7 +248,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
     public override fun extract(resource: Appointment): List<Reference> = resource.slot
   }
 
-  public data object Specialty : AppointmentSearchParam<CodeableConcept>() {
+  public data object Specialty : SearchParam<Appointment, CodeableConcept> {
     public override val paramName: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -241,7 +260,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
     public override fun extract(resource: Appointment): List<CodeableConcept> = resource.specialty
   }
 
-  public data object Status : AppointmentSearchParam<Any>() {
+  public data object Status : SearchParam<Appointment, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -253,7 +272,7 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
     public override fun extract(resource: Appointment): List<Any> = listOf(resource.status)
   }
 
-  public data object SupportingInfo : AppointmentSearchParam<Reference>() {
+  public data object SupportingInfo : SearchParam<Appointment, Reference> {
     public override val paramName: String = "supporting-info"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -406,29 +425,5 @@ public sealed class AppointmentSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Appointment): List<Reference> =
       resource.supportingInformation
-  }
-
-  public companion object {
-    /** All search parameters for the Appointment resource type. */
-    public val ALL: List<AppointmentSearchParam<*>> =
-      listOf(
-        Actor,
-        AppointmentType,
-        BasedOn,
-        Date,
-        Identifier,
-        Location,
-        PartStatus,
-        Patient,
-        Practitioner,
-        ReasonCode,
-        ReasonReference,
-        ServiceCategory,
-        ServiceType,
-        Slot,
-        Specialty,
-        Status,
-        SupportingInfo,
-      )
   }
 }

@@ -28,11 +28,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [InventoryItem] resource type. */
-public sealed class InventoryItemSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: InventoryItem): List<T>
+public object InventoryItemSearchParam {
+  /** All search parameters for the InventoryItem resource type. */
+  public val ALL: List<SearchParam<InventoryItem, *>> = listOf(Code, Identifier, Status, Subject)
 
-  public data object Code : InventoryItemSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<InventoryItem, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -44,7 +44,7 @@ public sealed class InventoryItemSearchParam<T> : SearchParam {
     public override fun extract(resource: InventoryItem): List<CodeableConcept> = resource.code
   }
 
-  public data object Identifier : InventoryItemSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<InventoryItem, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -57,7 +57,7 @@ public sealed class InventoryItemSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Status : InventoryItemSearchParam<Any>() {
+  public data object Status : SearchParam<InventoryItem, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -69,7 +69,7 @@ public sealed class InventoryItemSearchParam<T> : SearchParam {
     public override fun extract(resource: InventoryItem): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : InventoryItemSearchParam<Reference>() {
+  public data object Subject : SearchParam<InventoryItem, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -80,10 +80,5 @@ public sealed class InventoryItemSearchParam<T> : SearchParam {
 
     public override fun extract(resource: InventoryItem): List<Reference> =
       listOfNotNull(resource.instance?.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the InventoryItem resource type. */
-    public val ALL: List<InventoryItemSearchParam<*>> = listOf(Code, Identifier, Status, Subject)
   }
 }

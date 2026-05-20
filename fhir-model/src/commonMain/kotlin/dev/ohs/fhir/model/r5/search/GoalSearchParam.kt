@@ -28,11 +28,24 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Goal] resource type. */
-public sealed class GoalSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Goal): List<T>
+public object GoalSearchParam {
+  /** All search parameters for the Goal resource type. */
+  public val ALL: List<SearchParam<Goal, *>> =
+    listOf(
+      AchievementStatus,
+      Addresses,
+      Category,
+      Description,
+      Identifier,
+      LifecycleStatus,
+      Patient,
+      StartDate,
+      Subject,
+      TargetDate,
+      TargetMeasure,
+    )
 
-  public data object AchievementStatus : GoalSearchParam<CodeableConcept>() {
+  public data object AchievementStatus : SearchParam<Goal, CodeableConcept> {
     public override val paramName: String = "achievement-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +58,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
       listOfNotNull(resource.achievementStatus)
   }
 
-  public data object Addresses : GoalSearchParam<Reference>() {
+  public data object Addresses : SearchParam<Goal, Reference> {
     public override val paramName: String = "addresses"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -67,7 +80,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
     public override fun extract(resource: Goal): List<Reference> = resource.addresses
   }
 
-  public data object Category : GoalSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<Goal, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -79,7 +92,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
     public override fun extract(resource: Goal): List<CodeableConcept> = resource.category
   }
 
-  public data object Description : GoalSearchParam<CodeableConcept>() {
+  public data object Description : SearchParam<Goal, CodeableConcept> {
     public override val paramName: String = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -92,7 +105,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
       listOf(resource.description)
   }
 
-  public data object Identifier : GoalSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Goal, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -105,7 +118,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object LifecycleStatus : GoalSearchParam<Any>() {
+  public data object LifecycleStatus : SearchParam<Goal, Any> {
     public override val paramName: String = "lifecycle-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -117,7 +130,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
     public override fun extract(resource: Goal): List<Any> = listOf(resource.lifecycleStatus)
   }
 
-  public data object Patient : GoalSearchParam<Reference>() {
+  public data object Patient : SearchParam<Goal, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -132,7 +145,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
       }
   }
 
-  public data object StartDate : GoalSearchParam<Any>() {
+  public data object StartDate : SearchParam<Goal, Any> {
     public override val paramName: String = "start-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -144,7 +157,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
     public override fun extract(resource: Goal): List<Any> = emptyList()
   }
 
-  public data object Subject : GoalSearchParam<Reference>() {
+  public data object Subject : SearchParam<Goal, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -156,7 +169,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
     public override fun extract(resource: Goal): List<Reference> = listOf(resource.subject)
   }
 
-  public data object TargetDate : GoalSearchParam<Any>() {
+  public data object TargetDate : SearchParam<Goal, Any> {
     public override val paramName: String = "target-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -168,7 +181,7 @@ public sealed class GoalSearchParam<T> : SearchParam {
     public override fun extract(resource: Goal): List<Any> = emptyList()
   }
 
-  public data object TargetMeasure : GoalSearchParam<CodeableConcept>() {
+  public data object TargetMeasure : SearchParam<Goal, CodeableConcept> {
     public override val paramName: String = "target-measure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -179,23 +192,5 @@ public sealed class GoalSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Goal): List<CodeableConcept> =
       resource.target.mapNotNull { it.measure }
-  }
-
-  public companion object {
-    /** All search parameters for the Goal resource type. */
-    public val ALL: List<GoalSearchParam<*>> =
-      listOf(
-        AchievementStatus,
-        Addresses,
-        Category,
-        Description,
-        Identifier,
-        LifecycleStatus,
-        Patient,
-        StartDate,
-        Subject,
-        TargetDate,
-        TargetMeasure,
-      )
   }
 }

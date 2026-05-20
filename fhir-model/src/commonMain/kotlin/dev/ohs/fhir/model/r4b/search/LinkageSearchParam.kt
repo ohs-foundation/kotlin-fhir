@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Linkage] resource type. */
-public sealed class LinkageSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Linkage): List<T>
+public object LinkageSearchParam {
+  /** All search parameters for the Linkage resource type. */
+  public val ALL: List<SearchParam<Linkage, *>> = listOf(Author, Item, Source)
 
-  public data object Author : LinkageSearchParam<Reference>() {
+  public data object Author : SearchParam<Linkage, Reference> {
     public override val paramName: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -43,7 +43,7 @@ public sealed class LinkageSearchParam<T> : SearchParam {
     public override fun extract(resource: Linkage): List<Reference> = listOfNotNull(resource.author)
   }
 
-  public data object Item : LinkageSearchParam<Reference>() {
+  public data object Item : SearchParam<Linkage, Reference> {
     public override val paramName: String = "item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -198,7 +198,7 @@ public sealed class LinkageSearchParam<T> : SearchParam {
       resource.item.map { it.resource }
   }
 
-  public data object Source : LinkageSearchParam<Reference>() {
+  public data object Source : SearchParam<Linkage, Reference> {
     public override val paramName: String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -351,10 +351,5 @@ public sealed class LinkageSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Linkage): List<Reference> =
       resource.item.map { it.resource }
-  }
-
-  public companion object {
-    /** All search parameters for the Linkage resource type. */
-    public val ALL: List<LinkageSearchParam<*>> = listOf(Author, Item, Source)
   }
 }

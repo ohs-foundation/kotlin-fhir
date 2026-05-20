@@ -29,11 +29,23 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [VerificationResult] resource type. */
-public sealed class VerificationResultSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: VerificationResult): List<T>
+public object VerificationResultSearchParam {
+  /** All search parameters for the VerificationResult resource type. */
+  public val ALL: List<SearchParam<VerificationResult, *>> =
+    listOf(
+      AttestationMethod,
+      AttestationOnbehalfof,
+      AttestationWho,
+      PrimarysourceDate,
+      PrimarysourceType,
+      PrimarysourceWho,
+      Status,
+      StatusDate,
+      Target,
+      ValidatorOrganization,
+    )
 
-  public data object AttestationMethod : VerificationResultSearchParam<CodeableConcept>() {
+  public data object AttestationMethod : SearchParam<VerificationResult, CodeableConcept> {
     public override val paramName: String = "attestation-method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -46,7 +58,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
       listOfNotNull(resource.attestation?.communicationMethod)
   }
 
-  public data object AttestationOnbehalfof : VerificationResultSearchParam<Reference>() {
+  public data object AttestationOnbehalfof : SearchParam<VerificationResult, Reference> {
     public override val paramName: String = "attestation-onbehalfof"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -60,7 +72,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
       listOfNotNull(resource.attestation?.onBehalfOf)
   }
 
-  public data object AttestationWho : VerificationResultSearchParam<Reference>() {
+  public data object AttestationWho : SearchParam<VerificationResult, Reference> {
     public override val paramName: String = "attestation-who"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,7 +86,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
       listOfNotNull(resource.attestation?.who)
   }
 
-  public data object PrimarysourceDate : VerificationResultSearchParam<DateTime>() {
+  public data object PrimarysourceDate : SearchParam<VerificationResult, DateTime> {
     public override val paramName: String = "primarysource-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -87,7 +99,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
       resource.primarySource.mapNotNull { it.validationDate }
   }
 
-  public data object PrimarysourceType : VerificationResultSearchParam<CodeableConcept>() {
+  public data object PrimarysourceType : SearchParam<VerificationResult, CodeableConcept> {
     public override val paramName: String = "primarysource-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -100,7 +112,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
       resource.primarySource.flatMap { it.type }
   }
 
-  public data object PrimarysourceWho : VerificationResultSearchParam<Reference>() {
+  public data object PrimarysourceWho : SearchParam<VerificationResult, Reference> {
     public override val paramName: String = "primarysource-who"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -114,7 +126,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
       resource.primarySource.mapNotNull { it.who }
   }
 
-  public data object Status : VerificationResultSearchParam<Any>() {
+  public data object Status : SearchParam<VerificationResult, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -126,7 +138,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
     public override fun extract(resource: VerificationResult): List<Any> = listOf(resource.status)
   }
 
-  public data object StatusDate : VerificationResultSearchParam<DateTime>() {
+  public data object StatusDate : SearchParam<VerificationResult, DateTime> {
     public override val paramName: String = "status-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -139,7 +151,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
       listOfNotNull(resource.statusDate)
   }
 
-  public data object Target : VerificationResultSearchParam<Reference>() {
+  public data object Target : SearchParam<VerificationResult, Reference> {
     public override val paramName: String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -311,7 +323,7 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
     public override fun extract(resource: VerificationResult): List<Reference> = resource.target
   }
 
-  public data object ValidatorOrganization : VerificationResultSearchParam<Reference>() {
+  public data object ValidatorOrganization : SearchParam<VerificationResult, Reference> {
     public override val paramName: String = "validator-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -322,22 +334,5 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
 
     public override fun extract(resource: VerificationResult): List<Reference> =
       resource.validator.map { it.organization }
-  }
-
-  public companion object {
-    /** All search parameters for the VerificationResult resource type. */
-    public val ALL: List<VerificationResultSearchParam<*>> =
-      listOf(
-        AttestationMethod,
-        AttestationOnbehalfof,
-        AttestationWho,
-        PrimarysourceDate,
-        PrimarysourceType,
-        PrimarysourceWho,
-        Status,
-        StatusDate,
-        Target,
-        ValidatorOrganization,
-      )
   }
 }

@@ -29,11 +29,29 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [CommunicationRequest] resource type. */
-public sealed class CommunicationRequestSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: CommunicationRequest): List<T>
+public object CommunicationRequestSearchParam {
+  /** All search parameters for the CommunicationRequest resource type. */
+  public val ALL: List<SearchParam<CommunicationRequest, *>> =
+    listOf(
+      Authored,
+      BasedOn,
+      Category,
+      Encounter,
+      GroupIdentifier,
+      Identifier,
+      Medium,
+      Occurrence,
+      Patient,
+      Priority,
+      Recipient,
+      Replaces,
+      Requester,
+      Sender,
+      Status,
+      Subject,
+    )
 
-  public data object Authored : CommunicationRequestSearchParam<DateTime>() {
+  public data object Authored : SearchParam<CommunicationRequest, DateTime> {
     public override val paramName: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -46,7 +64,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.authoredOn)
   }
 
-  public data object BasedOn : CommunicationRequestSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<CommunicationRequest, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -205,7 +223,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: CommunicationRequest): List<Reference> = resource.basedOn
   }
 
-  public data object Category : CommunicationRequestSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<CommunicationRequest, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -218,7 +236,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
       resource.category
   }
 
-  public data object Encounter : CommunicationRequestSearchParam<Reference>() {
+  public data object Encounter : SearchParam<CommunicationRequest, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -232,7 +250,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
   }
 
   public data object GroupIdentifier :
-    CommunicationRequestSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<CommunicationRequest, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -247,7 +265,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    CommunicationRequestSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+    SearchParam<CommunicationRequest, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -261,7 +279,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Medium : CommunicationRequestSearchParam<CodeableConcept>() {
+  public data object Medium : SearchParam<CommunicationRequest, CodeableConcept> {
     public override val paramName: String = "medium"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -274,7 +292,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
       resource.medium
   }
 
-  public data object Occurrence : CommunicationRequestSearchParam<DateTime>() {
+  public data object Occurrence : SearchParam<CommunicationRequest, DateTime> {
     public override val paramName: String = "occurrence"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -287,7 +305,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
       listOfNotNull((resource.occurrence as? CommunicationRequest.Occurrence.DateTime)?.value)
   }
 
-  public data object Patient : CommunicationRequestSearchParam<Reference>() {
+  public data object Patient : SearchParam<CommunicationRequest, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -303,7 +321,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Priority : CommunicationRequestSearchParam<Any>() {
+  public data object Priority : SearchParam<CommunicationRequest, Any> {
     public override val paramName: String = "priority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -316,7 +334,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.priority)
   }
 
-  public data object Recipient : CommunicationRequestSearchParam<Reference>() {
+  public data object Recipient : SearchParam<CommunicationRequest, Reference> {
     public override val paramName: String = "recipient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -340,7 +358,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
       resource.recipient
   }
 
-  public data object Replaces : CommunicationRequestSearchParam<Reference>() {
+  public data object Replaces : SearchParam<CommunicationRequest, Reference> {
     public override val paramName: String = "replaces"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -352,7 +370,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: CommunicationRequest): List<Reference> = resource.replaces
   }
 
-  public data object Requester : CommunicationRequestSearchParam<Reference>() {
+  public data object Requester : SearchParam<CommunicationRequest, Reference> {
     public override val paramName: String = "requester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -373,7 +391,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.requester)
   }
 
-  public data object Sender : CommunicationRequestSearchParam<Reference>() {
+  public data object Sender : SearchParam<CommunicationRequest, Reference> {
     public override val paramName: String = "sender"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -395,7 +413,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.sender)
   }
 
-  public data object Status : CommunicationRequestSearchParam<Any>() {
+  public data object Status : SearchParam<CommunicationRequest, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -407,7 +425,7 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: CommunicationRequest): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : CommunicationRequestSearchParam<Reference>() {
+  public data object Subject : SearchParam<CommunicationRequest, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -418,28 +436,5 @@ public sealed class CommunicationRequestSearchParam<T> : SearchParam {
 
     public override fun extract(resource: CommunicationRequest): List<Reference> =
       listOfNotNull(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the CommunicationRequest resource type. */
-    public val ALL: List<CommunicationRequestSearchParam<*>> =
-      listOf(
-        Authored,
-        BasedOn,
-        Category,
-        Encounter,
-        GroupIdentifier,
-        Identifier,
-        Medium,
-        Occurrence,
-        Patient,
-        Priority,
-        Recipient,
-        Replaces,
-        Requester,
-        Sender,
-        Status,
-        Subject,
-      )
   }
 }

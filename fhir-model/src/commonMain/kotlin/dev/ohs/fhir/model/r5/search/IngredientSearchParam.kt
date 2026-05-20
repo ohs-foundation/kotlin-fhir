@@ -28,11 +28,26 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Ingredient] resource type. */
-public sealed class IngredientSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Ingredient): List<T>
+public object IngredientSearchParam {
+  /** All search parameters for the Ingredient resource type. */
+  public val ALL: List<SearchParam<Ingredient, *>> =
+    listOf(
+      For,
+      Function,
+      Identifier,
+      Manufacturer,
+      Role,
+      Status,
+      StrengthConcentrationQuantity,
+      StrengthConcentrationRatio,
+      StrengthPresentationQuantity,
+      StrengthPresentationRatio,
+      Substance,
+      SubstanceCode,
+      SubstanceDefinition,
+    )
 
-  public data object For : IngredientSearchParam<Reference>() {
+  public data object For : SearchParam<Ingredient, Reference> {
     public override val paramName: String = "for"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -49,7 +64,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
     public override fun extract(resource: Ingredient): List<Reference> = resource.`for`
   }
 
-  public data object Function : IngredientSearchParam<CodeableConcept>() {
+  public data object Function : SearchParam<Ingredient, CodeableConcept> {
     public override val paramName: String = "function"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -61,7 +76,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
     public override fun extract(resource: Ingredient): List<CodeableConcept> = resource.function
   }
 
-  public data object Identifier : IngredientSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Ingredient, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,7 +89,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
       listOfNotNull(resource.identifier)
   }
 
-  public data object Manufacturer : IngredientSearchParam<Reference>() {
+  public data object Manufacturer : SearchParam<Ingredient, Reference> {
     public override val paramName: String = "manufacturer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -87,7 +102,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
       resource.manufacturer.map { it.manufacturer }
   }
 
-  public data object Role : IngredientSearchParam<CodeableConcept>() {
+  public data object Role : SearchParam<Ingredient, CodeableConcept> {
     public override val paramName: String = "role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -99,7 +114,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
     public override fun extract(resource: Ingredient): List<CodeableConcept> = listOf(resource.role)
   }
 
-  public data object Status : IngredientSearchParam<Any>() {
+  public data object Status : SearchParam<Ingredient, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -111,7 +126,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
     public override fun extract(resource: Ingredient): List<Any> = listOf(resource.status)
   }
 
-  public data object StrengthConcentrationQuantity : IngredientSearchParam<Any>() {
+  public data object StrengthConcentrationQuantity : SearchParam<Ingredient, Any> {
     public override val paramName: String = "strength-concentration-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -124,7 +139,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
     public override fun extract(resource: Ingredient): List<Any> = emptyList()
   }
 
-  public data object StrengthConcentrationRatio : IngredientSearchParam<Any>() {
+  public data object StrengthConcentrationRatio : SearchParam<Ingredient, Any> {
     public override val paramName: String = "strength-concentration-ratio"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -137,7 +152,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
     public override fun extract(resource: Ingredient): List<Any> = emptyList()
   }
 
-  public data object StrengthPresentationQuantity : IngredientSearchParam<Any>() {
+  public data object StrengthPresentationQuantity : SearchParam<Ingredient, Any> {
     public override val paramName: String = "strength-presentation-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -150,7 +165,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
     public override fun extract(resource: Ingredient): List<Any> = emptyList()
   }
 
-  public data object StrengthPresentationRatio : IngredientSearchParam<Any>() {
+  public data object StrengthPresentationRatio : SearchParam<Ingredient, Any> {
     public override val paramName: String = "strength-presentation-ratio"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -163,7 +178,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
     public override fun extract(resource: Ingredient): List<Any> = emptyList()
   }
 
-  public data object Substance : IngredientSearchParam<Reference>() {
+  public data object Substance : SearchParam<Ingredient, Reference> {
     public override val paramName: String = "substance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -176,7 +191,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
       listOfNotNull(resource.substance.code.reference)
   }
 
-  public data object SubstanceCode : IngredientSearchParam<CodeableConcept>() {
+  public data object SubstanceCode : SearchParam<Ingredient, CodeableConcept> {
     public override val paramName: String = "substance-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -189,7 +204,7 @@ public sealed class IngredientSearchParam<T> : SearchParam {
       listOfNotNull(resource.substance.code.concept)
   }
 
-  public data object SubstanceDefinition : IngredientSearchParam<Reference>() {
+  public data object SubstanceDefinition : SearchParam<Ingredient, Reference> {
     public override val paramName: String = "substance-definition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -200,25 +215,5 @@ public sealed class IngredientSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Ingredient): List<Reference> =
       listOfNotNull(resource.substance.code.reference)
-  }
-
-  public companion object {
-    /** All search parameters for the Ingredient resource type. */
-    public val ALL: List<IngredientSearchParam<*>> =
-      listOf(
-        For,
-        Function,
-        Identifier,
-        Manufacturer,
-        Role,
-        Status,
-        StrengthConcentrationQuantity,
-        StrengthConcentrationRatio,
-        StrengthPresentationQuantity,
-        StrengthPresentationRatio,
-        Substance,
-        SubstanceCode,
-        SubstanceDefinition,
-      )
   }
 }

@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [SubstanceSpecification] resource type. */
-public sealed class SubstanceSpecificationSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: SubstanceSpecification): List<T>
+public object SubstanceSpecificationSearchParam {
+  /** All search parameters for the SubstanceSpecification resource type. */
+  public val ALL: List<SearchParam<SubstanceSpecification, *>> = listOf(Code)
 
-  public data object Code : SubstanceSpecificationSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<SubstanceSpecification, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -41,10 +41,5 @@ public sealed class SubstanceSpecificationSearchParam<T> : SearchParam {
 
     public override fun extract(resource: SubstanceSpecification): List<CodeableConcept> =
       resource.code.mapNotNull { it.code }
-  }
-
-  public companion object {
-    /** All search parameters for the SubstanceSpecification resource type. */
-    public val ALL: List<SubstanceSpecificationSearchParam<*>> = listOf(Code)
   }
 }

@@ -29,11 +29,23 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Group] resource type. */
-public sealed class GroupSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Group): List<T>
+public object GroupSearchParam {
+  /** All search parameters for the Group resource type. */
+  public val ALL: List<SearchParam<Group, *>> =
+    listOf(
+      Actual,
+      Characteristic,
+      CharacteristicValue,
+      Code,
+      Exclude,
+      Identifier,
+      ManagingEntity,
+      Member,
+      Type,
+      Value,
+    )
 
-  public data object Actual : GroupSearchParam<Boolean>() {
+  public data object Actual : SearchParam<Group, Boolean> {
     public override val paramName: String = "actual"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +57,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
     public override fun extract(resource: Group): List<Boolean> = listOf(resource.actual)
   }
 
-  public data object Characteristic : GroupSearchParam<CodeableConcept>() {
+  public data object Characteristic : SearchParam<Group, CodeableConcept> {
     public override val paramName: String = "characteristic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +70,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
       resource.characteristic.map { it.code }
   }
 
-  public data object CharacteristicValue : GroupSearchParam<Group.Characteristic>() {
+  public data object CharacteristicValue : SearchParam<Group, Group.Characteristic> {
     public override val paramName: String = "characteristic-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -71,7 +83,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
       resource.characteristic
   }
 
-  public data object Code : GroupSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<Group, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -84,7 +96,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Exclude : GroupSearchParam<Boolean>() {
+  public data object Exclude : SearchParam<Group, Boolean> {
     public override val paramName: String = "exclude"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -97,7 +109,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
       resource.characteristic.map { it.exclude }
   }
 
-  public data object Identifier : GroupSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<Group, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -110,7 +122,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object ManagingEntity : GroupSearchParam<Reference>() {
+  public data object ManagingEntity : SearchParam<Group, Reference> {
     public override val paramName: String = "managing-entity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -124,7 +136,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
       listOfNotNull(resource.managingEntity)
   }
 
-  public data object Member : GroupSearchParam<Reference>() {
+  public data object Member : SearchParam<Group, Reference> {
     public override val paramName: String = "member"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -147,7 +159,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
       resource.member.map { it.entity }
   }
 
-  public data object Type : GroupSearchParam<Any>() {
+  public data object Type : SearchParam<Group, Any> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -159,7 +171,7 @@ public sealed class GroupSearchParam<T> : SearchParam {
     public override fun extract(resource: Group): List<Any> = listOf(resource.type)
   }
 
-  public data object Value : GroupSearchParam<CodeableConcept>() {
+  public data object Value : SearchParam<Group, CodeableConcept> {
     public override val paramName: String = "value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -172,22 +184,5 @@ public sealed class GroupSearchParam<T> : SearchParam {
       resource.characteristic.mapNotNull {
         (it.value as? Group.Characteristic.Value.CodeableConcept)?.value
       }
-  }
-
-  public companion object {
-    /** All search parameters for the Group resource type. */
-    public val ALL: List<GroupSearchParam<*>> =
-      listOf(
-        Actual,
-        Characteristic,
-        CharacteristicValue,
-        Code,
-        Exclude,
-        Identifier,
-        ManagingEntity,
-        Member,
-        Type,
-        Value,
-      )
   }
 }

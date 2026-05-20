@@ -31,11 +31,25 @@ import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
 
 /** Search parameters for the [R4List] resource type. */
-public sealed class ListSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: R4List): CollectionsList<T>
+public object ListSearchParam {
+  /** All search parameters for the List resource type. */
+  public val ALL: CollectionsList<SearchParam<R4List, *>> =
+    listOf(
+      Code,
+      Date,
+      EmptyReason,
+      Encounter,
+      Identifier,
+      Item,
+      Notes,
+      Patient,
+      Source,
+      Status,
+      Subject,
+      Title,
+    )
 
-  public data object Code : ListSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<R4List, CodeableConcept> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -48,7 +62,7 @@ public sealed class ListSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Date : ListSearchParam<DateTime>() {
+  public data object Date : SearchParam<R4List, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -61,7 +75,7 @@ public sealed class ListSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object EmptyReason : ListSearchParam<CodeableConcept>() {
+  public data object EmptyReason : SearchParam<R4List, CodeableConcept> {
     public override val paramName: KotlinString = "empty-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,7 +88,7 @@ public sealed class ListSearchParam<T> : SearchParam {
       listOfNotNull(resource.emptyReason)
   }
 
-  public data object Encounter : ListSearchParam<Reference>() {
+  public data object Encounter : SearchParam<R4List, Reference> {
     public override val paramName: KotlinString = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -87,7 +101,7 @@ public sealed class ListSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : ListSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<R4List, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -101,7 +115,7 @@ public sealed class ListSearchParam<T> : SearchParam {
     ): CollectionsList<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Item : ListSearchParam<Reference>() {
+  public data object Item : SearchParam<R4List, Reference> {
     public override val paramName: KotlinString = "item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -261,7 +275,7 @@ public sealed class ListSearchParam<T> : SearchParam {
       resource.entry.map { it.item }
   }
 
-  public data object Notes : ListSearchParam<Markdown>() {
+  public data object Notes : SearchParam<R4List, Markdown> {
     public override val paramName: KotlinString = "notes"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -274,7 +288,7 @@ public sealed class ListSearchParam<T> : SearchParam {
       resource.note.map { it.text }
   }
 
-  public data object Patient : ListSearchParam<Reference>() {
+  public data object Patient : SearchParam<R4List, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -289,7 +303,7 @@ public sealed class ListSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Source : ListSearchParam<Reference>() {
+  public data object Source : SearchParam<R4List, Reference> {
     public override val paramName: KotlinString = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -303,7 +317,7 @@ public sealed class ListSearchParam<T> : SearchParam {
       listOfNotNull(resource.source)
   }
 
-  public data object Status : ListSearchParam<Any>() {
+  public data object Status : SearchParam<R4List, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -315,7 +329,7 @@ public sealed class ListSearchParam<T> : SearchParam {
     public override fun extract(resource: R4List): CollectionsList<Any> = listOf(resource.status)
   }
 
-  public data object Subject : ListSearchParam<Reference>() {
+  public data object Subject : SearchParam<R4List, Reference> {
     public override val paramName: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -329,7 +343,7 @@ public sealed class ListSearchParam<T> : SearchParam {
       listOfNotNull(resource.subject)
   }
 
-  public data object Title : ListSearchParam<R4String>() {
+  public data object Title : SearchParam<R4List, R4String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -340,24 +354,5 @@ public sealed class ListSearchParam<T> : SearchParam {
 
     public override fun extract(resource: R4List): CollectionsList<R4String> =
       listOfNotNull(resource.title)
-  }
-
-  public companion object {
-    /** All search parameters for the List resource type. */
-    public val ALL: CollectionsList<ListSearchParam<*>> =
-      listOf(
-        Code,
-        Date,
-        EmptyReason,
-        Encounter,
-        Identifier,
-        Item,
-        Notes,
-        Patient,
-        Source,
-        Status,
-        Subject,
-        Title,
-      )
   }
 }

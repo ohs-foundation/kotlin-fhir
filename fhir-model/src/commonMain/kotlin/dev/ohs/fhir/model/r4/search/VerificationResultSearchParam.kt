@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [VerificationResult] resource type. */
-public sealed class VerificationResultSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: VerificationResult): List<T>
+public object VerificationResultSearchParam {
+  /** All search parameters for the VerificationResult resource type. */
+  public val ALL: List<SearchParam<VerificationResult, *>> = listOf(Target)
 
-  public data object Target : VerificationResultSearchParam<Reference>() {
+  public data object Target : SearchParam<VerificationResult, Reference> {
     public override val paramName: String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -187,10 +187,5 @@ public sealed class VerificationResultSearchParam<T> : SearchParam {
       )
 
     public override fun extract(resource: VerificationResult): List<Reference> = resource.target
-  }
-
-  public companion object {
-    /** All search parameters for the VerificationResult resource type. */
-    public val ALL: List<VerificationResultSearchParam<*>> = listOf(Target)
   }
 }

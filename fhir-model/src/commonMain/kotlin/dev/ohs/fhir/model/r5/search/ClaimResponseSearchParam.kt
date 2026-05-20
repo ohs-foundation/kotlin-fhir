@@ -30,11 +30,24 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ClaimResponse] resource type. */
-public sealed class ClaimResponseSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ClaimResponse): List<T>
+public object ClaimResponseSearchParam {
+  /** All search parameters for the ClaimResponse resource type. */
+  public val ALL: List<SearchParam<ClaimResponse, *>> =
+    listOf(
+      Created,
+      Disposition,
+      Identifier,
+      Insurer,
+      Outcome,
+      Patient,
+      PaymentDate,
+      Request,
+      Requestor,
+      Status,
+      Use,
+    )
 
-  public data object Created : ClaimResponseSearchParam<DateTime>() {
+  public data object Created : SearchParam<ClaimResponse, DateTime> {
     public override val paramName: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -46,7 +59,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
     public override fun extract(resource: ClaimResponse): List<DateTime> = listOf(resource.created)
   }
 
-  public data object Disposition : ClaimResponseSearchParam<R5String>() {
+  public data object Disposition : SearchParam<ClaimResponse, R5String> {
     public override val paramName: KotlinString = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -59,7 +72,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.disposition)
   }
 
-  public data object Identifier : ClaimResponseSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<ClaimResponse, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -72,7 +85,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Insurer : ClaimResponseSearchParam<Reference>() {
+  public data object Insurer : SearchParam<ClaimResponse, Reference> {
     public override val paramName: KotlinString = "insurer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -85,7 +98,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.insurer)
   }
 
-  public data object Outcome : ClaimResponseSearchParam<Any>() {
+  public data object Outcome : SearchParam<ClaimResponse, Any> {
     public override val paramName: KotlinString = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -97,7 +110,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
     public override fun extract(resource: ClaimResponse): List<Any> = listOf(resource.outcome)
   }
 
-  public data object Patient : ClaimResponseSearchParam<Reference>() {
+  public data object Patient : SearchParam<ClaimResponse, Reference> {
     public override val paramName: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -109,7 +122,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
     public override fun extract(resource: ClaimResponse): List<Reference> = listOf(resource.patient)
   }
 
-  public data object PaymentDate : ClaimResponseSearchParam<Date>() {
+  public data object PaymentDate : SearchParam<ClaimResponse, Date> {
     public override val paramName: KotlinString = "payment-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -122,7 +135,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.payment?.date)
   }
 
-  public data object Request : ClaimResponseSearchParam<Reference>() {
+  public data object Request : SearchParam<ClaimResponse, Reference> {
     public override val paramName: KotlinString = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -135,7 +148,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.request)
   }
 
-  public data object Requestor : ClaimResponseSearchParam<Reference>() {
+  public data object Requestor : SearchParam<ClaimResponse, Reference> {
     public override val paramName: KotlinString = "requestor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -149,7 +162,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.requestor)
   }
 
-  public data object Status : ClaimResponseSearchParam<Any>() {
+  public data object Status : SearchParam<ClaimResponse, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -161,7 +174,7 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
     public override fun extract(resource: ClaimResponse): List<Any> = listOf(resource.status)
   }
 
-  public data object Use : ClaimResponseSearchParam<Any>() {
+  public data object Use : SearchParam<ClaimResponse, Any> {
     public override val paramName: KotlinString = "use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -171,23 +184,5 @@ public sealed class ClaimResponseSearchParam<T> : SearchParam {
     public override val target: List<KotlinString> = emptyList()
 
     public override fun extract(resource: ClaimResponse): List<Any> = listOf(resource.use)
-  }
-
-  public companion object {
-    /** All search parameters for the ClaimResponse resource type. */
-    public val ALL: List<ClaimResponseSearchParam<*>> =
-      listOf(
-        Created,
-        Disposition,
-        Identifier,
-        Insurer,
-        Outcome,
-        Patient,
-        PaymentDate,
-        Request,
-        Requestor,
-        Status,
-        Use,
-      )
   }
 }

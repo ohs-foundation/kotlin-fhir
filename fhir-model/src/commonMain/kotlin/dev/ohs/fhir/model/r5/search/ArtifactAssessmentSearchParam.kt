@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ArtifactAssessment] resource type. */
-public sealed class ArtifactAssessmentSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ArtifactAssessment): List<T>
+public object ArtifactAssessmentSearchParam {
+  /** All search parameters for the ArtifactAssessment resource type. */
+  public val ALL: List<SearchParam<ArtifactAssessment, *>> = listOf(Date, Identifier)
 
-  public data object Date : ArtifactAssessmentSearchParam<DateTime>() {
+  public data object Date : SearchParam<ArtifactAssessment, DateTime> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -44,7 +44,7 @@ public sealed class ArtifactAssessmentSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ArtifactAssessmentSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<ArtifactAssessment, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -56,10 +56,5 @@ public sealed class ArtifactAssessmentSearchParam<T> : SearchParam {
     public override fun extract(
       resource: ArtifactAssessment
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public companion object {
-    /** All search parameters for the ArtifactAssessment resource type. */
-    public val ALL: List<ArtifactAssessmentSearchParam<*>> = listOf(Date, Identifier)
   }
 }

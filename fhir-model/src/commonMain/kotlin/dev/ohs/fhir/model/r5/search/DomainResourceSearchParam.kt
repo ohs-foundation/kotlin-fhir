@@ -26,11 +26,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DomainResource] resource type. */
-public sealed class DomainResourceSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DomainResource): List<T>
+public object DomainResourceSearchParam {
+  /** All search parameters for the DomainResource resource type. */
+  public val ALL: List<SearchParam<DomainResource, *>> = listOf(_text)
 
-  public data object _text : DomainResourceSearchParam<Any>() {
+  public data object _text : SearchParam<DomainResource, Any> {
     public override val paramName: String = "_text"
 
     public override val type: SearchParamType = SearchParamType.fromCode("special")
@@ -40,10 +40,5 @@ public sealed class DomainResourceSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: DomainResource): List<Any> = emptyList()
-  }
-
-  public companion object {
-    /** All search parameters for the DomainResource resource type. */
-    public val ALL: List<DomainResourceSearchParam<*>> = listOf(_text)
   }
 }

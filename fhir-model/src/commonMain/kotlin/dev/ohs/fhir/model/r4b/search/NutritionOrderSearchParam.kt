@@ -31,11 +31,25 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [NutritionOrder] resource type. */
-public sealed class NutritionOrderSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: NutritionOrder): List<T>
+public object NutritionOrderSearchParam {
+  /** All search parameters for the NutritionOrder resource type. */
+  public val ALL: List<SearchParam<NutritionOrder, *>> =
+    listOf(
+      Additive,
+      Datetime,
+      Encounter,
+      Formula,
+      Identifier,
+      InstantiatesCanonical,
+      InstantiatesUri,
+      Oraldiet,
+      Patient,
+      Provider,
+      Status,
+      Supplement,
+    )
 
-  public data object Additive : NutritionOrderSearchParam<CodeableConcept>() {
+  public data object Additive : SearchParam<NutritionOrder, CodeableConcept> {
     public override val paramName: String = "additive"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -48,7 +62,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
       listOfNotNull(resource.enteralFormula?.additiveType)
   }
 
-  public data object Datetime : NutritionOrderSearchParam<DateTime>() {
+  public data object Datetime : SearchParam<NutritionOrder, DateTime> {
     public override val paramName: String = "datetime"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -61,7 +75,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
       listOf(resource.dateTime)
   }
 
-  public data object Encounter : NutritionOrderSearchParam<Reference>() {
+  public data object Encounter : SearchParam<NutritionOrder, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -74,7 +88,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Formula : NutritionOrderSearchParam<CodeableConcept>() {
+  public data object Formula : SearchParam<NutritionOrder, CodeableConcept> {
     public override val paramName: String = "formula"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -87,7 +101,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
       listOfNotNull(resource.enteralFormula?.baseFormulaType)
   }
 
-  public data object Identifier : NutritionOrderSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<NutritionOrder, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -100,7 +114,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object InstantiatesCanonical : NutritionOrderSearchParam<Canonical>() {
+  public data object InstantiatesCanonical : SearchParam<NutritionOrder, Canonical> {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -113,7 +127,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
       resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : NutritionOrderSearchParam<Uri>() {
+  public data object InstantiatesUri : SearchParam<NutritionOrder, Uri> {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -125,7 +139,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
     public override fun extract(resource: NutritionOrder): List<Uri> = resource.instantiatesUri
   }
 
-  public data object Oraldiet : NutritionOrderSearchParam<CodeableConcept>() {
+  public data object Oraldiet : SearchParam<NutritionOrder, CodeableConcept> {
     public override val paramName: String = "oraldiet"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -138,7 +152,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
       resource.oralDiet?.type ?: emptyList()
   }
 
-  public data object Patient : NutritionOrderSearchParam<Reference>() {
+  public data object Patient : SearchParam<NutritionOrder, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -151,7 +165,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
       listOf(resource.patient)
   }
 
-  public data object Provider : NutritionOrderSearchParam<Reference>() {
+  public data object Provider : SearchParam<NutritionOrder, Reference> {
     public override val paramName: String = "provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -164,7 +178,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
       listOfNotNull(resource.orderer)
   }
 
-  public data object Status : NutritionOrderSearchParam<Any>() {
+  public data object Status : SearchParam<NutritionOrder, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -176,7 +190,7 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
     public override fun extract(resource: NutritionOrder): List<Any> = listOf(resource.status)
   }
 
-  public data object Supplement : NutritionOrderSearchParam<CodeableConcept>() {
+  public data object Supplement : SearchParam<NutritionOrder, CodeableConcept> {
     public override val paramName: String = "supplement"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -187,24 +201,5 @@ public sealed class NutritionOrderSearchParam<T> : SearchParam {
 
     public override fun extract(resource: NutritionOrder): List<CodeableConcept> =
       resource.supplement.mapNotNull { it.type }
-  }
-
-  public companion object {
-    /** All search parameters for the NutritionOrder resource type. */
-    public val ALL: List<NutritionOrderSearchParam<*>> =
-      listOf(
-        Additive,
-        Datetime,
-        Encounter,
-        Formula,
-        Identifier,
-        InstantiatesCanonical,
-        InstantiatesUri,
-        Oraldiet,
-        Patient,
-        Provider,
-        Status,
-        Supplement,
-      )
   }
 }

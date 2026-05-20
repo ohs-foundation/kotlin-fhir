@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [AppointmentResponse] resource type. */
-public sealed class AppointmentResponseSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: AppointmentResponse): List<T>
+public object AppointmentResponseSearchParam {
+  /** All search parameters for the AppointmentResponse resource type. */
+  public val ALL: List<SearchParam<AppointmentResponse, *>> =
+    listOf(Actor, Appointment, Identifier, Location, PartStatus, Patient, Practitioner)
 
-  public data object Actor : AppointmentResponseSearchParam<Reference>() {
+  public data object Actor : SearchParam<AppointmentResponse, Reference> {
     public override val paramName: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -53,7 +54,7 @@ public sealed class AppointmentResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.actor)
   }
 
-  public data object Appointment : AppointmentResponseSearchParam<Reference>() {
+  public data object Appointment : SearchParam<AppointmentResponse, Reference> {
     public override val paramName: String = "appointment"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -67,7 +68,7 @@ public sealed class AppointmentResponseSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    AppointmentResponseSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+    SearchParam<AppointmentResponse, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -81,7 +82,7 @@ public sealed class AppointmentResponseSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
   }
 
-  public data object Location : AppointmentResponseSearchParam<Reference>() {
+  public data object Location : SearchParam<AppointmentResponse, Reference> {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -97,7 +98,7 @@ public sealed class AppointmentResponseSearchParam<T> : SearchParam {
       }
   }
 
-  public data object PartStatus : AppointmentResponseSearchParam<Any>() {
+  public data object PartStatus : SearchParam<AppointmentResponse, Any> {
     public override val paramName: String = "part-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -110,7 +111,7 @@ public sealed class AppointmentResponseSearchParam<T> : SearchParam {
       listOf(resource.participantStatus)
   }
 
-  public data object Patient : AppointmentResponseSearchParam<Reference>() {
+  public data object Patient : SearchParam<AppointmentResponse, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -125,7 +126,7 @@ public sealed class AppointmentResponseSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Practitioner : AppointmentResponseSearchParam<Reference>() {
+  public data object Practitioner : SearchParam<AppointmentResponse, Reference> {
     public override val paramName: String = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -139,11 +140,5 @@ public sealed class AppointmentResponseSearchParam<T> : SearchParam {
       listOfNotNull(resource.actor).filter {
         it.reference?.value?.toString()?.contains("Practitioner/") == true
       }
-  }
-
-  public companion object {
-    /** All search parameters for the AppointmentResponse resource type. */
-    public val ALL: List<AppointmentResponseSearchParam<*>> =
-      listOf(Actor, Appointment, Identifier, Location, PartStatus, Patient, Practitioner)
   }
 }

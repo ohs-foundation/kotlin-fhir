@@ -30,11 +30,26 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Invoice] resource type. */
-public sealed class InvoiceSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Invoice): List<T>
+public object InvoiceSearchParam {
+  /** All search parameters for the Invoice resource type. */
+  public val ALL: List<SearchParam<Invoice, *>> =
+    listOf(
+      Account,
+      Date,
+      Identifier,
+      Issuer,
+      Participant,
+      ParticipantRole,
+      Patient,
+      Recipient,
+      Status,
+      Subject,
+      Totalgross,
+      Totalnet,
+      Type,
+    )
 
-  public data object Account : InvoiceSearchParam<Reference>() {
+  public data object Account : SearchParam<Invoice, Reference> {
     public override val paramName: String = "account"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -47,7 +62,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
       listOfNotNull(resource.account)
   }
 
-  public data object Date : InvoiceSearchParam<DateTime>() {
+  public data object Date : SearchParam<Invoice, DateTime> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -59,7 +74,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
     public override fun extract(resource: Invoice): List<DateTime> = listOfNotNull(resource.date)
   }
 
-  public data object Identifier : InvoiceSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Invoice, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -72,7 +87,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Issuer : InvoiceSearchParam<Reference>() {
+  public data object Issuer : SearchParam<Invoice, Reference> {
     public override val paramName: String = "issuer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -84,7 +99,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
     public override fun extract(resource: Invoice): List<Reference> = listOfNotNull(resource.issuer)
   }
 
-  public data object Participant : InvoiceSearchParam<Reference>() {
+  public data object Participant : SearchParam<Invoice, Reference> {
     public override val paramName: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -105,7 +120,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
       resource.participant.map { it.actor }
   }
 
-  public data object ParticipantRole : InvoiceSearchParam<CodeableConcept>() {
+  public data object ParticipantRole : SearchParam<Invoice, CodeableConcept> {
     public override val paramName: String = "participant-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -118,7 +133,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
       resource.participant.mapNotNull { it.role }
   }
 
-  public data object Patient : InvoiceSearchParam<Reference>() {
+  public data object Patient : SearchParam<Invoice, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -133,7 +148,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Recipient : InvoiceSearchParam<Reference>() {
+  public data object Recipient : SearchParam<Invoice, Reference> {
     public override val paramName: String = "recipient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -146,7 +161,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
       listOfNotNull(resource.recipient)
   }
 
-  public data object Status : InvoiceSearchParam<Any>() {
+  public data object Status : SearchParam<Invoice, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -158,7 +173,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
     public override fun extract(resource: Invoice): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : InvoiceSearchParam<Reference>() {
+  public data object Subject : SearchParam<Invoice, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -171,7 +186,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
       listOfNotNull(resource.subject)
   }
 
-  public data object Totalgross : InvoiceSearchParam<Money>() {
+  public data object Totalgross : SearchParam<Invoice, Money> {
     public override val paramName: String = "totalgross"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -183,7 +198,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
     public override fun extract(resource: Invoice): List<Money> = listOfNotNull(resource.totalGross)
   }
 
-  public data object Totalnet : InvoiceSearchParam<Money>() {
+  public data object Totalnet : SearchParam<Invoice, Money> {
     public override val paramName: String = "totalnet"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -195,7 +210,7 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
     public override fun extract(resource: Invoice): List<Money> = listOfNotNull(resource.totalNet)
   }
 
-  public data object Type : InvoiceSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<Invoice, CodeableConcept> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -206,25 +221,5 @@ public sealed class InvoiceSearchParam<T> : SearchParam {
 
     public override fun extract(resource: Invoice): List<CodeableConcept> =
       listOfNotNull(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the Invoice resource type. */
-    public val ALL: List<InvoiceSearchParam<*>> =
-      listOf(
-        Account,
-        Date,
-        Identifier,
-        Issuer,
-        Participant,
-        ParticipantRole,
-        Patient,
-        Recipient,
-        Status,
-        Subject,
-        Totalgross,
-        Totalnet,
-        Type,
-      )
   }
 }

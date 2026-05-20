@@ -27,11 +27,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Bundle] resource type. */
-public sealed class BundleSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Bundle): List<T>
+public object BundleSearchParam {
+  /** All search parameters for the Bundle resource type. */
+  public val ALL: List<SearchParam<Bundle, *>> =
+    listOf(Composition, Identifier, Message, Timestamp, Type)
 
-  public data object Composition : BundleSearchParam<Any>() {
+  public data object Composition : SearchParam<Bundle, Any> {
     public override val paramName: String = "composition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -43,7 +44,7 @@ public sealed class BundleSearchParam<T> : SearchParam {
     public override fun extract(resource: Bundle): List<Any> = emptyList()
   }
 
-  public data object Identifier : BundleSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<Bundle, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -56,7 +57,7 @@ public sealed class BundleSearchParam<T> : SearchParam {
       listOfNotNull(resource.identifier)
   }
 
-  public data object Message : BundleSearchParam<Any>() {
+  public data object Message : SearchParam<Bundle, Any> {
     public override val paramName: String = "message"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -68,7 +69,7 @@ public sealed class BundleSearchParam<T> : SearchParam {
     public override fun extract(resource: Bundle): List<Any> = emptyList()
   }
 
-  public data object Timestamp : BundleSearchParam<Instant>() {
+  public data object Timestamp : SearchParam<Bundle, Instant> {
     public override val paramName: String = "timestamp"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -80,7 +81,7 @@ public sealed class BundleSearchParam<T> : SearchParam {
     public override fun extract(resource: Bundle): List<Instant> = listOfNotNull(resource.timestamp)
   }
 
-  public data object Type : BundleSearchParam<Any>() {
+  public data object Type : SearchParam<Bundle, Any> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -90,11 +91,5 @@ public sealed class BundleSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: Bundle): List<Any> = listOf(resource.type)
-  }
-
-  public companion object {
-    /** All search parameters for the Bundle resource type. */
-    public val ALL: List<BundleSearchParam<*>> =
-      listOf(Composition, Identifier, Message, Timestamp, Type)
   }
 }

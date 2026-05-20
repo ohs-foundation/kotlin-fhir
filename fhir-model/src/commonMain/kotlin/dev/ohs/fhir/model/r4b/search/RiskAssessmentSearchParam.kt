@@ -28,11 +28,23 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [RiskAssessment] resource type. */
-public sealed class RiskAssessmentSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: RiskAssessment): List<T>
+public object RiskAssessmentSearchParam {
+  /** All search parameters for the RiskAssessment resource type. */
+  public val ALL: List<SearchParam<RiskAssessment, *>> =
+    listOf(
+      Condition,
+      Date,
+      Encounter,
+      Identifier,
+      Method,
+      Patient,
+      Performer,
+      Probability,
+      Risk,
+      Subject,
+    )
 
-  public data object Condition : RiskAssessmentSearchParam<Reference>() {
+  public data object Condition : SearchParam<RiskAssessment, Reference> {
     public override val paramName: String = "condition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -45,7 +57,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
       listOfNotNull(resource.condition)
   }
 
-  public data object Date : RiskAssessmentSearchParam<DateTime>() {
+  public data object Date : SearchParam<RiskAssessment, DateTime> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -58,7 +70,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
       listOfNotNull((resource.occurrence as? RiskAssessment.Occurrence.DateTime)?.value)
   }
 
-  public data object Encounter : RiskAssessmentSearchParam<Reference>() {
+  public data object Encounter : SearchParam<RiskAssessment, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -71,7 +83,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : RiskAssessmentSearchParam<dev.ohs.fhir.model.r4b.Identifier>() {
+  public data object Identifier : SearchParam<RiskAssessment, dev.ohs.fhir.model.r4b.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -84,7 +96,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Method : RiskAssessmentSearchParam<CodeableConcept>() {
+  public data object Method : SearchParam<RiskAssessment, CodeableConcept> {
     public override val paramName: String = "method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -97,7 +109,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
       listOfNotNull(resource.method)
   }
 
-  public data object Patient : RiskAssessmentSearchParam<Reference>() {
+  public data object Patient : SearchParam<RiskAssessment, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -112,7 +124,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Performer : RiskAssessmentSearchParam<Reference>() {
+  public data object Performer : SearchParam<RiskAssessment, Reference> {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -126,7 +138,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
   }
 
   public data object Probability :
-    RiskAssessmentSearchParam<RiskAssessment.Prediction.Probability>() {
+    SearchParam<RiskAssessment, RiskAssessment.Prediction.Probability> {
     public override val paramName: String = "probability"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
@@ -141,7 +153,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
       resource.prediction.mapNotNull { it.probability }
   }
 
-  public data object Risk : RiskAssessmentSearchParam<CodeableConcept>() {
+  public data object Risk : SearchParam<RiskAssessment, CodeableConcept> {
     public override val paramName: String = "risk"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -154,7 +166,7 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
       resource.prediction.mapNotNull { it.qualitativeRisk }
   }
 
-  public data object Subject : RiskAssessmentSearchParam<Reference>() {
+  public data object Subject : SearchParam<RiskAssessment, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -165,22 +177,5 @@ public sealed class RiskAssessmentSearchParam<T> : SearchParam {
 
     public override fun extract(resource: RiskAssessment): List<Reference> =
       listOf(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the RiskAssessment resource type. */
-    public val ALL: List<RiskAssessmentSearchParam<*>> =
-      listOf(
-        Condition,
-        Date,
-        Encounter,
-        Identifier,
-        Method,
-        Patient,
-        Performer,
-        Probability,
-        Risk,
-        Subject,
-      )
   }
 }

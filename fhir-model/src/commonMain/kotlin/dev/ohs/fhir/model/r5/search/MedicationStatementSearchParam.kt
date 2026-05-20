@@ -28,11 +28,24 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MedicationStatement] resource type. */
-public sealed class MedicationStatementSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MedicationStatement): List<T>
+public object MedicationStatementSearchParam {
+  /** All search parameters for the MedicationStatement resource type. */
+  public val ALL: List<SearchParam<MedicationStatement, *>> =
+    listOf(
+      Adherence,
+      Category,
+      Code,
+      Effective,
+      Encounter,
+      Identifier,
+      Medication,
+      Patient,
+      Source,
+      Status,
+      Subject,
+    )
 
-  public data object Adherence : MedicationStatementSearchParam<CodeableConcept>() {
+  public data object Adherence : SearchParam<MedicationStatement, CodeableConcept> {
     public override val paramName: String = "adherence"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +58,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
       listOfNotNull(resource.adherence?.code)
   }
 
-  public data object Category : MedicationStatementSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<MedicationStatement, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +71,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
       resource.category
   }
 
-  public data object Code : MedicationStatementSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<MedicationStatement, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -71,7 +84,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
       listOfNotNull(resource.medication.concept)
   }
 
-  public data object Effective : MedicationStatementSearchParam<Any>() {
+  public data object Effective : SearchParam<MedicationStatement, Any> {
     public override val paramName: String = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -83,7 +96,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
     public override fun extract(resource: MedicationStatement): List<Any> = emptyList()
   }
 
-  public data object Encounter : MedicationStatementSearchParam<Reference>() {
+  public data object Encounter : SearchParam<MedicationStatement, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -97,7 +110,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    MedicationStatementSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<MedicationStatement, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -111,7 +124,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Medication : MedicationStatementSearchParam<Reference>() {
+  public data object Medication : SearchParam<MedicationStatement, Reference> {
     public override val paramName: String = "medication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -124,7 +137,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
       listOfNotNull(resource.medication.reference)
   }
 
-  public data object Patient : MedicationStatementSearchParam<Reference>() {
+  public data object Patient : SearchParam<MedicationStatement, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -140,7 +153,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Source : MedicationStatementSearchParam<Reference>() {
+  public data object Source : SearchParam<MedicationStatement, Reference> {
     public override val paramName: String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -154,7 +167,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
       resource.informationSource
   }
 
-  public data object Status : MedicationStatementSearchParam<Any>() {
+  public data object Status : SearchParam<MedicationStatement, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -166,7 +179,7 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
     public override fun extract(resource: MedicationStatement): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : MedicationStatementSearchParam<Reference>() {
+  public data object Subject : SearchParam<MedicationStatement, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -177,23 +190,5 @@ public sealed class MedicationStatementSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MedicationStatement): List<Reference> =
       listOf(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the MedicationStatement resource type. */
-    public val ALL: List<MedicationStatementSearchParam<*>> =
-      listOf(
-        Adherence,
-        Category,
-        Code,
-        Effective,
-        Encounter,
-        Identifier,
-        Medication,
-        Patient,
-        Source,
-        Status,
-        Subject,
-      )
   }
 }

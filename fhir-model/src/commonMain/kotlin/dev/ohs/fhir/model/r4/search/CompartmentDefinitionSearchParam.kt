@@ -34,11 +34,27 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [CompartmentDefinition] resource type. */
-public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: CompartmentDefinition): List<T>
+public object CompartmentDefinitionSearchParam {
+  /** All search parameters for the CompartmentDefinition resource type. */
+  public val ALL: List<SearchParam<CompartmentDefinition, *>> =
+    listOf(
+      Code,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Name,
+      Publisher,
+      Resource,
+      Status,
+      Url,
+      Version,
+    )
 
-  public data object Code : CompartmentDefinitionSearchParam<Any>() {
+  public data object Code : SearchParam<CompartmentDefinition, Any> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,7 +66,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: CompartmentDefinition): List<Any> = listOf(resource.code)
   }
 
-  public data object Context : CompartmentDefinitionSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<CompartmentDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -64,7 +80,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : CompartmentDefinitionSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<CompartmentDefinition, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -78,7 +94,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : CompartmentDefinitionSearchParam<Coding>() {
+  public data object ContextType : SearchParam<CompartmentDefinition, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -91,7 +107,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : CompartmentDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<CompartmentDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -104,7 +120,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object ContextTypeValue : CompartmentDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<CompartmentDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -117,7 +133,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object Date : CompartmentDefinitionSearchParam<DateTime>() {
+  public data object Date : SearchParam<CompartmentDefinition, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -130,7 +146,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Description : CompartmentDefinitionSearchParam<Markdown>() {
+  public data object Description : SearchParam<CompartmentDefinition, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -143,7 +159,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Name : CompartmentDefinitionSearchParam<R4String>() {
+  public data object Name : SearchParam<CompartmentDefinition, R4String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -156,7 +172,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       listOf(resource.name)
   }
 
-  public data object Publisher : CompartmentDefinitionSearchParam<R4String>() {
+  public data object Publisher : SearchParam<CompartmentDefinition, R4String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -169,7 +185,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Resource : CompartmentDefinitionSearchParam<Any>() {
+  public data object Resource : SearchParam<CompartmentDefinition, Any> {
     public override val paramName: KotlinString = "resource"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -182,7 +198,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       resource.resource.map { it.code }
   }
 
-  public data object Status : CompartmentDefinitionSearchParam<Any>() {
+  public data object Status : SearchParam<CompartmentDefinition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -195,7 +211,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
       listOf(resource.status)
   }
 
-  public data object Url : CompartmentDefinitionSearchParam<Uri>() {
+  public data object Url : SearchParam<CompartmentDefinition, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -207,7 +223,7 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: CompartmentDefinition): List<Uri> = listOf(resource.url)
   }
 
-  public data object Version : CompartmentDefinitionSearchParam<R4String>() {
+  public data object Version : SearchParam<CompartmentDefinition, R4String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -218,26 +234,5 @@ public sealed class CompartmentDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: CompartmentDefinition): List<R4String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the CompartmentDefinition resource type. */
-    public val ALL: List<CompartmentDefinitionSearchParam<*>> =
-      listOf(
-        Code,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Name,
-        Publisher,
-        Resource,
-        Status,
-        Url,
-        Version,
-      )
   }
 }

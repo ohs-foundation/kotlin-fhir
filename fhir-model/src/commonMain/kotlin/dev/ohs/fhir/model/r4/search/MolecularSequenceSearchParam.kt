@@ -29,11 +29,26 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [MolecularSequence] resource type. */
-public sealed class MolecularSequenceSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: MolecularSequence): List<T>
+public object MolecularSequenceSearchParam {
+  /** All search parameters for the MolecularSequence resource type. */
+  public val ALL: List<SearchParam<MolecularSequence, *>> =
+    listOf(
+      Chromosome,
+      ChromosomeVariantCoordinate,
+      ChromosomeWindowCoordinate,
+      Identifier,
+      Patient,
+      Referenceseqid,
+      ReferenceseqidVariantCoordinate,
+      ReferenceseqidWindowCoordinate,
+      Type,
+      VariantEnd,
+      VariantStart,
+      WindowEnd,
+      WindowStart,
+    )
 
-  public data object Chromosome : MolecularSequenceSearchParam<CodeableConcept>() {
+  public data object Chromosome : SearchParam<MolecularSequence, CodeableConcept> {
     public override val paramName: String = "chromosome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -47,7 +62,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
   }
 
   public data object ChromosomeVariantCoordinate :
-    MolecularSequenceSearchParam<MolecularSequence.Variant>() {
+    SearchParam<MolecularSequence, MolecularSequence.Variant> {
     public override val paramName: String = "chromosome-variant-coordinate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -61,7 +76,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
   }
 
   public data object ChromosomeWindowCoordinate :
-    MolecularSequenceSearchParam<MolecularSequence.ReferenceSeq>() {
+    SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> {
     public override val paramName: String = "chromosome-window-coordinate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -74,7 +89,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.referenceSeq)
   }
 
-  public data object Identifier : MolecularSequenceSearchParam<dev.ohs.fhir.model.r4.Identifier>() {
+  public data object Identifier : SearchParam<MolecularSequence, dev.ohs.fhir.model.r4.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -88,7 +103,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
   }
 
-  public data object Patient : MolecularSequenceSearchParam<Reference>() {
+  public data object Patient : SearchParam<MolecularSequence, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -101,7 +116,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.patient)
   }
 
-  public data object Referenceseqid : MolecularSequenceSearchParam<CodeableConcept>() {
+  public data object Referenceseqid : SearchParam<MolecularSequence, CodeableConcept> {
     public override val paramName: String = "referenceseqid"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -115,7 +130,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
   }
 
   public data object ReferenceseqidVariantCoordinate :
-    MolecularSequenceSearchParam<MolecularSequence.Variant>() {
+    SearchParam<MolecularSequence, MolecularSequence.Variant> {
     public override val paramName: String = "referenceseqid-variant-coordinate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -129,7 +144,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
   }
 
   public data object ReferenceseqidWindowCoordinate :
-    MolecularSequenceSearchParam<MolecularSequence.ReferenceSeq>() {
+    SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> {
     public override val paramName: String = "referenceseqid-window-coordinate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -142,7 +157,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.referenceSeq)
   }
 
-  public data object Type : MolecularSequenceSearchParam<Any>() {
+  public data object Type : SearchParam<MolecularSequence, Any> {
     public override val paramName: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -155,7 +170,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.type)
   }
 
-  public data object VariantEnd : MolecularSequenceSearchParam<Integer>() {
+  public data object VariantEnd : SearchParam<MolecularSequence, Integer> {
     public override val paramName: String = "variant-end"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
@@ -168,7 +183,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
       resource.variant.mapNotNull { it.end }
   }
 
-  public data object VariantStart : MolecularSequenceSearchParam<Integer>() {
+  public data object VariantStart : SearchParam<MolecularSequence, Integer> {
     public override val paramName: String = "variant-start"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
@@ -181,7 +196,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
       resource.variant.mapNotNull { it.start }
   }
 
-  public data object WindowEnd : MolecularSequenceSearchParam<Integer>() {
+  public data object WindowEnd : SearchParam<MolecularSequence, Integer> {
     public override val paramName: String = "window-end"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
@@ -194,7 +209,7 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
       listOfNotNull(resource.referenceSeq?.windowEnd)
   }
 
-  public data object WindowStart : MolecularSequenceSearchParam<Integer>() {
+  public data object WindowStart : SearchParam<MolecularSequence, Integer> {
     public override val paramName: String = "window-start"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
@@ -205,25 +220,5 @@ public sealed class MolecularSequenceSearchParam<T> : SearchParam {
 
     public override fun extract(resource: MolecularSequence): List<Integer> =
       listOfNotNull(resource.referenceSeq?.windowStart)
-  }
-
-  public companion object {
-    /** All search parameters for the MolecularSequence resource type. */
-    public val ALL: List<MolecularSequenceSearchParam<*>> =
-      listOf(
-        Chromosome,
-        ChromosomeVariantCoordinate,
-        ChromosomeWindowCoordinate,
-        Identifier,
-        Patient,
-        Referenceseqid,
-        ReferenceseqidVariantCoordinate,
-        ReferenceseqidWindowCoordinate,
-        Type,
-        VariantEnd,
-        VariantStart,
-        WindowEnd,
-        WindowStart,
-      )
   }
 }

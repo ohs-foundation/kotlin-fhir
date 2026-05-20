@@ -30,11 +30,30 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [Procedure] resource type. */
-public sealed class ProcedureSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: Procedure): List<T>
+public object ProcedureSearchParam {
+  /** All search parameters for the Procedure resource type. */
+  public val ALL: List<SearchParam<Procedure, *>> =
+    listOf(
+      BasedOn,
+      Category,
+      Code,
+      Date,
+      Encounter,
+      Identifier,
+      InstantiatesCanonical,
+      InstantiatesUri,
+      Location,
+      PartOf,
+      Patient,
+      Performer,
+      ReasonCode,
+      ReasonReference,
+      Report,
+      Status,
+      Subject,
+    )
 
-  public data object BasedOn : ProcedureSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<Procedure, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -46,7 +65,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
     public override fun extract(resource: Procedure): List<Reference> = resource.basedOn
   }
 
-  public data object Category : ProcedureSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<Procedure, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +77,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
     public override fun extract(resource: Procedure): List<CodeableConcept> = resource.category
   }
 
-  public data object Code : ProcedureSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<Procedure, CodeableConcept> {
     public override val paramName: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -71,7 +90,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       listOfNotNull(resource.code)
   }
 
-  public data object Date : ProcedureSearchParam<Any>() {
+  public data object Date : SearchParam<Procedure, Any> {
     public override val paramName: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -83,7 +102,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
     public override fun extract(resource: Procedure): List<Any> = emptyList()
   }
 
-  public data object Encounter : ProcedureSearchParam<Reference>() {
+  public data object Encounter : SearchParam<Procedure, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -96,7 +115,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : ProcedureSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<Procedure, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -109,7 +128,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object InstantiatesCanonical : ProcedureSearchParam<Canonical>() {
+  public data object InstantiatesCanonical : SearchParam<Procedure, Canonical> {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -129,7 +148,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : ProcedureSearchParam<Uri>() {
+  public data object InstantiatesUri : SearchParam<Procedure, Uri> {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -141,7 +160,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
     public override fun extract(resource: Procedure): List<Uri> = resource.instantiatesUri
   }
 
-  public data object Location : ProcedureSearchParam<Reference>() {
+  public data object Location : SearchParam<Procedure, Reference> {
     public override val paramName: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -154,7 +173,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       listOfNotNull(resource.location)
   }
 
-  public data object PartOf : ProcedureSearchParam<Reference>() {
+  public data object PartOf : SearchParam<Procedure, Reference> {
     public override val paramName: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -167,7 +186,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
     public override fun extract(resource: Procedure): List<Reference> = resource.partOf
   }
 
-  public data object Patient : ProcedureSearchParam<Reference>() {
+  public data object Patient : SearchParam<Procedure, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -182,7 +201,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Performer : ProcedureSearchParam<Reference>() {
+  public data object Performer : SearchParam<Procedure, Reference> {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -205,7 +224,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       resource.performer.map { it.actor }
   }
 
-  public data object ReasonCode : ProcedureSearchParam<CodeableConcept>() {
+  public data object ReasonCode : SearchParam<Procedure, CodeableConcept> {
     public override val paramName: String = "reason-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -218,7 +237,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       resource.reason.mapNotNull { it.concept }
   }
 
-  public data object ReasonReference : ProcedureSearchParam<Reference>() {
+  public data object ReasonReference : SearchParam<Procedure, Reference> {
     public override val paramName: String = "reason-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -232,7 +251,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       resource.reason.mapNotNull { it.reference }
   }
 
-  public data object Report : ProcedureSearchParam<Reference>() {
+  public data object Report : SearchParam<Procedure, Reference> {
     public override val paramName: String = "report"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -245,7 +264,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
     public override fun extract(resource: Procedure): List<Reference> = resource.report
   }
 
-  public data object Status : ProcedureSearchParam<Any>() {
+  public data object Status : SearchParam<Procedure, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -257,7 +276,7 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
     public override fun extract(resource: Procedure): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : ProcedureSearchParam<Reference>() {
+  public data object Subject : SearchParam<Procedure, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -268,29 +287,5 @@ public sealed class ProcedureSearchParam<T> : SearchParam {
       listOf("Device", "Organization", "Group", "Practitioner", "Location", "Patient")
 
     public override fun extract(resource: Procedure): List<Reference> = listOf(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the Procedure resource type. */
-    public val ALL: List<ProcedureSearchParam<*>> =
-      listOf(
-        BasedOn,
-        Category,
-        Code,
-        Date,
-        Encounter,
-        Identifier,
-        InstantiatesCanonical,
-        InstantiatesUri,
-        Location,
-        PartOf,
-        Patient,
-        Performer,
-        ReasonCode,
-        ReasonReference,
-        Report,
-        Status,
-        Subject,
-      )
   }
 }

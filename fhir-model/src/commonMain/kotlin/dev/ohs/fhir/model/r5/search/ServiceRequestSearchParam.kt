@@ -31,11 +31,36 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ServiceRequest] resource type. */
-public sealed class ServiceRequestSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ServiceRequest): List<T>
+public object ServiceRequestSearchParam {
+  /** All search parameters for the ServiceRequest resource type. */
+  public val ALL: List<SearchParam<ServiceRequest, *>> =
+    listOf(
+      Authored,
+      BasedOn,
+      BodySite,
+      BodyStructure,
+      Category,
+      CodeConcept,
+      CodeReference,
+      Encounter,
+      Identifier,
+      InstantiatesCanonical,
+      InstantiatesUri,
+      Intent,
+      Occurrence,
+      Patient,
+      Performer,
+      PerformerType,
+      Priority,
+      Replaces,
+      Requester,
+      Requisition,
+      Specimen,
+      Status,
+      Subject,
+    )
 
-  public data object Authored : ServiceRequestSearchParam<DateTime>() {
+  public data object Authored : SearchParam<ServiceRequest, DateTime> {
     public override val paramName: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -48,7 +73,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.authoredOn)
   }
 
-  public data object BasedOn : ServiceRequestSearchParam<Reference>() {
+  public data object BasedOn : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -61,7 +86,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<Reference> = resource.basedOn
   }
 
-  public data object BodySite : ServiceRequestSearchParam<CodeableConcept>() {
+  public data object BodySite : SearchParam<ServiceRequest, CodeableConcept> {
     public override val paramName: String = "body-site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -73,7 +98,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<CodeableConcept> = resource.bodySite
   }
 
-  public data object BodyStructure : ServiceRequestSearchParam<Reference>() {
+  public data object BodyStructure : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "body-structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -86,7 +111,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.bodyStructure)
   }
 
-  public data object Category : ServiceRequestSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<ServiceRequest, CodeableConcept> {
     public override val paramName: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -98,7 +123,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<CodeableConcept> = resource.category
   }
 
-  public data object CodeConcept : ServiceRequestSearchParam<CodeableConcept>() {
+  public data object CodeConcept : SearchParam<ServiceRequest, CodeableConcept> {
     public override val paramName: String = "code-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -111,7 +136,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.code?.concept)
   }
 
-  public data object CodeReference : ServiceRequestSearchParam<Reference>() {
+  public data object CodeReference : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "code-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -124,7 +149,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.code?.reference)
   }
 
-  public data object Encounter : ServiceRequestSearchParam<Reference>() {
+  public data object Encounter : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -137,7 +162,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.encounter)
   }
 
-  public data object Identifier : ServiceRequestSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<ServiceRequest, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -150,7 +175,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object InstantiatesCanonical : ServiceRequestSearchParam<Canonical>() {
+  public data object InstantiatesCanonical : SearchParam<ServiceRequest, Canonical> {
     public override val paramName: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -163,7 +188,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       resource.instantiatesCanonical
   }
 
-  public data object InstantiatesUri : ServiceRequestSearchParam<Uri>() {
+  public data object InstantiatesUri : SearchParam<ServiceRequest, Uri> {
     public override val paramName: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -175,7 +200,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<Uri> = resource.instantiatesUri
   }
 
-  public data object Intent : ServiceRequestSearchParam<Any>() {
+  public data object Intent : SearchParam<ServiceRequest, Any> {
     public override val paramName: String = "intent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -187,7 +212,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<Any> = listOf(resource.intent)
   }
 
-  public data object Occurrence : ServiceRequestSearchParam<Any>() {
+  public data object Occurrence : SearchParam<ServiceRequest, Any> {
     public override val paramName: String = "occurrence"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -199,7 +224,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<Any> = emptyList()
   }
 
-  public data object Patient : ServiceRequestSearchParam<Reference>() {
+  public data object Patient : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -214,7 +239,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       }
   }
 
-  public data object Performer : ServiceRequestSearchParam<Reference>() {
+  public data object Performer : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -236,7 +261,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<Reference> = resource.performer
   }
 
-  public data object PerformerType : ServiceRequestSearchParam<CodeableConcept>() {
+  public data object PerformerType : SearchParam<ServiceRequest, CodeableConcept> {
     public override val paramName: String = "performer-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -249,7 +274,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.performerType)
   }
 
-  public data object Priority : ServiceRequestSearchParam<Any>() {
+  public data object Priority : SearchParam<ServiceRequest, Any> {
     public override val paramName: String = "priority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -262,7 +287,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.priority)
   }
 
-  public data object Replaces : ServiceRequestSearchParam<Reference>() {
+  public data object Replaces : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "replaces"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -274,7 +299,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<Reference> = resource.replaces
   }
 
-  public data object Requester : ServiceRequestSearchParam<Reference>() {
+  public data object Requester : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "requester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -295,7 +320,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.requester)
   }
 
-  public data object Requisition : ServiceRequestSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Requisition : SearchParam<ServiceRequest, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "requisition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -308,7 +333,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
       listOfNotNull(resource.requisition)
   }
 
-  public data object Specimen : ServiceRequestSearchParam<Reference>() {
+  public data object Specimen : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "specimen"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -320,7 +345,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<Reference> = resource.specimen
   }
 
-  public data object Status : ServiceRequestSearchParam<Any>() {
+  public data object Status : SearchParam<ServiceRequest, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -332,7 +357,7 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
     public override fun extract(resource: ServiceRequest): List<Any> = listOf(resource.status)
   }
 
-  public data object Subject : ServiceRequestSearchParam<Reference>() {
+  public data object Subject : SearchParam<ServiceRequest, Reference> {
     public override val paramName: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -343,35 +368,5 @@ public sealed class ServiceRequestSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ServiceRequest): List<Reference> =
       listOf(resource.subject)
-  }
-
-  public companion object {
-    /** All search parameters for the ServiceRequest resource type. */
-    public val ALL: List<ServiceRequestSearchParam<*>> =
-      listOf(
-        Authored,
-        BasedOn,
-        BodySite,
-        BodyStructure,
-        Category,
-        CodeConcept,
-        CodeReference,
-        Encounter,
-        Identifier,
-        InstantiatesCanonical,
-        InstantiatesUri,
-        Intent,
-        Occurrence,
-        Patient,
-        Performer,
-        PerformerType,
-        Priority,
-        Replaces,
-        Requester,
-        Requisition,
-        Specimen,
-        Status,
-        Subject,
-      )
   }
 }

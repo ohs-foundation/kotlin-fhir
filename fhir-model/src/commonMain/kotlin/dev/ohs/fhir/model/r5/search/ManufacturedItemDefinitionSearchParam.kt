@@ -28,11 +28,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ManufacturedItemDefinition] resource type. */
-public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ManufacturedItemDefinition): List<T>
+public object ManufacturedItemDefinitionSearchParam {
+  /** All search parameters for the ManufacturedItemDefinition resource type. */
+  public val ALL: List<SearchParam<ManufacturedItemDefinition, *>> =
+    listOf(DoseForm, Identifier, Ingredient, Name, Status)
 
-  public data object DoseForm : ManufacturedItemDefinitionSearchParam<CodeableConcept>() {
+  public data object DoseForm : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "dose-form"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -46,7 +47,7 @@ public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ManufacturedItemDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<ManufacturedItemDefinition, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -60,7 +61,7 @@ public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Ingredient : ManufacturedItemDefinitionSearchParam<CodeableConcept>() {
+  public data object Ingredient : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -73,7 +74,7 @@ public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
       resource.ingredient
   }
 
-  public data object Name : ManufacturedItemDefinitionSearchParam<R5String>() {
+  public data object Name : SearchParam<ManufacturedItemDefinition, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -86,7 +87,7 @@ public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Status : ManufacturedItemDefinitionSearchParam<Any>() {
+  public data object Status : SearchParam<ManufacturedItemDefinition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -97,11 +98,5 @@ public sealed class ManufacturedItemDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ManufacturedItemDefinition): List<Any> =
       listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the ManufacturedItemDefinition resource type. */
-    public val ALL: List<ManufacturedItemDefinitionSearchParam<*>> =
-      listOf(DoseForm, Identifier, Ingredient, Name, Status)
   }
 }

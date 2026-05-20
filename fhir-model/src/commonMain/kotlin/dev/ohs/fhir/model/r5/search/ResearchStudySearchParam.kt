@@ -32,11 +32,38 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ResearchStudy] resource type. */
-public sealed class ResearchStudySearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ResearchStudy): List<T>
+public object ResearchStudySearchParam {
+  /** All search parameters for the ResearchStudy resource type. */
+  public val ALL: List<SearchParam<ResearchStudy, *>> =
+    listOf(
+      Classifier,
+      Condition,
+      Date,
+      Description,
+      Eligibility,
+      FocusCode,
+      FocusReference,
+      Identifier,
+      Keyword,
+      Name,
+      ObjectiveDescription,
+      ObjectiveType,
+      PartOf,
+      Phase,
+      ProgressStatusStateActual,
+      ProgressStatusStatePeriod,
+      ProgressStatusStatePeriodActual,
+      Protocol,
+      RecruitmentActual,
+      RecruitmentTarget,
+      Region,
+      Site,
+      Status,
+      StudyDesign,
+      Title,
+    )
 
-  public data object Classifier : ResearchStudySearchParam<CodeableConcept>() {
+  public data object Classifier : SearchParam<ResearchStudy, CodeableConcept> {
     public override val paramName: KotlinString = "classifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -49,7 +76,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       resource.classifier
   }
 
-  public data object Condition : ResearchStudySearchParam<CodeableConcept>() {
+  public data object Condition : SearchParam<ResearchStudy, CodeableConcept> {
     public override val paramName: KotlinString = "condition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -61,7 +88,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.condition
   }
 
-  public data object Date : ResearchStudySearchParam<Period>() {
+  public data object Date : SearchParam<ResearchStudy, Period> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -74,7 +101,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       listOfNotNull(resource.period)
   }
 
-  public data object Description : ResearchStudySearchParam<Markdown>() {
+  public data object Description : SearchParam<ResearchStudy, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -87,7 +114,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Eligibility : ResearchStudySearchParam<Reference>() {
+  public data object Eligibility : SearchParam<ResearchStudy, Reference> {
     public override val paramName: KotlinString = "eligibility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -100,7 +127,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       listOfNotNull(resource.recruitment?.eligibility)
   }
 
-  public data object FocusCode : ResearchStudySearchParam<CodeableConcept>() {
+  public data object FocusCode : SearchParam<ResearchStudy, CodeableConcept> {
     public override val paramName: KotlinString = "focus-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -113,7 +140,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       resource.focus.mapNotNull { it.concept }
   }
 
-  public data object FocusReference : ResearchStudySearchParam<Reference>() {
+  public data object FocusReference : SearchParam<ResearchStudy, Reference> {
     public override val paramName: KotlinString = "focus-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -127,7 +154,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       resource.focus.mapNotNull { it.reference }
   }
 
-  public data object Identifier : ResearchStudySearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<ResearchStudy, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -140,7 +167,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Keyword : ResearchStudySearchParam<CodeableConcept>() {
+  public data object Keyword : SearchParam<ResearchStudy, CodeableConcept> {
     public override val paramName: KotlinString = "keyword"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -152,7 +179,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.keyword
   }
 
-  public data object Name : ResearchStudySearchParam<R5String>() {
+  public data object Name : SearchParam<ResearchStudy, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -165,7 +192,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object ObjectiveDescription : ResearchStudySearchParam<Markdown>() {
+  public data object ObjectiveDescription : SearchParam<ResearchStudy, Markdown> {
     public override val paramName: KotlinString = "objective-description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -178,7 +205,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       resource.objective.mapNotNull { it.description }
   }
 
-  public data object ObjectiveType : ResearchStudySearchParam<CodeableConcept>() {
+  public data object ObjectiveType : SearchParam<ResearchStudy, CodeableConcept> {
     public override val paramName: KotlinString = "objective-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -191,7 +218,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       resource.objective.mapNotNull { it.type }
   }
 
-  public data object PartOf : ResearchStudySearchParam<Reference>() {
+  public data object PartOf : SearchParam<ResearchStudy, Reference> {
     public override val paramName: KotlinString = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -203,7 +230,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ResearchStudy): List<Reference> = resource.partOf
   }
 
-  public data object Phase : ResearchStudySearchParam<CodeableConcept>() {
+  public data object Phase : SearchParam<ResearchStudy, CodeableConcept> {
     public override val paramName: KotlinString = "phase"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -217,7 +244,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
   }
 
   public data object ProgressStatusStateActual :
-    ResearchStudySearchParam<ResearchStudy.ProgressStatus>() {
+    SearchParam<ResearchStudy, ResearchStudy.ProgressStatus> {
     public override val paramName: KotlinString = "progress-status-state-actual"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -231,7 +258,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
   }
 
   public data object ProgressStatusStatePeriod :
-    ResearchStudySearchParam<ResearchStudy.ProgressStatus>() {
+    SearchParam<ResearchStudy, ResearchStudy.ProgressStatus> {
     public override val paramName: KotlinString = "progress-status-state-period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -245,7 +272,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
   }
 
   public data object ProgressStatusStatePeriodActual :
-    ResearchStudySearchParam<ResearchStudy.ProgressStatus>() {
+    SearchParam<ResearchStudy, ResearchStudy.ProgressStatus> {
     public override val paramName: KotlinString = "progress-status-state-period-actual"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -258,7 +285,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       resource.progressStatus
   }
 
-  public data object Protocol : ResearchStudySearchParam<Reference>() {
+  public data object Protocol : SearchParam<ResearchStudy, Reference> {
     public override val paramName: KotlinString = "protocol"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -270,7 +297,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ResearchStudy): List<Reference> = resource.protocol
   }
 
-  public data object RecruitmentActual : ResearchStudySearchParam<UnsignedInt>() {
+  public data object RecruitmentActual : SearchParam<ResearchStudy, UnsignedInt> {
     public override val paramName: KotlinString = "recruitment-actual"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
@@ -283,7 +310,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       listOfNotNull(resource.recruitment?.actualNumber)
   }
 
-  public data object RecruitmentTarget : ResearchStudySearchParam<UnsignedInt>() {
+  public data object RecruitmentTarget : SearchParam<ResearchStudy, UnsignedInt> {
     public override val paramName: KotlinString = "recruitment-target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
@@ -296,7 +323,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       listOfNotNull(resource.recruitment?.targetNumber)
   }
 
-  public data object Region : ResearchStudySearchParam<CodeableConcept>() {
+  public data object Region : SearchParam<ResearchStudy, CodeableConcept> {
     public override val paramName: KotlinString = "region"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -308,7 +335,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.region
   }
 
-  public data object Site : ResearchStudySearchParam<Reference>() {
+  public data object Site : SearchParam<ResearchStudy, Reference> {
     public override val paramName: KotlinString = "site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -321,7 +348,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ResearchStudy): List<Reference> = resource.site
   }
 
-  public data object Status : ResearchStudySearchParam<Any>() {
+  public data object Status : SearchParam<ResearchStudy, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -333,7 +360,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
     public override fun extract(resource: ResearchStudy): List<Any> = listOf(resource.status)
   }
 
-  public data object StudyDesign : ResearchStudySearchParam<CodeableConcept>() {
+  public data object StudyDesign : SearchParam<ResearchStudy, CodeableConcept> {
     public override val paramName: KotlinString = "study-design"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -346,7 +373,7 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
       resource.studyDesign
   }
 
-  public data object Title : ResearchStudySearchParam<R5String>() {
+  public data object Title : SearchParam<ResearchStudy, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -357,37 +384,5 @@ public sealed class ResearchStudySearchParam<T> : SearchParam {
 
     public override fun extract(resource: ResearchStudy): List<R5String> =
       listOfNotNull(resource.title)
-  }
-
-  public companion object {
-    /** All search parameters for the ResearchStudy resource type. */
-    public val ALL: List<ResearchStudySearchParam<*>> =
-      listOf(
-        Classifier,
-        Condition,
-        Date,
-        Description,
-        Eligibility,
-        FocusCode,
-        FocusReference,
-        Identifier,
-        Keyword,
-        Name,
-        ObjectiveDescription,
-        ObjectiveType,
-        PartOf,
-        Phase,
-        ProgressStatusStateActual,
-        ProgressStatusStatePeriod,
-        ProgressStatusStatePeriodActual,
-        Protocol,
-        RecruitmentActual,
-        RecruitmentTarget,
-        Region,
-        Site,
-        Status,
-        StudyDesign,
-        Title,
-      )
   }
 }

@@ -30,11 +30,12 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ObservationDefinition] resource type. */
-public sealed class ObservationDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ObservationDefinition): List<T>
+public object ObservationDefinitionSearchParam {
+  /** All search parameters for the ObservationDefinition resource type. */
+  public val ALL: List<SearchParam<ObservationDefinition, *>> =
+    listOf(Category, Code, Experimental, Identifier, Method, Status, Title, Url)
 
-  public data object Category : ObservationDefinitionSearchParam<CodeableConcept>() {
+  public data object Category : SearchParam<ObservationDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -47,7 +48,7 @@ public sealed class ObservationDefinitionSearchParam<T> : SearchParam {
       resource.category
   }
 
-  public data object Code : ObservationDefinitionSearchParam<CodeableConcept>() {
+  public data object Code : SearchParam<ObservationDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -60,7 +61,7 @@ public sealed class ObservationDefinitionSearchParam<T> : SearchParam {
       listOf(resource.code)
   }
 
-  public data object Experimental : ObservationDefinitionSearchParam<Boolean>() {
+  public data object Experimental : SearchParam<ObservationDefinition, Boolean> {
     public override val paramName: KotlinString = "experimental"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -74,7 +75,7 @@ public sealed class ObservationDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ObservationDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<ObservationDefinition, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -88,7 +89,7 @@ public sealed class ObservationDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = listOfNotNull(resource.identifier)
   }
 
-  public data object Method : ObservationDefinitionSearchParam<CodeableConcept>() {
+  public data object Method : SearchParam<ObservationDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -101,7 +102,7 @@ public sealed class ObservationDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.method)
   }
 
-  public data object Status : ObservationDefinitionSearchParam<Any>() {
+  public data object Status : SearchParam<ObservationDefinition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -114,7 +115,7 @@ public sealed class ObservationDefinitionSearchParam<T> : SearchParam {
       listOf(resource.status)
   }
 
-  public data object Title : ObservationDefinitionSearchParam<R5String>() {
+  public data object Title : SearchParam<ObservationDefinition, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -127,7 +128,7 @@ public sealed class ObservationDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : ObservationDefinitionSearchParam<Uri>() {
+  public data object Url : SearchParam<ObservationDefinition, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -138,11 +139,5 @@ public sealed class ObservationDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ObservationDefinition): List<Uri> =
       listOfNotNull(resource.url)
-  }
-
-  public companion object {
-    /** All search parameters for the ObservationDefinition resource type. */
-    public val ALL: List<ObservationDefinitionSearchParam<*>> =
-      listOf(Category, Code, Experimental, Identifier, Method, Status, Title, Url)
   }
 }

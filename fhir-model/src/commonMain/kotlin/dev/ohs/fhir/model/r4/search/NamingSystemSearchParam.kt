@@ -34,11 +34,32 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [NamingSystem] resource type. */
-public sealed class NamingSystemSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: NamingSystem): List<T>
+public object NamingSystemSearchParam {
+  /** All search parameters for the NamingSystem resource type. */
+  public val ALL: List<SearchParam<NamingSystem, *>> =
+    listOf(
+      Contact,
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      IdType,
+      Jurisdiction,
+      Kind,
+      Name,
+      Period,
+      Publisher,
+      Responsible,
+      Status,
+      Telecom,
+      Type,
+      Value,
+    )
 
-  public data object Contact : NamingSystemSearchParam<R4String>() {
+  public data object Contact : SearchParam<NamingSystem, R4String> {
     public override val paramName: KotlinString = "contact"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -51,7 +72,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       resource.contact.mapNotNull { it.name }
   }
 
-  public data object Context : NamingSystemSearchParam<CodeableConcept>() {
+  public data object Context : SearchParam<NamingSystem, CodeableConcept> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -65,7 +86,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
   }
 
-  public data object ContextQuantity : NamingSystemSearchParam<Quantity>() {
+  public data object ContextQuantity : SearchParam<NamingSystem, Quantity> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -78,7 +99,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
   }
 
-  public data object ContextType : NamingSystemSearchParam<Coding>() {
+  public data object ContextType : SearchParam<NamingSystem, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -91,7 +112,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : NamingSystemSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<NamingSystem, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -103,7 +124,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
     public override fun extract(resource: NamingSystem): List<UsageContext> = resource.useContext
   }
 
-  public data object ContextTypeValue : NamingSystemSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<NamingSystem, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -115,7 +136,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
     public override fun extract(resource: NamingSystem): List<UsageContext> = resource.useContext
   }
 
-  public data object Date : NamingSystemSearchParam<DateTime>() {
+  public data object Date : SearchParam<NamingSystem, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -127,7 +148,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
     public override fun extract(resource: NamingSystem): List<DateTime> = listOf(resource.date)
   }
 
-  public data object Description : NamingSystemSearchParam<Markdown>() {
+  public data object Description : SearchParam<NamingSystem, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -140,7 +161,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object IdType : NamingSystemSearchParam<Any>() {
+  public data object IdType : SearchParam<NamingSystem, Any> {
     public override val paramName: KotlinString = "id-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -153,7 +174,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       resource.uniqueId.map { it.type }
   }
 
-  public data object Jurisdiction : NamingSystemSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<NamingSystem, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -166,7 +187,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Kind : NamingSystemSearchParam<Any>() {
+  public data object Kind : SearchParam<NamingSystem, Any> {
     public override val paramName: KotlinString = "kind"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -178,7 +199,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
     public override fun extract(resource: NamingSystem): List<Any> = listOf(resource.kind)
   }
 
-  public data object Name : NamingSystemSearchParam<R4String>() {
+  public data object Name : SearchParam<NamingSystem, R4String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -190,7 +211,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
     public override fun extract(resource: NamingSystem): List<R4String> = listOf(resource.name)
   }
 
-  public data object Period : NamingSystemSearchParam<dev.ohs.fhir.model.r4.Period>() {
+  public data object Period : SearchParam<NamingSystem, dev.ohs.fhir.model.r4.Period> {
     public override val paramName: KotlinString = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -203,7 +224,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       resource.uniqueId.mapNotNull { it.period }
   }
 
-  public data object Publisher : NamingSystemSearchParam<R4String>() {
+  public data object Publisher : SearchParam<NamingSystem, R4String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -216,7 +237,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Responsible : NamingSystemSearchParam<R4String>() {
+  public data object Responsible : SearchParam<NamingSystem, R4String> {
     public override val paramName: KotlinString = "responsible"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -229,7 +250,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       listOfNotNull(resource.responsible)
   }
 
-  public data object Status : NamingSystemSearchParam<Any>() {
+  public data object Status : SearchParam<NamingSystem, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -241,7 +262,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
     public override fun extract(resource: NamingSystem): List<Any> = listOf(resource.status)
   }
 
-  public data object Telecom : NamingSystemSearchParam<ContactPoint>() {
+  public data object Telecom : SearchParam<NamingSystem, ContactPoint> {
     public override val paramName: KotlinString = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -254,7 +275,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       resource.contact.flatMap { it.telecom }
   }
 
-  public data object Type : NamingSystemSearchParam<CodeableConcept>() {
+  public data object Type : SearchParam<NamingSystem, CodeableConcept> {
     public override val paramName: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -267,7 +288,7 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
       listOfNotNull(resource.type)
   }
 
-  public data object Value : NamingSystemSearchParam<R4String>() {
+  public data object Value : SearchParam<NamingSystem, R4String> {
     public override val paramName: KotlinString = "value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -278,31 +299,5 @@ public sealed class NamingSystemSearchParam<T> : SearchParam {
 
     public override fun extract(resource: NamingSystem): List<R4String> =
       resource.uniqueId.map { it.value }
-  }
-
-  public companion object {
-    /** All search parameters for the NamingSystem resource type. */
-    public val ALL: List<NamingSystemSearchParam<*>> =
-      listOf(
-        Contact,
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        IdType,
-        Jurisdiction,
-        Kind,
-        Name,
-        Period,
-        Publisher,
-        Responsible,
-        Status,
-        Telecom,
-        Type,
-        Value,
-      )
   }
 }

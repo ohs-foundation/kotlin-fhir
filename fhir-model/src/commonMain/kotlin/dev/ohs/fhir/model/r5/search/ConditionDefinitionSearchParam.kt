@@ -33,11 +33,28 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ConditionDefinition] resource type. */
-public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ConditionDefinition): List<T>
+public object ConditionDefinitionSearchParam {
+  /** All search parameters for the ConditionDefinition resource type. */
+  public val ALL: List<SearchParam<ConditionDefinition, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      Description,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Publisher,
+      Status,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Context : ConditionDefinitionSearchParam<Any>() {
+  public data object Context : SearchParam<ConditionDefinition, Any> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -50,7 +67,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ConditionDefinition): List<Any> = emptyList()
   }
 
-  public data object ContextQuantity : ConditionDefinitionSearchParam<Any>() {
+  public data object ContextQuantity : SearchParam<ConditionDefinition, Any> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -63,7 +80,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ConditionDefinition): List<Any> = emptyList()
   }
 
-  public data object ContextType : ConditionDefinitionSearchParam<Coding>() {
+  public data object ContextType : SearchParam<ConditionDefinition, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -76,7 +93,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ConditionDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<ConditionDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -89,7 +106,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object ContextTypeValue : ConditionDefinitionSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<ConditionDefinition, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -102,7 +119,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object Date : ConditionDefinitionSearchParam<DateTime>() {
+  public data object Date : SearchParam<ConditionDefinition, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -115,7 +132,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object Description : ConditionDefinitionSearchParam<Markdown>() {
+  public data object Description : SearchParam<ConditionDefinition, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -129,7 +146,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ConditionDefinitionSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<ConditionDefinition, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -143,7 +160,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Jurisdiction : ConditionDefinitionSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<ConditionDefinition, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -156,7 +173,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Name : ConditionDefinitionSearchParam<R5String>() {
+  public data object Name : SearchParam<ConditionDefinition, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -169,7 +186,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.name)
   }
 
-  public data object Publisher : ConditionDefinitionSearchParam<R5String>() {
+  public data object Publisher : SearchParam<ConditionDefinition, R5String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -182,7 +199,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Status : ConditionDefinitionSearchParam<Any>() {
+  public data object Status : SearchParam<ConditionDefinition, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -194,7 +211,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
     public override fun extract(resource: ConditionDefinition): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : ConditionDefinitionSearchParam<R5String>() {
+  public data object Title : SearchParam<ConditionDefinition, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -207,7 +224,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : ConditionDefinitionSearchParam<Uri>() {
+  public data object Url : SearchParam<ConditionDefinition, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -220,7 +237,7 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
       listOfNotNull(resource.url)
   }
 
-  public data object Version : ConditionDefinitionSearchParam<R5String>() {
+  public data object Version : SearchParam<ConditionDefinition, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -231,27 +248,5 @@ public sealed class ConditionDefinitionSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ConditionDefinition): List<R5String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the ConditionDefinition resource type. */
-    public val ALL: List<ConditionDefinitionSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        Description,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Publisher,
-        Status,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

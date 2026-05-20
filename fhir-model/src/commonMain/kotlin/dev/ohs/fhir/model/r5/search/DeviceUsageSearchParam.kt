@@ -28,11 +28,11 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [DeviceUsage] resource type. */
-public sealed class DeviceUsageSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: DeviceUsage): List<T>
+public object DeviceUsageSearchParam {
+  /** All search parameters for the DeviceUsage resource type. */
+  public val ALL: List<SearchParam<DeviceUsage, *>> = listOf(Device, Identifier, Patient, Status)
 
-  public data object Device : DeviceUsageSearchParam<CodeableConcept>() {
+  public data object Device : SearchParam<DeviceUsage, CodeableConcept> {
     public override val paramName: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -45,7 +45,7 @@ public sealed class DeviceUsageSearchParam<T> : SearchParam {
       listOfNotNull(resource.device.concept)
   }
 
-  public data object Identifier : DeviceUsageSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+  public data object Identifier : SearchParam<DeviceUsage, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -58,7 +58,7 @@ public sealed class DeviceUsageSearchParam<T> : SearchParam {
       resource.identifier
   }
 
-  public data object Patient : DeviceUsageSearchParam<Reference>() {
+  public data object Patient : SearchParam<DeviceUsage, Reference> {
     public override val paramName: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -70,7 +70,7 @@ public sealed class DeviceUsageSearchParam<T> : SearchParam {
     public override fun extract(resource: DeviceUsage): List<Reference> = listOf(resource.patient)
   }
 
-  public data object Status : DeviceUsageSearchParam<Any>() {
+  public data object Status : SearchParam<DeviceUsage, Any> {
     public override val paramName: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -80,10 +80,5 @@ public sealed class DeviceUsageSearchParam<T> : SearchParam {
     public override val target: List<String> = emptyList()
 
     public override fun extract(resource: DeviceUsage): List<Any> = listOf(resource.status)
-  }
-
-  public companion object {
-    /** All search parameters for the DeviceUsage resource type. */
-    public val ALL: List<DeviceUsageSearchParam<*>> = listOf(Device, Identifier, Patient, Status)
   }
 }

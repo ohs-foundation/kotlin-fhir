@@ -36,11 +36,32 @@ import kotlin.Suppress
 import kotlin.collections.List
 
 /** Search parameters for the [ImplementationGuide] resource type. */
-public sealed class ImplementationGuideSearchParam<T> : SearchParam {
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public abstract fun extract(resource: ImplementationGuide): List<T>
+public object ImplementationGuideSearchParam {
+  /** All search parameters for the ImplementationGuide resource type. */
+  public val ALL: List<SearchParam<ImplementationGuide, *>> =
+    listOf(
+      Context,
+      ContextQuantity,
+      ContextType,
+      ContextTypeQuantity,
+      ContextTypeValue,
+      Date,
+      DependsOn,
+      Description,
+      Experimental,
+      Global,
+      Identifier,
+      Jurisdiction,
+      Name,
+      Publisher,
+      Resource,
+      Status,
+      Title,
+      Url,
+      Version,
+    )
 
-  public data object Context : ImplementationGuideSearchParam<Any>() {
+  public data object Context : SearchParam<ImplementationGuide, Any> {
     public override val paramName: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -53,7 +74,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
     public override fun extract(resource: ImplementationGuide): List<Any> = emptyList()
   }
 
-  public data object ContextQuantity : ImplementationGuideSearchParam<Any>() {
+  public data object ContextQuantity : SearchParam<ImplementationGuide, Any> {
     public override val paramName: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
@@ -66,7 +87,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
     public override fun extract(resource: ImplementationGuide): List<Any> = emptyList()
   }
 
-  public data object ContextType : ImplementationGuideSearchParam<Coding>() {
+  public data object ContextType : SearchParam<ImplementationGuide, Coding> {
     public override val paramName: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -79,7 +100,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       resource.useContext.map { it.code }
   }
 
-  public data object ContextTypeQuantity : ImplementationGuideSearchParam<UsageContext>() {
+  public data object ContextTypeQuantity : SearchParam<ImplementationGuide, UsageContext> {
     public override val paramName: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -92,7 +113,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object ContextTypeValue : ImplementationGuideSearchParam<UsageContext>() {
+  public data object ContextTypeValue : SearchParam<ImplementationGuide, UsageContext> {
     public override val paramName: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
@@ -105,7 +126,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       resource.useContext
   }
 
-  public data object Date : ImplementationGuideSearchParam<DateTime>() {
+  public data object Date : SearchParam<ImplementationGuide, DateTime> {
     public override val paramName: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
@@ -118,7 +139,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       listOfNotNull(resource.date)
   }
 
-  public data object DependsOn : ImplementationGuideSearchParam<Canonical>() {
+  public data object DependsOn : SearchParam<ImplementationGuide, Canonical> {
     public override val paramName: KotlinString = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -131,7 +152,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       resource.dependsOn.map { it.uri }
   }
 
-  public data object Description : ImplementationGuideSearchParam<Markdown>() {
+  public data object Description : SearchParam<ImplementationGuide, Markdown> {
     public override val paramName: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -144,7 +165,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       listOfNotNull(resource.description)
   }
 
-  public data object Experimental : ImplementationGuideSearchParam<Boolean>() {
+  public data object Experimental : SearchParam<ImplementationGuide, Boolean> {
     public override val paramName: KotlinString = "experimental"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -157,7 +178,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       listOfNotNull(resource.experimental)
   }
 
-  public data object Global : ImplementationGuideSearchParam<Canonical>() {
+  public data object Global : SearchParam<ImplementationGuide, Canonical> {
     public override val paramName: KotlinString = "global"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -171,7 +192,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
   }
 
   public data object Identifier :
-    ImplementationGuideSearchParam<dev.ohs.fhir.model.r5.Identifier>() {
+    SearchParam<ImplementationGuide, dev.ohs.fhir.model.r5.Identifier> {
     public override val paramName: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -185,7 +206,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
     ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
   }
 
-  public data object Jurisdiction : ImplementationGuideSearchParam<CodeableConcept>() {
+  public data object Jurisdiction : SearchParam<ImplementationGuide, CodeableConcept> {
     public override val paramName: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -198,7 +219,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       resource.jurisdiction
   }
 
-  public data object Name : ImplementationGuideSearchParam<R5String>() {
+  public data object Name : SearchParam<ImplementationGuide, R5String> {
     public override val paramName: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -211,7 +232,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       listOf(resource.name)
   }
 
-  public data object Publisher : ImplementationGuideSearchParam<R5String>() {
+  public data object Publisher : SearchParam<ImplementationGuide, R5String> {
     public override val paramName: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -224,7 +245,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       listOfNotNull(resource.publisher)
   }
 
-  public data object Resource : ImplementationGuideSearchParam<Reference>() {
+  public data object Resource : SearchParam<ImplementationGuide, Reference> {
     public override val paramName: KotlinString = "resource"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
@@ -398,7 +419,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       (resource.definition?.resource ?: emptyList()).map { it.reference }
   }
 
-  public data object Status : ImplementationGuideSearchParam<Any>() {
+  public data object Status : SearchParam<ImplementationGuide, Any> {
     public override val paramName: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -410,7 +431,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
     public override fun extract(resource: ImplementationGuide): List<Any> = listOf(resource.status)
   }
 
-  public data object Title : ImplementationGuideSearchParam<R5String>() {
+  public data object Title : SearchParam<ImplementationGuide, R5String> {
     public override val paramName: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
@@ -423,7 +444,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
       listOfNotNull(resource.title)
   }
 
-  public data object Url : ImplementationGuideSearchParam<Uri>() {
+  public data object Url : SearchParam<ImplementationGuide, Uri> {
     public override val paramName: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
@@ -435,7 +456,7 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
     public override fun extract(resource: ImplementationGuide): List<Uri> = listOf(resource.url)
   }
 
-  public data object Version : ImplementationGuideSearchParam<R5String>() {
+  public data object Version : SearchParam<ImplementationGuide, R5String> {
     public override val paramName: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
@@ -446,31 +467,5 @@ public sealed class ImplementationGuideSearchParam<T> : SearchParam {
 
     public override fun extract(resource: ImplementationGuide): List<R5String> =
       listOfNotNull(resource.version)
-  }
-
-  public companion object {
-    /** All search parameters for the ImplementationGuide resource type. */
-    public val ALL: List<ImplementationGuideSearchParam<*>> =
-      listOf(
-        Context,
-        ContextQuantity,
-        ContextType,
-        ContextTypeQuantity,
-        ContextTypeValue,
-        Date,
-        DependsOn,
-        Description,
-        Experimental,
-        Global,
-        Identifier,
-        Jurisdiction,
-        Name,
-        Publisher,
-        Resource,
-        Status,
-        Title,
-        Url,
-        Version,
-      )
   }
 }

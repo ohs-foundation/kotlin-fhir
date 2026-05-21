@@ -19,11 +19,13 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.NutritionProduct
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [NutritionProduct] resource type. */
 public object NutritionProductSearchParam {
@@ -37,7 +39,7 @@ public object NutritionProductSearchParam {
 
     public override val expression: String = "NutritionProduct.instance.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: NutritionProduct
@@ -51,7 +53,7 @@ public object NutritionProductSearchParam {
 
     public override val expression: String = "NutritionProduct.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NutritionProduct): List<Any> = listOf(resource.status)
   }

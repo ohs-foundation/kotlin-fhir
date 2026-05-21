@@ -20,13 +20,20 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CareTeam
 import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.Practitioner
+import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.RelatedPerson
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [CareTeam] resource type. */
 public object CareTeamSearchParam {
@@ -41,7 +48,7 @@ public object CareTeamSearchParam {
 
     public override val expression: String = "CareTeam.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CareTeam): List<CodeableConcept> = resource.category
   }
@@ -53,7 +60,7 @@ public object CareTeamSearchParam {
 
     public override val expression: String = "CareTeam.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CareTeam): List<Period> = listOfNotNull(resource.period)
   }
@@ -65,7 +72,8 @@ public object CareTeamSearchParam {
 
     public override val expression: String = "CareTeam.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Encounter::class)
 
     public override fun extract(resource: CareTeam): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -78,7 +86,7 @@ public object CareTeamSearchParam {
 
     public override val expression: String = "CareTeam.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CareTeam): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -91,14 +99,14 @@ public object CareTeamSearchParam {
 
     public override val expression: String = "CareTeam.participant.member"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Organization",
-        "CareTeam",
-        "Patient",
-        "PractitionerRole",
-        "RelatedPerson",
+        Practitioner::class,
+        Organization::class,
+        CareTeam::class,
+        dev.ohs.fhir.model.r4.Patient::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
       )
 
     public override fun extract(resource: CareTeam): List<Reference> =
@@ -112,7 +120,8 @@ public object CareTeamSearchParam {
 
     public override val expression: String = "CareTeam.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient", "Group")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
 
     public override fun extract(resource: CareTeam): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -127,7 +136,7 @@ public object CareTeamSearchParam {
 
     public override val expression: String = "CareTeam.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CareTeam): List<Any> = listOfNotNull(resource.status)
   }
@@ -139,7 +148,8 @@ public object CareTeamSearchParam {
 
     public override val expression: String = "CareTeam.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: CareTeam): List<Reference> =
       listOfNotNull(resource.subject)

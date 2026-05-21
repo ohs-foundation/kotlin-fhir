@@ -22,11 +22,13 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Integer
 import dev.ohs.fhir.model.r4.MolecularSequence
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [MolecularSequence] resource type. */
 public object MolecularSequenceSearchParam {
@@ -55,7 +57,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.referenceSeq.chromosome"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<CodeableConcept> =
       listOfNotNull(resource.referenceSeq?.chromosome)
@@ -69,7 +71,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.variant"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<MolecularSequence.Variant> =
       resource.variant
@@ -83,7 +85,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.referenceSeq"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<MolecularSequence.ReferenceSeq> =
       listOfNotNull(resource.referenceSeq)
@@ -96,7 +98,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: MolecularSequence
@@ -110,7 +112,8 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: MolecularSequence): List<Reference> =
       listOfNotNull(resource.patient)
@@ -123,7 +126,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.referenceSeq.referenceSeqId"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<CodeableConcept> =
       listOfNotNull(resource.referenceSeq?.referenceSeqId)
@@ -137,7 +140,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.variant"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<MolecularSequence.Variant> =
       resource.variant
@@ -151,7 +154,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.referenceSeq"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<MolecularSequence.ReferenceSeq> =
       listOfNotNull(resource.referenceSeq)
@@ -164,7 +167,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<Any> =
       listOfNotNull(resource.type)
@@ -177,7 +180,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.variant.end"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<Integer> =
       resource.variant.mapNotNull { it.end }
@@ -190,7 +193,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.variant.start"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<Integer> =
       resource.variant.mapNotNull { it.start }
@@ -203,7 +206,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.referenceSeq.windowEnd"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<Integer> =
       listOfNotNull(resource.referenceSeq?.windowEnd)
@@ -216,7 +219,7 @@ public object MolecularSequenceSearchParam {
 
     public override val expression: String = "MolecularSequence.referenceSeq.windowStart"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MolecularSequence): List<Integer> =
       listOfNotNull(resource.referenceSeq?.windowStart)

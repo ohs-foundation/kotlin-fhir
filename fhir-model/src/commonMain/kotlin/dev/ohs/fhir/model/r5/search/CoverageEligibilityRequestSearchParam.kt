@@ -20,12 +20,18 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Location
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [CoverageEligibilityRequest] resource type. */
 public object CoverageEligibilityRequestSearchParam {
@@ -40,7 +46,7 @@ public object CoverageEligibilityRequestSearchParam {
 
     public override val expression: String = "CoverageEligibilityRequest.created"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CoverageEligibilityRequest): List<DateTime> =
       listOf(resource.created)
@@ -53,7 +59,8 @@ public object CoverageEligibilityRequestSearchParam {
 
     public override val expression: String = "CoverageEligibilityRequest.enterer"
 
-    public override val target: List<String> = listOf("PractitionerRole", "Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(PractitionerRole::class, Practitioner::class)
 
     public override fun extract(resource: CoverageEligibilityRequest): List<Reference> =
       listOfNotNull(resource.enterer)
@@ -66,7 +73,7 @@ public object CoverageEligibilityRequestSearchParam {
 
     public override val expression: String = "CoverageEligibilityRequest.facility"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<KClass<out Resource>> = listOf(Location::class)
 
     public override fun extract(resource: CoverageEligibilityRequest): List<Reference> =
       listOfNotNull(resource.facility)
@@ -80,7 +87,7 @@ public object CoverageEligibilityRequestSearchParam {
 
     public override val expression: String = "CoverageEligibilityRequest.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: CoverageEligibilityRequest
@@ -94,7 +101,8 @@ public object CoverageEligibilityRequestSearchParam {
 
     public override val expression: String = "CoverageEligibilityRequest.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: CoverageEligibilityRequest): List<Reference> =
       listOf(resource.patient)
@@ -107,8 +115,8 @@ public object CoverageEligibilityRequestSearchParam {
 
     public override val expression: String = "CoverageEligibilityRequest.provider"
 
-    public override val target: List<String> =
-      listOf("Organization", "PractitionerRole", "Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
 
     public override fun extract(resource: CoverageEligibilityRequest): List<Reference> =
       listOfNotNull(resource.provider)
@@ -121,7 +129,7 @@ public object CoverageEligibilityRequestSearchParam {
 
     public override val expression: String = "CoverageEligibilityRequest.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CoverageEligibilityRequest): List<Any> =
       listOf(resource.status)

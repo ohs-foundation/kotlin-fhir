@@ -19,15 +19,24 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Condition
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.DiagnosticReport
 import dev.ohs.fhir.model.r5.Immunization
+import dev.ohs.fhir.model.r5.Observation
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Immunization] resource type. */
 public object ImmunizationSearchParam {
@@ -59,7 +68,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "(Immunization.occurrence.ofType(dateTime))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<Any> = emptyList()
   }
@@ -71,7 +80,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -84,7 +93,8 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.location"
 
-    public override val target: List<KotlinString> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Location::class)
 
     public override fun extract(resource: Immunization): List<Reference> =
       listOfNotNull(resource.location)
@@ -97,7 +107,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.lotNumber"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<R5String> =
       listOfNotNull(resource.lotNumber)
@@ -110,7 +120,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.manufacturer.reference"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: Immunization): List<Reference> =
       listOfNotNull(resource.manufacturer?.reference)
@@ -123,7 +133,8 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.patient"
 
-    public override val target: List<KotlinString> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: Immunization): List<Reference> = listOf(resource.patient)
   }
@@ -135,8 +146,14 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.performer.actor"
 
-    public override val target: List<KotlinString> =
-      listOf("Organization", "RelatedPerson", "PractitionerRole", "Practitioner", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Organization::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
+      )
 
     public override fun extract(resource: Immunization): List<Reference> =
       resource.performer.map { it.actor }
@@ -149,7 +166,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.reaction.manifestation.reference"
 
-    public override val target: List<KotlinString> = listOf("Observation")
+    public override val target: List<KClass<out Resource>> = listOf(Observation::class)
 
     public override fun extract(resource: Immunization): List<Reference> =
       resource.reaction.mapNotNull { it.manifestation }.mapNotNull { it.reference }
@@ -162,7 +179,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.reaction.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<DateTime> =
       resource.reaction.mapNotNull { it.date }
@@ -175,7 +192,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.reason.concept"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<CodeableConcept> =
       resource.reason.mapNotNull { it.concept }
@@ -188,8 +205,8 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.reason.reference"
 
-    public override val target: List<KotlinString> =
-      listOf("Observation", "DiagnosticReport", "Condition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Observation::class, DiagnosticReport::class, Condition::class)
 
     public override fun extract(resource: Immunization): List<Reference> =
       resource.reason.mapNotNull { it.reference }
@@ -202,7 +219,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.protocolApplied.series"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<R5String> =
       resource.protocolApplied.mapNotNull { it.series }
@@ -215,7 +232,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<Any> = listOf(resource.status)
   }
@@ -227,7 +244,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.statusReason"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<CodeableConcept> =
       listOfNotNull(resource.statusReason)
@@ -240,7 +257,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.protocolApplied.targetDisease"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<CodeableConcept> =
       resource.protocolApplied.flatMap { it.targetDisease }
@@ -253,7 +270,7 @@ public object ImmunizationSearchParam {
 
     public override val expression: KotlinString = "Immunization.vaccineCode"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Immunization): List<CodeableConcept> =
       listOf(resource.vaccineCode)

@@ -21,11 +21,13 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [BodyStructure] resource type. */
 public object BodyStructureSearchParam {
@@ -40,7 +42,7 @@ public object BodyStructureSearchParam {
 
     public override val expression: String = "BodyStructure.excludedStructure.structure"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BodyStructure): List<Any> = emptyList()
   }
@@ -52,7 +54,7 @@ public object BodyStructureSearchParam {
 
     public override val expression: String = "BodyStructure.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BodyStructure): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -65,7 +67,7 @@ public object BodyStructureSearchParam {
 
     public override val expression: String = "BodyStructure.includedStructure.structure"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BodyStructure): List<CodeableConcept> =
       resource.includedStructure.map { it.structure }
@@ -78,7 +80,7 @@ public object BodyStructureSearchParam {
 
     public override val expression: String = "BodyStructure.morphology"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BodyStructure): List<CodeableConcept> =
       listOfNotNull(resource.morphology)
@@ -91,7 +93,8 @@ public object BodyStructureSearchParam {
 
     public override val expression: String = "BodyStructure.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: BodyStructure): List<Reference> = listOf(resource.patient)
   }

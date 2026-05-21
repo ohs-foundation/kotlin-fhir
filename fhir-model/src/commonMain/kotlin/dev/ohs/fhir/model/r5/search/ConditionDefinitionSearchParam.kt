@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.ConditionDefinition
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
@@ -31,6 +32,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ConditionDefinition] resource type. */
 public object ConditionDefinitionSearchParam {
@@ -62,7 +64,7 @@ public object ConditionDefinitionSearchParam {
     public override val expression: KotlinString =
       "(ConditionDefinition.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<Any> = emptyList()
   }
@@ -75,7 +77,7 @@ public object ConditionDefinitionSearchParam {
     public override val expression: KotlinString =
       "(ConditionDefinition.useContext.value.ofType(Quantity))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<Any> = emptyList()
   }
@@ -87,7 +89,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<Coding> =
       resource.useContext.map { it.code }
@@ -100,7 +102,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<UsageContext> =
       resource.useContext
@@ -113,7 +115,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<UsageContext> =
       resource.useContext
@@ -126,7 +128,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<DateTime> =
       listOfNotNull(resource.date)
@@ -139,7 +141,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<Markdown> =
       listOfNotNull(resource.description)
@@ -153,7 +155,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: ConditionDefinition
@@ -167,7 +169,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<CodeableConcept> =
       resource.jurisdiction
@@ -180,7 +182,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<R5String> =
       listOfNotNull(resource.name)
@@ -193,7 +195,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<R5String> =
       listOfNotNull(resource.publisher)
@@ -206,7 +208,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<Any> = listOf(resource.status)
   }
@@ -218,7 +220,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<R5String> =
       listOfNotNull(resource.title)
@@ -231,7 +233,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<Uri> =
       listOfNotNull(resource.url)
@@ -244,7 +246,7 @@ public object ConditionDefinitionSearchParam {
 
     public override val expression: KotlinString = "ConditionDefinition.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConditionDefinition): List<R5String> =
       listOfNotNull(resource.version)

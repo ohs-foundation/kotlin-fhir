@@ -18,13 +18,16 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.ActivityDefinition
 import dev.ohs.fhir.model.r4b.Canonical
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.MessageDefinition
+import dev.ohs.fhir.model.r4b.PlanDefinition
 import dev.ohs.fhir.model.r4b.Quantity
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
@@ -33,6 +36,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [MessageDefinition] resource type. */
 public object MessageDefinitionSearchParam {
@@ -67,7 +71,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.category"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<Any> =
       listOfNotNull(resource.category)
@@ -81,7 +85,7 @@ public object MessageDefinitionSearchParam {
     public override val expression: KotlinString =
       "(MessageDefinition.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -95,7 +99,7 @@ public object MessageDefinitionSearchParam {
     public override val expression: KotlinString =
       "(MessageDefinition.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -108,7 +112,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<Coding> =
       resource.useContext.map { it.code }
@@ -121,7 +125,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<UsageContext> =
       resource.useContext
@@ -134,7 +138,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<UsageContext> =
       resource.useContext
@@ -147,7 +151,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<DateTime> = listOf(resource.date)
   }
@@ -159,7 +163,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<Markdown> =
       listOfNotNull(resource.description)
@@ -172,7 +176,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.event"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<MessageDefinition.Event> =
       listOf(resource.event)
@@ -185,7 +189,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.focus.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<Any> =
       resource.focus.map { it.code }
@@ -199,7 +203,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: MessageDefinition
@@ -213,7 +217,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<CodeableConcept> =
       resource.jurisdiction
@@ -226,7 +230,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<R4bString> =
       listOfNotNull(resource.name)
@@ -239,7 +243,8 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.parent"
 
-    public override val target: List<KotlinString> = listOf("PlanDefinition", "ActivityDefinition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(PlanDefinition::class, ActivityDefinition::class)
 
     public override fun extract(resource: MessageDefinition): List<Canonical> = resource.parent
   }
@@ -251,7 +256,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<R4bString> =
       listOfNotNull(resource.publisher)
@@ -264,7 +269,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<Any> = listOf(resource.status)
   }
@@ -276,7 +281,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<R4bString> =
       listOfNotNull(resource.title)
@@ -289,7 +294,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<Uri> =
       listOfNotNull(resource.url)
@@ -302,7 +307,7 @@ public object MessageDefinitionSearchParam {
 
     public override val expression: KotlinString = "MessageDefinition.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MessageDefinition): List<R4bString> =
       listOfNotNull(resource.version)

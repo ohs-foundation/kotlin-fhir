@@ -20,11 +20,13 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.NutritionProduct
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [NutritionProduct] resource type. */
 public object NutritionProductSearchParam {
@@ -39,7 +41,7 @@ public object NutritionProductSearchParam {
 
     public override val expression: KotlinString = "NutritionProduct.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NutritionProduct): List<CodeableConcept> =
       listOfNotNull(resource.code)
@@ -52,7 +54,7 @@ public object NutritionProductSearchParam {
 
     public override val expression: KotlinString = "NutritionProduct.instance.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: NutritionProduct
@@ -66,7 +68,7 @@ public object NutritionProductSearchParam {
 
     public override val expression: KotlinString = "NutritionProduct.instance.lotNumber"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NutritionProduct): List<R5String> =
       resource.instance.mapNotNull { it.lotNumber }
@@ -80,7 +82,7 @@ public object NutritionProductSearchParam {
 
     public override val expression: KotlinString = "NutritionProduct.instance.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: NutritionProduct
@@ -94,7 +96,7 @@ public object NutritionProductSearchParam {
 
     public override val expression: KotlinString = "NutritionProduct.category"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NutritionProduct): List<CodeableConcept> =
       resource.category

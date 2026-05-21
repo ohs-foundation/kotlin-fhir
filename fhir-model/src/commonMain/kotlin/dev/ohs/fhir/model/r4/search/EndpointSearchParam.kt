@@ -22,12 +22,14 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.Endpoint
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Endpoint] resource type. */
 public object EndpointSearchParam {
@@ -42,7 +44,7 @@ public object EndpointSearchParam {
 
     public override val expression: KotlinString = "Endpoint.connectionType"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Endpoint): List<Coding> = listOf(resource.connectionType)
   }
@@ -54,7 +56,7 @@ public object EndpointSearchParam {
 
     public override val expression: KotlinString = "Endpoint.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Endpoint): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -67,7 +69,7 @@ public object EndpointSearchParam {
 
     public override val expression: KotlinString = "Endpoint.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Endpoint): List<R4String> = listOfNotNull(resource.name)
   }
@@ -79,7 +81,8 @@ public object EndpointSearchParam {
 
     public override val expression: KotlinString = "Endpoint.managingOrganization"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Organization::class)
 
     public override fun extract(resource: Endpoint): List<Reference> =
       listOfNotNull(resource.managingOrganization)
@@ -92,7 +95,7 @@ public object EndpointSearchParam {
 
     public override val expression: KotlinString = "Endpoint.payloadType"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Endpoint): List<CodeableConcept> = resource.payloadType
   }
@@ -104,7 +107,7 @@ public object EndpointSearchParam {
 
     public override val expression: KotlinString = "Endpoint.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Endpoint): List<Any> = listOf(resource.status)
   }

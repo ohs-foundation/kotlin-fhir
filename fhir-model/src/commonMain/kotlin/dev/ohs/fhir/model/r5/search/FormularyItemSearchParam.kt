@@ -20,10 +20,12 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.FormularyItem
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [FormularyItem] resource type. */
 public object FormularyItemSearchParam {
@@ -37,7 +39,7 @@ public object FormularyItemSearchParam {
 
     public override val expression: String = "FormularyItem.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: FormularyItem): List<CodeableConcept> =
       listOfNotNull(resource.code)
@@ -50,7 +52,7 @@ public object FormularyItemSearchParam {
 
     public override val expression: String = "FormularyItem.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: FormularyItem): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier

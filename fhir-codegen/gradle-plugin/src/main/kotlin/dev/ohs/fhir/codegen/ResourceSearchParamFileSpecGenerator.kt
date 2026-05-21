@@ -25,6 +25,7 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.WildcardTypeName
 import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
@@ -33,6 +34,7 @@ import dev.ohs.fhir.codegen.searchparam.SearchParamCodeEmitter
 import dev.ohs.fhir.codegen.searchparam.SearchParamPattern
 import dev.ohs.fhir.codegen.searchparam.SearchParamTypeResolver
 import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
+import kotlin.reflect.KClass
 
 /**
  * Generates per-resource search parameter container objects.
@@ -161,16 +163,22 @@ object ResourceSearchParamFileSpecGenerator {
       .addProperty(
         PropertySpec.builder(
             "target",
-            List::class.asClassName().parameterizedBy(String::class.asClassName()),
+            List::class.asClassName()
+              .parameterizedBy(
+                KClass::class.asClassName()
+                  .parameterizedBy(WildcardTypeName.producerOf(ClassName(packageName, "Resource")))
+              ),
           )
           .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
-          .initializer(
+          .apply {
             if (searchParam.target.isEmpty()) {
-              "emptyList()"
+              initializer("emptyList()")
             } else {
-              "listOf(${searchParam.target.joinToString(", ") { "\"$it\"" }})"
+              val targetClassNames = searchParam.target.map { ClassName(packageName, it) }
+              val format = "listOf(${targetClassNames.joinToString(", ") { "%T::class" }})"
+              initializer(format, *targetClassNames.toTypedArray())
             }
-          )
+          }
           .build()
       )
       .addFunction(

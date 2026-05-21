@@ -20,12 +20,14 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ManufacturedItemDefinition] resource type. */
 public object ManufacturedItemDefinitionSearchParam {
@@ -40,7 +42,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ManufacturedItemDefinition.manufacturedDoseForm"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
       listOf(resource.manufacturedDoseForm)
@@ -54,7 +56,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ManufacturedItemDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: ManufacturedItemDefinition
@@ -68,7 +70,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ManufacturedItemDefinition.ingredient"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
       resource.ingredient
@@ -81,7 +83,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ManufacturedItemDefinition.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ManufacturedItemDefinition): List<R5String> =
       listOfNotNull(resource.name)
@@ -94,7 +96,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ManufacturedItemDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ManufacturedItemDefinition): List<Any> =
       listOf(resource.status)

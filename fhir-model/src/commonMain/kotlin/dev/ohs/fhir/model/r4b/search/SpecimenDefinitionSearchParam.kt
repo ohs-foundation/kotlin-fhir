@@ -19,11 +19,13 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.SpecimenDefinition
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [SpecimenDefinition] resource type. */
 public object SpecimenDefinitionSearchParam {
@@ -37,7 +39,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: String = "SpecimenDefinition.typeTested.container.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
       resource.typeTested.mapNotNull { it.container }.mapNotNull { it.type }
@@ -51,7 +53,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: String = "SpecimenDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: SpecimenDefinition
@@ -65,7 +67,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: String = "SpecimenDefinition.typeCollected"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
       listOfNotNull(resource.typeCollected)

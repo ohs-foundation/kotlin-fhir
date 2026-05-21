@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.RiskEvidenceSynthesis
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
@@ -33,6 +34,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [RiskEvidenceSynthesis] resource type. */
 public object RiskEvidenceSynthesisSearchParam {
@@ -65,7 +67,7 @@ public object RiskEvidenceSynthesisSearchParam {
     public override val expression: KotlinString =
       "(RiskEvidenceSynthesis.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -79,7 +81,7 @@ public object RiskEvidenceSynthesisSearchParam {
     public override val expression: KotlinString =
       "(RiskEvidenceSynthesis.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -92,7 +94,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<Coding> =
       resource.useContext.map { it.code }
@@ -105,7 +107,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<UsageContext> =
       resource.useContext
@@ -118,7 +120,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<UsageContext> =
       resource.useContext
@@ -131,7 +133,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<DateTime> =
       listOfNotNull(resource.date)
@@ -144,7 +146,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<Markdown> =
       listOfNotNull(resource.description)
@@ -157,7 +159,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.effectivePeriod"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<Period> =
       listOfNotNull(resource.effectivePeriod)
@@ -171,7 +173,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: RiskEvidenceSynthesis
@@ -185,7 +187,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<CodeableConcept> =
       resource.jurisdiction
@@ -198,7 +200,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<R4String> =
       listOfNotNull(resource.name)
@@ -211,7 +213,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<R4String> =
       listOfNotNull(resource.publisher)
@@ -224,7 +226,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<Any> =
       listOf(resource.status)
@@ -237,7 +239,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<R4String> =
       listOfNotNull(resource.title)
@@ -250,7 +252,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<Uri> =
       listOfNotNull(resource.url)
@@ -263,7 +265,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "RiskEvidenceSynthesis.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskEvidenceSynthesis): List<R4String> =
       listOfNotNull(resource.version)

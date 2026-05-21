@@ -18,14 +18,21 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DeviceDefinition
+import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r5.MedicinalProductDefinition
+import dev.ohs.fhir.model.r5.NutritionProduct
 import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [PackagedProductDefinition] resource type. */
 public object PackagedProductDefinitionSearchParam {
@@ -53,13 +60,13 @@ public object PackagedProductDefinitionSearchParam {
     public override val expression: KotlinString =
       "PackagedProductDefinition.packaging.containedItem.item.reference"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "DeviceDefinition",
-        "NutritionProduct",
-        "BiologicallyDerivedProduct",
-        "PackagedProductDefinition",
-        "ManufacturedItemDefinition",
+        DeviceDefinition::class,
+        NutritionProduct::class,
+        BiologicallyDerivedProduct::class,
+        PackagedProductDefinition::class,
+        ManufacturedItemDefinition::class,
       )
 
     public override fun extract(resource: PackagedProductDefinition): List<Reference> =
@@ -74,13 +81,13 @@ public object PackagedProductDefinitionSearchParam {
     public override val expression: KotlinString =
       "PackagedProductDefinition.packaging.containedItem.item.reference"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "DeviceDefinition",
-        "NutritionProduct",
-        "BiologicallyDerivedProduct",
-        "PackagedProductDefinition",
-        "ManufacturedItemDefinition",
+        DeviceDefinition::class,
+        NutritionProduct::class,
+        BiologicallyDerivedProduct::class,
+        PackagedProductDefinition::class,
+        ManufacturedItemDefinition::class,
       )
 
     public override fun extract(resource: PackagedProductDefinition): List<Reference> =
@@ -95,13 +102,13 @@ public object PackagedProductDefinitionSearchParam {
     public override val expression: KotlinString =
       "PackagedProductDefinition.packaging.containedItem.item.reference"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "DeviceDefinition",
-        "NutritionProduct",
-        "BiologicallyDerivedProduct",
-        "PackagedProductDefinition",
-        "ManufacturedItemDefinition",
+        DeviceDefinition::class,
+        NutritionProduct::class,
+        BiologicallyDerivedProduct::class,
+        PackagedProductDefinition::class,
+        ManufacturedItemDefinition::class,
       )
 
     public override fun extract(resource: PackagedProductDefinition): List<Reference> =
@@ -116,7 +123,7 @@ public object PackagedProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "PackagedProductDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: PackagedProductDefinition
@@ -131,13 +138,13 @@ public object PackagedProductDefinitionSearchParam {
     public override val expression: KotlinString =
       "PackagedProductDefinition.packaging.containedItem.item.reference"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "DeviceDefinition",
-        "NutritionProduct",
-        "BiologicallyDerivedProduct",
-        "PackagedProductDefinition",
-        "ManufacturedItemDefinition",
+        DeviceDefinition::class,
+        NutritionProduct::class,
+        BiologicallyDerivedProduct::class,
+        PackagedProductDefinition::class,
+        ManufacturedItemDefinition::class,
       )
 
     public override fun extract(resource: PackagedProductDefinition): List<Reference> =
@@ -152,13 +159,13 @@ public object PackagedProductDefinitionSearchParam {
     public override val expression: KotlinString =
       "PackagedProductDefinition.packaging.containedItem.item.reference"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "DeviceDefinition",
-        "NutritionProduct",
-        "BiologicallyDerivedProduct",
-        "PackagedProductDefinition",
-        "ManufacturedItemDefinition",
+        DeviceDefinition::class,
+        NutritionProduct::class,
+        BiologicallyDerivedProduct::class,
+        PackagedProductDefinition::class,
+        ManufacturedItemDefinition::class,
       )
 
     public override fun extract(resource: PackagedProductDefinition): List<Reference> =
@@ -172,7 +179,7 @@ public object PackagedProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "PackagedProductDefinition.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PackagedProductDefinition): List<R5String> =
       listOfNotNull(resource.name)
@@ -186,13 +193,13 @@ public object PackagedProductDefinitionSearchParam {
     public override val expression: KotlinString =
       "PackagedProductDefinition.packaging.containedItem.item.reference"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "DeviceDefinition",
-        "NutritionProduct",
-        "BiologicallyDerivedProduct",
-        "PackagedProductDefinition",
-        "ManufacturedItemDefinition",
+        DeviceDefinition::class,
+        NutritionProduct::class,
+        BiologicallyDerivedProduct::class,
+        PackagedProductDefinition::class,
+        ManufacturedItemDefinition::class,
       )
 
     public override fun extract(resource: PackagedProductDefinition): List<Reference> =
@@ -207,13 +214,13 @@ public object PackagedProductDefinitionSearchParam {
     public override val expression: KotlinString =
       "PackagedProductDefinition.packaging.containedItem.item.reference"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "DeviceDefinition",
-        "NutritionProduct",
-        "BiologicallyDerivedProduct",
-        "PackagedProductDefinition",
-        "ManufacturedItemDefinition",
+        DeviceDefinition::class,
+        NutritionProduct::class,
+        BiologicallyDerivedProduct::class,
+        PackagedProductDefinition::class,
+        ManufacturedItemDefinition::class,
       )
 
     public override fun extract(resource: PackagedProductDefinition): List<Reference> =
@@ -227,7 +234,8 @@ public object PackagedProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "PackagedProductDefinition.packageFor"
 
-    public override val target: List<KotlinString> = listOf("MedicinalProductDefinition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(MedicinalProductDefinition::class)
 
     public override fun extract(resource: PackagedProductDefinition): List<Reference> =
       resource.packageFor
@@ -240,7 +248,7 @@ public object PackagedProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "PackagedProductDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PackagedProductDefinition): List<CodeableConcept> =
       listOfNotNull(resource.status)

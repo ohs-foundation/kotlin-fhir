@@ -21,13 +21,16 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.Boolean
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.ContactPoint
+import dev.ohs.fhir.model.r4.HealthcareService
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [PractitionerRole] resource type. */
 public object PractitionerRoleSearchParam {
@@ -56,7 +59,7 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.active"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PractitionerRole): List<Boolean> =
       listOfNotNull(resource.active)
@@ -69,7 +72,7 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PractitionerRole): List<Period> =
       listOfNotNull(resource.period)
@@ -82,7 +85,7 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.telecom.where(system='email')"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PractitionerRole): List<ContactPoint> =
       resource.telecom.filter { it.system?.value?.toString() == "email" }
@@ -95,7 +98,8 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.endpoint"
 
-    public override val target: List<String> = listOf("Endpoint")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Endpoint::class)
 
     public override fun extract(resource: PractitionerRole): List<Reference> = resource.endpoint
   }
@@ -107,7 +111,7 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: PractitionerRole
@@ -121,7 +125,8 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.location"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Location::class)
 
     public override fun extract(resource: PractitionerRole): List<Reference> = resource.location
   }
@@ -133,7 +138,8 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.organization"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Organization::class)
 
     public override fun extract(resource: PractitionerRole): List<Reference> =
       listOfNotNull(resource.organization)
@@ -146,7 +152,7 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.telecom.where(system='phone')"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PractitionerRole): List<ContactPoint> =
       resource.telecom.filter { it.system?.value?.toString() == "phone" }
@@ -159,7 +165,8 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.practitioner"
 
-    public override val target: List<String> = listOf("Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Practitioner::class)
 
     public override fun extract(resource: PractitionerRole): List<Reference> =
       listOfNotNull(resource.practitioner)
@@ -172,7 +179,7 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PractitionerRole): List<CodeableConcept> = resource.code
   }
@@ -184,7 +191,7 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.healthcareService"
 
-    public override val target: List<String> = listOf("HealthcareService")
+    public override val target: List<KClass<out Resource>> = listOf(HealthcareService::class)
 
     public override fun extract(resource: PractitionerRole): List<Reference> =
       resource.healthcareService
@@ -197,7 +204,7 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.specialty"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PractitionerRole): List<CodeableConcept> =
       resource.specialty
@@ -210,7 +217,7 @@ public object PractitionerRoleSearchParam {
 
     public override val expression: String = "PractitionerRole.telecom"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PractitionerRole): List<ContactPoint> = resource.telecom
   }

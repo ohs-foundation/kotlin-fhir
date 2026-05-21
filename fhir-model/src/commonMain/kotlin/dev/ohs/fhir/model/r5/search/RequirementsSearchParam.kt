@@ -18,12 +18,14 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.ActorDefinition
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Requirements
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
@@ -32,6 +34,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Requirements] resource type. */
 public object RequirementsSearchParam {
@@ -64,7 +67,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.actor"
 
-    public override val target: List<KotlinString> = listOf("ActorDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(ActorDefinition::class)
 
     public override fun extract(resource: Requirements): List<Canonical> = resource.actor
   }
@@ -77,7 +80,7 @@ public object RequirementsSearchParam {
     public override val expression: KotlinString =
       "(Requirements.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<Any> = emptyList()
   }
@@ -90,7 +93,7 @@ public object RequirementsSearchParam {
     public override val expression: KotlinString =
       "(Requirements.useContext.value.ofType(Quantity))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<Any> = emptyList()
   }
@@ -102,7 +105,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<Coding> =
       resource.useContext.map { it.code }
@@ -115,7 +118,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<UsageContext> = resource.useContext
   }
@@ -127,7 +130,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<UsageContext> = resource.useContext
   }
@@ -139,7 +142,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<DateTime> =
       listOfNotNull(resource.date)
@@ -152,7 +155,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.derivedFrom"
 
-    public override val target: List<KotlinString> = listOf("Requirements")
+    public override val target: List<KClass<out Resource>> = listOf(Requirements::class)
 
     public override fun extract(resource: Requirements): List<Canonical> = resource.derivedFrom
   }
@@ -164,7 +167,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<Markdown> =
       listOfNotNull(resource.description)
@@ -177,7 +180,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -190,7 +193,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<CodeableConcept> =
       resource.jurisdiction
@@ -203,7 +206,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<R5String> =
       listOfNotNull(resource.name)
@@ -216,7 +219,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<R5String> =
       listOfNotNull(resource.publisher)
@@ -229,7 +232,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<Any> = listOf(resource.status)
   }
@@ -241,7 +244,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<R5String> =
       listOfNotNull(resource.title)
@@ -254,7 +257,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<Uri> = listOfNotNull(resource.url)
   }
@@ -266,7 +269,7 @@ public object RequirementsSearchParam {
 
     public override val expression: KotlinString = "Requirements.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Requirements): List<R5String> =
       listOfNotNull(resource.version)

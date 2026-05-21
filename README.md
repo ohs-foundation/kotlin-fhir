@@ -226,13 +226,13 @@ The codegen reads `SearchParameter-*.json` files from the FHIR core packages and
 
 A `SearchParam<R, T>` sealed interface is generated in the `search` subpackage of each version package (e.g. `dev.ohs.fhir.model.r4.search`). It carries the metadata for a search parameter and the typed `extract` function:
 
-| Member       | Type                       | Description                                                                       |
-|:-------------|:---------------------------|:----------------------------------------------------------------------------------|
-| `paramName`  | `String`                   | The search parameter name as used in search URLs.                                 |
-| `type`       | `SearchParamType`          | The search parameter type (number, date, string, token, …).                       |
-| `expression` | `String`                   | The FHIRPath expression that extracts values for this param.                      |
-| `target`     | `List<String>`             | Target resource types for reference search parameters.                            |
-| `extract`    | `(resource: R) -> List<T>` | Pulls the values of type `T` out of a resource of type `R` for this search param. |
+| Member       | Type                         | Description                                                                       |
+|:-------------|:-----------------------------|:----------------------------------------------------------------------------------|
+| `paramName`  | `String`                     | The search parameter name as used in search URLs.                                 |
+| `type`       | `SearchParamType`            | The search parameter type (number, date, string, token, …).                       |
+| `expression` | `String`                     | The FHIRPath expression that extracts values for this param.                      |
+| `target`     | `List<KClass<out Resource>>` | Target resource types for reference search parameters.                            |
+| `extract`    | `(resource: R) -> List<T>`   | Pulls the values of type `T` out of a resource of type `R` for this search param. |
 
 For each resource type that has search parameters, a `{Resource}SearchParam` container `object` is generated. Each search parameter is a nested `data object` that implements `SearchParam<{Resource}, T>` with the value type `T` derived from the FHIRPath expression. An `ALL` property exposes every search parameter for the resource. For example, `PatientSearchParam` looks like:
 
@@ -241,7 +241,7 @@ sealed interface SearchParam<in R : Resource, out T> {
   val paramName: String
   val type: SearchParamType
   val expression: String
-  val target: List<String>
+  val target: List<KClass<out Resource>>
   fun extract(resource: R): List<T>
 }
 
@@ -250,7 +250,7 @@ object PatientSearchParam {
     override val paramName = "birthdate"
     override val type = SearchParamType.fromCode("date")
     override val expression = "Patient.birthDate"
-    override val target = emptyList<String>()
+    override val target = emptyList<KClass<out Resource>>()
     override fun extract(resource: Patient) = listOfNotNull(resource.birthDate)
   }
 
@@ -258,7 +258,7 @@ object PatientSearchParam {
     override val paramName = "general-practitioner"
     override val type = SearchParamType.fromCode("reference")
     override val expression = "Patient.generalPractitioner"
-    override val target = listOf("Practitioner", "Organization", "PractitionerRole")
+    override val target = listOf(Practitioner::class, Organization::class, PractitionerRole::class)
     override fun extract(resource: Patient) = resource.generalPractitioner
   }
   // ... one data object per search parameter

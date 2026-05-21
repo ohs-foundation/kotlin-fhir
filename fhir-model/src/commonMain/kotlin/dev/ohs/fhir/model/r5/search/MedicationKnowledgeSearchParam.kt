@@ -19,14 +19,18 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DocumentReference
 import dev.ohs.fhir.model.r5.MedicationKnowledge
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicationKnowledge] resource type. */
 public object MedicationKnowledgeSearchParam {
@@ -59,7 +63,7 @@ public object MedicationKnowledgeSearchParam {
     public override val expression: KotlinString =
       "MedicationKnowledge.medicineClassification.classification"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
       resource.medicineClassification.flatMap { it.classification }
@@ -72,7 +76,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.medicineClassification.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
       resource.medicineClassification.map { it.type }
@@ -85,7 +89,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
       listOfNotNull(resource.code)
@@ -98,7 +102,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.definitional.doseForm"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
       listOfNotNull(resource.definitional?.doseForm)
@@ -112,7 +116,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: MedicationKnowledge
@@ -127,7 +131,7 @@ public object MedicationKnowledgeSearchParam {
     public override val expression: KotlinString =
       "MedicationKnowledge.definitional.ingredient.item.reference"
 
-    public override val target: List<KotlinString> = listOf("Substance")
+    public override val target: List<KClass<out Resource>> = listOf(Substance::class)
 
     public override fun extract(resource: MedicationKnowledge): List<Reference> =
       (resource.definitional?.ingredient ?: emptyList()).map { it.item }.mapNotNull { it.reference }
@@ -141,7 +145,7 @@ public object MedicationKnowledgeSearchParam {
     public override val expression: KotlinString =
       "MedicationKnowledge.definitional.ingredient.item.concept"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
       (resource.definitional?.ingredient ?: emptyList()).map { it.item }.mapNotNull { it.concept }
@@ -154,7 +158,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.monitoringProgram.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<R5String> =
       resource.monitoringProgram.mapNotNull { it.name }
@@ -167,7 +171,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.monitoringProgram.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
       resource.monitoringProgram.mapNotNull { it.type }
@@ -180,7 +184,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.monograph.source"
 
-    public override val target: List<KotlinString> = listOf("DocumentReference")
+    public override val target: List<KClass<out Resource>> = listOf(DocumentReference::class)
 
     public override fun extract(resource: MedicationKnowledge): List<Reference> =
       resource.monograph.mapNotNull { it.source }
@@ -193,7 +197,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.monograph.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
       resource.monograph.mapNotNull { it.type }
@@ -206,7 +210,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = ""
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
   }
@@ -218,7 +222,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = ""
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<Any> = emptyList()
   }
@@ -230,7 +234,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.productType"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<CodeableConcept> =
       resource.productType
@@ -243,7 +247,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.cost.source"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<R5String> =
       resource.cost.mapNotNull { it.source }
@@ -256,7 +260,7 @@ public object MedicationKnowledgeSearchParam {
 
     public override val expression: KotlinString = "MedicationKnowledge.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationKnowledge): List<Any> =
       listOfNotNull(resource.status)

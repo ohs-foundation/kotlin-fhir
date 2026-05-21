@@ -20,13 +20,23 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.Boolean
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.Group
+import dev.ohs.fhir.model.r4b.Medication
+import dev.ohs.fhir.model.r4b.Organization
+import dev.ohs.fhir.model.r4b.Patient
+import dev.ohs.fhir.model.r4b.Practitioner
+import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.Resource
+import dev.ohs.fhir.model.r4b.Substance
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Group] resource type. */
 public object GroupSearchParam {
@@ -52,7 +62,7 @@ public object GroupSearchParam {
 
     public override val expression: String = "Group.actual"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Group): List<Boolean> = listOf(resource.actual)
   }
@@ -64,7 +74,7 @@ public object GroupSearchParam {
 
     public override val expression: String = "Group.characteristic.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Group): List<CodeableConcept> =
       resource.characteristic.map { it.code }
@@ -77,7 +87,7 @@ public object GroupSearchParam {
 
     public override val expression: String = "Group.characteristic"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Group): List<Group.Characteristic> =
       resource.characteristic
@@ -90,7 +100,7 @@ public object GroupSearchParam {
 
     public override val expression: String = "Group.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Group): List<CodeableConcept> =
       listOfNotNull(resource.code)
@@ -103,7 +113,7 @@ public object GroupSearchParam {
 
     public override val expression: String = "Group.characteristic.exclude"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Group): List<Boolean> =
       resource.characteristic.map { it.exclude }
@@ -116,7 +126,7 @@ public object GroupSearchParam {
 
     public override val expression: String = "Group.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Group): List<dev.ohs.fhir.model.r4b.Identifier> =
       resource.identifier
@@ -129,8 +139,13 @@ public object GroupSearchParam {
 
     public override val expression: String = "Group.managingEntity"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Organization", "PractitionerRole", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Practitioner::class,
+        Organization::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
+      )
 
     public override fun extract(resource: Group): List<Reference> =
       listOfNotNull(resource.managingEntity)
@@ -143,16 +158,16 @@ public object GroupSearchParam {
 
     public override val expression: String = "Group.member.entity"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Group",
-        "Device",
-        "Medication",
-        "Patient",
-        "Substance",
-        "PractitionerRole",
-        "RelatedPerson",
+        Practitioner::class,
+        Group::class,
+        Device::class,
+        Medication::class,
+        Patient::class,
+        Substance::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
       )
 
     public override fun extract(resource: Group): List<Reference> =
@@ -166,7 +181,7 @@ public object GroupSearchParam {
 
     public override val expression: String = "Group.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Group): List<Any> = listOf(resource.type)
   }
@@ -178,7 +193,7 @@ public object GroupSearchParam {
 
     public override val expression: String = "(Group.characteristic.value as CodeableConcept)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Group): List<CodeableConcept> =
       resource.characteristic.mapNotNull {

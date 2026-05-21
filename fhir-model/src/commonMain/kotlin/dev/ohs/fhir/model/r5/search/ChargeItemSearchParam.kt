@@ -18,17 +18,37 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.ChargeItem
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Decimal
+import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.DiagnosticReport
+import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.ImagingStudy
+import dev.ohs.fhir.model.r5.Immunization
+import dev.ohs.fhir.model.r5.MedicationAdministration
+import dev.ohs.fhir.model.r5.MedicationDispense
+import dev.ohs.fhir.model.r5.MedicationRequest
 import dev.ohs.fhir.model.r5.Money
+import dev.ohs.fhir.model.r5.Observation
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
+import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ServiceRequest
+import dev.ohs.fhir.model.r5.SupplyDelivery
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ChargeItem] resource type. */
 public object ChargeItemSearchParam {
@@ -62,7 +82,8 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.account"
 
-    public override val target: List<String> = listOf("Account")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Account::class)
 
     public override fun extract(resource: ChargeItem): List<Reference> = resource.account
   }
@@ -74,7 +95,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItem): List<CodeableConcept> = listOf(resource.code)
   }
@@ -86,7 +107,8 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Encounter::class)
 
     public override fun extract(resource: ChargeItem): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -99,7 +121,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.enteredDate"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItem): List<DateTime> =
       listOfNotNull(resource.enteredDate)
@@ -112,14 +134,14 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.enterer"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Organization",
-        "Device",
-        "RelatedPerson",
-        "PractitionerRole",
-        "Practitioner",
-        "Patient",
+        Organization::class,
+        Device::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
       )
 
     public override fun extract(resource: ChargeItem): List<Reference> =
@@ -133,7 +155,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.totalPriceComponent.factor"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItem): List<Decimal> =
       listOfNotNull(resource.totalPriceComponent?.factor)
@@ -146,7 +168,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItem): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -159,7 +181,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.occurrence.ofType(dateTime)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItem): List<Any> = emptyList()
   }
@@ -171,7 +193,8 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: ChargeItem): List<Reference> =
       listOf(resource.subject).filter {
@@ -186,16 +209,16 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.performer.actor"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "HealthcareService",
-        "Organization",
-        "CareTeam",
-        "Device",
-        "RelatedPerson",
-        "PractitionerRole",
-        "Practitioner",
-        "Patient",
+        HealthcareService::class,
+        Organization::class,
+        CareTeam::class,
+        Device::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
       )
 
     public override fun extract(resource: ChargeItem): List<Reference> =
@@ -209,7 +232,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.performer.function"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItem): List<CodeableConcept> =
       resource.performer.mapNotNull { it.function }
@@ -222,7 +245,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.performingOrganization"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: ChargeItem): List<Reference> =
       listOfNotNull(resource.performingOrganization)
@@ -235,7 +258,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.totalPriceComponent.amount"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItem): List<Money> =
       listOfNotNull(resource.totalPriceComponent?.amount)
@@ -248,7 +271,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.quantity"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItem): List<dev.ohs.fhir.model.r5.Quantity> =
       listOfNotNull(resource.quantity)
@@ -261,7 +284,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.requestingOrganization"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: ChargeItem): List<Reference> =
       listOfNotNull(resource.requestingOrganization)
@@ -274,18 +297,18 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.service.reference"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "SupplyDelivery",
-        "ImagingStudy",
-        "Procedure",
-        "Observation",
-        "ServiceRequest",
-        "MedicationAdministration",
-        "DiagnosticReport",
-        "Immunization",
-        "MedicationRequest",
-        "MedicationDispense",
+        SupplyDelivery::class,
+        ImagingStudy::class,
+        Procedure::class,
+        Observation::class,
+        ServiceRequest::class,
+        MedicationAdministration::class,
+        DiagnosticReport::class,
+        Immunization::class,
+        MedicationRequest::class,
+        MedicationDispense::class,
       )
 
     public override fun extract(resource: ChargeItem): List<Reference> =
@@ -299,7 +322,7 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItem): List<Any> = listOf(resource.status)
   }
@@ -311,7 +334,8 @@ public object ChargeItemSearchParam {
 
     public override val expression: String = "ChargeItem.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: ChargeItem): List<Reference> = listOf(resource.subject)
   }

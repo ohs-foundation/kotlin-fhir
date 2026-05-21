@@ -18,14 +18,21 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.InventoryItem
 import dev.ohs.fhir.model.r5.InventoryReport
+import dev.ohs.fhir.model.r5.Medication
+import dev.ohs.fhir.model.r5.NutritionProduct
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [InventoryReport] resource type. */
 public object InventoryReportSearchParam {
@@ -40,7 +47,7 @@ public object InventoryReportSearchParam {
 
     public override val expression: String = "InventoryReport.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InventoryReport): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -53,7 +60,7 @@ public object InventoryReportSearchParam {
 
     public override val expression: String = "InventoryReport.inventoryListing.item.item.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InventoryReport): List<CodeableConcept> =
       resource.inventoryListing.flatMap { it.item }.map { it.item }.mapNotNull { it.concept }
@@ -66,13 +73,13 @@ public object InventoryReportSearchParam {
 
     public override val expression: String = "InventoryReport.inventoryListing.item.item.reference"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Device",
-        "InventoryItem",
-        "NutritionProduct",
-        "BiologicallyDerivedProduct",
-        "Medication",
+        Device::class,
+        InventoryItem::class,
+        NutritionProduct::class,
+        BiologicallyDerivedProduct::class,
+        Medication::class,
       )
 
     public override fun extract(resource: InventoryReport): List<Reference> =
@@ -86,7 +93,7 @@ public object InventoryReportSearchParam {
 
     public override val expression: String = "InventoryReport.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InventoryReport): List<Any> = listOf(resource.status)
   }

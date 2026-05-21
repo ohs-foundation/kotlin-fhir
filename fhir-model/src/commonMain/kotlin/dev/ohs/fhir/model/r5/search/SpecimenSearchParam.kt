@@ -18,14 +18,25 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
+import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.Location
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Specimen
+import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Specimen] resource type. */
 public object SpecimenSearchParam {
@@ -53,7 +64,7 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.accessionIdentifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Specimen): List<dev.ohs.fhir.model.r5.Identifier> =
       listOfNotNull(resource.accessionIdentifier)
@@ -66,7 +77,7 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.collection.bodySite.reference"
 
-    public override val target: List<String> = listOf("BodyStructure")
+    public override val target: List<KClass<out Resource>> = listOf(BodyStructure::class)
 
     public override fun extract(resource: Specimen): List<Reference> =
       listOfNotNull(resource.collection?.bodySite?.reference)
@@ -79,7 +90,7 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.collection.collected.ofType(dateTime)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Specimen): List<Any> = emptyList()
   }
@@ -91,8 +102,13 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.collection.collector"
 
-    public override val target: List<String> =
-      listOf("RelatedPerson", "PractitionerRole", "Practitioner", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
+      )
 
     public override fun extract(resource: Specimen): List<Reference> =
       listOfNotNull(resource.collection?.collector)
@@ -105,7 +121,7 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.container.device.where(resolve() is Device)"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: Specimen): List<Reference> =
       resource.container
@@ -120,7 +136,7 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Specimen): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -133,7 +149,7 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.parent"
 
-    public override val target: List<String> = listOf("Specimen")
+    public override val target: List<KClass<out Resource>> = listOf(Specimen::class)
 
     public override fun extract(resource: Specimen): List<Reference> = resource.parent
   }
@@ -145,7 +161,8 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: Specimen): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -160,7 +177,8 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.collection.procedure"
 
-    public override val target: List<String> = listOf("Procedure")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Procedure::class)
 
     public override fun extract(resource: Specimen): List<Reference> =
       listOfNotNull(resource.collection?.procedure)
@@ -173,7 +191,7 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Specimen): List<Any> = listOfNotNull(resource.status)
   }
@@ -185,8 +203,15 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.subject"
 
-    public override val target: List<String> =
-      listOf("Device", "Group", "BiologicallyDerivedProduct", "Substance", "Location", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Device::class,
+        Group::class,
+        BiologicallyDerivedProduct::class,
+        Substance::class,
+        Location::class,
+        dev.ohs.fhir.model.r5.Patient::class,
+      )
 
     public override fun extract(resource: Specimen): List<Reference> =
       listOfNotNull(resource.subject)
@@ -199,7 +224,7 @@ public object SpecimenSearchParam {
 
     public override val expression: String = "Specimen.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Specimen): List<CodeableConcept> =
       listOfNotNull(resource.type)

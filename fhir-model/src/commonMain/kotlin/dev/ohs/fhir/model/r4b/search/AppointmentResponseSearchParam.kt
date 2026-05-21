@@ -19,12 +19,18 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.AppointmentResponse
+import dev.ohs.fhir.model.r4b.Device
+import dev.ohs.fhir.model.r4b.HealthcareService
+import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [AppointmentResponse] resource type. */
 public object AppointmentResponseSearchParam {
@@ -39,15 +45,15 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.actor"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Device",
-        "Patient",
-        "HealthcareService",
-        "PractitionerRole",
-        "RelatedPerson",
-        "Location",
+        dev.ohs.fhir.model.r4b.Practitioner::class,
+        Device::class,
+        dev.ohs.fhir.model.r4b.Patient::class,
+        HealthcareService::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
+        dev.ohs.fhir.model.r4b.Location::class,
       )
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
@@ -61,7 +67,8 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.appointment"
 
-    public override val target: List<String> = listOf("Appointment")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Appointment::class)
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
       listOf(resource.appointment)
@@ -75,7 +82,7 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: AppointmentResponse
@@ -90,7 +97,8 @@ public object AppointmentResponseSearchParam {
     public override val expression: String =
       "AppointmentResponse.actor.where(resolve() is Location)"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Location::class)
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
       listOfNotNull(resource.actor).filter {
@@ -105,7 +113,7 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.participantStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AppointmentResponse): List<Any> =
       listOf(resource.participantStatus)
@@ -118,7 +126,8 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.actor.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
       listOfNotNull(resource.actor).filter {
@@ -134,7 +143,8 @@ public object AppointmentResponseSearchParam {
     public override val expression: String =
       "AppointmentResponse.actor.where(resolve() is Practitioner)"
 
-    public override val target: List<String> = listOf("Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Practitioner::class)
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
       listOfNotNull(resource.actor).filter {

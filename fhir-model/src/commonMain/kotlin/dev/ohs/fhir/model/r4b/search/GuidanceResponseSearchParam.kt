@@ -18,12 +18,15 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.GuidanceResponse
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [GuidanceResponse] resource type. */
 public object GuidanceResponseSearchParam {
@@ -38,7 +41,7 @@ public object GuidanceResponseSearchParam {
 
     public override val expression: String = "GuidanceResponse.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: GuidanceResponse
@@ -52,7 +55,8 @@ public object GuidanceResponseSearchParam {
 
     public override val expression: String = "GuidanceResponse.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: GuidanceResponse): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -67,7 +71,7 @@ public object GuidanceResponseSearchParam {
 
     public override val expression: String = "GuidanceResponse.requestIdentifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: GuidanceResponse
@@ -81,7 +85,8 @@ public object GuidanceResponseSearchParam {
 
     public override val expression: String = "GuidanceResponse.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: GuidanceResponse): List<Reference> =
       listOfNotNull(resource.subject)

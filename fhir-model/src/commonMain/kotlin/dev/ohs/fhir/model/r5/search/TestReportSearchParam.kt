@@ -20,14 +20,17 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.TestReport
+import dev.ohs.fhir.model.r5.TestScript
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [TestReport] resource type. */
 public object TestReportSearchParam {
@@ -42,7 +45,7 @@ public object TestReportSearchParam {
 
     public override val expression: KotlinString = "TestReport.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestReport): List<dev.ohs.fhir.model.r5.Identifier> =
       listOfNotNull(resource.identifier)
@@ -55,7 +58,7 @@ public object TestReportSearchParam {
 
     public override val expression: KotlinString = "TestReport.issued"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestReport): List<DateTime> =
       listOfNotNull(resource.issued)
@@ -68,7 +71,7 @@ public object TestReportSearchParam {
 
     public override val expression: KotlinString = "TestReport.participant.uri"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestReport): List<Uri> =
       resource.participant.map { it.uri }
@@ -81,7 +84,7 @@ public object TestReportSearchParam {
 
     public override val expression: KotlinString = "TestReport.result"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestReport): List<Any> = listOf(resource.result)
   }
@@ -93,7 +96,7 @@ public object TestReportSearchParam {
 
     public override val expression: KotlinString = "TestReport.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestReport): List<Any> = listOf(resource.status)
   }
@@ -105,7 +108,7 @@ public object TestReportSearchParam {
 
     public override val expression: KotlinString = "TestReport.tester"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestReport): List<R5String> =
       listOfNotNull(resource.tester)
@@ -118,7 +121,7 @@ public object TestReportSearchParam {
 
     public override val expression: KotlinString = "TestReport.testScript"
 
-    public override val target: List<KotlinString> = listOf("TestScript")
+    public override val target: List<KClass<out Resource>> = listOf(TestScript::class)
 
     public override fun extract(resource: TestReport): List<Canonical> = listOf(resource.testScript)
   }

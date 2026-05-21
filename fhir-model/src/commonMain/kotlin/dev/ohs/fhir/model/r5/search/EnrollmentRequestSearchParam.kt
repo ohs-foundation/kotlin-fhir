@@ -20,11 +20,13 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.EnrollmentRequest
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [EnrollmentRequest] resource type. */
 public object EnrollmentRequestSearchParam {
@@ -39,7 +41,7 @@ public object EnrollmentRequestSearchParam {
 
     public override val expression: String = "EnrollmentRequest.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: EnrollmentRequest
@@ -53,7 +55,8 @@ public object EnrollmentRequestSearchParam {
 
     public override val expression: String = "EnrollmentRequest.candidate"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: EnrollmentRequest): List<Reference> =
       listOfNotNull(resource.candidate)
@@ -66,7 +69,7 @@ public object EnrollmentRequestSearchParam {
 
     public override val expression: String = "EnrollmentRequest.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EnrollmentRequest): List<Any> =
       listOfNotNull(resource.status)
@@ -79,7 +82,8 @@ public object EnrollmentRequestSearchParam {
 
     public override val expression: String = "EnrollmentRequest.candidate"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: EnrollmentRequest): List<Reference> =
       listOfNotNull(resource.candidate)

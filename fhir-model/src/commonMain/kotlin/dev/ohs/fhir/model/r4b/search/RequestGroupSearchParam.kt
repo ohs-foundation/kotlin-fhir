@@ -21,14 +21,21 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.Canonical
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Device
+import dev.ohs.fhir.model.r4b.Group
+import dev.ohs.fhir.model.r4b.Practitioner
+import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.RelatedPerson
 import dev.ohs.fhir.model.r4b.RequestGroup
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [RequestGroup] resource type. */
 public object RequestGroupSearchParam {
@@ -58,7 +65,8 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.author"
 
-    public override val target: List<String> = listOf("Practitioner", "Device", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, Device::class, PractitionerRole::class)
 
     public override fun extract(resource: RequestGroup): List<Reference> =
       listOfNotNull(resource.author)
@@ -71,7 +79,7 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.authoredOn"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RequestGroup): List<DateTime> =
       listOfNotNull(resource.authoredOn)
@@ -84,7 +92,7 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RequestGroup): List<CodeableConcept> =
       listOfNotNull(resource.code)
@@ -97,7 +105,8 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Encounter::class)
 
     public override fun extract(resource: RequestGroup): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -111,7 +120,7 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.groupIdentifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RequestGroup): List<dev.ohs.fhir.model.r4b.Identifier> =
       listOfNotNull(resource.groupIdentifier)
@@ -124,7 +133,7 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RequestGroup): List<dev.ohs.fhir.model.r4b.Identifier> =
       resource.identifier
@@ -137,7 +146,7 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.instantiatesCanonical"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RequestGroup): List<Canonical> =
       resource.instantiatesCanonical
@@ -150,7 +159,7 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.instantiatesUri"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RequestGroup): List<Uri> = resource.instantiatesUri
   }
@@ -162,7 +171,7 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.intent"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RequestGroup): List<Any> = listOf(resource.intent)
   }
@@ -174,8 +183,14 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.action.participant"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Device", "Patient", "PractitionerRole", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Practitioner::class,
+        Device::class,
+        dev.ohs.fhir.model.r4b.Patient::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
+      )
 
     public override fun extract(resource: RequestGroup): List<Reference> =
       resource.action.flatMap { it.participant }
@@ -188,7 +203,8 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: RequestGroup): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -203,7 +219,7 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.priority"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RequestGroup): List<Any> =
       listOfNotNull(resource.priority)
@@ -216,7 +232,7 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RequestGroup): List<Any> = listOf(resource.status)
   }
@@ -228,7 +244,8 @@ public object RequestGroupSearchParam {
 
     public override val expression: String = "RequestGroup.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: RequestGroup): List<Reference> =
       listOfNotNull(resource.subject)

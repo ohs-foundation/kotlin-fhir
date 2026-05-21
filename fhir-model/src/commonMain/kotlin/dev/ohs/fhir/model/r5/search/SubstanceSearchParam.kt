@@ -21,12 +21,15 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Substance
+import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Substance] resource type. */
 public object SubstanceSearchParam {
@@ -41,7 +44,7 @@ public object SubstanceSearchParam {
 
     public override val expression: String = "Substance.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Substance): List<CodeableConcept> = resource.category
   }
@@ -53,7 +56,7 @@ public object SubstanceSearchParam {
 
     public override val expression: String = "Substance.code.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Substance): List<CodeableConcept> =
       listOfNotNull(resource.code.concept)
@@ -66,7 +69,7 @@ public object SubstanceSearchParam {
 
     public override val expression: String = "Substance.code.reference"
 
-    public override val target: List<String> = listOf("SubstanceDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(SubstanceDefinition::class)
 
     public override fun extract(resource: Substance): List<Reference> =
       listOfNotNull(resource.code.reference)
@@ -79,7 +82,7 @@ public object SubstanceSearchParam {
 
     public override val expression: String = "Substance.expiry"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Substance): List<DateTime> =
       listOfNotNull(resource.expiry)
@@ -92,7 +95,7 @@ public object SubstanceSearchParam {
 
     public override val expression: String = "Substance.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Substance): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -105,7 +108,7 @@ public object SubstanceSearchParam {
 
     public override val expression: String = "Substance.quantity"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Substance): List<dev.ohs.fhir.model.r5.Quantity> =
       listOfNotNull(resource.quantity)
@@ -118,7 +121,7 @@ public object SubstanceSearchParam {
 
     public override val expression: String = "Substance.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Substance): List<Any> = listOfNotNull(resource.status)
   }
@@ -130,7 +133,7 @@ public object SubstanceSearchParam {
 
     public override val expression: String = "(Substance.ingredient.substance.ofType(Reference))"
 
-    public override val target: List<String> = listOf("Substance")
+    public override val target: List<KClass<out Resource>> = listOf(Substance::class)
 
     public override fun extract(resource: Substance): List<Any> = emptyList()
   }

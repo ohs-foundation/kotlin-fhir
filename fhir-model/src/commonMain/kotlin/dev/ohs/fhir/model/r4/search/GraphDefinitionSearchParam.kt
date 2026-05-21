@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.GraphDefinition
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [GraphDefinition] resource type. */
 public object GraphDefinitionSearchParam {
@@ -62,7 +64,7 @@ public object GraphDefinitionSearchParam {
     public override val expression: KotlinString =
       "(GraphDefinition.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -75,7 +77,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "(GraphDefinition.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -88,7 +90,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<Coding> =
       resource.useContext.map { it.code }
@@ -101,7 +103,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<UsageContext> = resource.useContext
   }
@@ -113,7 +115,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<UsageContext> = resource.useContext
   }
@@ -125,7 +127,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<DateTime> =
       listOfNotNull(resource.date)
@@ -138,7 +140,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<Markdown> =
       listOfNotNull(resource.description)
@@ -151,7 +153,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<CodeableConcept> =
       resource.jurisdiction
@@ -164,7 +166,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<R4String> = listOf(resource.name)
   }
@@ -176,7 +178,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<R4String> =
       listOfNotNull(resource.publisher)
@@ -189,7 +191,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.start"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<Any> = listOf(resource.start)
   }
@@ -201,7 +203,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<Any> = listOf(resource.status)
   }
@@ -213,7 +215,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<Uri> = listOfNotNull(resource.url)
   }
@@ -225,7 +227,7 @@ public object GraphDefinitionSearchParam {
 
     public override val expression: KotlinString = "GraphDefinition.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GraphDefinition): List<R4String> =
       listOfNotNull(resource.version)

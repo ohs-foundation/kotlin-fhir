@@ -19,11 +19,13 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Permission
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Permission] resource type. */
 public object PermissionSearchParam {
@@ -37,7 +39,7 @@ public object PermissionSearchParam {
 
     public override val expression: String = "Permission.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Permission): List<Any> = listOf(resource.status)
   }

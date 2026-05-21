@@ -20,11 +20,15 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceAssociation
+import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceAssociation] resource type. */
 public object DeviceAssociationSearchParam {
@@ -39,7 +43,8 @@ public object DeviceAssociationSearchParam {
 
     public override val expression: String = "DeviceAssociation.device"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Device::class)
 
     public override fun extract(resource: DeviceAssociation): List<Reference> =
       listOf(resource.device)
@@ -52,7 +57,7 @@ public object DeviceAssociationSearchParam {
 
     public override val expression: String = "DeviceAssociation.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: DeviceAssociation
@@ -66,7 +71,8 @@ public object DeviceAssociationSearchParam {
 
     public override val expression: String = "DeviceAssociation.operation.operator"
 
-    public override val target: List<String> = listOf("RelatedPerson", "Practitioner", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(RelatedPerson::class, Practitioner::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: DeviceAssociation): List<Reference> =
       resource.operation.flatMap { it.operator }
@@ -79,7 +85,8 @@ public object DeviceAssociationSearchParam {
 
     public override val expression: String = "DeviceAssociation.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: DeviceAssociation): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -94,7 +101,7 @@ public object DeviceAssociationSearchParam {
 
     public override val expression: String = "DeviceAssociation.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceAssociation): List<CodeableConcept> =
       listOf(resource.status)
@@ -107,7 +114,8 @@ public object DeviceAssociationSearchParam {
 
     public override val expression: String = "DeviceAssociation.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: DeviceAssociation): List<Reference> =
       listOfNotNull(resource.subject).filter {

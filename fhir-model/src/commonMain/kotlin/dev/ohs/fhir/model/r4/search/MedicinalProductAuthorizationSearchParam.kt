@@ -19,12 +19,17 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.MedicinalProduct
 import dev.ohs.fhir.model.r4.MedicinalProductAuthorization
+import dev.ohs.fhir.model.r4.MedicinalProductPackaged
+import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicinalProductAuthorization] resource type. */
 public object MedicinalProductAuthorizationSearchParam {
@@ -39,7 +44,7 @@ public object MedicinalProductAuthorizationSearchParam {
 
     public override val expression: String = "MedicinalProductAuthorization.country"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductAuthorization): List<CodeableConcept> =
       resource.country
@@ -52,7 +57,7 @@ public object MedicinalProductAuthorizationSearchParam {
 
     public override val expression: String = "MedicinalProductAuthorization.holder"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: MedicinalProductAuthorization): List<Reference> =
       listOfNotNull(resource.holder)
@@ -66,7 +71,7 @@ public object MedicinalProductAuthorizationSearchParam {
 
     public override val expression: String = "MedicinalProductAuthorization.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: MedicinalProductAuthorization
@@ -80,7 +85,7 @@ public object MedicinalProductAuthorizationSearchParam {
 
     public override val expression: String = "MedicinalProductAuthorization.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductAuthorization): List<CodeableConcept> =
       listOfNotNull(resource.status)
@@ -93,8 +98,8 @@ public object MedicinalProductAuthorizationSearchParam {
 
     public override val expression: String = "MedicinalProductAuthorization.subject"
 
-    public override val target: List<String> =
-      listOf("MedicinalProductPackaged", "MedicinalProduct")
+    public override val target: List<KClass<out Resource>> =
+      listOf(MedicinalProductPackaged::class, MedicinalProduct::class)
 
     public override fun extract(resource: MedicinalProductAuthorization): List<Reference> =
       listOfNotNull(resource.subject)

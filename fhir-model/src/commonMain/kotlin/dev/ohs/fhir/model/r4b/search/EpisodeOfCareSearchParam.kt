@@ -21,12 +21,16 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.EpisodeOfCare
 import dev.ohs.fhir.model.r4b.Period
+import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.Resource
+import dev.ohs.fhir.model.r4b.ServiceRequest
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [EpisodeOfCare] resource type. */
 public object EpisodeOfCareSearchParam {
@@ -52,7 +56,7 @@ public object EpisodeOfCareSearchParam {
     public override val expression: String =
       "EpisodeOfCare.careManager.where(resolve() is Practitioner)"
 
-    public override val target: List<String> = listOf("Practitioner")
+    public override val target: List<KClass<out Resource>> = listOf(Practitioner::class)
 
     public override fun extract(resource: EpisodeOfCare): List<Reference> =
       listOfNotNull(resource.careManager).filter {
@@ -67,7 +71,8 @@ public object EpisodeOfCareSearchParam {
 
     public override val expression: String = "EpisodeOfCare.diagnosis.condition"
 
-    public override val target: List<String> = listOf("Condition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Condition::class)
 
     public override fun extract(resource: EpisodeOfCare): List<Reference> =
       resource.diagnosis.map { it.condition }
@@ -80,7 +85,7 @@ public object EpisodeOfCareSearchParam {
 
     public override val expression: String = "EpisodeOfCare.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EpisodeOfCare): List<Period> =
       listOfNotNull(resource.period)
@@ -93,7 +98,7 @@ public object EpisodeOfCareSearchParam {
 
     public override val expression: String = "EpisodeOfCare.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EpisodeOfCare): List<dev.ohs.fhir.model.r4b.Identifier> =
       resource.identifier
@@ -106,7 +111,7 @@ public object EpisodeOfCareSearchParam {
 
     public override val expression: String = "EpisodeOfCare.referralRequest"
 
-    public override val target: List<String> = listOf("ServiceRequest")
+    public override val target: List<KClass<out Resource>> = listOf(ServiceRequest::class)
 
     public override fun extract(resource: EpisodeOfCare): List<Reference> = resource.referralRequest
   }
@@ -118,7 +123,8 @@ public object EpisodeOfCareSearchParam {
 
     public override val expression: String = "EpisodeOfCare.managingOrganization"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Organization::class)
 
     public override fun extract(resource: EpisodeOfCare): List<Reference> =
       listOfNotNull(resource.managingOrganization)
@@ -131,7 +137,8 @@ public object EpisodeOfCareSearchParam {
 
     public override val expression: String = "EpisodeOfCare.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: EpisodeOfCare): List<Reference> = listOf(resource.patient)
   }
@@ -143,7 +150,7 @@ public object EpisodeOfCareSearchParam {
 
     public override val expression: String = "EpisodeOfCare.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EpisodeOfCare): List<Any> = listOf(resource.status)
   }
@@ -155,7 +162,7 @@ public object EpisodeOfCareSearchParam {
 
     public override val expression: String = "EpisodeOfCare.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EpisodeOfCare): List<CodeableConcept> = resource.type
   }

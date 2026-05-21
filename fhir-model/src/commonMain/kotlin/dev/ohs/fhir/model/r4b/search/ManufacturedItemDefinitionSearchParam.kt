@@ -20,10 +20,12 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ManufacturedItemDefinition] resource type. */
 public object ManufacturedItemDefinitionSearchParam {
@@ -38,7 +40,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
     public override val expression: String = "ManufacturedItemDefinition.manufacturedDoseForm"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
       listOf(resource.manufacturedDoseForm)
@@ -52,7 +54,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
     public override val expression: String = "ManufacturedItemDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: ManufacturedItemDefinition
@@ -66,7 +68,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
     public override val expression: String = "ManufacturedItemDefinition.ingredient"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
       resource.ingredient

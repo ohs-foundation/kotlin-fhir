@@ -19,12 +19,15 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.EncounterHistory
+import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [EncounterHistory] resource type. */
 public object EncounterHistorySearchParam {
@@ -39,7 +42,8 @@ public object EncounterHistorySearchParam {
 
     public override val expression: String = "EncounterHistory.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Encounter::class)
 
     public override fun extract(resource: EncounterHistory): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -52,7 +56,7 @@ public object EncounterHistorySearchParam {
 
     public override val expression: String = "EncounterHistory.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: EncounterHistory
@@ -66,7 +70,8 @@ public object EncounterHistorySearchParam {
 
     public override val expression: String = "EncounterHistory.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: EncounterHistory): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -81,7 +86,7 @@ public object EncounterHistorySearchParam {
 
     public override val expression: String = "EncounterHistory.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EncounterHistory): List<Any> = listOf(resource.status)
   }
@@ -93,7 +98,8 @@ public object EncounterHistorySearchParam {
 
     public override val expression: String = "EncounterHistory.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: EncounterHistory): List<Reference> =
       listOfNotNull(resource.subject)

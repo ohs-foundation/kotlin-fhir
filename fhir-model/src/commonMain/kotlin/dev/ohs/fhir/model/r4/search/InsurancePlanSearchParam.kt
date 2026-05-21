@@ -20,13 +20,16 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.InsurancePlan
+import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [InsurancePlan] resource type. */
 public object InsurancePlanSearchParam {
@@ -56,7 +59,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.contact.address"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<dev.ohs.fhir.model.r4.Address> =
       resource.contact.mapNotNull { it.address }
@@ -69,7 +72,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.contact.address.city"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<R4String> =
       resource.contact.mapNotNull { it.address }.mapNotNull { it.city }
@@ -82,7 +85,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.contact.address.country"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<R4String> =
       resource.contact.mapNotNull { it.address }.mapNotNull { it.country }
@@ -95,7 +98,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.contact.address.postalCode"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<R4String> =
       resource.contact.mapNotNull { it.address }.mapNotNull { it.postalCode }
@@ -108,7 +111,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.contact.address.state"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<R4String> =
       resource.contact.mapNotNull { it.address }.mapNotNull { it.state }
@@ -121,7 +124,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.contact.address.use"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<Any> =
       resource.contact.mapNotNull { it.address }.mapNotNull { it.use }
@@ -134,7 +137,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.administeredBy"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: InsurancePlan): List<Reference> =
       listOfNotNull(resource.administeredBy)
@@ -147,7 +150,8 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.endpoint"
 
-    public override val target: List<KotlinString> = listOf("Endpoint")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Endpoint::class)
 
     public override fun extract(resource: InsurancePlan): List<Reference> = resource.endpoint
   }
@@ -159,7 +163,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -172,7 +176,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "name | alias"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<Any> = emptyList()
   }
@@ -184,7 +188,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.ownedBy"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: InsurancePlan): List<Reference> =
       listOfNotNull(resource.ownedBy)
@@ -197,7 +201,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<R4String> =
       listOfNotNull(resource.name)
@@ -210,7 +214,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<Any> = listOfNotNull(resource.status)
   }
@@ -222,7 +226,7 @@ public object InsurancePlanSearchParam {
 
     public override val expression: KotlinString = "InsurancePlan.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InsurancePlan): List<CodeableConcept> = resource.type
   }

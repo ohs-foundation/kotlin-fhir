@@ -19,14 +19,22 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.ExplanationOfBenefit
+import dev.ohs.fhir.model.r4b.Location
+import dev.ohs.fhir.model.r4b.Organization
+import dev.ohs.fhir.model.r4b.Practitioner
+import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ExplanationOfBenefit] resource type. */
 public object ExplanationOfBenefitSearchParam {
@@ -59,8 +67,8 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.careTeam.provider"
 
-    public override val target: List<KotlinString> =
-      listOf("Practitioner", "Organization", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, Organization::class, PractitionerRole::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       resource.careTeam.map { it.provider }
@@ -73,7 +81,8 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.claim"
 
-    public override val target: List<KotlinString> = listOf("Claim")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Claim::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       listOfNotNull(resource.claim)
@@ -86,7 +95,8 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.insurance.coverage"
 
-    public override val target: List<KotlinString> = listOf("Coverage")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Coverage::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       resource.insurance.map { it.coverage }
@@ -99,7 +109,7 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.created"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExplanationOfBenefit): List<DateTime> =
       listOf(resource.created)
@@ -112,7 +122,7 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.item.detail.udi"
 
-    public override val target: List<KotlinString> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       resource.item.flatMap { it.detail }.flatMap { it.udi }
@@ -125,7 +135,7 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.disposition"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExplanationOfBenefit): List<R4bString> =
       listOfNotNull(resource.disposition)
@@ -138,7 +148,8 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.item.encounter"
 
-    public override val target: List<KotlinString> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Encounter::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       resource.item.flatMap { it.encounter }
@@ -151,7 +162,8 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.enterer"
 
-    public override val target: List<KotlinString> = listOf("Practitioner", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, PractitionerRole::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       listOfNotNull(resource.enterer)
@@ -164,7 +176,7 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.facility"
 
-    public override val target: List<KotlinString> = listOf("Location")
+    public override val target: List<KClass<out Resource>> = listOf(Location::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       listOfNotNull(resource.facility)
@@ -178,7 +190,7 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: ExplanationOfBenefit
@@ -192,7 +204,7 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.item.udi"
 
-    public override val target: List<KotlinString> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       resource.item.flatMap { it.udi }
@@ -205,7 +217,8 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.patient"
 
-    public override val target: List<KotlinString> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       listOf(resource.patient)
@@ -218,8 +231,14 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.payee.party"
 
-    public override val target: List<KotlinString> =
-      listOf("Practitioner", "Organization", "Patient", "PractitionerRole", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Practitioner::class,
+        Organization::class,
+        dev.ohs.fhir.model.r4b.Patient::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
+      )
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       listOfNotNull(resource.payee?.party)
@@ -232,7 +251,7 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.procedure.udi"
 
-    public override val target: List<KotlinString> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       resource.procedure.flatMap { it.udi }
@@ -245,8 +264,8 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.provider"
 
-    public override val target: List<KotlinString> =
-      listOf("Practitioner", "Organization", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, Organization::class, PractitionerRole::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       listOf(resource.provider)
@@ -259,7 +278,7 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExplanationOfBenefit): List<Any> = listOf(resource.status)
   }
@@ -271,7 +290,7 @@ public object ExplanationOfBenefitSearchParam {
 
     public override val expression: KotlinString = "ExplanationOfBenefit.item.detail.subDetail.udi"
 
-    public override val target: List<KotlinString> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: ExplanationOfBenefit): List<Reference> =
       resource.item.flatMap { it.detail }.flatMap { it.subDetail }.flatMap { it.udi }

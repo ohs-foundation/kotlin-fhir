@@ -18,17 +18,25 @@
 
 package dev.ohs.fhir.model.r4.search
 
+import dev.ohs.fhir.model.r4.ActivityDefinition
 import dev.ohs.fhir.model.r4.Canonical
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.FamilyMemberHistory
+import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.Measure
+import dev.ohs.fhir.model.r4.OperationDefinition
+import dev.ohs.fhir.model.r4.PlanDefinition
+import dev.ohs.fhir.model.r4.Questionnaire
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [FamilyMemberHistory] resource type. */
 public object FamilyMemberHistorySearchParam {
@@ -53,7 +61,7 @@ public object FamilyMemberHistorySearchParam {
 
     public override val expression: String = "FamilyMemberHistory.condition.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: FamilyMemberHistory): List<CodeableConcept> =
       resource.condition.map { it.code }
@@ -66,7 +74,7 @@ public object FamilyMemberHistorySearchParam {
 
     public override val expression: String = "FamilyMemberHistory.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: FamilyMemberHistory): List<DateTime> =
       listOfNotNull(resource.date)
@@ -80,7 +88,7 @@ public object FamilyMemberHistorySearchParam {
 
     public override val expression: String = "FamilyMemberHistory.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: FamilyMemberHistory
@@ -94,13 +102,13 @@ public object FamilyMemberHistorySearchParam {
 
     public override val expression: String = "FamilyMemberHistory.instantiatesCanonical"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Questionnaire",
-        "Measure",
-        "PlanDefinition",
-        "OperationDefinition",
-        "ActivityDefinition",
+        Questionnaire::class,
+        Measure::class,
+        PlanDefinition::class,
+        OperationDefinition::class,
+        ActivityDefinition::class,
       )
 
     public override fun extract(resource: FamilyMemberHistory): List<Canonical> =
@@ -114,7 +122,7 @@ public object FamilyMemberHistorySearchParam {
 
     public override val expression: String = "FamilyMemberHistory.instantiatesUri"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: FamilyMemberHistory): List<Uri> = resource.instantiatesUri
   }
@@ -126,7 +134,8 @@ public object FamilyMemberHistorySearchParam {
 
     public override val expression: String = "FamilyMemberHistory.patient"
 
-    public override val target: List<String> = listOf("Patient", "Group")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
 
     public override fun extract(resource: FamilyMemberHistory): List<Reference> =
       listOf(resource.patient)
@@ -139,7 +148,7 @@ public object FamilyMemberHistorySearchParam {
 
     public override val expression: String = "FamilyMemberHistory.relationship"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: FamilyMemberHistory): List<CodeableConcept> =
       listOf(resource.relationship)
@@ -152,7 +161,7 @@ public object FamilyMemberHistorySearchParam {
 
     public override val expression: String = "FamilyMemberHistory.sex"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: FamilyMemberHistory): List<CodeableConcept> =
       listOfNotNull(resource.sex)
@@ -165,7 +174,7 @@ public object FamilyMemberHistorySearchParam {
 
     public override val expression: String = "FamilyMemberHistory.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: FamilyMemberHistory): List<Any> = listOf(resource.status)
   }

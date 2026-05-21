@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ChargeItemDefinition] resource type. */
 public object ChargeItemDefinitionSearchParam {
@@ -63,7 +65,7 @@ public object ChargeItemDefinitionSearchParam {
     public override val expression: KotlinString =
       "(ChargeItemDefinition.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
   }
@@ -76,7 +78,7 @@ public object ChargeItemDefinitionSearchParam {
     public override val expression: KotlinString =
       "(ChargeItemDefinition.useContext.value.ofType(Quantity))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<Any> = emptyList()
   }
@@ -88,7 +90,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<Coding> =
       resource.useContext.map { it.code }
@@ -101,7 +103,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<UsageContext> =
       resource.useContext
@@ -114,7 +116,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<UsageContext> =
       resource.useContext
@@ -127,7 +129,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<DateTime> =
       listOfNotNull(resource.date)
@@ -140,7 +142,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<Markdown> =
       listOfNotNull(resource.description)
@@ -154,7 +156,7 @@ public object ChargeItemDefinitionSearchParam {
     public override val expression: KotlinString =
       "ChargeItemDefinition.applicability.effectivePeriod"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<Period> =
       resource.applicability.mapNotNull { it.effectivePeriod }
@@ -168,7 +170,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: ChargeItemDefinition
@@ -182,7 +184,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<CodeableConcept> =
       resource.jurisdiction
@@ -195,7 +197,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<R5String> =
       listOfNotNull(resource.publisher)
@@ -208,7 +210,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<Any> = listOf(resource.status)
   }
@@ -220,7 +222,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<R5String> =
       listOfNotNull(resource.title)
@@ -233,7 +235,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<Uri> =
       listOfNotNull(resource.url)
@@ -246,7 +248,7 @@ public object ChargeItemDefinitionSearchParam {
 
     public override val expression: KotlinString = "ChargeItemDefinition.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ChargeItemDefinition): List<R5String> =
       listOfNotNull(resource.version)

@@ -20,10 +20,12 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.ArtifactAssessment
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ArtifactAssessment] resource type. */
 public object ArtifactAssessmentSearchParam {
@@ -37,7 +39,7 @@ public object ArtifactAssessmentSearchParam {
 
     public override val expression: String = "ArtifactAssessment.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ArtifactAssessment): List<DateTime> =
       listOfNotNull(resource.date)
@@ -51,7 +53,7 @@ public object ArtifactAssessmentSearchParam {
 
     public override val expression: String = "ArtifactAssessment.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: ArtifactAssessment

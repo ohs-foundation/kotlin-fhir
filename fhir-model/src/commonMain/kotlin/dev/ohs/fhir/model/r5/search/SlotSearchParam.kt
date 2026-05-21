@@ -19,14 +19,17 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Slot
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Slot] resource type. */
 public object SlotSearchParam {
@@ -51,7 +54,7 @@ public object SlotSearchParam {
 
     public override val expression: String = "Slot.appointmentType"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Slot): List<CodeableConcept> = resource.appointmentType
   }
@@ -63,7 +66,7 @@ public object SlotSearchParam {
 
     public override val expression: String = "Slot.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Slot): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -76,7 +79,8 @@ public object SlotSearchParam {
 
     public override val expression: String = "Slot.schedule"
 
-    public override val target: List<String> = listOf("Schedule")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Schedule::class)
 
     public override fun extract(resource: Slot): List<Reference> = listOf(resource.schedule)
   }
@@ -88,7 +92,7 @@ public object SlotSearchParam {
 
     public override val expression: String = "Slot.serviceCategory"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Slot): List<CodeableConcept> = resource.serviceCategory
   }
@@ -100,7 +104,7 @@ public object SlotSearchParam {
 
     public override val expression: String = "Slot.serviceType.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Slot): List<CodeableConcept> =
       resource.serviceType.mapNotNull { it.concept }
@@ -113,7 +117,7 @@ public object SlotSearchParam {
 
     public override val expression: String = "Slot.serviceType.reference"
 
-    public override val target: List<String> = listOf("HealthcareService")
+    public override val target: List<KClass<out Resource>> = listOf(HealthcareService::class)
 
     public override fun extract(resource: Slot): List<Reference> =
       resource.serviceType.mapNotNull { it.reference }
@@ -126,7 +130,7 @@ public object SlotSearchParam {
 
     public override val expression: String = "Slot.specialty"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Slot): List<CodeableConcept> = resource.specialty
   }
@@ -138,7 +142,7 @@ public object SlotSearchParam {
 
     public override val expression: String = "Slot.start"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Slot): List<Instant> = listOf(resource.start)
   }
@@ -150,7 +154,7 @@ public object SlotSearchParam {
 
     public override val expression: String = "Slot.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Slot): List<Any> = listOf(resource.status)
   }

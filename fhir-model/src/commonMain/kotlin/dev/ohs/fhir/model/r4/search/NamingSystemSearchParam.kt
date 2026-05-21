@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.NamingSystem
 import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [NamingSystem] resource type. */
 public object NamingSystemSearchParam {
@@ -66,7 +68,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.contact.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<R4String> =
       resource.contact.mapNotNull { it.name }
@@ -80,7 +82,7 @@ public object NamingSystemSearchParam {
     public override val expression: KotlinString =
       "(NamingSystem.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -93,7 +95,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "(NamingSystem.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -106,7 +108,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<Coding> =
       resource.useContext.map { it.code }
@@ -119,7 +121,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<UsageContext> = resource.useContext
   }
@@ -131,7 +133,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<UsageContext> = resource.useContext
   }
@@ -143,7 +145,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<DateTime> = listOf(resource.date)
   }
@@ -155,7 +157,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<Markdown> =
       listOfNotNull(resource.description)
@@ -168,7 +170,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.uniqueId.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<Any> =
       resource.uniqueId.map { it.type }
@@ -181,7 +183,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<CodeableConcept> =
       resource.jurisdiction
@@ -194,7 +196,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.kind"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<Any> = listOf(resource.kind)
   }
@@ -206,7 +208,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<R4String> = listOf(resource.name)
   }
@@ -218,7 +220,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.uniqueId.period"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<dev.ohs.fhir.model.r4.Period> =
       resource.uniqueId.mapNotNull { it.period }
@@ -231,7 +233,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<R4String> =
       listOfNotNull(resource.publisher)
@@ -244,7 +246,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.responsible"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<R4String> =
       listOfNotNull(resource.responsible)
@@ -257,7 +259,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<Any> = listOf(resource.status)
   }
@@ -269,7 +271,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.contact.telecom"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<ContactPoint> =
       resource.contact.flatMap { it.telecom }
@@ -282,7 +284,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<CodeableConcept> =
       listOfNotNull(resource.type)
@@ -295,7 +297,7 @@ public object NamingSystemSearchParam {
 
     public override val expression: KotlinString = "NamingSystem.uniqueId.value"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NamingSystem): List<R4String> =
       resource.uniqueId.map { it.value }

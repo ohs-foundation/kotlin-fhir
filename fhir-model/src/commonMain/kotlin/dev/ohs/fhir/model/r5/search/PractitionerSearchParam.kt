@@ -24,12 +24,14 @@ import dev.ohs.fhir.model.r5.ContactPoint
 import dev.ohs.fhir.model.r5.HumanName
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Practitioner] resource type. */
 public object PractitionerSearchParam {
@@ -65,7 +67,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.active"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<Boolean> =
       listOfNotNull(resource.active)
@@ -78,7 +80,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.address"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<dev.ohs.fhir.model.r5.Address> =
       resource.address
@@ -91,7 +93,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.address.city"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<R5String> =
       resource.address.mapNotNull { it.city }
@@ -104,7 +106,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.address.country"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<R5String> =
       resource.address.mapNotNull { it.country }
@@ -117,7 +119,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.address.postalCode"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<R5String> =
       resource.address.mapNotNull { it.postalCode }
@@ -130,7 +132,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.address.state"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<R5String> =
       resource.address.mapNotNull { it.state }
@@ -143,7 +145,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.address.use"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<Any> =
       resource.address.mapNotNull { it.use }
@@ -156,7 +158,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.communication.language"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<CodeableConcept> =
       resource.communication.map { it.language }
@@ -169,7 +171,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "(Practitioner.deceased.ofType(dateTime))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<Any> = emptyList()
   }
@@ -182,7 +184,7 @@ public object PractitionerSearchParam {
     public override val expression: KotlinString =
       "Practitioner.deceased.exists() and Practitioner.deceased != false"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<Any> = emptyList()
   }
@@ -194,7 +196,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.telecom.where(system='email')"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<ContactPoint> =
       resource.telecom.filter { it.system?.value?.toString() == "email" }
@@ -207,7 +209,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.name.family"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<R5String> =
       resource.name.mapNotNull { it.family }
@@ -220,7 +222,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.gender"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<Any> = listOfNotNull(resource.gender)
   }
@@ -232,7 +234,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.name.given"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<R5String> =
       resource.name.flatMap { it.given }
@@ -245,7 +247,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -258,7 +260,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<HumanName> = resource.name
   }
@@ -270,7 +272,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.telecom.where(system='phone')"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<ContactPoint> =
       resource.telecom.filter { it.system?.value?.toString() == "phone" }
@@ -283,7 +285,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<HumanName> = resource.name
   }
@@ -295,7 +297,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.qualification.period"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<Period> =
       resource.qualification.mapNotNull { it.period }
@@ -308,7 +310,7 @@ public object PractitionerSearchParam {
 
     public override val expression: KotlinString = "Practitioner.telecom"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Practitioner): List<ContactPoint> = resource.telecom
   }

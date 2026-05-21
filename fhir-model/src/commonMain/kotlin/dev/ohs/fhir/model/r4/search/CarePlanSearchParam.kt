@@ -18,17 +18,40 @@
 
 package dev.ohs.fhir.model.r4.search
 
+import dev.ohs.fhir.model.r4.ActivityDefinition
+import dev.ohs.fhir.model.r4.Appointment
 import dev.ohs.fhir.model.r4.Canonical
 import dev.ohs.fhir.model.r4.CarePlan
 import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.CommunicationRequest
+import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.DeviceRequest
+import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.HealthcareService
+import dev.ohs.fhir.model.r4.Measure
+import dev.ohs.fhir.model.r4.MedicationRequest
+import dev.ohs.fhir.model.r4.NutritionOrder
+import dev.ohs.fhir.model.r4.OperationDefinition
+import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.PlanDefinition
+import dev.ohs.fhir.model.r4.Practitioner
+import dev.ohs.fhir.model.r4.PractitionerRole
+import dev.ohs.fhir.model.r4.Questionnaire
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.RelatedPerson
+import dev.ohs.fhir.model.r4.RequestGroup
+import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.ServiceRequest
+import dev.ohs.fhir.model.r4.Task
 import dev.ohs.fhir.model.r4.Uri
+import dev.ohs.fhir.model.r4.VisionPrescription
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [CarePlan] resource type. */
 public object CarePlanSearchParam {
@@ -64,7 +87,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.activity.detail.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CarePlan): List<CodeableConcept> =
       resource.activity.mapNotNull { it.detail }.mapNotNull { it.code }
@@ -77,7 +100,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.activity.detail.scheduled"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CarePlan): List<CarePlan.Activity.Detail.Scheduled> =
       resource.activity.mapNotNull { it.detail }.mapNotNull { it.scheduled }
@@ -90,17 +113,17 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.activity.reference"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Appointment",
-        "MedicationRequest",
-        "Task",
-        "NutritionOrder",
-        "RequestGroup",
-        "VisionPrescription",
-        "DeviceRequest",
-        "ServiceRequest",
-        "CommunicationRequest",
+        Appointment::class,
+        MedicationRequest::class,
+        Task::class,
+        NutritionOrder::class,
+        RequestGroup::class,
+        VisionPrescription::class,
+        DeviceRequest::class,
+        ServiceRequest::class,
+        CommunicationRequest::class,
       )
 
     public override fun extract(resource: CarePlan): List<Reference> =
@@ -114,7 +137,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.basedOn"
 
-    public override val target: List<String> = listOf("CarePlan")
+    public override val target: List<KClass<out Resource>> = listOf(CarePlan::class)
 
     public override fun extract(resource: CarePlan): List<Reference> = resource.basedOn
   }
@@ -126,7 +149,8 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.careTeam"
 
-    public override val target: List<String> = listOf("CareTeam")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.CareTeam::class)
 
     public override fun extract(resource: CarePlan): List<Reference> = resource.careTeam
   }
@@ -138,7 +162,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CarePlan): List<CodeableConcept> = resource.category
   }
@@ -150,7 +174,8 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.addresses"
 
-    public override val target: List<String> = listOf("Condition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Condition::class)
 
     public override fun extract(resource: CarePlan): List<Reference> = resource.addresses
   }
@@ -162,7 +187,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CarePlan): List<Period> = listOfNotNull(resource.period)
   }
@@ -174,7 +199,8 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Encounter::class)
 
     public override fun extract(resource: CarePlan): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -187,7 +213,8 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.goal"
 
-    public override val target: List<String> = listOf("Goal")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Goal::class)
 
     public override fun extract(resource: CarePlan): List<Reference> = resource.goal
   }
@@ -199,7 +226,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CarePlan): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -212,13 +239,13 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.instantiatesCanonical"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Questionnaire",
-        "Measure",
-        "PlanDefinition",
-        "OperationDefinition",
-        "ActivityDefinition",
+        Questionnaire::class,
+        Measure::class,
+        PlanDefinition::class,
+        OperationDefinition::class,
+        ActivityDefinition::class,
       )
 
     public override fun extract(resource: CarePlan): List<Canonical> =
@@ -232,7 +259,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.instantiatesUri"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CarePlan): List<Uri> = resource.instantiatesUri
   }
@@ -244,7 +271,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.intent"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CarePlan): List<Any> = listOf(resource.intent)
   }
@@ -256,7 +283,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.partOf"
 
-    public override val target: List<String> = listOf("CarePlan")
+    public override val target: List<KClass<out Resource>> = listOf(CarePlan::class)
 
     public override fun extract(resource: CarePlan): List<Reference> = resource.partOf
   }
@@ -268,7 +295,8 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient", "Group")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
 
     public override fun extract(resource: CarePlan): List<Reference> =
       listOf(resource.subject).filter {
@@ -283,16 +311,16 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.activity.detail.performer"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Organization",
-        "CareTeam",
-        "Device",
-        "Patient",
-        "HealthcareService",
-        "PractitionerRole",
-        "RelatedPerson",
+        Practitioner::class,
+        Organization::class,
+        dev.ohs.fhir.model.r4.CareTeam::class,
+        Device::class,
+        dev.ohs.fhir.model.r4.Patient::class,
+        HealthcareService::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
       )
 
     public override fun extract(resource: CarePlan): List<Reference> =
@@ -306,7 +334,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.replaces"
 
-    public override val target: List<String> = listOf("CarePlan")
+    public override val target: List<KClass<out Resource>> = listOf(CarePlan::class)
 
     public override fun extract(resource: CarePlan): List<Reference> = resource.replaces
   }
@@ -318,7 +346,7 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CarePlan): List<Any> = listOf(resource.status)
   }
@@ -330,7 +358,8 @@ public object CarePlanSearchParam {
 
     public override val expression: String = "CarePlan.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: CarePlan): List<Reference> = listOf(resource.subject)
   }

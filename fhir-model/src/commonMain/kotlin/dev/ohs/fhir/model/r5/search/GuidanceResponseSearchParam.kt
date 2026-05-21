@@ -18,13 +18,16 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [GuidanceResponse] resource type. */
 public object GuidanceResponseSearchParam {
@@ -39,7 +42,7 @@ public object GuidanceResponseSearchParam {
 
     public override val expression: String = "GuidanceResponse.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: GuidanceResponse
@@ -53,7 +56,8 @@ public object GuidanceResponseSearchParam {
 
     public override val expression: String = "GuidanceResponse.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: GuidanceResponse): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -68,7 +72,7 @@ public object GuidanceResponseSearchParam {
 
     public override val expression: String = "GuidanceResponse.requestIdentifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: GuidanceResponse
@@ -82,7 +86,7 @@ public object GuidanceResponseSearchParam {
 
     public override val expression: String = "GuidanceResponse.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: GuidanceResponse): List<Any> = listOf(resource.status)
   }
@@ -94,7 +98,8 @@ public object GuidanceResponseSearchParam {
 
     public override val expression: String = "GuidanceResponse.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: GuidanceResponse): List<Reference> =
       listOfNotNull(resource.subject)

@@ -25,15 +25,18 @@ import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Quantity
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.StructureDefinition
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.ValueSet
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [StructureDefinition] resource type. */
 public object StructureDefinitionSearchParam {
@@ -75,7 +78,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.abstract"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Boolean> =
       listOf(resource.abstract)
@@ -88,7 +91,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.baseDefinition"
 
-    public override val target: List<KotlinString> = listOf("StructureDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(StructureDefinition::class)
 
     public override fun extract(resource: StructureDefinition): List<Canonical> =
       listOfNotNull(resource.baseDefinition)
@@ -101,7 +104,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.snapshot.element.base.path"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<R4bString> =
       (resource.snapshot?.element ?: emptyList()).mapNotNull { it.base }.map { it.path }
@@ -115,7 +118,7 @@ public object StructureDefinitionSearchParam {
     public override val expression: KotlinString =
       "(StructureDefinition.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -129,7 +132,7 @@ public object StructureDefinitionSearchParam {
     public override val expression: KotlinString =
       "(StructureDefinition.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -142,7 +145,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Coding> =
       resource.useContext.map { it.code }
@@ -155,7 +158,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<UsageContext> =
       resource.useContext
@@ -168,7 +171,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<UsageContext> =
       resource.useContext
@@ -181,7 +184,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<DateTime> =
       listOfNotNull(resource.date)
@@ -194,7 +197,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.derivation"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Any> =
       listOfNotNull(resource.derivation)
@@ -207,7 +210,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Markdown> =
       listOfNotNull(resource.description)
@@ -220,7 +223,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.experimental"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Boolean> =
       listOfNotNull(resource.experimental)
@@ -233,7 +236,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.context.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Any> =
       resource.context.map { it.type }
@@ -247,7 +250,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: StructureDefinition
@@ -261,7 +264,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<CodeableConcept> =
       resource.jurisdiction
@@ -274,7 +277,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.keyword"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Coding> = resource.keyword
   }
@@ -286,7 +289,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.kind"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Any> = listOf(resource.kind)
   }
@@ -298,7 +301,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<R4bString> =
       listOf(resource.name)
@@ -311,7 +314,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.snapshot.element.path"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<R4bString> =
       (resource.snapshot?.element ?: emptyList()).map { it.path }
@@ -324,7 +327,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<R4bString> =
       listOfNotNull(resource.publisher)
@@ -337,7 +340,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Any> = listOf(resource.status)
   }
@@ -349,7 +352,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<R4bString> =
       listOfNotNull(resource.title)
@@ -362,7 +365,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Uri> = listOf(resource.type)
   }
@@ -374,7 +377,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<Uri> = listOf(resource.url)
   }
@@ -387,7 +390,7 @@ public object StructureDefinitionSearchParam {
     public override val expression: KotlinString =
       "StructureDefinition.snapshot.element.binding.valueSet"
 
-    public override val target: List<KotlinString> = listOf("ValueSet")
+    public override val target: List<KClass<out Resource>> = listOf(ValueSet::class)
 
     public override fun extract(resource: StructureDefinition): List<Canonical> =
       (resource.snapshot?.element ?: emptyList())
@@ -402,7 +405,7 @@ public object StructureDefinitionSearchParam {
 
     public override val expression: KotlinString = "StructureDefinition.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureDefinition): List<R4bString> =
       listOfNotNull(resource.version)

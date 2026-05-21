@@ -18,14 +18,26 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.ActivityDefinition
+import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.ClinicalUseDefinition
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.DeviceDefinition
+import dev.ohs.fhir.model.r5.Medication
+import dev.ohs.fhir.model.r5.MedicinalProductDefinition
+import dev.ohs.fhir.model.r5.NutritionProduct
+import dev.ohs.fhir.model.r5.ObservationDefinition
+import dev.ohs.fhir.model.r5.PlanDefinition
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ClinicalUseDefinition] resource type. */
 public object ClinicalUseDefinitionSearchParam {
@@ -54,7 +66,7 @@ public object ClinicalUseDefinitionSearchParam {
     public override val expression: String =
       "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
       listOfNotNull(resource.contraindication?.diseaseSymptomProcedure?.concept)
@@ -68,7 +80,7 @@ public object ClinicalUseDefinitionSearchParam {
     public override val expression: String =
       "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.reference"
 
-    public override val target: List<String> = listOf("ObservationDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(ObservationDefinition::class)
 
     public override fun extract(resource: ClinicalUseDefinition): List<Reference> =
       listOfNotNull(resource.contraindication?.diseaseSymptomProcedure?.reference)
@@ -82,7 +94,7 @@ public object ClinicalUseDefinitionSearchParam {
     public override val expression: String =
       "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
       listOfNotNull(resource.undesirableEffect?.symptomConditionEffect?.concept)
@@ -96,7 +108,7 @@ public object ClinicalUseDefinitionSearchParam {
     public override val expression: String =
       "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.reference"
 
-    public override val target: List<String> = listOf("ObservationDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(ObservationDefinition::class)
 
     public override fun extract(resource: ClinicalUseDefinition): List<Reference> =
       listOfNotNull(resource.undesirableEffect?.symptomConditionEffect?.reference)
@@ -110,7 +122,7 @@ public object ClinicalUseDefinitionSearchParam {
 
     public override val expression: String = "ClinicalUseDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: ClinicalUseDefinition
@@ -125,7 +137,7 @@ public object ClinicalUseDefinitionSearchParam {
     public override val expression: String =
       "ClinicalUseDefinition.indication.diseaseSymptomProcedure.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
       listOfNotNull(resource.indication?.diseaseSymptomProcedure?.concept)
@@ -139,7 +151,7 @@ public object ClinicalUseDefinitionSearchParam {
     public override val expression: String =
       "ClinicalUseDefinition.indication.diseaseSymptomProcedure.reference"
 
-    public override val target: List<String> = listOf("ObservationDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(ObservationDefinition::class)
 
     public override fun extract(resource: ClinicalUseDefinition): List<Reference> =
       listOfNotNull(resource.indication?.diseaseSymptomProcedure?.reference)
@@ -152,7 +164,7 @@ public object ClinicalUseDefinitionSearchParam {
 
     public override val expression: String = "ClinicalUseDefinition.interaction.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
       listOfNotNull(resource.interaction?.type)
@@ -166,7 +178,8 @@ public object ClinicalUseDefinitionSearchParam {
     public override val expression: String =
       "ClinicalUseDefinition.subject.where(resolve() is MedicinalProductDefinition)"
 
-    public override val target: List<String> = listOf("MedicinalProductDefinition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(MedicinalProductDefinition::class)
 
     public override fun extract(resource: ClinicalUseDefinition): List<Reference> =
       resource.subject.filter {
@@ -181,7 +194,7 @@ public object ClinicalUseDefinitionSearchParam {
 
     public override val expression: String = "ClinicalUseDefinition.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
       listOfNotNull(resource.status)
@@ -194,17 +207,17 @@ public object ClinicalUseDefinitionSearchParam {
 
     public override val expression: String = "ClinicalUseDefinition.subject"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "MedicinalProductDefinition",
-        "Device",
-        "DeviceDefinition",
-        "NutritionProduct",
-        "ActivityDefinition",
-        "PlanDefinition",
-        "BiologicallyDerivedProduct",
-        "Substance",
-        "Medication",
+        MedicinalProductDefinition::class,
+        Device::class,
+        DeviceDefinition::class,
+        NutritionProduct::class,
+        ActivityDefinition::class,
+        PlanDefinition::class,
+        BiologicallyDerivedProduct::class,
+        Substance::class,
+        Medication::class,
       )
 
     public override fun extract(resource: ClinicalUseDefinition): List<Reference> = resource.subject
@@ -217,7 +230,7 @@ public object ClinicalUseDefinitionSearchParam {
 
     public override val expression: String = "ClinicalUseDefinition.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClinicalUseDefinition): List<Any> = listOf(resource.type)
   }

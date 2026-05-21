@@ -22,11 +22,13 @@ import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [HealthcareService] resource type. */
 public object HealthcareServiceSearchParam {
@@ -57,7 +59,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.active"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: HealthcareService): List<Boolean> =
       listOfNotNull(resource.active)
@@ -70,7 +72,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.characteristic"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: HealthcareService): List<CodeableConcept> =
       resource.characteristic
@@ -83,7 +85,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.communication"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: HealthcareService): List<CodeableConcept> =
       resource.communication
@@ -96,7 +98,8 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.coverageArea"
 
-    public override val target: List<KotlinString> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Location::class)
 
     public override fun extract(resource: HealthcareService): List<Reference> =
       resource.coverageArea
@@ -109,7 +112,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.eligibility.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: HealthcareService): List<CodeableConcept> =
       resource.eligibility.mapNotNull { it.code }
@@ -122,7 +125,8 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.endpoint"
 
-    public override val target: List<KotlinString> = listOf("Endpoint")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Endpoint::class)
 
     public override fun extract(resource: HealthcareService): List<Reference> = resource.endpoint
   }
@@ -134,7 +138,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: HealthcareService
@@ -148,7 +152,8 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.location"
 
-    public override val target: List<KotlinString> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Location::class)
 
     public override fun extract(resource: HealthcareService): List<Reference> = resource.location
   }
@@ -160,7 +165,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: HealthcareService): List<R5String> =
       listOfNotNull(resource.name)
@@ -173,7 +178,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.offeredIn"
 
-    public override val target: List<KotlinString> = listOf("HealthcareService")
+    public override val target: List<KClass<out Resource>> = listOf(HealthcareService::class)
 
     public override fun extract(resource: HealthcareService): List<Reference> = resource.offeredIn
   }
@@ -185,7 +190,8 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.providedBy"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Organization::class)
 
     public override fun extract(resource: HealthcareService): List<Reference> =
       listOfNotNull(resource.providedBy)
@@ -198,7 +204,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.program"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: HealthcareService): List<CodeableConcept> =
       resource.program
@@ -211,7 +217,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.category"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: HealthcareService): List<CodeableConcept> =
       resource.category
@@ -224,7 +230,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: HealthcareService): List<CodeableConcept> = resource.type
   }
@@ -236,7 +242,7 @@ public object HealthcareServiceSearchParam {
 
     public override val expression: KotlinString = "HealthcareService.specialty"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: HealthcareService): List<CodeableConcept> =
       resource.specialty

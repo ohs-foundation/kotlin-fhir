@@ -21,12 +21,20 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.Claim
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.Location
+import dev.ohs.fhir.model.r4.Organization
+import dev.ohs.fhir.model.r4.Practitioner
+import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.RelatedPerson
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Claim] resource type. */
 public object ClaimSearchParam {
@@ -59,8 +67,8 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.careTeam.provider"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Organization", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, Organization::class, PractitionerRole::class)
 
     public override fun extract(resource: Claim): List<Reference> =
       resource.careTeam.map { it.provider }
@@ -73,7 +81,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.created"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Claim): List<DateTime> = listOf(resource.created)
   }
@@ -85,7 +93,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.item.detail.udi"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: Claim): List<Reference> =
       resource.item.flatMap { it.detail }.flatMap { it.udi }
@@ -98,7 +106,8 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.item.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Encounter::class)
 
     public override fun extract(resource: Claim): List<Reference> =
       resource.item.flatMap { it.encounter }
@@ -111,7 +120,8 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.enterer"
 
-    public override val target: List<String> = listOf("Practitioner", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, PractitionerRole::class)
 
     public override fun extract(resource: Claim): List<Reference> = listOfNotNull(resource.enterer)
   }
@@ -123,7 +133,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.facility"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<KClass<out Resource>> = listOf(Location::class)
 
     public override fun extract(resource: Claim): List<Reference> = listOfNotNull(resource.facility)
   }
@@ -135,7 +145,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Claim): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -148,7 +158,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.insurer"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: Claim): List<Reference> = listOfNotNull(resource.insurer)
   }
@@ -160,7 +170,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.item.udi"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: Claim): List<Reference> = resource.item.flatMap { it.udi }
   }
@@ -172,7 +182,8 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: Claim): List<Reference> = listOf(resource.patient)
   }
@@ -184,8 +195,14 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.payee.party"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Organization", "Patient", "PractitionerRole", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Practitioner::class,
+        Organization::class,
+        dev.ohs.fhir.model.r4.Patient::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
+      )
 
     public override fun extract(resource: Claim): List<Reference> =
       listOfNotNull(resource.payee?.party)
@@ -198,7 +215,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.priority"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Claim): List<CodeableConcept> = listOf(resource.priority)
   }
@@ -210,7 +227,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.procedure.udi"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: Claim): List<Reference> =
       resource.procedure.flatMap { it.udi }
@@ -223,8 +240,8 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.provider"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Organization", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, Organization::class, PractitionerRole::class)
 
     public override fun extract(resource: Claim): List<Reference> = listOf(resource.provider)
   }
@@ -236,7 +253,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Claim): List<Any> = listOf(resource.status)
   }
@@ -248,7 +265,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.item.detail.subDetail.udi"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: Claim): List<Reference> =
       resource.item.flatMap { it.detail }.flatMap { it.subDetail }.flatMap { it.udi }
@@ -261,7 +278,7 @@ public object ClaimSearchParam {
 
     public override val expression: String = "Claim.use"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Claim): List<Any> = listOf(resource.use)
   }

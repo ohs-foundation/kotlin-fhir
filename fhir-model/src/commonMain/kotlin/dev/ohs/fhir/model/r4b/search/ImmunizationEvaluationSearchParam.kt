@@ -20,13 +20,16 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Immunization
 import dev.ohs.fhir.model.r4b.ImmunizationEvaluation
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ImmunizationEvaluation] resource type. */
 public object ImmunizationEvaluationSearchParam {
@@ -41,7 +44,7 @@ public object ImmunizationEvaluationSearchParam {
 
     public override val expression: String = "ImmunizationEvaluation.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ImmunizationEvaluation): List<DateTime> =
       listOfNotNull(resource.date)
@@ -54,7 +57,7 @@ public object ImmunizationEvaluationSearchParam {
 
     public override val expression: String = "ImmunizationEvaluation.doseStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ImmunizationEvaluation): List<CodeableConcept> =
       listOf(resource.doseStatus)
@@ -68,7 +71,7 @@ public object ImmunizationEvaluationSearchParam {
 
     public override val expression: String = "ImmunizationEvaluation.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: ImmunizationEvaluation
@@ -82,7 +85,7 @@ public object ImmunizationEvaluationSearchParam {
 
     public override val expression: String = "ImmunizationEvaluation.immunizationEvent"
 
-    public override val target: List<String> = listOf("Immunization")
+    public override val target: List<KClass<out Resource>> = listOf(Immunization::class)
 
     public override fun extract(resource: ImmunizationEvaluation): List<Reference> =
       listOf(resource.immunizationEvent)
@@ -95,7 +98,8 @@ public object ImmunizationEvaluationSearchParam {
 
     public override val expression: String = "ImmunizationEvaluation.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: ImmunizationEvaluation): List<Reference> =
       listOf(resource.patient)
@@ -108,7 +112,7 @@ public object ImmunizationEvaluationSearchParam {
 
     public override val expression: String = "ImmunizationEvaluation.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ImmunizationEvaluation): List<Any> =
       listOf(resource.status)
@@ -121,7 +125,7 @@ public object ImmunizationEvaluationSearchParam {
 
     public override val expression: String = "ImmunizationEvaluation.targetDisease"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ImmunizationEvaluation): List<CodeableConcept> =
       listOf(resource.targetDisease)

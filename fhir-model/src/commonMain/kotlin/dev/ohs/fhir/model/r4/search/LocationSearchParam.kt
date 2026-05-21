@@ -22,12 +22,14 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.Location
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Location] resource type. */
 public object LocationSearchParam {
@@ -58,7 +60,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.address"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<dev.ohs.fhir.model.r4.Address> =
       listOfNotNull(resource.address)
@@ -71,7 +73,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.address.city"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<R4String> =
       listOfNotNull(resource.address?.city)
@@ -84,7 +86,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.address.country"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<R4String> =
       listOfNotNull(resource.address?.country)
@@ -97,7 +99,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.address.postalCode"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<R4String> =
       listOfNotNull(resource.address?.postalCode)
@@ -110,7 +112,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.address.state"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<R4String> =
       listOfNotNull(resource.address?.state)
@@ -123,7 +125,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.address.use"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<Any> =
       listOfNotNull(resource.address?.use)
@@ -136,7 +138,8 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.endpoint"
 
-    public override val target: List<KotlinString> = listOf("Endpoint")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Endpoint::class)
 
     public override fun extract(resource: Location): List<Reference> = resource.endpoint
   }
@@ -148,7 +151,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -161,7 +164,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<R4String> = listOfNotNull(resource.name)
   }
@@ -173,7 +176,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.position"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<Location.Position> =
       listOfNotNull(resource.position)
@@ -186,7 +189,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.operationalStatus"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<Coding> =
       listOfNotNull(resource.operationalStatus)
@@ -199,7 +202,8 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.managingOrganization"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Organization::class)
 
     public override fun extract(resource: Location): List<Reference> =
       listOfNotNull(resource.managingOrganization)
@@ -212,7 +216,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.partOf"
 
-    public override val target: List<KotlinString> = listOf("Location")
+    public override val target: List<KClass<out Resource>> = listOf(Location::class)
 
     public override fun extract(resource: Location): List<Reference> =
       listOfNotNull(resource.partOf)
@@ -225,7 +229,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<Any> = listOfNotNull(resource.status)
   }
@@ -237,7 +241,7 @@ public object LocationSearchParam {
 
     public override val expression: KotlinString = "Location.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Location): List<CodeableConcept> = resource.type
   }

@@ -19,13 +19,20 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.NutritionIntake
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [NutritionIntake] resource type. */
 public object NutritionIntakeSearchParam {
@@ -40,7 +47,7 @@ public object NutritionIntakeSearchParam {
 
     public override val expression: String = "NutritionIntake.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NutritionIntake): List<CodeableConcept> =
       listOfNotNull(resource.code)
@@ -53,7 +60,7 @@ public object NutritionIntakeSearchParam {
 
     public override val expression: String = "NutritionIntake.occurrence.ofType(dateTime)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NutritionIntake): List<Any> = emptyList()
   }
@@ -65,7 +72,8 @@ public object NutritionIntakeSearchParam {
 
     public override val expression: String = "NutritionIntake.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Encounter::class)
 
     public override fun extract(resource: NutritionIntake): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -78,7 +86,7 @@ public object NutritionIntakeSearchParam {
 
     public override val expression: String = "NutritionIntake.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NutritionIntake): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -91,7 +99,7 @@ public object NutritionIntakeSearchParam {
 
     public override val expression: String = "NutritionIntake.consumedItem.nutritionProduct.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NutritionIntake): List<CodeableConcept> =
       resource.consumedItem.map { it.nutritionProduct }.mapNotNull { it.concept }
@@ -104,7 +112,8 @@ public object NutritionIntakeSearchParam {
 
     public override val expression: String = "NutritionIntake.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: NutritionIntake): List<Reference> =
       listOf(resource.subject).filter {
@@ -119,8 +128,14 @@ public object NutritionIntakeSearchParam {
 
     public override val expression: String = "(NutritionIntake.reported as Reference)"
 
-    public override val target: List<String> =
-      listOf("Organization", "RelatedPerson", "PractitionerRole", "Practitioner", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Organization::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
+      )
 
     public override fun extract(resource: NutritionIntake): List<Reference> =
       listOfNotNull((resource.reported as? NutritionIntake.Reported.Reference)?.value)
@@ -133,7 +148,7 @@ public object NutritionIntakeSearchParam {
 
     public override val expression: String = "NutritionIntake.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: NutritionIntake): List<Any> = listOf(resource.status)
   }
@@ -145,7 +160,8 @@ public object NutritionIntakeSearchParam {
 
     public override val expression: String = "NutritionIntake.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: NutritionIntake): List<Reference> =
       listOf(resource.subject)

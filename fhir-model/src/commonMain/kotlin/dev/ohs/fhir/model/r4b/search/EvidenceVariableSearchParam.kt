@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.EvidenceVariable
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Quantity
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [EvidenceVariable] resource type. */
 public object EvidenceVariableSearchParam {
@@ -62,7 +64,7 @@ public object EvidenceVariableSearchParam {
     public override val expression: KotlinString =
       "(EvidenceVariable.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -75,7 +77,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "(EvidenceVariable.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -88,7 +90,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<Coding> =
       resource.useContext.map { it.code }
@@ -101,7 +103,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<UsageContext> =
       resource.useContext
@@ -114,7 +116,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<UsageContext> =
       resource.useContext
@@ -127,7 +129,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<DateTime> =
       listOfNotNull(resource.date)
@@ -140,7 +142,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<Markdown> =
       listOfNotNull(resource.description)
@@ -153,7 +155,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: EvidenceVariable
@@ -167,7 +169,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<R4bString> =
       listOfNotNull(resource.name)
@@ -180,7 +182,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<R4bString> =
       listOfNotNull(resource.publisher)
@@ -193,7 +195,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<Any> = listOf(resource.status)
   }
@@ -205,7 +207,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<R4bString> =
       listOfNotNull(resource.title)
@@ -218,7 +220,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<Uri> = listOfNotNull(resource.url)
   }
@@ -230,7 +232,7 @@ public object EvidenceVariableSearchParam {
 
     public override val expression: KotlinString = "EvidenceVariable.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceVariable): List<R4bString> =
       listOfNotNull(resource.version)

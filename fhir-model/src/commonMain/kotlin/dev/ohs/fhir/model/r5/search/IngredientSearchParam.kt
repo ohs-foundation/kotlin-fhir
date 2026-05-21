@@ -18,14 +18,20 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.AdministrableProductDefinition
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Ingredient
+import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r5.MedicinalProductDefinition
+import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Ingredient] resource type. */
 public object IngredientSearchParam {
@@ -54,11 +60,11 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.for"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "MedicinalProductDefinition",
-        "AdministrableProductDefinition",
-        "ManufacturedItemDefinition",
+        MedicinalProductDefinition::class,
+        AdministrableProductDefinition::class,
+        ManufacturedItemDefinition::class,
       )
 
     public override fun extract(resource: Ingredient): List<Reference> = resource.`for`
@@ -71,7 +77,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.function"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<CodeableConcept> = resource.function
   }
@@ -83,7 +89,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<dev.ohs.fhir.model.r5.Identifier> =
       listOfNotNull(resource.identifier)
@@ -96,7 +102,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.manufacturer.manufacturer"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: Ingredient): List<Reference> =
       resource.manufacturer.map { it.manufacturer }
@@ -109,7 +115,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.role"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<CodeableConcept> = listOf(resource.role)
   }
@@ -121,7 +127,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<Any> = listOf(resource.status)
   }
@@ -134,7 +140,7 @@ public object IngredientSearchParam {
     public override val expression: String =
       "Ingredient.substance.strength.concentration.ofType(Quantity)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<Any> = emptyList()
   }
@@ -147,7 +153,7 @@ public object IngredientSearchParam {
     public override val expression: String =
       "Ingredient.substance.strength.concentration.ofType(Ratio)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<Any> = emptyList()
   }
@@ -160,7 +166,7 @@ public object IngredientSearchParam {
     public override val expression: String =
       "Ingredient.substance.strength.presentation.ofType(Quantity)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<Any> = emptyList()
   }
@@ -173,7 +179,7 @@ public object IngredientSearchParam {
     public override val expression: String =
       "Ingredient.substance.strength.presentation.ofType(Ratio)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<Any> = emptyList()
   }
@@ -185,7 +191,8 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.substance.code.reference"
 
-    public override val target: List<String> = listOf("SubstanceDefinition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.SubstanceDefinition::class)
 
     public override fun extract(resource: Ingredient): List<Reference> =
       listOfNotNull(resource.substance.code.reference)
@@ -198,7 +205,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.substance.code.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<CodeableConcept> =
       listOfNotNull(resource.substance.code.concept)
@@ -211,7 +218,8 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.substance.code.reference"
 
-    public override val target: List<String> = listOf("SubstanceDefinition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.SubstanceDefinition::class)
 
     public override fun extract(resource: Ingredient): List<Reference> =
       listOfNotNull(resource.substance.code.reference)

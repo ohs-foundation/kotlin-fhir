@@ -19,12 +19,18 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.AppointmentResponse
+import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [AppointmentResponse] resource type. */
 public object AppointmentResponseSearchParam {
@@ -39,16 +45,16 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.actor"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "HealthcareService",
-        "Device",
-        "RelatedPerson",
-        "PractitionerRole",
-        "Group",
-        "Practitioner",
-        "Location",
-        "Patient",
+        HealthcareService::class,
+        Device::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        dev.ohs.fhir.model.r5.Group::class,
+        dev.ohs.fhir.model.r5.Practitioner::class,
+        dev.ohs.fhir.model.r5.Location::class,
+        dev.ohs.fhir.model.r5.Patient::class,
       )
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
@@ -62,7 +68,8 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.appointment"
 
-    public override val target: List<String> = listOf("Appointment")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Appointment::class)
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
       listOf(resource.appointment)
@@ -75,7 +82,8 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.actor.where(resolve() is Group)"
 
-    public override val target: List<String> = listOf("Group")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Group::class)
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
       listOfNotNull(resource.actor).filter {
@@ -91,7 +99,7 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: AppointmentResponse
@@ -106,7 +114,8 @@ public object AppointmentResponseSearchParam {
     public override val expression: String =
       "AppointmentResponse.actor.where(resolve() is Location)"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Location::class)
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
       listOfNotNull(resource.actor).filter {
@@ -121,7 +130,7 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.participantStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AppointmentResponse): List<Any> =
       listOf(resource.participantStatus)
@@ -134,7 +143,8 @@ public object AppointmentResponseSearchParam {
 
     public override val expression: String = "AppointmentResponse.actor.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
       listOfNotNull(resource.actor).filter {
@@ -150,7 +160,8 @@ public object AppointmentResponseSearchParam {
     public override val expression: String =
       "AppointmentResponse.actor.where(resolve() is Practitioner)"
 
-    public override val target: List<String> = listOf("Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Practitioner::class)
 
     public override fun extract(resource: AppointmentResponse): List<Reference> =
       listOfNotNull(resource.actor).filter {

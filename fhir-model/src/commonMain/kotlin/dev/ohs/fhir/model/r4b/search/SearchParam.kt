@@ -20,6 +20,7 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Base type for typed FHIR search parameters. */
 public sealed interface SearchParam<in R : Resource, out T> {
@@ -33,7 +34,7 @@ public sealed interface SearchParam<in R : Resource, out T> {
   public val expression: String
 
   /** The target resource types for reference search parameters. */
-  public val target: List<String>
+  public val target: List<KClass<out Resource>>
 
   /** Extracts the values for this search parameter from the given [resource]. */
   public fun extract(resource: R): List<T>

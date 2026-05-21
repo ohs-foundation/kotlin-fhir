@@ -25,7 +25,9 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.OperationDefinition
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
@@ -33,6 +35,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [OperationDefinition] resource type. */
 public object OperationDefinitionSearchParam {
@@ -71,7 +74,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.base"
 
-    public override val target: List<KotlinString> = listOf("OperationDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(OperationDefinition::class)
 
     public override fun extract(resource: OperationDefinition): List<Canonical> =
       listOfNotNull(resource.base)
@@ -84,7 +87,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Any> = listOf(resource.code)
   }
@@ -97,7 +100,7 @@ public object OperationDefinitionSearchParam {
     public override val expression: KotlinString =
       "(OperationDefinition.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Any> = emptyList()
   }
@@ -110,7 +113,7 @@ public object OperationDefinitionSearchParam {
     public override val expression: KotlinString =
       "(OperationDefinition.useContext.value.ofType(Quantity))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Any> = emptyList()
   }
@@ -122,7 +125,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Coding> =
       resource.useContext.map { it.code }
@@ -135,7 +138,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<UsageContext> =
       resource.useContext
@@ -148,7 +151,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<UsageContext> =
       resource.useContext
@@ -161,7 +164,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<DateTime> =
       listOfNotNull(resource.date)
@@ -174,7 +177,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Markdown> =
       listOfNotNull(resource.description)
@@ -188,7 +191,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: OperationDefinition
@@ -202,7 +205,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.inputProfile"
 
-    public override val target: List<KotlinString> = listOf("StructureDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(StructureDefinition::class)
 
     public override fun extract(resource: OperationDefinition): List<Canonical> =
       listOfNotNull(resource.inputProfile)
@@ -215,7 +218,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.instance"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Boolean> =
       listOf(resource.instance)
@@ -228,7 +231,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<CodeableConcept> =
       resource.jurisdiction
@@ -241,7 +244,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.kind"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Any> = listOf(resource.kind)
   }
@@ -253,7 +256,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<R5String> =
       listOf(resource.name)
@@ -266,7 +269,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.outputProfile"
 
-    public override val target: List<KotlinString> = listOf("StructureDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(StructureDefinition::class)
 
     public override fun extract(resource: OperationDefinition): List<Canonical> =
       listOfNotNull(resource.outputProfile)
@@ -279,7 +282,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<R5String> =
       listOfNotNull(resource.publisher)
@@ -292,7 +295,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Any> = listOf(resource.status)
   }
@@ -304,7 +307,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.system"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Boolean> =
       listOf(resource.system)
@@ -317,7 +320,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<R5String> =
       listOfNotNull(resource.title)
@@ -330,7 +333,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Boolean> =
       listOf(resource.type)
@@ -343,7 +346,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<Uri> =
       listOfNotNull(resource.url)
@@ -356,7 +359,7 @@ public object OperationDefinitionSearchParam {
 
     public override val expression: KotlinString = "OperationDefinition.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OperationDefinition): List<R5String> =
       listOfNotNull(resource.version)

@@ -156,12 +156,12 @@ class SearchParamTest :
                   extractExpressionForResource(expected.expression, resourceName)
                 expression.shouldBe(expectedExpression)
 
-                // Verify target
+                // Verify target — generated as List<KClass<out Resource>>; compare by simple name
                 @Suppress("UNCHECKED_CAST")
                 val target =
                   actual::class.memberProperties.first { it.name == "target" }.call(actual)
-                    as List<String>
-                target.shouldBe(expected.target)
+                    as List<kotlin.reflect.KClass<*>>
+                target.map { it.simpleName }.shouldBe(expected.target)
               }
             }
           }

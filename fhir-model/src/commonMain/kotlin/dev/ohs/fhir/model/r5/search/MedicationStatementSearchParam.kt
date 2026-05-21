@@ -19,13 +19,20 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.MedicationStatement
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicationStatement] resource type. */
 public object MedicationStatementSearchParam {
@@ -52,7 +59,7 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.adherence.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationStatement): List<CodeableConcept> =
       listOfNotNull(resource.adherence?.code)
@@ -65,7 +72,7 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationStatement): List<CodeableConcept> =
       resource.category
@@ -78,7 +85,7 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.medication.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationStatement): List<CodeableConcept> =
       listOfNotNull(resource.medication.concept)
@@ -91,7 +98,7 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.effective.ofType(dateTime)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationStatement): List<Any> = emptyList()
   }
@@ -103,7 +110,8 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Encounter::class)
 
     public override fun extract(resource: MedicationStatement): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -117,7 +125,7 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: MedicationStatement
@@ -131,7 +139,8 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.medication.reference"
 
-    public override val target: List<String> = listOf("Medication")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Medication::class)
 
     public override fun extract(resource: MedicationStatement): List<Reference> =
       listOfNotNull(resource.medication.reference)
@@ -145,7 +154,8 @@ public object MedicationStatementSearchParam {
     public override val expression: String =
       "MedicationStatement.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: MedicationStatement): List<Reference> =
       listOf(resource.subject).filter {
@@ -160,8 +170,14 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.informationSource"
 
-    public override val target: List<String> =
-      listOf("Organization", "RelatedPerson", "PractitionerRole", "Practitioner", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Organization::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
+      )
 
     public override fun extract(resource: MedicationStatement): List<Reference> =
       resource.informationSource
@@ -174,7 +190,7 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicationStatement): List<Any> = listOf(resource.status)
   }
@@ -186,7 +202,8 @@ public object MedicationStatementSearchParam {
 
     public override val expression: String = "MedicationStatement.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: MedicationStatement): List<Reference> =
       listOf(resource.subject)

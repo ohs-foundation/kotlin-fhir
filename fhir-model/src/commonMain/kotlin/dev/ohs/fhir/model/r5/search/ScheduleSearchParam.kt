@@ -19,15 +19,25 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Boolean
+import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Location
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Schedule] resource type. */
 public object ScheduleSearchParam {
@@ -52,7 +62,7 @@ public object ScheduleSearchParam {
 
     public override val expression: KotlinString = "Schedule.active"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<Boolean> = listOfNotNull(resource.active)
   }
@@ -64,16 +74,16 @@ public object ScheduleSearchParam {
 
     public override val expression: KotlinString = "Schedule.actor"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "HealthcareService",
-        "CareTeam",
-        "Device",
-        "RelatedPerson",
-        "PractitionerRole",
-        "Practitioner",
-        "Location",
-        "Patient",
+        HealthcareService::class,
+        CareTeam::class,
+        Device::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        Location::class,
+        Patient::class,
       )
 
     public override fun extract(resource: Schedule): List<Reference> = resource.actor
@@ -86,7 +96,7 @@ public object ScheduleSearchParam {
 
     public override val expression: KotlinString = "Schedule.planningHorizon"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<Period> =
       listOfNotNull(resource.planningHorizon)
@@ -99,7 +109,7 @@ public object ScheduleSearchParam {
 
     public override val expression: KotlinString = "Schedule.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -112,7 +122,7 @@ public object ScheduleSearchParam {
 
     public override val expression: KotlinString = "Schedule.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<R5String> = listOfNotNull(resource.name)
   }
@@ -124,7 +134,7 @@ public object ScheduleSearchParam {
 
     public override val expression: KotlinString = "Schedule.serviceCategory"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<CodeableConcept> =
       resource.serviceCategory
@@ -137,7 +147,7 @@ public object ScheduleSearchParam {
 
     public override val expression: KotlinString = "Schedule.serviceType.concept"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<CodeableConcept> =
       resource.serviceType.mapNotNull { it.concept }
@@ -150,7 +160,7 @@ public object ScheduleSearchParam {
 
     public override val expression: KotlinString = "Schedule.serviceType.reference"
 
-    public override val target: List<KotlinString> = listOf("HealthcareService")
+    public override val target: List<KClass<out Resource>> = listOf(HealthcareService::class)
 
     public override fun extract(resource: Schedule): List<Reference> =
       resource.serviceType.mapNotNull { it.reference }
@@ -163,7 +173,7 @@ public object ScheduleSearchParam {
 
     public override val expression: KotlinString = "Schedule.specialty"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<CodeableConcept> = resource.specialty
   }

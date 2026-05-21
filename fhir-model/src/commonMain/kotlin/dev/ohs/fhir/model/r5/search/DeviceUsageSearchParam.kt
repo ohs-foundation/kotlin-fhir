@@ -21,11 +21,13 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceUsage
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceUsage] resource type. */
 public object DeviceUsageSearchParam {
@@ -39,7 +41,7 @@ public object DeviceUsageSearchParam {
 
     public override val expression: String = "DeviceUsage.device.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceUsage): List<CodeableConcept> =
       listOfNotNull(resource.device.concept)
@@ -52,7 +54,7 @@ public object DeviceUsageSearchParam {
 
     public override val expression: String = "DeviceUsage.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceUsage): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -65,7 +67,8 @@ public object DeviceUsageSearchParam {
 
     public override val expression: String = "DeviceUsage.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: DeviceUsage): List<Reference> = listOf(resource.patient)
   }
@@ -77,7 +80,7 @@ public object DeviceUsageSearchParam {
 
     public override val expression: String = "DeviceUsage.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceUsage): List<Any> = listOf(resource.status)
   }

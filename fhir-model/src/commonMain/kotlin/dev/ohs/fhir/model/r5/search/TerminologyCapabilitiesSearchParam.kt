@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.TerminologyCapabilities
 import dev.ohs.fhir.model.r5.Uri
@@ -31,6 +32,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [TerminologyCapabilities] resource type. */
 public object TerminologyCapabilitiesSearchParam {
@@ -62,7 +64,7 @@ public object TerminologyCapabilitiesSearchParam {
     public override val expression: KotlinString =
       "(TerminologyCapabilities.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<Any> = emptyList()
   }
@@ -75,7 +77,7 @@ public object TerminologyCapabilitiesSearchParam {
     public override val expression: KotlinString =
       "(TerminologyCapabilities.useContext.value.ofType(Quantity))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<Any> = emptyList()
   }
@@ -87,7 +89,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<Coding> =
       resource.useContext.map { it.code }
@@ -100,7 +102,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<UsageContext> =
       resource.useContext
@@ -113,7 +115,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<UsageContext> =
       resource.useContext
@@ -126,7 +128,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<DateTime> =
       listOf(resource.date)
@@ -139,7 +141,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<Markdown> =
       listOfNotNull(resource.description)
@@ -153,7 +155,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: TerminologyCapabilities
@@ -167,7 +169,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<CodeableConcept> =
       resource.jurisdiction
@@ -180,7 +182,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<R5String> =
       listOfNotNull(resource.name)
@@ -193,7 +195,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<R5String> =
       listOfNotNull(resource.publisher)
@@ -206,7 +208,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<Any> =
       listOf(resource.status)
@@ -219,7 +221,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<R5String> =
       listOfNotNull(resource.title)
@@ -232,7 +234,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<Uri> =
       listOfNotNull(resource.url)
@@ -245,7 +247,7 @@ public object TerminologyCapabilitiesSearchParam {
 
     public override val expression: KotlinString = "TerminologyCapabilities.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TerminologyCapabilities): List<R5String> =
       listOfNotNull(resource.version)

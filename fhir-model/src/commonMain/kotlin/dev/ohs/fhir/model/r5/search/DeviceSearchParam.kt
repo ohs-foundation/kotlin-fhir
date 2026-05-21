@@ -21,7 +21,9 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.DeviceDefinition
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
@@ -29,6 +31,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Device] resource type. */
 public object DeviceSearchParam {
@@ -67,7 +70,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.biologicalSourceEvent"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<dev.ohs.fhir.model.r5.Identifier> =
       listOfNotNull(resource.biologicalSourceEvent)
@@ -80,7 +83,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.definition.concept"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<CodeableConcept> =
       listOfNotNull(resource.definition?.concept)
@@ -93,7 +96,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<Any> = emptyList()
   }
@@ -105,7 +108,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.definition.reference"
 
-    public override val target: List<KotlinString> = listOf("DeviceDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(DeviceDefinition::class)
 
     public override fun extract(resource: Device): List<Reference> =
       listOfNotNull(resource.definition?.reference)
@@ -118,7 +121,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.name.value"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<R5String> = resource.name.map { it.value }
   }
@@ -130,7 +133,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.expirationDate"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<DateTime> =
       listOfNotNull(resource.expirationDate)
@@ -143,7 +146,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -156,7 +159,8 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.location"
 
-    public override val target: List<KotlinString> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Location::class)
 
     public override fun extract(resource: Device): List<Reference> =
       listOfNotNull(resource.location)
@@ -169,7 +173,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.lotNumber"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<R5String> =
       listOfNotNull(resource.lotNumber)
@@ -182,7 +186,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.manufactureDate"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<DateTime> =
       listOfNotNull(resource.manufactureDate)
@@ -195,7 +199,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.manufacturer"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<R5String> =
       listOfNotNull(resource.manufacturer)
@@ -208,7 +212,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.modelNumber"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<R5String> =
       listOfNotNull(resource.modelNumber)
@@ -221,7 +225,8 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.owner"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Organization::class)
 
     public override fun extract(resource: Device): List<Reference> = listOfNotNull(resource.owner)
   }
@@ -233,7 +238,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.parent"
 
-    public override val target: List<KotlinString> = listOf("Device")
+    public override val target: List<KClass<out Resource>> = listOf(Device::class)
 
     public override fun extract(resource: Device): List<Reference> = listOfNotNull(resource.parent)
   }
@@ -245,7 +250,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.serialNumber"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<R5String> =
       listOfNotNull(resource.serialNumber)
@@ -258,7 +263,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.conformsTo.specification"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<CodeableConcept> =
       resource.conformsTo.map { it.specification }
@@ -271,7 +276,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.conformsTo"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<Device.ConformsTo> = resource.conformsTo
   }
@@ -283,7 +288,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<Any> = listOfNotNull(resource.status)
   }
@@ -295,7 +300,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<CodeableConcept> = resource.type
   }
@@ -307,7 +312,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.udiCarrier.carrierHRF"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<R5String> =
       resource.udiCarrier.mapNotNull { it.carrierHRF }
@@ -320,7 +325,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.udiCarrier.deviceIdentifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<R5String> =
       resource.udiCarrier.map { it.deviceIdentifier }
@@ -333,7 +338,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<Uri> = listOfNotNull(resource.url)
   }
@@ -345,7 +350,7 @@ public object DeviceSearchParam {
 
     public override val expression: KotlinString = "Device.version.value"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Device): List<R5String> =
       resource.version.map { it.value }

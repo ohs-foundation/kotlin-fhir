@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.SearchParameter
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [SearchParameter] resource type. */
 public object SearchParameterSearchParam {
@@ -67,7 +69,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.base"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Any> = resource.base
   }
@@ -79,7 +81,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Any> = listOf(resource.code)
   }
@@ -91,7 +93,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.component.definition"
 
-    public override val target: List<KotlinString> = listOf("SearchParameter")
+    public override val target: List<KClass<out Resource>> = listOf(SearchParameter::class)
 
     public override fun extract(resource: SearchParameter): List<Canonical> =
       resource.component.map { it.definition }
@@ -105,7 +107,7 @@ public object SearchParameterSearchParam {
     public override val expression: KotlinString =
       "(SearchParameter.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Any> = emptyList()
   }
@@ -118,7 +120,7 @@ public object SearchParameterSearchParam {
     public override val expression: KotlinString =
       "(SearchParameter.useContext.value.ofType(Quantity))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Any> = emptyList()
   }
@@ -130,7 +132,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Coding> =
       resource.useContext.map { it.code }
@@ -143,7 +145,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<UsageContext> = resource.useContext
   }
@@ -155,7 +157,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<UsageContext> = resource.useContext
   }
@@ -167,7 +169,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<DateTime> =
       listOfNotNull(resource.date)
@@ -180,7 +182,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.derivedFrom"
 
-    public override val target: List<KotlinString> = listOf("SearchParameter")
+    public override val target: List<KClass<out Resource>> = listOf(SearchParameter::class)
 
     public override fun extract(resource: SearchParameter): List<Canonical> =
       listOfNotNull(resource.derivedFrom)
@@ -193,7 +195,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Markdown> =
       listOf(resource.description)
@@ -206,7 +208,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -219,7 +221,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<CodeableConcept> =
       resource.jurisdiction
@@ -232,7 +234,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<R5String> = listOf(resource.name)
   }
@@ -244,7 +246,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<R5String> =
       listOfNotNull(resource.publisher)
@@ -257,7 +259,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Any> = listOf(resource.status)
   }
@@ -269,7 +271,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.target"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Any> = resource.target
   }
@@ -281,7 +283,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Any> = listOf(resource.type)
   }
@@ -293,7 +295,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<Uri> = listOf(resource.url)
   }
@@ -305,7 +307,7 @@ public object SearchParameterSearchParam {
 
     public override val expression: KotlinString = "SearchParameter.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SearchParameter): List<R5String> =
       listOfNotNull(resource.version)

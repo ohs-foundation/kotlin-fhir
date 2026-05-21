@@ -18,13 +18,30 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.ActivityDefinition
+import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DeviceDefinition
+import dev.ohs.fhir.model.r5.Ingredient
+import dev.ohs.fhir.model.r5.Location
+import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r5.MedicinalProductDefinition
+import dev.ohs.fhir.model.r5.NutritionProduct
+import dev.ohs.fhir.model.r5.ObservationDefinition
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.PackagedProductDefinition
+import dev.ohs.fhir.model.r5.PlanDefinition
+import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RegulatedAuthorization
+import dev.ohs.fhir.model.r5.ResearchStudy
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [RegulatedAuthorization] resource type. */
 public object RegulatedAuthorizationSearchParam {
@@ -39,7 +56,7 @@ public object RegulatedAuthorizationSearchParam {
 
     public override val expression: String = "RegulatedAuthorization.case.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: RegulatedAuthorization
@@ -53,7 +70,7 @@ public object RegulatedAuthorizationSearchParam {
 
     public override val expression: String = "RegulatedAuthorization.case.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RegulatedAuthorization): List<CodeableConcept> =
       listOfNotNull(resource.case?.type)
@@ -66,7 +83,7 @@ public object RegulatedAuthorizationSearchParam {
 
     public override val expression: String = "RegulatedAuthorization.holder"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: RegulatedAuthorization): List<Reference> =
       listOfNotNull(resource.holder)
@@ -80,7 +97,7 @@ public object RegulatedAuthorizationSearchParam {
 
     public override val expression: String = "RegulatedAuthorization.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: RegulatedAuthorization
@@ -94,7 +111,7 @@ public object RegulatedAuthorizationSearchParam {
 
     public override val expression: String = "RegulatedAuthorization.region"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RegulatedAuthorization): List<CodeableConcept> =
       resource.region
@@ -107,7 +124,7 @@ public object RegulatedAuthorizationSearchParam {
 
     public override val expression: String = "RegulatedAuthorization.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RegulatedAuthorization): List<CodeableConcept> =
       listOfNotNull(resource.status)
@@ -120,23 +137,23 @@ public object RegulatedAuthorizationSearchParam {
 
     public override val expression: String = "RegulatedAuthorization.subject"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Ingredient",
-        "Organization",
-        "ObservationDefinition",
-        "ActivityDefinition",
-        "PlanDefinition",
-        "BiologicallyDerivedProduct",
-        "Practitioner",
-        "PackagedProductDefinition",
-        "SubstanceDefinition",
-        "Location",
-        "MedicinalProductDefinition",
-        "NutritionProduct",
-        "DeviceDefinition",
-        "ResearchStudy",
-        "ManufacturedItemDefinition",
+        Ingredient::class,
+        Organization::class,
+        ObservationDefinition::class,
+        ActivityDefinition::class,
+        PlanDefinition::class,
+        BiologicallyDerivedProduct::class,
+        Practitioner::class,
+        PackagedProductDefinition::class,
+        SubstanceDefinition::class,
+        Location::class,
+        MedicinalProductDefinition::class,
+        NutritionProduct::class,
+        DeviceDefinition::class,
+        ResearchStudy::class,
+        ManufacturedItemDefinition::class,
       )
 
     public override fun extract(resource: RegulatedAuthorization): List<Reference> =

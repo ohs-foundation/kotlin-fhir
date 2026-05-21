@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.EvidenceReport
 import dev.ohs.fhir.model.r4b.Quantity
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
@@ -30,6 +31,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [EvidenceReport] resource type. */
 public object EvidenceReportSearchParam {
@@ -55,7 +57,7 @@ public object EvidenceReportSearchParam {
     public override val expression: KotlinString =
       "(EvidenceReport.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -68,7 +70,7 @@ public object EvidenceReportSearchParam {
 
     public override val expression: KotlinString = "(EvidenceReport.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -81,7 +83,7 @@ public object EvidenceReportSearchParam {
 
     public override val expression: KotlinString = "EvidenceReport.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<Coding> =
       resource.useContext.map { it.code }
@@ -94,7 +96,7 @@ public object EvidenceReportSearchParam {
 
     public override val expression: KotlinString = "EvidenceReport.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<UsageContext> = resource.useContext
   }
@@ -106,7 +108,7 @@ public object EvidenceReportSearchParam {
 
     public override val expression: KotlinString = "EvidenceReport.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<UsageContext> = resource.useContext
   }
@@ -118,7 +120,7 @@ public object EvidenceReportSearchParam {
 
     public override val expression: KotlinString = "EvidenceReport.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<dev.ohs.fhir.model.r4b.Identifier> =
       resource.identifier
@@ -131,7 +133,7 @@ public object EvidenceReportSearchParam {
 
     public override val expression: KotlinString = "EvidenceReport.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<R4bString> =
       listOfNotNull(resource.publisher)
@@ -144,7 +146,7 @@ public object EvidenceReportSearchParam {
 
     public override val expression: KotlinString = "EvidenceReport.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<Any> = listOf(resource.status)
   }
@@ -156,7 +158,7 @@ public object EvidenceReportSearchParam {
 
     public override val expression: KotlinString = "EvidenceReport.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EvidenceReport): List<Uri> = listOfNotNull(resource.url)
   }

@@ -21,11 +21,13 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceMetric
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceMetric] resource type. */
 public object DeviceMetricSearchParam {
@@ -39,7 +41,7 @@ public object DeviceMetricSearchParam {
 
     public override val expression: String = "DeviceMetric.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceMetric): List<Any> = listOf(resource.category)
   }
@@ -51,7 +53,8 @@ public object DeviceMetricSearchParam {
 
     public override val expression: String = "DeviceMetric.device"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Device::class)
 
     public override fun extract(resource: DeviceMetric): List<Reference> = listOf(resource.device)
   }
@@ -63,7 +66,7 @@ public object DeviceMetricSearchParam {
 
     public override val expression: String = "DeviceMetric.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceMetric): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -76,7 +79,7 @@ public object DeviceMetricSearchParam {
 
     public override val expression: String = "DeviceMetric.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceMetric): List<CodeableConcept> =
       listOf(resource.type)

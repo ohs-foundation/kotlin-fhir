@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4.EffectEvidenceSynthesis
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
@@ -33,6 +34,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [EffectEvidenceSynthesis] resource type. */
 public object EffectEvidenceSynthesisSearchParam {
@@ -65,7 +67,7 @@ public object EffectEvidenceSynthesisSearchParam {
     public override val expression: KotlinString =
       "(EffectEvidenceSynthesis.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -79,7 +81,7 @@ public object EffectEvidenceSynthesisSearchParam {
     public override val expression: KotlinString =
       "(EffectEvidenceSynthesis.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -92,7 +94,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<Coding> =
       resource.useContext.map { it.code }
@@ -105,7 +107,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<UsageContext> =
       resource.useContext
@@ -118,7 +120,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<UsageContext> =
       resource.useContext
@@ -131,7 +133,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<DateTime> =
       listOfNotNull(resource.date)
@@ -144,7 +146,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<Markdown> =
       listOfNotNull(resource.description)
@@ -157,7 +159,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.effectivePeriod"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<Period> =
       listOfNotNull(resource.effectivePeriod)
@@ -171,7 +173,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: EffectEvidenceSynthesis
@@ -185,7 +187,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<CodeableConcept> =
       resource.jurisdiction
@@ -198,7 +200,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<R4String> =
       listOfNotNull(resource.name)
@@ -211,7 +213,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<R4String> =
       listOfNotNull(resource.publisher)
@@ -224,7 +226,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<Any> =
       listOf(resource.status)
@@ -237,7 +239,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<R4String> =
       listOfNotNull(resource.title)
@@ -250,7 +252,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<Uri> =
       listOfNotNull(resource.url)
@@ -263,7 +265,7 @@ public object EffectEvidenceSynthesisSearchParam {
 
     public override val expression: KotlinString = "EffectEvidenceSynthesis.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EffectEvidenceSynthesis): List<R4String> =
       listOfNotNull(resource.version)

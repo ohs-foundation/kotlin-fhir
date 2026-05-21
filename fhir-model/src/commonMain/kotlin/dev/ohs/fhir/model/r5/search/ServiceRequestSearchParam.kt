@@ -18,10 +18,24 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.ActivityDefinition
 import dev.ohs.fhir.model.r5.Canonical
+import dev.ohs.fhir.model.r5.CarePlan
+import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Location
+import dev.ohs.fhir.model.r5.MedicationRequest
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.PlanDefinition
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
@@ -29,6 +43,7 @@ import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ServiceRequest] resource type. */
 public object ServiceRequestSearchParam {
@@ -67,7 +82,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.authoredOn"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<DateTime> =
       listOfNotNull(resource.authoredOn)
@@ -80,8 +95,8 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.basedOn"
 
-    public override val target: List<String> =
-      listOf("ServiceRequest", "CarePlan", "MedicationRequest")
+    public override val target: List<KClass<out Resource>> =
+      listOf(ServiceRequest::class, CarePlan::class, MedicationRequest::class)
 
     public override fun extract(resource: ServiceRequest): List<Reference> = resource.basedOn
   }
@@ -93,7 +108,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.bodySite"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<CodeableConcept> = resource.bodySite
   }
@@ -105,7 +120,8 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.bodyStructure"
 
-    public override val target: List<String> = listOf("BodyStructure")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.BodyStructure::class)
 
     public override fun extract(resource: ServiceRequest): List<Reference> =
       listOfNotNull(resource.bodyStructure)
@@ -118,7 +134,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<CodeableConcept> = resource.category
   }
@@ -130,7 +146,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.code.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<CodeableConcept> =
       listOfNotNull(resource.code?.concept)
@@ -143,7 +159,8 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.code.reference"
 
-    public override val target: List<String> = listOf("ActivityDefinition", "PlanDefinition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(ActivityDefinition::class, PlanDefinition::class)
 
     public override fun extract(resource: ServiceRequest): List<Reference> =
       listOfNotNull(resource.code?.reference)
@@ -156,7 +173,8 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Encounter::class)
 
     public override fun extract(resource: ServiceRequest): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -169,7 +187,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -182,7 +200,8 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.instantiatesCanonical"
 
-    public override val target: List<String> = listOf("ActivityDefinition", "PlanDefinition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(ActivityDefinition::class, PlanDefinition::class)
 
     public override fun extract(resource: ServiceRequest): List<Canonical> =
       resource.instantiatesCanonical
@@ -195,7 +214,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.instantiatesUri"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<Uri> = resource.instantiatesUri
   }
@@ -207,7 +226,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.intent"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<Any> = listOf(resource.intent)
   }
@@ -219,7 +238,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.occurrence.ofType(dateTime)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<Any> = emptyList()
   }
@@ -231,7 +250,8 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: ServiceRequest): List<Reference> =
       listOf(resource.subject).filter {
@@ -246,16 +266,16 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.performer"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "HealthcareService",
-        "Organization",
-        "CareTeam",
-        "Device",
-        "RelatedPerson",
-        "PractitionerRole",
-        "Practitioner",
-        "Patient",
+        HealthcareService::class,
+        Organization::class,
+        CareTeam::class,
+        Device::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
       )
 
     public override fun extract(resource: ServiceRequest): List<Reference> = resource.performer
@@ -268,7 +288,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.performerType"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<CodeableConcept> =
       listOfNotNull(resource.performerType)
@@ -281,7 +301,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.priority"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<Any> =
       listOfNotNull(resource.priority)
@@ -294,7 +314,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.replaces"
 
-    public override val target: List<String> = listOf("ServiceRequest")
+    public override val target: List<KClass<out Resource>> = listOf(ServiceRequest::class)
 
     public override fun extract(resource: ServiceRequest): List<Reference> = resource.replaces
   }
@@ -306,14 +326,14 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.requester"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Organization",
-        "Device",
-        "RelatedPerson",
-        "PractitionerRole",
-        "Practitioner",
-        "Patient",
+        Organization::class,
+        Device::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
       )
 
     public override fun extract(resource: ServiceRequest): List<Reference> =
@@ -327,7 +347,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.requisition"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<dev.ohs.fhir.model.r5.Identifier> =
       listOfNotNull(resource.requisition)
@@ -340,7 +360,8 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.specimen"
 
-    public override val target: List<String> = listOf("Specimen")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Specimen::class)
 
     public override fun extract(resource: ServiceRequest): List<Reference> = resource.specimen
   }
@@ -352,7 +373,7 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ServiceRequest): List<Any> = listOf(resource.status)
   }
@@ -364,7 +385,8 @@ public object ServiceRequestSearchParam {
 
     public override val expression: String = "ServiceRequest.subject"
 
-    public override val target: List<String> = listOf("Device", "Group", "Location", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Device::class, Group::class, Location::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: ServiceRequest): List<Reference> =
       listOf(resource.subject)

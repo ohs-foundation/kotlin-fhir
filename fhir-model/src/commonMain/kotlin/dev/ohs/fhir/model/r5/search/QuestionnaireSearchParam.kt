@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Questionnaire
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Questionnaire] resource type. */
 public object QuestionnaireSearchParam {
@@ -68,7 +70,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Coding> = resource.code
   }
@@ -81,7 +83,7 @@ public object QuestionnaireSearchParam {
     public override val expression: KotlinString =
       "(Questionnaire.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Any> = emptyList()
   }
@@ -94,7 +96,7 @@ public object QuestionnaireSearchParam {
     public override val expression: KotlinString =
       "(Questionnaire.useContext.value.ofType(Quantity))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Any> = emptyList()
   }
@@ -106,7 +108,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Coding> =
       resource.useContext.map { it.code }
@@ -119,7 +121,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<UsageContext> = resource.useContext
   }
@@ -131,7 +133,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<UsageContext> = resource.useContext
   }
@@ -143,7 +145,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<DateTime> =
       listOfNotNull(resource.date)
@@ -156,7 +158,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.item.definition"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Uri> =
       resource.item.mapNotNull { it.definition }
@@ -169,7 +171,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Markdown> =
       listOfNotNull(resource.description)
@@ -182,7 +184,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.effectivePeriod"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Period> =
       listOfNotNull(resource.effectivePeriod)
@@ -195,7 +197,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -208,7 +210,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.item.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Coding> =
       resource.item.flatMap { it.code }
@@ -221,7 +223,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<CodeableConcept> =
       resource.jurisdiction
@@ -234,7 +236,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<R5String> =
       listOfNotNull(resource.name)
@@ -247,7 +249,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<R5String> =
       listOfNotNull(resource.publisher)
@@ -260,7 +262,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Coding> = resource.code
   }
@@ -272,7 +274,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Any> = listOf(resource.status)
   }
@@ -284,7 +286,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.subjectType"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Any> = resource.subjectType
   }
@@ -296,7 +298,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<R5String> =
       listOfNotNull(resource.title)
@@ -309,7 +311,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<Uri> = listOfNotNull(resource.url)
   }
@@ -321,7 +323,7 @@ public object QuestionnaireSearchParam {
 
     public override val expression: KotlinString = "Questionnaire.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Questionnaire): List<R5String> =
       listOfNotNull(resource.version)

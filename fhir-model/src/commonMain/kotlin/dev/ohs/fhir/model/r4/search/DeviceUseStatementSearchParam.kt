@@ -19,11 +19,14 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.DeviceUseStatement
+import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceUseStatement] resource type. */
 public object DeviceUseStatementSearchParam {
@@ -38,7 +41,8 @@ public object DeviceUseStatementSearchParam {
 
     public override val expression: String = "DeviceUseStatement.device"
 
-    public override val target: List<String> = listOf("Device")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Device::class)
 
     public override fun extract(resource: DeviceUseStatement): List<Reference> =
       listOf(resource.device)
@@ -52,7 +56,7 @@ public object DeviceUseStatementSearchParam {
 
     public override val expression: String = "DeviceUseStatement.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: DeviceUseStatement
@@ -66,7 +70,8 @@ public object DeviceUseStatementSearchParam {
 
     public override val expression: String = "DeviceUseStatement.subject"
 
-    public override val target: List<String> = listOf("Patient", "Group")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
 
     public override fun extract(resource: DeviceUseStatement): List<Reference> =
       listOf(resource.subject)
@@ -79,7 +84,8 @@ public object DeviceUseStatementSearchParam {
 
     public override val expression: String = "DeviceUseStatement.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: DeviceUseStatement): List<Reference> =
       listOf(resource.subject)

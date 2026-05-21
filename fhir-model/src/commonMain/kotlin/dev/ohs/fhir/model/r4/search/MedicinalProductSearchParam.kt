@@ -20,11 +20,13 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.MedicinalProduct
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicinalProduct] resource type. */
 public object MedicinalProductSearchParam {
@@ -38,7 +40,7 @@ public object MedicinalProductSearchParam {
 
     public override val expression: KotlinString = "MedicinalProduct.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: MedicinalProduct
@@ -52,7 +54,7 @@ public object MedicinalProductSearchParam {
 
     public override val expression: KotlinString = "MedicinalProduct.name.productName"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProduct): List<R4String> =
       resource.name.map { it.productName }
@@ -65,7 +67,7 @@ public object MedicinalProductSearchParam {
 
     public override val expression: KotlinString = "MedicinalProduct.name.countryLanguage.language"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProduct): List<CodeableConcept> =
       resource.name.flatMap { it.countryLanguage }.map { it.language }

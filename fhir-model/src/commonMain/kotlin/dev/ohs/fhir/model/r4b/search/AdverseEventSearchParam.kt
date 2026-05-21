@@ -20,13 +20,28 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.AdverseEvent
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Condition
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Device
+import dev.ohs.fhir.model.r4b.Group
+import dev.ohs.fhir.model.r4b.Immunization
+import dev.ohs.fhir.model.r4b.Medication
+import dev.ohs.fhir.model.r4b.MedicationAdministration
+import dev.ohs.fhir.model.r4b.MedicationStatement
+import dev.ohs.fhir.model.r4b.Patient
+import dev.ohs.fhir.model.r4b.Practitioner
+import dev.ohs.fhir.model.r4b.PractitionerRole
+import dev.ohs.fhir.model.r4b.Procedure
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.ResearchStudy
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [AdverseEvent] resource type. */
 public object AdverseEventSearchParam {
@@ -54,7 +69,7 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.actuality"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdverseEvent): List<Any> = listOf(resource.actuality)
   }
@@ -66,7 +81,7 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdverseEvent): List<CodeableConcept> = resource.category
   }
@@ -78,7 +93,7 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdverseEvent): List<DateTime> =
       listOfNotNull(resource.date)
@@ -91,7 +106,7 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.event"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdverseEvent): List<CodeableConcept> =
       listOfNotNull(resource.event)
@@ -104,7 +119,8 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.location"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Location::class)
 
     public override fun extract(resource: AdverseEvent): List<Reference> =
       listOfNotNull(resource.location)
@@ -117,8 +133,8 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.recorder"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Patient", "PractitionerRole", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class)
 
     public override fun extract(resource: AdverseEvent): List<Reference> =
       listOfNotNull(resource.recorder)
@@ -131,7 +147,7 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.resultingCondition"
 
-    public override val target: List<String> = listOf("Condition")
+    public override val target: List<KClass<out Resource>> = listOf(Condition::class)
 
     public override fun extract(resource: AdverseEvent): List<Reference> =
       resource.resultingCondition
@@ -144,7 +160,7 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.seriousness"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdverseEvent): List<CodeableConcept> =
       listOfNotNull(resource.seriousness)
@@ -157,7 +173,7 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.severity"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdverseEvent): List<CodeableConcept> =
       listOfNotNull(resource.severity)
@@ -170,7 +186,7 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.study"
 
-    public override val target: List<String> = listOf("ResearchStudy")
+    public override val target: List<KClass<out Resource>> = listOf(ResearchStudy::class)
 
     public override fun extract(resource: AdverseEvent): List<Reference> = resource.study
   }
@@ -182,8 +198,8 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.subject"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Group", "Patient", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, Group::class, Patient::class, RelatedPerson::class)
 
     public override fun extract(resource: AdverseEvent): List<Reference> = listOf(resource.subject)
   }
@@ -195,15 +211,15 @@ public object AdverseEventSearchParam {
 
     public override val expression: String = "AdverseEvent.suspectEntity.instance"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Immunization",
-        "Device",
-        "Medication",
-        "Procedure",
-        "Substance",
-        "MedicationAdministration",
-        "MedicationStatement",
+        Immunization::class,
+        Device::class,
+        Medication::class,
+        Procedure::class,
+        dev.ohs.fhir.model.r4b.Substance::class,
+        MedicationAdministration::class,
+        MedicationStatement::class,
       )
 
     public override fun extract(resource: AdverseEvent): List<Reference> =

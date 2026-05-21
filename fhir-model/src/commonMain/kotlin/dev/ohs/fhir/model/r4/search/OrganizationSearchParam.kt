@@ -22,12 +22,14 @@ import dev.ohs.fhir.model.r4.Boolean
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Organization] resource type. */
 public object OrganizationSearchParam {
@@ -56,7 +58,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.active"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<Boolean> =
       listOfNotNull(resource.active)
@@ -69,7 +71,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.address"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<dev.ohs.fhir.model.r4.Address> =
       resource.address
@@ -82,7 +84,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.address.city"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<R4String> =
       resource.address.mapNotNull { it.city }
@@ -95,7 +97,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.address.country"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<R4String> =
       resource.address.mapNotNull { it.country }
@@ -108,7 +110,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.address.postalCode"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<R4String> =
       resource.address.mapNotNull { it.postalCode }
@@ -121,7 +123,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.address.state"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<R4String> =
       resource.address.mapNotNull { it.state }
@@ -134,7 +136,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.address.use"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<Any> =
       resource.address.mapNotNull { it.use }
@@ -147,7 +149,8 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.endpoint"
 
-    public override val target: List<KotlinString> = listOf("Endpoint")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Endpoint::class)
 
     public override fun extract(resource: Organization): List<Reference> = resource.endpoint
   }
@@ -159,7 +162,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -172,7 +175,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<R4String> =
       listOfNotNull(resource.name)
@@ -185,7 +188,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.partOf"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: Organization): List<Reference> =
       listOfNotNull(resource.partOf)
@@ -198,7 +201,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<R4String> =
       listOfNotNull(resource.name)
@@ -211,7 +214,7 @@ public object OrganizationSearchParam {
 
     public override val expression: KotlinString = "Organization.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Organization): List<CodeableConcept> = resource.type
   }

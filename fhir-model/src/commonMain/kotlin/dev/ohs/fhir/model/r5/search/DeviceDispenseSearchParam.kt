@@ -20,12 +20,15 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceDispense
+import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceDispense] resource type. */
 public object DeviceDispenseSearchParam {
@@ -40,7 +43,7 @@ public object DeviceDispenseSearchParam {
 
     public override val expression: String = "DeviceDispense.device.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceDispense): List<CodeableConcept> =
       listOfNotNull(resource.device.concept)
@@ -53,7 +56,7 @@ public object DeviceDispenseSearchParam {
 
     public override val expression: String = "DeviceDispense.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceDispense): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -66,7 +69,8 @@ public object DeviceDispenseSearchParam {
 
     public override val expression: String = "DeviceDispense.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: DeviceDispense): List<Reference> =
       listOf(resource.subject).filter {
@@ -81,7 +85,7 @@ public object DeviceDispenseSearchParam {
 
     public override val expression: String = "DeviceDispense.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceDispense): List<Any> = listOf(resource.status)
   }
@@ -93,7 +97,8 @@ public object DeviceDispenseSearchParam {
 
     public override val expression: String = "DeviceDispense.subject"
 
-    public override val target: List<String> = listOf("Practitioner", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: DeviceDispense): List<Reference> =
       listOf(resource.subject)

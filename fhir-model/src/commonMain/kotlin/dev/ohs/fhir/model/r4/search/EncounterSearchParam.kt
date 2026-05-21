@@ -20,15 +20,26 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
+import dev.ohs.fhir.model.r4.Condition
 import dev.ohs.fhir.model.r4.Duration
 import dev.ohs.fhir.model.r4.Encounter
+import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.ImmunizationRecommendation
+import dev.ohs.fhir.model.r4.Observation
+import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.PractitionerRole
+import dev.ohs.fhir.model.r4.Procedure
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.RelatedPerson
+import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.ServiceRequest
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Encounter] resource type. */
 public object EncounterSearchParam {
@@ -67,7 +78,8 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.account"
 
-    public override val target: List<String> = listOf("Account")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Account::class)
 
     public override fun extract(resource: Encounter): List<Reference> = resource.account
   }
@@ -79,7 +91,8 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.appointment"
 
-    public override val target: List<String> = listOf("Appointment")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Appointment::class)
 
     public override fun extract(resource: Encounter): List<Reference> = resource.appointment
   }
@@ -91,7 +104,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.basedOn"
 
-    public override val target: List<String> = listOf("ServiceRequest")
+    public override val target: List<KClass<out Resource>> = listOf(ServiceRequest::class)
 
     public override fun extract(resource: Encounter): List<Reference> = resource.basedOn
   }
@@ -103,7 +116,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.class"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<Coding> = listOf(resource.`class`)
   }
@@ -115,7 +128,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<Period> = listOfNotNull(resource.period)
   }
@@ -127,7 +140,8 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.diagnosis.condition"
 
-    public override val target: List<String> = listOf("Condition", "Procedure")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Condition::class, Procedure::class)
 
     public override fun extract(resource: Encounter): List<Reference> =
       resource.diagnosis.map { it.condition }
@@ -140,7 +154,8 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.episodeOfCare"
 
-    public override val target: List<String> = listOf("EpisodeOfCare")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.EpisodeOfCare::class)
 
     public override fun extract(resource: Encounter): List<Reference> = resource.episodeOfCare
   }
@@ -152,7 +167,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -165,7 +180,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.length"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<Duration> =
       listOfNotNull(resource.length)
@@ -178,7 +193,8 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.location.location"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Location::class)
 
     public override fun extract(resource: Encounter): List<Reference> =
       resource.location.map { it.location }
@@ -191,7 +207,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.location.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<Period> =
       resource.location.mapNotNull { it.period }
@@ -204,7 +220,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.partOf"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> = listOf(Encounter::class)
 
     public override fun extract(resource: Encounter): List<Reference> =
       listOfNotNull(resource.partOf)
@@ -217,8 +233,12 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.participant.individual"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "PractitionerRole", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        dev.ohs.fhir.model.r4.Practitioner::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
+      )
 
     public override fun extract(resource: Encounter): List<Reference> =
       resource.participant.mapNotNull { it.individual }
@@ -231,7 +251,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.participant.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<CodeableConcept> =
       resource.participant.flatMap { it.type }
@@ -244,7 +264,8 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient", "Group")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
 
     public override fun extract(resource: Encounter): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -260,7 +281,8 @@ public object EncounterSearchParam {
     public override val expression: String =
       "Encounter.participant.individual.where(resolve() is Practitioner)"
 
-    public override val target: List<String> = listOf("Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Practitioner::class)
 
     public override fun extract(resource: Encounter): List<Reference> =
       resource.participant
@@ -275,7 +297,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.reasonCode"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<CodeableConcept> = resource.reasonCode
   }
@@ -287,8 +309,13 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.reasonReference"
 
-    public override val target: List<String> =
-      listOf("Condition", "Observation", "Procedure", "ImmunizationRecommendation")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Condition::class,
+        Observation::class,
+        Procedure::class,
+        ImmunizationRecommendation::class,
+      )
 
     public override fun extract(resource: Encounter): List<Reference> = resource.reasonReference
   }
@@ -300,7 +327,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.serviceProvider"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: Encounter): List<Reference> =
       listOfNotNull(resource.serviceProvider)
@@ -313,7 +340,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.hospitalization.specialArrangement"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<CodeableConcept> =
       resource.hospitalization?.specialArrangement ?: emptyList()
@@ -326,7 +353,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<Any> = listOf(resource.status)
   }
@@ -338,7 +365,8 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: Encounter): List<Reference> =
       listOfNotNull(resource.subject)
@@ -351,7 +379,7 @@ public object EncounterSearchParam {
 
     public override val expression: String = "Encounter.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Encounter): List<CodeableConcept> = resource.type
   }

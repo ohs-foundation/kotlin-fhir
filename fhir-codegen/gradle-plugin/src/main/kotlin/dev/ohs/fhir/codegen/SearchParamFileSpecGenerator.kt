@@ -24,7 +24,9 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.TypeVariableName
+import com.squareup.kotlinpoet.WildcardTypeName
 import com.squareup.kotlinpoet.asClassName
+import kotlin.reflect.KClass
 
 /**
  * Generates a `SearchParam.kt` file with the sealed interface for search parameter metadata and
@@ -43,6 +45,12 @@ object SearchParamFileSpecGenerator {
     val typeR = TypeVariableName("R", resourceClassName, variance = KModifier.IN)
     val typeT = TypeVariableName("T", variance = KModifier.OUT)
     val listOfT = List::class.asClassName().parameterizedBy(typeT)
+    val listOfTargetClasses =
+      List::class.asClassName()
+        .parameterizedBy(
+          KClass::class.asClassName()
+            .parameterizedBy(WildcardTypeName.producerOf(resourceClassName))
+        )
 
     return FileSpec.builder("$packageName.search", "SearchParam")
       .addType(
@@ -70,10 +78,7 @@ object SearchParamFileSpecGenerator {
               .build()
           )
           .addProperty(
-            PropertySpec.builder(
-                "target",
-                List::class.asClassName().parameterizedBy(String::class.asClassName()),
-              )
+            PropertySpec.builder("target", listOfTargetClasses)
               .addModifiers(KModifier.PUBLIC)
               .addKdoc("The target resource types for reference search parameters.")
               .build()

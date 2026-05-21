@@ -18,15 +18,25 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Location
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.SupplyRequest
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [SupplyRequest] resource type. */
 public object SupplyRequestSearchParam {
@@ -41,7 +51,7 @@ public object SupplyRequestSearchParam {
 
     public override val expression: String = "SupplyRequest.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SupplyRequest): List<CodeableConcept> =
       listOfNotNull(resource.category)
@@ -54,7 +64,7 @@ public object SupplyRequestSearchParam {
 
     public override val expression: String = "SupplyRequest.authoredOn"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SupplyRequest): List<DateTime> =
       listOfNotNull(resource.authoredOn)
@@ -67,7 +77,7 @@ public object SupplyRequestSearchParam {
 
     public override val expression: String = "SupplyRequest.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SupplyRequest): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -80,7 +90,8 @@ public object SupplyRequestSearchParam {
 
     public override val expression: String = "SupplyRequest.deliverFor"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: SupplyRequest): List<Reference> =
       listOfNotNull(resource.deliverFor)
@@ -93,15 +104,15 @@ public object SupplyRequestSearchParam {
 
     public override val expression: String = "SupplyRequest.requester"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Organization",
-        "Device",
-        "CareTeam",
-        "RelatedPerson",
-        "PractitionerRole",
-        "Practitioner",
-        "Patient",
+        Organization::class,
+        Device::class,
+        CareTeam::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
       )
 
     public override fun extract(resource: SupplyRequest): List<Reference> =
@@ -115,7 +126,7 @@ public object SupplyRequestSearchParam {
 
     public override val expression: String = "SupplyRequest.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SupplyRequest): List<Any> = listOfNotNull(resource.status)
   }
@@ -127,8 +138,13 @@ public object SupplyRequestSearchParam {
 
     public override val expression: String = "SupplyRequest.deliverTo"
 
-    public override val target: List<String> =
-      listOf("Organization", "RelatedPerson", "Location", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Organization::class,
+        RelatedPerson::class,
+        Location::class,
+        dev.ohs.fhir.model.r5.Patient::class,
+      )
 
     public override fun extract(resource: SupplyRequest): List<Reference> =
       listOfNotNull(resource.deliverTo)
@@ -141,7 +157,8 @@ public object SupplyRequestSearchParam {
 
     public override val expression: String = "SupplyRequest.supplier"
 
-    public override val target: List<String> = listOf("HealthcareService", "Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(HealthcareService::class, Organization::class)
 
     public override fun extract(resource: SupplyRequest): List<Reference> = resource.supplier
   }

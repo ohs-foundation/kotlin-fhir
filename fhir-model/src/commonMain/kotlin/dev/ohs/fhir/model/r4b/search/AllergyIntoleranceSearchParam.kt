@@ -21,12 +21,17 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.AllergyIntolerance
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Practitioner
+import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [AllergyIntolerance] resource type. */
 public object AllergyIntoleranceSearchParam {
@@ -58,8 +63,13 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.asserter"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Patient", "PractitionerRole", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Practitioner::class,
+        dev.ohs.fhir.model.r4b.Patient::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
+      )
 
     public override fun extract(resource: AllergyIntolerance): List<Reference> =
       listOfNotNull(resource.asserter)
@@ -72,7 +82,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<Any> = resource.category
   }
@@ -84,7 +94,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.clinicalStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
       listOfNotNull(resource.clinicalStatus)
@@ -97,7 +107,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
       listOfNotNull(resource.code)
@@ -110,7 +120,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.criticality"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<Any> =
       listOfNotNull(resource.criticality)
@@ -123,7 +133,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.recordedDate"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<DateTime> =
       listOfNotNull(resource.recordedDate)
@@ -137,7 +147,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: AllergyIntolerance
@@ -151,7 +161,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.lastOccurrence"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<DateTime> =
       listOfNotNull(resource.lastOccurrence)
@@ -164,7 +174,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.reaction.manifestation"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
       resource.reaction.flatMap { it.manifestation }
@@ -177,7 +187,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.reaction.onset"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<DateTime> =
       resource.reaction.mapNotNull { it.onset }
@@ -190,7 +200,8 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: AllergyIntolerance): List<Reference> =
       listOf(resource.patient)
@@ -203,8 +214,13 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.recorder"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Patient", "PractitionerRole", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Practitioner::class,
+        dev.ohs.fhir.model.r4b.Patient::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
+      )
 
     public override fun extract(resource: AllergyIntolerance): List<Reference> =
       listOfNotNull(resource.recorder)
@@ -217,7 +233,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.reaction.exposureRoute"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
       resource.reaction.mapNotNull { it.exposureRoute }
@@ -230,7 +246,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.reaction.severity"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<Any> =
       resource.reaction.mapNotNull { it.severity }
@@ -243,7 +259,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<Any> =
       listOfNotNull(resource.type)
@@ -256,7 +272,7 @@ public object AllergyIntoleranceSearchParam {
 
     public override val expression: String = "AllergyIntolerance.verificationStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
       listOfNotNull(resource.verificationStatus)

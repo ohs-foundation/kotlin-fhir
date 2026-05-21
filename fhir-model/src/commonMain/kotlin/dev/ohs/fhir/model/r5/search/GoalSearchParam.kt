@@ -19,13 +19,25 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Condition
 import dev.ohs.fhir.model.r5.Goal
+import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.MedicationRequest
+import dev.ohs.fhir.model.r5.MedicationStatement
+import dev.ohs.fhir.model.r5.NutritionOrder
+import dev.ohs.fhir.model.r5.Observation
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.RiskAssessment
+import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Goal] resource type. */
 public object GoalSearchParam {
@@ -52,7 +64,7 @@ public object GoalSearchParam {
 
     public override val expression: String = "Goal.achievementStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Goal): List<CodeableConcept> =
       listOfNotNull(resource.achievementStatus)
@@ -65,16 +77,16 @@ public object GoalSearchParam {
 
     public override val expression: String = "Goal.addresses"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "RiskAssessment",
-        "Procedure",
-        "Observation",
-        "MedicationStatement",
-        "ServiceRequest",
-        "MedicationRequest",
-        "Condition",
-        "NutritionOrder",
+        RiskAssessment::class,
+        Procedure::class,
+        Observation::class,
+        MedicationStatement::class,
+        ServiceRequest::class,
+        MedicationRequest::class,
+        Condition::class,
+        NutritionOrder::class,
       )
 
     public override fun extract(resource: Goal): List<Reference> = resource.addresses
@@ -87,7 +99,7 @@ public object GoalSearchParam {
 
     public override val expression: String = "Goal.category"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Goal): List<CodeableConcept> = resource.category
   }
@@ -99,7 +111,7 @@ public object GoalSearchParam {
 
     public override val expression: String = "Goal.description"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Goal): List<CodeableConcept> =
       listOf(resource.description)
@@ -112,7 +124,7 @@ public object GoalSearchParam {
 
     public override val expression: String = "Goal.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Goal): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -125,7 +137,7 @@ public object GoalSearchParam {
 
     public override val expression: String = "Goal.lifecycleStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Goal): List<Any> = listOf(resource.lifecycleStatus)
   }
@@ -137,7 +149,8 @@ public object GoalSearchParam {
 
     public override val expression: String = "Goal.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: Goal): List<Reference> =
       listOf(resource.subject).filter {
@@ -152,7 +165,7 @@ public object GoalSearchParam {
 
     public override val expression: String = "(Goal.start.ofType(date))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Goal): List<Any> = emptyList()
   }
@@ -164,7 +177,8 @@ public object GoalSearchParam {
 
     public override val expression: String = "Goal.subject"
 
-    public override val target: List<String> = listOf("Organization", "Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, Group::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: Goal): List<Reference> = listOf(resource.subject)
   }
@@ -176,7 +190,7 @@ public object GoalSearchParam {
 
     public override val expression: String = "(Goal.target.due.ofType(date))"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Goal): List<Any> = emptyList()
   }
@@ -188,7 +202,7 @@ public object GoalSearchParam {
 
     public override val expression: String = "Goal.target.measure"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Goal): List<CodeableConcept> =
       resource.target.mapNotNull { it.measure }

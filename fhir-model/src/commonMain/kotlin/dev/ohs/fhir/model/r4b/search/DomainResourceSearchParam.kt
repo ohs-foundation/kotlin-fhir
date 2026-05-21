@@ -19,11 +19,13 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.DomainResource
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [DomainResource] resource type. */
 public object DomainResourceSearchParam {
@@ -37,7 +39,7 @@ public object DomainResourceSearchParam {
 
     public override val expression: String = ""
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DomainResource): List<Any> = emptyList()
   }

@@ -20,6 +20,7 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.SpecimenDefinition
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
@@ -28,6 +29,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [SpecimenDefinition] resource type. */
 public object SpecimenDefinitionSearchParam {
@@ -42,7 +44,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: KotlinString = "SpecimenDefinition.typeTested.container.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
       resource.typeTested.mapNotNull { it.container }.mapNotNull { it.type }
@@ -55,7 +57,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: KotlinString = "SpecimenDefinition.experimental"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<Boolean> =
       listOfNotNull(resource.experimental)
@@ -69,7 +71,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: KotlinString = "SpecimenDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: SpecimenDefinition
@@ -83,7 +85,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: KotlinString = "SpecimenDefinition.typeTested.isDerived"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<Boolean> =
       resource.typeTested.mapNotNull { it.isDerived }
@@ -96,7 +98,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: KotlinString = "SpecimenDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<Any> = listOf(resource.status)
   }
@@ -108,7 +110,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: KotlinString = "SpecimenDefinition.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<R5String> =
       listOfNotNull(resource.title)
@@ -121,7 +123,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: KotlinString = "SpecimenDefinition.typeCollected"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
       listOfNotNull(resource.typeCollected)
@@ -134,7 +136,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: KotlinString = "SpecimenDefinition.typeTested.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
       resource.typeTested.mapNotNull { it.type }
@@ -147,7 +149,7 @@ public object SpecimenDefinitionSearchParam {
 
     public override val expression: KotlinString = "SpecimenDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SpecimenDefinition): List<Uri> =
       listOfNotNull(resource.url)

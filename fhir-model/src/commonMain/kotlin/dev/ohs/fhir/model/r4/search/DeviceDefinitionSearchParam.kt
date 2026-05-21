@@ -21,10 +21,12 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DeviceDefinition
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceDefinition] resource type. */
 public object DeviceDefinitionSearchParam {
@@ -38,7 +40,7 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: String = "DeviceDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: DeviceDefinition
@@ -52,7 +54,7 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: String = "DeviceDefinition.parentDevice"
 
-    public override val target: List<String> = listOf("DeviceDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(DeviceDefinition::class)
 
     public override fun extract(resource: DeviceDefinition): List<Reference> =
       listOfNotNull(resource.parentDevice)
@@ -65,7 +67,7 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: String = "DeviceDefinition.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceDefinition): List<CodeableConcept> =
       listOfNotNull(resource.type)

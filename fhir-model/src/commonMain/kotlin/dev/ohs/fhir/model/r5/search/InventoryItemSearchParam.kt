@@ -20,12 +20,16 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.InventoryItem
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [InventoryItem] resource type. */
 public object InventoryItemSearchParam {
@@ -39,7 +43,7 @@ public object InventoryItemSearchParam {
 
     public override val expression: String = "InventoryItem.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InventoryItem): List<CodeableConcept> = resource.code
   }
@@ -51,7 +55,7 @@ public object InventoryItemSearchParam {
 
     public override val expression: String = "InventoryItem.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InventoryItem): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -64,7 +68,7 @@ public object InventoryItemSearchParam {
 
     public override val expression: String = "InventoryItem.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: InventoryItem): List<Any> = listOf(resource.status)
   }
@@ -76,7 +80,8 @@ public object InventoryItemSearchParam {
 
     public override val expression: String = "InventoryItem.instance.subject"
 
-    public override val target: List<String> = listOf("Organization", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, Patient::class)
 
     public override fun extract(resource: InventoryItem): List<Reference> =
       listOfNotNull(resource.instance?.subject)

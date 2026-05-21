@@ -22,12 +22,14 @@ import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Resource] resource type. */
 public object ResourceSearchParam {
@@ -58,7 +60,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = ""
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = emptyList()
   }
@@ -70,7 +72,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = ""
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = emptyList()
   }
@@ -82,7 +84,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = ""
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = emptyList()
   }
@@ -94,7 +96,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = "id"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = emptyList()
   }
@@ -106,7 +108,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = "Resource.id"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = listOfNotNull(resource.id)
   }
@@ -118,7 +120,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = "Resource.language"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = listOfNotNull(resource.language)
   }
@@ -130,7 +132,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = "Resource.meta.lastUpdated"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Instant> =
       listOfNotNull(resource.meta?.lastUpdated)
@@ -143,7 +145,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = ""
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = emptyList()
   }
@@ -155,7 +157,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = "Resource.meta.profile"
 
-    public override val target: List<String> = listOf("StructureDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(StructureDefinition::class)
 
     public override fun extract(resource: Resource): List<Canonical> =
       resource.meta?.profile ?: emptyList()
@@ -168,7 +170,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = ""
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = emptyList()
   }
@@ -180,7 +182,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = "Resource.meta.security"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Coding> =
       resource.meta?.security ?: emptyList()
@@ -193,7 +195,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = "Resource.meta.source"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Uri> =
       listOfNotNull(resource.meta?.source)
@@ -206,7 +208,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = "Resource.meta.tag"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Coding> =
       resource.meta?.tag ?: emptyList()
@@ -219,7 +221,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = ""
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = emptyList()
   }
@@ -231,7 +233,7 @@ public object ResourceSearchParam {
 
     public override val expression: String = ""
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Resource): List<Any> = emptyList()
   }

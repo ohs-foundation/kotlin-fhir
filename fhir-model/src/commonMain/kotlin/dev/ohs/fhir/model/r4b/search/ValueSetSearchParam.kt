@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Quantity
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ValueSet] resource type. */
 public object ValueSetSearchParam {
@@ -65,7 +67,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.expansion.contains.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<Any> =
       (resource.expansion?.contains ?: emptyList()).mapNotNull { it.code }
@@ -78,7 +80,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "(ValueSet.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -91,7 +93,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "(ValueSet.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -104,7 +106,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<Coding> =
       resource.useContext.map { it.code }
@@ -117,7 +119,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<UsageContext> = resource.useContext
   }
@@ -129,7 +131,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<UsageContext> = resource.useContext
   }
@@ -141,7 +143,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<DateTime> = listOfNotNull(resource.date)
   }
@@ -153,7 +155,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<Markdown> =
       listOfNotNull(resource.description)
@@ -166,7 +168,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.expansion.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<Uri> =
       listOfNotNull(resource.expansion?.identifier)
@@ -179,7 +181,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<dev.ohs.fhir.model.r4b.Identifier> =
       resource.identifier
@@ -192,7 +194,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<CodeableConcept> = resource.jurisdiction
   }
@@ -204,7 +206,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<R4bString> = listOfNotNull(resource.name)
   }
@@ -216,7 +218,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<R4bString> =
       listOfNotNull(resource.publisher)
@@ -229,7 +231,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.compose.include.system"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<Uri> =
       (resource.compose?.include ?: emptyList()).mapNotNull { it.system }
@@ -242,7 +244,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<Any> = listOf(resource.status)
   }
@@ -254,7 +256,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<R4bString> = listOfNotNull(resource.title)
   }
@@ -266,7 +268,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<Uri> = listOfNotNull(resource.url)
   }
@@ -278,7 +280,7 @@ public object ValueSetSearchParam {
 
     public override val expression: KotlinString = "ValueSet.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ValueSet): List<R4bString> =
       listOfNotNull(resource.version)

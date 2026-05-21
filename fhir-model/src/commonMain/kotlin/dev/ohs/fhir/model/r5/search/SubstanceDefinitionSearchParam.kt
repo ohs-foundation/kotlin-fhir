@@ -19,12 +19,14 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [SubstanceDefinition] resource type. */
 public object SubstanceDefinitionSearchParam {
@@ -39,7 +41,7 @@ public object SubstanceDefinitionSearchParam {
 
     public override val expression: KotlinString = "SubstanceDefinition.classification"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SubstanceDefinition): List<CodeableConcept> =
       resource.classification
@@ -52,7 +54,7 @@ public object SubstanceDefinitionSearchParam {
 
     public override val expression: KotlinString = "SubstanceDefinition.code.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SubstanceDefinition): List<CodeableConcept> =
       resource.code.mapNotNull { it.code }
@@ -65,7 +67,7 @@ public object SubstanceDefinitionSearchParam {
 
     public override val expression: KotlinString = "SubstanceDefinition.domain"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SubstanceDefinition): List<CodeableConcept> =
       listOfNotNull(resource.domain)
@@ -79,7 +81,7 @@ public object SubstanceDefinitionSearchParam {
 
     public override val expression: KotlinString = "SubstanceDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: SubstanceDefinition
@@ -93,7 +95,7 @@ public object SubstanceDefinitionSearchParam {
 
     public override val expression: KotlinString = "SubstanceDefinition.name.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: SubstanceDefinition): List<R5String> =
       resource.name.map { it.name }

@@ -18,13 +18,18 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.AdministrableProductDefinition
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Ingredient
+import dev.ohs.fhir.model.r4b.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r4b.MedicinalProductDefinition
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Ingredient] resource type. */
 public object IngredientSearchParam {
@@ -48,11 +53,11 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.for"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "AdministrableProductDefinition",
-        "ManufacturedItemDefinition",
-        "MedicinalProductDefinition",
+        AdministrableProductDefinition::class,
+        ManufacturedItemDefinition::class,
+        MedicinalProductDefinition::class,
       )
 
     public override fun extract(resource: Ingredient): List<Reference> = resource.`for`
@@ -65,7 +70,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.function"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<CodeableConcept> = resource.function
   }
@@ -77,7 +82,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<dev.ohs.fhir.model.r4b.Identifier> =
       listOfNotNull(resource.identifier)
@@ -90,7 +95,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.manufacturer"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<Ingredient.Manufacturer> =
       resource.manufacturer
@@ -103,7 +108,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.role"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<CodeableConcept> = listOf(resource.role)
   }
@@ -115,7 +120,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.substance.code.reference"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<Reference> =
       listOfNotNull(resource.substance.code.reference)
@@ -128,7 +133,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.substance.code.concept"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<CodeableConcept> =
       listOfNotNull(resource.substance.code.concept)
@@ -141,7 +146,7 @@ public object IngredientSearchParam {
 
     public override val expression: String = "Ingredient.substance.code.reference"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Ingredient): List<Reference> =
       listOfNotNull(resource.substance.code.reference)

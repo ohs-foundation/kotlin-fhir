@@ -21,11 +21,13 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceDefinition
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceDefinition] resource type. */
 public object DeviceDefinitionSearchParam {
@@ -48,7 +50,7 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: KotlinString = "DeviceDefinition.deviceName.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceDefinition): List<R5String> =
       resource.deviceName.map { it.name }
@@ -61,7 +63,7 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: KotlinString = "DeviceDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: DeviceDefinition
@@ -75,7 +77,8 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: KotlinString = "DeviceDefinition.manufacturer"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Organization::class)
 
     public override fun extract(resource: DeviceDefinition): List<Reference> =
       listOfNotNull(resource.manufacturer)
@@ -88,7 +91,8 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: KotlinString = "DeviceDefinition.owner"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Organization::class)
 
     public override fun extract(resource: DeviceDefinition): List<Reference> =
       listOfNotNull(resource.owner)
@@ -101,7 +105,7 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: KotlinString = "DeviceDefinition.conformsTo.specification"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceDefinition): List<CodeableConcept> =
       resource.conformsTo.map { it.specification }
@@ -115,7 +119,7 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: KotlinString = "DeviceDefinition.conformsTo"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceDefinition): List<DeviceDefinition.ConformsTo> =
       resource.conformsTo
@@ -128,7 +132,7 @@ public object DeviceDefinitionSearchParam {
 
     public override val expression: KotlinString = "DeviceDefinition.conformsTo.category"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: DeviceDefinition): List<CodeableConcept> =
       resource.conformsTo.mapNotNull { it.category }

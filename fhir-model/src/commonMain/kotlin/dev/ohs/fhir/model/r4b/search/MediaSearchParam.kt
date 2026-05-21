@@ -18,14 +18,27 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.CarePlan
+import dev.ohs.fhir.model.r4b.CareTeam
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.DeviceMetric
+import dev.ohs.fhir.model.r4b.Group
+import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Media
+import dev.ohs.fhir.model.r4b.Organization
+import dev.ohs.fhir.model.r4b.Practitioner
+import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.Resource
+import dev.ohs.fhir.model.r4b.ServiceRequest
+import dev.ohs.fhir.model.r4b.Specimen
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Media] resource type. */
 public object MediaSearchParam {
@@ -54,7 +67,8 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.basedOn"
 
-    public override val target: List<String> = listOf("CarePlan", "ServiceRequest")
+    public override val target: List<KClass<out Resource>> =
+      listOf(CarePlan::class, ServiceRequest::class)
 
     public override fun extract(resource: Media): List<Reference> = resource.basedOn
   }
@@ -66,7 +80,7 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.created"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Media): List<Media.Created> =
       listOfNotNull(resource.created)
@@ -79,7 +93,8 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.device"
 
-    public override val target: List<String> = listOf("Device", "DeviceMetric")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Device::class, DeviceMetric::class)
 
     public override fun extract(resource: Media): List<Reference> = listOfNotNull(resource.device)
   }
@@ -91,7 +106,8 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.encounter"
 
-    public override val target: List<String> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Encounter::class)
 
     public override fun extract(resource: Media): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -104,7 +120,7 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Media): List<dev.ohs.fhir.model.r4b.Identifier> =
       resource.identifier
@@ -117,7 +133,7 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.modality"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Media): List<CodeableConcept> =
       listOfNotNull(resource.modality)
@@ -130,15 +146,15 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.operator"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Organization",
-        "CareTeam",
-        "Device",
-        "Patient",
-        "PractitionerRole",
-        "RelatedPerson",
+        Practitioner::class,
+        Organization::class,
+        CareTeam::class,
+        dev.ohs.fhir.model.r4b.Device::class,
+        dev.ohs.fhir.model.r4b.Patient::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
       )
 
     public override fun extract(resource: Media): List<Reference> = listOfNotNull(resource.operator)
@@ -151,7 +167,8 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: Media): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -166,7 +183,7 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.bodySite"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Media): List<CodeableConcept> =
       listOfNotNull(resource.bodySite)
@@ -179,7 +196,7 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Media): List<Any> = listOf(resource.status)
   }
@@ -191,15 +208,15 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.subject"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Group",
-        "Specimen",
-        "Device",
-        "Patient",
-        "PractitionerRole",
-        "Location",
+        Practitioner::class,
+        Group::class,
+        Specimen::class,
+        dev.ohs.fhir.model.r4b.Device::class,
+        dev.ohs.fhir.model.r4b.Patient::class,
+        PractitionerRole::class,
+        Location::class,
       )
 
     public override fun extract(resource: Media): List<Reference> = listOfNotNull(resource.subject)
@@ -212,7 +229,7 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Media): List<CodeableConcept> =
       listOfNotNull(resource.type)
@@ -225,7 +242,7 @@ public object MediaSearchParam {
 
     public override val expression: String = "Media.view"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Media): List<CodeableConcept> =
       listOfNotNull(resource.view)

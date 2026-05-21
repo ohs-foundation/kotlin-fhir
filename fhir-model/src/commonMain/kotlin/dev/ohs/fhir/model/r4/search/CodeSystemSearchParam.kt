@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
@@ -33,6 +34,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [CodeSystem] resource type. */
 public object CodeSystemSearchParam {
@@ -68,7 +70,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.concept.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<Any> = resource.concept.map { it.code }
   }
@@ -80,7 +82,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.content"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<Any> = listOf(resource.content)
   }
@@ -93,7 +95,7 @@ public object CodeSystemSearchParam {
     public override val expression: KotlinString =
       "(CodeSystem.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -106,7 +108,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "(CodeSystem.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -119,7 +121,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<Coding> =
       resource.useContext.map { it.code }
@@ -132,7 +134,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<UsageContext> = resource.useContext
   }
@@ -144,7 +146,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<UsageContext> = resource.useContext
   }
@@ -156,7 +158,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<DateTime> = listOfNotNull(resource.date)
   }
@@ -168,7 +170,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<Markdown> =
       listOfNotNull(resource.description)
@@ -181,7 +183,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -194,7 +196,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<CodeableConcept> = resource.jurisdiction
   }
@@ -206,7 +208,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.concept.designation.language"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<Any> =
       resource.concept.flatMap { it.designation }.mapNotNull { it.language }
@@ -219,7 +221,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<R4String> = listOfNotNull(resource.name)
   }
@@ -231,7 +233,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<R4String> =
       listOfNotNull(resource.publisher)
@@ -244,7 +246,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<Any> = listOf(resource.status)
   }
@@ -256,7 +258,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.supplements"
 
-    public override val target: List<KotlinString> = listOf("CodeSystem")
+    public override val target: List<KClass<out Resource>> = listOf(CodeSystem::class)
 
     public override fun extract(resource: CodeSystem): List<Canonical> =
       listOfNotNull(resource.supplements)
@@ -269,7 +271,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<Uri> = listOfNotNull(resource.url)
   }
@@ -281,7 +283,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<R4String> =
       listOfNotNull(resource.title)
@@ -294,7 +296,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<Uri> = listOfNotNull(resource.url)
   }
@@ -306,7 +308,7 @@ public object CodeSystemSearchParam {
 
     public override val expression: KotlinString = "CodeSystem.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CodeSystem): List<R4String> =
       listOfNotNull(resource.version)

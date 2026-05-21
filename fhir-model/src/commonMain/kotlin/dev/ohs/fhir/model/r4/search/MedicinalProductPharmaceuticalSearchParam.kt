@@ -20,10 +20,12 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.MedicinalProductPharmaceutical
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicinalProductPharmaceutical] resource type. */
 public object MedicinalProductPharmaceuticalSearchParam {
@@ -39,7 +41,7 @@ public object MedicinalProductPharmaceuticalSearchParam {
 
     public override val expression: String = "MedicinalProductPharmaceutical.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: MedicinalProductPharmaceutical
@@ -54,7 +56,7 @@ public object MedicinalProductPharmaceuticalSearchParam {
     public override val expression: String =
       "MedicinalProductPharmaceutical.routeOfAdministration.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductPharmaceutical): List<CodeableConcept> =
       resource.routeOfAdministration.map { it.code }
@@ -68,7 +70,7 @@ public object MedicinalProductPharmaceuticalSearchParam {
     public override val expression: String =
       "MedicinalProductPharmaceutical.routeOfAdministration.targetSpecies.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductPharmaceutical): List<CodeableConcept> =
       resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }

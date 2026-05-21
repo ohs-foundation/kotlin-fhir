@@ -25,14 +25,17 @@ import dev.ohs.fhir.model.r4b.ConceptMap
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Quantity
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
+import dev.ohs.fhir.model.r4b.ValueSet
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ConceptMap] resource type. */
 public object ConceptMapSearchParam {
@@ -75,7 +78,7 @@ public object ConceptMapSearchParam {
     public override val expression: KotlinString =
       "(ConceptMap.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -88,7 +91,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "(ConceptMap.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -101,7 +104,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Coding> =
       resource.useContext.map { it.code }
@@ -114,7 +117,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<UsageContext> = resource.useContext
   }
@@ -126,7 +129,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<UsageContext> = resource.useContext
   }
@@ -138,7 +141,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<DateTime> = listOfNotNull(resource.date)
   }
@@ -151,7 +154,7 @@ public object ConceptMapSearchParam {
     public override val expression: KotlinString =
       "ConceptMap.group.element.target.dependsOn.property"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Uri> =
       resource.group
@@ -168,7 +171,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Markdown> =
       listOfNotNull(resource.description)
@@ -181,7 +184,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<dev.ohs.fhir.model.r4b.Identifier> =
       listOfNotNull(resource.identifier)
@@ -194,7 +197,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<CodeableConcept> = resource.jurisdiction
   }
@@ -206,7 +209,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<R4bString> =
       listOfNotNull(resource.name)
@@ -219,7 +222,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.group.unmapped.url"
 
-    public override val target: List<KotlinString> = listOf("ConceptMap")
+    public override val target: List<KClass<out Resource>> = listOf(ConceptMap::class)
 
     public override fun extract(resource: ConceptMap): List<Canonical> =
       resource.group.mapNotNull { it.unmapped }.mapNotNull { it.url }
@@ -233,7 +236,7 @@ public object ConceptMapSearchParam {
     public override val expression: KotlinString =
       "ConceptMap.group.element.target.product.property"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Any> = emptyList()
   }
@@ -245,7 +248,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<R4bString> =
       listOfNotNull(resource.publisher)
@@ -258,7 +261,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "(ConceptMap.source as canonical)"
 
-    public override val target: List<KotlinString> = listOf("ValueSet")
+    public override val target: List<KClass<out Resource>> = listOf(ValueSet::class)
 
     public override fun extract(resource: ConceptMap): List<Canonical> =
       listOfNotNull((resource.source as? ConceptMap.Source.Canonical)?.value)
@@ -271,7 +274,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.group.element.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Any> =
       resource.group.flatMap { it.element }.mapNotNull { it.code }
@@ -284,7 +287,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.group.source"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Uri> =
       resource.group.mapNotNull { it.source }
@@ -297,7 +300,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "(ConceptMap.source as uri)"
 
-    public override val target: List<KotlinString> = listOf("ValueSet")
+    public override val target: List<KClass<out Resource>> = listOf(ValueSet::class)
 
     public override fun extract(resource: ConceptMap): List<Uri> =
       listOfNotNull((resource.source as? ConceptMap.Source.Uri)?.value)
@@ -310,7 +313,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Any> = listOf(resource.status)
   }
@@ -322,7 +325,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "(ConceptMap.target as canonical)"
 
-    public override val target: List<KotlinString> = listOf("ValueSet")
+    public override val target: List<KClass<out Resource>> = listOf(ValueSet::class)
 
     public override fun extract(resource: ConceptMap): List<Canonical> =
       listOfNotNull((resource.target as? ConceptMap.Target.Canonical)?.value)
@@ -335,7 +338,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.group.element.target.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Any> =
       resource.group.flatMap { it.element }.flatMap { it.target }.mapNotNull { it.code }
@@ -348,7 +351,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.group.target"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Uri> =
       resource.group.mapNotNull { it.target }
@@ -361,7 +364,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "(ConceptMap.target as uri)"
 
-    public override val target: List<KotlinString> = listOf("ValueSet")
+    public override val target: List<KClass<out Resource>> = listOf(ValueSet::class)
 
     public override fun extract(resource: ConceptMap): List<Uri> =
       listOfNotNull((resource.target as? ConceptMap.Target.Uri)?.value)
@@ -374,7 +377,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<R4bString> =
       listOfNotNull(resource.title)
@@ -387,7 +390,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<Uri> = listOfNotNull(resource.url)
   }
@@ -399,7 +402,7 @@ public object ConceptMapSearchParam {
 
     public override val expression: KotlinString = "ConceptMap.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ConceptMap): List<R4bString> =
       listOfNotNull(resource.version)

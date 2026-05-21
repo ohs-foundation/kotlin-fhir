@@ -20,11 +20,14 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.Bundle
 import dev.ohs.fhir.model.r4.Instant
+import dev.ohs.fhir.model.r4.MessageHeader
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Bundle] resource type. */
 public object BundleSearchParam {
@@ -39,7 +42,8 @@ public object BundleSearchParam {
 
     public override val expression: String = "Bundle.entry[0].resource"
 
-    public override val target: List<String> = listOf("Composition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Composition::class)
 
     public override fun extract(resource: Bundle): List<Any> = emptyList()
   }
@@ -51,7 +55,7 @@ public object BundleSearchParam {
 
     public override val expression: String = "Bundle.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Bundle): List<dev.ohs.fhir.model.r4.Identifier> =
       listOfNotNull(resource.identifier)
@@ -64,7 +68,7 @@ public object BundleSearchParam {
 
     public override val expression: String = "Bundle.entry[0].resource"
 
-    public override val target: List<String> = listOf("MessageHeader")
+    public override val target: List<KClass<out Resource>> = listOf(MessageHeader::class)
 
     public override fun extract(resource: Bundle): List<Any> = emptyList()
   }
@@ -76,7 +80,7 @@ public object BundleSearchParam {
 
     public override val expression: String = "Bundle.timestamp"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Bundle): List<Instant> = listOfNotNull(resource.timestamp)
   }
@@ -88,7 +92,7 @@ public object BundleSearchParam {
 
     public override val expression: String = "Bundle.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Bundle): List<Any> = listOf(resource.type)
   }

@@ -18,13 +18,16 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [EnrollmentResponse] resource type. */
 public object EnrollmentResponseSearchParam {
@@ -39,7 +42,7 @@ public object EnrollmentResponseSearchParam {
 
     public override val expression: String = "EnrollmentResponse.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: EnrollmentResponse
@@ -53,7 +56,7 @@ public object EnrollmentResponseSearchParam {
 
     public override val expression: String = "EnrollmentResponse.request"
 
-    public override val target: List<String> = listOf("EnrollmentRequest")
+    public override val target: List<KClass<out Resource>> = listOf(EnrollmentRequest::class)
 
     public override fun extract(resource: EnrollmentResponse): List<Reference> =
       listOfNotNull(resource.request)
@@ -66,7 +69,7 @@ public object EnrollmentResponseSearchParam {
 
     public override val expression: String = "EnrollmentResponse.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: EnrollmentResponse): List<Any> =
       listOfNotNull(resource.status)

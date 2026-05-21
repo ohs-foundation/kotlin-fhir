@@ -19,17 +19,27 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.EvidenceVariable
+import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Medication
+import dev.ohs.fhir.model.r5.MedicinalProductDefinition
+import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.PlanDefinition
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.ResearchStudy
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ResearchStudy] resource type. */
 public object ResearchStudySearchParam {
@@ -70,7 +80,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.classifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> =
       resource.classifier
@@ -83,7 +93,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.condition"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.condition
   }
@@ -95,7 +105,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.period"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<Period> =
       listOfNotNull(resource.period)
@@ -108,7 +118,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<Markdown> =
       listOfNotNull(resource.description)
@@ -121,7 +131,8 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.recruitment.eligibility"
 
-    public override val target: List<KotlinString> = listOf("Group", "EvidenceVariable")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, EvidenceVariable::class)
 
     public override fun extract(resource: ResearchStudy): List<Reference> =
       listOfNotNull(resource.recruitment?.eligibility)
@@ -134,7 +145,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.focus.concept"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> =
       resource.focus.mapNotNull { it.concept }
@@ -147,8 +158,13 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.focus.reference"
 
-    public override val target: List<KotlinString> =
-      listOf("MedicinalProductDefinition", "EvidenceVariable", "SubstanceDefinition", "Medication")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        MedicinalProductDefinition::class,
+        EvidenceVariable::class,
+        SubstanceDefinition::class,
+        Medication::class,
+      )
 
     public override fun extract(resource: ResearchStudy): List<Reference> =
       resource.focus.mapNotNull { it.reference }
@@ -161,7 +177,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -174,7 +190,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.keyword"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.keyword
   }
@@ -186,7 +202,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<R5String> =
       listOfNotNull(resource.name)
@@ -199,7 +215,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.objective.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<Markdown> =
       resource.objective.mapNotNull { it.description }
@@ -212,7 +228,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.objective.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> =
       resource.objective.mapNotNull { it.type }
@@ -225,7 +241,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.partOf"
 
-    public override val target: List<KotlinString> = listOf("ResearchStudy")
+    public override val target: List<KClass<out Resource>> = listOf(ResearchStudy::class)
 
     public override fun extract(resource: ResearchStudy): List<Reference> = resource.partOf
   }
@@ -237,7 +253,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.phase"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> =
       listOfNotNull(resource.phase)
@@ -251,7 +267,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.progressStatus"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<ResearchStudy.ProgressStatus> =
       resource.progressStatus
@@ -265,7 +281,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.progressStatus"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<ResearchStudy.ProgressStatus> =
       resource.progressStatus
@@ -279,7 +295,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.progressStatus"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<ResearchStudy.ProgressStatus> =
       resource.progressStatus
@@ -292,7 +308,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.protocol"
 
-    public override val target: List<KotlinString> = listOf("PlanDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(PlanDefinition::class)
 
     public override fun extract(resource: ResearchStudy): List<Reference> = resource.protocol
   }
@@ -304,7 +320,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.recruitment.actualNumber"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<UnsignedInt> =
       listOfNotNull(resource.recruitment?.actualNumber)
@@ -317,7 +333,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.recruitment.targetNumber"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<UnsignedInt> =
       listOfNotNull(resource.recruitment?.targetNumber)
@@ -330,7 +346,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.region"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.region
   }
@@ -342,8 +358,8 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.site"
 
-    public override val target: List<KotlinString> =
-      listOf("Organization", "ResearchStudy", "Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, ResearchStudy::class, Location::class)
 
     public override fun extract(resource: ResearchStudy): List<Reference> = resource.site
   }
@@ -355,7 +371,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<Any> = listOf(resource.status)
   }
@@ -367,7 +383,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.studyDesign"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<CodeableConcept> =
       resource.studyDesign
@@ -380,7 +396,7 @@ public object ResearchStudySearchParam {
 
     public override val expression: KotlinString = "ResearchStudy.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ResearchStudy): List<R5String> =
       listOfNotNull(resource.title)

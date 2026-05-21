@@ -23,9 +23,11 @@ import dev.ohs.fhir.model.r4b.CapabilityStatement
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.ImplementationGuide
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.StructureDefinition
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
@@ -33,6 +35,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [CapabilityStatement] resource type. */
 public object CapabilityStatementSearchParam {
@@ -72,7 +75,7 @@ public object CapabilityStatementSearchParam {
     public override val expression: KotlinString =
       "(CapabilityStatement.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -86,7 +89,7 @@ public object CapabilityStatementSearchParam {
     public override val expression: KotlinString =
       "(CapabilityStatement.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -99,7 +102,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<Coding> =
       resource.useContext.map { it.code }
@@ -112,7 +115,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<UsageContext> =
       resource.useContext
@@ -125,7 +128,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<UsageContext> =
       resource.useContext
@@ -138,7 +141,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<DateTime> =
       listOf(resource.date)
@@ -151,7 +154,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<Markdown> =
       listOfNotNull(resource.description)
@@ -164,7 +167,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<R4bString> =
       listOfNotNull(resource.version)
@@ -177,7 +180,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.format"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<Any> = resource.format
   }
@@ -189,7 +192,8 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.implementationGuide"
 
-    public override val target: List<KotlinString> = listOf("ImplementationGuide")
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> =
+      listOf(ImplementationGuide::class)
 
     public override fun extract(resource: CapabilityStatement): List<Canonical> =
       resource.implementationGuide
@@ -202,7 +206,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<CodeableConcept> =
       resource.jurisdiction
@@ -215,7 +219,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.rest.mode"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<Any> =
       resource.rest.map { it.mode }
@@ -228,7 +232,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<R4bString> =
       listOfNotNull(resource.name)
@@ -241,7 +245,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<R4bString> =
       listOfNotNull(resource.publisher)
@@ -254,7 +258,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.rest.resource.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<Any> =
       resource.rest.flatMap { it.resource }.map { it.type }
@@ -267,7 +271,8 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.rest.resource.profile"
 
-    public override val target: List<KotlinString> = listOf("StructureDefinition")
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> =
+      listOf(StructureDefinition::class)
 
     public override fun extract(resource: CapabilityStatement): List<Canonical> =
       resource.rest.flatMap { it.resource }.mapNotNull { it.profile }
@@ -280,7 +285,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.rest.security.service"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<CodeableConcept> =
       resource.rest.mapNotNull { it.security }.flatMap { it.service }
@@ -293,7 +298,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.software.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<R4bString> =
       listOfNotNull(resource.software?.name)
@@ -306,7 +311,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<Any> = listOf(resource.status)
   }
@@ -319,7 +324,8 @@ public object CapabilityStatementSearchParam {
     public override val expression: KotlinString =
       "CapabilityStatement.rest.resource.supportedProfile"
 
-    public override val target: List<KotlinString> = listOf("StructureDefinition")
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> =
+      listOf(StructureDefinition::class)
 
     public override fun extract(resource: CapabilityStatement): List<Canonical> =
       resource.rest.flatMap { it.resource }.flatMap { it.supportedProfile }
@@ -332,7 +338,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<R4bString> =
       listOfNotNull(resource.title)
@@ -345,7 +351,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<Uri> =
       listOfNotNull(resource.url)
@@ -358,7 +364,7 @@ public object CapabilityStatementSearchParam {
 
     public override val expression: KotlinString = "CapabilityStatement.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: CapabilityStatement): List<R4bString> =
       listOfNotNull(resource.version)

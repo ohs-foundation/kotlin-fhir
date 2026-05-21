@@ -32,6 +32,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [CompartmentDefinition] resource type. */
 public object CompartmentDefinitionSearchParam {
@@ -61,7 +62,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<Any> = listOf(resource.code)
   }
@@ -74,7 +75,7 @@ public object CompartmentDefinitionSearchParam {
     public override val expression: KotlinString =
       "(CompartmentDefinition.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -88,7 +89,7 @@ public object CompartmentDefinitionSearchParam {
     public override val expression: KotlinString =
       "(CompartmentDefinition.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -101,7 +102,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<Coding> =
       resource.useContext.map { it.code }
@@ -114,7 +115,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<UsageContext> =
       resource.useContext
@@ -127,7 +128,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<UsageContext> =
       resource.useContext
@@ -140,7 +141,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<DateTime> =
       listOfNotNull(resource.date)
@@ -153,7 +154,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<Markdown> =
       listOfNotNull(resource.description)
@@ -166,7 +167,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<R4String> =
       listOf(resource.name)
@@ -179,7 +180,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<R4String> =
       listOfNotNull(resource.publisher)
@@ -192,7 +193,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.resource.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<Any> =
       resource.resource.map { it.code }
@@ -205,7 +206,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<Any> =
       listOf(resource.status)
@@ -218,7 +219,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<Uri> = listOf(resource.url)
   }
@@ -230,7 +231,7 @@ public object CompartmentDefinitionSearchParam {
 
     public override val expression: KotlinString = "CompartmentDefinition.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4.Resource>> = emptyList()
 
     public override fun extract(resource: CompartmentDefinition): List<R4String> =
       listOfNotNull(resource.version)

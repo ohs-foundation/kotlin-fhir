@@ -18,15 +18,25 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Account
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentReconciliation
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.Task
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [PaymentReconciliation] resource type. */
 public object PaymentReconciliationSearchParam {
@@ -52,7 +62,7 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.allocation.account"
 
-    public override val target: List<KotlinString> = listOf("Account")
+    public override val target: List<KClass<out Resource>> = listOf(Account::class)
 
     public override fun extract(resource: PaymentReconciliation): List<Reference> =
       resource.allocation.mapNotNull { it.account }
@@ -65,7 +75,7 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.allocation.encounter"
 
-    public override val target: List<KotlinString> = listOf("Encounter")
+    public override val target: List<KClass<out Resource>> = listOf(Encounter::class)
 
     public override fun extract(resource: PaymentReconciliation): List<Reference> =
       resource.allocation.mapNotNull { it.encounter }
@@ -78,7 +88,7 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.created"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PaymentReconciliation): List<DateTime> =
       listOf(resource.created)
@@ -91,7 +101,7 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.disposition"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PaymentReconciliation): List<R5String> =
       listOfNotNull(resource.disposition)
@@ -105,7 +115,7 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: PaymentReconciliation
@@ -119,7 +129,7 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.outcome"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PaymentReconciliation): List<Any> =
       listOfNotNull(resource.outcome)
@@ -132,8 +142,8 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.paymentIssuer"
 
-    public override val target: List<KotlinString> =
-      listOf("Organization", "RelatedPerson", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, RelatedPerson::class, Patient::class)
 
     public override fun extract(resource: PaymentReconciliation): List<Reference> =
       listOfNotNull(resource.paymentIssuer)
@@ -146,7 +156,7 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.request"
 
-    public override val target: List<KotlinString> = listOf("Task")
+    public override val target: List<KClass<out Resource>> = listOf(Task::class)
 
     public override fun extract(resource: PaymentReconciliation): List<Reference> =
       listOfNotNull(resource.request)
@@ -159,8 +169,8 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.requestor"
 
-    public override val target: List<KotlinString> =
-      listOf("Organization", "PractitionerRole", "Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
 
     public override fun extract(resource: PaymentReconciliation): List<Reference> =
       listOfNotNull(resource.requestor)
@@ -173,7 +183,7 @@ public object PaymentReconciliationSearchParam {
 
     public override val expression: KotlinString = "PaymentReconciliation.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: PaymentReconciliation): List<Any> =
       listOf(resource.status)

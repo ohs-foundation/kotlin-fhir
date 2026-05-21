@@ -20,13 +20,21 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.Account
 import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.HealthcareService
+import dev.ohs.fhir.model.r4.Location
+import dev.ohs.fhir.model.r4.Organization
+import dev.ohs.fhir.model.r4.Practitioner
+import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Account] resource type. */
 public object AccountSearchParam {
@@ -41,7 +49,7 @@ public object AccountSearchParam {
 
     public override val expression: KotlinString = "Account.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Account): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -54,7 +62,7 @@ public object AccountSearchParam {
 
     public override val expression: KotlinString = "Account.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Account): List<R4String> = listOfNotNull(resource.name)
   }
@@ -66,7 +74,7 @@ public object AccountSearchParam {
 
     public override val expression: KotlinString = "Account.owner"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: Account): List<Reference> = listOfNotNull(resource.owner)
   }
@@ -78,7 +86,8 @@ public object AccountSearchParam {
 
     public override val expression: KotlinString = "Account.subject.where(resolve() is Patient)"
 
-    public override val target: List<KotlinString> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: Account): List<Reference> =
       resource.subject.filter { it.reference?.value?.toString()?.contains("Patient/") == true }
@@ -91,7 +100,7 @@ public object AccountSearchParam {
 
     public override val expression: KotlinString = "Account.servicePeriod"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Account): List<dev.ohs.fhir.model.r4.Period> =
       listOfNotNull(resource.servicePeriod)
@@ -104,7 +113,7 @@ public object AccountSearchParam {
 
     public override val expression: KotlinString = "Account.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Account): List<Any> = listOf(resource.status)
   }
@@ -116,15 +125,15 @@ public object AccountSearchParam {
 
     public override val expression: KotlinString = "Account.subject"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Organization",
-        "Device",
-        "Patient",
-        "HealthcareService",
-        "PractitionerRole",
-        "Location",
+        Practitioner::class,
+        Organization::class,
+        Device::class,
+        dev.ohs.fhir.model.r4.Patient::class,
+        HealthcareService::class,
+        PractitionerRole::class,
+        Location::class,
       )
 
     public override fun extract(resource: Account): List<Reference> = resource.subject
@@ -137,7 +146,7 @@ public object AccountSearchParam {
 
     public override val expression: KotlinString = "Account.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Account): List<CodeableConcept> =
       listOfNotNull(resource.type)

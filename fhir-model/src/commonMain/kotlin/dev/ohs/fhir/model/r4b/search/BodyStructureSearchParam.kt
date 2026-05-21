@@ -21,10 +21,12 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.BodyStructure
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [BodyStructure] resource type. */
 public object BodyStructureSearchParam {
@@ -39,7 +41,7 @@ public object BodyStructureSearchParam {
 
     public override val expression: String = "BodyStructure.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BodyStructure): List<dev.ohs.fhir.model.r4b.Identifier> =
       resource.identifier
@@ -52,7 +54,7 @@ public object BodyStructureSearchParam {
 
     public override val expression: String = "BodyStructure.location"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BodyStructure): List<CodeableConcept> =
       listOfNotNull(resource.location)
@@ -65,7 +67,7 @@ public object BodyStructureSearchParam {
 
     public override val expression: String = "BodyStructure.morphology"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BodyStructure): List<CodeableConcept> =
       listOfNotNull(resource.morphology)
@@ -78,7 +80,8 @@ public object BodyStructureSearchParam {
 
     public override val expression: String = "BodyStructure.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: BodyStructure): List<Reference> = listOf(resource.patient)
   }

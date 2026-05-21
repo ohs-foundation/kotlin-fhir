@@ -28,6 +28,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [SubscriptionTopic] resource type. */
 public object SubscriptionTopicSearchParam {
@@ -52,7 +53,7 @@ public object SubscriptionTopicSearchParam {
 
     public override val expression: KotlinString = "SubscriptionTopic.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: SubscriptionTopic): List<DateTime> =
       listOfNotNull(resource.date)
@@ -65,7 +66,7 @@ public object SubscriptionTopicSearchParam {
 
     public override val expression: KotlinString = "SubscriptionTopic.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: SubscriptionTopic): List<Uri> = listOf(resource.url)
   }
@@ -78,7 +79,7 @@ public object SubscriptionTopicSearchParam {
 
     public override val expression: KotlinString = "SubscriptionTopic.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(
       resource: SubscriptionTopic
@@ -92,7 +93,7 @@ public object SubscriptionTopicSearchParam {
 
     public override val expression: KotlinString = "SubscriptionTopic.resourceTrigger.resource"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: SubscriptionTopic): List<Uri> =
       resource.resourceTrigger.map { it.resource }
@@ -105,7 +106,7 @@ public object SubscriptionTopicSearchParam {
 
     public override val expression: KotlinString = "SubscriptionTopic.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: SubscriptionTopic): List<Any> = listOf(resource.status)
   }
@@ -117,7 +118,7 @@ public object SubscriptionTopicSearchParam {
 
     public override val expression: KotlinString = "SubscriptionTopic.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: SubscriptionTopic): List<R4bString> =
       listOfNotNull(resource.title)
@@ -130,7 +131,7 @@ public object SubscriptionTopicSearchParam {
 
     public override val expression: KotlinString = "SubscriptionTopic.resourceTrigger.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: SubscriptionTopic): List<Markdown> =
       resource.resourceTrigger.mapNotNull { it.description }
@@ -143,7 +144,7 @@ public object SubscriptionTopicSearchParam {
 
     public override val expression: KotlinString = "SubscriptionTopic.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: SubscriptionTopic): List<Uri> = listOf(resource.url)
   }
@@ -155,7 +156,7 @@ public object SubscriptionTopicSearchParam {
 
     public override val expression: KotlinString = "SubscriptionTopic.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out dev.ohs.fhir.model.r4b.Resource>> = emptyList()
 
     public override fun extract(resource: SubscriptionTopic): List<R4bString> =
       listOfNotNull(resource.version)

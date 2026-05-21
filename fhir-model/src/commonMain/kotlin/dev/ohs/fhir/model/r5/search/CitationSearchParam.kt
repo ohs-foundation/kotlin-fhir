@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Citation] resource type. */
 public object CitationSearchParam {
@@ -66,7 +68,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.classification"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Citation.Classification> =
       resource.classification
@@ -79,7 +81,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "(Citation.classification.type)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Any> = emptyList()
   }
@@ -91,7 +93,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "(Citation.classification.classifier)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Any> = emptyList()
   }
@@ -104,7 +106,7 @@ public object CitationSearchParam {
     public override val expression: KotlinString =
       "(Citation.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Any> = emptyList()
   }
@@ -116,7 +118,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "(Citation.useContext.value.ofType(Quantity))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Any> = emptyList()
   }
@@ -128,7 +130,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Coding> =
       resource.useContext.map { it.code }
@@ -141,7 +143,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<UsageContext> = resource.useContext
   }
@@ -153,7 +155,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<UsageContext> = resource.useContext
   }
@@ -165,7 +167,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<DateTime> = listOfNotNull(resource.date)
   }
@@ -177,7 +179,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Markdown> =
       listOfNotNull(resource.description)
@@ -190,7 +192,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.effectivePeriod"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Period> =
       listOfNotNull(resource.effectivePeriod)
@@ -203,7 +205,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -216,7 +218,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<CodeableConcept> = resource.jurisdiction
   }
@@ -228,7 +230,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<R5String> = listOfNotNull(resource.name)
   }
@@ -240,7 +242,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<R5String> =
       listOfNotNull(resource.publisher)
@@ -253,7 +255,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Any> = listOf(resource.status)
   }
@@ -265,7 +267,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<R5String> = listOfNotNull(resource.title)
   }
@@ -277,7 +279,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<Uri> = listOfNotNull(resource.url)
   }
@@ -289,7 +291,7 @@ public object CitationSearchParam {
 
     public override val expression: KotlinString = "Citation.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Citation): List<R5String> =
       listOfNotNull(resource.version)

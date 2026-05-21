@@ -18,12 +18,16 @@
 
 package dev.ohs.fhir.model.r4.search
 
+import dev.ohs.fhir.model.r4.Medication
+import dev.ohs.fhir.model.r4.MedicinalProduct
 import dev.ohs.fhir.model.r4.MedicinalProductIndication
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicinalProductIndication] resource type. */
 public object MedicinalProductIndicationSearchParam {
@@ -37,7 +41,8 @@ public object MedicinalProductIndicationSearchParam {
 
     public override val expression: String = "MedicinalProductIndication.subject"
 
-    public override val target: List<String> = listOf("Medication", "MedicinalProduct")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Medication::class, MedicinalProduct::class)
 
     public override fun extract(resource: MedicinalProductIndication): List<Reference> =
       resource.subject

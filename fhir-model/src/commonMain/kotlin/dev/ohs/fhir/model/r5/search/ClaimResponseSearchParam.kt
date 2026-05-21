@@ -18,16 +18,22 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Claim
 import dev.ohs.fhir.model.r5.ClaimResponse
 import dev.ohs.fhir.model.r5.Date
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ClaimResponse] resource type. */
 public object ClaimResponseSearchParam {
@@ -54,7 +60,7 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.created"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClaimResponse): List<DateTime> = listOf(resource.created)
   }
@@ -66,7 +72,7 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.disposition"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClaimResponse): List<R5String> =
       listOfNotNull(resource.disposition)
@@ -79,7 +85,7 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClaimResponse): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -92,7 +98,7 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.insurer"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: ClaimResponse): List<Reference> =
       listOfNotNull(resource.insurer)
@@ -105,7 +111,7 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.outcome"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClaimResponse): List<Any> = listOf(resource.outcome)
   }
@@ -117,7 +123,8 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.patient"
 
-    public override val target: List<KotlinString> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: ClaimResponse): List<Reference> = listOf(resource.patient)
   }
@@ -129,7 +136,7 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.payment.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClaimResponse): List<Date> =
       listOfNotNull(resource.payment?.date)
@@ -142,7 +149,7 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.request"
 
-    public override val target: List<KotlinString> = listOf("Claim")
+    public override val target: List<KClass<out Resource>> = listOf(Claim::class)
 
     public override fun extract(resource: ClaimResponse): List<Reference> =
       listOfNotNull(resource.request)
@@ -155,8 +162,8 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.requestor"
 
-    public override val target: List<KotlinString> =
-      listOf("Organization", "PractitionerRole", "Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
 
     public override fun extract(resource: ClaimResponse): List<Reference> =
       listOfNotNull(resource.requestor)
@@ -169,7 +176,7 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClaimResponse): List<Any> = listOf(resource.status)
   }
@@ -181,7 +188,7 @@ public object ClaimResponseSearchParam {
 
     public override val expression: KotlinString = "ClaimResponse.use"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ClaimResponse): List<Any> = listOf(resource.use)
   }

@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
@@ -31,6 +32,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ActorDefinition] resource type. */
 public object ActorDefinitionSearchParam {
@@ -62,7 +64,7 @@ public object ActorDefinitionSearchParam {
     public override val expression: KotlinString =
       "(ActorDefinition.useContext.value.ofType(CodeableConcept))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<Any> = emptyList()
   }
@@ -75,7 +77,7 @@ public object ActorDefinitionSearchParam {
     public override val expression: KotlinString =
       "(ActorDefinition.useContext.value.ofType(Quantity))"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<Any> = emptyList()
   }
@@ -87,7 +89,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<Coding> =
       resource.useContext.map { it.code }
@@ -100,7 +102,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<UsageContext> = resource.useContext
   }
@@ -112,7 +114,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<UsageContext> = resource.useContext
   }
@@ -124,7 +126,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<DateTime> =
       listOfNotNull(resource.date)
@@ -137,7 +139,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<Markdown> =
       listOfNotNull(resource.description)
@@ -150,7 +152,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -163,7 +165,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<CodeableConcept> =
       resource.jurisdiction
@@ -176,7 +178,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<R5String> =
       listOfNotNull(resource.publisher)
@@ -189,7 +191,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<Any> = listOf(resource.status)
   }
@@ -201,7 +203,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<R5String> =
       listOfNotNull(resource.title)
@@ -214,7 +216,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<Any> = listOf(resource.type)
   }
@@ -226,7 +228,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<Uri> = listOfNotNull(resource.url)
   }
@@ -238,7 +240,7 @@ public object ActorDefinitionSearchParam {
 
     public override val expression: KotlinString = "ActorDefinition.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ActorDefinition): List<R5String> =
       listOfNotNull(resource.version)

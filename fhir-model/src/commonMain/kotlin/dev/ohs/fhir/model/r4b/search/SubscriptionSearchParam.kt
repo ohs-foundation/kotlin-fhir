@@ -19,6 +19,7 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.ContactPoint
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Subscription
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
@@ -26,6 +27,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Subscription] resource type. */
 public object SubscriptionSearchParam {
@@ -40,7 +42,7 @@ public object SubscriptionSearchParam {
 
     public override val expression: KotlinString = "Subscription.contact"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Subscription): List<ContactPoint> = resource.contact
   }
@@ -52,7 +54,7 @@ public object SubscriptionSearchParam {
 
     public override val expression: KotlinString = "Subscription.criteria"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Subscription): List<R4bString> = listOf(resource.criteria)
   }
@@ -64,7 +66,7 @@ public object SubscriptionSearchParam {
 
     public override val expression: KotlinString = "Subscription.channel.payload"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Subscription): List<Any> =
       listOfNotNull(resource.channel.payload)
@@ -77,7 +79,7 @@ public object SubscriptionSearchParam {
 
     public override val expression: KotlinString = "Subscription.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Subscription): List<Any> = listOf(resource.status)
   }
@@ -89,7 +91,7 @@ public object SubscriptionSearchParam {
 
     public override val expression: KotlinString = "Subscription.channel.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Subscription): List<Any> = listOf(resource.channel.type)
   }
@@ -101,7 +103,7 @@ public object SubscriptionSearchParam {
 
     public override val expression: KotlinString = "Subscription.channel.endpoint"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Subscription): List<dev.ohs.fhir.model.r4b.Url> =
       listOfNotNull(resource.channel.endpoint)

@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Quantity
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.TestScript
 import dev.ohs.fhir.model.r4b.Uri
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [TestScript] resource type. */
 public object TestScriptSearchParam {
@@ -64,7 +66,7 @@ public object TestScriptSearchParam {
     public override val expression: KotlinString =
       "(TestScript.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -77,7 +79,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "(TestScript.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -90,7 +92,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<Coding> =
       resource.useContext.map { it.code }
@@ -103,7 +105,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<UsageContext> = resource.useContext
   }
@@ -115,7 +117,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<UsageContext> = resource.useContext
   }
@@ -127,7 +129,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<DateTime> = listOfNotNull(resource.date)
   }
@@ -139,7 +141,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<Markdown> =
       listOfNotNull(resource.description)
@@ -152,7 +154,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<dev.ohs.fhir.model.r4b.Identifier> =
       listOfNotNull(resource.identifier)
@@ -165,7 +167,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<CodeableConcept> = resource.jurisdiction
   }
@@ -177,7 +179,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<R4bString> = listOf(resource.name)
   }
@@ -189,7 +191,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<R4bString> =
       listOfNotNull(resource.publisher)
@@ -202,7 +204,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<Any> = listOf(resource.status)
   }
@@ -214,7 +216,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.metadata.capability.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<R4bString> =
       (resource.metadata?.capability ?: emptyList()).mapNotNull { it.description }
@@ -227,7 +229,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<R4bString> =
       listOfNotNull(resource.title)
@@ -240,7 +242,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<Uri> = listOf(resource.url)
   }
@@ -252,7 +254,7 @@ public object TestScriptSearchParam {
 
     public override val expression: KotlinString = "TestScript.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: TestScript): List<R4bString> =
       listOfNotNull(resource.version)

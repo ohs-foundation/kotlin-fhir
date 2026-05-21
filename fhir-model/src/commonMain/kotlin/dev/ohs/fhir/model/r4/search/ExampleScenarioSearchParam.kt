@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.ExampleScenario
 import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
@@ -31,6 +32,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ExampleScenario] resource type. */
 public object ExampleScenarioSearchParam {
@@ -60,7 +62,7 @@ public object ExampleScenarioSearchParam {
     public override val expression: KotlinString =
       "(ExampleScenario.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -73,7 +75,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "(ExampleScenario.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -86,7 +88,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<Coding> =
       resource.useContext.map { it.code }
@@ -99,7 +101,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<UsageContext> = resource.useContext
   }
@@ -111,7 +113,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<UsageContext> = resource.useContext
   }
@@ -123,7 +125,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<DateTime> =
       listOfNotNull(resource.date)
@@ -136,7 +138,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -149,7 +151,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<CodeableConcept> =
       resource.jurisdiction
@@ -162,7 +164,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<R4String> =
       listOfNotNull(resource.name)
@@ -175,7 +177,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<R4String> =
       listOfNotNull(resource.publisher)
@@ -188,7 +190,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<Any> = listOf(resource.status)
   }
@@ -200,7 +202,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<Uri> = listOfNotNull(resource.url)
   }
@@ -212,7 +214,7 @@ public object ExampleScenarioSearchParam {
 
     public override val expression: KotlinString = "ExampleScenario.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ExampleScenario): List<R4String> =
       listOfNotNull(resource.version)

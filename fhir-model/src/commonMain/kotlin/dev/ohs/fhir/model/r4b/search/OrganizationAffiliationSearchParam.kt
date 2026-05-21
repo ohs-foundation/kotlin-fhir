@@ -21,13 +21,17 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.Boolean
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.ContactPoint
+import dev.ohs.fhir.model.r4b.HealthcareService
+import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.Period
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [OrganizationAffiliation] resource type. */
 public object OrganizationAffiliationSearchParam {
@@ -57,7 +61,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.active"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OrganizationAffiliation): List<Boolean> =
       listOfNotNull(resource.active)
@@ -70,7 +74,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OrganizationAffiliation): List<Period> =
       listOfNotNull(resource.period)
@@ -83,7 +87,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.telecom.where(system='email')"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
       resource.telecom.filter { it.system?.value?.toString() == "email" }
@@ -96,7 +100,8 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.endpoint"
 
-    public override val target: List<String> = listOf("Endpoint")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Endpoint::class)
 
     public override fun extract(resource: OrganizationAffiliation): List<Reference> =
       resource.endpoint
@@ -110,7 +115,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: OrganizationAffiliation
@@ -124,7 +129,8 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.location"
 
-    public override val target: List<String> = listOf("Location")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Location::class)
 
     public override fun extract(resource: OrganizationAffiliation): List<Reference> =
       resource.location
@@ -137,7 +143,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.network"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: OrganizationAffiliation): List<Reference> =
       resource.network
@@ -150,7 +156,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.participatingOrganization"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: OrganizationAffiliation): List<Reference> =
       listOfNotNull(resource.participatingOrganization)
@@ -163,7 +169,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.telecom.where(system='phone')"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
       resource.telecom.filter { it.system?.value?.toString() == "phone" }
@@ -176,7 +182,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.organization"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: OrganizationAffiliation): List<Reference> =
       listOfNotNull(resource.organization)
@@ -189,7 +195,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OrganizationAffiliation): List<CodeableConcept> =
       resource.code
@@ -202,7 +208,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.healthcareService"
 
-    public override val target: List<String> = listOf("HealthcareService")
+    public override val target: List<KClass<out Resource>> = listOf(HealthcareService::class)
 
     public override fun extract(resource: OrganizationAffiliation): List<Reference> =
       resource.healthcareService
@@ -215,7 +221,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.specialty"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OrganizationAffiliation): List<CodeableConcept> =
       resource.specialty
@@ -228,7 +234,7 @@ public object OrganizationAffiliationSearchParam {
 
     public override val expression: String = "OrganizationAffiliation.telecom"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
       resource.telecom

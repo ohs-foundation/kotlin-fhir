@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Quantity
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.StructureMap
 import dev.ohs.fhir.model.r4.Uri
@@ -32,6 +33,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [StructureMap] resource type. */
 public object StructureMapSearchParam {
@@ -63,7 +65,7 @@ public object StructureMapSearchParam {
     public override val expression: KotlinString =
       "(StructureMap.useContext.value as CodeableConcept)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<CodeableConcept> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
@@ -76,7 +78,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "(StructureMap.useContext.value as Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<Quantity> =
       resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
@@ -89,7 +91,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.useContext.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<Coding> =
       resource.useContext.map { it.code }
@@ -102,7 +104,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<UsageContext> = resource.useContext
   }
@@ -114,7 +116,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.useContext"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<UsageContext> = resource.useContext
   }
@@ -126,7 +128,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.date"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<DateTime> =
       listOfNotNull(resource.date)
@@ -139,7 +141,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.description"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<Markdown> =
       listOfNotNull(resource.description)
@@ -152,7 +154,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -165,7 +167,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.jurisdiction"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<CodeableConcept> =
       resource.jurisdiction
@@ -178,7 +180,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<R4String> = listOf(resource.name)
   }
@@ -190,7 +192,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.publisher"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<R4String> =
       listOfNotNull(resource.publisher)
@@ -203,7 +205,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<Any> = listOf(resource.status)
   }
@@ -215,7 +217,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<R4String> =
       listOfNotNull(resource.title)
@@ -228,7 +230,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<Uri> = listOf(resource.url)
   }
@@ -240,7 +242,7 @@ public object StructureMapSearchParam {
 
     public override val expression: KotlinString = "StructureMap.version"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: StructureMap): List<R4String> =
       listOfNotNull(resource.version)

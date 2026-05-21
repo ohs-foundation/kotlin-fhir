@@ -20,14 +20,22 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.Invoice
 import dev.ohs.fhir.model.r4.Money
+import dev.ohs.fhir.model.r4.Organization
+import dev.ohs.fhir.model.r4.Practitioner
+import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.RelatedPerson
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Invoice] resource type. */
 public object InvoiceSearchParam {
@@ -56,7 +64,8 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.account"
 
-    public override val target: List<String> = listOf("Account")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Account::class)
 
     public override fun extract(resource: Invoice): List<Reference> =
       listOfNotNull(resource.account)
@@ -69,7 +78,7 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.date"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Invoice): List<DateTime> = listOfNotNull(resource.date)
   }
@@ -81,7 +90,7 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Invoice): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -94,7 +103,7 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.issuer"
 
-    public override val target: List<String> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: Invoice): List<Reference> = listOfNotNull(resource.issuer)
   }
@@ -106,14 +115,14 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.participant.actor"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Organization",
-        "Device",
-        "Patient",
-        "PractitionerRole",
-        "RelatedPerson",
+        Practitioner::class,
+        Organization::class,
+        Device::class,
+        dev.ohs.fhir.model.r4.Patient::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
       )
 
     public override fun extract(resource: Invoice): List<Reference> =
@@ -127,7 +136,7 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.participant.role"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Invoice): List<CodeableConcept> =
       resource.participant.mapNotNull { it.role }
@@ -140,7 +149,8 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: Invoice): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -155,7 +165,8 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.recipient"
 
-    public override val target: List<String> = listOf("Organization", "Patient", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, dev.ohs.fhir.model.r4.Patient::class, RelatedPerson::class)
 
     public override fun extract(resource: Invoice): List<Reference> =
       listOfNotNull(resource.recipient)
@@ -168,7 +179,7 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Invoice): List<Any> = listOf(resource.status)
   }
@@ -180,7 +191,8 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: Invoice): List<Reference> =
       listOfNotNull(resource.subject)
@@ -193,7 +205,7 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.totalGross"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Invoice): List<Money> = listOfNotNull(resource.totalGross)
   }
@@ -205,7 +217,7 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.totalNet"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Invoice): List<Money> = listOfNotNull(resource.totalNet)
   }
@@ -217,7 +229,7 @@ public object InvoiceSearchParam {
 
     public override val expression: String = "Invoice.type"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Invoice): List<CodeableConcept> =
       listOfNotNull(resource.type)

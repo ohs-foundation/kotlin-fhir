@@ -18,13 +18,17 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProductDispense
+import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [BiologicallyDerivedProductDispense] resource type. */
 public object BiologicallyDerivedProductDispenseSearchParam {
@@ -40,7 +44,7 @@ public object BiologicallyDerivedProductDispenseSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProductDispense.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: BiologicallyDerivedProductDispense
@@ -54,7 +58,8 @@ public object BiologicallyDerivedProductDispenseSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProductDispense.patient"
 
-    public override val target: List<String> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: BiologicallyDerivedProductDispense): List<Reference> =
       listOf(resource.patient)
@@ -67,7 +72,7 @@ public object BiologicallyDerivedProductDispenseSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProductDispense.performer.actor"
 
-    public override val target: List<String> = listOf("Practitioner")
+    public override val target: List<KClass<out Resource>> = listOf(Practitioner::class)
 
     public override fun extract(resource: BiologicallyDerivedProductDispense): List<Reference> =
       resource.performer.map { it.actor }
@@ -80,7 +85,8 @@ public object BiologicallyDerivedProductDispenseSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProductDispense.product"
 
-    public override val target: List<String> = listOf("BiologicallyDerivedProduct")
+    public override val target: List<KClass<out Resource>> =
+      listOf(BiologicallyDerivedProduct::class)
 
     public override fun extract(resource: BiologicallyDerivedProductDispense): List<Reference> =
       listOf(resource.product)
@@ -93,7 +99,7 @@ public object BiologicallyDerivedProductDispenseSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProductDispense.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BiologicallyDerivedProductDispense): List<Any> =
       listOf(resource.status)

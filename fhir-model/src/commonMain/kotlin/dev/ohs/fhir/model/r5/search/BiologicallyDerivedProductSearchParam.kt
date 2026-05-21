@@ -21,11 +21,16 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [BiologicallyDerivedProduct] resource type. */
 public object BiologicallyDerivedProductSearchParam {
@@ -50,7 +55,7 @@ public object BiologicallyDerivedProductSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProduct.biologicalSourceEvent"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: BiologicallyDerivedProduct
@@ -64,7 +69,7 @@ public object BiologicallyDerivedProductSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProduct.productCode"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BiologicallyDerivedProduct): List<CodeableConcept> =
       listOfNotNull(resource.productCode)
@@ -77,7 +82,8 @@ public object BiologicallyDerivedProductSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProduct.collection.collector"
 
-    public override val target: List<String> = listOf("PractitionerRole", "Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(PractitionerRole::class, Practitioner::class)
 
     public override fun extract(resource: BiologicallyDerivedProduct): List<Reference> =
       listOfNotNull(resource.collection?.collector)
@@ -91,7 +97,7 @@ public object BiologicallyDerivedProductSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProduct.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: BiologicallyDerivedProduct
@@ -105,7 +111,7 @@ public object BiologicallyDerivedProductSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProduct.productCategory"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BiologicallyDerivedProduct): List<Coding> =
       listOfNotNull(resource.productCategory)
@@ -118,7 +124,7 @@ public object BiologicallyDerivedProductSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProduct.productStatus"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: BiologicallyDerivedProduct): List<Coding> =
       listOfNotNull(resource.productStatus)
@@ -131,7 +137,7 @@ public object BiologicallyDerivedProductSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProduct.request"
 
-    public override val target: List<String> = listOf("ServiceRequest")
+    public override val target: List<KClass<out Resource>> = listOf(ServiceRequest::class)
 
     public override fun extract(resource: BiologicallyDerivedProduct): List<Reference> =
       resource.request
@@ -145,7 +151,7 @@ public object BiologicallyDerivedProductSearchParam {
 
     public override val expression: String = "BiologicallyDerivedProduct.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: BiologicallyDerivedProduct

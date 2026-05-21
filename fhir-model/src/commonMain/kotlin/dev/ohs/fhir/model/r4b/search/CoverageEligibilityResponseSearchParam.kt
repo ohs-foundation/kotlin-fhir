@@ -18,15 +18,21 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r4b.CoverageEligibilityResponse
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Organization
+import dev.ohs.fhir.model.r4b.Practitioner
+import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [CoverageEligibilityResponse] resource type. */
 public object CoverageEligibilityResponseSearchParam {
@@ -41,7 +47,7 @@ public object CoverageEligibilityResponseSearchParam {
 
     public override val expression: KotlinString = "CoverageEligibilityResponse.created"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CoverageEligibilityResponse): List<DateTime> =
       listOf(resource.created)
@@ -54,7 +60,7 @@ public object CoverageEligibilityResponseSearchParam {
 
     public override val expression: KotlinString = "CoverageEligibilityResponse.disposition"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CoverageEligibilityResponse): List<R4bString> =
       listOfNotNull(resource.disposition)
@@ -68,7 +74,7 @@ public object CoverageEligibilityResponseSearchParam {
 
     public override val expression: KotlinString = "CoverageEligibilityResponse.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: CoverageEligibilityResponse
@@ -82,7 +88,7 @@ public object CoverageEligibilityResponseSearchParam {
 
     public override val expression: KotlinString = "CoverageEligibilityResponse.insurer"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: CoverageEligibilityResponse): List<Reference> =
       listOf(resource.insurer)
@@ -95,7 +101,7 @@ public object CoverageEligibilityResponseSearchParam {
 
     public override val expression: KotlinString = "CoverageEligibilityResponse.outcome"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CoverageEligibilityResponse): List<Any> =
       listOf(resource.outcome)
@@ -108,7 +114,8 @@ public object CoverageEligibilityResponseSearchParam {
 
     public override val expression: KotlinString = "CoverageEligibilityResponse.patient"
 
-    public override val target: List<KotlinString> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: CoverageEligibilityResponse): List<Reference> =
       listOf(resource.patient)
@@ -121,7 +128,8 @@ public object CoverageEligibilityResponseSearchParam {
 
     public override val expression: KotlinString = "CoverageEligibilityResponse.request"
 
-    public override val target: List<KotlinString> = listOf("CoverageEligibilityRequest")
+    public override val target: List<KClass<out Resource>> =
+      listOf(CoverageEligibilityRequest::class)
 
     public override fun extract(resource: CoverageEligibilityResponse): List<Reference> =
       listOf(resource.request)
@@ -134,8 +142,8 @@ public object CoverageEligibilityResponseSearchParam {
 
     public override val expression: KotlinString = "CoverageEligibilityResponse.requestor"
 
-    public override val target: List<KotlinString> =
-      listOf("Practitioner", "Organization", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, Organization::class, PractitionerRole::class)
 
     public override fun extract(resource: CoverageEligibilityResponse): List<Reference> =
       listOfNotNull(resource.requestor)
@@ -148,7 +156,7 @@ public object CoverageEligibilityResponseSearchParam {
 
     public override val expression: KotlinString = "CoverageEligibilityResponse.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CoverageEligibilityResponse): List<Any> =
       listOf(resource.status)

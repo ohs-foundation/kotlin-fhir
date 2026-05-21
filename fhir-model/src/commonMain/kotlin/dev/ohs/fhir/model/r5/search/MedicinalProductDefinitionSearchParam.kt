@@ -19,14 +19,19 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DocumentReference
 import dev.ohs.fhir.model.r5.MedicinalProductDefinition
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicinalProductDefinition] resource type. */
 public object MedicinalProductDefinitionSearchParam {
@@ -55,7 +60,7 @@ public object MedicinalProductDefinitionSearchParam {
     public override val expression: KotlinString =
       "MedicinalProductDefinition.characteristic.value.ofType(Quantity)"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductDefinition): List<Any> = emptyList()
   }
@@ -67,7 +72,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.characteristic.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductDefinition): List<CodeableConcept> =
       resource.characteristic.map { it.type }
@@ -80,7 +85,8 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.contact.contact"
 
-    public override val target: List<KotlinString> = listOf("Organization", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, PractitionerRole::class)
 
     public override fun extract(resource: MedicinalProductDefinition): List<Reference> =
       resource.contact.map { it.contact }
@@ -93,7 +99,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.domain"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductDefinition): List<CodeableConcept> =
       listOfNotNull(resource.domain)
@@ -107,7 +113,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: MedicinalProductDefinition
@@ -121,7 +127,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.ingredient"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductDefinition): List<CodeableConcept> =
       resource.ingredient
@@ -134,7 +140,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.masterFile"
 
-    public override val target: List<KotlinString> = listOf("DocumentReference")
+    public override val target: List<KClass<out Resource>> = listOf(DocumentReference::class)
 
     public override fun extract(resource: MedicinalProductDefinition): List<Reference> =
       resource.masterFile
@@ -147,7 +153,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.name.productName"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductDefinition): List<R5String> =
       resource.name.map { it.productName }
@@ -160,7 +166,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.name.usage.language"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductDefinition): List<CodeableConcept> =
       resource.name.flatMap { it.usage }.map { it.language }
@@ -174,7 +180,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.classification"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductDefinition): List<CodeableConcept> =
       resource.classification
@@ -187,7 +193,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductDefinition): List<CodeableConcept> =
       listOfNotNull(resource.status)
@@ -200,7 +206,7 @@ public object MedicinalProductDefinitionSearchParam {
 
     public override val expression: KotlinString = "MedicinalProductDefinition.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: MedicinalProductDefinition): List<CodeableConcept> =
       listOfNotNull(resource.type)

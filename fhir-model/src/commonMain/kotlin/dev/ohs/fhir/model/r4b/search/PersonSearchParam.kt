@@ -23,12 +23,15 @@ import dev.ohs.fhir.model.r4b.Date
 import dev.ohs.fhir.model.r4b.HumanName
 import dev.ohs.fhir.model.r4b.Person
 import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Person] resource type. */
 public object PersonSearchParam {
@@ -63,7 +66,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.address"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<dev.ohs.fhir.model.r4b.Address> =
       resource.address
@@ -76,7 +79,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.address.city"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<R4bString> =
       resource.address.mapNotNull { it.city }
@@ -89,7 +92,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.address.country"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<R4bString> =
       resource.address.mapNotNull { it.country }
@@ -102,7 +105,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.address.postalCode"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<R4bString> =
       resource.address.mapNotNull { it.postalCode }
@@ -115,7 +118,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.address.state"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<R4bString> =
       resource.address.mapNotNull { it.state }
@@ -128,7 +131,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.address.use"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<Any> =
       resource.address.mapNotNull { it.use }
@@ -141,7 +144,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.birthDate"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<Date> = listOfNotNull(resource.birthDate)
   }
@@ -153,7 +156,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.telecom.where(system='email')"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<ContactPoint> =
       resource.telecom.filter { it.system?.value?.toString() == "email" }
@@ -166,7 +169,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.gender"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<Any> = listOfNotNull(resource.gender)
   }
@@ -178,7 +181,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<dev.ohs.fhir.model.r4b.Identifier> =
       resource.identifier
@@ -191,8 +194,13 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.link.target"
 
-    public override val target: List<KotlinString> =
-      listOf("Practitioner", "Patient", "Person", "RelatedPerson")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        dev.ohs.fhir.model.r4b.Practitioner::class,
+        dev.ohs.fhir.model.r4b.Patient::class,
+        Person::class,
+        RelatedPerson::class,
+      )
 
     public override fun extract(resource: Person): List<Reference> = resource.link.map { it.target }
   }
@@ -204,7 +212,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<HumanName> = resource.name
   }
@@ -216,7 +224,8 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.managingOrganization"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Organization::class)
 
     public override fun extract(resource: Person): List<Reference> =
       listOfNotNull(resource.managingOrganization)
@@ -229,7 +238,8 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.link.target.where(resolve() is Patient)"
 
-    public override val target: List<KotlinString> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Patient::class)
 
     public override fun extract(resource: Person): List<Reference> =
       resource.link
@@ -244,7 +254,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.telecom.where(system='phone')"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<ContactPoint> =
       resource.telecom.filter { it.system?.value?.toString() == "phone" }
@@ -257,7 +267,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<HumanName> = resource.name
   }
@@ -270,7 +280,8 @@ public object PersonSearchParam {
     public override val expression: KotlinString =
       "Person.link.target.where(resolve() is Practitioner)"
 
-    public override val target: List<KotlinString> = listOf("Practitioner")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4b.Practitioner::class)
 
     public override fun extract(resource: Person): List<Reference> =
       resource.link
@@ -286,7 +297,7 @@ public object PersonSearchParam {
     public override val expression: KotlinString =
       "Person.link.target.where(resolve() is RelatedPerson)"
 
-    public override val target: List<KotlinString> = listOf("RelatedPerson")
+    public override val target: List<KClass<out Resource>> = listOf(RelatedPerson::class)
 
     public override fun extract(resource: Person): List<Reference> =
       resource.link
@@ -301,7 +312,7 @@ public object PersonSearchParam {
 
     public override val expression: KotlinString = "Person.telecom"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Person): List<ContactPoint> = resource.telecom
   }

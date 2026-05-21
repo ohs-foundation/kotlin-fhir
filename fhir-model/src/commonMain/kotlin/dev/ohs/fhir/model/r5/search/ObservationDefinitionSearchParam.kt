@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.ObservationDefinition
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
@@ -28,6 +29,7 @@ import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [ObservationDefinition] resource type. */
 public object ObservationDefinitionSearchParam {
@@ -42,7 +44,7 @@ public object ObservationDefinitionSearchParam {
 
     public override val expression: KotlinString = "ObservationDefinition.category"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ObservationDefinition): List<CodeableConcept> =
       resource.category
@@ -55,7 +57,7 @@ public object ObservationDefinitionSearchParam {
 
     public override val expression: KotlinString = "ObservationDefinition.code"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ObservationDefinition): List<CodeableConcept> =
       listOf(resource.code)
@@ -68,7 +70,7 @@ public object ObservationDefinitionSearchParam {
 
     public override val expression: KotlinString = "ObservationDefinition.experimental"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ObservationDefinition): List<Boolean> =
       listOfNotNull(resource.experimental)
@@ -82,7 +84,7 @@ public object ObservationDefinitionSearchParam {
 
     public override val expression: KotlinString = "ObservationDefinition.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: ObservationDefinition
@@ -96,7 +98,7 @@ public object ObservationDefinitionSearchParam {
 
     public override val expression: KotlinString = "ObservationDefinition.method"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ObservationDefinition): List<CodeableConcept> =
       listOfNotNull(resource.method)
@@ -109,7 +111,7 @@ public object ObservationDefinitionSearchParam {
 
     public override val expression: KotlinString = "ObservationDefinition.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ObservationDefinition): List<Any> =
       listOf(resource.status)
@@ -122,7 +124,7 @@ public object ObservationDefinitionSearchParam {
 
     public override val expression: KotlinString = "ObservationDefinition.title"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ObservationDefinition): List<R5String> =
       listOfNotNull(resource.title)
@@ -135,7 +137,7 @@ public object ObservationDefinitionSearchParam {
 
     public override val expression: KotlinString = "ObservationDefinition.url"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: ObservationDefinition): List<Uri> =
       listOfNotNull(resource.url)

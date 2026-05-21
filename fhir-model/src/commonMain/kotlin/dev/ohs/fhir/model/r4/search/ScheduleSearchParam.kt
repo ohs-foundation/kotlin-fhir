@@ -20,13 +20,22 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.Boolean
 import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.HealthcareService
+import dev.ohs.fhir.model.r4.Location
+import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.Practitioner
+import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.RelatedPerson
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.Schedule
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Schedule] resource type. */
 public object ScheduleSearchParam {
@@ -41,7 +50,7 @@ public object ScheduleSearchParam {
 
     public override val expression: String = "Schedule.active"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<Boolean> = listOfNotNull(resource.active)
   }
@@ -53,15 +62,15 @@ public object ScheduleSearchParam {
 
     public override val expression: String = "Schedule.actor"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Device",
-        "Patient",
-        "HealthcareService",
-        "PractitionerRole",
-        "RelatedPerson",
-        "Location",
+        Practitioner::class,
+        Device::class,
+        Patient::class,
+        HealthcareService::class,
+        PractitionerRole::class,
+        RelatedPerson::class,
+        Location::class,
       )
 
     public override fun extract(resource: Schedule): List<Reference> = resource.actor
@@ -74,7 +83,7 @@ public object ScheduleSearchParam {
 
     public override val expression: String = "Schedule.planningHorizon"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<Period> =
       listOfNotNull(resource.planningHorizon)
@@ -87,7 +96,7 @@ public object ScheduleSearchParam {
 
     public override val expression: String = "Schedule.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -100,7 +109,7 @@ public object ScheduleSearchParam {
 
     public override val expression: String = "Schedule.serviceCategory"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<CodeableConcept> =
       resource.serviceCategory
@@ -113,7 +122,7 @@ public object ScheduleSearchParam {
 
     public override val expression: String = "Schedule.serviceType"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<CodeableConcept> = resource.serviceType
   }
@@ -125,7 +134,7 @@ public object ScheduleSearchParam {
 
     public override val expression: String = "Schedule.specialty"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Schedule): List<CodeableConcept> = resource.specialty
   }

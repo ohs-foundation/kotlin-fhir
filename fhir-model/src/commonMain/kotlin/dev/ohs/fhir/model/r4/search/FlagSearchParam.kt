@@ -18,13 +18,25 @@
 
 package dev.ohs.fhir.model.r4.search
 
+import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.Flag
+import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.Location
+import dev.ohs.fhir.model.r4.Medication
+import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Period
+import dev.ohs.fhir.model.r4.PlanDefinition
+import dev.ohs.fhir.model.r4.Practitioner
+import dev.ohs.fhir.model.r4.PractitionerRole
+import dev.ohs.fhir.model.r4.Procedure
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Flag] resource type. */
 public object FlagSearchParam {
@@ -39,8 +51,14 @@ public object FlagSearchParam {
 
     public override val expression: String = "Flag.author"
 
-    public override val target: List<String> =
-      listOf("Practitioner", "Organization", "Device", "Patient", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(
+        Practitioner::class,
+        Organization::class,
+        Device::class,
+        dev.ohs.fhir.model.r4.Patient::class,
+        PractitionerRole::class,
+      )
 
     public override fun extract(resource: Flag): List<Reference> = listOfNotNull(resource.author)
   }
@@ -52,7 +70,7 @@ public object FlagSearchParam {
 
     public override val expression: String = "Flag.period"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Flag): List<Period> = listOfNotNull(resource.period)
   }
@@ -64,7 +82,8 @@ public object FlagSearchParam {
 
     public override val expression: String = "Flag.encounter"
 
-    public override val target: List<String> = listOf("Encounter", "EpisodeOfCare")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Encounter::class, EpisodeOfCare::class)
 
     public override fun extract(resource: Flag): List<Reference> = listOfNotNull(resource.encounter)
   }
@@ -76,7 +95,7 @@ public object FlagSearchParam {
 
     public override val expression: String = "Flag.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Flag): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -89,7 +108,8 @@ public object FlagSearchParam {
 
     public override val expression: String = "Flag.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient", "Group")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
 
     public override fun extract(resource: Flag): List<Reference> =
       listOf(resource.subject).filter {
@@ -104,16 +124,16 @@ public object FlagSearchParam {
 
     public override val expression: String = "Flag.subject"
 
-    public override val target: List<String> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Practitioner",
-        "Group",
-        "Organization",
-        "Medication",
-        "Patient",
-        "PlanDefinition",
-        "Procedure",
-        "Location",
+        Practitioner::class,
+        Group::class,
+        Organization::class,
+        Medication::class,
+        dev.ohs.fhir.model.r4.Patient::class,
+        PlanDefinition::class,
+        Procedure::class,
+        Location::class,
       )
 
     public override fun extract(resource: Flag): List<Reference> = listOf(resource.subject)

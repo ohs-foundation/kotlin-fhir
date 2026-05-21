@@ -20,13 +20,20 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.Organization
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [CareTeam] resource type. */
 public object CareTeamSearchParam {
@@ -41,7 +48,7 @@ public object CareTeamSearchParam {
 
     public override val expression: KotlinString = "CareTeam.category"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CareTeam): List<CodeableConcept> = resource.category
   }
@@ -54,7 +61,7 @@ public object CareTeamSearchParam {
     public override val expression: KotlinString =
       "AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CareTeam): List<Any> = emptyList()
   }
@@ -66,7 +73,7 @@ public object CareTeamSearchParam {
 
     public override val expression: KotlinString = "CareTeam.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CareTeam): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -79,7 +86,7 @@ public object CareTeamSearchParam {
 
     public override val expression: KotlinString = "CareTeam.name"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CareTeam): List<R5String> = listOfNotNull(resource.name)
   }
@@ -91,14 +98,14 @@ public object CareTeamSearchParam {
 
     public override val expression: KotlinString = "CareTeam.participant.member"
 
-    public override val target: List<KotlinString> =
+    public override val target: List<KClass<out Resource>> =
       listOf(
-        "Organization",
-        "CareTeam",
-        "RelatedPerson",
-        "PractitionerRole",
-        "Practitioner",
-        "Patient",
+        Organization::class,
+        CareTeam::class,
+        RelatedPerson::class,
+        PractitionerRole::class,
+        Practitioner::class,
+        dev.ohs.fhir.model.r5.Patient::class,
       )
 
     public override fun extract(resource: CareTeam): List<Reference> =
@@ -112,7 +119,8 @@ public object CareTeamSearchParam {
 
     public override val expression: KotlinString = "CareTeam.subject.where(resolve() is Patient)"
 
-    public override val target: List<KotlinString> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: CareTeam): List<Reference> =
       listOfNotNull(resource.subject).filter {
@@ -127,7 +135,7 @@ public object CareTeamSearchParam {
 
     public override val expression: KotlinString = "CareTeam.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: CareTeam): List<Any> = listOfNotNull(resource.status)
   }
@@ -139,7 +147,8 @@ public object CareTeamSearchParam {
 
     public override val expression: KotlinString = "CareTeam.subject"
 
-    public override val target: List<KotlinString> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: CareTeam): List<Reference> =
       listOfNotNull(resource.subject)

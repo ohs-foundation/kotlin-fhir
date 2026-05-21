@@ -20,12 +20,19 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.EpisodeOfCare
+import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.Practitioner
+import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.RiskAssessment
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [RiskAssessment] resource type. */
 public object RiskAssessmentSearchParam {
@@ -51,7 +58,8 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "RiskAssessment.condition"
 
-    public override val target: List<String> = listOf("Condition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Condition::class)
 
     public override fun extract(resource: RiskAssessment): List<Reference> =
       listOfNotNull(resource.condition)
@@ -64,7 +72,7 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "(RiskAssessment.occurrence as dateTime)"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskAssessment): List<DateTime> =
       listOfNotNull((resource.occurrence as? RiskAssessment.Occurrence.DateTime)?.value)
@@ -77,7 +85,8 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "RiskAssessment.encounter"
 
-    public override val target: List<String> = listOf("Encounter", "EpisodeOfCare")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Encounter::class, EpisodeOfCare::class)
 
     public override fun extract(resource: RiskAssessment): List<Reference> =
       listOfNotNull(resource.encounter)
@@ -90,7 +99,7 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "RiskAssessment.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskAssessment): List<dev.ohs.fhir.model.r4.Identifier> =
       resource.identifier
@@ -103,7 +112,7 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "RiskAssessment.method"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskAssessment): List<CodeableConcept> =
       listOfNotNull(resource.method)
@@ -116,7 +125,8 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "RiskAssessment.subject.where(resolve() is Patient)"
 
-    public override val target: List<String> = listOf("Patient", "Group")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
 
     public override fun extract(resource: RiskAssessment): List<Reference> =
       listOf(resource.subject).filter {
@@ -131,7 +141,8 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "RiskAssessment.performer"
 
-    public override val target: List<String> = listOf("Practitioner", "Device", "PractitionerRole")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Practitioner::class, Device::class, PractitionerRole::class)
 
     public override fun extract(resource: RiskAssessment): List<Reference> =
       listOfNotNull(resource.performer)
@@ -145,7 +156,7 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "RiskAssessment.prediction.probability"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: RiskAssessment
@@ -160,7 +171,7 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "RiskAssessment.prediction.qualitativeRisk"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: RiskAssessment): List<CodeableConcept> =
       resource.prediction.mapNotNull { it.qualitativeRisk }
@@ -173,7 +184,8 @@ public object RiskAssessmentSearchParam {
 
     public override val expression: String = "RiskAssessment.subject"
 
-    public override val target: List<String> = listOf("Group", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
 
     public override fun extract(resource: RiskAssessment): List<Reference> =
       listOf(resource.subject)

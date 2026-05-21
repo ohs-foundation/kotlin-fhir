@@ -20,13 +20,17 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coverage
+import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.RelatedPerson
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [Coverage] resource type. */
 public object CoverageSearchParam {
@@ -55,7 +59,8 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.beneficiary"
 
-    public override val target: List<KotlinString> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: Coverage): List<Reference> = listOf(resource.beneficiary)
   }
@@ -67,7 +72,7 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.class.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Coverage): List<CodeableConcept> =
       resource.`class`.map { it.type }
@@ -80,7 +85,7 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.class.value"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Coverage): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.`class`.map { it.value }
@@ -93,7 +98,7 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.dependent"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Coverage): List<R5String> =
       listOfNotNull(resource.dependent)
@@ -106,7 +111,7 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.identifier"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Coverage): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.identifier
@@ -119,7 +124,7 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.insurer"
 
-    public override val target: List<KotlinString> = listOf("Organization")
+    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
 
     public override fun extract(resource: Coverage): List<Reference> =
       listOfNotNull(resource.insurer)
@@ -132,7 +137,8 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.beneficiary"
 
-    public override val target: List<KotlinString> = listOf("Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: Coverage): List<Reference> = listOf(resource.beneficiary)
   }
@@ -144,8 +150,8 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.paymentBy.party"
 
-    public override val target: List<KotlinString> =
-      listOf("Organization", "RelatedPerson", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: Coverage): List<Reference> =
       resource.paymentBy.map { it.party }
@@ -158,8 +164,8 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.policyHolder"
 
-    public override val target: List<KotlinString> =
-      listOf("Organization", "RelatedPerson", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(Organization::class, RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: Coverage): List<Reference> =
       listOfNotNull(resource.policyHolder)
@@ -172,7 +178,7 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.status"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Coverage): List<Any> = listOf(resource.status)
   }
@@ -184,7 +190,8 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.subscriber"
 
-    public override val target: List<KotlinString> = listOf("RelatedPerson", "Patient")
+    public override val target: List<KClass<out Resource>> =
+      listOf(RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class)
 
     public override fun extract(resource: Coverage): List<Reference> =
       listOfNotNull(resource.subscriber)
@@ -197,7 +204,7 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.subscriberId"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Coverage): List<dev.ohs.fhir.model.r5.Identifier> =
       resource.subscriberId
@@ -210,7 +217,7 @@ public object CoverageSearchParam {
 
     public override val expression: KotlinString = "Coverage.type"
 
-    public override val target: List<KotlinString> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: Coverage): List<CodeableConcept> =
       listOfNotNull(resource.type)

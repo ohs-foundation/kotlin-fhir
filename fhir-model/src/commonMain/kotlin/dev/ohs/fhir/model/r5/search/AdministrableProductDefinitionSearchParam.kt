@@ -20,12 +20,17 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.AdministrableProductDefinition
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DeviceDefinition
+import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
+import dev.ohs.fhir.model.r5.MedicinalProductDefinition
 import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlin.reflect.KClass
 
 /** Search parameters for the [AdministrableProductDefinition] resource type. */
 public object AdministrableProductDefinitionSearchParam {
@@ -50,7 +55,7 @@ public object AdministrableProductDefinitionSearchParam {
 
     public override val expression: String = "AdministrableProductDefinition.device"
 
-    public override val target: List<String> = listOf("DeviceDefinition")
+    public override val target: List<KClass<out Resource>> = listOf(DeviceDefinition::class)
 
     public override fun extract(resource: AdministrableProductDefinition): List<Reference> =
       listOfNotNull(resource.device)
@@ -63,7 +68,7 @@ public object AdministrableProductDefinitionSearchParam {
 
     public override val expression: String = "AdministrableProductDefinition.administrableDoseForm"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
       listOfNotNull(resource.administrableDoseForm)
@@ -76,7 +81,8 @@ public object AdministrableProductDefinitionSearchParam {
 
     public override val expression: String = "AdministrableProductDefinition.formOf"
 
-    public override val target: List<String> = listOf("MedicinalProductDefinition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(MedicinalProductDefinition::class)
 
     public override fun extract(resource: AdministrableProductDefinition): List<Reference> =
       resource.formOf
@@ -90,7 +96,7 @@ public object AdministrableProductDefinitionSearchParam {
 
     public override val expression: String = "AdministrableProductDefinition.identifier"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(
       resource: AdministrableProductDefinition
@@ -104,7 +110,7 @@ public object AdministrableProductDefinitionSearchParam {
 
     public override val expression: String = "AdministrableProductDefinition.ingredient"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
       resource.ingredient
@@ -117,7 +123,8 @@ public object AdministrableProductDefinitionSearchParam {
 
     public override val expression: String = "AdministrableProductDefinition.producedFrom"
 
-    public override val target: List<String> = listOf("ManufacturedItemDefinition")
+    public override val target: List<KClass<out Resource>> =
+      listOf(ManufacturedItemDefinition::class)
 
     public override fun extract(resource: AdministrableProductDefinition): List<Reference> =
       resource.producedFrom
@@ -131,7 +138,7 @@ public object AdministrableProductDefinitionSearchParam {
     public override val expression: String =
       "AdministrableProductDefinition.routeOfAdministration.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
       resource.routeOfAdministration.map { it.code }
@@ -144,7 +151,7 @@ public object AdministrableProductDefinitionSearchParam {
 
     public override val expression: String = "AdministrableProductDefinition.status"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdministrableProductDefinition): List<Any> =
       listOf(resource.status)
@@ -158,7 +165,7 @@ public object AdministrableProductDefinitionSearchParam {
     public override val expression: String =
       "AdministrableProductDefinition.routeOfAdministration.targetSpecies.code"
 
-    public override val target: List<String> = emptyList()
+    public override val target: List<KClass<out Resource>> = emptyList()
 
     public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
       resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }

@@ -42,7 +42,7 @@ public object CareTeamSearchParam {
     listOf(Category, Date, Identifier, Name, Participant, Patient, Status, Subject)
 
   public data object Category : SearchParam<CareTeam, CodeableConcept> {
-    public override val paramName: KotlinString = "category"
+    public override val name: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -54,7 +54,7 @@ public object CareTeamSearchParam {
   }
 
   public data object Date : SearchParam<CareTeam, Any> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -67,7 +67,7 @@ public object CareTeamSearchParam {
   }
 
   public data object Identifier : SearchParam<CareTeam, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -80,7 +80,7 @@ public object CareTeamSearchParam {
   }
 
   public data object Name : SearchParam<CareTeam, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -92,7 +92,7 @@ public object CareTeamSearchParam {
   }
 
   public data object Participant : SearchParam<CareTeam, Reference> {
-    public override val paramName: KotlinString = "participant"
+    public override val name: KotlinString = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -113,7 +113,7 @@ public object CareTeamSearchParam {
   }
 
   public data object Patient : SearchParam<CareTeam, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -129,7 +129,7 @@ public object CareTeamSearchParam {
   }
 
   public data object Status : SearchParam<CareTeam, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -141,7 +141,7 @@ public object CareTeamSearchParam {
   }
 
   public data object Subject : SearchParam<CareTeam, Reference> {
-    public override val paramName: KotlinString = "subject"
+    public override val name: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

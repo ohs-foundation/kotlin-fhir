@@ -77,7 +77,7 @@ public object ProcedureSearchParam {
     )
 
   public data object BasedOn : SearchParam<Procedure, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -90,7 +90,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Category : SearchParam<Procedure, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -102,7 +102,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Code : SearchParam<Procedure, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -115,7 +115,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Date : SearchParam<Procedure, Any> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -127,7 +127,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Encounter : SearchParam<Procedure, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -141,7 +141,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Identifier : SearchParam<Procedure, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -154,7 +154,7 @@ public object ProcedureSearchParam {
   }
 
   public data object InstantiatesCanonical : SearchParam<Procedure, Canonical> {
-    public override val paramName: String = "instantiates-canonical"
+    public override val name: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -174,7 +174,7 @@ public object ProcedureSearchParam {
   }
 
   public data object InstantiatesUri : SearchParam<Procedure, Uri> {
-    public override val paramName: String = "instantiates-uri"
+    public override val name: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -186,7 +186,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Location : SearchParam<Procedure, Reference> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -200,7 +200,7 @@ public object ProcedureSearchParam {
   }
 
   public data object PartOf : SearchParam<Procedure, Reference> {
-    public override val paramName: String = "part-of"
+    public override val name: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -213,7 +213,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Patient : SearchParam<Procedure, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -229,7 +229,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Performer : SearchParam<Procedure, Reference> {
-    public override val paramName: String = "performer"
+    public override val name: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -252,7 +252,7 @@ public object ProcedureSearchParam {
   }
 
   public data object ReasonCode : SearchParam<Procedure, CodeableConcept> {
-    public override val paramName: String = "reason-code"
+    public override val name: String = "reason-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -265,7 +265,7 @@ public object ProcedureSearchParam {
   }
 
   public data object ReasonReference : SearchParam<Procedure, Reference> {
-    public override val paramName: String = "reason-reference"
+    public override val name: String = "reason-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -285,7 +285,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Report : SearchParam<Procedure, Reference> {
-    public override val paramName: String = "report"
+    public override val name: String = "report"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -298,7 +298,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Status : SearchParam<Procedure, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -310,7 +310,7 @@ public object ProcedureSearchParam {
   }
 
   public data object Subject : SearchParam<Procedure, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

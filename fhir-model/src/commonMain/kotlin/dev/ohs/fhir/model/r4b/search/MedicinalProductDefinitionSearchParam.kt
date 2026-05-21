@@ -53,7 +53,7 @@ public object MedicinalProductDefinitionSearchParam {
 
   public data object Characteristic :
     SearchParam<MedicinalProductDefinition, MedicinalProductDefinition.Characteristic.Value> {
-    public override val paramName: KotlinString = "characteristic"
+    public override val name: KotlinString = "characteristic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -68,7 +68,7 @@ public object MedicinalProductDefinitionSearchParam {
   }
 
   public data object CharacteristicType : SearchParam<MedicinalProductDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "characteristic-type"
+    public override val name: KotlinString = "characteristic-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -81,7 +81,7 @@ public object MedicinalProductDefinitionSearchParam {
   }
 
   public data object Contact : SearchParam<MedicinalProductDefinition, Reference> {
-    public override val paramName: KotlinString = "contact"
+    public override val name: KotlinString = "contact"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -95,7 +95,7 @@ public object MedicinalProductDefinitionSearchParam {
   }
 
   public data object Domain : SearchParam<MedicinalProductDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "domain"
+    public override val name: KotlinString = "domain"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -109,7 +109,7 @@ public object MedicinalProductDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<MedicinalProductDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -123,7 +123,7 @@ public object MedicinalProductDefinitionSearchParam {
   }
 
   public data object Ingredient : SearchParam<MedicinalProductDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "ingredient"
+    public override val name: KotlinString = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -136,7 +136,7 @@ public object MedicinalProductDefinitionSearchParam {
   }
 
   public data object MasterFile : SearchParam<MedicinalProductDefinition, Reference> {
-    public override val paramName: KotlinString = "master-file"
+    public override val name: KotlinString = "master-file"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -149,7 +149,7 @@ public object MedicinalProductDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<MedicinalProductDefinition, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -162,7 +162,7 @@ public object MedicinalProductDefinitionSearchParam {
   }
 
   public data object NameLanguage : SearchParam<MedicinalProductDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "name-language"
+    public override val name: KotlinString = "name-language"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -177,7 +177,7 @@ public object MedicinalProductDefinitionSearchParam {
 
   public data object ProductClassification :
     SearchParam<MedicinalProductDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "product-classification"
+    public override val name: KotlinString = "product-classification"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -190,7 +190,7 @@ public object MedicinalProductDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<MedicinalProductDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -203,7 +203,7 @@ public object MedicinalProductDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<MedicinalProductDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

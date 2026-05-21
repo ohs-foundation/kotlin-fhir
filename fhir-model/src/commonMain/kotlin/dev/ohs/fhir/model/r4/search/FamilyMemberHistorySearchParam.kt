@@ -55,7 +55,7 @@ public object FamilyMemberHistorySearchParam {
     )
 
   public data object Code : SearchParam<FamilyMemberHistory, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -68,7 +68,7 @@ public object FamilyMemberHistorySearchParam {
   }
 
   public data object Date : SearchParam<FamilyMemberHistory, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -82,7 +82,7 @@ public object FamilyMemberHistorySearchParam {
 
   public data object Identifier :
     SearchParam<FamilyMemberHistory, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -96,7 +96,7 @@ public object FamilyMemberHistorySearchParam {
   }
 
   public data object InstantiatesCanonical : SearchParam<FamilyMemberHistory, Canonical> {
-    public override val paramName: String = "instantiates-canonical"
+    public override val name: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -116,7 +116,7 @@ public object FamilyMemberHistorySearchParam {
   }
 
   public data object InstantiatesUri : SearchParam<FamilyMemberHistory, Uri> {
-    public override val paramName: String = "instantiates-uri"
+    public override val name: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -128,7 +128,7 @@ public object FamilyMemberHistorySearchParam {
   }
 
   public data object Patient : SearchParam<FamilyMemberHistory, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -142,7 +142,7 @@ public object FamilyMemberHistorySearchParam {
   }
 
   public data object Relationship : SearchParam<FamilyMemberHistory, CodeableConcept> {
-    public override val paramName: String = "relationship"
+    public override val name: String = "relationship"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -155,7 +155,7 @@ public object FamilyMemberHistorySearchParam {
   }
 
   public data object Sex : SearchParam<FamilyMemberHistory, CodeableConcept> {
-    public override val paramName: String = "sex"
+    public override val name: String = "sex"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -168,7 +168,7 @@ public object FamilyMemberHistorySearchParam {
   }
 
   public data object Status : SearchParam<FamilyMemberHistory, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

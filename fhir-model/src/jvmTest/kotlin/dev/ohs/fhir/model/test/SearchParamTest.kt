@@ -126,7 +126,7 @@ class SearchParamTest :
             dedupedExpected.forEach { expected ->
               val dataObjectName = codeToDataObjectName(expected.code)
               test(
-                "$resourceName.$dataObjectName should have paramName '${expected.code}' and type '${expected.type}'"
+                "$resourceName.$dataObjectName should have name '${expected.code}' and type '${expected.type}'"
               ) {
                 val actual =
                   searchParamsByName[dataObjectName]
@@ -137,11 +137,10 @@ class SearchParamTest :
                 // Verify it implements SearchParam
                 searchParamInterface.isInstance(actual).shouldBe(true)
 
-                // Verify paramName
-                val paramName =
-                  actual::class.memberProperties.first { it.name == "paramName" }.call(actual)
-                    as String
-                paramName.shouldBe(expected.code)
+                // Verify name
+                val name =
+                  actual::class.memberProperties.first { it.name == "name" }.call(actual) as String
+                name.shouldBe(expected.code)
 
                 // Verify type
                 val type = actual::class.memberProperties.first { it.name == "type" }.call(actual)

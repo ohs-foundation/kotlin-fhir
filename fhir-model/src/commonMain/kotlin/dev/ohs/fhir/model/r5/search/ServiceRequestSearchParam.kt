@@ -76,7 +76,7 @@ public object ServiceRequestSearchParam {
     )
 
   public data object Authored : SearchParam<ServiceRequest, DateTime> {
-    public override val paramName: String = "authored"
+    public override val name: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -89,7 +89,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object BasedOn : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -102,7 +102,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object BodySite : SearchParam<ServiceRequest, CodeableConcept> {
-    public override val paramName: String = "body-site"
+    public override val name: String = "body-site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -114,7 +114,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object BodyStructure : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "body-structure"
+    public override val name: String = "body-structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -128,7 +128,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Category : SearchParam<ServiceRequest, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -140,7 +140,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object CodeConcept : SearchParam<ServiceRequest, CodeableConcept> {
-    public override val paramName: String = "code-concept"
+    public override val name: String = "code-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -153,7 +153,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object CodeReference : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "code-reference"
+    public override val name: String = "code-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -167,7 +167,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Encounter : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -181,7 +181,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Identifier : SearchParam<ServiceRequest, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -194,7 +194,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object InstantiatesCanonical : SearchParam<ServiceRequest, Canonical> {
-    public override val paramName: String = "instantiates-canonical"
+    public override val name: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -208,7 +208,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object InstantiatesUri : SearchParam<ServiceRequest, Uri> {
-    public override val paramName: String = "instantiates-uri"
+    public override val name: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -220,7 +220,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Intent : SearchParam<ServiceRequest, Any> {
-    public override val paramName: String = "intent"
+    public override val name: String = "intent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -232,7 +232,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Occurrence : SearchParam<ServiceRequest, Any> {
-    public override val paramName: String = "occurrence"
+    public override val name: String = "occurrence"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -244,7 +244,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Patient : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -260,7 +260,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Performer : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "performer"
+    public override val name: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -282,7 +282,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object PerformerType : SearchParam<ServiceRequest, CodeableConcept> {
-    public override val paramName: String = "performer-type"
+    public override val name: String = "performer-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -295,7 +295,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Priority : SearchParam<ServiceRequest, Any> {
-    public override val paramName: String = "priority"
+    public override val name: String = "priority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -308,7 +308,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Replaces : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "replaces"
+    public override val name: String = "replaces"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -320,7 +320,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Requester : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "requester"
+    public override val name: String = "requester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -341,7 +341,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Requisition : SearchParam<ServiceRequest, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "requisition"
+    public override val name: String = "requisition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -354,7 +354,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Specimen : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "specimen"
+    public override val name: String = "specimen"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -367,7 +367,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Status : SearchParam<ServiceRequest, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -379,7 +379,7 @@ public object ServiceRequestSearchParam {
   }
 
   public data object Subject : SearchParam<ServiceRequest, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

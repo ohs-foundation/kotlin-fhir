@@ -228,7 +228,7 @@ A `SearchParam<R, T>` sealed interface is generated in the `search` subpackage o
 
 | Member       | Type                         | Description                                                                       |
 |:-------------|:-----------------------------|:----------------------------------------------------------------------------------|
-| `paramName`  | `String`                     | The search parameter name as used in search URLs.                                 |
+| `name`       | `String`                     | The search parameter name as used in search URLs.                                 |
 | `type`       | `SearchParamType`            | The search parameter type (number, date, string, token, …).                       |
 | `expression` | `String`                     | The FHIRPath expression that extracts values for this param.                      |
 | `target`     | `List<KClass<out Resource>>` | Target resource types for reference search parameters.                            |
@@ -238,7 +238,7 @@ For each resource type that has search parameters, a `{Resource}SearchParam` con
 
 ```kotlin
 sealed interface SearchParam<in R : Resource, out T> {
-  val paramName: String
+  val name: String
   val type: SearchParamType
   val expression: String
   val target: List<KClass<out Resource>>
@@ -247,7 +247,7 @@ sealed interface SearchParam<in R : Resource, out T> {
 
 object PatientSearchParam {
   data object Birthdate : SearchParam<Patient, Date> {
-    override val paramName = "birthdate"
+    override val name = "birthdate"
     override val type = SearchParamType.fromCode("date")
     override val expression = "Patient.birthDate"
     override val target = emptyList<KClass<out Resource>>()
@@ -255,7 +255,7 @@ object PatientSearchParam {
   }
 
   data object GeneralPractitioner : SearchParam<Patient, Reference> {
-    override val paramName = "general-practitioner"
+    override val name = "general-practitioner"
     override val type = SearchParamType.fromCode("reference")
     override val expression = "Patient.generalPractitioner"
     override val target = listOf(Practitioner::class, Organization::class, PractitionerRole::class)
@@ -288,7 +288,7 @@ The codegen translates the following FHIRPath shapes into Kotlin extraction code
 
 #### Unsupported FHIRPath patterns
 
-When a FHIRPath expression doesn't match any of the shapes above, the codegen falls back to a stub: the search parameter's `extract()` returns `emptyList()` and its type parameter is `Any`. The metadata (`paramName`, `type`, `expression`, `target`) is still populated correctly. Downstream apps that need to support these search parameters can read the `expression` string and evaluate it with a FHIRPath engine.
+When a FHIRPath expression doesn't match any of the shapes above, the codegen falls back to a stub: the search parameter's `extract()` returns `emptyList()` and its type parameter is `Any`. The metadata (`name`, `type`, `expression`, `target`) is still populated correctly. Downstream apps that need to support these search parameters can read the `expression` string and evaluate it with a FHIRPath engine.
 
 There are 206 such unsupported search parameters across versions. They fall into the following categories. The "Full list" column links to a per-category section of [unsupported-search-params.md](docs/unsupported-search-params.md) containing every entry (param name, type, target, expression, source JSON file, canonical URL):
 
@@ -695,10 +695,10 @@ executed:
 4. Search parameter test:
    - Loads the source `SearchParameter-*.json` files as ground truth.
    - For each concrete resource across R4, R4B, and R5, uses JVM reflection on the
-     generated `{Resource}SearchParam` sealed class and its `ALL` companion property
+     generated `{Resource}SearchParam` container object and its `ALL` property
      to verify:
      - Count: `ALL` contains exactly one entry per search parameter defined for the resource.
-     - Name: each entry's `paramName` matches the `code` from the JSON definition.
+     - Name: each entry's `name` matches the `code` from the JSON definition.
      - Type: each entry's `type` matches the FHIR search parameter type (e.g., `"date"`).
      - Expression: the entry's `expression` matches the resource-specific portion of the
        FHIRPath expression from the JSON definition.

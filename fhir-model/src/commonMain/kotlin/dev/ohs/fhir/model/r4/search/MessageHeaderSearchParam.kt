@@ -197,7 +197,7 @@ public object MessageHeaderSearchParam {
     )
 
   public data object Author : SearchParam<MessageHeader, Reference> {
-    public override val paramName: KotlinString = "author"
+    public override val name: KotlinString = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -211,7 +211,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Code : SearchParam<MessageHeader, Any> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -224,7 +224,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Destination : SearchParam<MessageHeader, R4String> {
-    public override val paramName: KotlinString = "destination"
+    public override val name: KotlinString = "destination"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -237,7 +237,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object DestinationUri : SearchParam<MessageHeader, Url> {
-    public override val paramName: KotlinString = "destination-uri"
+    public override val name: KotlinString = "destination-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -250,7 +250,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Enterer : SearchParam<MessageHeader, Reference> {
-    public override val paramName: KotlinString = "enterer"
+    public override val name: KotlinString = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -264,7 +264,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Event : SearchParam<MessageHeader, MessageHeader.Event> {
-    public override val paramName: KotlinString = "event"
+    public override val name: KotlinString = "event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -277,7 +277,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Focus : SearchParam<MessageHeader, Reference> {
-    public override val paramName: KotlinString = "focus"
+    public override val name: KotlinString = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -437,7 +437,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Receiver : SearchParam<MessageHeader, Reference> {
-    public override val paramName: KotlinString = "receiver"
+    public override val name: KotlinString = "receiver"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -451,7 +451,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object ResponseId : SearchParam<MessageHeader, Id> {
-    public override val paramName: KotlinString = "response-id"
+    public override val name: KotlinString = "response-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -464,7 +464,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Responsible : SearchParam<MessageHeader, Reference> {
-    public override val paramName: KotlinString = "responsible"
+    public override val name: KotlinString = "responsible"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -478,7 +478,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Sender : SearchParam<MessageHeader, Reference> {
-    public override val paramName: KotlinString = "sender"
+    public override val name: KotlinString = "sender"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -492,7 +492,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Source : SearchParam<MessageHeader, R4String> {
-    public override val paramName: KotlinString = "source"
+    public override val name: KotlinString = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -505,7 +505,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object SourceUri : SearchParam<MessageHeader, Url> {
-    public override val paramName: KotlinString = "source-uri"
+    public override val name: KotlinString = "source-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -518,7 +518,7 @@ public object MessageHeaderSearchParam {
   }
 
   public data object Target : SearchParam<MessageHeader, Reference> {
-    public override val paramName: KotlinString = "target"
+    public override val name: KotlinString = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

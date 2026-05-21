@@ -64,7 +64,7 @@ public object CodeSystemSearchParam {
     )
 
   public data object Code : SearchParam<CodeSystem, Any> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -76,7 +76,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object ContentMode : SearchParam<CodeSystem, Any> {
-    public override val paramName: KotlinString = "content-mode"
+    public override val name: KotlinString = "content-mode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -88,7 +88,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Context : SearchParam<CodeSystem, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -102,7 +102,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<CodeSystem, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -115,7 +115,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object ContextType : SearchParam<CodeSystem, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -128,7 +128,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<CodeSystem, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -140,7 +140,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<CodeSystem, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -152,7 +152,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Date : SearchParam<CodeSystem, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -164,7 +164,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Description : SearchParam<CodeSystem, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -177,7 +177,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Identifier : SearchParam<CodeSystem, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -190,7 +190,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<CodeSystem, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -202,7 +202,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Language : SearchParam<CodeSystem, Any> {
-    public override val paramName: KotlinString = "language"
+    public override val name: KotlinString = "language"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -215,7 +215,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Name : SearchParam<CodeSystem, R4String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -227,7 +227,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Publisher : SearchParam<CodeSystem, R4String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -240,7 +240,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Status : SearchParam<CodeSystem, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -252,7 +252,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Supplements : SearchParam<CodeSystem, Canonical> {
-    public override val paramName: KotlinString = "supplements"
+    public override val name: KotlinString = "supplements"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -265,7 +265,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object System : SearchParam<CodeSystem, Uri> {
-    public override val paramName: KotlinString = "system"
+    public override val name: KotlinString = "system"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -277,7 +277,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Title : SearchParam<CodeSystem, R4String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -290,7 +290,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Url : SearchParam<CodeSystem, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -302,7 +302,7 @@ public object CodeSystemSearchParam {
   }
 
   public data object Version : SearchParam<CodeSystem, R4String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

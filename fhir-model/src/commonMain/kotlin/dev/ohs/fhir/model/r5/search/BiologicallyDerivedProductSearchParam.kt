@@ -49,7 +49,7 @@ public object BiologicallyDerivedProductSearchParam {
 
   public data object BiologicalSourceEvent :
     SearchParam<BiologicallyDerivedProduct, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "biological-source-event"
+    public override val name: String = "biological-source-event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -63,7 +63,7 @@ public object BiologicallyDerivedProductSearchParam {
   }
 
   public data object Code : SearchParam<BiologicallyDerivedProduct, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -76,7 +76,7 @@ public object BiologicallyDerivedProductSearchParam {
   }
 
   public data object Collector : SearchParam<BiologicallyDerivedProduct, Reference> {
-    public override val paramName: String = "collector"
+    public override val name: String = "collector"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -91,7 +91,7 @@ public object BiologicallyDerivedProductSearchParam {
 
   public data object Identifier :
     SearchParam<BiologicallyDerivedProduct, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -105,7 +105,7 @@ public object BiologicallyDerivedProductSearchParam {
   }
 
   public data object ProductCategory : SearchParam<BiologicallyDerivedProduct, Coding> {
-    public override val paramName: String = "product-category"
+    public override val name: String = "product-category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -118,7 +118,7 @@ public object BiologicallyDerivedProductSearchParam {
   }
 
   public data object ProductStatus : SearchParam<BiologicallyDerivedProduct, Coding> {
-    public override val paramName: String = "product-status"
+    public override val name: String = "product-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -131,7 +131,7 @@ public object BiologicallyDerivedProductSearchParam {
   }
 
   public data object Request : SearchParam<BiologicallyDerivedProduct, Reference> {
-    public override val paramName: String = "request"
+    public override val name: String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -145,7 +145,7 @@ public object BiologicallyDerivedProductSearchParam {
 
   public data object SerialNumber :
     SearchParam<BiologicallyDerivedProduct, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "serial-number"
+    public override val name: String = "serial-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

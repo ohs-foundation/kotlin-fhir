@@ -33,7 +33,7 @@ public object PermissionSearchParam {
   public val ALL: List<SearchParam<Permission, *>> = listOf(Status)
 
   public data object Status : SearchParam<Permission, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

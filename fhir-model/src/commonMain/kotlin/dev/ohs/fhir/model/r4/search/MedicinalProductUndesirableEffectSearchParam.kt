@@ -35,7 +35,7 @@ public object MedicinalProductUndesirableEffectSearchParam {
   public val ALL: List<SearchParam<MedicinalProductUndesirableEffect, *>> = listOf(Subject)
 
   public data object Subject : SearchParam<MedicinalProductUndesirableEffect, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

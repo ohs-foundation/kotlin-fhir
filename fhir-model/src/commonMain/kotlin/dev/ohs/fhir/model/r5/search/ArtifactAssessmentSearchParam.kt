@@ -33,7 +33,7 @@ public object ArtifactAssessmentSearchParam {
   public val ALL: List<SearchParam<ArtifactAssessment, *>> = listOf(Date, Identifier)
 
   public data object Date : SearchParam<ArtifactAssessment, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -47,7 +47,7 @@ public object ArtifactAssessmentSearchParam {
 
   public data object Identifier :
     SearchParam<ArtifactAssessment, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -199,7 +199,7 @@ public object DeviceRequestSearchParam {
     )
 
   public data object AuthoredOn : SearchParam<DeviceRequest, DateTime> {
-    public override val paramName: String = "authored-on"
+    public override val name: String = "authored-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -212,7 +212,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object BasedOn : SearchParam<DeviceRequest, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -372,7 +372,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Code : SearchParam<DeviceRequest, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -385,7 +385,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Device : SearchParam<DeviceRequest, Reference> {
-    public override val paramName: String = "device"
+    public override val name: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -399,7 +399,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Encounter : SearchParam<DeviceRequest, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -413,7 +413,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object EventDate : SearchParam<DeviceRequest, DateTime> {
-    public override val paramName: String = "event-date"
+    public override val name: String = "event-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -427,7 +427,7 @@ public object DeviceRequestSearchParam {
 
   public data object GroupIdentifier :
     SearchParam<DeviceRequest, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "group-identifier"
+    public override val name: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -441,7 +441,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Identifier : SearchParam<DeviceRequest, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -455,7 +455,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object InstantiatesCanonical : SearchParam<DeviceRequest, Canonical> {
-    public override val paramName: String = "instantiates-canonical"
+    public override val name: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -469,7 +469,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object InstantiatesUri : SearchParam<DeviceRequest, Uri> {
-    public override val paramName: String = "instantiates-uri"
+    public override val name: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -482,7 +482,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Insurance : SearchParam<DeviceRequest, Reference> {
-    public override val paramName: String = "insurance"
+    public override val name: String = "insurance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -496,7 +496,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Intent : SearchParam<DeviceRequest, Any> {
-    public override val paramName: String = "intent"
+    public override val name: String = "intent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -509,7 +509,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Patient : SearchParam<DeviceRequest, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -525,7 +525,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Performer : SearchParam<DeviceRequest, Reference> {
-    public override val paramName: String = "performer"
+    public override val name: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -548,7 +548,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object PriorRequest : SearchParam<DeviceRequest, Reference> {
-    public override val paramName: String = "prior-request"
+    public override val name: String = "prior-request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -708,7 +708,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Requester : SearchParam<DeviceRequest, Reference> {
-    public override val paramName: String = "requester"
+    public override val name: String = "requester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -727,7 +727,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Status : SearchParam<DeviceRequest, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -740,7 +740,7 @@ public object DeviceRequestSearchParam {
   }
 
   public data object Subject : SearchParam<DeviceRequest, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

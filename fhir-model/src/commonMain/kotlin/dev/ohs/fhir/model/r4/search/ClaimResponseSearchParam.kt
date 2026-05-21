@@ -54,7 +54,7 @@ public object ClaimResponseSearchParam {
     )
 
   public data object Created : SearchParam<ClaimResponse, DateTime> {
-    public override val paramName: KotlinString = "created"
+    public override val name: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -66,7 +66,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object Disposition : SearchParam<ClaimResponse, R4String> {
-    public override val paramName: KotlinString = "disposition"
+    public override val name: KotlinString = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -79,7 +79,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object Identifier : SearchParam<ClaimResponse, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -92,7 +92,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object Insurer : SearchParam<ClaimResponse, Reference> {
-    public override val paramName: KotlinString = "insurer"
+    public override val name: KotlinString = "insurer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -104,7 +104,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object Outcome : SearchParam<ClaimResponse, Any> {
-    public override val paramName: KotlinString = "outcome"
+    public override val name: KotlinString = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -116,7 +116,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object Patient : SearchParam<ClaimResponse, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -129,7 +129,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object PaymentDate : SearchParam<ClaimResponse, Date> {
-    public override val paramName: KotlinString = "payment-date"
+    public override val name: KotlinString = "payment-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -142,7 +142,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object Request : SearchParam<ClaimResponse, Reference> {
-    public override val paramName: KotlinString = "request"
+    public override val name: KotlinString = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -155,7 +155,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object Requestor : SearchParam<ClaimResponse, Reference> {
-    public override val paramName: KotlinString = "requestor"
+    public override val name: KotlinString = "requestor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -169,7 +169,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object Status : SearchParam<ClaimResponse, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -181,7 +181,7 @@ public object ClaimResponseSearchParam {
   }
 
   public data object Use : SearchParam<ClaimResponse, Any> {
-    public override val paramName: KotlinString = "use"
+    public override val name: KotlinString = "use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -195,7 +195,7 @@ public object AppointmentSearchParam {
     )
 
   public data object Actor : SearchParam<Appointment, Reference> {
-    public override val paramName: String = "actor"
+    public override val name: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -217,7 +217,7 @@ public object AppointmentSearchParam {
   }
 
   public data object AppointmentType : SearchParam<Appointment, CodeableConcept> {
-    public override val paramName: String = "appointment-type"
+    public override val name: String = "appointment-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -230,7 +230,7 @@ public object AppointmentSearchParam {
   }
 
   public data object BasedOn : SearchParam<Appointment, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -244,7 +244,7 @@ public object AppointmentSearchParam {
   }
 
   public data object Date : SearchParam<Appointment, Instant> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -257,7 +257,7 @@ public object AppointmentSearchParam {
   }
 
   public data object Identifier : SearchParam<Appointment, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -271,7 +271,7 @@ public object AppointmentSearchParam {
   }
 
   public data object Location : SearchParam<Appointment, Reference> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -288,7 +288,7 @@ public object AppointmentSearchParam {
   }
 
   public data object PartStatus : SearchParam<Appointment, Any> {
-    public override val paramName: String = "part-status"
+    public override val name: String = "part-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -301,7 +301,7 @@ public object AppointmentSearchParam {
   }
 
   public data object Patient : SearchParam<Appointment, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -318,7 +318,7 @@ public object AppointmentSearchParam {
   }
 
   public data object Practitioner : SearchParam<Appointment, Reference> {
-    public override val paramName: String = "practitioner"
+    public override val name: String = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -335,7 +335,7 @@ public object AppointmentSearchParam {
   }
 
   public data object ReasonCode : SearchParam<Appointment, CodeableConcept> {
-    public override val paramName: String = "reason-code"
+    public override val name: String = "reason-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -348,7 +348,7 @@ public object AppointmentSearchParam {
   }
 
   public data object ReasonReference : SearchParam<Appointment, Reference> {
-    public override val paramName: String = "reason-reference"
+    public override val name: String = "reason-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -367,7 +367,7 @@ public object AppointmentSearchParam {
   }
 
   public data object ServiceCategory : SearchParam<Appointment, CodeableConcept> {
-    public override val paramName: String = "service-category"
+    public override val name: String = "service-category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -380,7 +380,7 @@ public object AppointmentSearchParam {
   }
 
   public data object ServiceType : SearchParam<Appointment, CodeableConcept> {
-    public override val paramName: String = "service-type"
+    public override val name: String = "service-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -393,7 +393,7 @@ public object AppointmentSearchParam {
   }
 
   public data object Slot : SearchParam<Appointment, Reference> {
-    public override val paramName: String = "slot"
+    public override val name: String = "slot"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -406,7 +406,7 @@ public object AppointmentSearchParam {
   }
 
   public data object Specialty : SearchParam<Appointment, CodeableConcept> {
-    public override val paramName: String = "specialty"
+    public override val name: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -419,7 +419,7 @@ public object AppointmentSearchParam {
   }
 
   public data object Status : SearchParam<Appointment, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -432,7 +432,7 @@ public object AppointmentSearchParam {
   }
 
   public data object SupportingInfo : SearchParam<Appointment, Reference> {
-    public override val paramName: String = "supporting-info"
+    public override val name: String = "supporting-info"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

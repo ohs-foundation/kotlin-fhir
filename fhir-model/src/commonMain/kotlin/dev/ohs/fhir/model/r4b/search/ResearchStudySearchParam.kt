@@ -56,7 +56,7 @@ public object ResearchStudySearchParam {
     )
 
   public data object Category : SearchParam<ResearchStudy, CodeableConcept> {
-    public override val paramName: KotlinString = "category"
+    public override val name: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -68,7 +68,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Date : SearchParam<ResearchStudy, Period> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -81,7 +81,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Focus : SearchParam<ResearchStudy, CodeableConcept> {
-    public override val paramName: KotlinString = "focus"
+    public override val name: KotlinString = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -93,7 +93,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Identifier : SearchParam<ResearchStudy, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -106,7 +106,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Keyword : SearchParam<ResearchStudy, CodeableConcept> {
-    public override val paramName: KotlinString = "keyword"
+    public override val name: KotlinString = "keyword"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -118,7 +118,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Location : SearchParam<ResearchStudy, CodeableConcept> {
-    public override val paramName: KotlinString = "location"
+    public override val name: KotlinString = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -130,7 +130,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Partof : SearchParam<ResearchStudy, Reference> {
-    public override val paramName: KotlinString = "partof"
+    public override val name: KotlinString = "partof"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -142,7 +142,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Principalinvestigator : SearchParam<ResearchStudy, Reference> {
-    public override val paramName: KotlinString = "principalinvestigator"
+    public override val name: KotlinString = "principalinvestigator"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -156,7 +156,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Protocol : SearchParam<ResearchStudy, Reference> {
-    public override val paramName: KotlinString = "protocol"
+    public override val name: KotlinString = "protocol"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -168,7 +168,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Site : SearchParam<ResearchStudy, Reference> {
-    public override val paramName: KotlinString = "site"
+    public override val name: KotlinString = "site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -181,7 +181,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Sponsor : SearchParam<ResearchStudy, Reference> {
-    public override val paramName: KotlinString = "sponsor"
+    public override val name: KotlinString = "sponsor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -194,7 +194,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Status : SearchParam<ResearchStudy, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -206,7 +206,7 @@ public object ResearchStudySearchParam {
   }
 
   public data object Title : SearchParam<ResearchStudy, R4bString> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 

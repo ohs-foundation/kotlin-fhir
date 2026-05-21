@@ -41,7 +41,7 @@ public object CoverageEligibilityResponseSearchParam {
     listOf(Created, Disposition, Identifier, Insurer, Outcome, Patient, Request, Requestor, Status)
 
   public data object Created : SearchParam<CoverageEligibilityResponse, DateTime> {
-    public override val paramName: KotlinString = "created"
+    public override val name: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -54,7 +54,7 @@ public object CoverageEligibilityResponseSearchParam {
   }
 
   public data object Disposition : SearchParam<CoverageEligibilityResponse, R4bString> {
-    public override val paramName: KotlinString = "disposition"
+    public override val name: KotlinString = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -68,7 +68,7 @@ public object CoverageEligibilityResponseSearchParam {
 
   public data object Identifier :
     SearchParam<CoverageEligibilityResponse, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -82,7 +82,7 @@ public object CoverageEligibilityResponseSearchParam {
   }
 
   public data object Insurer : SearchParam<CoverageEligibilityResponse, Reference> {
-    public override val paramName: KotlinString = "insurer"
+    public override val name: KotlinString = "insurer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -95,7 +95,7 @@ public object CoverageEligibilityResponseSearchParam {
   }
 
   public data object Outcome : SearchParam<CoverageEligibilityResponse, Any> {
-    public override val paramName: KotlinString = "outcome"
+    public override val name: KotlinString = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -108,7 +108,7 @@ public object CoverageEligibilityResponseSearchParam {
   }
 
   public data object Patient : SearchParam<CoverageEligibilityResponse, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -122,7 +122,7 @@ public object CoverageEligibilityResponseSearchParam {
   }
 
   public data object Request : SearchParam<CoverageEligibilityResponse, Reference> {
-    public override val paramName: KotlinString = "request"
+    public override val name: KotlinString = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -136,7 +136,7 @@ public object CoverageEligibilityResponseSearchParam {
   }
 
   public data object Requestor : SearchParam<CoverageEligibilityResponse, Reference> {
-    public override val paramName: KotlinString = "requestor"
+    public override val name: KotlinString = "requestor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -150,7 +150,7 @@ public object CoverageEligibilityResponseSearchParam {
   }
 
   public data object Status : SearchParam<CoverageEligibilityResponse, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

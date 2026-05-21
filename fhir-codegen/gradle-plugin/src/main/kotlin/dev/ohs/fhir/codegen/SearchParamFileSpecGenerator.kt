@@ -60,7 +60,7 @@ object SearchParamFileSpecGenerator {
           .addTypeVariable(typeT)
           .addKdoc("Base type for typed FHIR search parameters.")
           .addProperty(
-            PropertySpec.builder("paramName", String::class)
+            PropertySpec.builder("name", String::class)
               .addModifiers(KModifier.PUBLIC)
               .addKdoc("The name of the search parameter as used in search URLs.")
               .build()

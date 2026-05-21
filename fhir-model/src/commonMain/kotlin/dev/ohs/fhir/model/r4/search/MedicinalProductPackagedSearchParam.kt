@@ -35,7 +35,7 @@ public object MedicinalProductPackagedSearchParam {
 
   public data object Identifier :
     SearchParam<MedicinalProductPackaged, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -49,7 +49,7 @@ public object MedicinalProductPackagedSearchParam {
   }
 
   public data object Subject : SearchParam<MedicinalProductPackaged, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

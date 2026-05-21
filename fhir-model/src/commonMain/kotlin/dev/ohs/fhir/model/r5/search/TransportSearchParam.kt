@@ -33,7 +33,7 @@ public object TransportSearchParam {
   public val ALL: List<SearchParam<Transport, *>> = listOf(Identifier, Status)
 
   public data object Identifier : SearchParam<Transport, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -46,7 +46,7 @@ public object TransportSearchParam {
   }
 
   public data object Status : SearchParam<Transport, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

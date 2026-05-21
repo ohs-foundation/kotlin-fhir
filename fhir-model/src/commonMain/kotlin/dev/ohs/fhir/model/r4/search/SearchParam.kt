@@ -25,7 +25,7 @@ import kotlin.reflect.KClass
 /** Base type for typed FHIR search parameters. */
 public sealed interface SearchParam<in R : Resource, out T> {
   /** The name of the search parameter as used in search URLs. */
-  public val paramName: String
+  public val name: String
 
   /** The search parameter type (e.g., date, token, reference). */
   public val type: SearchParamType

@@ -44,7 +44,7 @@ public object ScheduleSearchParam {
     listOf(Active, Actor, Date, Identifier, ServiceCategory, ServiceType, Specialty)
 
   public data object Active : SearchParam<Schedule, Boolean> {
-    public override val paramName: String = "active"
+    public override val name: String = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -56,7 +56,7 @@ public object ScheduleSearchParam {
   }
 
   public data object Actor : SearchParam<Schedule, Reference> {
-    public override val paramName: String = "actor"
+    public override val name: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -77,7 +77,7 @@ public object ScheduleSearchParam {
   }
 
   public data object Date : SearchParam<Schedule, Period> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -90,7 +90,7 @@ public object ScheduleSearchParam {
   }
 
   public data object Identifier : SearchParam<Schedule, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -103,7 +103,7 @@ public object ScheduleSearchParam {
   }
 
   public data object ServiceCategory : SearchParam<Schedule, CodeableConcept> {
-    public override val paramName: String = "service-category"
+    public override val name: String = "service-category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -116,7 +116,7 @@ public object ScheduleSearchParam {
   }
 
   public data object ServiceType : SearchParam<Schedule, CodeableConcept> {
-    public override val paramName: String = "service-type"
+    public override val name: String = "service-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -128,7 +128,7 @@ public object ScheduleSearchParam {
   }
 
   public data object Specialty : SearchParam<Schedule, CodeableConcept> {
-    public override val paramName: String = "specialty"
+    public override val name: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

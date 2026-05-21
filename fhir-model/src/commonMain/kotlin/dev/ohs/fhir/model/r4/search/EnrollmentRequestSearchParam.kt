@@ -35,7 +35,7 @@ public object EnrollmentRequestSearchParam {
     listOf(Identifier, Patient, Status, Subject)
 
   public data object Identifier : SearchParam<EnrollmentRequest, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -49,7 +49,7 @@ public object EnrollmentRequestSearchParam {
   }
 
   public data object Patient : SearchParam<EnrollmentRequest, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -63,7 +63,7 @@ public object EnrollmentRequestSearchParam {
   }
 
   public data object Status : SearchParam<EnrollmentRequest, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -76,7 +76,7 @@ public object EnrollmentRequestSearchParam {
   }
 
   public data object Subject : SearchParam<EnrollmentRequest, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

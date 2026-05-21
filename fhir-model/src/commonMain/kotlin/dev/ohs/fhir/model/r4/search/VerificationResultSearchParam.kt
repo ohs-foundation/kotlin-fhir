@@ -177,7 +177,7 @@ public object VerificationResultSearchParam {
   public val ALL: CollectionsList<SearchParam<VerificationResult, *>> = listOf(Target)
 
   public data object Target : SearchParam<VerificationResult, Reference> {
-    public override val paramName: String = "target"
+    public override val name: String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

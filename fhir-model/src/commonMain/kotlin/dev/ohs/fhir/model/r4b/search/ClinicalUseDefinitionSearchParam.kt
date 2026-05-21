@@ -56,7 +56,7 @@ public object ClinicalUseDefinitionSearchParam {
     )
 
   public data object Contraindication : SearchParam<ClinicalUseDefinition, CodeableReference> {
-    public override val paramName: String = "contraindication"
+    public override val name: String = "contraindication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -71,7 +71,7 @@ public object ClinicalUseDefinitionSearchParam {
 
   public data object ContraindicationReference :
     SearchParam<ClinicalUseDefinition, CodeableReference> {
-    public override val paramName: String = "contraindication-reference"
+    public override val name: String = "contraindication-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -85,7 +85,7 @@ public object ClinicalUseDefinitionSearchParam {
   }
 
   public data object Effect : SearchParam<ClinicalUseDefinition, CodeableReference> {
-    public override val paramName: String = "effect"
+    public override val name: String = "effect"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -99,7 +99,7 @@ public object ClinicalUseDefinitionSearchParam {
   }
 
   public data object EffectReference : SearchParam<ClinicalUseDefinition, CodeableReference> {
-    public override val paramName: String = "effect-reference"
+    public override val name: String = "effect-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -114,7 +114,7 @@ public object ClinicalUseDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<ClinicalUseDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -128,7 +128,7 @@ public object ClinicalUseDefinitionSearchParam {
   }
 
   public data object Indication : SearchParam<ClinicalUseDefinition, CodeableReference> {
-    public override val paramName: String = "indication"
+    public override val name: String = "indication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -142,7 +142,7 @@ public object ClinicalUseDefinitionSearchParam {
   }
 
   public data object IndicationReference : SearchParam<ClinicalUseDefinition, CodeableReference> {
-    public override val paramName: String = "indication-reference"
+    public override val name: String = "indication-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -156,7 +156,7 @@ public object ClinicalUseDefinitionSearchParam {
   }
 
   public data object Interaction : SearchParam<ClinicalUseDefinition, CodeableConcept> {
-    public override val paramName: String = "interaction"
+    public override val name: String = "interaction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -169,7 +169,7 @@ public object ClinicalUseDefinitionSearchParam {
   }
 
   public data object Product : SearchParam<ClinicalUseDefinition, Reference> {
-    public override val paramName: String = "product"
+    public override val name: String = "product"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -186,7 +186,7 @@ public object ClinicalUseDefinitionSearchParam {
   }
 
   public data object Subject : SearchParam<ClinicalUseDefinition, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -207,7 +207,7 @@ public object ClinicalUseDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<ClinicalUseDefinition, Any> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

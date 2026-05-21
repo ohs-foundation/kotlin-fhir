@@ -38,7 +38,7 @@ public object ObservationDefinitionSearchParam {
     listOf(Category, Code, Experimental, Identifier, Method, Status, Title, Url)
 
   public data object Category : SearchParam<ObservationDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "category"
+    public override val name: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -51,7 +51,7 @@ public object ObservationDefinitionSearchParam {
   }
 
   public data object Code : SearchParam<ObservationDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -64,7 +64,7 @@ public object ObservationDefinitionSearchParam {
   }
 
   public data object Experimental : SearchParam<ObservationDefinition, Boolean> {
-    public override val paramName: KotlinString = "experimental"
+    public override val name: KotlinString = "experimental"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -78,7 +78,7 @@ public object ObservationDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<ObservationDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -92,7 +92,7 @@ public object ObservationDefinitionSearchParam {
   }
 
   public data object Method : SearchParam<ObservationDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "method"
+    public override val name: KotlinString = "method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -105,7 +105,7 @@ public object ObservationDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<ObservationDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -118,7 +118,7 @@ public object ObservationDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<ObservationDefinition, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -131,7 +131,7 @@ public object ObservationDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<ObservationDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 

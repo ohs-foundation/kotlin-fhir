@@ -49,7 +49,7 @@ public object PackagedProductDefinitionSearchParam {
     )
 
   public data object Biological : SearchParam<PackagedProductDefinition, Reference> {
-    public override val paramName: KotlinString = "biological"
+    public override val name: KotlinString = "biological"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -63,7 +63,7 @@ public object PackagedProductDefinitionSearchParam {
   }
 
   public data object ContainedItem : SearchParam<PackagedProductDefinition, Reference> {
-    public override val paramName: KotlinString = "contained-item"
+    public override val name: KotlinString = "contained-item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -77,7 +77,7 @@ public object PackagedProductDefinitionSearchParam {
   }
 
   public data object Device : SearchParam<PackagedProductDefinition, Reference> {
-    public override val paramName: KotlinString = "device"
+    public override val name: KotlinString = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -92,7 +92,7 @@ public object PackagedProductDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<PackagedProductDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -106,7 +106,7 @@ public object PackagedProductDefinitionSearchParam {
   }
 
   public data object ManufacturedItem : SearchParam<PackagedProductDefinition, Reference> {
-    public override val paramName: KotlinString = "manufactured-item"
+    public override val name: KotlinString = "manufactured-item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -120,7 +120,7 @@ public object PackagedProductDefinitionSearchParam {
   }
 
   public data object Medication : SearchParam<PackagedProductDefinition, Reference> {
-    public override val paramName: KotlinString = "medication"
+    public override val name: KotlinString = "medication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -134,7 +134,7 @@ public object PackagedProductDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<PackagedProductDefinition, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -147,7 +147,7 @@ public object PackagedProductDefinitionSearchParam {
   }
 
   public data object Nutrition : SearchParam<PackagedProductDefinition, Reference> {
-    public override val paramName: KotlinString = "nutrition"
+    public override val name: KotlinString = "nutrition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -161,7 +161,7 @@ public object PackagedProductDefinitionSearchParam {
   }
 
   public data object Package : SearchParam<PackagedProductDefinition, Reference> {
-    public override val paramName: KotlinString = "package"
+    public override val name: KotlinString = "package"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -175,7 +175,7 @@ public object PackagedProductDefinitionSearchParam {
   }
 
   public data object PackageFor : SearchParam<PackagedProductDefinition, Reference> {
-    public override val paramName: KotlinString = "package-for"
+    public override val name: KotlinString = "package-for"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -189,7 +189,7 @@ public object PackagedProductDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<PackagedProductDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

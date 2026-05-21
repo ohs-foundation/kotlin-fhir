@@ -84,7 +84,7 @@ public object EncounterSearchParam {
     )
 
   public data object Account : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "account"
+    public override val name: String = "account"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -97,7 +97,7 @@ public object EncounterSearchParam {
   }
 
   public data object Appointment : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "appointment"
+    public override val name: String = "appointment"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -110,7 +110,7 @@ public object EncounterSearchParam {
   }
 
   public data object BasedOn : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -123,7 +123,7 @@ public object EncounterSearchParam {
   }
 
   public data object Careteam : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "careteam"
+    public override val name: String = "careteam"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -135,7 +135,7 @@ public object EncounterSearchParam {
   }
 
   public data object Class : SearchParam<Encounter, CodeableConcept> {
-    public override val paramName: String = "class"
+    public override val name: String = "class"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -147,7 +147,7 @@ public object EncounterSearchParam {
   }
 
   public data object Date : SearchParam<Encounter, Period> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -160,7 +160,7 @@ public object EncounterSearchParam {
   }
 
   public data object DateStart : SearchParam<Encounter, DateTime> {
-    public override val paramName: String = "date-start"
+    public override val name: String = "date-start"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -173,7 +173,7 @@ public object EncounterSearchParam {
   }
 
   public data object DiagnosisCode : SearchParam<Encounter, CodeableConcept> {
-    public override val paramName: String = "diagnosis-code"
+    public override val name: String = "diagnosis-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -186,7 +186,7 @@ public object EncounterSearchParam {
   }
 
   public data object DiagnosisReference : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "diagnosis-reference"
+    public override val name: String = "diagnosis-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -199,7 +199,7 @@ public object EncounterSearchParam {
   }
 
   public data object EndDate : SearchParam<Encounter, DateTime> {
-    public override val paramName: String = "end-date"
+    public override val name: String = "end-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -212,7 +212,7 @@ public object EncounterSearchParam {
   }
 
   public data object EpisodeOfCare : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "episode-of-care"
+    public override val name: String = "episode-of-care"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -225,7 +225,7 @@ public object EncounterSearchParam {
   }
 
   public data object Identifier : SearchParam<Encounter, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -238,7 +238,7 @@ public object EncounterSearchParam {
   }
 
   public data object Length : SearchParam<Encounter, Duration> {
-    public override val paramName: String = "length"
+    public override val name: String = "length"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -251,7 +251,7 @@ public object EncounterSearchParam {
   }
 
   public data object Location : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -265,7 +265,7 @@ public object EncounterSearchParam {
   }
 
   public data object LocationPeriod : SearchParam<Encounter, Encounter.Location> {
-    public override val paramName: String = "location-period"
+    public override val name: String = "location-period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -277,7 +277,7 @@ public object EncounterSearchParam {
   }
 
   public data object PartOf : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "part-of"
+    public override val name: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -290,7 +290,7 @@ public object EncounterSearchParam {
   }
 
   public data object Participant : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "participant"
+    public override val name: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -312,7 +312,7 @@ public object EncounterSearchParam {
   }
 
   public data object ParticipantType : SearchParam<Encounter, CodeableConcept> {
-    public override val paramName: String = "participant-type"
+    public override val name: String = "participant-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -325,7 +325,7 @@ public object EncounterSearchParam {
   }
 
   public data object Patient : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -341,7 +341,7 @@ public object EncounterSearchParam {
   }
 
   public data object Practitioner : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "practitioner"
+    public override val name: String = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -358,7 +358,7 @@ public object EncounterSearchParam {
   }
 
   public data object ReasonCode : SearchParam<Encounter, CodeableConcept> {
-    public override val paramName: String = "reason-code"
+    public override val name: String = "reason-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -371,7 +371,7 @@ public object EncounterSearchParam {
   }
 
   public data object ReasonReference : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "reason-reference"
+    public override val name: String = "reason-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -391,7 +391,7 @@ public object EncounterSearchParam {
   }
 
   public data object ServiceProvider : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "service-provider"
+    public override val name: String = "service-provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -404,7 +404,7 @@ public object EncounterSearchParam {
   }
 
   public data object SpecialArrangement : SearchParam<Encounter, CodeableConcept> {
-    public override val paramName: String = "special-arrangement"
+    public override val name: String = "special-arrangement"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -417,7 +417,7 @@ public object EncounterSearchParam {
   }
 
   public data object Status : SearchParam<Encounter, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -429,7 +429,7 @@ public object EncounterSearchParam {
   }
 
   public data object Subject : SearchParam<Encounter, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -443,7 +443,7 @@ public object EncounterSearchParam {
   }
 
   public data object SubjectStatus : SearchParam<Encounter, CodeableConcept> {
-    public override val paramName: String = "subject-status"
+    public override val name: String = "subject-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -456,7 +456,7 @@ public object EncounterSearchParam {
   }
 
   public data object Type : SearchParam<Encounter, CodeableConcept> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

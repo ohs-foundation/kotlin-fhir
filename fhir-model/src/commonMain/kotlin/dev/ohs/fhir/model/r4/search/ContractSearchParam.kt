@@ -191,7 +191,7 @@ public object ContractSearchParam {
     )
 
   public data object Authority : SearchParam<Contract, Reference> {
-    public override val paramName: String = "authority"
+    public override val name: String = "authority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -203,7 +203,7 @@ public object ContractSearchParam {
   }
 
   public data object Domain : SearchParam<Contract, Reference> {
-    public override val paramName: String = "domain"
+    public override val name: String = "domain"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -215,7 +215,7 @@ public object ContractSearchParam {
   }
 
   public data object Identifier : SearchParam<Contract, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -229,7 +229,7 @@ public object ContractSearchParam {
   }
 
   public data object Instantiates : SearchParam<Contract, Uri> {
-    public override val paramName: String = "instantiates"
+    public override val name: String = "instantiates"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -242,7 +242,7 @@ public object ContractSearchParam {
   }
 
   public data object Issued : SearchParam<Contract, DateTime> {
-    public override val paramName: String = "issued"
+    public override val name: String = "issued"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -255,7 +255,7 @@ public object ContractSearchParam {
   }
 
   public data object Patient : SearchParam<Contract, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -269,7 +269,7 @@ public object ContractSearchParam {
   }
 
   public data object Signer : SearchParam<Contract, Reference> {
-    public override val paramName: String = "signer"
+    public override val name: String = "signer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -289,7 +289,7 @@ public object ContractSearchParam {
   }
 
   public data object Status : SearchParam<Contract, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -302,7 +302,7 @@ public object ContractSearchParam {
   }
 
   public data object Subject : SearchParam<Contract, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -461,7 +461,7 @@ public object ContractSearchParam {
   }
 
   public data object Url : SearchParam<Contract, Uri> {
-    public override val paramName: String = "url"
+    public override val name: String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 

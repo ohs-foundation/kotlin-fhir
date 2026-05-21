@@ -58,7 +58,7 @@ public object SpecimenSearchParam {
     )
 
   public data object Accession : SearchParam<Specimen, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "accession"
+    public override val name: String = "accession"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -71,7 +71,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Bodysite : SearchParam<Specimen, Reference> {
-    public override val paramName: String = "bodysite"
+    public override val name: String = "bodysite"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -84,7 +84,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Collected : SearchParam<Specimen, Any> {
-    public override val paramName: String = "collected"
+    public override val name: String = "collected"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -96,7 +96,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Collector : SearchParam<Specimen, Reference> {
-    public override val paramName: String = "collector"
+    public override val name: String = "collector"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -115,7 +115,7 @@ public object SpecimenSearchParam {
   }
 
   public data object ContainerDevice : SearchParam<Specimen, Reference> {
-    public override val paramName: String = "container-device"
+    public override val name: String = "container-device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -130,7 +130,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Identifier : SearchParam<Specimen, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -143,7 +143,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Parent : SearchParam<Specimen, Reference> {
-    public override val paramName: String = "parent"
+    public override val name: String = "parent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -155,7 +155,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Patient : SearchParam<Specimen, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -171,7 +171,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Procedure : SearchParam<Specimen, Reference> {
-    public override val paramName: String = "procedure"
+    public override val name: String = "procedure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -185,7 +185,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Status : SearchParam<Specimen, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -197,7 +197,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Subject : SearchParam<Specimen, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -218,7 +218,7 @@ public object SpecimenSearchParam {
   }
 
   public data object Type : SearchParam<Specimen, CodeableConcept> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

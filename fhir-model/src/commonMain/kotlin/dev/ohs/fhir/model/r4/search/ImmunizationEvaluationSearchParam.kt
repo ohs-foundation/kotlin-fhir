@@ -38,7 +38,7 @@ public object ImmunizationEvaluationSearchParam {
     listOf(Date, DoseStatus, Identifier, ImmunizationEvent, Patient, Status, TargetDisease)
 
   public data object Date : SearchParam<ImmunizationEvaluation, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -51,7 +51,7 @@ public object ImmunizationEvaluationSearchParam {
   }
 
   public data object DoseStatus : SearchParam<ImmunizationEvaluation, CodeableConcept> {
-    public override val paramName: String = "dose-status"
+    public override val name: String = "dose-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -65,7 +65,7 @@ public object ImmunizationEvaluationSearchParam {
 
   public data object Identifier :
     SearchParam<ImmunizationEvaluation, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -79,7 +79,7 @@ public object ImmunizationEvaluationSearchParam {
   }
 
   public data object ImmunizationEvent : SearchParam<ImmunizationEvaluation, Reference> {
-    public override val paramName: String = "immunization-event"
+    public override val name: String = "immunization-event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -92,7 +92,7 @@ public object ImmunizationEvaluationSearchParam {
   }
 
   public data object Patient : SearchParam<ImmunizationEvaluation, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -106,7 +106,7 @@ public object ImmunizationEvaluationSearchParam {
   }
 
   public data object Status : SearchParam<ImmunizationEvaluation, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -119,7 +119,7 @@ public object ImmunizationEvaluationSearchParam {
   }
 
   public data object TargetDisease : SearchParam<ImmunizationEvaluation, CodeableConcept> {
-    public override val paramName: String = "target-disease"
+    public override val name: String = "target-disease"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

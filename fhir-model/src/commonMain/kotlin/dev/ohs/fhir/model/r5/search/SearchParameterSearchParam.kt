@@ -63,7 +63,7 @@ public object SearchParameterSearchParam {
     )
 
   public data object Base : SearchParam<SearchParameter, Any> {
-    public override val paramName: KotlinString = "base"
+    public override val name: KotlinString = "base"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -75,7 +75,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Code : SearchParam<SearchParameter, Any> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -87,7 +87,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Component : SearchParam<SearchParameter, Canonical> {
-    public override val paramName: KotlinString = "component"
+    public override val name: KotlinString = "component"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -100,7 +100,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Context : SearchParam<SearchParameter, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -113,7 +113,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<SearchParameter, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -126,7 +126,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object ContextType : SearchParam<SearchParameter, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -139,7 +139,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<SearchParameter, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -151,7 +151,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<SearchParameter, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -163,7 +163,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Date : SearchParam<SearchParameter, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -176,7 +176,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object DerivedFrom : SearchParam<SearchParameter, Canonical> {
-    public override val paramName: KotlinString = "derived-from"
+    public override val name: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -189,7 +189,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Description : SearchParam<SearchParameter, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -202,7 +202,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Identifier : SearchParam<SearchParameter, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -215,7 +215,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<SearchParameter, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -228,7 +228,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Name : SearchParam<SearchParameter, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -240,7 +240,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Publisher : SearchParam<SearchParameter, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -253,7 +253,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Status : SearchParam<SearchParameter, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -265,7 +265,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Target : SearchParam<SearchParameter, Any> {
-    public override val paramName: KotlinString = "target"
+    public override val name: KotlinString = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -277,7 +277,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Type : SearchParam<SearchParameter, Any> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -289,7 +289,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Url : SearchParam<SearchParameter, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -301,7 +301,7 @@ public object SearchParameterSearchParam {
   }
 
   public data object Version : SearchParam<SearchParameter, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

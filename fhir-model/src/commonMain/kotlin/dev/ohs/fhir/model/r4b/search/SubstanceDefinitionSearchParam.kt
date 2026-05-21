@@ -35,7 +35,7 @@ public object SubstanceDefinitionSearchParam {
     listOf(Classification, Code, Domain, Identifier, Name)
 
   public data object Classification : SearchParam<SubstanceDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "classification"
+    public override val name: KotlinString = "classification"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -48,7 +48,7 @@ public object SubstanceDefinitionSearchParam {
   }
 
   public data object Code : SearchParam<SubstanceDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -61,7 +61,7 @@ public object SubstanceDefinitionSearchParam {
   }
 
   public data object Domain : SearchParam<SubstanceDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "domain"
+    public override val name: KotlinString = "domain"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -75,7 +75,7 @@ public object SubstanceDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<SubstanceDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -89,7 +89,7 @@ public object SubstanceDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<SubstanceDefinition, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 

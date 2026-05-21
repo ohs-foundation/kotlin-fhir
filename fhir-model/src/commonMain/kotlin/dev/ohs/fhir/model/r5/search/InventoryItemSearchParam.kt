@@ -37,7 +37,7 @@ public object InventoryItemSearchParam {
   public val ALL: List<SearchParam<InventoryItem, *>> = listOf(Code, Identifier, Status, Subject)
 
   public data object Code : SearchParam<InventoryItem, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -49,7 +49,7 @@ public object InventoryItemSearchParam {
   }
 
   public data object Identifier : SearchParam<InventoryItem, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -62,7 +62,7 @@ public object InventoryItemSearchParam {
   }
 
   public data object Status : SearchParam<InventoryItem, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -74,7 +74,7 @@ public object InventoryItemSearchParam {
   }
 
   public data object Subject : SearchParam<InventoryItem, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

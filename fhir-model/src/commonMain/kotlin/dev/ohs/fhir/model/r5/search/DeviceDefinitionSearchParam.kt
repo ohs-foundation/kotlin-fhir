@@ -44,7 +44,7 @@ public object DeviceDefinitionSearchParam {
     )
 
   public data object DeviceName : SearchParam<DeviceDefinition, R5String> {
-    public override val paramName: KotlinString = "device-name"
+    public override val name: KotlinString = "device-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -57,7 +57,7 @@ public object DeviceDefinitionSearchParam {
   }
 
   public data object Identifier : SearchParam<DeviceDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -71,7 +71,7 @@ public object DeviceDefinitionSearchParam {
   }
 
   public data object Manufacturer : SearchParam<DeviceDefinition, Reference> {
-    public override val paramName: KotlinString = "manufacturer"
+    public override val name: KotlinString = "manufacturer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -85,7 +85,7 @@ public object DeviceDefinitionSearchParam {
   }
 
   public data object Organization : SearchParam<DeviceDefinition, Reference> {
-    public override val paramName: KotlinString = "organization"
+    public override val name: KotlinString = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -99,7 +99,7 @@ public object DeviceDefinitionSearchParam {
   }
 
   public data object Specification : SearchParam<DeviceDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "specification"
+    public override val name: KotlinString = "specification"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -113,7 +113,7 @@ public object DeviceDefinitionSearchParam {
 
   public data object SpecificationVersion :
     SearchParam<DeviceDefinition, DeviceDefinition.ConformsTo> {
-    public override val paramName: KotlinString = "specification-version"
+    public override val name: KotlinString = "specification-version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -126,7 +126,7 @@ public object DeviceDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<DeviceDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

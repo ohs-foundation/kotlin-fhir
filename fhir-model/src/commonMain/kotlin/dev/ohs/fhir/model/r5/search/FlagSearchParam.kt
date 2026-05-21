@@ -47,7 +47,7 @@ public object FlagSearchParam {
     listOf(Author, Category, Date, Encounter, Identifier, Patient, Status, Subject)
 
   public data object Author : SearchParam<Flag, Reference> {
-    public override val paramName: String = "author"
+    public override val name: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -67,7 +67,7 @@ public object FlagSearchParam {
   }
 
   public data object Category : SearchParam<Flag, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -79,7 +79,7 @@ public object FlagSearchParam {
   }
 
   public data object Date : SearchParam<Flag, Period> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -91,7 +91,7 @@ public object FlagSearchParam {
   }
 
   public data object Encounter : SearchParam<Flag, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -104,7 +104,7 @@ public object FlagSearchParam {
   }
 
   public data object Identifier : SearchParam<Flag, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -117,7 +117,7 @@ public object FlagSearchParam {
   }
 
   public data object Patient : SearchParam<Flag, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -133,7 +133,7 @@ public object FlagSearchParam {
   }
 
   public data object Status : SearchParam<Flag, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -145,7 +145,7 @@ public object FlagSearchParam {
   }
 
   public data object Subject : SearchParam<Flag, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

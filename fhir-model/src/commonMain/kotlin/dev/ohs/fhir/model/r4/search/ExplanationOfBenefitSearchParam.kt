@@ -61,7 +61,7 @@ public object ExplanationOfBenefitSearchParam {
     )
 
   public data object CareTeam : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "care-team"
+    public override val name: KotlinString = "care-team"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -75,7 +75,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Claim : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "claim"
+    public override val name: KotlinString = "claim"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -89,7 +89,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Coverage : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "coverage"
+    public override val name: KotlinString = "coverage"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -103,7 +103,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Created : SearchParam<ExplanationOfBenefit, DateTime> {
-    public override val paramName: KotlinString = "created"
+    public override val name: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -116,7 +116,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object DetailUdi : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "detail-udi"
+    public override val name: KotlinString = "detail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -129,7 +129,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Disposition : SearchParam<ExplanationOfBenefit, R4String> {
-    public override val paramName: KotlinString = "disposition"
+    public override val name: KotlinString = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -142,7 +142,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Encounter : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "encounter"
+    public override val name: KotlinString = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -156,7 +156,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Enterer : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "enterer"
+    public override val name: KotlinString = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -170,7 +170,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Facility : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "facility"
+    public override val name: KotlinString = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -184,7 +184,7 @@ public object ExplanationOfBenefitSearchParam {
 
   public data object Identifier :
     SearchParam<ExplanationOfBenefit, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -198,7 +198,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object ItemUdi : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "item-udi"
+    public override val name: KotlinString = "item-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -211,7 +211,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Patient : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -225,7 +225,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Payee : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "payee"
+    public override val name: KotlinString = "payee"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -245,7 +245,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object ProcedureUdi : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "procedure-udi"
+    public override val name: KotlinString = "procedure-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -258,7 +258,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Provider : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "provider"
+    public override val name: KotlinString = "provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -272,7 +272,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object Status : SearchParam<ExplanationOfBenefit, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -284,7 +284,7 @@ public object ExplanationOfBenefitSearchParam {
   }
 
   public data object SubdetailUdi : SearchParam<ExplanationOfBenefit, Reference> {
-    public override val paramName: KotlinString = "subdetail-udi"
+    public override val name: KotlinString = "subdetail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

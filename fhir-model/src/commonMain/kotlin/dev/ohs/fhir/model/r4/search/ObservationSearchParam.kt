@@ -223,7 +223,7 @@ public object ObservationSearchParam {
     )
 
   public data object AminoAcidChange : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "amino-acid-change"
+    public override val name: KotlinString = "amino-acid-change"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -236,7 +236,7 @@ public object ObservationSearchParam {
   }
 
   public data object BasedOn : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "based-on"
+    public override val name: KotlinString = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -257,7 +257,7 @@ public object ObservationSearchParam {
   }
 
   public data object Category : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "category"
+    public override val name: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -270,7 +270,7 @@ public object ObservationSearchParam {
   }
 
   public data object Code : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -283,7 +283,7 @@ public object ObservationSearchParam {
   }
 
   public data object CodeValueConcept : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "code-value-concept"
+    public override val name: KotlinString = "code-value-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -295,7 +295,7 @@ public object ObservationSearchParam {
   }
 
   public data object CodeValueDate : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "code-value-date"
+    public override val name: KotlinString = "code-value-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -307,7 +307,7 @@ public object ObservationSearchParam {
   }
 
   public data object CodeValueQuantity : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "code-value-quantity"
+    public override val name: KotlinString = "code-value-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -319,7 +319,7 @@ public object ObservationSearchParam {
   }
 
   public data object CodeValueString : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "code-value-string"
+    public override val name: KotlinString = "code-value-string"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -331,7 +331,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComboCode : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "combo-code"
+    public override val name: KotlinString = "combo-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -344,7 +344,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComboCodeValueConcept : SearchParam<Observation, Observation.Component> {
-    public override val paramName: KotlinString = "combo-code-value-concept"
+    public override val name: KotlinString = "combo-code-value-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -357,7 +357,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComboCodeValueQuantity : SearchParam<Observation, Observation.Component> {
-    public override val paramName: KotlinString = "combo-code-value-quantity"
+    public override val name: KotlinString = "combo-code-value-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -370,7 +370,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComboDataAbsentReason : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "combo-data-absent-reason"
+    public override val name: KotlinString = "combo-data-absent-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -383,7 +383,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComboValueConcept : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "combo-value-concept"
+    public override val name: KotlinString = "combo-value-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -396,7 +396,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComboValueQuantity : SearchParam<Observation, Quantity> {
-    public override val paramName: KotlinString = "combo-value-quantity"
+    public override val name: KotlinString = "combo-value-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -409,7 +409,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComponentCode : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "component-code"
+    public override val name: KotlinString = "component-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -422,7 +422,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComponentCodeValueConcept : SearchParam<Observation, Observation.Component> {
-    public override val paramName: KotlinString = "component-code-value-concept"
+    public override val name: KotlinString = "component-code-value-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -435,7 +435,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComponentCodeValueQuantity : SearchParam<Observation, Observation.Component> {
-    public override val paramName: KotlinString = "component-code-value-quantity"
+    public override val name: KotlinString = "component-code-value-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -448,7 +448,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComponentDataAbsentReason : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "component-data-absent-reason"
+    public override val name: KotlinString = "component-data-absent-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -461,7 +461,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComponentValueConcept : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "component-value-concept"
+    public override val name: KotlinString = "component-value-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -477,7 +477,7 @@ public object ObservationSearchParam {
   }
 
   public data object ComponentValueQuantity : SearchParam<Observation, Quantity> {
-    public override val paramName: KotlinString = "component-value-quantity"
+    public override val name: KotlinString = "component-value-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -490,7 +490,7 @@ public object ObservationSearchParam {
   }
 
   public data object DataAbsentReason : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "data-absent-reason"
+    public override val name: KotlinString = "data-absent-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -503,7 +503,7 @@ public object ObservationSearchParam {
   }
 
   public data object Date : SearchParam<Observation, Observation.Effective> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -516,7 +516,7 @@ public object ObservationSearchParam {
   }
 
   public data object DerivedFrom : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "derived-from"
+    public override val name: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -537,7 +537,7 @@ public object ObservationSearchParam {
   }
 
   public data object Device : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "device"
+    public override val name: KotlinString = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -551,7 +551,7 @@ public object ObservationSearchParam {
   }
 
   public data object DnaVariant : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "dna-variant"
+    public override val name: KotlinString = "dna-variant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -564,7 +564,7 @@ public object ObservationSearchParam {
   }
 
   public data object Encounter : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "encounter"
+    public override val name: KotlinString = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -578,7 +578,7 @@ public object ObservationSearchParam {
   }
 
   public data object Focus : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "focus"
+    public override val name: KotlinString = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -737,7 +737,7 @@ public object ObservationSearchParam {
   }
 
   public data object GeneAminoAcidChange : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "gene-amino-acid-change"
+    public override val name: KotlinString = "gene-amino-acid-change"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -750,7 +750,7 @@ public object ObservationSearchParam {
   }
 
   public data object GeneDnavariant : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "gene-dnavariant"
+    public override val name: KotlinString = "gene-dnavariant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -763,7 +763,7 @@ public object ObservationSearchParam {
   }
 
   public data object GeneIdentifier : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "gene-identifier"
+    public override val name: KotlinString = "gene-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -776,7 +776,7 @@ public object ObservationSearchParam {
   }
 
   public data object HasMember : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "has-member"
+    public override val name: KotlinString = "has-member"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -790,7 +790,7 @@ public object ObservationSearchParam {
   }
 
   public data object Identifier : SearchParam<Observation, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -804,7 +804,7 @@ public object ObservationSearchParam {
   }
 
   public data object Method : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "method"
+    public override val name: KotlinString = "method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -817,7 +817,7 @@ public object ObservationSearchParam {
   }
 
   public data object PartOf : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "part-of"
+    public override val name: KotlinString = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -837,7 +837,7 @@ public object ObservationSearchParam {
   }
 
   public data object Patient : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -853,7 +853,7 @@ public object ObservationSearchParam {
   }
 
   public data object Performer : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "performer"
+    public override val name: KotlinString = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -874,7 +874,7 @@ public object ObservationSearchParam {
   }
 
   public data object Specimen : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "specimen"
+    public override val name: KotlinString = "specimen"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -888,7 +888,7 @@ public object ObservationSearchParam {
   }
 
   public data object Status : SearchParam<Observation, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -901,7 +901,7 @@ public object ObservationSearchParam {
   }
 
   public data object Subject : SearchParam<Observation, Reference> {
-    public override val paramName: KotlinString = "subject"
+    public override val name: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -920,7 +920,7 @@ public object ObservationSearchParam {
   }
 
   public data object ValueConcept : SearchParam<Observation, CodeableConcept> {
-    public override val paramName: KotlinString = "value-concept"
+    public override val name: KotlinString = "value-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -933,7 +933,7 @@ public object ObservationSearchParam {
   }
 
   public data object ValueDate : SearchParam<Observation, DateTime> {
-    public override val paramName: KotlinString = "value-date"
+    public override val name: KotlinString = "value-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -946,7 +946,7 @@ public object ObservationSearchParam {
   }
 
   public data object ValueQuantity : SearchParam<Observation, Quantity> {
-    public override val paramName: KotlinString = "value-quantity"
+    public override val name: KotlinString = "value-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -959,7 +959,7 @@ public object ObservationSearchParam {
   }
 
   public data object ValueString : SearchParam<Observation, R4String> {
-    public override val paramName: KotlinString = "value-string"
+    public override val name: KotlinString = "value-string"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 

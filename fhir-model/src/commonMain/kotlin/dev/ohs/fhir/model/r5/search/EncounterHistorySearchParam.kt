@@ -36,7 +36,7 @@ public object EncounterHistorySearchParam {
     listOf(Encounter, Identifier, Patient, Status, Subject)
 
   public data object Encounter : SearchParam<EncounterHistory, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -50,7 +50,7 @@ public object EncounterHistorySearchParam {
   }
 
   public data object Identifier : SearchParam<EncounterHistory, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -64,7 +64,7 @@ public object EncounterHistorySearchParam {
   }
 
   public data object Patient : SearchParam<EncounterHistory, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -80,7 +80,7 @@ public object EncounterHistorySearchParam {
   }
 
   public data object Status : SearchParam<EncounterHistory, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -92,7 +92,7 @@ public object EncounterHistorySearchParam {
   }
 
   public data object Subject : SearchParam<EncounterHistory, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

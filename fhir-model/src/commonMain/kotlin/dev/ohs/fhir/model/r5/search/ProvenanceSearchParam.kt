@@ -206,7 +206,7 @@ public object ProvenanceSearchParam {
     )
 
   public data object Activity : SearchParam<Provenance, CodeableConcept> {
-    public override val paramName: String = "activity"
+    public override val name: String = "activity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -219,7 +219,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object Agent : SearchParam<Provenance, Reference> {
-    public override val paramName: String = "agent"
+    public override val name: String = "agent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -241,7 +241,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object AgentRole : SearchParam<Provenance, CodeableConcept> {
-    public override val paramName: String = "agent-role"
+    public override val name: String = "agent-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -254,7 +254,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object AgentType : SearchParam<Provenance, CodeableConcept> {
-    public override val paramName: String = "agent-type"
+    public override val name: String = "agent-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -267,7 +267,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object BasedOn : SearchParam<Provenance, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -288,7 +288,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object Encounter : SearchParam<Provenance, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -302,7 +302,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object Entity : SearchParam<Provenance, Reference> {
-    public override val paramName: String = "entity"
+    public override val name: String = "entity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -475,7 +475,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object Location : SearchParam<Provenance, Reference> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -489,7 +489,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object Patient : SearchParam<Provenance, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -503,7 +503,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object Recorded : SearchParam<Provenance, Instant> {
-    public override val paramName: String = "recorded"
+    public override val name: String = "recorded"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -516,7 +516,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object SignatureType : SearchParam<Provenance, Coding> {
-    public override val paramName: String = "signature-type"
+    public override val name: String = "signature-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -529,7 +529,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object Target : SearchParam<Provenance, Reference> {
-    public override val paramName: String = "target"
+    public override val name: String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -701,7 +701,7 @@ public object ProvenanceSearchParam {
   }
 
   public data object When : SearchParam<Provenance, Any> {
-    public override val paramName: String = "when"
+    public override val name: String = "when"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 

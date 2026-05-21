@@ -74,7 +74,7 @@ public object PatientSearchParam {
     )
 
   public data object Active : SearchParam<Patient, Boolean> {
-    public override val paramName: KotlinString = "active"
+    public override val name: KotlinString = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -86,7 +86,7 @@ public object PatientSearchParam {
   }
 
   public data object Address : SearchParam<Patient, dev.ohs.fhir.model.r4.Address> {
-    public override val paramName: KotlinString = "address"
+    public override val name: KotlinString = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -99,7 +99,7 @@ public object PatientSearchParam {
   }
 
   public data object AddressCity : SearchParam<Patient, R4String> {
-    public override val paramName: KotlinString = "address-city"
+    public override val name: KotlinString = "address-city"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -112,7 +112,7 @@ public object PatientSearchParam {
   }
 
   public data object AddressCountry : SearchParam<Patient, R4String> {
-    public override val paramName: KotlinString = "address-country"
+    public override val name: KotlinString = "address-country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -125,7 +125,7 @@ public object PatientSearchParam {
   }
 
   public data object AddressPostalcode : SearchParam<Patient, R4String> {
-    public override val paramName: KotlinString = "address-postalcode"
+    public override val name: KotlinString = "address-postalcode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -138,7 +138,7 @@ public object PatientSearchParam {
   }
 
   public data object AddressState : SearchParam<Patient, R4String> {
-    public override val paramName: KotlinString = "address-state"
+    public override val name: KotlinString = "address-state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -151,7 +151,7 @@ public object PatientSearchParam {
   }
 
   public data object AddressUse : SearchParam<Patient, Any> {
-    public override val paramName: KotlinString = "address-use"
+    public override val name: KotlinString = "address-use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -164,7 +164,7 @@ public object PatientSearchParam {
   }
 
   public data object Age : SearchParam<Patient, Any> {
-    public override val paramName: KotlinString = "age"
+    public override val name: KotlinString = "age"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
 
@@ -176,7 +176,7 @@ public object PatientSearchParam {
   }
 
   public data object BirthOrderBoolean : SearchParam<Patient, Any> {
-    public override val paramName: KotlinString = "birthOrderBoolean"
+    public override val name: KotlinString = "birthOrderBoolean"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -188,7 +188,7 @@ public object PatientSearchParam {
   }
 
   public data object Birthdate : SearchParam<Patient, Date> {
-    public override val paramName: KotlinString = "birthdate"
+    public override val name: KotlinString = "birthdate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -200,7 +200,7 @@ public object PatientSearchParam {
   }
 
   public data object DeathDate : SearchParam<Patient, DateTime> {
-    public override val paramName: KotlinString = "death-date"
+    public override val name: KotlinString = "death-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -213,7 +213,7 @@ public object PatientSearchParam {
   }
 
   public data object Deceased : SearchParam<Patient, Any> {
-    public override val paramName: KotlinString = "deceased"
+    public override val name: KotlinString = "deceased"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -226,7 +226,7 @@ public object PatientSearchParam {
   }
 
   public data object Email : SearchParam<Patient, ContactPoint> {
-    public override val paramName: KotlinString = "email"
+    public override val name: KotlinString = "email"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -239,7 +239,7 @@ public object PatientSearchParam {
   }
 
   public data object Family : SearchParam<Patient, R4String> {
-    public override val paramName: KotlinString = "family"
+    public override val name: KotlinString = "family"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -252,7 +252,7 @@ public object PatientSearchParam {
   }
 
   public data object Gender : SearchParam<Patient, Any> {
-    public override val paramName: KotlinString = "gender"
+    public override val name: KotlinString = "gender"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -264,7 +264,7 @@ public object PatientSearchParam {
   }
 
   public data object GeneralPractitioner : SearchParam<Patient, Reference> {
-    public override val paramName: KotlinString = "general-practitioner"
+    public override val name: KotlinString = "general-practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -281,7 +281,7 @@ public object PatientSearchParam {
   }
 
   public data object Given : SearchParam<Patient, R4String> {
-    public override val paramName: KotlinString = "given"
+    public override val name: KotlinString = "given"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -294,7 +294,7 @@ public object PatientSearchParam {
   }
 
   public data object Identifier : SearchParam<Patient, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -307,7 +307,7 @@ public object PatientSearchParam {
   }
 
   public data object Language : SearchParam<Patient, CodeableConcept> {
-    public override val paramName: KotlinString = "language"
+    public override val name: KotlinString = "language"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -320,7 +320,7 @@ public object PatientSearchParam {
   }
 
   public data object Link : SearchParam<Patient, Reference> {
-    public override val paramName: KotlinString = "link"
+    public override val name: KotlinString = "link"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -333,7 +333,7 @@ public object PatientSearchParam {
   }
 
   public data object MothersMaidenName : SearchParam<Patient, Any> {
-    public override val paramName: KotlinString = "mothersMaidenName"
+    public override val name: KotlinString = "mothersMaidenName"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -346,7 +346,7 @@ public object PatientSearchParam {
   }
 
   public data object Name : SearchParam<Patient, HumanName> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -358,7 +358,7 @@ public object PatientSearchParam {
   }
 
   public data object Organization : SearchParam<Patient, Reference> {
-    public override val paramName: KotlinString = "organization"
+    public override val name: KotlinString = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -372,7 +372,7 @@ public object PatientSearchParam {
   }
 
   public data object PartAgree : SearchParam<Patient, Any> {
-    public override val paramName: KotlinString = "part-agree"
+    public override val name: KotlinString = "part-agree"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -385,7 +385,7 @@ public object PatientSearchParam {
   }
 
   public data object Phone : SearchParam<Patient, ContactPoint> {
-    public override val paramName: KotlinString = "phone"
+    public override val name: KotlinString = "phone"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -398,7 +398,7 @@ public object PatientSearchParam {
   }
 
   public data object Phonetic : SearchParam<Patient, HumanName> {
-    public override val paramName: KotlinString = "phonetic"
+    public override val name: KotlinString = "phonetic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -410,7 +410,7 @@ public object PatientSearchParam {
   }
 
   public data object Telecom : SearchParam<Patient, ContactPoint> {
-    public override val paramName: KotlinString = "telecom"
+    public override val name: KotlinString = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

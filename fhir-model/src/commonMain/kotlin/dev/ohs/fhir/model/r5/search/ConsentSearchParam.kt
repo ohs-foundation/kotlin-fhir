@@ -214,7 +214,7 @@ public object ConsentSearchParam {
     )
 
   public data object Action : SearchParam<Consent, CodeableConcept> {
-    public override val paramName: String = "action"
+    public override val name: String = "action"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -227,7 +227,7 @@ public object ConsentSearchParam {
   }
 
   public data object Actor : SearchParam<Consent, Reference> {
-    public override val paramName: String = "actor"
+    public override val name: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -250,7 +250,7 @@ public object ConsentSearchParam {
   }
 
   public data object Category : SearchParam<Consent, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -263,7 +263,7 @@ public object ConsentSearchParam {
   }
 
   public data object Controller : SearchParam<Consent, Reference> {
-    public override val paramName: String = "controller"
+    public override val name: String = "controller"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -281,7 +281,7 @@ public object ConsentSearchParam {
   }
 
   public data object Data : SearchParam<Consent, Reference> {
-    public override val paramName: String = "data"
+    public override val name: String = "data"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -454,7 +454,7 @@ public object ConsentSearchParam {
   }
 
   public data object Date : SearchParam<Consent, dev.ohs.fhir.model.r5.Date> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -467,7 +467,7 @@ public object ConsentSearchParam {
   }
 
   public data object Grantee : SearchParam<Consent, Reference> {
-    public override val paramName: String = "grantee"
+    public override val name: String = "grantee"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -488,7 +488,7 @@ public object ConsentSearchParam {
   }
 
   public data object Identifier : SearchParam<Consent, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -502,7 +502,7 @@ public object ConsentSearchParam {
   }
 
   public data object Manager : SearchParam<Consent, Reference> {
-    public override val paramName: String = "manager"
+    public override val name: String = "manager"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -520,7 +520,7 @@ public object ConsentSearchParam {
   }
 
   public data object Patient : SearchParam<Consent, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -536,7 +536,7 @@ public object ConsentSearchParam {
   }
 
   public data object Period : SearchParam<Consent, dev.ohs.fhir.model.r5.Period> {
-    public override val paramName: String = "period"
+    public override val name: String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -549,7 +549,7 @@ public object ConsentSearchParam {
   }
 
   public data object Purpose : SearchParam<Consent, Coding> {
-    public override val paramName: String = "purpose"
+    public override val name: String = "purpose"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -562,7 +562,7 @@ public object ConsentSearchParam {
   }
 
   public data object SecurityLabel : SearchParam<Consent, Coding> {
-    public override val paramName: String = "security-label"
+    public override val name: String = "security-label"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -575,7 +575,7 @@ public object ConsentSearchParam {
   }
 
   public data object SourceReference : SearchParam<Consent, Reference> {
-    public override val paramName: String = "source-reference"
+    public override val name: String = "source-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -594,7 +594,7 @@ public object ConsentSearchParam {
   }
 
   public data object Status : SearchParam<Consent, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -606,7 +606,7 @@ public object ConsentSearchParam {
   }
 
   public data object Subject : SearchParam<Consent, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -620,7 +620,7 @@ public object ConsentSearchParam {
   }
 
   public data object Verified : SearchParam<Consent, Boolean> {
-    public override val paramName: String = "verified"
+    public override val name: String = "verified"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -633,7 +633,7 @@ public object ConsentSearchParam {
   }
 
   public data object VerifiedDate : SearchParam<Consent, DateTime> {
-    public override val paramName: String = "verified-date"
+    public override val name: String = "verified-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 

@@ -178,7 +178,7 @@ public object DetectedIssueSearchParam {
     listOf(Author, Code, Identified, Identifier, Implicated, Patient)
 
   public data object Author : SearchParam<DetectedIssue, Reference> {
-    public override val paramName: String = "author"
+    public override val name: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -192,7 +192,7 @@ public object DetectedIssueSearchParam {
   }
 
   public data object Code : SearchParam<DetectedIssue, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -205,7 +205,7 @@ public object DetectedIssueSearchParam {
   }
 
   public data object Identified : SearchParam<DetectedIssue, DetectedIssue.Identified> {
-    public override val paramName: String = "identified"
+    public override val name: String = "identified"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -219,7 +219,7 @@ public object DetectedIssueSearchParam {
   }
 
   public data object Identifier : SearchParam<DetectedIssue, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -233,7 +233,7 @@ public object DetectedIssueSearchParam {
   }
 
   public data object Implicated : SearchParam<DetectedIssue, Reference> {
-    public override val paramName: String = "implicated"
+    public override val name: String = "implicated"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -393,7 +393,7 @@ public object DetectedIssueSearchParam {
   }
 
   public data object Patient : SearchParam<DetectedIssue, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

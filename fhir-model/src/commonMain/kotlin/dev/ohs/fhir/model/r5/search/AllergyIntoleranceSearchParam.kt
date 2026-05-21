@@ -60,7 +60,7 @@ public object AllergyIntoleranceSearchParam {
     )
 
   public data object Category : SearchParam<AllergyIntolerance, Any> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -72,7 +72,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object ClinicalStatus : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val paramName: String = "clinical-status"
+    public override val name: String = "clinical-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -85,7 +85,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object Code : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -98,7 +98,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object Criticality : SearchParam<AllergyIntolerance, Any> {
-    public override val paramName: String = "criticality"
+    public override val name: String = "criticality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -111,7 +111,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object Date : SearchParam<AllergyIntolerance, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -125,7 +125,7 @@ public object AllergyIntoleranceSearchParam {
 
   public data object Identifier :
     SearchParam<AllergyIntolerance, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -139,7 +139,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object LastDate : SearchParam<AllergyIntolerance, DateTime> {
-    public override val paramName: String = "last-date"
+    public override val name: String = "last-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -152,7 +152,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object ManifestationCode : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val paramName: String = "manifestation-code"
+    public override val name: String = "manifestation-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -165,7 +165,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object ManifestationReference : SearchParam<AllergyIntolerance, Reference> {
-    public override val paramName: String = "manifestation-reference"
+    public override val name: String = "manifestation-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -178,7 +178,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object Participant : SearchParam<AllergyIntolerance, Reference> {
-    public override val paramName: String = "participant"
+    public override val name: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -200,7 +200,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object Patient : SearchParam<AllergyIntolerance, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -214,7 +214,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object Route : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val paramName: String = "route"
+    public override val name: String = "route"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -227,7 +227,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object Severity : SearchParam<AllergyIntolerance, Any> {
-    public override val paramName: String = "severity"
+    public override val name: String = "severity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -240,7 +240,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object Type : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -253,7 +253,7 @@ public object AllergyIntoleranceSearchParam {
   }
 
   public data object VerificationStatus : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val paramName: String = "verification-status"
+    public override val name: String = "verification-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

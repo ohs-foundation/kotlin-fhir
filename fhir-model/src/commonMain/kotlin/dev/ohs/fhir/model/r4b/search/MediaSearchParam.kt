@@ -61,7 +61,7 @@ public object MediaSearchParam {
     )
 
   public data object BasedOn : SearchParam<Media, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -74,7 +74,7 @@ public object MediaSearchParam {
   }
 
   public data object Created : SearchParam<Media, Media.Created> {
-    public override val paramName: String = "created"
+    public override val name: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -87,7 +87,7 @@ public object MediaSearchParam {
   }
 
   public data object Device : SearchParam<Media, Reference> {
-    public override val paramName: String = "device"
+    public override val name: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -100,7 +100,7 @@ public object MediaSearchParam {
   }
 
   public data object Encounter : SearchParam<Media, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -114,7 +114,7 @@ public object MediaSearchParam {
   }
 
   public data object Identifier : SearchParam<Media, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -127,7 +127,7 @@ public object MediaSearchParam {
   }
 
   public data object Modality : SearchParam<Media, CodeableConcept> {
-    public override val paramName: String = "modality"
+    public override val name: String = "modality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -140,7 +140,7 @@ public object MediaSearchParam {
   }
 
   public data object Operator : SearchParam<Media, Reference> {
-    public override val paramName: String = "operator"
+    public override val name: String = "operator"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -161,7 +161,7 @@ public object MediaSearchParam {
   }
 
   public data object Patient : SearchParam<Media, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -177,7 +177,7 @@ public object MediaSearchParam {
   }
 
   public data object Site : SearchParam<Media, CodeableConcept> {
-    public override val paramName: String = "site"
+    public override val name: String = "site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -190,7 +190,7 @@ public object MediaSearchParam {
   }
 
   public data object Status : SearchParam<Media, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -202,7 +202,7 @@ public object MediaSearchParam {
   }
 
   public data object Subject : SearchParam<Media, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -223,7 +223,7 @@ public object MediaSearchParam {
   }
 
   public data object Type : SearchParam<Media, CodeableConcept> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -236,7 +236,7 @@ public object MediaSearchParam {
   }
 
   public data object View : SearchParam<Media, CodeableConcept> {
-    public override val paramName: String = "view"
+    public override val name: String = "view"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -44,7 +44,7 @@ public object ResearchSubjectSearchParam {
     listOf(Date, Identifier, Patient, Status, Study, Subject, Subject_state)
 
   public data object Date : SearchParam<ResearchSubject, Period> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -57,7 +57,7 @@ public object ResearchSubjectSearchParam {
   }
 
   public data object Identifier : SearchParam<ResearchSubject, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -70,7 +70,7 @@ public object ResearchSubjectSearchParam {
   }
 
   public data object Patient : SearchParam<ResearchSubject, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -86,7 +86,7 @@ public object ResearchSubjectSearchParam {
   }
 
   public data object Status : SearchParam<ResearchSubject, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -98,7 +98,7 @@ public object ResearchSubjectSearchParam {
   }
 
   public data object Study : SearchParam<ResearchSubject, Reference> {
-    public override val paramName: String = "study"
+    public override val name: String = "study"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -110,7 +110,7 @@ public object ResearchSubjectSearchParam {
   }
 
   public data object Subject : SearchParam<ResearchSubject, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -132,7 +132,7 @@ public object ResearchSubjectSearchParam {
   }
 
   public data object Subject_state : SearchParam<ResearchSubject, CodeableConcept> {
-    public override val paramName: String = "subject_state"
+    public override val name: String = "subject_state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -192,7 +192,7 @@ public object TestPlanSearchParam {
   public val ALL: CollectionsList<SearchParam<TestPlan, *>> = listOf(Identifier, Scope, Status, Url)
 
   public data object Identifier : SearchParam<TestPlan, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -206,7 +206,7 @@ public object TestPlanSearchParam {
   }
 
   public data object Scope : SearchParam<TestPlan, Reference> {
-    public override val paramName: String = "scope"
+    public override val name: String = "scope"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -378,7 +378,7 @@ public object TestPlanSearchParam {
   }
 
   public data object Status : SearchParam<TestPlan, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -390,7 +390,7 @@ public object TestPlanSearchParam {
   }
 
   public data object Url : SearchParam<TestPlan, Uri> {
-    public override val paramName: String = "url"
+    public override val name: String = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 

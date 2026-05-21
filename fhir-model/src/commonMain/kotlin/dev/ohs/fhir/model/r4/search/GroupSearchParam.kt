@@ -56,7 +56,7 @@ public object GroupSearchParam {
     )
 
   public data object Actual : SearchParam<Group, Boolean> {
-    public override val paramName: String = "actual"
+    public override val name: String = "actual"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -68,7 +68,7 @@ public object GroupSearchParam {
   }
 
   public data object Characteristic : SearchParam<Group, CodeableConcept> {
-    public override val paramName: String = "characteristic"
+    public override val name: String = "characteristic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -81,7 +81,7 @@ public object GroupSearchParam {
   }
 
   public data object CharacteristicValue : SearchParam<Group, Group.Characteristic> {
-    public override val paramName: String = "characteristic-value"
+    public override val name: String = "characteristic-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -94,7 +94,7 @@ public object GroupSearchParam {
   }
 
   public data object Code : SearchParam<Group, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -107,7 +107,7 @@ public object GroupSearchParam {
   }
 
   public data object Exclude : SearchParam<Group, Boolean> {
-    public override val paramName: String = "exclude"
+    public override val name: String = "exclude"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -120,7 +120,7 @@ public object GroupSearchParam {
   }
 
   public data object Identifier : SearchParam<Group, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -133,7 +133,7 @@ public object GroupSearchParam {
   }
 
   public data object ManagingEntity : SearchParam<Group, Reference> {
-    public override val paramName: String = "managing-entity"
+    public override val name: String = "managing-entity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -152,7 +152,7 @@ public object GroupSearchParam {
   }
 
   public data object Member : SearchParam<Group, Reference> {
-    public override val paramName: String = "member"
+    public override val name: String = "member"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -174,7 +174,7 @@ public object GroupSearchParam {
   }
 
   public data object Type : SearchParam<Group, Any> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -186,7 +186,7 @@ public object GroupSearchParam {
   }
 
   public data object Value : SearchParam<Group, CodeableConcept> {
-    public override val paramName: String = "value"
+    public override val name: String = "value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -33,7 +33,7 @@ public object DomainResourceSearchParam {
   public val ALL: List<SearchParam<DomainResource, *>> = listOf(_text)
 
   public data object _text : SearchParam<DomainResource, Any> {
-    public override val paramName: String = "_text"
+    public override val name: String = "_text"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 

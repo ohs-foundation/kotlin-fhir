@@ -36,7 +36,7 @@ public object SubscriptionSearchParam {
     listOf(Contact, Criteria, Payload, Status, Type, Url)
 
   public data object Contact : SearchParam<Subscription, ContactPoint> {
-    public override val paramName: KotlinString = "contact"
+    public override val name: KotlinString = "contact"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -48,7 +48,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Criteria : SearchParam<Subscription, R4bString> {
-    public override val paramName: KotlinString = "criteria"
+    public override val name: KotlinString = "criteria"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -60,7 +60,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Payload : SearchParam<Subscription, Any> {
-    public override val paramName: KotlinString = "payload"
+    public override val name: KotlinString = "payload"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -73,7 +73,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Status : SearchParam<Subscription, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -85,7 +85,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Type : SearchParam<Subscription, Any> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -97,7 +97,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Url : SearchParam<Subscription, dev.ohs.fhir.model.r4b.Url> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 

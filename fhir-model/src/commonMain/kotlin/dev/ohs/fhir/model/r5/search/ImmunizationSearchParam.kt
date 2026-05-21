@@ -62,7 +62,7 @@ public object ImmunizationSearchParam {
     )
 
   public data object Date : SearchParam<Immunization, Any> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -74,7 +74,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object Identifier : SearchParam<Immunization, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -87,7 +87,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object Location : SearchParam<Immunization, Reference> {
-    public override val paramName: KotlinString = "location"
+    public override val name: KotlinString = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -101,7 +101,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object LotNumber : SearchParam<Immunization, R5String> {
-    public override val paramName: KotlinString = "lot-number"
+    public override val name: KotlinString = "lot-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -114,7 +114,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object Manufacturer : SearchParam<Immunization, Reference> {
-    public override val paramName: KotlinString = "manufacturer"
+    public override val name: KotlinString = "manufacturer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -127,7 +127,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object Patient : SearchParam<Immunization, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -140,7 +140,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object Performer : SearchParam<Immunization, Reference> {
-    public override val paramName: KotlinString = "performer"
+    public override val name: KotlinString = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -160,7 +160,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object Reaction : SearchParam<Immunization, Reference> {
-    public override val paramName: KotlinString = "reaction"
+    public override val name: KotlinString = "reaction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -173,7 +173,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object ReactionDate : SearchParam<Immunization, DateTime> {
-    public override val paramName: KotlinString = "reaction-date"
+    public override val name: KotlinString = "reaction-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -186,7 +186,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object ReasonCode : SearchParam<Immunization, CodeableConcept> {
-    public override val paramName: KotlinString = "reason-code"
+    public override val name: KotlinString = "reason-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -199,7 +199,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object ReasonReference : SearchParam<Immunization, Reference> {
-    public override val paramName: KotlinString = "reason-reference"
+    public override val name: KotlinString = "reason-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -213,7 +213,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object Series : SearchParam<Immunization, R5String> {
-    public override val paramName: KotlinString = "series"
+    public override val name: KotlinString = "series"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -226,7 +226,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object Status : SearchParam<Immunization, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -238,7 +238,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object StatusReason : SearchParam<Immunization, CodeableConcept> {
-    public override val paramName: KotlinString = "status-reason"
+    public override val name: KotlinString = "status-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -251,7 +251,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object TargetDisease : SearchParam<Immunization, CodeableConcept> {
-    public override val paramName: KotlinString = "target-disease"
+    public override val name: KotlinString = "target-disease"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -264,7 +264,7 @@ public object ImmunizationSearchParam {
   }
 
   public data object VaccineCode : SearchParam<Immunization, CodeableConcept> {
-    public override val paramName: KotlinString = "vaccine-code"
+    public override val name: KotlinString = "vaccine-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

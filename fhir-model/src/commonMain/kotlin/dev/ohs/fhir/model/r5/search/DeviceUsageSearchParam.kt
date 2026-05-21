@@ -35,7 +35,7 @@ public object DeviceUsageSearchParam {
   public val ALL: List<SearchParam<DeviceUsage, *>> = listOf(Device, Identifier, Patient, Status)
 
   public data object Device : SearchParam<DeviceUsage, CodeableConcept> {
-    public override val paramName: String = "device"
+    public override val name: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -48,7 +48,7 @@ public object DeviceUsageSearchParam {
   }
 
   public data object Identifier : SearchParam<DeviceUsage, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -61,7 +61,7 @@ public object DeviceUsageSearchParam {
   }
 
   public data object Patient : SearchParam<DeviceUsage, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -74,7 +74,7 @@ public object DeviceUsageSearchParam {
   }
 
   public data object Status : SearchParam<DeviceUsage, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -39,7 +39,7 @@ public object TestReportSearchParam {
     listOf(Identifier, Issued, Participant, Result, Tester, Testscript)
 
   public data object Identifier : SearchParam<TestReport, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -52,7 +52,7 @@ public object TestReportSearchParam {
   }
 
   public data object Issued : SearchParam<TestReport, DateTime> {
-    public override val paramName: KotlinString = "issued"
+    public override val name: KotlinString = "issued"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -65,7 +65,7 @@ public object TestReportSearchParam {
   }
 
   public data object Participant : SearchParam<TestReport, Uri> {
-    public override val paramName: KotlinString = "participant"
+    public override val name: KotlinString = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -78,7 +78,7 @@ public object TestReportSearchParam {
   }
 
   public data object Result : SearchParam<TestReport, Any> {
-    public override val paramName: KotlinString = "result"
+    public override val name: KotlinString = "result"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -90,7 +90,7 @@ public object TestReportSearchParam {
   }
 
   public data object Tester : SearchParam<TestReport, R4String> {
-    public override val paramName: KotlinString = "tester"
+    public override val name: KotlinString = "tester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -103,7 +103,7 @@ public object TestReportSearchParam {
   }
 
   public data object Testscript : SearchParam<TestReport, Reference> {
-    public override val paramName: KotlinString = "testscript"
+    public override val name: KotlinString = "testscript"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

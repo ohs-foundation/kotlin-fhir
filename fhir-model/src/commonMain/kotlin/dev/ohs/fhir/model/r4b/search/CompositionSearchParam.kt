@@ -194,7 +194,7 @@ public object CompositionSearchParam {
     )
 
   public data object Attester : SearchParam<Composition, Reference> {
-    public override val paramName: KotlinString = "attester"
+    public override val name: KotlinString = "attester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -214,7 +214,7 @@ public object CompositionSearchParam {
   }
 
   public data object Author : SearchParam<Composition, Reference> {
-    public override val paramName: KotlinString = "author"
+    public override val name: KotlinString = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -234,7 +234,7 @@ public object CompositionSearchParam {
   }
 
   public data object Category : SearchParam<Composition, CodeableConcept> {
-    public override val paramName: KotlinString = "category"
+    public override val name: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -247,7 +247,7 @@ public object CompositionSearchParam {
   }
 
   public data object Confidentiality : SearchParam<Composition, Any> {
-    public override val paramName: KotlinString = "confidentiality"
+    public override val name: KotlinString = "confidentiality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -260,7 +260,7 @@ public object CompositionSearchParam {
   }
 
   public data object Context : SearchParam<Composition, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -273,7 +273,7 @@ public object CompositionSearchParam {
   }
 
   public data object Date : SearchParam<Composition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -286,7 +286,7 @@ public object CompositionSearchParam {
   }
 
   public data object Encounter : SearchParam<Composition, Reference> {
-    public override val paramName: KotlinString = "encounter"
+    public override val name: KotlinString = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -300,7 +300,7 @@ public object CompositionSearchParam {
   }
 
   public data object Entry : SearchParam<Composition, Reference> {
-    public override val paramName: KotlinString = "entry"
+    public override val name: KotlinString = "entry"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -455,7 +455,7 @@ public object CompositionSearchParam {
   }
 
   public data object Identifier : SearchParam<Composition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -469,7 +469,7 @@ public object CompositionSearchParam {
   }
 
   public data object Patient : SearchParam<Composition, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -485,7 +485,7 @@ public object CompositionSearchParam {
   }
 
   public data object Period : SearchParam<Composition, dev.ohs.fhir.model.r4b.Period> {
-    public override val paramName: KotlinString = "period"
+    public override val name: KotlinString = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -499,7 +499,7 @@ public object CompositionSearchParam {
   }
 
   public data object RelatedId : SearchParam<Composition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "related-id"
+    public override val name: KotlinString = "related-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -516,7 +516,7 @@ public object CompositionSearchParam {
   }
 
   public data object RelatedRef : SearchParam<Composition, Reference> {
-    public override val paramName: KotlinString = "related-ref"
+    public override val name: KotlinString = "related-ref"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -531,7 +531,7 @@ public object CompositionSearchParam {
   }
 
   public data object Section : SearchParam<Composition, CodeableConcept> {
-    public override val paramName: KotlinString = "section"
+    public override val name: KotlinString = "section"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -544,7 +544,7 @@ public object CompositionSearchParam {
   }
 
   public data object Status : SearchParam<Composition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -557,7 +557,7 @@ public object CompositionSearchParam {
   }
 
   public data object Subject : SearchParam<Composition, Reference> {
-    public override val paramName: KotlinString = "subject"
+    public override val name: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -712,7 +712,7 @@ public object CompositionSearchParam {
   }
 
   public data object Title : SearchParam<Composition, R4bString> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -725,7 +725,7 @@ public object CompositionSearchParam {
   }
 
   public data object Type : SearchParam<Composition, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

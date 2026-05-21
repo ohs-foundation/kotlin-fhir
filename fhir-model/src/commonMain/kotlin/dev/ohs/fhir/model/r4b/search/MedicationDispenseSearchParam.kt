@@ -63,7 +63,7 @@ public object MedicationDispenseSearchParam {
     )
 
   public data object Code : SearchParam<MedicationDispense, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -76,7 +76,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Context : SearchParam<MedicationDispense, Reference> {
-    public override val paramName: String = "context"
+    public override val name: String = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -90,7 +90,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Destination : SearchParam<MedicationDispense, Reference> {
-    public override val paramName: String = "destination"
+    public override val name: String = "destination"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -104,7 +104,7 @@ public object MedicationDispenseSearchParam {
 
   public data object Identifier :
     SearchParam<MedicationDispense, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -118,7 +118,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Medication : SearchParam<MedicationDispense, Reference> {
-    public override val paramName: String = "medication"
+    public override val name: String = "medication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -132,7 +132,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Patient : SearchParam<MedicationDispense, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -149,7 +149,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Performer : SearchParam<MedicationDispense, Reference> {
-    public override val paramName: String = "performer"
+    public override val name: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -170,7 +170,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Prescription : SearchParam<MedicationDispense, Reference> {
-    public override val paramName: String = "prescription"
+    public override val name: String = "prescription"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -183,7 +183,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Receiver : SearchParam<MedicationDispense, Reference> {
-    public override val paramName: String = "receiver"
+    public override val name: String = "receiver"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -196,7 +196,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Responsibleparty : SearchParam<MedicationDispense, Reference> {
-    public override val paramName: String = "responsibleparty"
+    public override val name: String = "responsibleparty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -210,7 +210,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Status : SearchParam<MedicationDispense, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -222,7 +222,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Subject : SearchParam<MedicationDispense, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -236,7 +236,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Type : SearchParam<MedicationDispense, CodeableConcept> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -249,7 +249,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Whenhandedover : SearchParam<MedicationDispense, DateTime> {
-    public override val paramName: String = "whenhandedover"
+    public override val name: String = "whenhandedover"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -262,7 +262,7 @@ public object MedicationDispenseSearchParam {
   }
 
   public data object Whenprepared : SearchParam<MedicationDispense, DateTime> {
-    public override val paramName: String = "whenprepared"
+    public override val name: String = "whenprepared"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 

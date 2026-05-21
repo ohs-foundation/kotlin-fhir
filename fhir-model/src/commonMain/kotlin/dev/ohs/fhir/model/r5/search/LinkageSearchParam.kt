@@ -190,7 +190,7 @@ public object LinkageSearchParam {
   public val ALL: CollectionsList<SearchParam<Linkage, *>> = listOf(Author, Item, Source)
 
   public data object Author : SearchParam<Linkage, Reference> {
-    public override val paramName: String = "author"
+    public override val name: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -204,7 +204,7 @@ public object LinkageSearchParam {
   }
 
   public data object Item : SearchParam<Linkage, Reference> {
-    public override val paramName: String = "item"
+    public override val name: String = "item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -377,7 +377,7 @@ public object LinkageSearchParam {
   }
 
   public data object Source : SearchParam<Linkage, Reference> {
-    public override val paramName: String = "source"
+    public override val name: String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

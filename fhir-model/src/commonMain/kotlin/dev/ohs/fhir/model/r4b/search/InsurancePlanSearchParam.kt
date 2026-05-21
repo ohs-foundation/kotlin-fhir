@@ -53,7 +53,7 @@ public object InsurancePlanSearchParam {
     )
 
   public data object Address : SearchParam<InsurancePlan, dev.ohs.fhir.model.r4b.Address> {
-    public override val paramName: KotlinString = "address"
+    public override val name: KotlinString = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -66,7 +66,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object AddressCity : SearchParam<InsurancePlan, R4bString> {
-    public override val paramName: KotlinString = "address-city"
+    public override val name: KotlinString = "address-city"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -79,7 +79,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object AddressCountry : SearchParam<InsurancePlan, R4bString> {
-    public override val paramName: KotlinString = "address-country"
+    public override val name: KotlinString = "address-country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -92,7 +92,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object AddressPostalcode : SearchParam<InsurancePlan, R4bString> {
-    public override val paramName: KotlinString = "address-postalcode"
+    public override val name: KotlinString = "address-postalcode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -105,7 +105,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object AddressState : SearchParam<InsurancePlan, R4bString> {
-    public override val paramName: KotlinString = "address-state"
+    public override val name: KotlinString = "address-state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -118,7 +118,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object AddressUse : SearchParam<InsurancePlan, Any> {
-    public override val paramName: KotlinString = "address-use"
+    public override val name: KotlinString = "address-use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -131,7 +131,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object AdministeredBy : SearchParam<InsurancePlan, Reference> {
-    public override val paramName: KotlinString = "administered-by"
+    public override val name: KotlinString = "administered-by"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -144,7 +144,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object Endpoint : SearchParam<InsurancePlan, Reference> {
-    public override val paramName: KotlinString = "endpoint"
+    public override val name: KotlinString = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -157,7 +157,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object Identifier : SearchParam<InsurancePlan, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -170,7 +170,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object Name : SearchParam<InsurancePlan, Any> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -182,7 +182,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object OwnedBy : SearchParam<InsurancePlan, Reference> {
-    public override val paramName: KotlinString = "owned-by"
+    public override val name: KotlinString = "owned-by"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -195,7 +195,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object Phonetic : SearchParam<InsurancePlan, R4bString> {
-    public override val paramName: KotlinString = "phonetic"
+    public override val name: KotlinString = "phonetic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -208,7 +208,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object Status : SearchParam<InsurancePlan, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -220,7 +220,7 @@ public object InsurancePlanSearchParam {
   }
 
   public data object Type : SearchParam<InsurancePlan, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

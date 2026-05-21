@@ -194,7 +194,7 @@ public object PaymentNoticeSearchParam {
     listOf(Created, Identifier, PaymentStatus, Reporter, Request, Response, Status)
 
   public data object Created : SearchParam<PaymentNotice, DateTime> {
-    public override val paramName: String = "created"
+    public override val name: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -207,7 +207,7 @@ public object PaymentNoticeSearchParam {
   }
 
   public data object Identifier : SearchParam<PaymentNotice, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -221,7 +221,7 @@ public object PaymentNoticeSearchParam {
   }
 
   public data object PaymentStatus : SearchParam<PaymentNotice, CodeableConcept> {
-    public override val paramName: String = "payment-status"
+    public override val name: String = "payment-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -234,7 +234,7 @@ public object PaymentNoticeSearchParam {
   }
 
   public data object Reporter : SearchParam<PaymentNotice, Reference> {
-    public override val paramName: String = "reporter"
+    public override val name: String = "reporter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -248,7 +248,7 @@ public object PaymentNoticeSearchParam {
   }
 
   public data object Request : SearchParam<PaymentNotice, Reference> {
-    public override val paramName: String = "request"
+    public override val name: String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -421,7 +421,7 @@ public object PaymentNoticeSearchParam {
   }
 
   public data object Response : SearchParam<PaymentNotice, Reference> {
-    public override val paramName: String = "response"
+    public override val name: String = "response"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -594,7 +594,7 @@ public object PaymentNoticeSearchParam {
   }
 
   public data object Status : SearchParam<PaymentNotice, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

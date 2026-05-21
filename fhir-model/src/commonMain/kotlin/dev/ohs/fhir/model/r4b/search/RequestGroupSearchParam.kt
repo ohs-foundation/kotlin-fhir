@@ -59,7 +59,7 @@ public object RequestGroupSearchParam {
     )
 
   public data object Author : SearchParam<RequestGroup, Reference> {
-    public override val paramName: String = "author"
+    public override val name: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -73,7 +73,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Authored : SearchParam<RequestGroup, DateTime> {
-    public override val paramName: String = "authored"
+    public override val name: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -86,7 +86,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Code : SearchParam<RequestGroup, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -99,7 +99,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Encounter : SearchParam<RequestGroup, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -114,7 +114,7 @@ public object RequestGroupSearchParam {
 
   public data object GroupIdentifier :
     SearchParam<RequestGroup, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "group-identifier"
+    public override val name: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -127,7 +127,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Identifier : SearchParam<RequestGroup, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -140,7 +140,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object InstantiatesCanonical : SearchParam<RequestGroup, Canonical> {
-    public override val paramName: String = "instantiates-canonical"
+    public override val name: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -153,7 +153,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object InstantiatesUri : SearchParam<RequestGroup, Uri> {
-    public override val paramName: String = "instantiates-uri"
+    public override val name: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -165,7 +165,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Intent : SearchParam<RequestGroup, Any> {
-    public override val paramName: String = "intent"
+    public override val name: String = "intent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -177,7 +177,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Participant : SearchParam<RequestGroup, Reference> {
-    public override val paramName: String = "participant"
+    public override val name: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -197,7 +197,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Patient : SearchParam<RequestGroup, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -213,7 +213,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Priority : SearchParam<RequestGroup, Any> {
-    public override val paramName: String = "priority"
+    public override val name: String = "priority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -226,7 +226,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Status : SearchParam<RequestGroup, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -238,7 +238,7 @@ public object RequestGroupSearchParam {
   }
 
   public data object Subject : SearchParam<RequestGroup, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

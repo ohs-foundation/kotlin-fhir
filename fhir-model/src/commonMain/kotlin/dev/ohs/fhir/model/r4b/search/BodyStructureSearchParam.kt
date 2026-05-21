@@ -35,7 +35,7 @@ public object BodyStructureSearchParam {
     listOf(Identifier, Location, Morphology, Patient)
 
   public data object Identifier : SearchParam<BodyStructure, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -48,7 +48,7 @@ public object BodyStructureSearchParam {
   }
 
   public data object Location : SearchParam<BodyStructure, CodeableConcept> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -61,7 +61,7 @@ public object BodyStructureSearchParam {
   }
 
   public data object Morphology : SearchParam<BodyStructure, CodeableConcept> {
-    public override val paramName: String = "morphology"
+    public override val name: String = "morphology"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -74,7 +74,7 @@ public object BodyStructureSearchParam {
   }
 
   public data object Patient : SearchParam<BodyStructure, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

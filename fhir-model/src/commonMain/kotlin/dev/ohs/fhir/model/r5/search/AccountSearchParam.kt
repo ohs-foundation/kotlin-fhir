@@ -55,7 +55,7 @@ public object AccountSearchParam {
     )
 
   public data object Guarantor : SearchParam<Account, Reference> {
-    public override val paramName: KotlinString = "guarantor"
+    public override val name: KotlinString = "guarantor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -69,7 +69,7 @@ public object AccountSearchParam {
   }
 
   public data object Identifier : SearchParam<Account, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -82,7 +82,7 @@ public object AccountSearchParam {
   }
 
   public data object Name : SearchParam<Account, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -94,7 +94,7 @@ public object AccountSearchParam {
   }
 
   public data object Owner : SearchParam<Account, Reference> {
-    public override val paramName: KotlinString = "owner"
+    public override val name: KotlinString = "owner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -106,7 +106,7 @@ public object AccountSearchParam {
   }
 
   public data object Patient : SearchParam<Account, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -120,7 +120,7 @@ public object AccountSearchParam {
   }
 
   public data object Period : SearchParam<Account, dev.ohs.fhir.model.r5.Period> {
-    public override val paramName: KotlinString = "period"
+    public override val name: KotlinString = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -133,7 +133,7 @@ public object AccountSearchParam {
   }
 
   public data object Relatedaccount : SearchParam<Account, Reference> {
-    public override val paramName: KotlinString = "relatedaccount"
+    public override val name: KotlinString = "relatedaccount"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -146,7 +146,7 @@ public object AccountSearchParam {
   }
 
   public data object Status : SearchParam<Account, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -158,7 +158,7 @@ public object AccountSearchParam {
   }
 
   public data object Subject : SearchParam<Account, Reference> {
-    public override val paramName: KotlinString = "subject"
+    public override val name: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -179,7 +179,7 @@ public object AccountSearchParam {
   }
 
   public data object Type : SearchParam<Account, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

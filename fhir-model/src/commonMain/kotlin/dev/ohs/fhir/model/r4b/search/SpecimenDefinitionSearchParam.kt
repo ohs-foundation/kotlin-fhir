@@ -33,7 +33,7 @@ public object SpecimenDefinitionSearchParam {
   public val ALL: List<SearchParam<SpecimenDefinition, *>> = listOf(Container, Identifier, Type)
 
   public data object Container : SearchParam<SpecimenDefinition, CodeableConcept> {
-    public override val paramName: String = "container"
+    public override val name: String = "container"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -47,7 +47,7 @@ public object SpecimenDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<SpecimenDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -61,7 +61,7 @@ public object SpecimenDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<SpecimenDefinition, CodeableConcept> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

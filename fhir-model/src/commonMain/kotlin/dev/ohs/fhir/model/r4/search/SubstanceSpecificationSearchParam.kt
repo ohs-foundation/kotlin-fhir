@@ -33,7 +33,7 @@ public object SubstanceSpecificationSearchParam {
   public val ALL: List<SearchParam<SubstanceSpecification, *>> = listOf(Code)
 
   public data object Code : SearchParam<SubstanceSpecification, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

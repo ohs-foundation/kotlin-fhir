@@ -48,7 +48,7 @@ public object SlotSearchParam {
     )
 
   public data object AppointmentType : SearchParam<Slot, CodeableConcept> {
-    public override val paramName: String = "appointment-type"
+    public override val name: String = "appointment-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -60,7 +60,7 @@ public object SlotSearchParam {
   }
 
   public data object Identifier : SearchParam<Slot, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -73,7 +73,7 @@ public object SlotSearchParam {
   }
 
   public data object Schedule : SearchParam<Slot, Reference> {
-    public override val paramName: String = "schedule"
+    public override val name: String = "schedule"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -86,7 +86,7 @@ public object SlotSearchParam {
   }
 
   public data object ServiceCategory : SearchParam<Slot, CodeableConcept> {
-    public override val paramName: String = "service-category"
+    public override val name: String = "service-category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -98,7 +98,7 @@ public object SlotSearchParam {
   }
 
   public data object ServiceType : SearchParam<Slot, CodeableConcept> {
-    public override val paramName: String = "service-type"
+    public override val name: String = "service-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -111,7 +111,7 @@ public object SlotSearchParam {
   }
 
   public data object ServiceTypeReference : SearchParam<Slot, Reference> {
-    public override val paramName: String = "service-type-reference"
+    public override val name: String = "service-type-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -124,7 +124,7 @@ public object SlotSearchParam {
   }
 
   public data object Specialty : SearchParam<Slot, CodeableConcept> {
-    public override val paramName: String = "specialty"
+    public override val name: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -136,7 +136,7 @@ public object SlotSearchParam {
   }
 
   public data object Start : SearchParam<Slot, Instant> {
-    public override val paramName: String = "start"
+    public override val name: String = "start"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -148,7 +148,7 @@ public object SlotSearchParam {
   }
 
   public data object Status : SearchParam<Slot, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

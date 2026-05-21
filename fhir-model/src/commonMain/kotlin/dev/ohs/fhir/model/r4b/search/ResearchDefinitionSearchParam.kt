@@ -206,7 +206,7 @@ public object ResearchDefinitionSearchParam {
     )
 
   public data object ComposedOf : SearchParam<ResearchDefinition, Canonical> {
-    public override val paramName: KotlinString = "composed-of"
+    public override val name: KotlinString = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -364,7 +364,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Context : SearchParam<ResearchDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -378,7 +378,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<ResearchDefinition, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -392,7 +392,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<ResearchDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -405,7 +405,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<ResearchDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -418,7 +418,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<ResearchDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -431,7 +431,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<ResearchDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -444,7 +444,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object DependsOn : SearchParam<ResearchDefinition, Canonical> {
-    public override val paramName: KotlinString = "depends-on"
+    public override val name: KotlinString = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -602,7 +602,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object DerivedFrom : SearchParam<ResearchDefinition, Canonical> {
-    public override val paramName: KotlinString = "derived-from"
+    public override val name: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -760,7 +760,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<ResearchDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -773,7 +773,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Effective : SearchParam<ResearchDefinition, Period> {
-    public override val paramName: KotlinString = "effective"
+    public override val name: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -787,7 +787,7 @@ public object ResearchDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<ResearchDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -801,7 +801,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<ResearchDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -814,7 +814,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<ResearchDefinition, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -827,7 +827,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Predecessor : SearchParam<ResearchDefinition, Canonical> {
-    public override val paramName: KotlinString = "predecessor"
+    public override val name: KotlinString = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -985,7 +985,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<ResearchDefinition, R4bString> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -998,7 +998,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<ResearchDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1011,7 +1011,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Successor : SearchParam<ResearchDefinition, Canonical> {
-    public override val paramName: KotlinString = "successor"
+    public override val name: KotlinString = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -1169,7 +1169,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<ResearchDefinition, R4bString> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -1182,7 +1182,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Topic : SearchParam<ResearchDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "topic"
+    public override val name: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1195,7 +1195,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<ResearchDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -1208,7 +1208,7 @@ public object ResearchDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<ResearchDefinition, R4bString> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

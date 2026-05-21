@@ -59,7 +59,7 @@ public object TestScriptSearchParam {
     )
 
   public data object Context : SearchParam<TestScript, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -73,7 +73,7 @@ public object TestScriptSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<TestScript, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -86,7 +86,7 @@ public object TestScriptSearchParam {
   }
 
   public data object ContextType : SearchParam<TestScript, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -99,7 +99,7 @@ public object TestScriptSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<TestScript, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -111,7 +111,7 @@ public object TestScriptSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<TestScript, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -123,7 +123,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Date : SearchParam<TestScript, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -135,7 +135,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Description : SearchParam<TestScript, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -148,7 +148,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Identifier : SearchParam<TestScript, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -161,7 +161,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<TestScript, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -173,7 +173,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Name : SearchParam<TestScript, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -185,7 +185,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Publisher : SearchParam<TestScript, R4bString> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -198,7 +198,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Status : SearchParam<TestScript, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -210,7 +210,7 @@ public object TestScriptSearchParam {
   }
 
   public data object TestscriptCapability : SearchParam<TestScript, R4bString> {
-    public override val paramName: KotlinString = "testscript-capability"
+    public override val name: KotlinString = "testscript-capability"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -223,7 +223,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Title : SearchParam<TestScript, R4bString> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -236,7 +236,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Url : SearchParam<TestScript, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -248,7 +248,7 @@ public object TestScriptSearchParam {
   }
 
   public data object Version : SearchParam<TestScript, R4bString> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

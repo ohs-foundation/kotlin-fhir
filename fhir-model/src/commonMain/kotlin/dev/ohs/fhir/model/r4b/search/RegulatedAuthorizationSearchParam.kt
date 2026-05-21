@@ -48,7 +48,7 @@ public object RegulatedAuthorizationSearchParam {
     listOf(Case, CaseType, Holder, Identifier, Region, Status, Subject)
 
   public data object Case : SearchParam<RegulatedAuthorization, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "case"
+    public override val name: String = "case"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -62,7 +62,7 @@ public object RegulatedAuthorizationSearchParam {
   }
 
   public data object CaseType : SearchParam<RegulatedAuthorization, CodeableConcept> {
-    public override val paramName: String = "case-type"
+    public override val name: String = "case-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -75,7 +75,7 @@ public object RegulatedAuthorizationSearchParam {
   }
 
   public data object Holder : SearchParam<RegulatedAuthorization, Reference> {
-    public override val paramName: String = "holder"
+    public override val name: String = "holder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -89,7 +89,7 @@ public object RegulatedAuthorizationSearchParam {
 
   public data object Identifier :
     SearchParam<RegulatedAuthorization, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -103,7 +103,7 @@ public object RegulatedAuthorizationSearchParam {
   }
 
   public data object Region : SearchParam<RegulatedAuthorization, CodeableConcept> {
-    public override val paramName: String = "region"
+    public override val name: String = "region"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -116,7 +116,7 @@ public object RegulatedAuthorizationSearchParam {
   }
 
   public data object Status : SearchParam<RegulatedAuthorization, CodeableConcept> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -129,7 +129,7 @@ public object RegulatedAuthorizationSearchParam {
   }
 
   public data object Subject : SearchParam<RegulatedAuthorization, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

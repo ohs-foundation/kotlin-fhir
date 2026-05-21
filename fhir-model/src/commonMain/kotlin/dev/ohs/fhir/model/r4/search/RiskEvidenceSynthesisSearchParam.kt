@@ -60,7 +60,7 @@ public object RiskEvidenceSynthesisSearchParam {
     )
 
   public data object Context : SearchParam<RiskEvidenceSynthesis, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -74,7 +74,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<RiskEvidenceSynthesis, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -88,7 +88,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object ContextType : SearchParam<RiskEvidenceSynthesis, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -101,7 +101,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<RiskEvidenceSynthesis, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -114,7 +114,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<RiskEvidenceSynthesis, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -127,7 +127,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Date : SearchParam<RiskEvidenceSynthesis, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -140,7 +140,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Description : SearchParam<RiskEvidenceSynthesis, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -153,7 +153,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Effective : SearchParam<RiskEvidenceSynthesis, Period> {
-    public override val paramName: KotlinString = "effective"
+    public override val name: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -167,7 +167,7 @@ public object RiskEvidenceSynthesisSearchParam {
 
   public data object Identifier :
     SearchParam<RiskEvidenceSynthesis, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -181,7 +181,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<RiskEvidenceSynthesis, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -194,7 +194,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Name : SearchParam<RiskEvidenceSynthesis, R4String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -207,7 +207,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Publisher : SearchParam<RiskEvidenceSynthesis, R4String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -220,7 +220,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Status : SearchParam<RiskEvidenceSynthesis, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -233,7 +233,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Title : SearchParam<RiskEvidenceSynthesis, R4String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -246,7 +246,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Url : SearchParam<RiskEvidenceSynthesis, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -259,7 +259,7 @@ public object RiskEvidenceSynthesisSearchParam {
   }
 
   public data object Version : SearchParam<RiskEvidenceSynthesis, R4String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

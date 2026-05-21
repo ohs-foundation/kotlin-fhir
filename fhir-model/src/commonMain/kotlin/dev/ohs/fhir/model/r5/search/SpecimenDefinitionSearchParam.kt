@@ -38,7 +38,7 @@ public object SpecimenDefinitionSearchParam {
     listOf(Container, Experimental, Identifier, IsDerived, Status, Title, Type, TypeTested, Url)
 
   public data object Container : SearchParam<SpecimenDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "container"
+    public override val name: KotlinString = "container"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -51,7 +51,7 @@ public object SpecimenDefinitionSearchParam {
   }
 
   public data object Experimental : SearchParam<SpecimenDefinition, Boolean> {
-    public override val paramName: KotlinString = "experimental"
+    public override val name: KotlinString = "experimental"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -65,7 +65,7 @@ public object SpecimenDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<SpecimenDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -79,7 +79,7 @@ public object SpecimenDefinitionSearchParam {
   }
 
   public data object IsDerived : SearchParam<SpecimenDefinition, Boolean> {
-    public override val paramName: KotlinString = "is-derived"
+    public override val name: KotlinString = "is-derived"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -92,7 +92,7 @@ public object SpecimenDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<SpecimenDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -104,7 +104,7 @@ public object SpecimenDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<SpecimenDefinition, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -117,7 +117,7 @@ public object SpecimenDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<SpecimenDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -130,7 +130,7 @@ public object SpecimenDefinitionSearchParam {
   }
 
   public data object TypeTested : SearchParam<SpecimenDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "type-tested"
+    public override val name: KotlinString = "type-tested"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -143,7 +143,7 @@ public object SpecimenDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<SpecimenDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 

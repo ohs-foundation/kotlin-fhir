@@ -66,7 +66,7 @@ public object ImagingSelectionSearchParam {
     )
 
   public data object BasedOn : SearchParam<ImagingSelection, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -85,7 +85,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object BodySite : SearchParam<ImagingSelection, CodeableConcept> {
-    public override val paramName: String = "body-site"
+    public override val name: String = "body-site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -98,7 +98,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object BodyStructure : SearchParam<ImagingSelection, Reference> {
-    public override val paramName: String = "body-structure"
+    public override val name: String = "body-structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -112,7 +112,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object Code : SearchParam<ImagingSelection, Any> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -124,7 +124,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object DerivedFrom : SearchParam<ImagingSelection, Reference> {
-    public override val paramName: String = "derived-from"
+    public override val name: String = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -137,7 +137,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object Identifier : SearchParam<ImagingSelection, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -151,7 +151,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object Issued : SearchParam<ImagingSelection, Instant> {
-    public override val paramName: String = "issued"
+    public override val name: String = "issued"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -164,7 +164,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object Patient : SearchParam<ImagingSelection, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -180,7 +180,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object Status : SearchParam<ImagingSelection, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -192,7 +192,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object StudyUid : SearchParam<ImagingSelection, Id> {
-    public override val paramName: String = "study-uid"
+    public override val name: String = "study-uid"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -205,7 +205,7 @@ public object ImagingSelectionSearchParam {
   }
 
   public data object Subject : SearchParam<ImagingSelection, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

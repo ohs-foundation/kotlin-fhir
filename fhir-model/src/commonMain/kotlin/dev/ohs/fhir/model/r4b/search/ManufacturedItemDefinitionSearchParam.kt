@@ -34,7 +34,7 @@ public object ManufacturedItemDefinitionSearchParam {
     listOf(DoseForm, Identifier, Ingredient)
 
   public data object DoseForm : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
-    public override val paramName: String = "dose-form"
+    public override val name: String = "dose-form"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -48,7 +48,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<ManufacturedItemDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -62,7 +62,7 @@ public object ManufacturedItemDefinitionSearchParam {
   }
 
   public data object Ingredient : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
-    public override val paramName: String = "ingredient"
+    public override val name: String = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

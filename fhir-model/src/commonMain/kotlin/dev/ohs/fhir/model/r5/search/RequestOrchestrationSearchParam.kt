@@ -210,7 +210,7 @@ public object RequestOrchestrationSearchParam {
     )
 
   public data object Author : SearchParam<RequestOrchestration, Reference> {
-    public override val paramName: String = "author"
+    public override val name: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -224,7 +224,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object Authored : SearchParam<RequestOrchestration, DateTime> {
-    public override val paramName: String = "authored"
+    public override val name: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -237,7 +237,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object BasedOn : SearchParam<RequestOrchestration, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -410,7 +410,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object Code : SearchParam<RequestOrchestration, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -423,7 +423,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object Encounter : SearchParam<RequestOrchestration, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -438,7 +438,7 @@ public object RequestOrchestrationSearchParam {
 
   public data object GroupIdentifier :
     SearchParam<RequestOrchestration, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "group-identifier"
+    public override val name: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -453,7 +453,7 @@ public object RequestOrchestrationSearchParam {
 
   public data object Identifier :
     SearchParam<RequestOrchestration, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -467,7 +467,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object InstantiatesCanonical : SearchParam<RequestOrchestration, Canonical> {
-    public override val paramName: String = "instantiates-canonical"
+    public override val name: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -520,7 +520,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object InstantiatesUri : SearchParam<RequestOrchestration, Uri> {
-    public override val paramName: String = "instantiates-uri"
+    public override val name: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -533,7 +533,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object Intent : SearchParam<RequestOrchestration, Any> {
-    public override val paramName: String = "intent"
+    public override val name: String = "intent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -546,7 +546,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object Participant : SearchParam<RequestOrchestration, Any> {
-    public override val paramName: String = "participant"
+    public override val name: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -574,7 +574,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object Patient : SearchParam<RequestOrchestration, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -591,7 +591,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object Priority : SearchParam<RequestOrchestration, Any> {
-    public override val paramName: String = "priority"
+    public override val name: String = "priority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -604,7 +604,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object Status : SearchParam<RequestOrchestration, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -617,7 +617,7 @@ public object RequestOrchestrationSearchParam {
   }
 
   public data object Subject : SearchParam<RequestOrchestration, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

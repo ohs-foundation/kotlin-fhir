@@ -54,7 +54,7 @@ public object CompartmentDefinitionSearchParam {
     )
 
   public data object Code : SearchParam<CompartmentDefinition, Any> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -66,7 +66,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object Context : SearchParam<CompartmentDefinition, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -79,7 +79,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<CompartmentDefinition, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -92,7 +92,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<CompartmentDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -105,7 +105,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<CompartmentDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -118,7 +118,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<CompartmentDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -131,7 +131,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<CompartmentDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -144,7 +144,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<CompartmentDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -157,7 +157,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<CompartmentDefinition, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -170,7 +170,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<CompartmentDefinition, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -183,7 +183,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object Resource : SearchParam<CompartmentDefinition, Any> {
-    public override val paramName: KotlinString = "resource"
+    public override val name: KotlinString = "resource"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -196,7 +196,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<CompartmentDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -209,7 +209,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<CompartmentDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -221,7 +221,7 @@ public object CompartmentDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<CompartmentDefinition, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

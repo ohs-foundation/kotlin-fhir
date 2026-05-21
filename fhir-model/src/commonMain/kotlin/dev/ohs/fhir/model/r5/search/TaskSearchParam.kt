@@ -215,7 +215,7 @@ public object TaskSearchParam {
     )
 
   public data object Actor : SearchParam<Task, Reference> {
-    public override val paramName: String = "actor"
+    public override val name: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -236,7 +236,7 @@ public object TaskSearchParam {
   }
 
   public data object AuthoredOn : SearchParam<Task, DateTime> {
-    public override val paramName: String = "authored-on"
+    public override val name: String = "authored-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -249,7 +249,7 @@ public object TaskSearchParam {
   }
 
   public data object BasedOn : SearchParam<Task, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -421,7 +421,7 @@ public object TaskSearchParam {
   }
 
   public data object BusinessStatus : SearchParam<Task, CodeableConcept> {
-    public override val paramName: String = "business-status"
+    public override val name: String = "business-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -434,7 +434,7 @@ public object TaskSearchParam {
   }
 
   public data object Code : SearchParam<Task, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -447,7 +447,7 @@ public object TaskSearchParam {
   }
 
   public data object Encounter : SearchParam<Task, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -461,7 +461,7 @@ public object TaskSearchParam {
   }
 
   public data object Focus : SearchParam<Task, Reference> {
-    public override val paramName: String = "focus"
+    public override val name: String = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -634,7 +634,7 @@ public object TaskSearchParam {
   }
 
   public data object GroupIdentifier : SearchParam<Task, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "group-identifier"
+    public override val name: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -647,7 +647,7 @@ public object TaskSearchParam {
   }
 
   public data object Identifier : SearchParam<Task, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -660,7 +660,7 @@ public object TaskSearchParam {
   }
 
   public data object Intent : SearchParam<Task, Any> {
-    public override val paramName: String = "intent"
+    public override val name: String = "intent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -672,7 +672,7 @@ public object TaskSearchParam {
   }
 
   public data object Modified : SearchParam<Task, DateTime> {
-    public override val paramName: String = "modified"
+    public override val name: String = "modified"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -685,7 +685,7 @@ public object TaskSearchParam {
   }
 
   public data object Output : SearchParam<Task, Any> {
-    public override val paramName: String = "output"
+    public override val name: String = "output"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -857,7 +857,7 @@ public object TaskSearchParam {
   }
 
   public data object Owner : SearchParam<Task, Reference> {
-    public override val paramName: String = "owner"
+    public override val name: String = "owner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -878,7 +878,7 @@ public object TaskSearchParam {
   }
 
   public data object PartOf : SearchParam<Task, Reference> {
-    public override val paramName: String = "part-of"
+    public override val name: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -890,7 +890,7 @@ public object TaskSearchParam {
   }
 
   public data object Patient : SearchParam<Task, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -906,7 +906,7 @@ public object TaskSearchParam {
   }
 
   public data object Performer : SearchParam<Task, CodeableConcept> {
-    public override val paramName: String = "performer"
+    public override val name: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -919,7 +919,7 @@ public object TaskSearchParam {
   }
 
   public data object Period : SearchParam<Task, dev.ohs.fhir.model.r5.Period> {
-    public override val paramName: String = "period"
+    public override val name: String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -932,7 +932,7 @@ public object TaskSearchParam {
   }
 
   public data object Priority : SearchParam<Task, Any> {
-    public override val paramName: String = "priority"
+    public override val name: String = "priority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -945,7 +945,7 @@ public object TaskSearchParam {
   }
 
   public data object RequestedperformerReference : SearchParam<Task, Reference> {
-    public override val paramName: String = "requestedperformer-reference"
+    public override val name: String = "requestedperformer-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -968,7 +968,7 @@ public object TaskSearchParam {
   }
 
   public data object Requester : SearchParam<Task, Reference> {
-    public override val paramName: String = "requester"
+    public override val name: String = "requester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -989,7 +989,7 @@ public object TaskSearchParam {
   }
 
   public data object Status : SearchParam<Task, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1001,7 +1001,7 @@ public object TaskSearchParam {
   }
 
   public data object Subject : SearchParam<Task, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

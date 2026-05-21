@@ -213,7 +213,7 @@ public object LibrarySearchParam {
     )
 
   public data object ComposedOf : SearchParam<Library, Canonical> {
-    public override val paramName: KotlinString = "composed-of"
+    public override val name: KotlinString = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -376,7 +376,7 @@ public object LibrarySearchParam {
   }
 
   public data object ContentType : SearchParam<Library, Any> {
-    public override val paramName: KotlinString = "content-type"
+    public override val name: KotlinString = "content-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -389,7 +389,7 @@ public object LibrarySearchParam {
   }
 
   public data object Context : SearchParam<Library, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -402,7 +402,7 @@ public object LibrarySearchParam {
   }
 
   public data object ContextQuantity : SearchParam<Library, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -415,7 +415,7 @@ public object LibrarySearchParam {
   }
 
   public data object ContextType : SearchParam<Library, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -428,7 +428,7 @@ public object LibrarySearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<Library, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -441,7 +441,7 @@ public object LibrarySearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<Library, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -454,7 +454,7 @@ public object LibrarySearchParam {
   }
 
   public data object Date : SearchParam<Library, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -467,7 +467,7 @@ public object LibrarySearchParam {
   }
 
   public data object DependsOn : SearchParam<Library, Canonical> {
-    public override val paramName: KotlinString = "depends-on"
+    public override val name: KotlinString = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -630,7 +630,7 @@ public object LibrarySearchParam {
   }
 
   public data object DerivedFrom : SearchParam<Library, Canonical> {
-    public override val paramName: KotlinString = "derived-from"
+    public override val name: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -793,7 +793,7 @@ public object LibrarySearchParam {
   }
 
   public data object Description : SearchParam<Library, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -806,7 +806,7 @@ public object LibrarySearchParam {
   }
 
   public data object Effective : SearchParam<Library, Period> {
-    public override val paramName: KotlinString = "effective"
+    public override val name: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -819,7 +819,7 @@ public object LibrarySearchParam {
   }
 
   public data object Identifier : SearchParam<Library, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -833,7 +833,7 @@ public object LibrarySearchParam {
   }
 
   public data object Jurisdiction : SearchParam<Library, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -846,7 +846,7 @@ public object LibrarySearchParam {
   }
 
   public data object Name : SearchParam<Library, R4String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -859,7 +859,7 @@ public object LibrarySearchParam {
   }
 
   public data object Predecessor : SearchParam<Library, Canonical> {
-    public override val paramName: KotlinString = "predecessor"
+    public override val name: KotlinString = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -1022,7 +1022,7 @@ public object LibrarySearchParam {
   }
 
   public data object Publisher : SearchParam<Library, R4String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -1035,7 +1035,7 @@ public object LibrarySearchParam {
   }
 
   public data object Status : SearchParam<Library, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1047,7 +1047,7 @@ public object LibrarySearchParam {
   }
 
   public data object Successor : SearchParam<Library, Canonical> {
-    public override val paramName: KotlinString = "successor"
+    public override val name: KotlinString = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -1210,7 +1210,7 @@ public object LibrarySearchParam {
   }
 
   public data object Title : SearchParam<Library, R4String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -1223,7 +1223,7 @@ public object LibrarySearchParam {
   }
 
   public data object Topic : SearchParam<Library, CodeableConcept> {
-    public override val paramName: KotlinString = "topic"
+    public override val name: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1236,7 +1236,7 @@ public object LibrarySearchParam {
   }
 
   public data object Type : SearchParam<Library, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1249,7 +1249,7 @@ public object LibrarySearchParam {
   }
 
   public data object Url : SearchParam<Library, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -1262,7 +1262,7 @@ public object LibrarySearchParam {
   }
 
   public data object Version : SearchParam<Library, R4String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

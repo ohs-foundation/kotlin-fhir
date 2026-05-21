@@ -143,7 +143,7 @@ object ResourceSearchParamFileSpecGenerator {
       .addModifiers(KModifier.PUBLIC, KModifier.DATA)
       .addSuperinterface(parentType)
       .addProperty(
-        PropertySpec.builder("paramName", String::class)
+        PropertySpec.builder("name", String::class)
           .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
           .initializer("%S", searchParam.code)
           .build()

@@ -58,7 +58,7 @@ public object SubscriptionSearchParam {
     )
 
   public data object Contact : SearchParam<Subscription, ContactPoint> {
-    public override val paramName: KotlinString = "contact"
+    public override val name: KotlinString = "contact"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -70,7 +70,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object ContentLevel : SearchParam<Subscription, Any> {
-    public override val paramName: KotlinString = "content-level"
+    public override val name: KotlinString = "content-level"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -82,7 +82,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object FilterValue : SearchParam<Subscription, R5String> {
-    public override val paramName: KotlinString = "filter-value"
+    public override val name: KotlinString = "filter-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -95,7 +95,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Identifier : SearchParam<Subscription, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -108,7 +108,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Name : SearchParam<Subscription, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -121,7 +121,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Owner : SearchParam<Subscription, Reference> {
-    public override val paramName: KotlinString = "owner"
+    public override val name: KotlinString = "owner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -143,7 +143,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Payload : SearchParam<Subscription, Any> {
-    public override val paramName: KotlinString = "payload"
+    public override val name: KotlinString = "payload"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -156,7 +156,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Status : SearchParam<Subscription, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -168,7 +168,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Topic : SearchParam<Subscription, Canonical> {
-    public override val paramName: KotlinString = "topic"
+    public override val name: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -180,7 +180,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Type : SearchParam<Subscription, Coding> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -192,7 +192,7 @@ public object SubscriptionSearchParam {
   }
 
   public data object Url : SearchParam<Subscription, dev.ohs.fhir.model.r5.Url> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 

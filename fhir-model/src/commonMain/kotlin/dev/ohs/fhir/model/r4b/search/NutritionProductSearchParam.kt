@@ -33,7 +33,7 @@ public object NutritionProductSearchParam {
   public val ALL: List<SearchParam<NutritionProduct, *>> = listOf(Identifier, Status)
 
   public data object Identifier : SearchParam<NutritionProduct, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -47,7 +47,7 @@ public object NutritionProductSearchParam {
   }
 
   public data object Status : SearchParam<NutritionProduct, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

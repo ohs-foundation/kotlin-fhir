@@ -53,7 +53,7 @@ public object CoverageSearchParam {
     )
 
   public data object Beneficiary : SearchParam<Coverage, Reference> {
-    public override val paramName: KotlinString = "beneficiary"
+    public override val name: KotlinString = "beneficiary"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -66,7 +66,7 @@ public object CoverageSearchParam {
   }
 
   public data object ClassType : SearchParam<Coverage, CodeableConcept> {
-    public override val paramName: KotlinString = "class-type"
+    public override val name: KotlinString = "class-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -79,7 +79,7 @@ public object CoverageSearchParam {
   }
 
   public data object ClassValue : SearchParam<Coverage, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "class-value"
+    public override val name: KotlinString = "class-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -92,7 +92,7 @@ public object CoverageSearchParam {
   }
 
   public data object Dependent : SearchParam<Coverage, R5String> {
-    public override val paramName: KotlinString = "dependent"
+    public override val name: KotlinString = "dependent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -105,7 +105,7 @@ public object CoverageSearchParam {
   }
 
   public data object Identifier : SearchParam<Coverage, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -118,7 +118,7 @@ public object CoverageSearchParam {
   }
 
   public data object Insurer : SearchParam<Coverage, Reference> {
-    public override val paramName: KotlinString = "insurer"
+    public override val name: KotlinString = "insurer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -131,7 +131,7 @@ public object CoverageSearchParam {
   }
 
   public data object Patient : SearchParam<Coverage, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -144,7 +144,7 @@ public object CoverageSearchParam {
   }
 
   public data object PaymentbyParty : SearchParam<Coverage, Reference> {
-    public override val paramName: KotlinString = "paymentby-party"
+    public override val name: KotlinString = "paymentby-party"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -158,7 +158,7 @@ public object CoverageSearchParam {
   }
 
   public data object PolicyHolder : SearchParam<Coverage, Reference> {
-    public override val paramName: KotlinString = "policy-holder"
+    public override val name: KotlinString = "policy-holder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -172,7 +172,7 @@ public object CoverageSearchParam {
   }
 
   public data object Status : SearchParam<Coverage, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -184,7 +184,7 @@ public object CoverageSearchParam {
   }
 
   public data object Subscriber : SearchParam<Coverage, Reference> {
-    public override val paramName: KotlinString = "subscriber"
+    public override val name: KotlinString = "subscriber"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -198,7 +198,7 @@ public object CoverageSearchParam {
   }
 
   public data object Subscriberid : SearchParam<Coverage, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "subscriberid"
+    public override val name: KotlinString = "subscriberid"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -211,7 +211,7 @@ public object CoverageSearchParam {
   }
 
   public data object Type : SearchParam<Coverage, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

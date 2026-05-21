@@ -51,7 +51,7 @@ public object RiskAssessmentSearchParam {
     )
 
   public data object Condition : SearchParam<RiskAssessment, Reference> {
-    public override val paramName: String = "condition"
+    public override val name: String = "condition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -65,7 +65,7 @@ public object RiskAssessmentSearchParam {
   }
 
   public data object Date : SearchParam<RiskAssessment, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -78,7 +78,7 @@ public object RiskAssessmentSearchParam {
   }
 
   public data object Encounter : SearchParam<RiskAssessment, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -92,7 +92,7 @@ public object RiskAssessmentSearchParam {
   }
 
   public data object Identifier : SearchParam<RiskAssessment, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -105,7 +105,7 @@ public object RiskAssessmentSearchParam {
   }
 
   public data object Method : SearchParam<RiskAssessment, CodeableConcept> {
-    public override val paramName: String = "method"
+    public override val name: String = "method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -118,7 +118,7 @@ public object RiskAssessmentSearchParam {
   }
 
   public data object Patient : SearchParam<RiskAssessment, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -134,7 +134,7 @@ public object RiskAssessmentSearchParam {
   }
 
   public data object Performer : SearchParam<RiskAssessment, Reference> {
-    public override val paramName: String = "performer"
+    public override val name: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -149,7 +149,7 @@ public object RiskAssessmentSearchParam {
 
   public data object Probability :
     SearchParam<RiskAssessment, RiskAssessment.Prediction.Probability> {
-    public override val paramName: String = "probability"
+    public override val name: String = "probability"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
 
@@ -164,7 +164,7 @@ public object RiskAssessmentSearchParam {
   }
 
   public data object Risk : SearchParam<RiskAssessment, CodeableConcept> {
-    public override val paramName: String = "risk"
+    public override val name: String = "risk"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -177,7 +177,7 @@ public object RiskAssessmentSearchParam {
   }
 
   public data object Subject : SearchParam<RiskAssessment, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

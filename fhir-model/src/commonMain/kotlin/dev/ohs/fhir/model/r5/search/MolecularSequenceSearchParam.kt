@@ -191,7 +191,7 @@ public object MolecularSequenceSearchParam {
     listOf(Focus, Identifier, Patient, Subject, Type)
 
   public data object Focus : SearchParam<MolecularSequence, Reference> {
-    public override val paramName: String = "focus"
+    public override val name: String = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -364,7 +364,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object Identifier : SearchParam<MolecularSequence, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -378,7 +378,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object Patient : SearchParam<MolecularSequence, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -394,7 +394,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object Subject : SearchParam<MolecularSequence, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -414,7 +414,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object Type : SearchParam<MolecularSequence, Any> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

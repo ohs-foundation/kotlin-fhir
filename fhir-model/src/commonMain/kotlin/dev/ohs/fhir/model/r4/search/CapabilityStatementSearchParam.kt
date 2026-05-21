@@ -68,7 +68,7 @@ public object CapabilityStatementSearchParam {
     )
 
   public data object Context : SearchParam<CapabilityStatement, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -82,7 +82,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<CapabilityStatement, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -96,7 +96,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object ContextType : SearchParam<CapabilityStatement, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -109,7 +109,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<CapabilityStatement, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -122,7 +122,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<CapabilityStatement, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -135,7 +135,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Date : SearchParam<CapabilityStatement, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -148,7 +148,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Description : SearchParam<CapabilityStatement, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -161,7 +161,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Fhirversion : SearchParam<CapabilityStatement, R4String> {
-    public override val paramName: KotlinString = "fhirversion"
+    public override val name: KotlinString = "fhirversion"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -174,7 +174,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Format : SearchParam<CapabilityStatement, Any> {
-    public override val paramName: KotlinString = "format"
+    public override val name: KotlinString = "format"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -186,7 +186,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Guide : SearchParam<CapabilityStatement, Canonical> {
-    public override val paramName: KotlinString = "guide"
+    public override val name: KotlinString = "guide"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -200,7 +200,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<CapabilityStatement, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -213,7 +213,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Mode : SearchParam<CapabilityStatement, Any> {
-    public override val paramName: KotlinString = "mode"
+    public override val name: KotlinString = "mode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -226,7 +226,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Name : SearchParam<CapabilityStatement, R4String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -239,7 +239,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Publisher : SearchParam<CapabilityStatement, R4String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -252,7 +252,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Resource : SearchParam<CapabilityStatement, Any> {
-    public override val paramName: KotlinString = "resource"
+    public override val name: KotlinString = "resource"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -265,7 +265,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object ResourceProfile : SearchParam<CapabilityStatement, Canonical> {
-    public override val paramName: KotlinString = "resource-profile"
+    public override val name: KotlinString = "resource-profile"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -279,7 +279,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object SecurityService : SearchParam<CapabilityStatement, CodeableConcept> {
-    public override val paramName: KotlinString = "security-service"
+    public override val name: KotlinString = "security-service"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -292,7 +292,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Software : SearchParam<CapabilityStatement, R4String> {
-    public override val paramName: KotlinString = "software"
+    public override val name: KotlinString = "software"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -305,7 +305,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Status : SearchParam<CapabilityStatement, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -317,7 +317,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object SupportedProfile : SearchParam<CapabilityStatement, Canonical> {
-    public override val paramName: KotlinString = "supported-profile"
+    public override val name: KotlinString = "supported-profile"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -332,7 +332,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Title : SearchParam<CapabilityStatement, R4String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -345,7 +345,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Url : SearchParam<CapabilityStatement, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -358,7 +358,7 @@ public object CapabilityStatementSearchParam {
   }
 
   public data object Version : SearchParam<CapabilityStatement, R4String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

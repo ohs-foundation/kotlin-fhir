@@ -35,7 +35,7 @@ public object GuidanceResponseSearchParam {
     listOf(Identifier, Patient, Request, Subject)
 
   public data object Identifier : SearchParam<GuidanceResponse, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -49,7 +49,7 @@ public object GuidanceResponseSearchParam {
   }
 
   public data object Patient : SearchParam<GuidanceResponse, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -65,7 +65,7 @@ public object GuidanceResponseSearchParam {
   }
 
   public data object Request : SearchParam<GuidanceResponse, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "request"
+    public override val name: String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -79,7 +79,7 @@ public object GuidanceResponseSearchParam {
   }
 
   public data object Subject : SearchParam<GuidanceResponse, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

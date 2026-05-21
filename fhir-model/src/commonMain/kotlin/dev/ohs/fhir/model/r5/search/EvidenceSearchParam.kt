@@ -54,7 +54,7 @@ public object EvidenceSearchParam {
     )
 
   public data object Context : SearchParam<Evidence, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -67,7 +67,7 @@ public object EvidenceSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<Evidence, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -79,7 +79,7 @@ public object EvidenceSearchParam {
   }
 
   public data object ContextType : SearchParam<Evidence, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -92,7 +92,7 @@ public object EvidenceSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<Evidence, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -104,7 +104,7 @@ public object EvidenceSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<Evidence, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -116,7 +116,7 @@ public object EvidenceSearchParam {
   }
 
   public data object Date : SearchParam<Evidence, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -128,7 +128,7 @@ public object EvidenceSearchParam {
   }
 
   public data object Description : SearchParam<Evidence, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -141,7 +141,7 @@ public object EvidenceSearchParam {
   }
 
   public data object Identifier : SearchParam<Evidence, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -154,7 +154,7 @@ public object EvidenceSearchParam {
   }
 
   public data object Publisher : SearchParam<Evidence, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -167,7 +167,7 @@ public object EvidenceSearchParam {
   }
 
   public data object Status : SearchParam<Evidence, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -179,7 +179,7 @@ public object EvidenceSearchParam {
   }
 
   public data object Title : SearchParam<Evidence, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -191,7 +191,7 @@ public object EvidenceSearchParam {
   }
 
   public data object Url : SearchParam<Evidence, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -203,7 +203,7 @@ public object EvidenceSearchParam {
   }
 
   public data object Version : SearchParam<Evidence, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

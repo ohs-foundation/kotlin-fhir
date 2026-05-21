@@ -37,7 +37,7 @@ public object EndpointSearchParam {
     listOf(ConnectionType, Identifier, Name, Organization, PayloadType, Status)
 
   public data object ConnectionType : SearchParam<Endpoint, CodeableConcept> {
-    public override val paramName: KotlinString = "connection-type"
+    public override val name: KotlinString = "connection-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -49,7 +49,7 @@ public object EndpointSearchParam {
   }
 
   public data object Identifier : SearchParam<Endpoint, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -62,7 +62,7 @@ public object EndpointSearchParam {
   }
 
   public data object Name : SearchParam<Endpoint, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -74,7 +74,7 @@ public object EndpointSearchParam {
   }
 
   public data object Organization : SearchParam<Endpoint, Reference> {
-    public override val paramName: KotlinString = "organization"
+    public override val name: KotlinString = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -88,7 +88,7 @@ public object EndpointSearchParam {
   }
 
   public data object PayloadType : SearchParam<Endpoint, CodeableConcept> {
-    public override val paramName: KotlinString = "payload-type"
+    public override val name: KotlinString = "payload-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -101,7 +101,7 @@ public object EndpointSearchParam {
   }
 
   public data object Status : SearchParam<Endpoint, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

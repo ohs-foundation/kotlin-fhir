@@ -207,7 +207,7 @@ public object ListSearchParam {
     )
 
   public data object Code : SearchParam<R5List, CodeableConcept> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -220,7 +220,7 @@ public object ListSearchParam {
   }
 
   public data object Date : SearchParam<R5List, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -233,7 +233,7 @@ public object ListSearchParam {
   }
 
   public data object EmptyReason : SearchParam<R5List, CodeableConcept> {
-    public override val paramName: KotlinString = "empty-reason"
+    public override val name: KotlinString = "empty-reason"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -246,7 +246,7 @@ public object ListSearchParam {
   }
 
   public data object Encounter : SearchParam<R5List, Reference> {
-    public override val paramName: KotlinString = "encounter"
+    public override val name: KotlinString = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -260,7 +260,7 @@ public object ListSearchParam {
   }
 
   public data object Identifier : SearchParam<R5List, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -274,7 +274,7 @@ public object ListSearchParam {
   }
 
   public data object Item : SearchParam<R5List, Reference> {
-    public override val paramName: KotlinString = "item"
+    public override val name: KotlinString = "item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -447,7 +447,7 @@ public object ListSearchParam {
   }
 
   public data object Notes : SearchParam<R5List, Markdown> {
-    public override val paramName: KotlinString = "notes"
+    public override val name: KotlinString = "notes"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -460,7 +460,7 @@ public object ListSearchParam {
   }
 
   public data object Patient : SearchParam<R5List, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -474,7 +474,7 @@ public object ListSearchParam {
   }
 
   public data object Source : SearchParam<R5List, Reference> {
-    public override val paramName: KotlinString = "source"
+    public override val name: KotlinString = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -496,7 +496,7 @@ public object ListSearchParam {
   }
 
   public data object Status : SearchParam<R5List, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -508,7 +508,7 @@ public object ListSearchParam {
   }
 
   public data object Subject : SearchParam<R5List, Reference> {
-    public override val paramName: KotlinString = "subject"
+    public override val name: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -680,7 +680,7 @@ public object ListSearchParam {
   }
 
   public data object Title : SearchParam<R5List, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 

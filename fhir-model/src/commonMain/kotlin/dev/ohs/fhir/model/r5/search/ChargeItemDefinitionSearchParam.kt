@@ -58,7 +58,7 @@ public object ChargeItemDefinitionSearchParam {
     )
 
   public data object Context : SearchParam<ChargeItemDefinition, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -71,7 +71,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<ChargeItemDefinition, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -84,7 +84,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<ChargeItemDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -97,7 +97,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<ChargeItemDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -110,7 +110,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<ChargeItemDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -123,7 +123,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<ChargeItemDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -136,7 +136,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<ChargeItemDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -149,7 +149,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object Effective : SearchParam<ChargeItemDefinition, Period> {
-    public override val paramName: KotlinString = "effective"
+    public override val name: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -164,7 +164,7 @@ public object ChargeItemDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<ChargeItemDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -178,7 +178,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<ChargeItemDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -191,7 +191,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<ChargeItemDefinition, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -204,7 +204,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<ChargeItemDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -216,7 +216,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<ChargeItemDefinition, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -229,7 +229,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<ChargeItemDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -242,7 +242,7 @@ public object ChargeItemDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<ChargeItemDefinition, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

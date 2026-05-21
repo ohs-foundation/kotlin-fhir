@@ -33,7 +33,7 @@ public object FormularyItemSearchParam {
   public val ALL: List<SearchParam<FormularyItem, *>> = listOf(Code, Identifier)
 
   public data object Code : SearchParam<FormularyItem, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -46,7 +46,7 @@ public object FormularyItemSearchParam {
   }
 
   public data object Identifier : SearchParam<FormularyItem, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

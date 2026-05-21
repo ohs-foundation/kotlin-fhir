@@ -56,7 +56,7 @@ public object PaymentReconciliationSearchParam {
     )
 
   public data object AllocationAccount : SearchParam<PaymentReconciliation, Reference> {
-    public override val paramName: KotlinString = "allocation-account"
+    public override val name: KotlinString = "allocation-account"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -69,7 +69,7 @@ public object PaymentReconciliationSearchParam {
   }
 
   public data object AllocationEncounter : SearchParam<PaymentReconciliation, Reference> {
-    public override val paramName: KotlinString = "allocation-encounter"
+    public override val name: KotlinString = "allocation-encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -82,7 +82,7 @@ public object PaymentReconciliationSearchParam {
   }
 
   public data object Created : SearchParam<PaymentReconciliation, DateTime> {
-    public override val paramName: KotlinString = "created"
+    public override val name: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -95,7 +95,7 @@ public object PaymentReconciliationSearchParam {
   }
 
   public data object Disposition : SearchParam<PaymentReconciliation, R5String> {
-    public override val paramName: KotlinString = "disposition"
+    public override val name: KotlinString = "disposition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -109,7 +109,7 @@ public object PaymentReconciliationSearchParam {
 
   public data object Identifier :
     SearchParam<PaymentReconciliation, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -123,7 +123,7 @@ public object PaymentReconciliationSearchParam {
   }
 
   public data object Outcome : SearchParam<PaymentReconciliation, Any> {
-    public override val paramName: KotlinString = "outcome"
+    public override val name: KotlinString = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -136,7 +136,7 @@ public object PaymentReconciliationSearchParam {
   }
 
   public data object PaymentIssuer : SearchParam<PaymentReconciliation, Reference> {
-    public override val paramName: KotlinString = "payment-issuer"
+    public override val name: KotlinString = "payment-issuer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -150,7 +150,7 @@ public object PaymentReconciliationSearchParam {
   }
 
   public data object Request : SearchParam<PaymentReconciliation, Reference> {
-    public override val paramName: KotlinString = "request"
+    public override val name: KotlinString = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -163,7 +163,7 @@ public object PaymentReconciliationSearchParam {
   }
 
   public data object Requestor : SearchParam<PaymentReconciliation, Reference> {
-    public override val paramName: KotlinString = "requestor"
+    public override val name: KotlinString = "requestor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -177,7 +177,7 @@ public object PaymentReconciliationSearchParam {
   }
 
   public data object Status : SearchParam<PaymentReconciliation, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

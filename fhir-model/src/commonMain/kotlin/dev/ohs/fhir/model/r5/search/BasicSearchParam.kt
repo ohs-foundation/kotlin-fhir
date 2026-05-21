@@ -192,7 +192,7 @@ public object BasicSearchParam {
     listOf(Author, Code, Created, Identifier, Patient, Subject)
 
   public data object Author : SearchParam<Basic, Reference> {
-    public override val paramName: String = "author"
+    public override val name: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -214,7 +214,7 @@ public object BasicSearchParam {
   }
 
   public data object Code : SearchParam<Basic, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -227,7 +227,7 @@ public object BasicSearchParam {
   }
 
   public data object Created : SearchParam<Basic, DateTime> {
-    public override val paramName: String = "created"
+    public override val name: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -240,7 +240,7 @@ public object BasicSearchParam {
   }
 
   public data object Identifier : SearchParam<Basic, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -254,7 +254,7 @@ public object BasicSearchParam {
   }
 
   public data object Patient : SearchParam<Basic, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -270,7 +270,7 @@ public object BasicSearchParam {
   }
 
   public data object Subject : SearchParam<Basic, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

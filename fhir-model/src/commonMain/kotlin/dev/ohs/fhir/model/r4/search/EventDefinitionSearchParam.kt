@@ -211,7 +211,7 @@ public object EventDefinitionSearchParam {
     )
 
   public data object ComposedOf : SearchParam<EventDefinition, Canonical> {
-    public override val paramName: KotlinString = "composed-of"
+    public override val name: KotlinString = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -374,7 +374,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Context : SearchParam<EventDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -388,7 +388,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<EventDefinition, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -401,7 +401,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<EventDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -414,7 +414,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<EventDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -427,7 +427,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<EventDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -440,7 +440,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<EventDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -453,7 +453,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object DependsOn : SearchParam<EventDefinition, Canonical> {
-    public override val paramName: KotlinString = "depends-on"
+    public override val name: KotlinString = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -616,7 +616,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object DerivedFrom : SearchParam<EventDefinition, Canonical> {
-    public override val paramName: KotlinString = "derived-from"
+    public override val name: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -779,7 +779,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<EventDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -792,7 +792,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Effective : SearchParam<EventDefinition, Period> {
-    public override val paramName: KotlinString = "effective"
+    public override val name: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -805,7 +805,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Identifier : SearchParam<EventDefinition, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -819,7 +819,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<EventDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -832,7 +832,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<EventDefinition, R4String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -845,7 +845,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Predecessor : SearchParam<EventDefinition, Canonical> {
-    public override val paramName: KotlinString = "predecessor"
+    public override val name: KotlinString = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -1008,7 +1008,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<EventDefinition, R4String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -1021,7 +1021,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<EventDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1034,7 +1034,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Successor : SearchParam<EventDefinition, Canonical> {
-    public override val paramName: KotlinString = "successor"
+    public override val name: KotlinString = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -1197,7 +1197,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<EventDefinition, R4String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -1210,7 +1210,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Topic : SearchParam<EventDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "topic"
+    public override val name: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1223,7 +1223,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<EventDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -1236,7 +1236,7 @@ public object EventDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<EventDefinition, R4String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

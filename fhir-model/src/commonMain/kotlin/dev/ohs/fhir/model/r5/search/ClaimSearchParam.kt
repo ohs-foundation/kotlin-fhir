@@ -61,7 +61,7 @@ public object ClaimSearchParam {
     )
 
   public data object CareTeam : SearchParam<Claim, Reference> {
-    public override val paramName: String = "care-team"
+    public override val name: String = "care-team"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -75,7 +75,7 @@ public object ClaimSearchParam {
   }
 
   public data object Created : SearchParam<Claim, DateTime> {
-    public override val paramName: String = "created"
+    public override val name: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -87,7 +87,7 @@ public object ClaimSearchParam {
   }
 
   public data object DetailUdi : SearchParam<Claim, Reference> {
-    public override val paramName: String = "detail-udi"
+    public override val name: String = "detail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -100,7 +100,7 @@ public object ClaimSearchParam {
   }
 
   public data object Encounter : SearchParam<Claim, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -114,7 +114,7 @@ public object ClaimSearchParam {
   }
 
   public data object Enterer : SearchParam<Claim, Reference> {
-    public override val paramName: String = "enterer"
+    public override val name: String = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -132,7 +132,7 @@ public object ClaimSearchParam {
   }
 
   public data object Facility : SearchParam<Claim, Reference> {
-    public override val paramName: String = "facility"
+    public override val name: String = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -145,7 +145,7 @@ public object ClaimSearchParam {
   }
 
   public data object Identifier : SearchParam<Claim, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -158,7 +158,7 @@ public object ClaimSearchParam {
   }
 
   public data object Insurer : SearchParam<Claim, Reference> {
-    public override val paramName: String = "insurer"
+    public override val name: String = "insurer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -170,7 +170,7 @@ public object ClaimSearchParam {
   }
 
   public data object ItemUdi : SearchParam<Claim, Reference> {
-    public override val paramName: String = "item-udi"
+    public override val name: String = "item-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -182,7 +182,7 @@ public object ClaimSearchParam {
   }
 
   public data object Patient : SearchParam<Claim, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -195,7 +195,7 @@ public object ClaimSearchParam {
   }
 
   public data object Payee : SearchParam<Claim, Reference> {
-    public override val paramName: String = "payee"
+    public override val name: String = "payee"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -215,7 +215,7 @@ public object ClaimSearchParam {
   }
 
   public data object Priority : SearchParam<Claim, CodeableConcept> {
-    public override val paramName: String = "priority"
+    public override val name: String = "priority"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -228,7 +228,7 @@ public object ClaimSearchParam {
   }
 
   public data object ProcedureUdi : SearchParam<Claim, Reference> {
-    public override val paramName: String = "procedure-udi"
+    public override val name: String = "procedure-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -241,7 +241,7 @@ public object ClaimSearchParam {
   }
 
   public data object Provider : SearchParam<Claim, Reference> {
-    public override val paramName: String = "provider"
+    public override val name: String = "provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -254,7 +254,7 @@ public object ClaimSearchParam {
   }
 
   public data object Status : SearchParam<Claim, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -266,7 +266,7 @@ public object ClaimSearchParam {
   }
 
   public data object SubdetailUdi : SearchParam<Claim, Reference> {
-    public override val paramName: String = "subdetail-udi"
+    public override val name: String = "subdetail-udi"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -279,7 +279,7 @@ public object ClaimSearchParam {
   }
 
   public data object Use : SearchParam<Claim, Any> {
-    public override val paramName: String = "use"
+    public override val name: String = "use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

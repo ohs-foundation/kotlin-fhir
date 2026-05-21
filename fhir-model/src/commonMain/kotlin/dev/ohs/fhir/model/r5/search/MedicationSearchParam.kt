@@ -51,7 +51,7 @@ public object MedicationSearchParam {
     )
 
   public data object Code : SearchParam<Medication, CodeableConcept> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -64,7 +64,7 @@ public object MedicationSearchParam {
   }
 
   public data object ExpirationDate : SearchParam<Medication, DateTime> {
-    public override val paramName: KotlinString = "expiration-date"
+    public override val name: KotlinString = "expiration-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -77,7 +77,7 @@ public object MedicationSearchParam {
   }
 
   public data object Form : SearchParam<Medication, Any> {
-    public override val paramName: KotlinString = "form"
+    public override val name: KotlinString = "form"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -89,7 +89,7 @@ public object MedicationSearchParam {
   }
 
   public data object Identifier : SearchParam<Medication, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -102,7 +102,7 @@ public object MedicationSearchParam {
   }
 
   public data object Ingredient : SearchParam<Medication, Reference> {
-    public override val paramName: KotlinString = "ingredient"
+    public override val name: KotlinString = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -116,7 +116,7 @@ public object MedicationSearchParam {
   }
 
   public data object IngredientCode : SearchParam<Medication, CodeableConcept> {
-    public override val paramName: KotlinString = "ingredient-code"
+    public override val name: KotlinString = "ingredient-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -129,7 +129,7 @@ public object MedicationSearchParam {
   }
 
   public data object LotNumber : SearchParam<Medication, R5String> {
-    public override val paramName: KotlinString = "lot-number"
+    public override val name: KotlinString = "lot-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -142,7 +142,7 @@ public object MedicationSearchParam {
   }
 
   public data object Marketingauthorizationholder : SearchParam<Medication, Reference> {
-    public override val paramName: KotlinString = "marketingauthorizationholder"
+    public override val name: KotlinString = "marketingauthorizationholder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -155,7 +155,7 @@ public object MedicationSearchParam {
   }
 
   public data object SerialNumber : SearchParam<Medication, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "serial-number"
+    public override val name: KotlinString = "serial-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -168,7 +168,7 @@ public object MedicationSearchParam {
   }
 
   public data object Status : SearchParam<Medication, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

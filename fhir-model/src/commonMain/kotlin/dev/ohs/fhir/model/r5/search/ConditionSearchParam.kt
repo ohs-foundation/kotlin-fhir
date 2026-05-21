@@ -214,7 +214,7 @@ public object ConditionSearchParam {
     )
 
   public data object AbatementAge : SearchParam<Condition, Any> {
-    public override val paramName: String = "abatement-age"
+    public override val name: String = "abatement-age"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -226,7 +226,7 @@ public object ConditionSearchParam {
   }
 
   public data object AbatementDate : SearchParam<Condition, Any> {
-    public override val paramName: String = "abatement-date"
+    public override val name: String = "abatement-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -238,7 +238,7 @@ public object ConditionSearchParam {
   }
 
   public data object AbatementString : SearchParam<Condition, Any> {
-    public override val paramName: String = "abatement-string"
+    public override val name: String = "abatement-string"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -250,7 +250,7 @@ public object ConditionSearchParam {
   }
 
   public data object BodySite : SearchParam<Condition, CodeableConcept> {
-    public override val paramName: String = "body-site"
+    public override val name: String = "body-site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -263,7 +263,7 @@ public object ConditionSearchParam {
   }
 
   public data object Category : SearchParam<Condition, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -276,7 +276,7 @@ public object ConditionSearchParam {
   }
 
   public data object ClinicalStatus : SearchParam<Condition, CodeableConcept> {
-    public override val paramName: String = "clinical-status"
+    public override val name: String = "clinical-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -289,7 +289,7 @@ public object ConditionSearchParam {
   }
 
   public data object Code : SearchParam<Condition, CodeableConcept> {
-    public override val paramName: String = "code"
+    public override val name: String = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -302,7 +302,7 @@ public object ConditionSearchParam {
   }
 
   public data object Encounter : SearchParam<Condition, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -316,7 +316,7 @@ public object ConditionSearchParam {
   }
 
   public data object Evidence : SearchParam<Condition, CodeableConcept> {
-    public override val paramName: String = "evidence"
+    public override val name: String = "evidence"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -329,7 +329,7 @@ public object ConditionSearchParam {
   }
 
   public data object EvidenceDetail : SearchParam<Condition, Reference> {
-    public override val paramName: String = "evidence-detail"
+    public override val name: String = "evidence-detail"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -502,7 +502,7 @@ public object ConditionSearchParam {
   }
 
   public data object Identifier : SearchParam<Condition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -516,7 +516,7 @@ public object ConditionSearchParam {
   }
 
   public data object OnsetAge : SearchParam<Condition, Any> {
-    public override val paramName: String = "onset-age"
+    public override val name: String = "onset-age"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -528,7 +528,7 @@ public object ConditionSearchParam {
   }
 
   public data object OnsetDate : SearchParam<Condition, Any> {
-    public override val paramName: String = "onset-date"
+    public override val name: String = "onset-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -540,7 +540,7 @@ public object ConditionSearchParam {
   }
 
   public data object OnsetInfo : SearchParam<Condition, Any> {
-    public override val paramName: String = "onset-info"
+    public override val name: String = "onset-info"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -552,7 +552,7 @@ public object ConditionSearchParam {
   }
 
   public data object ParticipantActor : SearchParam<Condition, Reference> {
-    public override val paramName: String = "participant-actor"
+    public override val name: String = "participant-actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -574,7 +574,7 @@ public object ConditionSearchParam {
   }
 
   public data object ParticipantFunction : SearchParam<Condition, CodeableConcept> {
-    public override val paramName: String = "participant-function"
+    public override val name: String = "participant-function"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -587,7 +587,7 @@ public object ConditionSearchParam {
   }
 
   public data object Patient : SearchParam<Condition, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -603,7 +603,7 @@ public object ConditionSearchParam {
   }
 
   public data object RecordedDate : SearchParam<Condition, DateTime> {
-    public override val paramName: String = "recorded-date"
+    public override val name: String = "recorded-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -616,7 +616,7 @@ public object ConditionSearchParam {
   }
 
   public data object Severity : SearchParam<Condition, CodeableConcept> {
-    public override val paramName: String = "severity"
+    public override val name: String = "severity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -629,7 +629,7 @@ public object ConditionSearchParam {
   }
 
   public data object Stage : SearchParam<Condition, CodeableConcept> {
-    public override val paramName: String = "stage"
+    public override val name: String = "stage"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -642,7 +642,7 @@ public object ConditionSearchParam {
   }
 
   public data object Subject : SearchParam<Condition, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -655,7 +655,7 @@ public object ConditionSearchParam {
   }
 
   public data object VerificationStatus : SearchParam<Condition, CodeableConcept> {
-    public override val paramName: String = "verification-status"
+    public override val name: String = "verification-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

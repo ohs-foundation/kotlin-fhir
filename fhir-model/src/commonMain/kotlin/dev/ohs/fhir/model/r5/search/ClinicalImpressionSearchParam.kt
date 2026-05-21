@@ -205,7 +205,7 @@ public object ClinicalImpressionSearchParam {
     )
 
   public data object Date : SearchParam<ClinicalImpression, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -218,7 +218,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object Encounter : SearchParam<ClinicalImpression, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -232,7 +232,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object FindingCode : SearchParam<ClinicalImpression, CodeableConcept> {
-    public override val paramName: String = "finding-code"
+    public override val name: String = "finding-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -245,7 +245,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object FindingRef : SearchParam<ClinicalImpression, Reference> {
-    public override val paramName: String = "finding-ref"
+    public override val name: String = "finding-ref"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -260,7 +260,7 @@ public object ClinicalImpressionSearchParam {
 
   public data object Identifier :
     SearchParam<ClinicalImpression, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -274,7 +274,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object Patient : SearchParam<ClinicalImpression, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -291,7 +291,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object Performer : SearchParam<ClinicalImpression, Reference> {
-    public override val paramName: String = "performer"
+    public override val name: String = "performer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -305,7 +305,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object Previous : SearchParam<ClinicalImpression, Reference> {
-    public override val paramName: String = "previous"
+    public override val name: String = "previous"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -319,7 +319,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object Problem : SearchParam<ClinicalImpression, Reference> {
-    public override val paramName: String = "problem"
+    public override val name: String = "problem"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -333,7 +333,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object Status : SearchParam<ClinicalImpression, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -346,7 +346,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object Subject : SearchParam<ClinicalImpression, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -360,7 +360,7 @@ public object ClinicalImpressionSearchParam {
   }
 
   public data object SupportingInfo : SearchParam<ClinicalImpression, Reference> {
-    public override val paramName: String = "supporting-info"
+    public override val name: String = "supporting-info"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

@@ -64,7 +64,7 @@ public object MessageDefinitionSearchParam {
     )
 
   public data object Category : SearchParam<MessageDefinition, Any> {
-    public override val paramName: KotlinString = "category"
+    public override val name: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -77,7 +77,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Context : SearchParam<MessageDefinition, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -90,7 +90,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<MessageDefinition, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -103,7 +103,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<MessageDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -116,7 +116,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<MessageDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -129,7 +129,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<MessageDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -142,7 +142,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<MessageDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -154,7 +154,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<MessageDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -167,7 +167,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Event : SearchParam<MessageDefinition, Any> {
-    public override val paramName: KotlinString = "event"
+    public override val name: KotlinString = "event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -179,7 +179,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Focus : SearchParam<MessageDefinition, Any> {
-    public override val paramName: KotlinString = "focus"
+    public override val name: KotlinString = "focus"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -192,7 +192,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Identifier : SearchParam<MessageDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -206,7 +206,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<MessageDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -219,7 +219,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<MessageDefinition, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -232,7 +232,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Parent : SearchParam<MessageDefinition, Canonical> {
-    public override val paramName: KotlinString = "parent"
+    public override val name: KotlinString = "parent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -245,7 +245,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<MessageDefinition, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -258,7 +258,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<MessageDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -270,7 +270,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<MessageDefinition, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -283,7 +283,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<MessageDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -296,7 +296,7 @@ public object MessageDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<MessageDefinition, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

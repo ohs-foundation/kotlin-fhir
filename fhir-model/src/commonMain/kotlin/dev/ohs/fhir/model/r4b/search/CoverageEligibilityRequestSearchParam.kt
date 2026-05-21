@@ -40,7 +40,7 @@ public object CoverageEligibilityRequestSearchParam {
     listOf(Created, Enterer, Facility, Identifier, Patient, Provider, Status)
 
   public data object Created : SearchParam<CoverageEligibilityRequest, DateTime> {
-    public override val paramName: String = "created"
+    public override val name: String = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -53,7 +53,7 @@ public object CoverageEligibilityRequestSearchParam {
   }
 
   public data object Enterer : SearchParam<CoverageEligibilityRequest, Reference> {
-    public override val paramName: String = "enterer"
+    public override val name: String = "enterer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -67,7 +67,7 @@ public object CoverageEligibilityRequestSearchParam {
   }
 
   public data object Facility : SearchParam<CoverageEligibilityRequest, Reference> {
-    public override val paramName: String = "facility"
+    public override val name: String = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -81,7 +81,7 @@ public object CoverageEligibilityRequestSearchParam {
 
   public data object Identifier :
     SearchParam<CoverageEligibilityRequest, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -95,7 +95,7 @@ public object CoverageEligibilityRequestSearchParam {
   }
 
   public data object Patient : SearchParam<CoverageEligibilityRequest, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -109,7 +109,7 @@ public object CoverageEligibilityRequestSearchParam {
   }
 
   public data object Provider : SearchParam<CoverageEligibilityRequest, Reference> {
-    public override val paramName: String = "provider"
+    public override val name: String = "provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -123,7 +123,7 @@ public object CoverageEligibilityRequestSearchParam {
   }
 
   public data object Status : SearchParam<CoverageEligibilityRequest, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

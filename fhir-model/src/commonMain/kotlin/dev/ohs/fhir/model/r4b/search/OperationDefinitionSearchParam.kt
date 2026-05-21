@@ -68,7 +68,7 @@ public object OperationDefinitionSearchParam {
     )
 
   public data object Base : SearchParam<OperationDefinition, Canonical> {
-    public override val paramName: KotlinString = "base"
+    public override val name: KotlinString = "base"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -81,7 +81,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Code : SearchParam<OperationDefinition, Any> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -93,7 +93,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Context : SearchParam<OperationDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -107,7 +107,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<OperationDefinition, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -121,7 +121,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<OperationDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -134,7 +134,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<OperationDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -147,7 +147,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<OperationDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -160,7 +160,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<OperationDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -173,7 +173,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<OperationDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -186,7 +186,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object InputProfile : SearchParam<OperationDefinition, Canonical> {
-    public override val paramName: KotlinString = "input-profile"
+    public override val name: KotlinString = "input-profile"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -199,7 +199,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Instance : SearchParam<OperationDefinition, Boolean> {
-    public override val paramName: KotlinString = "instance"
+    public override val name: KotlinString = "instance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -212,7 +212,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<OperationDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -225,7 +225,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Kind : SearchParam<OperationDefinition, Any> {
-    public override val paramName: KotlinString = "kind"
+    public override val name: KotlinString = "kind"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -237,7 +237,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<OperationDefinition, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -250,7 +250,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object OutputProfile : SearchParam<OperationDefinition, Canonical> {
-    public override val paramName: KotlinString = "output-profile"
+    public override val name: KotlinString = "output-profile"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -263,7 +263,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<OperationDefinition, R4bString> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -276,7 +276,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<OperationDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -288,7 +288,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object System : SearchParam<OperationDefinition, Boolean> {
-    public override val paramName: KotlinString = "system"
+    public override val name: KotlinString = "system"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -301,7 +301,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<OperationDefinition, R4bString> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -314,7 +314,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<OperationDefinition, Boolean> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -327,7 +327,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<OperationDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -340,7 +340,7 @@ public object OperationDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<OperationDefinition, R4bString> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -54,7 +54,7 @@ public object ResourceSearchParam {
     )
 
   public data object _content : SearchParam<Resource, Any> {
-    public override val paramName: String = "_content"
+    public override val name: String = "_content"
 
     public override val type: SearchParamType = SearchParamType.fromCode("special")
 
@@ -66,7 +66,7 @@ public object ResourceSearchParam {
   }
 
   public data object _filter : SearchParam<Resource, Any> {
-    public override val paramName: String = "_filter"
+    public override val name: String = "_filter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("special")
 
@@ -78,7 +78,7 @@ public object ResourceSearchParam {
   }
 
   public data object _has : SearchParam<Resource, Any> {
-    public override val paramName: String = "_has"
+    public override val name: String = "_has"
 
     public override val type: SearchParamType = SearchParamType.fromCode("special")
 
@@ -90,7 +90,7 @@ public object ResourceSearchParam {
   }
 
   public data object _id : SearchParam<Resource, Any> {
-    public override val paramName: String = "_id"
+    public override val name: String = "_id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -102,7 +102,7 @@ public object ResourceSearchParam {
   }
 
   public data object _in : SearchParam<Resource, Any> {
-    public override val paramName: String = "_in"
+    public override val name: String = "_in"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -114,7 +114,7 @@ public object ResourceSearchParam {
   }
 
   public data object _language : SearchParam<Resource, Any> {
-    public override val paramName: String = "_language"
+    public override val name: String = "_language"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -126,7 +126,7 @@ public object ResourceSearchParam {
   }
 
   public data object _lastUpdated : SearchParam<Resource, Instant> {
-    public override val paramName: String = "_lastUpdated"
+    public override val name: String = "_lastUpdated"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -139,7 +139,7 @@ public object ResourceSearchParam {
   }
 
   public data object _list : SearchParam<Resource, Any> {
-    public override val paramName: String = "_list"
+    public override val name: String = "_list"
 
     public override val type: SearchParamType = SearchParamType.fromCode("special")
 
@@ -151,7 +151,7 @@ public object ResourceSearchParam {
   }
 
   public data object _profile : SearchParam<Resource, Canonical> {
-    public override val paramName: String = "_profile"
+    public override val name: String = "_profile"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -164,7 +164,7 @@ public object ResourceSearchParam {
   }
 
   public data object _query : SearchParam<Resource, Any> {
-    public override val paramName: String = "_query"
+    public override val name: String = "_query"
 
     public override val type: SearchParamType = SearchParamType.fromCode("special")
 
@@ -176,7 +176,7 @@ public object ResourceSearchParam {
   }
 
   public data object _security : SearchParam<Resource, Coding> {
-    public override val paramName: String = "_security"
+    public override val name: String = "_security"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -189,7 +189,7 @@ public object ResourceSearchParam {
   }
 
   public data object _source : SearchParam<Resource, Uri> {
-    public override val paramName: String = "_source"
+    public override val name: String = "_source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -202,7 +202,7 @@ public object ResourceSearchParam {
   }
 
   public data object _tag : SearchParam<Resource, Coding> {
-    public override val paramName: String = "_tag"
+    public override val name: String = "_tag"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -215,7 +215,7 @@ public object ResourceSearchParam {
   }
 
   public data object _text : SearchParam<Resource, Any> {
-    public override val paramName: String = "_text"
+    public override val name: String = "_text"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -227,7 +227,7 @@ public object ResourceSearchParam {
   }
 
   public data object _type : SearchParam<Resource, Any> {
-    public override val paramName: String = "_type"
+    public override val name: String = "_type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("special")
 

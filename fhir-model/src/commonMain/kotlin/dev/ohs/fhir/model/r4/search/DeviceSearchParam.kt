@@ -52,7 +52,7 @@ public object DeviceSearchParam {
     )
 
   public data object DeviceName : SearchParam<Device, R4String> {
-    public override val paramName: KotlinString = "device-name"
+    public override val name: KotlinString = "device-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -65,7 +65,7 @@ public object DeviceSearchParam {
   }
 
   public data object Din : SearchParam<Device, Any> {
-    public override val paramName: KotlinString = "din"
+    public override val name: KotlinString = "din"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -78,7 +78,7 @@ public object DeviceSearchParam {
   }
 
   public data object Identifier : SearchParam<Device, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -91,7 +91,7 @@ public object DeviceSearchParam {
   }
 
   public data object Location : SearchParam<Device, Reference> {
-    public override val paramName: KotlinString = "location"
+    public override val name: KotlinString = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -105,7 +105,7 @@ public object DeviceSearchParam {
   }
 
   public data object Manufacturer : SearchParam<Device, R4String> {
-    public override val paramName: KotlinString = "manufacturer"
+    public override val name: KotlinString = "manufacturer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -118,7 +118,7 @@ public object DeviceSearchParam {
   }
 
   public data object Model : SearchParam<Device, R4String> {
-    public override val paramName: KotlinString = "model"
+    public override val name: KotlinString = "model"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -131,7 +131,7 @@ public object DeviceSearchParam {
   }
 
   public data object Organization : SearchParam<Device, Reference> {
-    public override val paramName: KotlinString = "organization"
+    public override val name: KotlinString = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -144,7 +144,7 @@ public object DeviceSearchParam {
   }
 
   public data object Patient : SearchParam<Device, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -157,7 +157,7 @@ public object DeviceSearchParam {
   }
 
   public data object Status : SearchParam<Device, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -169,7 +169,7 @@ public object DeviceSearchParam {
   }
 
   public data object Type : SearchParam<Device, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -182,7 +182,7 @@ public object DeviceSearchParam {
   }
 
   public data object UdiCarrier : SearchParam<Device, R4String> {
-    public override val paramName: KotlinString = "udi-carrier"
+    public override val name: KotlinString = "udi-carrier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -195,7 +195,7 @@ public object DeviceSearchParam {
   }
 
   public data object UdiDi : SearchParam<Device, R4String> {
-    public override val paramName: KotlinString = "udi-di"
+    public override val name: KotlinString = "udi-di"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -208,7 +208,7 @@ public object DeviceSearchParam {
   }
 
   public data object Url : SearchParam<Device, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 

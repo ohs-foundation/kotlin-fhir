@@ -55,7 +55,7 @@ public object OrganizationAffiliationSearchParam {
     )
 
   public data object Active : SearchParam<OrganizationAffiliation, Boolean> {
-    public override val paramName: String = "active"
+    public override val name: String = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -68,7 +68,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Date : SearchParam<OrganizationAffiliation, Period> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -81,7 +81,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Email : SearchParam<OrganizationAffiliation, ContactPoint> {
-    public override val paramName: String = "email"
+    public override val name: String = "email"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -95,7 +95,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Endpoint : SearchParam<OrganizationAffiliation, Reference> {
-    public override val paramName: String = "endpoint"
+    public override val name: String = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -110,7 +110,7 @@ public object OrganizationAffiliationSearchParam {
 
   public data object Identifier :
     SearchParam<OrganizationAffiliation, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -124,7 +124,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Location : SearchParam<OrganizationAffiliation, Reference> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -138,7 +138,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Network : SearchParam<OrganizationAffiliation, Reference> {
-    public override val paramName: String = "network"
+    public override val name: String = "network"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -151,7 +151,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object ParticipatingOrganization : SearchParam<OrganizationAffiliation, Reference> {
-    public override val paramName: String = "participating-organization"
+    public override val name: String = "participating-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -164,7 +164,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Phone : SearchParam<OrganizationAffiliation, ContactPoint> {
-    public override val paramName: String = "phone"
+    public override val name: String = "phone"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -178,7 +178,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object PrimaryOrganization : SearchParam<OrganizationAffiliation, Reference> {
-    public override val paramName: String = "primary-organization"
+    public override val name: String = "primary-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -191,7 +191,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Role : SearchParam<OrganizationAffiliation, CodeableConcept> {
-    public override val paramName: String = "role"
+    public override val name: String = "role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -204,7 +204,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Service : SearchParam<OrganizationAffiliation, Reference> {
-    public override val paramName: String = "service"
+    public override val name: String = "service"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -217,7 +217,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Specialty : SearchParam<OrganizationAffiliation, CodeableConcept> {
-    public override val paramName: String = "specialty"
+    public override val name: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -230,7 +230,7 @@ public object OrganizationAffiliationSearchParam {
   }
 
   public data object Telecom : SearchParam<OrganizationAffiliation, ContactPoint> {
-    public override val paramName: String = "telecom"
+    public override val name: String = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

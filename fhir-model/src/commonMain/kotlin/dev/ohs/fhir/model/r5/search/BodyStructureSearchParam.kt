@@ -36,7 +36,7 @@ public object BodyStructureSearchParam {
     listOf(Excluded_structure, Identifier, Included_structure, Morphology, Patient)
 
   public data object Excluded_structure : SearchParam<BodyStructure, Any> {
-    public override val paramName: String = "excluded_structure"
+    public override val name: String = "excluded_structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -48,7 +48,7 @@ public object BodyStructureSearchParam {
   }
 
   public data object Identifier : SearchParam<BodyStructure, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -61,7 +61,7 @@ public object BodyStructureSearchParam {
   }
 
   public data object Included_structure : SearchParam<BodyStructure, CodeableConcept> {
-    public override val paramName: String = "included_structure"
+    public override val name: String = "included_structure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -74,7 +74,7 @@ public object BodyStructureSearchParam {
   }
 
   public data object Morphology : SearchParam<BodyStructure, CodeableConcept> {
-    public override val paramName: String = "morphology"
+    public override val name: String = "morphology"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -87,7 +87,7 @@ public object BodyStructureSearchParam {
   }
 
   public data object Patient : SearchParam<BodyStructure, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

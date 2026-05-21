@@ -196,7 +196,7 @@ public object DocumentManifestSearchParam {
     )
 
   public data object Author : SearchParam<DocumentManifest, Reference> {
-    public override val paramName: KotlinString = "author"
+    public override val name: KotlinString = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -217,7 +217,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Created : SearchParam<DocumentManifest, DateTime> {
-    public override val paramName: KotlinString = "created"
+    public override val name: KotlinString = "created"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -230,7 +230,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Description : SearchParam<DocumentManifest, R4String> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -243,7 +243,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Identifier : SearchParam<DocumentManifest, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -257,7 +257,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Item : SearchParam<DocumentManifest, Reference> {
-    public override val paramName: KotlinString = "item"
+    public override val name: KotlinString = "item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -417,7 +417,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Patient : SearchParam<DocumentManifest, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -434,7 +434,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Recipient : SearchParam<DocumentManifest, Reference> {
-    public override val paramName: KotlinString = "recipient"
+    public override val name: KotlinString = "recipient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -454,7 +454,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object RelatedId : SearchParam<DocumentManifest, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "related-id"
+    public override val name: KotlinString = "related-id"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -469,7 +469,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object RelatedRef : SearchParam<DocumentManifest, Reference> {
-    public override val paramName: KotlinString = "related-ref"
+    public override val name: KotlinString = "related-ref"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -629,7 +629,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Source : SearchParam<DocumentManifest, Uri> {
-    public override val paramName: KotlinString = "source"
+    public override val name: KotlinString = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -642,7 +642,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Status : SearchParam<DocumentManifest, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -655,7 +655,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Subject : SearchParam<DocumentManifest, Reference> {
-    public override val paramName: KotlinString = "subject"
+    public override val name: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -669,7 +669,7 @@ public object DocumentManifestSearchParam {
   }
 
   public data object Type : SearchParam<DocumentManifest, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

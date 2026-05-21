@@ -60,7 +60,7 @@ public object CitationSearchParam {
     )
 
   public data object Context : SearchParam<Citation, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -73,7 +73,7 @@ public object CitationSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<Citation, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -86,7 +86,7 @@ public object CitationSearchParam {
   }
 
   public data object ContextType : SearchParam<Citation, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -99,7 +99,7 @@ public object CitationSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<Citation, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -111,7 +111,7 @@ public object CitationSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<Citation, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -123,7 +123,7 @@ public object CitationSearchParam {
   }
 
   public data object Date : SearchParam<Citation, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -135,7 +135,7 @@ public object CitationSearchParam {
   }
 
   public data object Description : SearchParam<Citation, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -148,7 +148,7 @@ public object CitationSearchParam {
   }
 
   public data object Effective : SearchParam<Citation, Period> {
-    public override val paramName: KotlinString = "effective"
+    public override val name: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -161,7 +161,7 @@ public object CitationSearchParam {
   }
 
   public data object Identifier : SearchParam<Citation, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -174,7 +174,7 @@ public object CitationSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<Citation, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -186,7 +186,7 @@ public object CitationSearchParam {
   }
 
   public data object Name : SearchParam<Citation, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -198,7 +198,7 @@ public object CitationSearchParam {
   }
 
   public data object Publisher : SearchParam<Citation, R4bString> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -211,7 +211,7 @@ public object CitationSearchParam {
   }
 
   public data object Status : SearchParam<Citation, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -223,7 +223,7 @@ public object CitationSearchParam {
   }
 
   public data object Title : SearchParam<Citation, R4bString> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -235,7 +235,7 @@ public object CitationSearchParam {
   }
 
   public data object Url : SearchParam<Citation, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -247,7 +247,7 @@ public object CitationSearchParam {
   }
 
   public data object Version : SearchParam<Citation, R4bString> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

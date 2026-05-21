@@ -34,7 +34,7 @@ public object DeviceDefinitionSearchParam {
   public val ALL: List<SearchParam<DeviceDefinition, *>> = listOf(Identifier, Parent, Type)
 
   public data object Identifier : SearchParam<DeviceDefinition, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -48,7 +48,7 @@ public object DeviceDefinitionSearchParam {
   }
 
   public data object Parent : SearchParam<DeviceDefinition, Reference> {
-    public override val paramName: String = "parent"
+    public override val name: String = "parent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -61,7 +61,7 @@ public object DeviceDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<DeviceDefinition, CodeableConcept> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

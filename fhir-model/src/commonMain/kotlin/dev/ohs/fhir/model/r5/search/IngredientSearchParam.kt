@@ -54,7 +54,7 @@ public object IngredientSearchParam {
     )
 
   public data object For : SearchParam<Ingredient, Reference> {
-    public override val paramName: String = "for"
+    public override val name: String = "for"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -71,7 +71,7 @@ public object IngredientSearchParam {
   }
 
   public data object Function : SearchParam<Ingredient, CodeableConcept> {
-    public override val paramName: String = "function"
+    public override val name: String = "function"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -83,7 +83,7 @@ public object IngredientSearchParam {
   }
 
   public data object Identifier : SearchParam<Ingredient, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -96,7 +96,7 @@ public object IngredientSearchParam {
   }
 
   public data object Manufacturer : SearchParam<Ingredient, Reference> {
-    public override val paramName: String = "manufacturer"
+    public override val name: String = "manufacturer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -109,7 +109,7 @@ public object IngredientSearchParam {
   }
 
   public data object Role : SearchParam<Ingredient, CodeableConcept> {
-    public override val paramName: String = "role"
+    public override val name: String = "role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -121,7 +121,7 @@ public object IngredientSearchParam {
   }
 
   public data object Status : SearchParam<Ingredient, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -133,7 +133,7 @@ public object IngredientSearchParam {
   }
 
   public data object StrengthConcentrationQuantity : SearchParam<Ingredient, Any> {
-    public override val paramName: String = "strength-concentration-quantity"
+    public override val name: String = "strength-concentration-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -146,7 +146,7 @@ public object IngredientSearchParam {
   }
 
   public data object StrengthConcentrationRatio : SearchParam<Ingredient, Any> {
-    public override val paramName: String = "strength-concentration-ratio"
+    public override val name: String = "strength-concentration-ratio"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -159,7 +159,7 @@ public object IngredientSearchParam {
   }
 
   public data object StrengthPresentationQuantity : SearchParam<Ingredient, Any> {
-    public override val paramName: String = "strength-presentation-quantity"
+    public override val name: String = "strength-presentation-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -172,7 +172,7 @@ public object IngredientSearchParam {
   }
 
   public data object StrengthPresentationRatio : SearchParam<Ingredient, Any> {
-    public override val paramName: String = "strength-presentation-ratio"
+    public override val name: String = "strength-presentation-ratio"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -185,7 +185,7 @@ public object IngredientSearchParam {
   }
 
   public data object Substance : SearchParam<Ingredient, Reference> {
-    public override val paramName: String = "substance"
+    public override val name: String = "substance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -199,7 +199,7 @@ public object IngredientSearchParam {
   }
 
   public data object SubstanceCode : SearchParam<Ingredient, CodeableConcept> {
-    public override val paramName: String = "substance-code"
+    public override val name: String = "substance-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -212,7 +212,7 @@ public object IngredientSearchParam {
   }
 
   public data object SubstanceDefinition : SearchParam<Ingredient, Reference> {
-    public override val paramName: String = "substance-definition"
+    public override val name: String = "substance-definition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

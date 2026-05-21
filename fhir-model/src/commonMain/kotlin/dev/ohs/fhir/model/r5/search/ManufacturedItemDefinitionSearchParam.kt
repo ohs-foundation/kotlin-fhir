@@ -36,7 +36,7 @@ public object ManufacturedItemDefinitionSearchParam {
     listOf(DoseForm, Identifier, Ingredient, Name, Status)
 
   public data object DoseForm : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "dose-form"
+    public override val name: KotlinString = "dose-form"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -50,7 +50,7 @@ public object ManufacturedItemDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<ManufacturedItemDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -64,7 +64,7 @@ public object ManufacturedItemDefinitionSearchParam {
   }
 
   public data object Ingredient : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "ingredient"
+    public override val name: KotlinString = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -77,7 +77,7 @@ public object ManufacturedItemDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<ManufacturedItemDefinition, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -90,7 +90,7 @@ public object ManufacturedItemDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<ManufacturedItemDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

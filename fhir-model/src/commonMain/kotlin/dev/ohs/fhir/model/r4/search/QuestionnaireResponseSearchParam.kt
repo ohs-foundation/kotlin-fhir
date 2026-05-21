@@ -191,7 +191,7 @@ public object QuestionnaireResponseSearchParam {
     )
 
   public data object Author : SearchParam<QuestionnaireResponse, Reference> {
-    public override val paramName: String = "author"
+    public override val name: String = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -212,7 +212,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object Authored : SearchParam<QuestionnaireResponse, DateTime> {
-    public override val paramName: String = "authored"
+    public override val name: String = "authored"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -225,7 +225,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object BasedOn : SearchParam<QuestionnaireResponse, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -239,7 +239,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object Encounter : SearchParam<QuestionnaireResponse, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -254,7 +254,7 @@ public object QuestionnaireResponseSearchParam {
 
   public data object Identifier :
     SearchParam<QuestionnaireResponse, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -268,7 +268,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object ItemSubject : SearchParam<QuestionnaireResponse, Any> {
-    public override val paramName: String = "item-subject"
+    public override val name: String = "item-subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -281,7 +281,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object PartOf : SearchParam<QuestionnaireResponse, Reference> {
-    public override val paramName: String = "part-of"
+    public override val name: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -295,7 +295,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object Patient : SearchParam<QuestionnaireResponse, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -312,7 +312,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object Questionnaire : SearchParam<QuestionnaireResponse, Canonical> {
-    public override val paramName: String = "questionnaire"
+    public override val name: String = "questionnaire"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -326,7 +326,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object Source : SearchParam<QuestionnaireResponse, Reference> {
-    public override val paramName: String = "source"
+    public override val name: String = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -345,7 +345,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object Status : SearchParam<QuestionnaireResponse, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -358,7 +358,7 @@ public object QuestionnaireResponseSearchParam {
   }
 
   public data object Subject : SearchParam<QuestionnaireResponse, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

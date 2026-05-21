@@ -56,7 +56,7 @@ public object MedicationKnowledgeSearchParam {
     )
 
   public data object Classification : SearchParam<MedicationKnowledge, CodeableConcept> {
-    public override val paramName: KotlinString = "classification"
+    public override val name: KotlinString = "classification"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -70,7 +70,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object ClassificationType : SearchParam<MedicationKnowledge, CodeableConcept> {
-    public override val paramName: KotlinString = "classification-type"
+    public override val name: KotlinString = "classification-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -83,7 +83,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object Code : SearchParam<MedicationKnowledge, CodeableConcept> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -96,7 +96,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object Doseform : SearchParam<MedicationKnowledge, CodeableConcept> {
-    public override val paramName: KotlinString = "doseform"
+    public override val name: KotlinString = "doseform"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -110,7 +110,7 @@ public object MedicationKnowledgeSearchParam {
 
   public data object Identifier :
     SearchParam<MedicationKnowledge, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -124,7 +124,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object Ingredient : SearchParam<MedicationKnowledge, Reference> {
-    public override val paramName: KotlinString = "ingredient"
+    public override val name: KotlinString = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -138,7 +138,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object IngredientCode : SearchParam<MedicationKnowledge, CodeableConcept> {
-    public override val paramName: KotlinString = "ingredient-code"
+    public override val name: KotlinString = "ingredient-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -152,7 +152,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object MonitoringProgramName : SearchParam<MedicationKnowledge, R5String> {
-    public override val paramName: KotlinString = "monitoring-program-name"
+    public override val name: KotlinString = "monitoring-program-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -165,7 +165,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object MonitoringProgramType : SearchParam<MedicationKnowledge, CodeableConcept> {
-    public override val paramName: KotlinString = "monitoring-program-type"
+    public override val name: KotlinString = "monitoring-program-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -178,7 +178,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object Monograph : SearchParam<MedicationKnowledge, Reference> {
-    public override val paramName: KotlinString = "monograph"
+    public override val name: KotlinString = "monograph"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -191,7 +191,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object MonographType : SearchParam<MedicationKnowledge, CodeableConcept> {
-    public override val paramName: KotlinString = "monograph-type"
+    public override val name: KotlinString = "monograph-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -204,7 +204,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object PackagingCost : SearchParam<MedicationKnowledge, Any> {
-    public override val paramName: KotlinString = "packaging-cost"
+    public override val name: KotlinString = "packaging-cost"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -216,7 +216,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object PackagingCostConcept : SearchParam<MedicationKnowledge, Any> {
-    public override val paramName: KotlinString = "packaging-cost-concept"
+    public override val name: KotlinString = "packaging-cost-concept"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -228,7 +228,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object ProductType : SearchParam<MedicationKnowledge, CodeableConcept> {
-    public override val paramName: KotlinString = "product-type"
+    public override val name: KotlinString = "product-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -241,7 +241,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object SourceCost : SearchParam<MedicationKnowledge, R5String> {
-    public override val paramName: KotlinString = "source-cost"
+    public override val name: KotlinString = "source-cost"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -254,7 +254,7 @@ public object MedicationKnowledgeSearchParam {
   }
 
   public data object Status : SearchParam<MedicationKnowledge, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

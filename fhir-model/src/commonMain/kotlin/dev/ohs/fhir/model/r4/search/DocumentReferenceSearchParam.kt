@@ -207,7 +207,7 @@ public object DocumentReferenceSearchParam {
     )
 
   public data object Authenticator : SearchParam<DocumentReference, Reference> {
-    public override val paramName: KotlinString = "authenticator"
+    public override val name: KotlinString = "authenticator"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -221,7 +221,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Author : SearchParam<DocumentReference, Reference> {
-    public override val paramName: KotlinString = "author"
+    public override val name: KotlinString = "author"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -242,7 +242,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Category : SearchParam<DocumentReference, CodeableConcept> {
-    public override val paramName: KotlinString = "category"
+    public override val name: KotlinString = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -255,7 +255,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Contenttype : SearchParam<DocumentReference, Any> {
-    public override val paramName: KotlinString = "contenttype"
+    public override val name: KotlinString = "contenttype"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -269,7 +269,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Custodian : SearchParam<DocumentReference, Reference> {
-    public override val paramName: KotlinString = "custodian"
+    public override val name: KotlinString = "custodian"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -282,7 +282,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Date : SearchParam<DocumentReference, Instant> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -295,7 +295,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Description : SearchParam<DocumentReference, R4String> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -308,7 +308,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Encounter : SearchParam<DocumentReference, Reference> {
-    public override val paramName: KotlinString = "encounter"
+    public override val name: KotlinString = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -322,7 +322,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Event : SearchParam<DocumentReference, CodeableConcept> {
-    public override val paramName: KotlinString = "event"
+    public override val name: KotlinString = "event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -335,7 +335,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Facility : SearchParam<DocumentReference, CodeableConcept> {
-    public override val paramName: KotlinString = "facility"
+    public override val name: KotlinString = "facility"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -348,7 +348,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Format : SearchParam<DocumentReference, Coding> {
-    public override val paramName: KotlinString = "format"
+    public override val name: KotlinString = "format"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -361,7 +361,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Identifier : SearchParam<DocumentReference, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -375,7 +375,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Language : SearchParam<DocumentReference, Any> {
-    public override val paramName: KotlinString = "language"
+    public override val name: KotlinString = "language"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -388,7 +388,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Location : SearchParam<DocumentReference, Url> {
-    public override val paramName: KotlinString = "location"
+    public override val name: KotlinString = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -401,7 +401,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Patient : SearchParam<DocumentReference, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -418,7 +418,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Period : SearchParam<DocumentReference, dev.ohs.fhir.model.r4.Period> {
-    public override val paramName: KotlinString = "period"
+    public override val name: KotlinString = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -432,7 +432,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Related : SearchParam<DocumentReference, Reference> {
-    public override val paramName: KotlinString = "related"
+    public override val name: KotlinString = "related"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -592,7 +592,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Relatesto : SearchParam<DocumentReference, Reference> {
-    public override val paramName: KotlinString = "relatesto"
+    public override val name: KotlinString = "relatesto"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -606,7 +606,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Relation : SearchParam<DocumentReference, Any> {
-    public override val paramName: KotlinString = "relation"
+    public override val name: KotlinString = "relation"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -619,7 +619,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Relationship : SearchParam<DocumentReference, DocumentReference.RelatesTo> {
-    public override val paramName: KotlinString = "relationship"
+    public override val name: KotlinString = "relationship"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -633,7 +633,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object SecurityLabel : SearchParam<DocumentReference, CodeableConcept> {
-    public override val paramName: KotlinString = "security-label"
+    public override val name: KotlinString = "security-label"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -646,7 +646,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Setting : SearchParam<DocumentReference, CodeableConcept> {
-    public override val paramName: KotlinString = "setting"
+    public override val name: KotlinString = "setting"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -659,7 +659,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Status : SearchParam<DocumentReference, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -672,7 +672,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Subject : SearchParam<DocumentReference, Reference> {
-    public override val paramName: KotlinString = "subject"
+    public override val name: KotlinString = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -686,7 +686,7 @@ public object DocumentReferenceSearchParam {
   }
 
   public data object Type : SearchParam<DocumentReference, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

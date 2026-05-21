@@ -52,7 +52,7 @@ public object OrganizationSearchParam {
     )
 
   public data object Active : SearchParam<Organization, Boolean> {
-    public override val paramName: KotlinString = "active"
+    public override val name: KotlinString = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -65,7 +65,7 @@ public object OrganizationSearchParam {
   }
 
   public data object Address : SearchParam<Organization, dev.ohs.fhir.model.r4.Address> {
-    public override val paramName: KotlinString = "address"
+    public override val name: KotlinString = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -78,7 +78,7 @@ public object OrganizationSearchParam {
   }
 
   public data object AddressCity : SearchParam<Organization, R4String> {
-    public override val paramName: KotlinString = "address-city"
+    public override val name: KotlinString = "address-city"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -91,7 +91,7 @@ public object OrganizationSearchParam {
   }
 
   public data object AddressCountry : SearchParam<Organization, R4String> {
-    public override val paramName: KotlinString = "address-country"
+    public override val name: KotlinString = "address-country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -104,7 +104,7 @@ public object OrganizationSearchParam {
   }
 
   public data object AddressPostalcode : SearchParam<Organization, R4String> {
-    public override val paramName: KotlinString = "address-postalcode"
+    public override val name: KotlinString = "address-postalcode"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -117,7 +117,7 @@ public object OrganizationSearchParam {
   }
 
   public data object AddressState : SearchParam<Organization, R4String> {
-    public override val paramName: KotlinString = "address-state"
+    public override val name: KotlinString = "address-state"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -130,7 +130,7 @@ public object OrganizationSearchParam {
   }
 
   public data object AddressUse : SearchParam<Organization, Any> {
-    public override val paramName: KotlinString = "address-use"
+    public override val name: KotlinString = "address-use"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -143,7 +143,7 @@ public object OrganizationSearchParam {
   }
 
   public data object Endpoint : SearchParam<Organization, Reference> {
-    public override val paramName: KotlinString = "endpoint"
+    public override val name: KotlinString = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -156,7 +156,7 @@ public object OrganizationSearchParam {
   }
 
   public data object Identifier : SearchParam<Organization, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -169,7 +169,7 @@ public object OrganizationSearchParam {
   }
 
   public data object Name : SearchParam<Organization, R4String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -182,7 +182,7 @@ public object OrganizationSearchParam {
   }
 
   public data object Partof : SearchParam<Organization, Reference> {
-    public override val paramName: KotlinString = "partof"
+    public override val name: KotlinString = "partof"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -195,7 +195,7 @@ public object OrganizationSearchParam {
   }
 
   public data object Phonetic : SearchParam<Organization, R4String> {
-    public override val paramName: KotlinString = "phonetic"
+    public override val name: KotlinString = "phonetic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -208,7 +208,7 @@ public object OrganizationSearchParam {
   }
 
   public data object Type : SearchParam<Organization, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

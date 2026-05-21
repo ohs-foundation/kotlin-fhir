@@ -35,7 +35,7 @@ public object NutritionProductSearchParam {
     listOf(Code, Identifier, LotNumber, SerialNumber, Status)
 
   public data object Code : SearchParam<NutritionProduct, CodeableConcept> {
-    public override val paramName: KotlinString = "code"
+    public override val name: KotlinString = "code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -48,7 +48,7 @@ public object NutritionProductSearchParam {
   }
 
   public data object Identifier : SearchParam<NutritionProduct, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -62,7 +62,7 @@ public object NutritionProductSearchParam {
   }
 
   public data object LotNumber : SearchParam<NutritionProduct, R5String> {
-    public override val paramName: KotlinString = "lot-number"
+    public override val name: KotlinString = "lot-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -76,7 +76,7 @@ public object NutritionProductSearchParam {
 
   public data object SerialNumber :
     SearchParam<NutritionProduct, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "serial-number"
+    public override val name: KotlinString = "serial-number"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -90,7 +90,7 @@ public object NutritionProductSearchParam {
   }
 
   public data object Status : SearchParam<NutritionProduct, CodeableConcept> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

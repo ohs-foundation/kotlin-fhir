@@ -230,7 +230,7 @@ public object ConceptMapSearchParam {
     )
 
   public data object Context : SearchParam<ConceptMap, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -243,7 +243,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<ConceptMap, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -255,7 +255,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object ContextType : SearchParam<ConceptMap, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -268,7 +268,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<ConceptMap, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -281,7 +281,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<ConceptMap, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -294,7 +294,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Date : SearchParam<ConceptMap, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -307,7 +307,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object DerivedFrom : SearchParam<ConceptMap, Canonical> {
-    public override val paramName: KotlinString = "derived-from"
+    public override val name: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -483,7 +483,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Description : SearchParam<ConceptMap, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -496,7 +496,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Effective : SearchParam<ConceptMap, Period> {
-    public override val paramName: KotlinString = "effective"
+    public override val name: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -509,7 +509,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Identifier : SearchParam<ConceptMap, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -523,7 +523,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<ConceptMap, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -536,7 +536,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object MappingProperty : SearchParam<ConceptMap, Uri> {
-    public override val paramName: KotlinString = "mapping-property"
+    public override val name: KotlinString = "mapping-property"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -549,7 +549,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Name : SearchParam<ConceptMap, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -562,7 +562,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object OtherMap : SearchParam<ConceptMap, Canonical> {
-    public override val paramName: KotlinString = "other-map"
+    public override val name: KotlinString = "other-map"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -575,7 +575,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Predecessor : SearchParam<ConceptMap, Canonical> {
-    public override val paramName: KotlinString = "predecessor"
+    public override val name: KotlinString = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -751,7 +751,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Publisher : SearchParam<ConceptMap, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -764,7 +764,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object SourceCode : SearchParam<ConceptMap, Any> {
-    public override val paramName: KotlinString = "source-code"
+    public override val name: KotlinString = "source-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -777,7 +777,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object SourceGroupSystem : SearchParam<ConceptMap, Canonical> {
-    public override val paramName: KotlinString = "source-group-system"
+    public override val name: KotlinString = "source-group-system"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -790,7 +790,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object SourceScope : SearchParam<ConceptMap, Canonical> {
-    public override val paramName: KotlinString = "source-scope"
+    public override val name: KotlinString = "source-scope"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -803,7 +803,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object SourceScopeUri : SearchParam<ConceptMap, Uri> {
-    public override val paramName: KotlinString = "source-scope-uri"
+    public override val name: KotlinString = "source-scope-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -816,7 +816,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Status : SearchParam<ConceptMap, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -829,7 +829,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object TargetCode : SearchParam<ConceptMap, Any> {
-    public override val paramName: KotlinString = "target-code"
+    public override val name: KotlinString = "target-code"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -842,7 +842,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object TargetGroupSystem : SearchParam<ConceptMap, Canonical> {
-    public override val paramName: KotlinString = "target-group-system"
+    public override val name: KotlinString = "target-group-system"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -855,7 +855,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object TargetScope : SearchParam<ConceptMap, Canonical> {
-    public override val paramName: KotlinString = "target-scope"
+    public override val name: KotlinString = "target-scope"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -868,7 +868,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object TargetScopeUri : SearchParam<ConceptMap, Uri> {
-    public override val paramName: KotlinString = "target-scope-uri"
+    public override val name: KotlinString = "target-scope-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -881,7 +881,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Title : SearchParam<ConceptMap, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -894,7 +894,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Topic : SearchParam<ConceptMap, CodeableConcept> {
-    public override val paramName: KotlinString = "topic"
+    public override val name: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -907,7 +907,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Url : SearchParam<ConceptMap, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -920,7 +920,7 @@ public object ConceptMapSearchParam {
   }
 
   public data object Version : SearchParam<ConceptMap, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

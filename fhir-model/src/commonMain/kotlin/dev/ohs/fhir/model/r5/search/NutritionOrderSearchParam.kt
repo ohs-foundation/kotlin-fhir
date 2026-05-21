@@ -53,7 +53,7 @@ public object NutritionOrderSearchParam {
     )
 
   public data object Additive : SearchParam<NutritionOrder, CodeableConcept> {
-    public override val paramName: String = "additive"
+    public override val name: String = "additive"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -68,7 +68,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Datetime : SearchParam<NutritionOrder, DateTime> {
-    public override val paramName: String = "datetime"
+    public override val name: String = "datetime"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -81,7 +81,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Encounter : SearchParam<NutritionOrder, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -95,7 +95,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Formula : SearchParam<NutritionOrder, CodeableConcept> {
-    public override val paramName: String = "formula"
+    public override val name: String = "formula"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -109,7 +109,7 @@ public object NutritionOrderSearchParam {
 
   public data object GroupIdentifier :
     SearchParam<NutritionOrder, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "group-identifier"
+    public override val name: String = "group-identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -122,7 +122,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Identifier : SearchParam<NutritionOrder, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -135,7 +135,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Oraldiet : SearchParam<NutritionOrder, CodeableConcept> {
-    public override val paramName: String = "oraldiet"
+    public override val name: String = "oraldiet"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -148,7 +148,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Patient : SearchParam<NutritionOrder, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -164,7 +164,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Provider : SearchParam<NutritionOrder, Reference> {
-    public override val paramName: String = "provider"
+    public override val name: String = "provider"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -178,7 +178,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Status : SearchParam<NutritionOrder, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -190,7 +190,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Subject : SearchParam<NutritionOrder, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -204,7 +204,7 @@ public object NutritionOrderSearchParam {
   }
 
   public data object Supplement : SearchParam<NutritionOrder, CodeableConcept> {
-    public override val paramName: String = "supplement"
+    public override val name: String = "supplement"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -80,7 +80,7 @@ public object CarePlanSearchParam {
     )
 
   public data object ActivityReference : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "activity-reference"
+    public override val name: String = "activity-reference"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -106,7 +106,7 @@ public object CarePlanSearchParam {
   }
 
   public data object BasedOn : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -124,7 +124,7 @@ public object CarePlanSearchParam {
   }
 
   public data object CareTeam : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "care-team"
+    public override val name: String = "care-team"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -137,7 +137,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Category : SearchParam<CarePlan, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -149,7 +149,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Condition : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "condition"
+    public override val name: String = "condition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -163,7 +163,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Custodian : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "custodian"
+    public override val name: String = "custodian"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -185,7 +185,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Date : SearchParam<CarePlan, Period> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -197,7 +197,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Encounter : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -211,7 +211,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Goal : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "goal"
+    public override val name: String = "goal"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -224,7 +224,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Identifier : SearchParam<CarePlan, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -237,7 +237,7 @@ public object CarePlanSearchParam {
   }
 
   public data object InstantiatesCanonical : SearchParam<CarePlan, Canonical> {
-    public override val paramName: String = "instantiates-canonical"
+    public override val name: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -257,7 +257,7 @@ public object CarePlanSearchParam {
   }
 
   public data object InstantiatesUri : SearchParam<CarePlan, Uri> {
-    public override val paramName: String = "instantiates-uri"
+    public override val name: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -269,7 +269,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Intent : SearchParam<CarePlan, Any> {
-    public override val paramName: String = "intent"
+    public override val name: String = "intent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -281,7 +281,7 @@ public object CarePlanSearchParam {
   }
 
   public data object PartOf : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "part-of"
+    public override val name: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -293,7 +293,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Patient : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -309,7 +309,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Replaces : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "replaces"
+    public override val name: String = "replaces"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -321,7 +321,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Status : SearchParam<CarePlan, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -333,7 +333,7 @@ public object CarePlanSearchParam {
   }
 
   public data object Subject : SearchParam<CarePlan, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

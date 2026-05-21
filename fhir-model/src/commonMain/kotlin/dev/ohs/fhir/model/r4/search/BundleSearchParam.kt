@@ -36,7 +36,7 @@ public object BundleSearchParam {
     listOf(Composition, Identifier, Message, Timestamp, Type)
 
   public data object Composition : SearchParam<Bundle, Any> {
-    public override val paramName: String = "composition"
+    public override val name: String = "composition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -49,7 +49,7 @@ public object BundleSearchParam {
   }
 
   public data object Identifier : SearchParam<Bundle, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -62,7 +62,7 @@ public object BundleSearchParam {
   }
 
   public data object Message : SearchParam<Bundle, Any> {
-    public override val paramName: String = "message"
+    public override val name: String = "message"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -74,7 +74,7 @@ public object BundleSearchParam {
   }
 
   public data object Timestamp : SearchParam<Bundle, Instant> {
-    public override val paramName: String = "timestamp"
+    public override val name: String = "timestamp"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -86,7 +86,7 @@ public object BundleSearchParam {
   }
 
   public data object Type : SearchParam<Bundle, Any> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -55,7 +55,7 @@ public object PractitionerRoleSearchParam {
     )
 
   public data object Active : SearchParam<PractitionerRole, Boolean> {
-    public override val paramName: String = "active"
+    public override val name: String = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -68,7 +68,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Characteristic : SearchParam<PractitionerRole, CodeableConcept> {
-    public override val paramName: String = "characteristic"
+    public override val name: String = "characteristic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -81,7 +81,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Communication : SearchParam<PractitionerRole, CodeableConcept> {
-    public override val paramName: String = "communication"
+    public override val name: String = "communication"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -94,7 +94,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Date : SearchParam<PractitionerRole, Period> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -107,7 +107,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Email : SearchParam<PractitionerRole, ContactPoint> {
-    public override val paramName: String = "email"
+    public override val name: String = "email"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -121,7 +121,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Endpoint : SearchParam<PractitionerRole, Reference> {
-    public override val paramName: String = "endpoint"
+    public override val name: String = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -134,7 +134,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Identifier : SearchParam<PractitionerRole, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -148,7 +148,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Location : SearchParam<PractitionerRole, Reference> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -161,7 +161,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Organization : SearchParam<PractitionerRole, Reference> {
-    public override val paramName: String = "organization"
+    public override val name: String = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -175,7 +175,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Phone : SearchParam<PractitionerRole, ContactPoint> {
-    public override val paramName: String = "phone"
+    public override val name: String = "phone"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -189,7 +189,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Practitioner : SearchParam<PractitionerRole, Reference> {
-    public override val paramName: String = "practitioner"
+    public override val name: String = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -203,7 +203,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Role : SearchParam<PractitionerRole, CodeableConcept> {
-    public override val paramName: String = "role"
+    public override val name: String = "role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -215,7 +215,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Service : SearchParam<PractitionerRole, Reference> {
-    public override val paramName: String = "service"
+    public override val name: String = "service"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -228,7 +228,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Specialty : SearchParam<PractitionerRole, CodeableConcept> {
-    public override val paramName: String = "specialty"
+    public override val name: String = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -241,7 +241,7 @@ public object PractitionerRoleSearchParam {
   }
 
   public data object Telecom : SearchParam<PractitionerRole, ContactPoint> {
-    public override val paramName: String = "telecom"
+    public override val name: String = "telecom"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

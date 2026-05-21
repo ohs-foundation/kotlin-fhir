@@ -202,7 +202,7 @@ public object MeasureReportSearchParam {
     )
 
   public data object Date : SearchParam<MeasureReport, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -215,7 +215,7 @@ public object MeasureReportSearchParam {
   }
 
   public data object EvaluatedResource : SearchParam<MeasureReport, Reference> {
-    public override val paramName: String = "evaluated-resource"
+    public override val name: String = "evaluated-resource"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -388,7 +388,7 @@ public object MeasureReportSearchParam {
   }
 
   public data object Identifier : SearchParam<MeasureReport, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -402,7 +402,7 @@ public object MeasureReportSearchParam {
   }
 
   public data object Location : SearchParam<MeasureReport, Reference> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -416,7 +416,7 @@ public object MeasureReportSearchParam {
   }
 
   public data object Measure : SearchParam<MeasureReport, Canonical> {
-    public override val paramName: String = "measure"
+    public override val name: String = "measure"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -430,7 +430,7 @@ public object MeasureReportSearchParam {
   }
 
   public data object Patient : SearchParam<MeasureReport, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -446,7 +446,7 @@ public object MeasureReportSearchParam {
   }
 
   public data object Period : SearchParam<MeasureReport, dev.ohs.fhir.model.r5.Period> {
-    public override val paramName: String = "period"
+    public override val name: String = "period"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -460,7 +460,7 @@ public object MeasureReportSearchParam {
   }
 
   public data object Reporter : SearchParam<MeasureReport, Reference> {
-    public override val paramName: String = "reporter"
+    public override val name: String = "reporter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -474,7 +474,7 @@ public object MeasureReportSearchParam {
   }
 
   public data object Status : SearchParam<MeasureReport, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -487,7 +487,7 @@ public object MeasureReportSearchParam {
   }
 
   public data object Subject : SearchParam<MeasureReport, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

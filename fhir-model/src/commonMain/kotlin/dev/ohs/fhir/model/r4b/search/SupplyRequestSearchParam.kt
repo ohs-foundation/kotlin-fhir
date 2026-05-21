@@ -45,7 +45,7 @@ public object SupplyRequestSearchParam {
     listOf(Category, Date, Identifier, Requester, Status, Subject, Supplier)
 
   public data object Category : SearchParam<SupplyRequest, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -58,7 +58,7 @@ public object SupplyRequestSearchParam {
   }
 
   public data object Date : SearchParam<SupplyRequest, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -71,7 +71,7 @@ public object SupplyRequestSearchParam {
   }
 
   public data object Identifier : SearchParam<SupplyRequest, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -84,7 +84,7 @@ public object SupplyRequestSearchParam {
   }
 
   public data object Requester : SearchParam<SupplyRequest, Reference> {
-    public override val paramName: String = "requester"
+    public override val name: String = "requester"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -105,7 +105,7 @@ public object SupplyRequestSearchParam {
   }
 
   public data object Status : SearchParam<SupplyRequest, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -117,7 +117,7 @@ public object SupplyRequestSearchParam {
   }
 
   public data object Subject : SearchParam<SupplyRequest, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -131,7 +131,7 @@ public object SupplyRequestSearchParam {
   }
 
   public data object Supplier : SearchParam<SupplyRequest, Reference> {
-    public override val paramName: String = "supplier"
+    public override val name: String = "supplier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

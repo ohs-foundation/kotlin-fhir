@@ -50,7 +50,7 @@ public object EpisodeOfCareSearchParam {
     )
 
   public data object CareManager : SearchParam<EpisodeOfCare, Reference> {
-    public override val paramName: String = "care-manager"
+    public override val name: String = "care-manager"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -66,7 +66,7 @@ public object EpisodeOfCareSearchParam {
   }
 
   public data object Condition : SearchParam<EpisodeOfCare, Reference> {
-    public override val paramName: String = "condition"
+    public override val name: String = "condition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -80,7 +80,7 @@ public object EpisodeOfCareSearchParam {
   }
 
   public data object Date : SearchParam<EpisodeOfCare, Period> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -93,7 +93,7 @@ public object EpisodeOfCareSearchParam {
   }
 
   public data object Identifier : SearchParam<EpisodeOfCare, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -106,7 +106,7 @@ public object EpisodeOfCareSearchParam {
   }
 
   public data object IncomingReferral : SearchParam<EpisodeOfCare, Reference> {
-    public override val paramName: String = "incoming-referral"
+    public override val name: String = "incoming-referral"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -118,7 +118,7 @@ public object EpisodeOfCareSearchParam {
   }
 
   public data object Organization : SearchParam<EpisodeOfCare, Reference> {
-    public override val paramName: String = "organization"
+    public override val name: String = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -132,7 +132,7 @@ public object EpisodeOfCareSearchParam {
   }
 
   public data object Patient : SearchParam<EpisodeOfCare, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -145,7 +145,7 @@ public object EpisodeOfCareSearchParam {
   }
 
   public data object Status : SearchParam<EpisodeOfCare, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -157,7 +157,7 @@ public object EpisodeOfCareSearchParam {
   }
 
   public data object Type : SearchParam<EpisodeOfCare, CodeableConcept> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

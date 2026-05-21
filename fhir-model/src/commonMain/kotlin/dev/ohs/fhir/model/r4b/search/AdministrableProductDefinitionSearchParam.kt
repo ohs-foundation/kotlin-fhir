@@ -38,7 +38,7 @@ public object AdministrableProductDefinitionSearchParam {
     listOf(Device, DoseForm, FormOf, Identifier, Ingredient, ManufacturedItem, Route, TargetSpecies)
 
   public data object Device : SearchParam<AdministrableProductDefinition, Reference> {
-    public override val paramName: String = "device"
+    public override val name: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -51,7 +51,7 @@ public object AdministrableProductDefinitionSearchParam {
   }
 
   public data object DoseForm : SearchParam<AdministrableProductDefinition, CodeableConcept> {
-    public override val paramName: String = "dose-form"
+    public override val name: String = "dose-form"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -64,7 +64,7 @@ public object AdministrableProductDefinitionSearchParam {
   }
 
   public data object FormOf : SearchParam<AdministrableProductDefinition, Reference> {
-    public override val paramName: String = "form-of"
+    public override val name: String = "form-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -79,7 +79,7 @@ public object AdministrableProductDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<AdministrableProductDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -93,7 +93,7 @@ public object AdministrableProductDefinitionSearchParam {
   }
 
   public data object Ingredient : SearchParam<AdministrableProductDefinition, CodeableConcept> {
-    public override val paramName: String = "ingredient"
+    public override val name: String = "ingredient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -106,7 +106,7 @@ public object AdministrableProductDefinitionSearchParam {
   }
 
   public data object ManufacturedItem : SearchParam<AdministrableProductDefinition, Reference> {
-    public override val paramName: String = "manufactured-item"
+    public override val name: String = "manufactured-item"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -120,7 +120,7 @@ public object AdministrableProductDefinitionSearchParam {
   }
 
   public data object Route : SearchParam<AdministrableProductDefinition, CodeableConcept> {
-    public override val paramName: String = "route"
+    public override val name: String = "route"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -134,7 +134,7 @@ public object AdministrableProductDefinitionSearchParam {
   }
 
   public data object TargetSpecies : SearchParam<AdministrableProductDefinition, CodeableConcept> {
-    public override val paramName: String = "target-species"
+    public override val name: String = "target-species"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

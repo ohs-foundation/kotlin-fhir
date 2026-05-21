@@ -37,7 +37,7 @@ public object DeviceAssociationSearchParam {
     listOf(Device, Identifier, Operator, Patient, Status, Subject)
 
   public data object Device : SearchParam<DeviceAssociation, Reference> {
-    public override val paramName: String = "device"
+    public override val name: String = "device"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -51,7 +51,7 @@ public object DeviceAssociationSearchParam {
   }
 
   public data object Identifier : SearchParam<DeviceAssociation, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -65,7 +65,7 @@ public object DeviceAssociationSearchParam {
   }
 
   public data object Operator : SearchParam<DeviceAssociation, Reference> {
-    public override val paramName: String = "operator"
+    public override val name: String = "operator"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -79,7 +79,7 @@ public object DeviceAssociationSearchParam {
   }
 
   public data object Patient : SearchParam<DeviceAssociation, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -95,7 +95,7 @@ public object DeviceAssociationSearchParam {
   }
 
   public data object Status : SearchParam<DeviceAssociation, CodeableConcept> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -108,7 +108,7 @@ public object DeviceAssociationSearchParam {
   }
 
   public data object Subject : SearchParam<DeviceAssociation, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

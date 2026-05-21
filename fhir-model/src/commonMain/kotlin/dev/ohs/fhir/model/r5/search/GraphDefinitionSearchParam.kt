@@ -58,7 +58,7 @@ public object GraphDefinitionSearchParam {
     )
 
   public data object Context : SearchParam<GraphDefinition, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -71,7 +71,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<GraphDefinition, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -84,7 +84,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<GraphDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -97,7 +97,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<GraphDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -109,7 +109,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<GraphDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -121,7 +121,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<GraphDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -134,7 +134,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<GraphDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -147,7 +147,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Identifier : SearchParam<GraphDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -160,7 +160,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<GraphDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -173,7 +173,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<GraphDefinition, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -185,7 +185,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<GraphDefinition, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -198,7 +198,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Start : SearchParam<GraphDefinition, Id> {
-    public override val paramName: KotlinString = "start"
+    public override val name: KotlinString = "start"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -210,7 +210,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<GraphDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -222,7 +222,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<GraphDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -234,7 +234,7 @@ public object GraphDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<GraphDefinition, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

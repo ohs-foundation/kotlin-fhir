@@ -48,7 +48,7 @@ public object GoalSearchParam {
     )
 
   public data object AchievementStatus : SearchParam<Goal, CodeableConcept> {
-    public override val paramName: String = "achievement-status"
+    public override val name: String = "achievement-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -61,7 +61,7 @@ public object GoalSearchParam {
   }
 
   public data object Category : SearchParam<Goal, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -73,7 +73,7 @@ public object GoalSearchParam {
   }
 
   public data object Identifier : SearchParam<Goal, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -86,7 +86,7 @@ public object GoalSearchParam {
   }
 
   public data object LifecycleStatus : SearchParam<Goal, Any> {
-    public override val paramName: String = "lifecycle-status"
+    public override val name: String = "lifecycle-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -98,7 +98,7 @@ public object GoalSearchParam {
   }
 
   public data object Patient : SearchParam<Goal, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -114,7 +114,7 @@ public object GoalSearchParam {
   }
 
   public data object StartDate : SearchParam<Goal, Date> {
-    public override val paramName: String = "start-date"
+    public override val name: String = "start-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -127,7 +127,7 @@ public object GoalSearchParam {
   }
 
   public data object Subject : SearchParam<Goal, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -140,7 +140,7 @@ public object GoalSearchParam {
   }
 
   public data object TargetDate : SearchParam<Goal, Date> {
-    public override val paramName: String = "target-date"
+    public override val name: String = "target-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 

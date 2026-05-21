@@ -57,7 +57,7 @@ public object ActorDefinitionSearchParam {
     )
 
   public data object Context : SearchParam<ActorDefinition, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -70,7 +70,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<ActorDefinition, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -83,7 +83,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<ActorDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -96,7 +96,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<ActorDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -108,7 +108,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<ActorDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -120,7 +120,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<ActorDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -133,7 +133,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<ActorDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -146,7 +146,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Identifier : SearchParam<ActorDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -159,7 +159,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<ActorDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -172,7 +172,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<ActorDefinition, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -185,7 +185,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<ActorDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -197,7 +197,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<ActorDefinition, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -210,7 +210,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<ActorDefinition, Any> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -222,7 +222,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<ActorDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -234,7 +234,7 @@ public object ActorDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<ActorDefinition, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

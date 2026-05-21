@@ -202,7 +202,7 @@ public object AuditEventSearchParam {
     )
 
   public data object Action : SearchParam<AuditEvent, Any> {
-    public override val paramName: KotlinString = "action"
+    public override val name: KotlinString = "action"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -215,7 +215,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Address : SearchParam<AuditEvent, R4String> {
-    public override val paramName: KotlinString = "address"
+    public override val name: KotlinString = "address"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -228,7 +228,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Agent : SearchParam<AuditEvent, Reference> {
-    public override val paramName: KotlinString = "agent"
+    public override val name: KotlinString = "agent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -249,7 +249,7 @@ public object AuditEventSearchParam {
   }
 
   public data object AgentName : SearchParam<AuditEvent, R4String> {
-    public override val paramName: KotlinString = "agent-name"
+    public override val name: KotlinString = "agent-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -262,7 +262,7 @@ public object AuditEventSearchParam {
   }
 
   public data object AgentRole : SearchParam<AuditEvent, CodeableConcept> {
-    public override val paramName: KotlinString = "agent-role"
+    public override val name: KotlinString = "agent-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -275,7 +275,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Altid : SearchParam<AuditEvent, R4String> {
-    public override val paramName: KotlinString = "altid"
+    public override val name: KotlinString = "altid"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -288,7 +288,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Date : SearchParam<AuditEvent, Instant> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -301,7 +301,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Entity : SearchParam<AuditEvent, Reference> {
-    public override val paramName: KotlinString = "entity"
+    public override val name: KotlinString = "entity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -461,7 +461,7 @@ public object AuditEventSearchParam {
   }
 
   public data object EntityName : SearchParam<AuditEvent, R4String> {
-    public override val paramName: KotlinString = "entity-name"
+    public override val name: KotlinString = "entity-name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -474,7 +474,7 @@ public object AuditEventSearchParam {
   }
 
   public data object EntityRole : SearchParam<AuditEvent, Coding> {
-    public override val paramName: KotlinString = "entity-role"
+    public override val name: KotlinString = "entity-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -487,7 +487,7 @@ public object AuditEventSearchParam {
   }
 
   public data object EntityType : SearchParam<AuditEvent, Coding> {
-    public override val paramName: KotlinString = "entity-type"
+    public override val name: KotlinString = "entity-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -500,7 +500,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Outcome : SearchParam<AuditEvent, Any> {
-    public override val paramName: KotlinString = "outcome"
+    public override val name: KotlinString = "outcome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -513,7 +513,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Patient : SearchParam<AuditEvent, Reference> {
-    public override val paramName: KotlinString = "patient"
+    public override val name: KotlinString = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -530,7 +530,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Policy : SearchParam<AuditEvent, Uri> {
-    public override val paramName: KotlinString = "policy"
+    public override val name: KotlinString = "policy"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -543,7 +543,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Site : SearchParam<AuditEvent, R4String> {
-    public override val paramName: KotlinString = "site"
+    public override val name: KotlinString = "site"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -556,7 +556,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Source : SearchParam<AuditEvent, Reference> {
-    public override val paramName: KotlinString = "source"
+    public override val name: KotlinString = "source"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -577,7 +577,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Subtype : SearchParam<AuditEvent, Coding> {
-    public override val paramName: KotlinString = "subtype"
+    public override val name: KotlinString = "subtype"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -589,7 +589,7 @@ public object AuditEventSearchParam {
   }
 
   public data object Type : SearchParam<AuditEvent, Coding> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -38,7 +38,7 @@ public object MedicinalProductAuthorizationSearchParam {
     listOf(Country, Holder, Identifier, Status, Subject)
 
   public data object Country : SearchParam<MedicinalProductAuthorization, CodeableConcept> {
-    public override val paramName: String = "country"
+    public override val name: String = "country"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -51,7 +51,7 @@ public object MedicinalProductAuthorizationSearchParam {
   }
 
   public data object Holder : SearchParam<MedicinalProductAuthorization, Reference> {
-    public override val paramName: String = "holder"
+    public override val name: String = "holder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -65,7 +65,7 @@ public object MedicinalProductAuthorizationSearchParam {
 
   public data object Identifier :
     SearchParam<MedicinalProductAuthorization, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -79,7 +79,7 @@ public object MedicinalProductAuthorizationSearchParam {
   }
 
   public data object Status : SearchParam<MedicinalProductAuthorization, CodeableConcept> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -92,7 +92,7 @@ public object MedicinalProductAuthorizationSearchParam {
   }
 
   public data object Subject : SearchParam<MedicinalProductAuthorization, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

@@ -211,7 +211,7 @@ public object CommunicationSearchParam {
     )
 
   public data object BasedOn : SearchParam<Communication, Reference> {
-    public override val paramName: String = "based-on"
+    public override val name: String = "based-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -384,7 +384,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Category : SearchParam<Communication, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -397,7 +397,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Encounter : SearchParam<Communication, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -411,7 +411,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Identifier : SearchParam<Communication, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -425,7 +425,7 @@ public object CommunicationSearchParam {
   }
 
   public data object InstantiatesCanonical : SearchParam<Communication, Canonical> {
-    public override val paramName: String = "instantiates-canonical"
+    public override val name: String = "instantiates-canonical"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -445,7 +445,7 @@ public object CommunicationSearchParam {
   }
 
   public data object InstantiatesUri : SearchParam<Communication, Uri> {
-    public override val paramName: String = "instantiates-uri"
+    public override val name: String = "instantiates-uri"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -458,7 +458,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Medium : SearchParam<Communication, CodeableConcept> {
-    public override val paramName: String = "medium"
+    public override val name: String = "medium"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -471,7 +471,7 @@ public object CommunicationSearchParam {
   }
 
   public data object PartOf : SearchParam<Communication, Reference> {
-    public override val paramName: String = "part-of"
+    public override val name: String = "part-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -644,7 +644,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Patient : SearchParam<Communication, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -660,7 +660,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Received : SearchParam<Communication, DateTime> {
-    public override val paramName: String = "received"
+    public override val name: String = "received"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -673,7 +673,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Recipient : SearchParam<Communication, Reference> {
-    public override val paramName: String = "recipient"
+    public override val name: String = "recipient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -699,7 +699,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Sender : SearchParam<Communication, Reference> {
-    public override val paramName: String = "sender"
+    public override val name: String = "sender"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -723,7 +723,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Sent : SearchParam<Communication, DateTime> {
-    public override val paramName: String = "sent"
+    public override val name: String = "sent"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -736,7 +736,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Status : SearchParam<Communication, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -749,7 +749,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Subject : SearchParam<Communication, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -763,7 +763,7 @@ public object CommunicationSearchParam {
   }
 
   public data object Topic : SearchParam<Communication, CodeableConcept> {
-    public override val paramName: String = "topic"
+    public override val name: String = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

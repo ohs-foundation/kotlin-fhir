@@ -51,7 +51,7 @@ public object MolecularSequenceSearchParam {
     )
 
   public data object Chromosome : SearchParam<MolecularSequence, CodeableConcept> {
-    public override val paramName: String = "chromosome"
+    public override val name: String = "chromosome"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -65,7 +65,7 @@ public object MolecularSequenceSearchParam {
 
   public data object ChromosomeVariantCoordinate :
     SearchParam<MolecularSequence, MolecularSequence.Variant> {
-    public override val paramName: String = "chromosome-variant-coordinate"
+    public override val name: String = "chromosome-variant-coordinate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -79,7 +79,7 @@ public object MolecularSequenceSearchParam {
 
   public data object ChromosomeWindowCoordinate :
     SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> {
-    public override val paramName: String = "chromosome-window-coordinate"
+    public override val name: String = "chromosome-window-coordinate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -92,7 +92,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object Identifier : SearchParam<MolecularSequence, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -106,7 +106,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object Patient : SearchParam<MolecularSequence, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -120,7 +120,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object Referenceseqid : SearchParam<MolecularSequence, CodeableConcept> {
-    public override val paramName: String = "referenceseqid"
+    public override val name: String = "referenceseqid"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -134,7 +134,7 @@ public object MolecularSequenceSearchParam {
 
   public data object ReferenceseqidVariantCoordinate :
     SearchParam<MolecularSequence, MolecularSequence.Variant> {
-    public override val paramName: String = "referenceseqid-variant-coordinate"
+    public override val name: String = "referenceseqid-variant-coordinate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -148,7 +148,7 @@ public object MolecularSequenceSearchParam {
 
   public data object ReferenceseqidWindowCoordinate :
     SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> {
-    public override val paramName: String = "referenceseqid-window-coordinate"
+    public override val name: String = "referenceseqid-window-coordinate"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -161,7 +161,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object Type : SearchParam<MolecularSequence, Any> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -174,7 +174,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object VariantEnd : SearchParam<MolecularSequence, Integer> {
-    public override val paramName: String = "variant-end"
+    public override val name: String = "variant-end"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
 
@@ -187,7 +187,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object VariantStart : SearchParam<MolecularSequence, Integer> {
-    public override val paramName: String = "variant-start"
+    public override val name: String = "variant-start"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
 
@@ -200,7 +200,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object WindowEnd : SearchParam<MolecularSequence, Integer> {
-    public override val paramName: String = "window-end"
+    public override val name: String = "window-end"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
 
@@ -213,7 +213,7 @@ public object MolecularSequenceSearchParam {
   }
 
   public data object WindowStart : SearchParam<MolecularSequence, Integer> {
-    public override val paramName: String = "window-start"
+    public override val name: String = "window-start"
 
     public override val type: SearchParamType = SearchParamType.fromCode("number")
 

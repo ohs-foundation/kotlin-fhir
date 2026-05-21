@@ -73,7 +73,7 @@ public object StructureDefinitionSearchParam {
     )
 
   public data object Abstract : SearchParam<StructureDefinition, Boolean> {
-    public override val paramName: KotlinString = "abstract"
+    public override val name: KotlinString = "abstract"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -86,7 +86,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Base : SearchParam<StructureDefinition, Canonical> {
-    public override val paramName: KotlinString = "base"
+    public override val name: KotlinString = "base"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -99,7 +99,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object BasePath : SearchParam<StructureDefinition, R5String> {
-    public override val paramName: KotlinString = "base-path"
+    public override val name: KotlinString = "base-path"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -112,7 +112,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Context : SearchParam<StructureDefinition, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -125,7 +125,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<StructureDefinition, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -138,7 +138,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<StructureDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -151,7 +151,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<StructureDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -164,7 +164,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<StructureDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -177,7 +177,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<StructureDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -190,7 +190,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Derivation : SearchParam<StructureDefinition, Any> {
-    public override val paramName: KotlinString = "derivation"
+    public override val name: KotlinString = "derivation"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -203,7 +203,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<StructureDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -216,7 +216,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Experimental : SearchParam<StructureDefinition, Boolean> {
-    public override val paramName: KotlinString = "experimental"
+    public override val name: KotlinString = "experimental"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -229,7 +229,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object ExtContext : SearchParam<StructureDefinition, StructureDefinition.Context> {
-    public override val paramName: KotlinString = "ext-context"
+    public override val name: KotlinString = "ext-context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -242,7 +242,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object ExtContextExpression : SearchParam<StructureDefinition, R5String> {
-    public override val paramName: KotlinString = "ext-context-expression"
+    public override val name: KotlinString = "ext-context-expression"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -255,7 +255,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object ExtContextType : SearchParam<StructureDefinition, Any> {
-    public override val paramName: KotlinString = "ext-context-type"
+    public override val name: KotlinString = "ext-context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -269,7 +269,7 @@ public object StructureDefinitionSearchParam {
 
   public data object Identifier :
     SearchParam<StructureDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -283,7 +283,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<StructureDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -296,7 +296,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Keyword : SearchParam<StructureDefinition, Coding> {
-    public override val paramName: KotlinString = "keyword"
+    public override val name: KotlinString = "keyword"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -308,7 +308,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Kind : SearchParam<StructureDefinition, Any> {
-    public override val paramName: KotlinString = "kind"
+    public override val name: KotlinString = "kind"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -320,7 +320,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<StructureDefinition, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -333,7 +333,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Path : SearchParam<StructureDefinition, R5String> {
-    public override val paramName: KotlinString = "path"
+    public override val name: KotlinString = "path"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -346,7 +346,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<StructureDefinition, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -359,7 +359,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<StructureDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -371,7 +371,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<StructureDefinition, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -384,7 +384,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<StructureDefinition, Uri> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -396,7 +396,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<StructureDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -408,7 +408,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Valueset : SearchParam<StructureDefinition, Canonical> {
-    public override val paramName: KotlinString = "valueset"
+    public override val name: KotlinString = "valueset"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -424,7 +424,7 @@ public object StructureDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<StructureDefinition, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

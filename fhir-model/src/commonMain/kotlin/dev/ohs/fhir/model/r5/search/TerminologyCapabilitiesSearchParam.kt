@@ -57,7 +57,7 @@ public object TerminologyCapabilitiesSearchParam {
     )
 
   public data object Context : SearchParam<TerminologyCapabilities, Any> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -70,7 +70,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<TerminologyCapabilities, Any> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -83,7 +83,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object ContextType : SearchParam<TerminologyCapabilities, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -96,7 +96,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<TerminologyCapabilities, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -109,7 +109,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<TerminologyCapabilities, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -122,7 +122,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object Date : SearchParam<TerminologyCapabilities, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -135,7 +135,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object Description : SearchParam<TerminologyCapabilities, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -149,7 +149,7 @@ public object TerminologyCapabilitiesSearchParam {
 
   public data object Identifier :
     SearchParam<TerminologyCapabilities, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -163,7 +163,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<TerminologyCapabilities, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -176,7 +176,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object Name : SearchParam<TerminologyCapabilities, R5String> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -189,7 +189,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object Publisher : SearchParam<TerminologyCapabilities, R5String> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -202,7 +202,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object Status : SearchParam<TerminologyCapabilities, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -215,7 +215,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object Title : SearchParam<TerminologyCapabilities, R5String> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -228,7 +228,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object Url : SearchParam<TerminologyCapabilities, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -241,7 +241,7 @@ public object TerminologyCapabilitiesSearchParam {
   }
 
   public data object Version : SearchParam<TerminologyCapabilities, R5String> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

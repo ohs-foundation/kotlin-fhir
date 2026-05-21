@@ -50,7 +50,7 @@ public object HealthcareServiceSearchParam {
     )
 
   public data object Active : SearchParam<HealthcareService, Boolean> {
-    public override val paramName: KotlinString = "active"
+    public override val name: KotlinString = "active"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -63,7 +63,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object Characteristic : SearchParam<HealthcareService, CodeableConcept> {
-    public override val paramName: KotlinString = "characteristic"
+    public override val name: KotlinString = "characteristic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -76,7 +76,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object CoverageArea : SearchParam<HealthcareService, Reference> {
-    public override val paramName: KotlinString = "coverage-area"
+    public override val name: KotlinString = "coverage-area"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -90,7 +90,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object Endpoint : SearchParam<HealthcareService, Reference> {
-    public override val paramName: KotlinString = "endpoint"
+    public override val name: KotlinString = "endpoint"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -104,7 +104,7 @@ public object HealthcareServiceSearchParam {
 
   public data object Identifier :
     SearchParam<HealthcareService, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -118,7 +118,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object Location : SearchParam<HealthcareService, Reference> {
-    public override val paramName: KotlinString = "location"
+    public override val name: KotlinString = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -131,7 +131,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object Name : SearchParam<HealthcareService, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -144,7 +144,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object Organization : SearchParam<HealthcareService, Reference> {
-    public override val paramName: KotlinString = "organization"
+    public override val name: KotlinString = "organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -158,7 +158,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object Program : SearchParam<HealthcareService, CodeableConcept> {
-    public override val paramName: KotlinString = "program"
+    public override val name: KotlinString = "program"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -171,7 +171,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object ServiceCategory : SearchParam<HealthcareService, CodeableConcept> {
-    public override val paramName: KotlinString = "service-category"
+    public override val name: KotlinString = "service-category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -184,7 +184,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object ServiceType : SearchParam<HealthcareService, CodeableConcept> {
-    public override val paramName: KotlinString = "service-type"
+    public override val name: KotlinString = "service-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -196,7 +196,7 @@ public object HealthcareServiceSearchParam {
   }
 
   public data object Specialty : SearchParam<HealthcareService, CodeableConcept> {
-    public override val paramName: KotlinString = "specialty"
+    public override val name: KotlinString = "specialty"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -63,7 +63,7 @@ public object AdverseEventSearchParam {
     )
 
   public data object Actuality : SearchParam<AdverseEvent, Any> {
-    public override val paramName: String = "actuality"
+    public override val name: String = "actuality"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -75,7 +75,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Category : SearchParam<AdverseEvent, CodeableConcept> {
-    public override val paramName: String = "category"
+    public override val name: String = "category"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -87,7 +87,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Date : SearchParam<AdverseEvent, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -100,7 +100,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Event : SearchParam<AdverseEvent, CodeableConcept> {
-    public override val paramName: String = "event"
+    public override val name: String = "event"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -113,7 +113,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Location : SearchParam<AdverseEvent, Reference> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -127,7 +127,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Recorder : SearchParam<AdverseEvent, Reference> {
-    public override val paramName: String = "recorder"
+    public override val name: String = "recorder"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -141,7 +141,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Resultingcondition : SearchParam<AdverseEvent, Reference> {
-    public override val paramName: String = "resultingcondition"
+    public override val name: String = "resultingcondition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -154,7 +154,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Seriousness : SearchParam<AdverseEvent, CodeableConcept> {
-    public override val paramName: String = "seriousness"
+    public override val name: String = "seriousness"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -167,7 +167,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Severity : SearchParam<AdverseEvent, CodeableConcept> {
-    public override val paramName: String = "severity"
+    public override val name: String = "severity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -180,7 +180,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Study : SearchParam<AdverseEvent, Reference> {
-    public override val paramName: String = "study"
+    public override val name: String = "study"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -192,7 +192,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Subject : SearchParam<AdverseEvent, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -205,7 +205,7 @@ public object AdverseEventSearchParam {
   }
 
   public data object Substance : SearchParam<AdverseEvent, Reference> {
-    public override val paramName: String = "substance"
+    public override val name: String = "substance"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

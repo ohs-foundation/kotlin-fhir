@@ -28,7 +28,7 @@ private typealias ContactPointSystem = ContactPoint.ContactPointSystem
 
 class SearchParamAllUsageTest :
   FunSpec({
-    test("indexing extracts (paramName, value) rows; search queries the index, not extract") {
+    test("indexing extracts (name, value) rows; search queries the index, not extract") {
       val email =
         ContactPoint(
           system = Enumeration(`value` = ContactPointSystem.Email),
@@ -48,20 +48,18 @@ class SearchParamAllUsageTest :
       // telecom by system (FHIRPath: Patient.telecom.where(system='email')), a computation
       // that has no equivalent direct field on Patient.
       val index: List<Pair<String, Any?>> =
-        PatientSearchParam.ALL.flatMap { sp ->
-          sp.extract(alice).map { value -> sp.paramName to value }
-        }
+        PatientSearchParam.ALL.flatMap { sp -> sp.extract(alice).map { value -> sp.name to value } }
 
       // ---------- SEARCH TIME ----------
       // /Patient?email=alice@example.com the server filters the index by both the
-      // paramName ("email") and the value ("alice@example.com"). extract is never called
-      // here. Filtering an in-memory list of (paramName, value) pairs is what makes search
+      // name ("email") and the value ("alice@example.com"). extract is never called
+      // here. Filtering an in-memory list of (name, value) pairs is what makes search
       // fast and uniform across every search param the spec defines.
-      val queryParamName = "email"
+      val queryName = "email"
       val queryValue = "alice@example.com"
       val matches =
-        index.filter { (paramName, value) ->
-          paramName == queryParamName && (value as? ContactPoint)?.`value`?.`value` == queryValue
+        index.filter { (name, value) ->
+          name == queryName && (value as? ContactPoint)?.`value`?.`value` == queryValue
         }
 
       // The email row matched; the phone row was rejected by the value check.

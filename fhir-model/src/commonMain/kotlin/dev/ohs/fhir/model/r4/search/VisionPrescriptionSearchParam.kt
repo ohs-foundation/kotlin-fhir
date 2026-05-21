@@ -40,7 +40,7 @@ public object VisionPrescriptionSearchParam {
     listOf(Datewritten, Encounter, Identifier, Patient, Prescriber, Status)
 
   public data object Datewritten : SearchParam<VisionPrescription, DateTime> {
-    public override val paramName: String = "datewritten"
+    public override val name: String = "datewritten"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -53,7 +53,7 @@ public object VisionPrescriptionSearchParam {
   }
 
   public data object Encounter : SearchParam<VisionPrescription, Reference> {
-    public override val paramName: String = "encounter"
+    public override val name: String = "encounter"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -68,7 +68,7 @@ public object VisionPrescriptionSearchParam {
 
   public data object Identifier :
     SearchParam<VisionPrescription, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -82,7 +82,7 @@ public object VisionPrescriptionSearchParam {
   }
 
   public data object Patient : SearchParam<VisionPrescription, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -96,7 +96,7 @@ public object VisionPrescriptionSearchParam {
   }
 
   public data object Prescriber : SearchParam<VisionPrescription, Reference> {
-    public override val paramName: String = "prescriber"
+    public override val name: String = "prescriber"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -110,7 +110,7 @@ public object VisionPrescriptionSearchParam {
   }
 
   public data object Status : SearchParam<VisionPrescription, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

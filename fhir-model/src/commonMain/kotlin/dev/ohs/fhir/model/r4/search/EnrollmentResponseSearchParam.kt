@@ -36,7 +36,7 @@ public object EnrollmentResponseSearchParam {
 
   public data object Identifier :
     SearchParam<EnrollmentResponse, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -50,7 +50,7 @@ public object EnrollmentResponseSearchParam {
   }
 
   public data object Request : SearchParam<EnrollmentResponse, Reference> {
-    public override val paramName: String = "request"
+    public override val name: String = "request"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -63,7 +63,7 @@ public object EnrollmentResponseSearchParam {
   }
 
   public data object Status : SearchParam<EnrollmentResponse, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

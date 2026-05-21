@@ -38,7 +38,7 @@ public object SupplyDeliverySearchParam {
     listOf(Identifier, Patient, Receiver, Status, Supplier)
 
   public data object Identifier : SearchParam<SupplyDelivery, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -51,7 +51,7 @@ public object SupplyDeliverySearchParam {
   }
 
   public data object Patient : SearchParam<SupplyDelivery, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -65,7 +65,7 @@ public object SupplyDeliverySearchParam {
   }
 
   public data object Receiver : SearchParam<SupplyDelivery, Reference> {
-    public override val paramName: String = "receiver"
+    public override val name: String = "receiver"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -78,7 +78,7 @@ public object SupplyDeliverySearchParam {
   }
 
   public data object Status : SearchParam<SupplyDelivery, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -91,7 +91,7 @@ public object SupplyDeliverySearchParam {
   }
 
   public data object Supplier : SearchParam<SupplyDelivery, Reference> {
-    public override val paramName: String = "supplier"
+    public override val name: String = "supplier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

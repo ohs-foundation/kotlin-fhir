@@ -55,7 +55,7 @@ public object ExampleScenarioSearchParam {
     )
 
   public data object Context : SearchParam<ExampleScenario, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -69,7 +69,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<ExampleScenario, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -82,7 +82,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object ContextType : SearchParam<ExampleScenario, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -95,7 +95,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<ExampleScenario, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -107,7 +107,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<ExampleScenario, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -119,7 +119,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object Date : SearchParam<ExampleScenario, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -132,7 +132,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object Identifier : SearchParam<ExampleScenario, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -146,7 +146,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<ExampleScenario, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -159,7 +159,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object Name : SearchParam<ExampleScenario, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -172,7 +172,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object Publisher : SearchParam<ExampleScenario, R4bString> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -185,7 +185,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object Status : SearchParam<ExampleScenario, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -197,7 +197,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object Url : SearchParam<ExampleScenario, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -209,7 +209,7 @@ public object ExampleScenarioSearchParam {
   }
 
   public data object Version : SearchParam<ExampleScenario, R4bString> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

@@ -208,7 +208,7 @@ public object PlanDefinitionSearchParam {
     )
 
   public data object ComposedOf : SearchParam<PlanDefinition, Canonical> {
-    public override val paramName: KotlinString = "composed-of"
+    public override val name: KotlinString = "composed-of"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -366,7 +366,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Context : SearchParam<PlanDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "context"
+    public override val name: KotlinString = "context"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -380,7 +380,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object ContextQuantity : SearchParam<PlanDefinition, Quantity> {
-    public override val paramName: KotlinString = "context-quantity"
+    public override val name: KotlinString = "context-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -393,7 +393,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object ContextType : SearchParam<PlanDefinition, Coding> {
-    public override val paramName: KotlinString = "context-type"
+    public override val name: KotlinString = "context-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -406,7 +406,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object ContextTypeQuantity : SearchParam<PlanDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-quantity"
+    public override val name: KotlinString = "context-type-quantity"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -419,7 +419,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object ContextTypeValue : SearchParam<PlanDefinition, UsageContext> {
-    public override val paramName: KotlinString = "context-type-value"
+    public override val name: KotlinString = "context-type-value"
 
     public override val type: SearchParamType = SearchParamType.fromCode("composite")
 
@@ -432,7 +432,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Date : SearchParam<PlanDefinition, DateTime> {
-    public override val paramName: KotlinString = "date"
+    public override val name: KotlinString = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -445,7 +445,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Definition : SearchParam<PlanDefinition, PlanDefinition.Action.Definition> {
-    public override val paramName: KotlinString = "definition"
+    public override val name: KotlinString = "definition"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -461,7 +461,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object DependsOn : SearchParam<PlanDefinition, Canonical> {
-    public override val paramName: KotlinString = "depends-on"
+    public override val name: KotlinString = "depends-on"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -619,7 +619,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object DerivedFrom : SearchParam<PlanDefinition, Canonical> {
-    public override val paramName: KotlinString = "derived-from"
+    public override val name: KotlinString = "derived-from"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -777,7 +777,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Description : SearchParam<PlanDefinition, Markdown> {
-    public override val paramName: KotlinString = "description"
+    public override val name: KotlinString = "description"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -790,7 +790,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Effective : SearchParam<PlanDefinition, Period> {
-    public override val paramName: KotlinString = "effective"
+    public override val name: KotlinString = "effective"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -803,7 +803,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Identifier : SearchParam<PlanDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val paramName: KotlinString = "identifier"
+    public override val name: KotlinString = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -817,7 +817,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Jurisdiction : SearchParam<PlanDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "jurisdiction"
+    public override val name: KotlinString = "jurisdiction"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -830,7 +830,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Name : SearchParam<PlanDefinition, R4bString> {
-    public override val paramName: KotlinString = "name"
+    public override val name: KotlinString = "name"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -843,7 +843,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Predecessor : SearchParam<PlanDefinition, Canonical> {
-    public override val paramName: KotlinString = "predecessor"
+    public override val name: KotlinString = "predecessor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -1001,7 +1001,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Publisher : SearchParam<PlanDefinition, R4bString> {
-    public override val paramName: KotlinString = "publisher"
+    public override val name: KotlinString = "publisher"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -1014,7 +1014,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Status : SearchParam<PlanDefinition, Any> {
-    public override val paramName: KotlinString = "status"
+    public override val name: KotlinString = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1027,7 +1027,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Successor : SearchParam<PlanDefinition, Canonical> {
-    public override val paramName: KotlinString = "successor"
+    public override val name: KotlinString = "successor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -1185,7 +1185,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Title : SearchParam<PlanDefinition, R4bString> {
-    public override val paramName: KotlinString = "title"
+    public override val name: KotlinString = "title"
 
     public override val type: SearchParamType = SearchParamType.fromCode("string")
 
@@ -1198,7 +1198,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Topic : SearchParam<PlanDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "topic"
+    public override val name: KotlinString = "topic"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1211,7 +1211,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Type : SearchParam<PlanDefinition, CodeableConcept> {
-    public override val paramName: KotlinString = "type"
+    public override val name: KotlinString = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -1224,7 +1224,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Url : SearchParam<PlanDefinition, Uri> {
-    public override val paramName: KotlinString = "url"
+    public override val name: KotlinString = "url"
 
     public override val type: SearchParamType = SearchParamType.fromCode("uri")
 
@@ -1237,7 +1237,7 @@ public object PlanDefinitionSearchParam {
   }
 
   public data object Version : SearchParam<PlanDefinition, R4bString> {
-    public override val paramName: KotlinString = "version"
+    public override val name: KotlinString = "version"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

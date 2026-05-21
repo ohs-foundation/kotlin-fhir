@@ -39,7 +39,7 @@ public object AppointmentResponseSearchParam {
     listOf(Actor, Appointment, Identifier, Location, PartStatus, Patient, Practitioner)
 
   public data object Actor : SearchParam<AppointmentResponse, Reference> {
-    public override val paramName: String = "actor"
+    public override val name: String = "actor"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -61,7 +61,7 @@ public object AppointmentResponseSearchParam {
   }
 
   public data object Appointment : SearchParam<AppointmentResponse, Reference> {
-    public override val paramName: String = "appointment"
+    public override val name: String = "appointment"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -76,7 +76,7 @@ public object AppointmentResponseSearchParam {
 
   public data object Identifier :
     SearchParam<AppointmentResponse, dev.ohs.fhir.model.r4.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -90,7 +90,7 @@ public object AppointmentResponseSearchParam {
   }
 
   public data object Location : SearchParam<AppointmentResponse, Reference> {
-    public override val paramName: String = "location"
+    public override val name: String = "location"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -107,7 +107,7 @@ public object AppointmentResponseSearchParam {
   }
 
   public data object PartStatus : SearchParam<AppointmentResponse, Any> {
-    public override val paramName: String = "part-status"
+    public override val name: String = "part-status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -120,7 +120,7 @@ public object AppointmentResponseSearchParam {
   }
 
   public data object Patient : SearchParam<AppointmentResponse, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -136,7 +136,7 @@ public object AppointmentResponseSearchParam {
   }
 
   public data object Practitioner : SearchParam<AppointmentResponse, Reference> {
-    public override val paramName: String = "practitioner"
+    public override val name: String = "practitioner"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

@@ -58,7 +58,7 @@ public object InvoiceSearchParam {
     )
 
   public data object Account : SearchParam<Invoice, Reference> {
-    public override val paramName: String = "account"
+    public override val name: String = "account"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -72,7 +72,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Date : SearchParam<Invoice, DateTime> {
-    public override val paramName: String = "date"
+    public override val name: String = "date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -84,7 +84,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Identifier : SearchParam<Invoice, dev.ohs.fhir.model.r5.Identifier> {
-    public override val paramName: String = "identifier"
+    public override val name: String = "identifier"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -97,7 +97,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Issuer : SearchParam<Invoice, Reference> {
-    public override val paramName: String = "issuer"
+    public override val name: String = "issuer"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -109,7 +109,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Participant : SearchParam<Invoice, Reference> {
-    public override val paramName: String = "participant"
+    public override val name: String = "participant"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -130,7 +130,7 @@ public object InvoiceSearchParam {
   }
 
   public data object ParticipantRole : SearchParam<Invoice, CodeableConcept> {
-    public override val paramName: String = "participant-role"
+    public override val name: String = "participant-role"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -143,7 +143,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Patient : SearchParam<Invoice, Reference> {
-    public override val paramName: String = "patient"
+    public override val name: String = "patient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -159,7 +159,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Recipient : SearchParam<Invoice, Reference> {
-    public override val paramName: String = "recipient"
+    public override val name: String = "recipient"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -173,7 +173,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Status : SearchParam<Invoice, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -185,7 +185,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Subject : SearchParam<Invoice, Reference> {
-    public override val paramName: String = "subject"
+    public override val name: String = "subject"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -199,7 +199,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Totalgross : SearchParam<Invoice, Money> {
-    public override val paramName: String = "totalgross"
+    public override val name: String = "totalgross"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -211,7 +211,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Totalnet : SearchParam<Invoice, Money> {
-    public override val paramName: String = "totalnet"
+    public override val name: String = "totalnet"
 
     public override val type: SearchParamType = SearchParamType.fromCode("quantity")
 
@@ -223,7 +223,7 @@ public object InvoiceSearchParam {
   }
 
   public data object Type : SearchParam<Invoice, CodeableConcept> {
-    public override val paramName: String = "type"
+    public override val name: String = "type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 

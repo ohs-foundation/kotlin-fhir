@@ -205,7 +205,7 @@ public object VerificationResultSearchParam {
     )
 
   public data object AttestationMethod : SearchParam<VerificationResult, CodeableConcept> {
-    public override val paramName: String = "attestation-method"
+    public override val name: String = "attestation-method"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -218,7 +218,7 @@ public object VerificationResultSearchParam {
   }
 
   public data object AttestationOnbehalfof : SearchParam<VerificationResult, Reference> {
-    public override val paramName: String = "attestation-onbehalfof"
+    public override val name: String = "attestation-onbehalfof"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -232,7 +232,7 @@ public object VerificationResultSearchParam {
   }
 
   public data object AttestationWho : SearchParam<VerificationResult, Reference> {
-    public override val paramName: String = "attestation-who"
+    public override val name: String = "attestation-who"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -246,7 +246,7 @@ public object VerificationResultSearchParam {
   }
 
   public data object PrimarysourceDate : SearchParam<VerificationResult, DateTime> {
-    public override val paramName: String = "primarysource-date"
+    public override val name: String = "primarysource-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -259,7 +259,7 @@ public object VerificationResultSearchParam {
   }
 
   public data object PrimarysourceType : SearchParam<VerificationResult, CodeableConcept> {
-    public override val paramName: String = "primarysource-type"
+    public override val name: String = "primarysource-type"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -272,7 +272,7 @@ public object VerificationResultSearchParam {
   }
 
   public data object PrimarysourceWho : SearchParam<VerificationResult, Reference> {
-    public override val paramName: String = "primarysource-who"
+    public override val name: String = "primarysource-who"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -286,7 +286,7 @@ public object VerificationResultSearchParam {
   }
 
   public data object Status : SearchParam<VerificationResult, Any> {
-    public override val paramName: String = "status"
+    public override val name: String = "status"
 
     public override val type: SearchParamType = SearchParamType.fromCode("token")
 
@@ -299,7 +299,7 @@ public object VerificationResultSearchParam {
   }
 
   public data object StatusDate : SearchParam<VerificationResult, DateTime> {
-    public override val paramName: String = "status-date"
+    public override val name: String = "status-date"
 
     public override val type: SearchParamType = SearchParamType.fromCode("date")
 
@@ -312,7 +312,7 @@ public object VerificationResultSearchParam {
   }
 
   public data object Target : SearchParam<VerificationResult, Reference> {
-    public override val paramName: String = "target"
+    public override val name: String = "target"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 
@@ -485,7 +485,7 @@ public object VerificationResultSearchParam {
   }
 
   public data object ValidatorOrganization : SearchParam<VerificationResult, Reference> {
-    public override val paramName: String = "validator-organization"
+    public override val name: String = "validator-organization"
 
     public override val type: SearchParamType = SearchParamType.fromCode("reference")
 

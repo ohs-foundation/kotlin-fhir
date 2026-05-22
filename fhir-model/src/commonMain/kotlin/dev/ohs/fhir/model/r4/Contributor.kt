@@ -55,7 +55,7 @@ public data class Contributor(
   /** Contact details to assist a user in finding and communicating with the contributor. */
   public val contact: List<ContactDetail> = listOf(),
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(type, name.toBuilder()).apply {
         id = this@with.id

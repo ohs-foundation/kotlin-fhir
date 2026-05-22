@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -39,9 +40,11 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -450,7 +453,7 @@ internal object DeviceDefinitionCapabilitySerializer : KSerializer<DeviceDefinit
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.description.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, value.description)
   }
@@ -549,7 +552,7 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.valueQuantity.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -660,9 +663,7 @@ internal object DeviceDefinitionMaterialSerializer : KSerializer<DeviceDefinitio
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.substance)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.substanceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.substanceSer, value.substance)
     ((value.alternate?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.alternate?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.alternateSer, it)

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -38,9 +39,11 @@ import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -128,7 +131,7 @@ internal object AdverseEventParticipantSerializer : KSerializer<AdverseEvent.Par
     (value.function)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.functionSer, it)
     }
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, value.actor)
   }
 
   private object Hoisted {
@@ -234,7 +237,6 @@ internal object AdverseEventSuspectEntitySerializer : KSerializer<AdverseEvent.S
         value.modifierExtension,
       )
     when (val choice = value.instance) {
-      null -> {}
       is AdverseEvent.SuspectEntity.Instance.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
@@ -457,7 +459,6 @@ internal object AdverseEventContributingFactorSerializer :
         value.modifierExtension,
       )
     when (val choice = value.item) {
-      null -> {}
       is AdverseEvent.ContributingFactor.Item.Reference -> {
         encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
@@ -560,7 +561,6 @@ internal object AdverseEventPreventiveActionSerializer :
         value.modifierExtension,
       )
     when (val choice = value.item) {
-      null -> {}
       is AdverseEvent.PreventiveAction.Item.Reference -> {
         encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
@@ -663,7 +663,6 @@ internal object AdverseEventMitigatingActionSerializer :
         value.modifierExtension,
       )
     when (val choice = value.item) {
-      null -> {}
       is AdverseEvent.MitigatingAction.Item.Reference -> {
         encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
@@ -765,7 +764,6 @@ internal object AdverseEventSupportingInfoSerializer : KSerializer<AdverseEvent.
         value.modifierExtension,
       )
     when (val choice = value.item) {
-      null -> {}
       is AdverseEvent.SupportingInfo.Item.Reference -> {
         encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
@@ -1251,9 +1249,12 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
         it,
       )
     }
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, Hoisted.subjectSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      17 + descriptorOffset,
+      Hoisted.subjectSer,
+      value.subject,
+    )
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, Hoisted.subjectSer, it)
     }

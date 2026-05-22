@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -25,9 +26,11 @@ import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.Money
 import dev.ohs.fhir.model.r4.terminologies.Currencies
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer

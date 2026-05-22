@@ -49,7 +49,7 @@ public data class Canonical(
   /** Primitive value for canonical */
   override val `value`: String? = null,
 ) : Uri(id, extension, `value`) {
-  open override fun toBuilder(): Builder =
+  override fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

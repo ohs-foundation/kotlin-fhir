@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -52,10 +53,12 @@ import dev.ohs.fhir.model.r4b.UnsignedInt
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.datetime.LocalTime
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -191,7 +194,7 @@ internal object ContractContentDefinitionSerializer : KSerializer<Contract.Conte
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     (value.subType)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
     (value.publisher)?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.publisherSer, it)
@@ -447,7 +450,7 @@ internal object ContractTermSerializer : KSerializer<Contract.Term> {
         Hoisted.securityLabelSer,
         value.securityLabel,
       )
-    (value.offer)?.let { encoder.encodeSerializableElement(descriptor, 14, Hoisted.offerSer, it) }
+    encoder.encodeSerializableElement(descriptor, 14, Hoisted.offerSer, value.offer)
     if (value.asset.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 15, Hoisted.assetSer, value.asset)
     if (value.action.isNotEmpty())
@@ -596,9 +599,12 @@ internal object ContractTermSecurityLabelSerializer : KSerializer<Contract.Term.
     (value.number.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.numberSer2, it)
     }
-    (value.classification)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.classificationSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      5,
+      Hoisted.classificationSer,
+      value.classification,
+    )
     if (value.category.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.categorySer, value.category)
     if (value.control.isNotEmpty())
@@ -942,7 +948,7 @@ internal object ContractTermOfferPartySerializer : KSerializer<Contract.Term.Off
       )
     if (value.reference.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, value.reference)
-    (value.role)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, value.role)
   }
 
   private object Hoisted {
@@ -1132,7 +1138,6 @@ internal object ContractTermOfferAnswerSerializer : KSerializer<Contract.Term.Of
         value.modifierExtension,
       )
     when (val choice = value.`value`) {
-      null -> {}
       is Contract.Term.Offer.Answer.Value.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
         (choice.value.toElement())?.let {
@@ -2340,17 +2345,17 @@ internal object ContractTermActionSerializer : KSerializer<Contract.Term.Action>
     (value.doNotPerform?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.doNotPerformSer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, value.type)
     if (value.subject.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.subjectSer, value.subject)
-    (value.intent)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 7, Hoisted.typeSer, value.intent)
     (value.linkId.map { it.value }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.linkIdSer, it)
     }
     (value.linkId.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.linkIdSer2, it)
     }
-    (value.status)?.let { encoder.encodeSerializableElement(descriptor, 10, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 10, Hoisted.typeSer, value.status)
     (value.context)?.let {
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.contextSer, it)
     }
@@ -2643,8 +2648,8 @@ internal object ContractSignerSerializer : KSerializer<Contract.Signer> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    (value.party)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.partySer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.partySer, value.party)
     if (value.signature.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.signatureSer, value.signature)
   }
@@ -2746,7 +2751,6 @@ internal object ContractFriendlySerializer : KSerializer<Contract.Friendly> {
         value.modifierExtension,
       )
     when (val choice = value.content) {
-      null -> {}
       is Contract.Friendly.Content.Attachment -> {
         encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, choice.value)
       }
@@ -2848,7 +2852,6 @@ internal object ContractLegalSerializer : KSerializer<Contract.Legal> {
         value.modifierExtension,
       )
     when (val choice = value.content) {
-      null -> {}
       is Contract.Legal.Content.Attachment -> {
         encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, choice.value)
       }
@@ -2950,7 +2953,6 @@ internal object ContractRuleSerializer : KSerializer<Contract.Rule> {
         value.modifierExtension,
       )
     when (val choice = value.content) {
-      null -> {}
       is Contract.Rule.Content.Attachment -> {
         encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, choice.value)
       }

@@ -127,7 +127,7 @@ public data class ProdCharacteristic(
    */
   public val scoring: CodeableConcept? = null,
 ) : BackboneElement() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

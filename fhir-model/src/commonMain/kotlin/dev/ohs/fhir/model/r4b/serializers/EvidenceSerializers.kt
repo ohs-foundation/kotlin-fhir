@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -47,9 +48,11 @@ import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -166,9 +169,7 @@ internal object EvidenceVariableDefinitionSerializer : KSerializer<Evidence.Vari
     }
     if (value.note.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.noteSer, value.note)
-    (value.variableRole)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.variableRoleSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 6, Hoisted.variableRoleSer, value.variableRole)
     (value.observed)?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.observedSer, it)
     }
@@ -828,7 +829,7 @@ internal object EvidenceStatisticModelCharacteristicSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     (value.`value`)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueSer, it) }
     if (value.variable.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.variableSer, value.variable)
@@ -979,9 +980,12 @@ internal object EvidenceStatisticModelCharacteristicVariableSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.variableDefinition)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.variableDefinitionSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.variableDefinitionSer,
+      value.variableDefinition,
+    )
     ((value.handling?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.handling?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.handlingSer, it)

@@ -88,7 +88,7 @@ public data class ProductShelfLife(
    */
   public val specialPrecautionsForStorage: List<CodeableConcept> = listOf(),
 ) : BackboneType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

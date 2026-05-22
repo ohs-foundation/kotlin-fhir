@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -36,9 +37,11 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.Url
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -374,14 +377,12 @@ internal object EndpointSerializer : KSerializer<Endpoint> {
         it,
       )
     }
-    (value.connectionType)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        Hoisted.connectionTypeSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      13 + descriptorOffset,
+      Hoisted.connectionTypeSer,
+      value.connectionType,
+    )
     ((value.name?.value))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }

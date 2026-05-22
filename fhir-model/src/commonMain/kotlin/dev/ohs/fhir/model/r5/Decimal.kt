@@ -48,7 +48,7 @@ public data class Decimal(
   /** The actual value */
   @Serializable(with = BigDecimalSerializer::class) public val `value`: BigDecimal? = null,
 ) : PrimitiveType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

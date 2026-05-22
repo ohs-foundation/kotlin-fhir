@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -37,9 +38,11 @@ import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -134,7 +137,7 @@ internal object CatalogEntryRelatedEntrySerializer : KSerializer<CatalogEntry.Re
     (value.relationtype.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.relationtypeSer, it)
     }
-    (value.item)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.itemSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.itemSer, value.item)
   }
 
   private object Hoisted {
@@ -460,14 +463,12 @@ internal object CatalogEntrySerializer : KSerializer<CatalogEntry> {
         it,
       )
     }
-    (value.referencedItem)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        Hoisted.referencedItemSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      14 + descriptorOffset,
+      Hoisted.referencedItemSer,
+      value.referencedItem,
+    )
     if (value.additionalIdentifier.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -47,9 +48,11 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -317,9 +320,7 @@ internal object DeviceDefinitionUdiDeviceIdentifierMarketDistributionSerializer 
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.marketPeriod)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.marketPeriodSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.marketPeriodSer, value.marketPeriod)
     ((value.subJurisdiction.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.subJurisdiction.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.subJurisdictionSer, it)
@@ -635,7 +636,7 @@ internal object DeviceDefinitionClassificationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.justification.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -760,9 +761,7 @@ internal object DeviceDefinitionConformsToSerializer : KSerializer<DeviceDefinit
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, it)
     }
-    (value.specification)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.categorySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.categorySer, value.specification)
     (value.version.map { it.value }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.versionSer, it)
     }
@@ -870,9 +869,7 @@ internal object DeviceDefinitionHasPartSerializer : KSerializer<DeviceDefinition
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, value.reference)
     ((value.count?.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
     (value.count?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.countSer, it)
@@ -1394,9 +1391,8 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.`value`) {
-      null -> {}
       is DeviceDefinition.Property.Value.Quantity -> {
         encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
@@ -1518,12 +1514,8 @@ internal object DeviceDefinitionLinkSerializer : KSerializer<DeviceDefinition.Li
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.relation)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.relationSer, it)
-    }
-    (value.relatedDevice)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.relatedDeviceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.relationSer, value.relation)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.relatedDeviceSer, value.relatedDevice)
   }
 
   private object Hoisted {
@@ -1620,9 +1612,7 @@ internal object DeviceDefinitionMaterialSerializer : KSerializer<DeviceDefinitio
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.substance)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.substanceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.substanceSer, value.substance)
     ((value.alternate?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.alternate?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.alternateSer, it)
@@ -1936,7 +1926,7 @@ internal object DeviceDefinitionCorrectiveActionSerializer :
     (value.scope?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.recallSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.periodSer, it) }
+    encoder.encodeSerializableElement(descriptor, 7, Hoisted.periodSer, value.period)
   }
 
   private object Hoisted {
@@ -2046,10 +2036,13 @@ internal object DeviceDefinitionChargeItemSerializer : KSerializer<DeviceDefinit
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.chargeItemCode)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.chargeItemCodeSer, it)
-    }
-    (value.count)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.countSer, it) }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.chargeItemCodeSer,
+      value.chargeItemCode,
+    )
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.countSer, value.count)
     (value.effectivePeriod)?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.effectivePeriodSer, it)
     }

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -44,9 +45,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -139,7 +142,7 @@ internal object FamilyMemberHistoryParticipantSerializer :
     (value.function)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.functionSer, it)
     }
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, value.actor)
   }
 
   private object Hoisted {
@@ -275,7 +278,7 @@ internal object FamilyMemberHistoryConditionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     (value.outcome)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it) }
     ((value.contributedToDeath?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
     (value.contributedToDeath?.toElement())?.let {
@@ -470,7 +473,7 @@ internal object FamilyMemberHistoryProcedureSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     (value.outcome)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it) }
     ((value.contributedToDeath?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
     (value.contributedToDeath?.toElement())?.let {
@@ -1031,9 +1034,12 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         it,
       )
     }
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      18 + descriptorOffset,
+      Hoisted.patientSer,
+      value.patient,
+    )
     ((value.date?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
@@ -1063,14 +1069,12 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         it,
       )
     }
-    (value.relationship)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        24 + descriptorOffset,
-        Hoisted.dataAbsentReasonSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      24 + descriptorOffset,
+      Hoisted.dataAbsentReasonSer,
+      value.relationship,
+    )
     (value.sex)?.let {
       encoder.encodeSerializableElement(
         descriptor,

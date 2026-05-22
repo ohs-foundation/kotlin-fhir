@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -39,9 +40,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -226,9 +229,7 @@ internal object ImagingStudySeriesSerializer : KSerializer<ImagingStudy.Series> 
     (value.number?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.uidSer, it)
     }
-    (value.modality)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.modalitySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 7, Hoisted.modalitySer, value.modality)
     ((value.description?.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.uidSer, it)
@@ -359,7 +360,7 @@ internal object ImagingStudySeriesPerformerSerializer : KSerializer<ImagingStudy
     (value.function)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.functionSer, it)
     }
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, value.actor)
   }
 
   private object Hoisted {
@@ -464,9 +465,7 @@ internal object ImagingStudySeriesInstanceSerializer : KSerializer<ImagingStudy.
     (value.uid.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.uidSer, it)
     }
-    (value.sopClass)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.sopClassSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.sopClassSer, value.sopClass)
     ((value.number?.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
     (value.number?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.uidSer, it)
@@ -811,9 +810,12 @@ internal object ImagingStudySerializer : KSerializer<ImagingStudy> {
         Hoisted.modalitySer,
         value.modality,
       )
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.subjectSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      14 + descriptorOffset,
+      Hoisted.subjectSer,
+      value.subject,
+    )
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.subjectSer, it)
     }

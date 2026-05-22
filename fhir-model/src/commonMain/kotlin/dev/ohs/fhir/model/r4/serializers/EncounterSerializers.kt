@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -35,9 +36,11 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -129,7 +132,7 @@ internal object EncounterStatusHistorySerializer : KSerializer<Encounter.StatusH
     (value.status.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.statusSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.periodSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.periodSer, value.period)
   }
 
   private object Hoisted {
@@ -212,8 +215,8 @@ internal object EncounterClassHistorySerializer : KSerializer<Encounter.ClassHis
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.`class`)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.classSer, it) }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.classSer, value.`class`)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, value.period)
   }
 
   private object Hoisted {
@@ -404,9 +407,7 @@ internal object EncounterDiagnosisSerializer : KSerializer<Encounter.Diagnosis> 
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.condition)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.conditionSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.conditionSer, value.condition)
     (value.use)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.useSer, it) }
     ((value.rank?.value))?.let { encoder.encodeIntElement(descriptor, 5, it) }
     (value.rank?.toElement())?.let {
@@ -712,9 +713,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.location)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.locationSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.locationSer, value.location)
     ((value.status?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.status?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.statusSer, it)
@@ -1108,9 +1107,12 @@ internal object EncounterSerializer : KSerializer<Encounter> {
         Hoisted.statusHistorySer,
         value.statusHistory,
       )
-    (value.`class`)?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.classSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      14 + descriptorOffset,
+      Hoisted.classSer,
+      value.`class`,
+    )
     if (value.classHistory.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

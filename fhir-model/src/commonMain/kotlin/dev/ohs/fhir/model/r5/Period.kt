@@ -62,7 +62,7 @@ public data class Period(
    */
   public val end: DateTime? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

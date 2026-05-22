@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -41,9 +42,11 @@ import dev.ohs.fhir.model.r4.Timing
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -733,7 +736,6 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
       )
     }
     when (val choice = value.code) {
-      null -> {}
       is DeviceRequest.Code.Reference -> {
         encoder.encodeSerializableElement(
           descriptor,
@@ -758,14 +760,12 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
         Hoisted.parameterSer,
         value.parameter,
       )
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        Hoisted.basedOnSerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      27 + descriptorOffset,
+      Hoisted.basedOnSerInner,
+      value.subject,
+    )
     (value.encounter)?.let {
       encoder.encodeSerializableElement(
         descriptor,

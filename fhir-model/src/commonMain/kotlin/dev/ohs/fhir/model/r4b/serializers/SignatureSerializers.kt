@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -27,9 +28,11 @@ import dev.ohs.fhir.model.r4b.FhirDateTime
 import dev.ohs.fhir.model.r4b.Instant
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.Signature
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -146,7 +149,7 @@ internal object SignatureSerializer : KSerializer<Signature> {
     (value.`when`.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.whenSer, it)
     }
-    (value.who)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.whoSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.whoSer, value.who)
     (value.onBehalfOf)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.whoSer, it) }
     ((value.targetFormat?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.targetFormat?.toElement())?.let {

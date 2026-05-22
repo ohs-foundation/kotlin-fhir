@@ -139,18 +139,21 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
       }
     } else if (type != null && FhirPathType.containsFhirTypeCode(type.code)) {
       val fhirPathType = FhirPathType.getFromFhirTypeCode(type.code)!!
-      val notNullAssertion = if (element.min == 1) "!!" else ""
-      // Xhtml element in the data model can never be null but the wire representation is nullable.
-      val notNullAssertionXhtml = if (type.code == "xhtml") "!!" else ""
+      // Primitives whose StructureDefinition declares `<Type>.value` with `min > 0` have a
+      // non-null `.value` field on the wrapper, so the wire value must be coerced non-null at the
+      // call site. `Type.of(...)` then returns non-null, making any outer `!!` redundant.
+      val wireValueIsNonNull = codegenContext.primitiveValueIsNonNull[type.code] == true
+      val coerceWireValue = if (wireValueIsNonNull) "!!" else ""
+      val coerceResult = if (element.min == 1 && !wireValueIsNonNull) "!!" else ""
       add("%T.of(", ClassName(modelClassName.packageName, type.code.capitalized()))
       fhirPathType.addCodeToDecodeWirePropertyToModel(
         this,
         modelClassName.packageName,
         propertyName,
       )
-      add(notNullAssertionXhtml)
+      add(coerceWireValue)
       add(", %N)", sidecarName)
-      add(notNullAssertion)
+      add(coerceResult)
     } else {
       add("%N", propertyName)
       if (element.min == 1 && element.max == "1") {

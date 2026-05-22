@@ -48,7 +48,7 @@ public data class Time(
   /** The actual value */
   @Serializable(with = LocalTimeSerializer::class) public val `value`: LocalTime? = null,
 ) : PrimitiveType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

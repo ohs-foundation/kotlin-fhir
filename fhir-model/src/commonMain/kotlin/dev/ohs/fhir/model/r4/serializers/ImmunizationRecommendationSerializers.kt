@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -34,9 +35,11 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -284,9 +287,12 @@ internal object ImmunizationRecommendationRecommendationSerializer :
         Hoisted.vaccineCodeSer,
         value.contraindicatedVaccineCode,
       )
-    (value.forecastStatus)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.vaccineCodeSerInner, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      6,
+      Hoisted.vaccineCodeSerInner,
+      value.forecastStatus,
+    )
     if (value.forecastReason.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.vaccineCodeSer, value.forecastReason)
     if (value.dateCriterion.isNotEmpty())
@@ -459,7 +465,7 @@ internal object ImmunizationRecommendationRecommendationDateCriterionSerializer 
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     ((value.`value`.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.`value`.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
@@ -687,9 +693,12 @@ internal object ImmunizationRecommendationSerializer : KSerializer<ImmunizationR
         Hoisted.identifierSer,
         value.identifier,
       )
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      11 + descriptorOffset,
+      Hoisted.patientSer,
+      value.patient,
+    )
     ((value.date.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }

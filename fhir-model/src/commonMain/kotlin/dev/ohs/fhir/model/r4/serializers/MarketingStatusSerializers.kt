@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -25,9 +26,11 @@ import dev.ohs.fhir.model.r4.Extension
 import dev.ohs.fhir.model.r4.FhirDateTime
 import dev.ohs.fhir.model.r4.MarketingStatus
 import dev.ohs.fhir.model.r4.Period
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -133,16 +136,12 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.country)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.countrySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.countrySer, value.country)
     (value.jurisdiction)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.countrySer, it)
     }
-    (value.status)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.countrySer, it) }
-    (value.dateRange)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.dateRangeSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.countrySer, value.status)
+    encoder.encodeSerializableElement(descriptor, 6, Hoisted.dateRangeSer, value.dateRange)
     ((value.restoreDate?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.restoreDate?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.restoreDateSer, it)

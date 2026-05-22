@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -42,9 +43,11 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -213,7 +216,7 @@ internal object NutritionProductIngredientSerializer : KSerializer<NutritionProd
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.item)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemSer, value.item)
     if (value.amount.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountSer, value.amount)
   }
@@ -354,9 +357,8 @@ internal object NutritionProductProductCharacteristicSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.`value`) {
-      null -> {}
       is NutritionProduct.ProductCharacteristic.Value.CodeableConcept -> {
         encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, choice.value)
       }

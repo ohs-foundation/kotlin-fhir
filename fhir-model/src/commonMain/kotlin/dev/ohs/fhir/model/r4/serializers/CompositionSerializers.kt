@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -35,9 +36,11 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -244,7 +247,6 @@ internal object CompositionRelatesToSerializer : KSerializer<Composition.Relates
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
     when (val choice = value.target) {
-      null -> {}
       is Composition.RelatesTo.Target.Identifier -> {
         encoder.encodeSerializableElement(descriptor, 5, Hoisted.targetIdentifierSer, choice.value)
       }
@@ -832,9 +834,12 @@ internal object CompositionSerializer : KSerializer<Composition> {
         it,
       )
     }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.typeSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      13 + descriptorOffset,
+      Hoisted.typeSer,
+      value.type,
+    )
     if (value.category.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

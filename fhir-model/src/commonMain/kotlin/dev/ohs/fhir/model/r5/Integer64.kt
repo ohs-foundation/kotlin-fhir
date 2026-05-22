@@ -47,7 +47,7 @@ public data class Integer64(
   /** The actual value */
   public val `value`: Long? = null,
 ) : PrimitiveType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

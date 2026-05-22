@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -43,9 +44,11 @@ import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -292,9 +295,8 @@ internal object EvidenceReportSubjectCharacteristicSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     when (val choice = value.`value`) {
-      null -> {}
       is EvidenceReport.Subject.Characteristic.Value.Reference -> {
         encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueReferenceSer, choice.value)
       }
@@ -432,7 +434,6 @@ internal object EvidenceReportRelatesToSerializer : KSerializer<EvidenceReport.R
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
     when (val choice = value.target) {
-      null -> {}
       is EvidenceReport.RelatesTo.Target.Identifier -> {
         encoder.encodeSerializableElement(descriptor, 5, Hoisted.targetIdentifierSer, choice.value)
       }
@@ -1100,9 +1101,12 @@ internal object EvidenceReportSerializer : KSerializer<EvidenceReport> {
         Hoisted.relatedArtifactSer,
         value.relatedArtifact,
       )
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, Hoisted.subjectSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      23 + descriptorOffset,
+      Hoisted.subjectSer,
+      value.subject,
+    )
     ((value.publisher?.value))?.let {
       encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
     }

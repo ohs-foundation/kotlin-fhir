@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -38,9 +39,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -133,7 +136,7 @@ internal object CoveragePaymentBySerializer : KSerializer<Coverage.PaymentBy> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.party)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.partySer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.partySer, value.party)
     ((value.responsibility?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.responsibility?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.responsibilitySer, it)
@@ -226,8 +229,8 @@ internal object CoverageClassSerializer : KSerializer<Coverage.Class> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    (value.`value`)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueSer, value.`value`)
     ((value.name?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.name?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
@@ -460,7 +463,7 @@ internal object CoverageCostToBeneficiaryExceptionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     (value.period)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, it) }
   }
 
@@ -854,14 +857,12 @@ internal object CoverageSerializer : KSerializer<Coverage> {
         Hoisted.identifierSer,
         value.subscriberId,
       )
-    (value.beneficiary)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        20 + descriptorOffset,
-        Hoisted.policyHolderSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      20 + descriptorOffset,
+      Hoisted.policyHolderSer,
+      value.beneficiary,
+    )
     ((value.dependent?.value))?.let {
       encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
     }

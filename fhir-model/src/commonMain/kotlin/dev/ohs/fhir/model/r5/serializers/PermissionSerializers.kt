@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -35,9 +36,11 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -482,9 +485,7 @@ internal object PermissionRuleDataResourceSerializer : KSerializer<Permission.Ru
     (value.meaning.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.meaningSer, it)
     }
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, value.reference)
   }
 
   private object Hoisted {

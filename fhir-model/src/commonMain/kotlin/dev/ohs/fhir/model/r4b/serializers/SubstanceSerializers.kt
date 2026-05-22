@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -36,9 +37,11 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Substance
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -253,7 +256,6 @@ internal object SubstanceIngredientSerializer : KSerializer<Substance.Ingredient
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.quantitySer, it)
     }
     when (val choice = value.substance) {
-      null -> {}
       is Substance.Ingredient.Substance.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
@@ -530,14 +532,12 @@ internal object SubstanceSerializer : KSerializer<Substance> {
         Hoisted.categorySer,
         value.category,
       )
-    (value.code)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        14 + descriptorOffset,
-        Hoisted.categorySerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      14 + descriptorOffset,
+      Hoisted.categorySerInner,
+      value.code,
+    )
     ((value.description?.value))?.let {
       encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
     }

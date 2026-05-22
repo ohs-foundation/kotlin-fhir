@@ -52,7 +52,7 @@ public data class DateTime(
   /** The actual value */
   @Serializable(with = FhirDateTimeSerializer::class) public val `value`: FhirDateTime? = null,
 ) : Element(id, extension) {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

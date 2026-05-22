@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -44,10 +45,12 @@ import dev.ohs.fhir.model.r5.Time
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.datetime.LocalTime
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -135,7 +138,7 @@ internal object AuditEventOutcomeSerializer : KSerializer<AuditEvent.Outcome> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     if (value.detail.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.detailSer, value.detail)
   }
@@ -300,7 +303,7 @@ internal object AuditEventAgentSerializer : KSerializer<AuditEvent.Agent> {
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
     if (value.role.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, value.role)
-    (value.who)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.whoSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.whoSer, value.who)
     ((value.requestor?.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
     (value.requestor?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.requestorSer, it)
@@ -434,7 +437,7 @@ internal object AuditEventSourceSerializer : KSerializer<AuditEvent.Source> {
         value.modifierExtension,
       )
     (value.site)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.siteSer, it) }
-    (value.observer)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.siteSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.siteSer, value.observer)
     if (value.type.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, value.type)
   }
@@ -752,9 +755,8 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.`value`) {
-      null -> {}
       is AuditEvent.Entity.Detail.Value.Quantity -> {
         encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
@@ -1123,14 +1125,12 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         Hoisted.categorySer,
         value.category,
       )
-    (value.code)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        Hoisted.categorySerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      11 + descriptorOffset,
+      Hoisted.categorySerInner,
+      value.code,
+    )
     ((value.action?.value?.getCode()))?.let {
       encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
     }
@@ -1228,9 +1228,12 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         Hoisted.agentSer,
         value.agent,
       )
-    (value.source)?.let {
-      encoder.encodeSerializableElement(descriptor, 27 + descriptorOffset, Hoisted.sourceSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      27 + descriptorOffset,
+      Hoisted.sourceSer,
+      value.source,
+    )
     if (value.entity.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

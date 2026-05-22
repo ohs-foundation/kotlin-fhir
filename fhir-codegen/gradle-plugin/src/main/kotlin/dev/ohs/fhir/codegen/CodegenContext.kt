@@ -29,6 +29,7 @@ data class CodegenContext(
   val valueSetMap: Map<String, ValueSet>,
   val baseClassNameSet: HashSet<String>,
   val typeGraph: TypeGraphAnalyzer,
+  val primitiveValueIsNonNull: Map<String, Boolean>,
 ) {
   fun getModelClassName(structureDefinition: StructureDefinition) =
     ClassName(packageName, structureDefinition.name.capitalized())

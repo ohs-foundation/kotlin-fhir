@@ -59,7 +59,7 @@ public data class UsageContext(
    */
   public val `value`: Value,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(code.toBuilder(), `value`).apply {
         id = this@with.id

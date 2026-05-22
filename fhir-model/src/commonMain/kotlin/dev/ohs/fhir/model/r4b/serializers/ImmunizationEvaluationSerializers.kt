@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -35,9 +36,11 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -362,9 +365,12 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
         it,
       )
     }
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      13 + descriptorOffset,
+      Hoisted.patientSer,
+      value.patient,
+    )
     ((value.date?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
     }
@@ -379,25 +385,24 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
     (value.authority)?.let {
       encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.patientSer, it)
     }
-    (value.targetDisease)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        Hoisted.targetDiseaseSer,
-        it,
-      )
-    }
-    (value.immunizationEvent)?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, Hoisted.patientSer, it)
-    }
-    (value.doseStatus)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        19 + descriptorOffset,
-        Hoisted.targetDiseaseSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      17 + descriptorOffset,
+      Hoisted.targetDiseaseSer,
+      value.targetDisease,
+    )
+    encoder.encodeSerializableElement(
+      descriptor,
+      18 + descriptorOffset,
+      Hoisted.patientSer,
+      value.immunizationEvent,
+    )
+    encoder.encodeSerializableElement(
+      descriptor,
+      19 + descriptorOffset,
+      Hoisted.targetDiseaseSer,
+      value.doseStatus,
+    )
     if (value.doseStatusReason.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

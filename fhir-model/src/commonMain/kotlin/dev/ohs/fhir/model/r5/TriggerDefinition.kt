@@ -93,7 +93,7 @@ public data class TriggerDefinition(
    */
   public val condition: Expression? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(type).apply {
         id = this@with.id

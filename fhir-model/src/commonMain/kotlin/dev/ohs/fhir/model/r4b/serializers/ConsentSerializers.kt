@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -38,9 +39,11 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -543,10 +546,8 @@ internal object ConsentProvisionActorSerializer : KSerializer<Consent.Provision.
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.role)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.roleSer, it) }
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.roleSer, value.role)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.referenceSer, value.reference)
   }
 
   private object Hoisted {
@@ -638,9 +639,7 @@ internal object ConsentProvisionDataSerializer : KSerializer<Consent.Provision.D
     (value.meaning.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.meaningSer, it)
     }
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, value.reference)
   }
 
   private object Hoisted {
@@ -946,9 +945,12 @@ internal object ConsentSerializer : KSerializer<Consent> {
         it,
       )
     }
-    (value.scope)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.scopeSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      13 + descriptorOffset,
+      Hoisted.scopeSer,
+      value.scope,
+    )
     if (value.category.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

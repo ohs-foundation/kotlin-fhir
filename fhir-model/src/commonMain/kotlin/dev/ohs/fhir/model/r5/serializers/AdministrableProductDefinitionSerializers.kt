@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -42,9 +43,11 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -197,7 +200,7 @@ internal object AdministrableProductDefinitionPropertySerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.`value`) {
       null -> {}
       is AdministrableProductDefinition.Property.Value.CodeableConcept -> {
@@ -380,7 +383,7 @@ internal object AdministrableProductDefinitionRouteOfAdministrationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     (value.firstDose)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.firstDoseSer, it)
     }
@@ -525,7 +528,7 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     if (value.withdrawalPeriod.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -651,8 +654,8 @@ internal object AdministrableProductDefinitionRouteOfAdministrationTargetSpecies
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.tissue)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.tissueSer, it) }
-    (value.`value`)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.tissueSer, value.tissue)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueSer, value.`value`)
     ((value.supportingInformation?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.supportingInformation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.supportingInformationSer, it)

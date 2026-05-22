@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -37,9 +38,11 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.VirtualServiceDetail
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -563,9 +566,7 @@ internal object EncounterLocationSerializer : KSerializer<Encounter.Location> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.location)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.locationSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.locationSer, value.location)
     ((value.status?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.status?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.statusSer, it)

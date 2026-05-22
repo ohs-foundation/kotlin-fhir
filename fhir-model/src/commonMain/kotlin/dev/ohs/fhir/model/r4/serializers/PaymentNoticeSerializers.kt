@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -36,9 +37,11 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -329,9 +332,12 @@ internal object PaymentNoticeSerializer : KSerializer<PaymentNotice> {
     (value.provider)?.let {
       encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, Hoisted.requestSer, it)
     }
-    (value.payment)?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, Hoisted.requestSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      18 + descriptorOffset,
+      Hoisted.requestSer,
+      value.payment,
+    )
     ((value.paymentDate?.value?.toString()))?.let {
       encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
     }
@@ -346,12 +352,18 @@ internal object PaymentNoticeSerializer : KSerializer<PaymentNotice> {
     (value.payee)?.let {
       encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, Hoisted.requestSer, it)
     }
-    (value.recipient)?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, Hoisted.requestSer, it)
-    }
-    (value.amount)?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, Hoisted.amountSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      22 + descriptorOffset,
+      Hoisted.requestSer,
+      value.recipient,
+    )
+    encoder.encodeSerializableElement(
+      descriptor,
+      23 + descriptorOffset,
+      Hoisted.amountSer,
+      value.amount,
+    )
     (value.paymentStatus)?.let {
       encoder.encodeSerializableElement(
         descriptor,

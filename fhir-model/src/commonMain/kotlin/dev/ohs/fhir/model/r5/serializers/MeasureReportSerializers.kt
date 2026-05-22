@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -42,9 +43,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -1018,9 +1021,8 @@ internal object MeasureReportGroupStratifierStratumComponentSerializer :
     (value.linkId?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.linkIdSer, it)
     }
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, value.code)
     when (val choice = value.`value`) {
-      null -> {}
       is MeasureReport.Group.Stratifier.Stratum.Component.Value.CodeableConcept -> {
         encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, choice.value)
       }
@@ -1592,9 +1594,12 @@ internal object MeasureReportSerializer : KSerializer<MeasureReport> {
     (value.location)?.let {
       encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, Hoisted.subjectSer, it)
     }
-    (value.period)?.let {
-      encoder.encodeSerializableElement(descriptor, 25 + descriptorOffset, Hoisted.periodSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      25 + descriptorOffset,
+      Hoisted.periodSer,
+      value.period,
+    )
     (value.inputParameters)?.let {
       encoder.encodeSerializableElement(descriptor, 26 + descriptorOffset, Hoisted.subjectSer, it)
     }

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -46,9 +47,11 @@ import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -273,9 +276,7 @@ internal object MeasureGroupPopulationSerializer : KSerializer<Measure.Group.Pop
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.descriptionSer, it)
     }
-    (value.criteria)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.criteriaSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 6, Hoisted.criteriaSer, value.criteria)
   }
 
   private object Hoisted {
@@ -499,9 +500,7 @@ internal object MeasureGroupStratifierComponentSerializer :
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.descriptionSer, it)
     }
-    (value.criteria)?.let {
-      encoder.encodeSerializableElement(descriptor, 6, Hoisted.criteriaSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 6, Hoisted.criteriaSer, value.criteria)
   }
 
   private object Hoisted {
@@ -611,9 +610,7 @@ internal object MeasureSupplementalDataSerializer : KSerializer<Measure.Suppleme
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
     }
-    (value.criteria)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.criteriaSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 7, Hoisted.criteriaSer, value.criteria)
   }
 
   private object Hoisted {

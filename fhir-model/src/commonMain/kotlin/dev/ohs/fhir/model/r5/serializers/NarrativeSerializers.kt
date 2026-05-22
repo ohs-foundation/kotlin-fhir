@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -23,9 +24,11 @@ import dev.ohs.fhir.model.r5.Enumeration
 import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.Narrative
 import dev.ohs.fhir.model.r5.Xhtml
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -90,7 +93,7 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
       id = id,
       extension = extension ?: listOf(),
       status = Enumeration.of(Narrative.NarrativeStatus.fromCode(status!!), _status),
-      div = Xhtml.of(div!!, _div)!!,
+      div = Xhtml.of(div!!, _div),
     )
   }
 
@@ -102,7 +105,7 @@ internal object NarrativeSerializer : KSerializer<Narrative> {
     (value.status.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.statusSer, it)
     }
-    ((value.div.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+    encoder.encodeStringElement(descriptor, 4, (value.div.value))
     (value.div.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.statusSer, it)
     }

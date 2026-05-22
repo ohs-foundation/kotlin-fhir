@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -46,9 +47,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -147,7 +150,7 @@ internal object MedicationKnowledgeRelatedMedicationKnowledgeSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.reference.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.referenceSer, value.reference)
   }
@@ -350,13 +353,12 @@ internal object MedicationKnowledgeCostSerializer : KSerializer<MedicationKnowle
         Hoisted.effectiveDateSer,
         value.effectiveDate,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, value.type)
     ((value.source?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.source?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.sourceSer, it)
     }
     when (val choice = value.cost) {
-      null -> {}
       is MedicationKnowledge.Cost.Cost.Money -> {
         encoder.encodeSerializableElement(descriptor, 7, Hoisted.costMoneySer, choice.value)
       }
@@ -854,7 +856,7 @@ internal object MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageSeria
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.dosage.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.dosageSer, value.dosage)
   }
@@ -968,7 +970,7 @@ internal object MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientChar
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.`value`) {
       null -> {}
       is MedicationKnowledge.IndicationGuideline.DosingGuideline.PatientCharacteristic.Value.CodeableConcept -> {
@@ -1102,7 +1104,7 @@ internal object MedicationKnowledgeMedicineClassificationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.source) {
       null -> {}
       is MedicationKnowledge.MedicineClassification.Source.String -> {
@@ -1485,9 +1487,8 @@ internal object MedicationKnowledgeStorageGuidelineEnvironmentalSettingSerialize
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.`value`) {
-      null -> {}
       is MedicationKnowledge.StorageGuideline.EnvironmentalSetting.Value.Quantity -> {
         encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
@@ -1619,9 +1620,12 @@ internal object MedicationKnowledgeRegulatorySerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.regulatoryAuthority)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.regulatoryAuthoritySer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.regulatoryAuthoritySer,
+      value.regulatoryAuthority,
+    )
     if (value.substitution.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.substitutionSer, value.substitution)
     if (value.schedule.isNotEmpty())
@@ -1732,7 +1736,7 @@ internal object MedicationKnowledgeRegulatorySubstitutionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     ((value.allowed.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.allowed.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.allowedSer, it)
@@ -1826,9 +1830,7 @@ internal object MedicationKnowledgeRegulatoryMaxDispenseSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.quantity)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.quantitySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.quantitySer, value.quantity)
     (value.period)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, it) }
   }
 
@@ -2116,7 +2118,7 @@ internal object MedicationKnowledgeDefinitionalIngredientSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.item)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemSer, value.item)
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
     when (val choice = value.strength) {
       null -> {}

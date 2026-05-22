@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -46,9 +47,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -545,9 +548,7 @@ internal object DeviceConformsToSerializer : KSerializer<Device.ConformsTo> {
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, it)
     }
-    (value.specification)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.categorySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.categorySer, value.specification)
     ((value.version?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.version?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.versionSer, it)
@@ -687,9 +688,8 @@ internal object DevicePropertySerializer : KSerializer<Device.Property> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.`value`) {
-      null -> {}
       is Device.Property.Value.Quantity -> {
         encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }

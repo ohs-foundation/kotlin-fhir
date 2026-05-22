@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -42,9 +43,11 @@ import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -136,7 +139,7 @@ internal object MedicationAdministrationPerformerSerializer :
     (value.function)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.functionSer, it)
     }
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, value.actor)
   }
 
   private object Hoisted {
@@ -687,22 +690,18 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
         Hoisted.statusReasonSer,
         value.category,
       )
-    (value.medication)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        17 + descriptorOffset,
-        Hoisted.medicationSer,
-        it,
-      )
-    }
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        18 + descriptorOffset,
-        Hoisted.basedOnSerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      17 + descriptorOffset,
+      Hoisted.medicationSer,
+      value.medication,
+    )
+    encoder.encodeSerializableElement(
+      descriptor,
+      18 + descriptorOffset,
+      Hoisted.basedOnSerInner,
+      value.subject,
+    )
     (value.encounter)?.let {
       encoder.encodeSerializableElement(
         descriptor,
@@ -719,7 +718,6 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
         value.supportingInformation,
       )
     when (val choice = value.occurence) {
-      null -> {}
       is MedicationAdministration.Occurence.DateTime -> {
         ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)

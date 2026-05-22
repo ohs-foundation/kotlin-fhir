@@ -76,6 +76,7 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
               addEqualsAndHashCodeFunctions(
                 structureDefinition.name,
                 structureDefinition.rootElements,
+                modelClassName,
               )
             } else {
               addModifiers(KModifier.SEALED)
@@ -93,6 +94,7 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
             addEqualsAndHashCodeFunctions(
               structureDefinition.name,
               structureDefinition.rootElements,
+              modelClassName,
             )
           } else {
             addModifiers(KModifier.DATA)
@@ -182,7 +184,12 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
 
           addSealedInterfaces(modelClassName, structureDefinition.rootElements)
 
-          addModelBuilderSupport(structureDefinition, modelClassName, codegenContext.valueSetMap)
+          addModelBuilderSupport(
+            structureDefinition,
+            modelClassName,
+            codegenContext.valueSetMap,
+            isBaseClass = isBaseClass,
+          )
 
           addEnumClassTypeSpec(
             valueSetMap = codegenContext.valueSetMap,
@@ -230,8 +237,16 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
   private fun TypeSpec.Builder.addEqualsAndHashCodeFunctions(
     name: String,
     elements: List<Element>,
+    modelClassName: ClassName,
   ) {
     if (elements.isEmpty()) return
+    val propertyMapper =
+      PropertyMapper(
+        PropertyMapper.MappingContext.MODEL,
+        modelClassName,
+        codegenContext.valueSetMap,
+      )
+    val properties = elements.map { propertyMapper.mapToProperty(it) }
     val equalsFunSpec =
       FunSpec.builder("equals")
         .addModifiers(KModifier.OVERRIDE)
@@ -245,14 +260,19 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
             .trimIndent()
         )
         .addCode(
-          elements.joinToString(separator = "\n", prefix = "\n", postfix = "\n") {
-            "if( ${it.getElementName()} != other.${it.getElementName()}) return false"
+          properties.joinToString(separator = "\n", prefix = "\n", postfix = "\n") {
+            "if (${it.name} != other.${it.name}) return false"
           }
         )
         .addCode("return true")
         .build()
-
     this.addFunction(equalsFunSpec)
+
+    // Lift the property's static nullability straight off the [PropertyMapper] output instead of
+    // re-deriving it from element constraints — keeps a single source of truth.
+    fun hashCodeExpr(property: PropertyInfo): String =
+      if (property.typeName.isNullable) "${property.name}?.hashCode() ?: 0"
+      else "${property.name}.hashCode()"
 
     val hashCodeFunSpec =
       FunSpec.builder("hashCode")
@@ -261,14 +281,10 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
         .addCode(
           "// Using 31 improves hash distribution and reduces collisions in hash-based collections\n"
         )
-        .addCode("var result = ${elements.first().getElementName()}?.hashCode() ?: 0")
+        .addCode("var result = ${hashCodeExpr(properties.first())}")
         .addCode(
-          elements.subList(1, elements.size).joinToString(
-            separator = "\n",
-            prefix = "\n",
-            postfix = "\n",
-          ) {
-            "result = 31 * result + (${it.getElementName()}?.hashCode() ?: 0)"
+          properties.drop(1).joinToString(separator = "\n", prefix = "\n", postfix = "\n") {
+            "result = 31 * result + (${hashCodeExpr(it)})"
           }
         )
         .addCode("return result")

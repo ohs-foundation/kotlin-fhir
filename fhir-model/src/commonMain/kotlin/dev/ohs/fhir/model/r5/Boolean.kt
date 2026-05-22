@@ -46,7 +46,7 @@ public data class Boolean(
   /** The actual value */
   public val `value`: kotlin.Boolean? = null,
 ) : PrimitiveType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -42,9 +43,11 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -153,9 +156,7 @@ internal object CoverageEligibilityRequestSupportingInfoSerializer :
     (value.sequence.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
-    (value.information)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.informationSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.informationSer, value.information)
     ((value.appliesToAll?.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
     (value.appliesToAll?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.sequenceSer, it)
@@ -263,9 +264,7 @@ internal object CoverageEligibilityRequestInsuranceSerializer :
     (value.focal?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.focalSer, it)
     }
-    (value.coverage)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.coverageSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.coverageSer, value.coverage)
     ((value.businessArrangement?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.businessArrangement?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.focalSer, it)
@@ -976,9 +975,12 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
     (value.purpose.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.purposeSer2, it)
     }
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      16 + descriptorOffset,
+      Hoisted.patientSer,
+      value.patient,
+    )
     when (val choice = value.serviced) {
       null -> {}
       is CoverageEligibilityRequest.Serviced.Date -> {
@@ -1020,9 +1022,12 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
     (value.provider)?.let {
       encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, Hoisted.patientSer, it)
     }
-    (value.insurer)?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      24 + descriptorOffset,
+      Hoisted.patientSer,
+      value.insurer,
+    )
     (value.facility)?.let {
       encoder.encodeSerializableElement(descriptor, 25 + descriptorOffset, Hoisted.patientSer, it)
     }

@@ -123,7 +123,7 @@ public data class Reference(
    */
   public val display: String? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

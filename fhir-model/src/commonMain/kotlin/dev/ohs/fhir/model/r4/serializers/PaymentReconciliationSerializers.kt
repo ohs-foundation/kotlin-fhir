@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -40,9 +41,11 @@ import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.ClaimProcessingCodes
 import dev.ohs.fhir.model.r4.terminologies.NoteType
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -180,7 +183,7 @@ internal object PaymentReconciliationDetailSerializer : KSerializer<PaymentRecon
     (value.predecessor)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.identifierSer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, value.type)
     (value.request)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.requestSer, it)
     }
@@ -684,14 +687,12 @@ internal object PaymentReconciliationSerializer : KSerializer<PaymentReconciliat
         it,
       )
     }
-    (value.paymentAmount)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        25 + descriptorOffset,
-        Hoisted.paymentAmountSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      25 + descriptorOffset,
+      Hoisted.paymentAmountSer,
+      value.paymentAmount,
+    )
     (value.paymentIdentifier)?.let {
       encoder.encodeSerializableElement(
         descriptor,

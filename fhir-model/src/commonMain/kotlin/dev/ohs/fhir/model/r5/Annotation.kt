@@ -60,7 +60,7 @@ public data class Annotation(
   /** The text of the annotation in markdown format. */
   public val text: Markdown,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(text.toBuilder()).apply {
         id = this@with.id

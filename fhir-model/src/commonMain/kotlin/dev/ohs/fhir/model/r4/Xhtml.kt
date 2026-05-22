@@ -46,7 +46,7 @@ public data class Xhtml(
   /** Actual xhtml */
   public val `value`: String,
 ) : Element(id, extension) {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(`value`).apply {
         id = this@with.id

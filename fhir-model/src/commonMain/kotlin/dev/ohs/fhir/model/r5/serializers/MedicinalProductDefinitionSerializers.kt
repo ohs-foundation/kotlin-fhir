@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -45,9 +46,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -136,9 +139,7 @@ internal object MedicinalProductDefinitionContactSerializer :
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    (value.contact)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.contactSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.contactSer, value.contact)
   }
 
   private object Hoisted {
@@ -361,7 +362,7 @@ internal object MedicinalProductDefinitionNamePartSerializer :
     (value.part.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.partSer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, value.type)
   }
 
   private object Hoisted {
@@ -458,15 +459,11 @@ internal object MedicinalProductDefinitionNameUsageSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.country)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.countrySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.countrySer, value.country)
     (value.jurisdiction)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.countrySer, it)
     }
-    (value.language)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.countrySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.countrySer, value.language)
   }
 
   private object Hoisted {
@@ -553,9 +550,7 @@ internal object MedicinalProductDefinitionCrossReferenceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.product)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.productSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.productSer, value.product)
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
   }
 
@@ -829,7 +824,7 @@ internal object MedicinalProductDefinitionCharacteristicSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.`value`) {
       null -> {}
       is MedicinalProductDefinition.Characteristic.Value.CodeableConcept -> {

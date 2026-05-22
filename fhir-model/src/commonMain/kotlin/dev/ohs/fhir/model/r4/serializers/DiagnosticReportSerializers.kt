@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -37,9 +38,11 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -130,7 +133,7 @@ internal object DiagnosticReportMediaSerializer : KSerializer<DiagnosticReport.M
     (value.comment?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.commentSer, it)
     }
-    (value.link)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.linkSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.linkSer, value.link)
   }
 
   private object Hoisted {
@@ -499,14 +502,12 @@ internal object DiagnosticReportSerializer : KSerializer<DiagnosticReport> {
         Hoisted.categorySer,
         value.category,
       )
-    (value.code)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        Hoisted.categorySerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      15 + descriptorOffset,
+      Hoisted.categorySerInner,
+      value.code,
+    )
     (value.subject)?.let {
       encoder.encodeSerializableElement(
         descriptor,

@@ -111,7 +111,7 @@ public data class SampledData(
    */
   public val `data`: String? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(origin.toBuilder(), intervalUnit.toBuilder(), dimensions.toBuilder()).apply {
         id = this@with.id

@@ -96,7 +96,7 @@ public data class Identifier(
    */
   public val assigner: Reference? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

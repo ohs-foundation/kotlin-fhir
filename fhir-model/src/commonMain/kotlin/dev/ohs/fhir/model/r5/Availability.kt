@@ -52,7 +52,7 @@ public data class Availability(
   /** Not available during this time due to provided reason. */
   public val notAvailableTime: List<NotAvailableTime> = listOf(),
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

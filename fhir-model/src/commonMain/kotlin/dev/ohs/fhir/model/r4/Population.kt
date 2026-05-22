@@ -77,7 +77,7 @@ public data class Population(
   /** The existing physiological conditions of the specific population to which this applies. */
   public val physiologicalCondition: CodeableConcept? = null,
 ) : BackboneElement() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

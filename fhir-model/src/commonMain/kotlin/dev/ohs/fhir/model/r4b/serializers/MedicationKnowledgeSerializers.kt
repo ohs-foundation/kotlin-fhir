@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -40,9 +41,11 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -141,7 +144,7 @@ internal object MedicationKnowledgeRelatedMedicationKnowledgeSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.reference.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.referenceSer, value.reference)
   }
@@ -339,7 +342,6 @@ internal object MedicationKnowledgeIngredientSerializer :
         value.modifierExtension,
       )
     when (val choice = value.item) {
-      null -> {}
       is MedicationKnowledge.Ingredient.Item.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
@@ -452,12 +454,12 @@ internal object MedicationKnowledgeCostSerializer : KSerializer<MedicationKnowle
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     ((value.source?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.source?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.sourceSer, it)
     }
-    (value.cost)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.costSer, it) }
+    encoder.encodeSerializableElement(descriptor, 6, Hoisted.costSer, value.cost)
   }
 
   private object Hoisted {
@@ -830,7 +832,7 @@ internal object MedicationKnowledgeAdministrationGuidelinesDosageSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.dosage.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.dosageSer, value.dosage)
   }
@@ -965,7 +967,6 @@ internal object MedicationKnowledgeAdministrationGuidelinesPatientCharacteristic
         value.modifierExtension,
       )
     when (val choice = value.characteristic) {
-      null -> {}
       is MedicationKnowledge.AdministrationGuidelines.PatientCharacteristics.Characteristic.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
@@ -1098,7 +1099,7 @@ internal object MedicationKnowledgeMedicineClassificationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.classification.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1454,9 +1455,12 @@ internal object MedicationKnowledgeRegulatorySerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.regulatoryAuthority)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.regulatoryAuthoritySer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.regulatoryAuthoritySer,
+      value.regulatoryAuthority,
+    )
     if (value.substitution.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.substitutionSer, value.substitution)
     if (value.schedule.isNotEmpty())
@@ -1568,7 +1572,7 @@ internal object MedicationKnowledgeRegulatorySubstitutionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     ((value.allowed.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.allowed.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.allowedSer, it)
@@ -1657,9 +1661,7 @@ internal object MedicationKnowledgeRegulatoryScheduleSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.schedule)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.scheduleSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.scheduleSer, value.schedule)
   }
 
   private object Hoisted {
@@ -1747,9 +1749,7 @@ internal object MedicationKnowledgeRegulatoryMaxDispenseSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.quantity)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.quantitySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.quantitySer, value.quantity)
     (value.period)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, it) }
   }
 

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -38,9 +39,11 @@ import dev.ohs.fhir.model.r4.UnsignedInt
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -173,9 +176,8 @@ internal object GroupCharacteristicSerializer : KSerializer<Group.Characteristic
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     when (val choice = value.`value`) {
-      null -> {}
       is Group.Characteristic.Value.CodeableConcept -> {
         encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, choice.value)
       }
@@ -299,7 +301,7 @@ internal object GroupMemberSerializer : KSerializer<Group.Member> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.entity)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.entitySer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.entitySer, value.entity)
     (value.period)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodSer, it) }
     ((value.inactive?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
     (value.inactive?.toElement())?.let {

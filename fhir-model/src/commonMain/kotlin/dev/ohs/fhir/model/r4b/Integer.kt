@@ -61,7 +61,7 @@ public open class Integer(
   override fun hashCode(): Int {
     // Using 31 improves hash distribution and reduces collisions in hash-based collections
     var result = id?.hashCode() ?: 0
-    result = 31 * result + (extension?.hashCode() ?: 0)
+    result = 31 * result + (extension.hashCode())
     result = 31 * result + (value?.hashCode() ?: 0)
     return result
   }

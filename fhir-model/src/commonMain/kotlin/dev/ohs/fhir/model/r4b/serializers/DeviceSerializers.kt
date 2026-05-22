@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -38,9 +39,11 @@ import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -399,9 +402,7 @@ internal object DeviceSpecializationSerializer : KSerializer<Device.Specializati
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.systemType)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.systemTypeSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.systemTypeSer, value.systemType)
     ((value.version?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.version?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.versionSer, it)
@@ -602,7 +603,7 @@ internal object DevicePropertySerializer : KSerializer<Device.Property> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.valueQuantity.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

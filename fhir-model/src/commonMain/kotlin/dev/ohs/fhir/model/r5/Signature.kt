@@ -104,7 +104,7 @@ public data class Signature(
    */
   public val `data`: Base64Binary? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

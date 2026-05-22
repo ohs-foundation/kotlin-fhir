@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -39,9 +40,11 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.VisionPrescription
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -235,9 +238,7 @@ internal object VisionPrescriptionLensSpecificationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.product)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.productSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.productSer, value.product)
     ((value.eye.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.eye.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.eyeSer, it)
@@ -683,9 +684,12 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
         it,
       )
     }
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      15 + descriptorOffset,
+      Hoisted.patientSer,
+      value.patient,
+    )
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.patientSer, it)
     }
@@ -700,9 +704,12 @@ internal object VisionPrescriptionSerializer : KSerializer<VisionPrescription> {
         it,
       )
     }
-    (value.prescriber)?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      19 + descriptorOffset,
+      Hoisted.patientSer,
+      value.prescriber,
+    )
     if (value.lensSpecification.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

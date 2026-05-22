@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -31,9 +32,11 @@ import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -127,7 +130,7 @@ internal object DeviceAssociationOperationSerializer : KSerializer<DeviceAssocia
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.status)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.statusSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.statusSer, value.status)
     if (value.`operator`.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.operatorSer, value.`operator`)
     (value.period)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.periodSer, it) }
@@ -377,9 +380,12 @@ internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    (value.device)?.let {
-      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, Hoisted.deviceSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      11 + descriptorOffset,
+      Hoisted.deviceSer,
+      value.device,
+    )
     if (value.category.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -387,14 +393,12 @@ internal object DeviceAssociationSerializer : KSerializer<DeviceAssociation> {
         Hoisted.categorySer,
         value.category,
       )
-    (value.status)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        13 + descriptorOffset,
-        Hoisted.categorySerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      13 + descriptorOffset,
+      Hoisted.categorySerInner,
+      value.status,
+    )
     if (value.statusReason.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

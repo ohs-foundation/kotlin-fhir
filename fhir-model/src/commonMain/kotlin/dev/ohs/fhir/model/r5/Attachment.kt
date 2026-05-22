@@ -118,7 +118,7 @@ public data class Attachment(
   /** The number of pages when printed. */
   public val pages: PositiveInt? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

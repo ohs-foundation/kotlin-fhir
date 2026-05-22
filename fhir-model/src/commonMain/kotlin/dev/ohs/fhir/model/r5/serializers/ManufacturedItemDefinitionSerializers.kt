@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -42,9 +43,11 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -190,7 +193,7 @@ internal object ManufacturedItemDefinitionPropertySerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.`value`) {
       null -> {}
       is ManufacturedItemDefinition.Property.Value.CodeableConcept -> {
@@ -363,7 +366,7 @@ internal object ManufacturedItemDefinitionComponentSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.function.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.functionSer, value.function)
     if (value.amount.isNotEmpty())
@@ -842,14 +845,12 @@ internal object ManufacturedItemDefinitionSerializer : KSerializer<ManufacturedI
         it,
       )
     }
-    (value.manufacturedDoseForm)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        Hoisted.manufacturedDoseFormSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      15 + descriptorOffset,
+      Hoisted.manufacturedDoseFormSer,
+      value.manufacturedDoseForm,
+    )
     (value.unitOfPresentation)?.let {
       encoder.encodeSerializableElement(
         descriptor,

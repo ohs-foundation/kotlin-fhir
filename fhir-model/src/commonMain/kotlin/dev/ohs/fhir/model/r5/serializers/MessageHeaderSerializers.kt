@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -36,9 +37,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -433,9 +436,7 @@ internal object MessageHeaderResponseSerializer : KSerializer<MessageHeader.Resp
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.identifier)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.identifierSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.identifierSer, value.identifier)
     ((value.code.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it)
@@ -692,7 +693,6 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
         value.modifierExtension,
       )
     when (val choice = value.event) {
-      null -> {}
       is MessageHeader.Event.Coding -> {
         encoder.encodeSerializableElement(
           descriptor,
@@ -728,9 +728,12 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
     (value.author)?.let {
       encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.senderSer, it)
     }
-    (value.source)?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.sourceSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      16 + descriptorOffset,
+      Hoisted.sourceSer,
+      value.source,
+    )
     (value.responsible)?.let {
       encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, Hoisted.senderSer, it)
     }

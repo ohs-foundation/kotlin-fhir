@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -42,9 +43,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.DocumentReferenceStatus
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -134,7 +137,7 @@ internal object DocumentReferenceAttesterSerializer : KSerializer<DocumentRefere
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.mode)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.modeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.modeSer, value.mode)
     ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.time?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.timeSer, it)
@@ -223,8 +226,8 @@ internal object DocumentReferenceRelatesToSerializer : KSerializer<DocumentRefer
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
-    (value.target)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.targetSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.targetSer, value.target)
   }
 
   private object Hoisted {
@@ -315,9 +318,7 @@ internal object DocumentReferenceContentSerializer : KSerializer<DocumentReferen
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.attachment)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.attachmentSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.attachmentSer, value.attachment)
     if (value.profile.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.profileSer, value.profile)
   }
@@ -428,7 +429,6 @@ internal object DocumentReferenceContentProfileSerializer :
         value.modifierExtension,
       )
     when (val choice = value.`value`) {
-      null -> {}
       is DocumentReference.Content.Profile.Value.Coding -> {
         encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueCodingSer, choice.value)
       }

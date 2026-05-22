@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -44,9 +45,11 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -245,7 +248,7 @@ internal object ResearchStudyAssociatedPartySerializer :
     (value.name?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    (value.role)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.roleSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.roleSer, value.role)
     if (value.period.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodSer, value.period)
     if (value.classifier.isNotEmpty())
@@ -350,7 +353,7 @@ internal object ResearchStudyProgressStatusSerializer : KSerializer<ResearchStud
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.state)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.stateSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.stateSer, value.state)
     ((value.`actual`?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.`actual`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.actualSer, it)

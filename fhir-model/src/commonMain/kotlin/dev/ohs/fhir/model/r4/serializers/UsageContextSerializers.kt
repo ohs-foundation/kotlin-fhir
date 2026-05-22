@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -25,9 +26,11 @@ import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.Range
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.UsageContext
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -131,9 +134,8 @@ internal object UsageContextSerializer : KSerializer<UsageContext> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 2, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 2, Hoisted.codeSer, value.code)
     when (val choice = value.`value`) {
-      null -> {}
       is UsageContext.Value.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,

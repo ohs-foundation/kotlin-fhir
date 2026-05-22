@@ -65,7 +65,7 @@ public data class Narrative(
    */
   public val div: Xhtml,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(status, div.toBuilder()).apply {
         id = this@with.id

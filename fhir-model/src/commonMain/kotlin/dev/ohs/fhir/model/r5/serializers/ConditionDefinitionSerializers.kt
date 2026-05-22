@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -42,9 +43,11 @@ import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -327,7 +330,7 @@ internal object ConditionDefinitionPreconditionSerializer :
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, value.code)
     when (val choice = value.`value`) {
       null -> {}
       is ConditionDefinition.Precondition.Value.CodeableConcept -> {
@@ -438,9 +441,7 @@ internal object ConditionDefinitionQuestionnaireSerializer :
     (value.purpose.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.purposeSer, it)
     }
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.referenceSer, value.reference)
   }
 
   private object Hoisted {
@@ -524,9 +525,7 @@ internal object ConditionDefinitionPlanSerializer : KSerializer<ConditionDefinit
         value.modifierExtension,
       )
     (value.role)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.roleSer, it) }
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.referenceSer, value.reference)
   }
 
   private object Hoisted {
@@ -1160,14 +1159,12 @@ internal object ConditionDefinitionSerializer : KSerializer<ConditionDefinition>
         Hoisted.jurisdictionSer,
         value.jurisdiction,
       )
-    (value.code)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        37 + descriptorOffset,
-        Hoisted.jurisdictionSerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      37 + descriptorOffset,
+      Hoisted.jurisdictionSerInner,
+      value.code,
+    )
     (value.severity)?.let {
       encoder.encodeSerializableElement(
         descriptor,

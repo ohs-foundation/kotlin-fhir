@@ -115,7 +115,7 @@ public data class DataRequirement(
    */
   public val sort: List<Sort> = listOf(),
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(type).apply {
         id = this@with.id

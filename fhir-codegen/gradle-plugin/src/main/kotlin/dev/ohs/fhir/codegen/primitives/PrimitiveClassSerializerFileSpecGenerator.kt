@@ -22,6 +22,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
@@ -81,7 +82,7 @@ object PrimitiveClassSerializerFileSpecGenerator {
       CodeBlock.builder()
         .add(
           "%M(%S) {\n",
-          MemberNameRef("kotlinx.serialization.descriptors", "buildClassSerialDescriptor"),
+          MemberName("kotlinx.serialization.descriptors", "buildClassSerialDescriptor"),
           primitiveClassName.simpleName,
         )
         .indent()
@@ -236,16 +237,16 @@ object PrimitiveClassSerializerFileSpecGenerator {
   private fun valueEncodingFor(valueType: TypeName, modelPackage: String): ValueEncoding {
     val raw = (valueType as? ClassName)?.copy(nullable = false)
     val serializersPackage = "$modelPackage.serializers"
-    return when {
-      raw == ClassName("kotlin", "Boolean") ||
-        raw == ClassName("kotlin", "Int") ||
-        raw == ClassName("kotlin", "Long") ||
-        raw == ClassName("kotlin", "String") ->
+    return when (raw) {
+      ClassName("kotlin", "Boolean"),
+      ClassName("kotlin", "Int"),
+      ClassName("kotlin", "Long"),
+      ClassName("kotlin", "String") ->
         ValueEncoding(
           serializerExpr = CodeBlock.of("%T.serializer()", raw),
           descriptorExpr = CodeBlock.of("%T.serializer().descriptor", raw),
         )
-      raw == ClassName("kotlin", "ByteArray") ->
+      ClassName("kotlin", "ByteArray") ->
         ValueEncoding(
           serializerExpr =
             CodeBlock.of("%T", ClassName("kotlinx.serialization.builtins", "ByteArraySerializer")),
@@ -255,13 +256,13 @@ object PrimitiveClassSerializerFileSpecGenerator {
               ClassName("kotlinx.serialization.builtins", "ByteArraySerializer"),
             ),
         )
-      raw == ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal") ->
+      ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal") ->
         customSerializerRef(ClassName(serializersPackage, "BigDecimalSerializer"))
-      raw == ClassName(modelPackage, "FhirDate") ->
+      ClassName(modelPackage, "FhirDate") ->
         customSerializerRef(ClassName(serializersPackage, "FhirDateSerializer"))
-      raw == ClassName(modelPackage, "FhirDateTime") ->
+      ClassName(modelPackage, "FhirDateTime") ->
         customSerializerRef(ClassName(serializersPackage, "FhirDateTimeSerializer"))
-      raw == ClassName("kotlinx.datetime", "LocalTime") ->
+      ClassName("kotlinx.datetime", "LocalTime") ->
         customSerializerRef(ClassName(serializersPackage, "LocalTimeSerializer"))
       else ->
         error(
@@ -276,8 +277,4 @@ object PrimitiveClassSerializerFileSpecGenerator {
       serializerExpr = CodeBlock.of("%T", className),
       descriptorExpr = CodeBlock.of("%T.descriptor", className),
     )
-
-  /** Tiny helper so we don't have to import [com.squareup.kotlinpoet.MemberName] separately. */
-  private fun MemberNameRef(packageName: String, name: String) =
-    com.squareup.kotlinpoet.MemberName(packageName, name)
 }

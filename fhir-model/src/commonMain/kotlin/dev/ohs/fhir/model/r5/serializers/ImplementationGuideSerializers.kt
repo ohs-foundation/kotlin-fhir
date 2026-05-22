@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -46,9 +47,11 @@ import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -710,9 +713,7 @@ internal object ImplementationGuideDefinitionResourceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, value.reference)
     (value.fhirVersion.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.fhirVersionSer, it)
     }
@@ -1022,7 +1023,7 @@ internal object ImplementationGuideDefinitionParameterSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     ((value.`value`.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.`value`.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueSer, it)
@@ -1431,9 +1432,7 @@ internal object ImplementationGuideManifestResourceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, value.reference)
     ((value.isExample?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.isExample?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.isExampleSer, it)

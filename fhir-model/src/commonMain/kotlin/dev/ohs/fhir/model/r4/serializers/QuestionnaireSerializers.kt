@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -52,10 +53,12 @@ import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.datetime.LocalTime
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -554,7 +557,6 @@ internal object QuestionnaireItemEnableWhenSerializer : KSerializer<Questionnair
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.questionSer, it)
     }
     when (val choice = value.answer) {
-      null -> {}
       is Questionnaire.Item.EnableWhen.Answer.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
         (choice.value.toElement())?.let {
@@ -759,7 +761,6 @@ internal object QuestionnaireItemAnswerOptionSerializer :
         value.modifierExtension,
       )
     when (val choice = value.`value`) {
-      null -> {}
       is Questionnaire.Item.AnswerOption.Value.Integer -> {
         ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 3, it) }
         (choice.value.toElement())?.let {
@@ -985,7 +986,6 @@ internal object QuestionnaireItemInitialSerializer : KSerializer<Questionnaire.I
         value.modifierExtension,
       )
     when (val choice = value.`value`) {
-      null -> {}
       is Questionnaire.Item.Initial.Value.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
         (choice.value.toElement())?.let {

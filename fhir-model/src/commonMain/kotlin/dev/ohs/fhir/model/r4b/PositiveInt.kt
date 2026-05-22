@@ -49,7 +49,7 @@ public data class PositiveInt(
   /** Primitive value for positiveInt */
   override val `value`: Int? = null,
 ) : Integer(id, extension, `value`) {
-  open override fun toBuilder(): Builder =
+  override fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

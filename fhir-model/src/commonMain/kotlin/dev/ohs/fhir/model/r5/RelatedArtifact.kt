@@ -107,7 +107,7 @@ public data class RelatedArtifact(
   /** The date of publication of the artifact being referred to. */
   public val publicationDate: Date? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(type).apply {
         id = this@with.id

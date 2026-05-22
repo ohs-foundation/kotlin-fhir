@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -36,9 +37,11 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -127,9 +130,7 @@ internal object AccountCoverageSerializer : KSerializer<Account.Coverage> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.coverage)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.coverageSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.coverageSer, value.coverage)
     ((value.priority?.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
     (value.priority?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.prioritySer, it)
@@ -225,7 +226,7 @@ internal object AccountGuarantorSerializer : KSerializer<Account.Guarantor> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.party)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.partySer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.partySer, value.party)
     ((value.onHold?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.onHold?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.onHoldSer, it)

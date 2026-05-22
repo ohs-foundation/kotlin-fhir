@@ -62,7 +62,7 @@ public data class Extension(
    */
   public val `value`: Value? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(url).apply {
         id = this@with.id

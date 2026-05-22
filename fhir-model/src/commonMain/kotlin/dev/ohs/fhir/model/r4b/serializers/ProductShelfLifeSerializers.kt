@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -23,9 +24,11 @@ import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.ProductShelfLife
 import dev.ohs.fhir.model.r4b.Quantity
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -131,8 +134,8 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
     (value.identifier)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.identifierSer, it)
     }
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.periodSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, value.type)
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.periodSer, value.period)
     if (value.specialPrecautionsForStorage.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

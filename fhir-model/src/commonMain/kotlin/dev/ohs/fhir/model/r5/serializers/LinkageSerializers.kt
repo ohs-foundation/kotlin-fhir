@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -31,9 +32,11 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -124,9 +127,7 @@ internal object LinkageItemSerializer : KSerializer<Linkage.Item> {
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
-    (value.resource)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.resourceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.resourceSer, value.resource)
   }
 
   private object Hoisted {

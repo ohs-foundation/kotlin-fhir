@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -40,9 +41,11 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -252,7 +255,7 @@ internal object InsurancePlanCoverageSerializer : KSerializer<InsurancePlan.Cove
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.network.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.networkSer, value.network)
     if (value.benefit.isNotEmpty())
@@ -365,7 +368,7 @@ internal object InsurancePlanCoverageBenefitSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     ((value.requirement?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.requirement?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.requirementSer, it)
@@ -830,9 +833,7 @@ internal object InsurancePlanPlanSpecificCostSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.category)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, value.category)
     if (value.benefit.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.benefitSer, value.benefit)
   }
@@ -931,7 +932,7 @@ internal object InsurancePlanPlanSpecificCostBenefitSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     if (value.cost.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.costSer, value.cost)
   }
@@ -1041,7 +1042,7 @@ internal object InsurancePlanPlanSpecificCostBenefitCostSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     (value.applicability)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }

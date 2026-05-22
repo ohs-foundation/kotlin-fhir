@@ -57,7 +57,7 @@ public data class Money(
   /** ISO 4217 Currency Code. */
   public val currency: Enumeration<Currencies>? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -45,9 +46,11 @@ import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -147,9 +150,7 @@ internal object TestScriptOriginSerializer : KSerializer<TestScript.Origin> {
     (value.index.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.indexSer, it)
     }
-    (value.profile)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.profileSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.profileSer, value.profile)
     ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.url?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.indexSer, it)
@@ -251,9 +252,7 @@ internal object TestScriptDestinationSerializer : KSerializer<TestScript.Destina
     (value.index.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.indexSer, it)
     }
-    (value.profile)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.profileSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.profileSer, value.profile)
     ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
     (value.url?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.indexSer, it)
@@ -2526,9 +2525,7 @@ internal object TestScriptTeardownActionSerializer : KSerializer<TestScript.Tear
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.operation)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.operationSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.operationSer, value.operation)
   }
 
   private object Hoisted {

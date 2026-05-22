@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -46,9 +47,11 @@ import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -1396,14 +1399,12 @@ internal object RiskEvidenceSynthesisSerializer : KSerializer<RiskEvidenceSynthe
         it,
       )
     }
-    (value.population)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        46 + descriptorOffset,
-        Hoisted.populationSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      46 + descriptorOffset,
+      Hoisted.populationSer,
+      value.population,
+    )
     (value.exposure)?.let {
       encoder.encodeSerializableElement(
         descriptor,
@@ -1412,14 +1413,12 @@ internal object RiskEvidenceSynthesisSerializer : KSerializer<RiskEvidenceSynthe
         it,
       )
     }
-    (value.outcome)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        48 + descriptorOffset,
-        Hoisted.populationSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      48 + descriptorOffset,
+      Hoisted.populationSer,
+      value.outcome,
+    )
     (value.sampleSize)?.let {
       encoder.encodeSerializableElement(
         descriptor,

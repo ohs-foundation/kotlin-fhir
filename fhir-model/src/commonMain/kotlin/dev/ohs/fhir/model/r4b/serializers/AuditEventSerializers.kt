@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -38,9 +39,11 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -436,9 +439,7 @@ internal object AuditEventSourceSerializer : KSerializer<AuditEvent.Source> {
     (value.site?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.siteSer, it)
     }
-    (value.observer)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.observerSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.observerSer, value.observer)
     if (value.type.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, value.type)
   }
@@ -718,7 +719,6 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
     when (val choice = value.`value`) {
-      null -> {}
       is AuditEvent.Entity.Detail.Value.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
         (choice.value.toElement())?.let {
@@ -991,9 +991,12 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 10 + descriptorOffset, Hoisted.typeSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      10 + descriptorOffset,
+      Hoisted.typeSer,
+      value.type,
+    )
     if (value.subtype.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -1062,9 +1065,12 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         Hoisted.agentSer,
         value.agent,
       )
-    (value.source)?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, Hoisted.sourceSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      23 + descriptorOffset,
+      Hoisted.sourceSer,
+      value.source,
+    )
     if (value.entity.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

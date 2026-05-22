@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -41,9 +42,11 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -132,9 +135,7 @@ internal object RelatedPersonCommunicationSerializer : KSerializer<RelatedPerson
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.language)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.languageSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.languageSer, value.language)
     ((value.preferred?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.preferred?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.preferredSer, it)
@@ -417,9 +418,12 @@ internal object RelatedPersonSerializer : KSerializer<RelatedPerson> {
         it,
       )
     }
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      13 + descriptorOffset,
+      Hoisted.patientSer,
+      value.patient,
+    )
     if (value.relationship.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

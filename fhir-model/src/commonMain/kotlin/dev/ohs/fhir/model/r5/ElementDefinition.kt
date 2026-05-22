@@ -453,7 +453,7 @@ public data class ElementDefinition(
    */
   public val mapping: List<Mapping> = listOf(),
 ) : BackboneType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(path.toBuilder()).apply {
         id = this@with.id

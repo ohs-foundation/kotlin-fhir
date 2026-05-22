@@ -48,7 +48,7 @@ public data class Markdown(
   /** Primitive value for markdown */
   override val `value`: kotlin.String? = null,
 ) : String(id, extension, `value`) {
-  open override fun toBuilder(): Builder =
+  override fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -46,9 +47,11 @@ import dev.ohs.fhir.model.r4b.String as R4bString
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -230,7 +233,7 @@ internal object ClaimPayeeSerializer : KSerializer<Claim.Payee> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     (value.party)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.partySer, it) }
   }
 
@@ -342,9 +345,7 @@ internal object ClaimCareTeamSerializer : KSerializer<Claim.CareTeam> {
     (value.sequence.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
-    (value.provider)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.providerSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.providerSer, value.provider)
     ((value.responsible?.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
     (value.responsible?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.sequenceSer, it)
@@ -524,9 +525,7 @@ internal object ClaimSupportingInfoSerializer : KSerializer<Claim.SupportingInfo
     (value.sequence.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
-    (value.category)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.categorySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.categorySer, value.category)
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.categorySer, it) }
     when (val choice = value.timing) {
       null -> {}
@@ -716,7 +715,6 @@ internal object ClaimDiagnosisSerializer : KSerializer<Claim.Diagnosis> {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
     when (val choice = value.diagnosis) {
-      null -> {}
       is Claim.Diagnosis.Diagnosis.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
@@ -881,7 +879,6 @@ internal object ClaimProcedureSerializer : KSerializer<Claim.Procedure> {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.sequenceSer, it)
     }
     when (val choice = value.procedure) {
-      null -> {}
       is Claim.Procedure.Procedure.CodeableConcept -> {
         encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSerInner, choice.value)
       }
@@ -1052,9 +1049,7 @@ internal object ClaimInsuranceSerializer : KSerializer<Claim.Insurance> {
     (value.identifier)?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.identifierSer, it)
     }
-    (value.coverage)?.let {
-      encoder.encodeSerializableElement(descriptor, 8, Hoisted.coverageSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 8, Hoisted.coverageSer, value.coverage)
     ((value.businessArrangement?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
     (value.businessArrangement?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.sequenceSer, it)
@@ -1617,9 +1612,7 @@ internal object ClaimItemSerializer : KSerializer<Claim.Item> {
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.revenueSer, it)
     }
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 15, Hoisted.revenueSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 15, Hoisted.revenueSer, value.productOrService)
     if (value.modifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
@@ -1877,9 +1870,7 @@ internal object ClaimItemDetailSerializer : KSerializer<Claim.Item.Detail> {
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.revenueSer, it)
     }
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.revenueSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 7, Hoisted.revenueSer, value.productOrService)
     if (value.modifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
@@ -2078,9 +2069,7 @@ internal object ClaimItemDetailSubDetailSerializer : KSerializer<Claim.Item.Deta
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.revenueSer, it)
     }
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.revenueSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 7, Hoisted.revenueSer, value.productOrService)
     if (value.modifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
@@ -2504,9 +2493,12 @@ internal object ClaimSerializer : KSerializer<Claim> {
         it,
       )
     }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.typeSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      13 + descriptorOffset,
+      Hoisted.typeSer,
+      value.type,
+    )
     (value.subType)?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.typeSer, it)
     }
@@ -2521,9 +2513,12 @@ internal object ClaimSerializer : KSerializer<Claim> {
         it,
       )
     }
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      17 + descriptorOffset,
+      Hoisted.patientSer,
+      value.patient,
+    )
     (value.billablePeriod)?.let {
       encoder.encodeSerializableElement(
         descriptor,
@@ -2549,12 +2544,18 @@ internal object ClaimSerializer : KSerializer<Claim> {
     (value.insurer)?.let {
       encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, Hoisted.patientSer, it)
     }
-    (value.provider)?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, Hoisted.patientSer, it)
-    }
-    (value.priority)?.let {
-      encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, Hoisted.typeSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      23 + descriptorOffset,
+      Hoisted.patientSer,
+      value.provider,
+    )
+    encoder.encodeSerializableElement(
+      descriptor,
+      24 + descriptorOffset,
+      Hoisted.typeSer,
+      value.priority,
+    )
     (value.fundsReserve)?.let {
       encoder.encodeSerializableElement(descriptor, 25 + descriptorOffset, Hoisted.typeSer, it)
     }

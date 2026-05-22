@@ -137,7 +137,7 @@ public data class Dosage(
   /** Upper limit on medication per lifetime of the patient. */
   public val maxDosePerLifetime: Quantity? = null,
 ) : BackboneElement() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -47,9 +48,11 @@ import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.Url
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -147,9 +150,7 @@ internal object InventoryItemNameSerializer : KSerializer<InventoryItem.Name> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.nameType)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameTypeSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.nameTypeSer, value.nameType)
     ((value.language.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.language.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.languageSer, it)
@@ -247,10 +248,8 @@ internal object InventoryItemResponsibleOrganizationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.role)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.roleSer, it) }
-    (value.organization)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.organizationSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.roleSer, value.role)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.organizationSer, value.organization)
   }
 
   private object Hoisted {
@@ -443,15 +442,14 @@ internal object InventoryItemAssociationSerializer : KSerializer<InventoryItem.A
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.associationType)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.associationTypeSer, it)
-    }
-    (value.relatedItem)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.relatedItemSer, it)
-    }
-    (value.quantity)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.quantitySer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.associationTypeSer,
+      value.associationType,
+    )
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.relatedItemSer, value.relatedItem)
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.quantitySer, value.quantity)
   }
 
   private object Hoisted {
@@ -648,11 +646,13 @@ internal object InventoryItemCharacteristicSerializer : KSerializer<InventoryIte
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.characteristicType)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.characteristicTypeSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.characteristicTypeSer,
+      value.characteristicType,
+    )
     when (val choice = value.`value`) {
-      null -> {}
       is InventoryItem.Characteristic.Value.String -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
         (choice.value.toElement())?.let {

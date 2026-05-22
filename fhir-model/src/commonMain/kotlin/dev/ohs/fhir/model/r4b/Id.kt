@@ -49,7 +49,7 @@ public data class Id(
   /** Primitive value for id */
   override val `value`: kotlin.String? = null,
 ) : String(id, extension, `value`) {
-  open override fun toBuilder(): Builder =
+  override fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

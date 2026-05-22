@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -33,9 +34,11 @@ import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -127,7 +130,7 @@ internal object EpisodeOfCareStatusHistorySerializer : KSerializer<EpisodeOfCare
     (value.status.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.statusSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.periodSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.periodSer, value.period)
   }
 
   private object Hoisted {
@@ -217,9 +220,7 @@ internal object EpisodeOfCareDiagnosisSerializer : KSerializer<EpisodeOfCare.Dia
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.condition)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.conditionSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.conditionSer, value.condition)
     (value.role)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, it) }
     ((value.rank?.value))?.let { encoder.encodeIntElement(descriptor, 5, it) }
     (value.rank?.toElement())?.let {
@@ -540,9 +541,12 @@ internal object EpisodeOfCareSerializer : KSerializer<EpisodeOfCare> {
         Hoisted.diagnosisSer,
         value.diagnosis,
       )
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      16 + descriptorOffset,
+      Hoisted.patientSer,
+      value.patient,
+    )
     (value.managingOrganization)?.let {
       encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, Hoisted.patientSer, it)
     }

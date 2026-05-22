@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -35,9 +36,11 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -139,9 +142,12 @@ internal object MedicinalProductPackagedBatchIdentifierSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.outerPackaging)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.outerPackagingSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.outerPackagingSer,
+      value.outerPackaging,
+    )
     (value.immediatePackaging)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.outerPackagingSer, it)
     }
@@ -338,10 +344,8 @@ internal object MedicinalProductPackagedPackageItemSerializer :
       )
     if (value.identifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.identifierSer, value.identifier)
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
-    (value.quantity)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.quantitySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, value.type)
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.quantitySer, value.quantity)
     if (value.material.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.materialSer, value.material)
     if (value.alternateMaterial.isNotEmpty())

@@ -79,7 +79,7 @@ class TypeGraphAnalyzer(structureDefinitions: List<StructureDefinition>) {
     var nextIndex = 0
     var nextScc = 0
 
-    fun strongconnect(vertex: String): Int {
+    fun strongConnect(vertex: String): Int {
       val vertexIndex = nextIndex++
       var lowLink = vertexIndex
       index[vertex] = vertexIndex
@@ -88,7 +88,7 @@ class TypeGraphAnalyzer(structureDefinitions: List<StructureDefinition>) {
       for (neighbor in graph[vertex].orEmpty()) {
         val neighborIndex = index[neighbor]
         if (neighborIndex == null) {
-          lowLink = minOf(lowLink, strongconnect(neighbor))
+          lowLink = minOf(lowLink, strongConnect(neighbor))
         } else if (neighbor in onStack) {
           lowLink = minOf(lowLink, neighborIndex)
         }
@@ -106,7 +106,7 @@ class TypeGraphAnalyzer(structureDefinitions: List<StructureDefinition>) {
     }
 
     for (vertex in graph.keys) {
-      if (vertex !in index) strongconnect(vertex)
+      if (vertex !in index) strongConnect(vertex)
     }
     return result
   }

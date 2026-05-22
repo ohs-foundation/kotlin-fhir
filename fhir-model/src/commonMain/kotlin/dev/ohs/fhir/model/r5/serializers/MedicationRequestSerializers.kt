@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -43,9 +44,11 @@ import dev.ohs.fhir.model.r5.UnsignedInt
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -478,7 +481,6 @@ internal object MedicationRequestSubstitutionSerializer :
         value.modifierExtension,
       )
     when (val choice = value.allowed) {
-      null -> {}
       is MedicationRequest.Substitution.Allowed.Boolean -> {
         ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
         (choice.value.toElement())?.let {
@@ -1055,22 +1057,18 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
         it,
       )
     }
-    (value.medication)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        26 + descriptorOffset,
-        Hoisted.medicationSer,
-        it,
-      )
-    }
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        27 + descriptorOffset,
-        Hoisted.basedOnSerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      26 + descriptorOffset,
+      Hoisted.medicationSer,
+      value.medication,
+    )
+    encoder.encodeSerializableElement(
+      descriptor,
+      27 + descriptorOffset,
+      Hoisted.basedOnSerInner,
+      value.subject,
+    )
     if (value.informationSource.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

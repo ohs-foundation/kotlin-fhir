@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -47,9 +48,11 @@ import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -417,7 +420,7 @@ internal object ObservationDefinitionComponentSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     (value.permittedDataType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
       ?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.permittedDataTypeSer, it) }
     (value.permittedDataType.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
@@ -1343,14 +1346,12 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
         Hoisted.jurisdictionSer,
         value.category,
       )
-    (value.code)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        53 + descriptorOffset,
-        Hoisted.jurisdictionSerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      53 + descriptorOffset,
+      Hoisted.jurisdictionSerInner,
+      value.code,
+    )
     (value.permittedDataType.map { it.value?.getCode() }.takeUnless { it.all { it == null } })
       ?.let {
         encoder.encodeSerializableElement(

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -40,9 +41,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SpecimenCombined
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -129,7 +132,7 @@ internal object SpecimenFeatureSerializer : KSerializer<Specimen.Feature> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     ((value.description.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.description.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.descriptionSer, it)
@@ -571,7 +574,7 @@ internal object SpecimenContainerSerializer : KSerializer<Specimen.Container> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.device)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.deviceSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.deviceSer, value.device)
     (value.location)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.deviceSer, it)
     }

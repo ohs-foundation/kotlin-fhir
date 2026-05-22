@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -38,9 +39,11 @@ import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -132,9 +135,7 @@ internal object IngredientManufacturerSerializer : KSerializer<Ingredient.Manufa
     (value.role?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, it)
     }
-    (value.manufacturer)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.manufacturerSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.manufacturerSer, value.manufacturer)
   }
 
   private object Hoisted {
@@ -223,7 +224,7 @@ internal object IngredientSubstanceSerializer : KSerializer<Ingredient.Substance
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     if (value.strength.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.strengthSer, value.strength)
   }
@@ -617,7 +618,6 @@ internal object IngredientSubstanceStrengthReferenceStrengthSerializer :
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.substanceSer, it)
     }
     when (val choice = value.strength) {
-      null -> {}
       is Ingredient.Substance.Strength.ReferenceStrength.Strength.Ratio -> {
         encoder.encodeSerializableElement(descriptor, 4, Hoisted.strengthRatioSer, choice.value)
       }
@@ -900,9 +900,12 @@ internal object IngredientSerializer : KSerializer<Ingredient> {
         Hoisted.forSer,
         value.`for`,
       )
-    (value.role)?.let {
-      encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.roleSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      14 + descriptorOffset,
+      Hoisted.roleSer,
+      value.role,
+    )
     if (value.function.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -928,9 +931,12 @@ internal object IngredientSerializer : KSerializer<Ingredient> {
         Hoisted.manufacturerSer,
         value.manufacturer,
       )
-    (value.substance)?.let {
-      encoder.encodeSerializableElement(descriptor, 19 + descriptorOffset, Hoisted.substanceSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      19 + descriptorOffset,
+      Hoisted.substanceSer,
+      value.substance,
+    )
   }
 
   private object Hoisted {

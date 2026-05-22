@@ -16,7 +16,6 @@
 
 package dev.ohs.fhir.codegen
 
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import dev.ohs.fhir.codegen.primitives.PrimitiveClassSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.schema.StructureDefinition
@@ -38,6 +37,7 @@ class FhirCodegen(
   valueSetMap: Map<String, ValueSet>,
   baseClassesSet: HashSet<String>,
   typeGraph: TypeGraphAnalyzer,
+  primitiveValueIsNonNull: Map<String, Boolean>,
 ) {
 
   private val codegenContext =
@@ -46,6 +46,7 @@ class FhirCodegen(
       valueSetMap = valueSetMap,
       baseClassNameSet = baseClassesSet,
       typeGraph = typeGraph,
+      primitiveValueIsNonNull = primitiveValueIsNonNull,
     )
 
   private val modelFileSpecGenerator = ModelFileSpecGenerator(codegenContext)
@@ -84,14 +85,7 @@ class FhirCodegen(
     val valueTypeName = valuePropertyInfo.typeName
     val valueNullable = valueTypeName.isNullable
     val nonNullValueType =
-      if (valueNullable) {
-        when (valueTypeName) {
-          is ClassName -> valueTypeName.copy(nullable = false)
-          else -> valueTypeName
-        }
-      } else {
-        valueTypeName
-      }
+      if (valueNullable) valueTypeName.copy(nullable = false) else valueTypeName
     return PrimitiveClassSerializerFileSpecGenerator.generate(
       primitiveClassName = primitiveClassName,
       valueType = nonNullValueType,

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -36,9 +37,11 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Signature
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -138,7 +141,7 @@ internal object ProvenanceAgentSerializer : KSerializer<Provenance.Agent> {
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
     if (value.role.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, value.role)
-    (value.who)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.whoSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.whoSer, value.who)
     (value.onBehalfOf)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.whoSer, it) }
   }
 
@@ -238,7 +241,7 @@ internal object ProvenanceEntitySerializer : KSerializer<Provenance.Entity> {
     (value.role.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.roleSer, it)
     }
-    (value.what)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.whatSer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.whatSer, value.what)
     if (value.agent.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.agentSer, value.agent)
   }

@@ -93,7 +93,7 @@ public data class SampledData(
    */
   public val `data`: String? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(origin.toBuilder(), period.toBuilder(), dimensions.toBuilder()).apply {
         id = this@with.id

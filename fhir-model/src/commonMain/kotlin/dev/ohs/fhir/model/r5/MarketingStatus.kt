@@ -102,7 +102,7 @@ public data class MarketingStatus(
    */
   public val restoreDate: DateTime? = null,
 ) : BackboneType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(status.toBuilder()).apply {
         id = this@with.id

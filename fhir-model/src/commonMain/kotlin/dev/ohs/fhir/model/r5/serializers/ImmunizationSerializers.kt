@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -41,9 +42,11 @@ import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -131,7 +134,7 @@ internal object ImmunizationPerformerSerializer : KSerializer<Immunization.Perfo
     (value.function)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.functionSer, it)
     }
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, value.actor)
   }
 
   private object Hoisted {
@@ -220,12 +223,8 @@ internal object ImmunizationProgramEligibilitySerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.program)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.programSer, it)
-    }
-    (value.programStatus)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.programSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.programSer, value.program)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.programSer, value.programStatus)
   }
 
   private object Hoisted {
@@ -930,14 +929,12 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
         it,
       )
     }
-    (value.vaccineCode)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        15 + descriptorOffset,
-        Hoisted.statusReasonSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      15 + descriptorOffset,
+      Hoisted.statusReasonSer,
+      value.vaccineCode,
+    )
     (value.administeredProduct)?.let {
       encoder.encodeSerializableElement(
         descriptor,
@@ -976,14 +973,12 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
         it,
       )
     }
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        Hoisted.basedOnSerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      22 + descriptorOffset,
+      Hoisted.basedOnSerInner,
+      value.patient,
+    )
     (value.encounter)?.let {
       encoder.encodeSerializableElement(
         descriptor,
@@ -1000,7 +995,6 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
         value.supportingInformation,
       )
     when (val choice = value.occurrence) {
-      null -> {}
       is Immunization.Occurrence.DateTime -> {
         ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)

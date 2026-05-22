@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -34,9 +35,11 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -128,9 +131,7 @@ internal object AdverseEventSuspectEntitySerializer : KSerializer<AdverseEvent.S
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.instance)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.instanceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.instanceSer, value.instance)
     if (value.causality.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.causalitySer, value.causality)
   }
@@ -640,9 +641,12 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
         it,
       )
     }
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(descriptor, 15 + descriptorOffset, Hoisted.subjectSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      15 + descriptorOffset,
+      Hoisted.subjectSer,
+      value.subject,
+    )
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.subjectSer, it)
     }

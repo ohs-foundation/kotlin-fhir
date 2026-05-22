@@ -90,7 +90,7 @@ public data class Timing(
    */
   public val code: CodeableConcept? = null,
 ) : BackboneType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

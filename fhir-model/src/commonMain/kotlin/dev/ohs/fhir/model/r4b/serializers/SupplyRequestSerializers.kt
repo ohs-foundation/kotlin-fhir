@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -39,9 +40,11 @@ import dev.ohs.fhir.model.r4b.Timing
 import dev.ohs.fhir.model.r4b.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -526,7 +529,6 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
       )
     }
     when (val choice = value.item) {
-      null -> {}
       is SupplyRequest.Item.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
@@ -544,9 +546,12 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
         )
       }
     }
-    (value.quantity)?.let {
-      encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, Hoisted.quantitySer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      18 + descriptorOffset,
+      Hoisted.quantitySer,
+      value.quantity,
+    )
     if (value.parameter.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -25,9 +26,11 @@ import dev.ohs.fhir.model.r4b.Extension
 import dev.ohs.fhir.model.r4b.FhirDateTime
 import dev.ohs.fhir.model.r4b.MarketingStatus
 import dev.ohs.fhir.model.r4b.Period
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -139,7 +142,7 @@ internal object MarketingStatusSerializer : KSerializer<MarketingStatus> {
     (value.jurisdiction)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.countrySer, it)
     }
-    (value.status)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.countrySer, it) }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.countrySer, value.status)
     (value.dateRange)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.dateRangeSer, it)
     }

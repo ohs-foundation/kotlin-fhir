@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -39,9 +40,11 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -136,7 +139,7 @@ internal object ProcedurePerformerSerializer : KSerializer<Procedure.Performer> 
     (value.function)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.functionSer, it)
     }
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, value.actor)
     (value.onBehalfOf)?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.actorSer, it)
     }
@@ -224,9 +227,7 @@ internal object ProcedureFocalDeviceSerializer : KSerializer<Procedure.FocalDevi
         value.modifierExtension,
       )
     (value.action)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.actionSer, it) }
-    (value.manipulated)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.manipulatedSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.manipulatedSer, value.manipulated)
   }
 
   private object Hoisted {
@@ -799,14 +800,12 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
         it,
       )
     }
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        22 + descriptorOffset,
-        Hoisted.basedOnSerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      22 + descriptorOffset,
+      Hoisted.basedOnSerInner,
+      value.subject,
+    )
     (value.encounter)?.let {
       encoder.encodeSerializableElement(
         descriptor,

@@ -87,7 +87,7 @@ public data class Coding(
    */
   public val userSelected: Boolean? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -49,9 +50,11 @@ import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.NoteType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -346,9 +349,7 @@ internal object ExplanationOfBenefitCareTeamSerializer :
     (value.sequence.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
-    (value.provider)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.providerSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.providerSer, value.provider)
     ((value.responsible?.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
     (value.responsible?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.sequenceSer, it)
@@ -531,9 +532,7 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
     (value.sequence.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
-    (value.category)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.categorySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.categorySer, value.category)
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.categorySer, it) }
     when (val choice = value.timing) {
       null -> {}
@@ -731,7 +730,6 @@ internal object ExplanationOfBenefitDiagnosisSerializer :
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
     when (val choice = value.diagnosis) {
-      null -> {}
       is ExplanationOfBenefit.Diagnosis.Diagnosis.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
@@ -904,7 +902,6 @@ internal object ExplanationOfBenefitProcedureSerializer :
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.sequenceSer, it)
     }
     when (val choice = value.procedure) {
-      null -> {}
       is ExplanationOfBenefit.Procedure.Procedure.CodeableConcept -> {
         encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSerInner, choice.value)
       }
@@ -1041,9 +1038,7 @@ internal object ExplanationOfBenefitInsuranceSerializer :
     (value.focal.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.focalSer, it)
     }
-    (value.coverage)?.let {
-      encoder.encodeSerializableElement(descriptor, 5, Hoisted.coverageSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 5, Hoisted.coverageSer, value.coverage)
     (value.preAuthRef.map { it.value }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.preAuthRefSer, it)
     }
@@ -1644,9 +1639,7 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.revenueSer, it)
     }
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 15, Hoisted.revenueSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 15, Hoisted.revenueSer, value.productOrService)
     if (value.modifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
@@ -1851,9 +1844,7 @@ internal object ExplanationOfBenefitItemAdjudicationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.category)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, value.category)
     (value.reason)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.categorySer, it)
     }
@@ -2073,9 +2064,7 @@ internal object ExplanationOfBenefitItemDetailSerializer :
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.revenueSer, it)
     }
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.revenueSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 7, Hoisted.revenueSer, value.productOrService)
     if (value.modifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
@@ -2332,9 +2321,7 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
     (value.category)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.revenueSer, it)
     }
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 7, Hoisted.revenueSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 7, Hoisted.revenueSer, value.productOrService)
     if (value.modifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
@@ -2748,9 +2735,12 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
     }
     if (value.provider.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.providerSer, value.provider)
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 10, Hoisted.productOrServiceSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      10,
+      Hoisted.productOrServiceSer,
+      value.productOrService,
+    )
     if (value.modifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
@@ -3009,9 +2999,12 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.productOrServiceSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.productOrServiceSer,
+      value.productOrService,
+    )
     if (value.modifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modifierSer, value.modifier)
     (value.quantity)?.let {
@@ -3221,9 +3214,12 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.productOrService)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.productOrServiceSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.productOrServiceSer,
+      value.productOrService,
+    )
     if (value.modifier.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.modifierSer, value.modifier)
     (value.quantity)?.let {
@@ -3351,10 +3347,8 @@ internal object ExplanationOfBenefitTotalSerializer : KSerializer<ExplanationOfB
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.category)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, it)
-    }
-    (value.amount)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, value.category)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountSer, value.amount)
   }
 
   private object Hoisted {
@@ -3742,9 +3736,7 @@ internal object ExplanationOfBenefitBenefitBalanceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.category)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.categorySer, value.category)
     ((value.excluded?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.excluded?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.excludedSer, it)
@@ -3912,7 +3904,7 @@ internal object ExplanationOfBenefitBenefitBalanceFinancialSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     when (val choice = value.allowed) {
       null -> {}
       is ExplanationOfBenefit.BenefitBalance.Financial.Allowed.UnsignedInt -> {
@@ -4521,9 +4513,12 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
         it,
       )
     }
-    (value.type)?.let {
-      encoder.encodeSerializableElement(descriptor, 13 + descriptorOffset, Hoisted.typeSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      13 + descriptorOffset,
+      Hoisted.typeSer,
+      value.type,
+    )
     (value.subType)?.let {
       encoder.encodeSerializableElement(descriptor, 14 + descriptorOffset, Hoisted.typeSer, it)
     }
@@ -4538,9 +4533,12 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
         it,
       )
     }
-    (value.patient)?.let {
-      encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      17 + descriptorOffset,
+      Hoisted.patientSer,
+      value.patient,
+    )
     (value.billablePeriod)?.let {
       encoder.encodeSerializableElement(
         descriptor,
@@ -4563,12 +4561,18 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
     (value.enterer)?.let {
       encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, Hoisted.patientSer, it)
     }
-    (value.insurer)?.let {
-      encoder.encodeSerializableElement(descriptor, 22 + descriptorOffset, Hoisted.patientSer, it)
-    }
-    (value.provider)?.let {
-      encoder.encodeSerializableElement(descriptor, 23 + descriptorOffset, Hoisted.patientSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      22 + descriptorOffset,
+      Hoisted.patientSer,
+      value.insurer,
+    )
+    encoder.encodeSerializableElement(
+      descriptor,
+      23 + descriptorOffset,
+      Hoisted.patientSer,
+      value.provider,
+    )
     (value.priority)?.let {
       encoder.encodeSerializableElement(descriptor, 24 + descriptorOffset, Hoisted.typeSer, it)
     }

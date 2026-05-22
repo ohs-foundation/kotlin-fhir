@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -37,9 +38,11 @@ import dev.ohs.fhir.model.r4b.Timing
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.VerificationResult
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -478,9 +481,7 @@ internal object VerificationResultValidatorSerializer : KSerializer<Verification
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.organization)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.organizationSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.organizationSer, value.organization)
     ((value.identityCertificate?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.identityCertificate?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.identityCertificateSer, it)

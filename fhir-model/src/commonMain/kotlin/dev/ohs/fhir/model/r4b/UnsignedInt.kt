@@ -50,7 +50,7 @@ public data class UnsignedInt(
   /** Primitive value for unsignedInt */
   override val `value`: Int? = null,
 ) : Integer(id, extension, `value`) {
-  open override fun toBuilder(): Builder =
+  override fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

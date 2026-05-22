@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -41,9 +42,11 @@ import dev.ohs.fhir.model.r5.Timing
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -164,10 +167,13 @@ internal object NutritionIntakeConsumedItemSerializer : KSerializer<NutritionInt
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    (value.nutritionProduct)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.nutritionProductSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
+    encoder.encodeSerializableElement(
+      descriptor,
+      4,
+      Hoisted.nutritionProductSer,
+      value.nutritionProduct,
+    )
     (value.schedule)?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.scheduleSer, it)
     }
@@ -273,10 +279,8 @@ internal object NutritionIntakeIngredientLabelSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.nutrient)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.nutrientSer, it)
-    }
-    (value.amount)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.nutrientSer, value.nutrient)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountSer, value.amount)
   }
 
   private object Hoisted {
@@ -363,7 +367,7 @@ internal object NutritionIntakePerformerSerializer : KSerializer<NutritionIntake
     (value.function)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.functionSer, it)
     }
-    (value.actor)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, it) }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.actorSer, value.actor)
   }
 
   private object Hoisted {
@@ -863,14 +867,12 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
         it,
       )
     }
-    (value.subject)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        21 + descriptorOffset,
-        Hoisted.basedOnSerInner,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      21 + descriptorOffset,
+      Hoisted.basedOnSerInner,
+      value.subject,
+    )
     (value.encounter)?.let {
       encoder.encodeSerializableElement(
         descriptor,

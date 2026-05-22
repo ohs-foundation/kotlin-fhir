@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -34,9 +35,11 @@ import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -144,8 +147,8 @@ internal object MedicinalProductIngredientSpecifiedSubstanceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
-    (value.group)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, value.group)
     (value.confidentiality)?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it)
     }
@@ -310,9 +313,7 @@ internal object MedicinalProductIngredientSpecifiedSubstanceStrengthSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.presentation)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.presentationSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.presentationSer, value.presentation)
     (value.presentationLowLimit)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.presentationSer, it)
     }
@@ -476,9 +477,7 @@ internal object MedicinalProductIngredientSpecifiedSubstanceStrengthReferenceStr
     (value.substance)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.substanceSer, it)
     }
-    (value.strength)?.let {
-      encoder.encodeSerializableElement(descriptor, 4, Hoisted.strengthSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.strengthSer, value.strength)
     (value.strengthLowLimit)?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.strengthSer, it)
     }
@@ -586,7 +585,7 @@ internal object MedicinalProductIngredientSubstanceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     if (value.strength.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.strengthSer, value.strength)
   }
@@ -827,9 +826,12 @@ internal object MedicinalProductIngredientSerializer : KSerializer<MedicinalProd
         it,
       )
     }
-    (value.role)?.let {
-      encoder.encodeSerializableElement(descriptor, 11 + descriptorOffset, Hoisted.roleSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      11 + descriptorOffset,
+      Hoisted.roleSer,
+      value.role,
+    )
     ((value.allergenicIndicator?.value))?.let {
       encoder.encodeBooleanElement(descriptor, 12 + descriptorOffset, it)
     }

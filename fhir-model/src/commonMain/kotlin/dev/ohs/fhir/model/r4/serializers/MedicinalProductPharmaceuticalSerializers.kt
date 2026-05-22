@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -34,9 +35,11 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.String as R4String
 import dev.ohs.fhir.model.r4.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -128,7 +131,7 @@ internal object MedicinalProductPharmaceuticalCharacteristicsSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     (value.status)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it) }
   }
 
@@ -270,7 +273,7 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     (value.firstDose)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.firstDoseSer, it)
     }
@@ -415,7 +418,7 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpecies
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, value.code)
     if (value.withdrawalPeriod.isNotEmpty())
       encoder.encodeSerializableElement(
         descriptor,
@@ -541,8 +544,8 @@ internal object MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpecies
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.tissue)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.tissueSer, it) }
-    (value.`value`)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.tissueSer, value.tissue)
+    encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueSer, value.`value`)
     ((value.supportingInformation?.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
     (value.supportingInformation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.supportingInformationSer, it)
@@ -811,14 +814,12 @@ internal object MedicinalProductPharmaceuticalSerializer :
         Hoisted.identifierSer,
         value.identifier,
       )
-    (value.administrableDoseForm)?.let {
-      encoder.encodeSerializableElement(
-        descriptor,
-        11 + descriptorOffset,
-        Hoisted.administrableDoseFormSer,
-        it,
-      )
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      11 + descriptorOffset,
+      Hoisted.administrableDoseFormSer,
+      value.administrableDoseForm,
+    )
     (value.unitOfPresentation)?.let {
       encoder.encodeSerializableElement(
         descriptor,

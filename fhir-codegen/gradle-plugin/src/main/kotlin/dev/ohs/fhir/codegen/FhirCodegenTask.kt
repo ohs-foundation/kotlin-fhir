@@ -130,7 +130,20 @@ abstract class FhirCodegenTask : DefaultTask() {
     val packageName = this.packageName.get()
 
     val typeGraph = TypeGraphAnalyzer(structureDefinitions)
-    val fhirCodegen = FhirCodegen(packageName, valueSetMap, baseClasses, typeGraph)
+    // Map FHIR primitive type codes (e.g. "boolean", "xhtml") to whether the wrapper class's
+    // `.value` field is non-null in the generated model. Derived from the primitive's own
+    // StructureDefinition: an element `<Type>.value` with `min > 0` means the wrapper always
+    // carries a scalar value (atm only `xhtml`).
+    val primitiveValueIsNonNull: Map<String, Boolean> =
+      structureDefinitions
+        .filter { it.kind == StructureDefinition.Kind.PRIMITIVE_TYPE }
+        .mapNotNull { sd ->
+          val valueElement = sd.snapshot?.element?.firstOrNull { it.path == "${sd.name}.value" }
+          valueElement?.let { sd.name to (it.min > 0) }
+        }
+        .toMap()
+    val fhirCodegen =
+      FhirCodegen(packageName, valueSetMap, baseClasses, typeGraph, primitiveValueIsNonNull)
 
     structureDefinitions
       .flatMap { fhirCodegen.generateFileSpecs(it) }

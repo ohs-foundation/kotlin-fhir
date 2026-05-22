@@ -39,8 +39,8 @@ import dev.ohs.fhir.codegen.schema.valueset.ValueSet
  * Note this is a list of classes from different FHIR versions, e.g., DataType exists in R5 but not
  * in R4 or R4B.
  */
-val builderExclusionList =
-  listOf("Base", "Element", "BackboneElement", "DataType", "BackboneType", "PrimitiveType")
+private val builderExclusionList =
+  setOf("Base", "Element", "BackboneElement", "DataType", "BackboneType", "PrimitiveType")
 
 /**
  * Adds a nested `Builder` class and `toBuilder` function to the model class in [TypeSpec.Builder].
@@ -49,8 +49,9 @@ internal fun TypeSpec.Builder.addModelBuilderSupport(
   structureDefinition: StructureDefinition,
   modelClassName: ClassName,
   valueSetMap: Map<String, ValueSet>,
+  isBaseClass: Boolean,
 ): TypeSpec.Builder {
-  BuilderSupportGenerator(this, structureDefinition, modelClassName, valueSetMap)
+  BuilderSupportGenerator(this, structureDefinition, modelClassName, valueSetMap, isBaseClass)
     .addResourceBuilderSupport()
   return this
 }
@@ -65,7 +66,14 @@ internal fun TypeSpec.Builder.addBackboneElementBuilderSupport(
   valueSetMap: Map<String, ValueSet>,
   elements: List<Element>,
 ): TypeSpec.Builder {
-  BuilderSupportGenerator(this, structureDefinition, backboneElementClassName, valueSetMap)
+  // Backbone elements are leaf types — no subclasses, so the toBuilder method is never open.
+  BuilderSupportGenerator(
+      this,
+      structureDefinition,
+      backboneElementClassName,
+      valueSetMap,
+      isBaseClass = false,
+    )
     .addBackboneElementBuilderSupport(elements)
   return this
 }
@@ -75,6 +83,7 @@ private class BuilderSupportGenerator(
   val structureDefinition: StructureDefinition,
   val baseClassName: ClassName,
   val valueSetMap: Map<String, ValueSet>,
+  val isBaseClass: Boolean,
 ) {
   fun addResourceBuilderSupport() {
     when (structureDefinition.kind) {
@@ -123,7 +132,7 @@ private class BuilderSupportGenerator(
               addToBuilderFunction(
                 structureDefinition.rootElements,
                 overrideBaseFunction = false,
-                open = true,
+                open = isBaseClass,
               )
             }
 
@@ -132,15 +141,14 @@ private class BuilderSupportGenerator(
                 structureDefinition.rootElements,
                 overrideBaseBuilder = true,
                 overrideBaseProperties = true,
-                // We mark all builder functions in the type classes as open for simplicity. This is
-                // needed for classes with child classes such as `String`, but not needed for
-                // classes that do not such as `Code`.
+                // Builder class stays open for simplicity (matches the historical pattern); the
+                // toBuilder fun is only marked open when this class actually has subclasses.
                 open = true,
               )
               addToBuilderFunction(
                 structureDefinition.rootElements,
                 overrideBaseFunction = true,
-                open = true,
+                open = isBaseClass,
               )
             }
           }
@@ -163,13 +171,10 @@ private class BuilderSupportGenerator(
 
   private fun addBuilderForResource() {
     typeSpecBuilder.addType(
-      TypeSpec.Companion.classBuilder("Builder")
+      TypeSpec.classBuilder("Builder")
         .addModifiers(KModifier.ABSTRACT)
         .addFunction(
-          FunSpec.Companion.builder("build")
-            .returns(baseClassName)
-            .addModifiers(KModifier.ABSTRACT)
-            .build()
+          FunSpec.builder("build").returns(baseClassName).addModifiers(KModifier.ABSTRACT).build()
         )
         .build()
     )
@@ -177,7 +182,7 @@ private class BuilderSupportGenerator(
 
   private fun addToBuilderFunctionForResource() {
     typeSpecBuilder.addFunction(
-      FunSpec.Companion.builder("toBuilder")
+      FunSpec.builder("toBuilder")
         .addModifiers(KModifier.ABSTRACT)
         .returns(baseClassName.nestedClass("Builder"))
         .build()
@@ -186,9 +191,8 @@ private class BuilderSupportGenerator(
 
   private fun addToBuilderFunctionForDomainResource() {
     typeSpecBuilder.addFunction(
-      FunSpec.Companion.builder("toBuilder")
-        .addModifiers(KModifier.ABSTRACT)
-        .addModifiers(KModifier.OVERRIDE)
+      FunSpec.builder("toBuilder")
+        .addModifiers(KModifier.ABSTRACT, KModifier.OVERRIDE)
         .returns(baseClassName.nestedClass("Builder"))
         .build()
     )
@@ -196,7 +200,7 @@ private class BuilderSupportGenerator(
 
   private fun addBuilderForDomainResource() {
     typeSpecBuilder.addType(
-      TypeSpec.Companion.classBuilder("Builder")
+      TypeSpec.classBuilder("Builder")
         .addModifiers(KModifier.ABSTRACT)
         .superclass(ClassName(baseClassName.packageName, "Resource").nestedClass("Builder"))
         .build()
@@ -230,12 +234,11 @@ private class BuilderSupportGenerator(
         .addFunction(
           FunSpec.builder("build")
             .apply {
-              if (overrideBaseBuilder) {
-                addModifiers(KModifier.OVERRIDE)
+              val modifiers = buildList {
+                if (overrideBaseBuilder) add(KModifier.OVERRIDE)
+                if (open) add(KModifier.OPEN)
               }
-              if (open) {
-                addModifiers(KModifier.OPEN)
-              }
+              if (modifiers.isNotEmpty()) addModifiers(modifiers)
             }
             .returns(baseClassName)
             .addCode(
@@ -296,14 +299,12 @@ private class BuilderSupportGenerator(
         PropertySpec.builder(propertyInfo.name, propertyInfo.typeName)
           .mutable()
           .apply {
-            mutable(true)
             initializer(propertyInfo.defaultValue ?: propertyInfo.name)
-            if (override) {
-              addModifiers(KModifier.OVERRIDE)
+            val modifiers = buildList {
+              if (override) add(KModifier.OVERRIDE)
+              if (open) add(KModifier.OPEN)
             }
-            if (open) {
-              addModifiers(KModifier.OPEN)
-            }
+            if (modifiers.isNotEmpty()) addModifiers(modifiers)
             addKdoc("%L", element.definition.sanitizeKDoc())
             element.comment?.let { addKdoc("\n\n%L", it.sanitizeKDoc()) }
           }
@@ -327,16 +328,15 @@ private class BuilderSupportGenerator(
     typeSpecBuilder.addFunction(
       FunSpec.builder("toBuilder")
         .apply {
-          if (overrideBaseFunction) {
-            addModifiers(KModifier.OVERRIDE)
+          val modifiers = buildList {
+            if (overrideBaseFunction) add(KModifier.OVERRIDE)
+            if (open) add(KModifier.OPEN)
           }
-          if (open) {
-            addModifiers(KModifier.OPEN)
-          }
+          if (modifiers.isNotEmpty()) addModifiers(modifiers)
         }
         .returns(builderClassName)
         .addCode(
-          CodeBlock.Companion.builder()
+          CodeBlock.builder()
             .add("return with(this) {")
             .indent()
             .add("%T(", builderClassName)

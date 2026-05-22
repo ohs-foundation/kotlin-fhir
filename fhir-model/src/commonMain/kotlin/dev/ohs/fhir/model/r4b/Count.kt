@@ -75,7 +75,7 @@ public data class Count(
    */
   override val code: Code? = null,
 ) : Quantity() {
-  open override fun toBuilder(): Builder =
+  override fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

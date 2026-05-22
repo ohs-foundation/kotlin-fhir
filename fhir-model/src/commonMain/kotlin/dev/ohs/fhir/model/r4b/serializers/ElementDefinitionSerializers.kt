@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
 
@@ -79,10 +80,12 @@ import dev.ohs.fhir.model.r4b.Uuid
 import dev.ohs.fhir.model.r4b.terminologies.BindingStrength
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.datetime.LocalTime
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -1087,7 +1090,6 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.labelSer, it)
     }
     when (val choice = value.`value`) {
-      null -> {}
       is ElementDefinition.Example.Value.Base64Binary -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
         (choice.value.toElement())?.let {

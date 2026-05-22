@@ -50,7 +50,7 @@ public data class Date(
   /** The actual value */
   @Serializable(with = FhirDateSerializer::class) public val `value`: FhirDate? = null,
 ) : PrimitiveType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -35,9 +36,11 @@ import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.String as R5String
 import dev.ohs.fhir.model.r5.Uri
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -167,9 +170,12 @@ internal object MolecularSequenceRelativeSerializer : KSerializer<MolecularSeque
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.coordinateSystem)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.coordinateSystemSer, it)
-    }
+    encoder.encodeSerializableElement(
+      descriptor,
+      3,
+      Hoisted.coordinateSystemSer,
+      value.coordinateSystem,
+    )
     ((value.ordinalPosition?.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
     (value.ordinalPosition?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.ordinalPositionSer, it)

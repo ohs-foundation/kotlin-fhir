@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4.serializers
 
@@ -44,9 +45,11 @@ import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -695,9 +698,7 @@ internal object ImplementationGuideDefinitionResourceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, value.reference)
     (value.fhirVersion.map { it.value?.getCode() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.fhirVersionSer, it)
     }
@@ -860,7 +861,6 @@ internal object ImplementationGuideDefinitionPageSerializer :
         value.modifierExtension,
       )
     when (val choice = value.name) {
-      null -> {}
       is ImplementationGuide.Definition.Page.Name.Url -> {
         ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
         (choice.value.toElement())?.let {
@@ -1399,9 +1399,7 @@ internal object ImplementationGuideManifestResourceSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.reference)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, value.reference)
     when (val choice = value.example) {
       null -> {}
       is ImplementationGuide.Manifest.Resource.Example.Boolean -> {

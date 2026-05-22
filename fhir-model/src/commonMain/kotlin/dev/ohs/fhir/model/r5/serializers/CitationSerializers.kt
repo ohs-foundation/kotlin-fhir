@@ -15,6 +15,7 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
@@ -49,9 +50,11 @@ import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Boolean as KotlinBoolean
 import kotlin.Int
+import kotlin.OptIn
 import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.builtins.ListSerializer
@@ -323,14 +326,12 @@ internal object CitationStatusDateSerializer : KSerializer<Citation.StatusDate> 
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.activity)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.activitySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.activitySer, value.activity)
     ((value.`actual`?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.`actual`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.actualSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodSer, it) }
+    encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodSer, value.period)
   }
 
   private object Hoisted {
@@ -880,14 +881,12 @@ internal object CitationCitedArtifactStatusDateSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.activity)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.activitySer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.activitySer, value.activity)
     ((value.`actual`?.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
     (value.`actual`?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.actualSer, it)
     }
-    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodSer, it) }
+    encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodSer, value.period)
   }
 
   private object Hoisted {
@@ -2336,9 +2335,7 @@ internal object CitationCitedArtifactContributorshipEntrySerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.contributor)?.let {
-      encoder.encodeSerializableElement(descriptor, 3, Hoisted.contributorSer, it)
-    }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.contributorSer, value.contributor)
     ((value.forenameInitials?.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.forenameInitials?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.forenameInitialsSer, it)
@@ -2479,7 +2476,7 @@ internal object CitationCitedArtifactContributorshipEntryContributionInstanceSer
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, value.type)
     ((value.time?.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
     (value.time?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.timeSer, it)

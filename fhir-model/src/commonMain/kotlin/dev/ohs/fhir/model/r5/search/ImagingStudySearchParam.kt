@@ -29,24 +29,191 @@ import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.HealthcareService
 import dev.ohs.fhir.model.r5.Id
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Task
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ImagingStudy] resource type. */
 public object ImagingStudySearchParam {
+  public val BasedOn: SearchParam<ImagingStudy, Reference> =
+    SimpleSearchParam<ImagingStudy, Reference>(
+      name = "based-on",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImagingStudy.basedOn",
+      target =
+        listOf(
+          Appointment::class,
+          ServiceRequest::class,
+          CarePlan::class,
+          Task::class,
+          AppointmentResponse::class,
+        ),
+      extractor = { resource -> resource.basedOn },
+    )
+
+  public val BodySite: SearchParam<ImagingStudy, CodeableConcept> =
+    SimpleSearchParam<ImagingStudy, CodeableConcept>(
+      name = "body-site",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImagingStudy.series.bodySite.concept",
+      extractor = { resource ->
+        resource.series.mapNotNull { it.bodySite }.mapNotNull { it.concept }
+      },
+    )
+
+  public val BodyStructure: SearchParam<ImagingStudy, Reference> =
+    SimpleSearchParam<ImagingStudy, Reference>(
+      name = "body-structure",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImagingStudy.series.bodySite.reference",
+      target = listOf(dev.ohs.fhir.model.r5.BodyStructure::class),
+      extractor = { resource ->
+        resource.series.mapNotNull { it.bodySite }.mapNotNull { it.reference }
+      },
+    )
+
+  public val DicomClass: SearchParam<ImagingStudy, Coding> =
+    SimpleSearchParam<ImagingStudy, Coding>(
+      name = "dicom-class",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImagingStudy.series.instance.sopClass",
+      extractor = { resource -> resource.series.flatMap { it.instance }.map { it.sopClass } },
+    )
+
+  public val Encounter: SearchParam<ImagingStudy, Reference> =
+    SimpleSearchParam<ImagingStudy, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImagingStudy.encounter",
+      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Endpoint: SearchParam<ImagingStudy, Reference> =
+    SimpleSearchParam<ImagingStudy, Reference>(
+      name = "endpoint",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImagingStudy.endpoint",
+      target = listOf(dev.ohs.fhir.model.r5.Endpoint::class),
+      extractor = { resource -> resource.endpoint },
+    )
+
+  public val Identifier: SearchParam<ImagingStudy, Identifier> =
+    SimpleSearchParam<ImagingStudy, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImagingStudy.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Instance: SearchParam<ImagingStudy, Id> =
+    SimpleSearchParam<ImagingStudy, Id>(
+      name = "instance",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImagingStudy.series.instance.uid",
+      extractor = { resource -> resource.series.flatMap { it.instance }.map { it.uid } },
+    )
+
+  public val Modality: SearchParam<ImagingStudy, CodeableConcept> =
+    SimpleSearchParam<ImagingStudy, CodeableConcept>(
+      name = "modality",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImagingStudy.series.modality",
+      extractor = { resource -> resource.series.map { it.modality } },
+    )
+
+  public val Patient: SearchParam<ImagingStudy, Reference> =
+    SimpleSearchParam<ImagingStudy, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImagingStudy.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOf(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Performer: SearchParam<ImagingStudy, Reference> =
+    SimpleSearchParam<ImagingStudy, Reference>(
+      name = "performer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImagingStudy.series.performer.actor",
+      target =
+        listOf(
+          HealthcareService::class,
+          Organization::class,
+          CareTeam::class,
+          Device::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> resource.series.flatMap { it.performer }.map { it.actor } },
+    )
+
+  public val Reason: SearchParam<ImagingStudy, Any> =
+    SimpleSearchParam<ImagingStudy, Any>(
+      name = "reason",
+      type = SearchParamType.fromCode("token"),
+      expression = "",
+      extractor = { emptyList() },
+    )
+
+  public val Referrer: SearchParam<ImagingStudy, Reference> =
+    SimpleSearchParam<ImagingStudy, Reference>(
+      name = "referrer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImagingStudy.referrer",
+      target = listOf(PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.referrer) },
+    )
+
+  public val Series: SearchParam<ImagingStudy, Id> =
+    SimpleSearchParam<ImagingStudy, Id>(
+      name = "series",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImagingStudy.series.uid",
+      extractor = { resource -> resource.series.map { it.uid } },
+    )
+
+  public val Started: SearchParam<ImagingStudy, DateTime> =
+    SimpleSearchParam<ImagingStudy, DateTime>(
+      name = "started",
+      type = SearchParamType.fromCode("date"),
+      expression = "ImagingStudy.started",
+      extractor = { resource -> listOfNotNull(resource.started) },
+    )
+
+  public val Status: SearchParam<ImagingStudy, Any> =
+    SimpleSearchParam<ImagingStudy, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImagingStudy.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<ImagingStudy, Reference> =
+    SimpleSearchParam<ImagingStudy, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImagingStudy.subject",
+      target = listOf(Device::class, Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
   /** All search parameters for the ImagingStudy resource type. */
   public val ALL: List<SearchParam<ImagingStudy, *>> =
     listOf(
@@ -68,244 +235,4 @@ public object ImagingStudySearchParam {
       Status,
       Subject,
     )
-
-  public data object BasedOn : SearchParam<ImagingStudy, Reference> {
-    public override val name: String = "based-on"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImagingStudy.basedOn"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Appointment::class,
-        ServiceRequest::class,
-        CarePlan::class,
-        Task::class,
-        AppointmentResponse::class,
-      )
-
-    public override fun extract(resource: ImagingStudy): List<Reference> = resource.basedOn
-  }
-
-  public data object BodySite : SearchParam<ImagingStudy, CodeableConcept> {
-    public override val name: String = "body-site"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImagingStudy.series.bodySite.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImagingStudy): List<CodeableConcept> =
-      resource.series.mapNotNull { it.bodySite }.mapNotNull { it.concept }
-  }
-
-  public data object BodyStructure : SearchParam<ImagingStudy, Reference> {
-    public override val name: String = "body-structure"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImagingStudy.series.bodySite.reference"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.BodyStructure::class)
-
-    public override fun extract(resource: ImagingStudy): List<Reference> =
-      resource.series.mapNotNull { it.bodySite }.mapNotNull { it.reference }
-  }
-
-  public data object DicomClass : SearchParam<ImagingStudy, Coding> {
-    public override val name: String = "dicom-class"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImagingStudy.series.instance.sopClass"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImagingStudy): List<Coding> =
-      resource.series.flatMap { it.instance }.map { it.sopClass }
-  }
-
-  public data object Encounter : SearchParam<ImagingStudy, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImagingStudy.encounter"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Encounter::class)
-
-    public override fun extract(resource: ImagingStudy): List<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Endpoint : SearchParam<ImagingStudy, Reference> {
-    public override val name: String = "endpoint"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImagingStudy.endpoint"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Endpoint::class)
-
-    public override fun extract(resource: ImagingStudy): List<Reference> = resource.endpoint
-  }
-
-  public data object Identifier : SearchParam<ImagingStudy, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImagingStudy.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImagingStudy): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Instance : SearchParam<ImagingStudy, Id> {
-    public override val name: String = "instance"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImagingStudy.series.instance.uid"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImagingStudy): List<Id> =
-      resource.series.flatMap { it.instance }.map { it.uid }
-  }
-
-  public data object Modality : SearchParam<ImagingStudy, CodeableConcept> {
-    public override val name: String = "modality"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImagingStudy.series.modality"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImagingStudy): List<CodeableConcept> =
-      resource.series.map { it.modality }
-  }
-
-  public data object Patient : SearchParam<ImagingStudy, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImagingStudy.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: ImagingStudy): List<Reference> =
-      listOf(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Performer : SearchParam<ImagingStudy, Reference> {
-    public override val name: String = "performer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImagingStudy.series.performer.actor"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        HealthcareService::class,
-        Organization::class,
-        CareTeam::class,
-        Device::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: ImagingStudy): List<Reference> =
-      resource.series.flatMap { it.performer }.map { it.actor }
-  }
-
-  public data object Reason : SearchParam<ImagingStudy, Any> {
-    public override val name: String = "reason"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = ""
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImagingStudy): List<Any> = emptyList()
-  }
-
-  public data object Referrer : SearchParam<ImagingStudy, Reference> {
-    public override val name: String = "referrer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImagingStudy.referrer"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: ImagingStudy): List<Reference> =
-      listOfNotNull(resource.referrer)
-  }
-
-  public data object Series : SearchParam<ImagingStudy, Id> {
-    public override val name: String = "series"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImagingStudy.series.uid"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImagingStudy): List<Id> = resource.series.map { it.uid }
-  }
-
-  public data object Started : SearchParam<ImagingStudy, DateTime> {
-    public override val name: String = "started"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "ImagingStudy.started"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImagingStudy): List<DateTime> =
-      listOfNotNull(resource.started)
-  }
-
-  public data object Status : SearchParam<ImagingStudy, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImagingStudy.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImagingStudy): List<Any> = listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<ImagingStudy, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImagingStudy.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Device::class, Group::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: ImagingStudy): List<Reference> = listOf(resource.subject)
-  }
 }

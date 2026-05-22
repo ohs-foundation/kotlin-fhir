@@ -148,7 +148,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -182,13 +181,324 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [AuditEvent] resource type. */
 public object AuditEventSearchParam {
+  public val Action: SearchParam<AuditEvent, Any> =
+    SimpleSearchParam<AuditEvent, Any>(
+      name = "action",
+      type = SearchParamType.fromCode("token"),
+      expression = "AuditEvent.action",
+      extractor = { resource -> listOfNotNull(resource.action) },
+    )
+
+  public val Agent: SearchParam<AuditEvent, Reference> =
+    SimpleSearchParam<AuditEvent, Reference>(
+      name = "agent",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AuditEvent.agent.who",
+      target =
+        listOf(
+          Organization::class,
+          CareTeam::class,
+          Device::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> resource.agent.map { it.who } },
+    )
+
+  public val AgentRole: SearchParam<AuditEvent, CodeableConcept> =
+    SimpleSearchParam<AuditEvent, CodeableConcept>(
+      name = "agent-role",
+      type = SearchParamType.fromCode("token"),
+      expression = "AuditEvent.agent.role",
+      extractor = { resource -> resource.agent.flatMap { it.role } },
+    )
+
+  public val BasedOn: SearchParam<AuditEvent, Reference> =
+    SimpleSearchParam<AuditEvent, Reference>(
+      name = "based-on",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AuditEvent.basedOn",
+      target =
+        listOf(
+          DeviceRequest::class,
+          ServiceRequest::class,
+          CarePlan::class,
+          Task::class,
+          MedicationRequest::class,
+          ImmunizationRecommendation::class,
+          NutritionOrder::class,
+        ),
+      extractor = { resource -> resource.basedOn },
+    )
+
+  public val Category: SearchParam<AuditEvent, CodeableConcept> =
+    SimpleSearchParam<AuditEvent, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "AuditEvent.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Code: SearchParam<AuditEvent, CodeableConcept> =
+    SimpleSearchParam<AuditEvent, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "AuditEvent.code",
+      extractor = { resource -> listOf(resource.code) },
+    )
+
+  public val Date: SearchParam<AuditEvent, Instant> =
+    SimpleSearchParam<AuditEvent, Instant>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "AuditEvent.recorded",
+      extractor = { resource -> listOf(resource.recorded) },
+    )
+
+  public val Encounter: SearchParam<AuditEvent, Reference> =
+    SimpleSearchParam<AuditEvent, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AuditEvent.encounter",
+      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Entity: SearchParam<AuditEvent, Reference> =
+    SimpleSearchParam<AuditEvent, Reference>(
+      name = "entity",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AuditEvent.entity.what",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          dev.ohs.fhir.model.r5.Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource -> resource.entity.mapNotNull { it.what } },
+    )
+
+  public val EntityRole: SearchParam<AuditEvent, CodeableConcept> =
+    SimpleSearchParam<AuditEvent, CodeableConcept>(
+      name = "entity-role",
+      type = SearchParamType.fromCode("token"),
+      expression = "AuditEvent.entity.role",
+      extractor = { resource -> resource.entity.mapNotNull { it.role } },
+    )
+
+  public val Outcome: SearchParam<AuditEvent, Coding> =
+    SimpleSearchParam<AuditEvent, Coding>(
+      name = "outcome",
+      type = SearchParamType.fromCode("token"),
+      expression = "AuditEvent.outcome.code",
+      extractor = { resource -> listOfNotNull(resource.outcome?.code) },
+    )
+
+  public val Patient: SearchParam<AuditEvent, Reference> =
+    SimpleSearchParam<AuditEvent, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AuditEvent.patient",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.patient) },
+    )
+
+  public val Policy: SearchParam<AuditEvent, Uri> =
+    SimpleSearchParam<AuditEvent, Uri>(
+      name = "policy",
+      type = SearchParamType.fromCode("uri"),
+      expression = "AuditEvent.agent.policy",
+      extractor = { resource -> resource.agent.flatMap { it.policy } },
+    )
+
+  public val Purpose: SearchParam<AuditEvent, CodeableConcept> =
+    SimpleSearchParam<AuditEvent, CodeableConcept>(
+      name = "purpose",
+      type = SearchParamType.fromCode("token"),
+      expression = "AuditEvent.authorization",
+      extractor = { resource -> resource.authorization },
+    )
+
+  public val Source: SearchParam<AuditEvent, Reference> =
+    SimpleSearchParam<AuditEvent, Reference>(
+      name = "source",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AuditEvent.source.observer",
+      target =
+        listOf(
+          Organization::class,
+          CareTeam::class,
+          Device::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> listOf(resource.source.observer) },
+    )
+
   /** All search parameters for the AuditEvent resource type. */
   public val ALL: CollectionsList<SearchParam<AuditEvent, *>> =
     listOf(
@@ -208,387 +518,4 @@ public object AuditEventSearchParam {
       Purpose,
       Source,
     )
-
-  public data object Action : SearchParam<AuditEvent, Any> {
-    public override val name: String = "action"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AuditEvent.action"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Any> =
-      listOfNotNull(resource.action)
-  }
-
-  public data object Agent : SearchParam<AuditEvent, Reference> {
-    public override val name: String = "agent"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AuditEvent.agent.who"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Organization::class,
-        CareTeam::class,
-        Device::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Reference> =
-      resource.agent.map { it.who }
-  }
-
-  public data object AgentRole : SearchParam<AuditEvent, CodeableConcept> {
-    public override val name: String = "agent-role"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AuditEvent.agent.role"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AuditEvent): CollectionsList<CodeableConcept> =
-      resource.agent.flatMap { it.role }
-  }
-
-  public data object BasedOn : SearchParam<AuditEvent, Reference> {
-    public override val name: String = "based-on"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AuditEvent.basedOn"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        DeviceRequest::class,
-        ServiceRequest::class,
-        CarePlan::class,
-        Task::class,
-        MedicationRequest::class,
-        ImmunizationRecommendation::class,
-        NutritionOrder::class,
-      )
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Reference> = resource.basedOn
-  }
-
-  public data object Category : SearchParam<AuditEvent, CodeableConcept> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AuditEvent.category"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AuditEvent): CollectionsList<CodeableConcept> =
-      resource.category
-  }
-
-  public data object Code : SearchParam<AuditEvent, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AuditEvent.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AuditEvent): CollectionsList<CodeableConcept> =
-      listOf(resource.code)
-  }
-
-  public data object Date : SearchParam<AuditEvent, Instant> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "AuditEvent.recorded"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Instant> =
-      listOf(resource.recorded)
-  }
-
-  public data object Encounter : SearchParam<AuditEvent, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AuditEvent.encounter"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Encounter::class)
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Entity : SearchParam<AuditEvent, Reference> {
-    public override val name: String = "entity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AuditEvent.entity.what"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        dev.ohs.fhir.model.r5.Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Reference> =
-      resource.entity.mapNotNull { it.what }
-  }
-
-  public data object EntityRole : SearchParam<AuditEvent, CodeableConcept> {
-    public override val name: String = "entity-role"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AuditEvent.entity.role"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AuditEvent): CollectionsList<CodeableConcept> =
-      resource.entity.mapNotNull { it.role }
-  }
-
-  public data object Outcome : SearchParam<AuditEvent, Coding> {
-    public override val name: String = "outcome"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AuditEvent.outcome.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Coding> =
-      listOfNotNull(resource.outcome?.code)
-  }
-
-  public data object Patient : SearchParam<AuditEvent, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AuditEvent.patient"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Reference> =
-      listOfNotNull(resource.patient)
-  }
-
-  public data object Policy : SearchParam<AuditEvent, Uri> {
-    public override val name: String = "policy"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: String = "AuditEvent.agent.policy"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Uri> =
-      resource.agent.flatMap { it.policy }
-  }
-
-  public data object Purpose : SearchParam<AuditEvent, CodeableConcept> {
-    public override val name: String = "purpose"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AuditEvent.authorization"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AuditEvent): CollectionsList<CodeableConcept> =
-      resource.authorization
-  }
-
-  public data object Source : SearchParam<AuditEvent, Reference> {
-    public override val name: String = "source"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AuditEvent.source.observer"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Organization::class,
-        CareTeam::class,
-        Device::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: AuditEvent): CollectionsList<Reference> =
-      listOf(resource.source.observer)
-  }
 }

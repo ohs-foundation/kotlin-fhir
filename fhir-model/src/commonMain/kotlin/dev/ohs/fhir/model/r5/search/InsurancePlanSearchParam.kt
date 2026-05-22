@@ -18,21 +18,139 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Address
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.InsurancePlan
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [InsurancePlan] resource type. */
 public object InsurancePlanSearchParam {
+  public val Address: SearchParam<InsurancePlan, Address> =
+    SimpleSearchParam<InsurancePlan, Address>(
+      name = "address",
+      type = SearchParamType.fromCode("string"),
+      expression = "InsurancePlan.contact.address",
+      extractor = { resource -> resource.contact.mapNotNull { it.address } },
+    )
+
+  public val AddressCity: SearchParam<InsurancePlan, String> =
+    SimpleSearchParam<InsurancePlan, String>(
+      name = "address-city",
+      type = SearchParamType.fromCode("string"),
+      expression = "InsurancePlan.contact.address.city",
+      extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.city } },
+    )
+
+  public val AddressCountry: SearchParam<InsurancePlan, String> =
+    SimpleSearchParam<InsurancePlan, String>(
+      name = "address-country",
+      type = SearchParamType.fromCode("string"),
+      expression = "InsurancePlan.contact.address.country",
+      extractor = { resource ->
+        resource.contact.mapNotNull { it.address }.mapNotNull { it.country }
+      },
+    )
+
+  public val AddressPostalcode: SearchParam<InsurancePlan, String> =
+    SimpleSearchParam<InsurancePlan, String>(
+      name = "address-postalcode",
+      type = SearchParamType.fromCode("string"),
+      expression = "InsurancePlan.contact.address.postalCode",
+      extractor = { resource ->
+        resource.contact.mapNotNull { it.address }.mapNotNull { it.postalCode }
+      },
+    )
+
+  public val AddressState: SearchParam<InsurancePlan, String> =
+    SimpleSearchParam<InsurancePlan, String>(
+      name = "address-state",
+      type = SearchParamType.fromCode("string"),
+      expression = "InsurancePlan.contact.address.state",
+      extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.state } },
+    )
+
+  public val AddressUse: SearchParam<InsurancePlan, Any> =
+    SimpleSearchParam<InsurancePlan, Any>(
+      name = "address-use",
+      type = SearchParamType.fromCode("token"),
+      expression = "InsurancePlan.contact.address.use",
+      extractor = { resource -> resource.contact.mapNotNull { it.address }.mapNotNull { it.use } },
+    )
+
+  public val AdministeredBy: SearchParam<InsurancePlan, Reference> =
+    SimpleSearchParam<InsurancePlan, Reference>(
+      name = "administered-by",
+      type = SearchParamType.fromCode("reference"),
+      expression = "InsurancePlan.administeredBy",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.administeredBy) },
+    )
+
+  public val Endpoint: SearchParam<InsurancePlan, Reference> =
+    SimpleSearchParam<InsurancePlan, Reference>(
+      name = "endpoint",
+      type = SearchParamType.fromCode("reference"),
+      expression = "InsurancePlan.endpoint",
+      target = listOf(dev.ohs.fhir.model.r5.Endpoint::class),
+      extractor = { resource -> resource.endpoint },
+    )
+
+  public val Identifier: SearchParam<InsurancePlan, Identifier> =
+    SimpleSearchParam<InsurancePlan, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "InsurancePlan.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Name: SearchParam<InsurancePlan, String> =
+    SimpleSearchParam<InsurancePlan, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "InsurancePlan.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val OwnedBy: SearchParam<InsurancePlan, Reference> =
+    SimpleSearchParam<InsurancePlan, Reference>(
+      name = "owned-by",
+      type = SearchParamType.fromCode("reference"),
+      expression = "InsurancePlan.ownedBy",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.ownedBy) },
+    )
+
+  public val Phonetic: SearchParam<InsurancePlan, String> =
+    SimpleSearchParam<InsurancePlan, String>(
+      name = "phonetic",
+      type = SearchParamType.fromCode("string"),
+      expression = "InsurancePlan.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Status: SearchParam<InsurancePlan, Any> =
+    SimpleSearchParam<InsurancePlan, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "InsurancePlan.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
+  public val Type: SearchParam<InsurancePlan, CodeableConcept> =
+    SimpleSearchParam<InsurancePlan, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "InsurancePlan.type",
+      extractor = { resource -> resource.type },
+    )
+
   /** All search parameters for the InsurancePlan resource type. */
   public val ALL: List<SearchParam<InsurancePlan, *>> =
     listOf(
@@ -51,184 +169,4 @@ public object InsurancePlanSearchParam {
       Status,
       Type,
     )
-
-  public data object Address : SearchParam<InsurancePlan, dev.ohs.fhir.model.r5.Address> {
-    public override val name: KotlinString = "address"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "InsurancePlan.contact.address"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<dev.ohs.fhir.model.r5.Address> =
-      resource.contact.mapNotNull { it.address }
-  }
-
-  public data object AddressCity : SearchParam<InsurancePlan, R5String> {
-    public override val name: KotlinString = "address-city"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "InsurancePlan.contact.address.city"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<R5String> =
-      resource.contact.mapNotNull { it.address }.mapNotNull { it.city }
-  }
-
-  public data object AddressCountry : SearchParam<InsurancePlan, R5String> {
-    public override val name: KotlinString = "address-country"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "InsurancePlan.contact.address.country"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<R5String> =
-      resource.contact.mapNotNull { it.address }.mapNotNull { it.country }
-  }
-
-  public data object AddressPostalcode : SearchParam<InsurancePlan, R5String> {
-    public override val name: KotlinString = "address-postalcode"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "InsurancePlan.contact.address.postalCode"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<R5String> =
-      resource.contact.mapNotNull { it.address }.mapNotNull { it.postalCode }
-  }
-
-  public data object AddressState : SearchParam<InsurancePlan, R5String> {
-    public override val name: KotlinString = "address-state"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "InsurancePlan.contact.address.state"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<R5String> =
-      resource.contact.mapNotNull { it.address }.mapNotNull { it.state }
-  }
-
-  public data object AddressUse : SearchParam<InsurancePlan, Any> {
-    public override val name: KotlinString = "address-use"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "InsurancePlan.contact.address.use"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<Any> =
-      resource.contact.mapNotNull { it.address }.mapNotNull { it.use }
-  }
-
-  public data object AdministeredBy : SearchParam<InsurancePlan, Reference> {
-    public override val name: KotlinString = "administered-by"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "InsurancePlan.administeredBy"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: InsurancePlan): List<Reference> =
-      listOfNotNull(resource.administeredBy)
-  }
-
-  public data object Endpoint : SearchParam<InsurancePlan, Reference> {
-    public override val name: KotlinString = "endpoint"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "InsurancePlan.endpoint"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Endpoint::class)
-
-    public override fun extract(resource: InsurancePlan): List<Reference> = resource.endpoint
-  }
-
-  public data object Identifier : SearchParam<InsurancePlan, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "InsurancePlan.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Name : SearchParam<InsurancePlan, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "InsurancePlan.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<R5String> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object OwnedBy : SearchParam<InsurancePlan, Reference> {
-    public override val name: KotlinString = "owned-by"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "InsurancePlan.ownedBy"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: InsurancePlan): List<Reference> =
-      listOfNotNull(resource.ownedBy)
-  }
-
-  public data object Phonetic : SearchParam<InsurancePlan, R5String> {
-    public override val name: KotlinString = "phonetic"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "InsurancePlan.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<R5String> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Status : SearchParam<InsurancePlan, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "InsurancePlan.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<Any> = listOfNotNull(resource.status)
-  }
-
-  public data object Type : SearchParam<InsurancePlan, CodeableConcept> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "InsurancePlan.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InsurancePlan): List<CodeableConcept> = resource.type
-  }
 }

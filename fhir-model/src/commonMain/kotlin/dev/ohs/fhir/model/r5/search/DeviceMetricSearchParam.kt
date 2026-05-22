@@ -20,68 +20,48 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceMetric
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceMetric] resource type. */
 public object DeviceMetricSearchParam {
+  public val Category: SearchParam<DeviceMetric, Any> =
+    SimpleSearchParam<DeviceMetric, Any>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceMetric.category",
+      extractor = { resource -> listOf(resource.category) },
+    )
+
+  public val Device: SearchParam<DeviceMetric, Reference> =
+    SimpleSearchParam<DeviceMetric, Reference>(
+      name = "device",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DeviceMetric.device",
+      target = listOf(dev.ohs.fhir.model.r5.Device::class),
+      extractor = { resource -> listOf(resource.device) },
+    )
+
+  public val Identifier: SearchParam<DeviceMetric, Identifier> =
+    SimpleSearchParam<DeviceMetric, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceMetric.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Type: SearchParam<DeviceMetric, CodeableConcept> =
+    SimpleSearchParam<DeviceMetric, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceMetric.type",
+      extractor = { resource -> listOf(resource.type) },
+    )
+
   /** All search parameters for the DeviceMetric resource type. */
   public val ALL: List<SearchParam<DeviceMetric, *>> = listOf(Category, Device, Identifier, Type)
-
-  public data object Category : SearchParam<DeviceMetric, Any> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "DeviceMetric.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceMetric): List<Any> = listOf(resource.category)
-  }
-
-  public data object Device : SearchParam<DeviceMetric, Reference> {
-    public override val name: String = "device"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "DeviceMetric.device"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Device::class)
-
-    public override fun extract(resource: DeviceMetric): List<Reference> = listOf(resource.device)
-  }
-
-  public data object Identifier : SearchParam<DeviceMetric, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "DeviceMetric.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceMetric): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Type : SearchParam<DeviceMetric, CodeableConcept> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "DeviceMetric.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceMetric): List<CodeableConcept> =
-      listOf(resource.type)
-  }
 }

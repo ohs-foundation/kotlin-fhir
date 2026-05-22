@@ -92,6 +92,7 @@ import dev.ohs.fhir.model.r5.GraphDefinition
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingSelection
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Immunization
@@ -152,7 +153,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -160,7 +160,7 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Slot
 import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.SpecimenDefinition
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.StructureMap
 import dev.ohs.fhir.model.r5.Subscription
@@ -188,13 +188,1012 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Measure] resource type. */
 public object MeasureSearchParam {
+  public val ComposedOf: SearchParam<Measure, Canonical> =
+    SimpleSearchParam<Measure, Canonical>(
+      name = "composed-of",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Measure.relatedArtifact.where(type='composed-of').resource",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource ->
+        resource.relatedArtifact
+          .filter { it.type?.value?.toString() == "composed-of" }
+          .mapNotNull { it.resource }
+      },
+    )
+
+  public val Context: SearchParam<Measure, Any> =
+    SimpleSearchParam<Measure, Any>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(Measure.useContext.value.ofType(CodeableConcept))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextQuantity: SearchParam<Measure, Any> =
+    SimpleSearchParam<Measure, Any>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(Measure.useContext.value.ofType(Quantity))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextType: SearchParam<Measure, Coding> =
+    SimpleSearchParam<Measure, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Measure.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<Measure, UsageContext> =
+    SimpleSearchParam<Measure, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Measure.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<Measure, UsageContext> =
+    SimpleSearchParam<Measure, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Measure.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<Measure, DateTime> =
+    SimpleSearchParam<Measure, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Measure.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val DependsOn: SearchParam<Measure, Canonical> =
+    SimpleSearchParam<Measure, Canonical>(
+      name = "depends-on",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Measure.relatedArtifact.where(type='depends-on').resource",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource ->
+        resource.relatedArtifact
+          .filter { it.type?.value?.toString() == "depends-on" }
+          .mapNotNull { it.resource }
+      },
+    )
+
+  public val DerivedFrom: SearchParam<Measure, Canonical> =
+    SimpleSearchParam<Measure, Canonical>(
+      name = "derived-from",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Measure.relatedArtifact.where(type='derived-from').resource",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource ->
+        resource.relatedArtifact
+          .filter { it.type?.value?.toString() == "derived-from" }
+          .mapNotNull { it.resource }
+      },
+    )
+
+  public val Description: SearchParam<Measure, Markdown> =
+    SimpleSearchParam<Measure, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "Measure.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Effective: SearchParam<Measure, Period> =
+    SimpleSearchParam<Measure, Period>(
+      name = "effective",
+      type = SearchParamType.fromCode("date"),
+      expression = "Measure.effectivePeriod",
+      extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
+    )
+
+  public val Identifier: SearchParam<Measure, Identifier> =
+    SimpleSearchParam<Measure, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Measure.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<Measure, CodeableConcept> =
+    SimpleSearchParam<Measure, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "Measure.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<Measure, String> =
+    SimpleSearchParam<Measure, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "Measure.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Predecessor: SearchParam<Measure, Canonical> =
+    SimpleSearchParam<Measure, Canonical>(
+      name = "predecessor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Measure.relatedArtifact.where(type='predecessor').resource",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource ->
+        resource.relatedArtifact
+          .filter { it.type?.value?.toString() == "predecessor" }
+          .mapNotNull { it.resource }
+      },
+    )
+
+  public val Publisher: SearchParam<Measure, String> =
+    SimpleSearchParam<Measure, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "Measure.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<Measure, Any> =
+    SimpleSearchParam<Measure, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Measure.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Successor: SearchParam<Measure, Canonical> =
+    SimpleSearchParam<Measure, Canonical>(
+      name = "successor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Measure.relatedArtifact.where(type='successor').resource",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource ->
+        resource.relatedArtifact
+          .filter { it.type?.value?.toString() == "successor" }
+          .mapNotNull { it.resource }
+      },
+    )
+
+  public val Title: SearchParam<Measure, String> =
+    SimpleSearchParam<Measure, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "Measure.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Topic: SearchParam<Measure, CodeableConcept> =
+    SimpleSearchParam<Measure, CodeableConcept>(
+      name = "topic",
+      type = SearchParamType.fromCode("token"),
+      expression = "Measure.topic",
+      extractor = { resource -> resource.topic },
+    )
+
+  public val Url: SearchParam<Measure, Uri> =
+    SimpleSearchParam<Measure, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "Measure.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Version: SearchParam<Measure, String> =
+    SimpleSearchParam<Measure, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "Measure.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the Measure resource type. */
   public val ALL: CollectionsList<SearchParam<Measure, *>> =
     listOf(
@@ -221,1104 +1220,4 @@ public object MeasureSearchParam {
       Url,
       Version,
     )
-
-  public data object ComposedOf : SearchParam<Measure, Canonical> {
-    public override val name: KotlinString = "composed-of"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "Measure.relatedArtifact.where(type='composed-of').resource"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Measure): CollectionsList<Canonical> =
-      resource.relatedArtifact
-        .filter { it.type?.value?.toString() == "composed-of" }
-        .mapNotNull { it.resource }
-  }
-
-  public data object Context : SearchParam<Measure, Any> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(Measure.useContext.value.ofType(CodeableConcept))"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<Any> = emptyList()
-  }
-
-  public data object ContextQuantity : SearchParam<Measure, Any> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString = "(Measure.useContext.value.ofType(Quantity))"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<Any> = emptyList()
-  }
-
-  public data object ContextType : SearchParam<Measure, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Measure.useContext.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<Measure, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Measure.useContext"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<UsageContext> =
-      resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<Measure, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Measure.useContext"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<UsageContext> =
-      resource.useContext
-  }
-
-  public data object Date : SearchParam<Measure, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "Measure.date"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object DependsOn : SearchParam<Measure, Canonical> {
-    public override val name: KotlinString = "depends-on"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "Measure.relatedArtifact.where(type='depends-on').resource"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Measure): CollectionsList<Canonical> =
-      resource.relatedArtifact
-        .filter { it.type?.value?.toString() == "depends-on" }
-        .mapNotNull { it.resource }
-  }
-
-  public data object DerivedFrom : SearchParam<Measure, Canonical> {
-    public override val name: KotlinString = "derived-from"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "Measure.relatedArtifact.where(type='derived-from').resource"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Measure): CollectionsList<Canonical> =
-      resource.relatedArtifact
-        .filter { it.type?.value?.toString() == "derived-from" }
-        .mapNotNull { it.resource }
-  }
-
-  public data object Description : SearchParam<Measure, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Measure.description"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Effective : SearchParam<Measure, Period> {
-    public override val name: KotlinString = "effective"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "Measure.effectivePeriod"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<Period> =
-      listOfNotNull(resource.effectivePeriod)
-  }
-
-  public data object Identifier : SearchParam<Measure, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Measure.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: Measure
-    ): CollectionsList<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<Measure, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Measure.jurisdiction"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<Measure, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Measure.name"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<R5String> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Predecessor : SearchParam<Measure, Canonical> {
-    public override val name: KotlinString = "predecessor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "Measure.relatedArtifact.where(type='predecessor').resource"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Measure): CollectionsList<Canonical> =
-      resource.relatedArtifact
-        .filter { it.type?.value?.toString() == "predecessor" }
-        .mapNotNull { it.resource }
-  }
-
-  public data object Publisher : SearchParam<Measure, R5String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Measure.publisher"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<R5String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<Measure, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Measure.status"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<Any> = listOf(resource.status)
-  }
-
-  public data object Successor : SearchParam<Measure, Canonical> {
-    public override val name: KotlinString = "successor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "Measure.relatedArtifact.where(type='successor').resource"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Measure): CollectionsList<Canonical> =
-      resource.relatedArtifact
-        .filter { it.type?.value?.toString() == "successor" }
-        .mapNotNull { it.resource }
-  }
-
-  public data object Title : SearchParam<Measure, R5String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Measure.title"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<R5String> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Topic : SearchParam<Measure, CodeableConcept> {
-    public override val name: KotlinString = "topic"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Measure.topic"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<CodeableConcept> =
-      resource.topic
-  }
-
-  public data object Url : SearchParam<Measure, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "Measure.url"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<Uri> =
-      listOfNotNull(resource.url)
-  }
-
-  public data object Version : SearchParam<Measure, R5String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Measure.version"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Measure): CollectionsList<R5String> =
-      listOfNotNull(resource.version)
-  }
 }

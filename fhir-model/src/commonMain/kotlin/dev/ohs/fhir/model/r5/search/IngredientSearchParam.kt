@@ -20,21 +20,132 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.AdministrableProductDefinition
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Ingredient
 import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
 import dev.ohs.fhir.model.r5.MedicinalProductDefinition
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Ingredient] resource type. */
 public object IngredientSearchParam {
+  public val For: SearchParam<Ingredient, Reference> =
+    SimpleSearchParam<Ingredient, Reference>(
+      name = "for",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Ingredient.for",
+      target =
+        listOf(
+          MedicinalProductDefinition::class,
+          AdministrableProductDefinition::class,
+          ManufacturedItemDefinition::class,
+        ),
+      extractor = { resource -> resource.`for` },
+    )
+
+  public val Function: SearchParam<Ingredient, CodeableConcept> =
+    SimpleSearchParam<Ingredient, CodeableConcept>(
+      name = "function",
+      type = SearchParamType.fromCode("token"),
+      expression = "Ingredient.function",
+      extractor = { resource -> resource.function },
+    )
+
+  public val Identifier: SearchParam<Ingredient, Identifier> =
+    SimpleSearchParam<Ingredient, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Ingredient.identifier",
+      extractor = { resource -> listOfNotNull(resource.identifier) },
+    )
+
+  public val Manufacturer: SearchParam<Ingredient, Reference> =
+    SimpleSearchParam<Ingredient, Reference>(
+      name = "manufacturer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Ingredient.manufacturer.manufacturer",
+      target = listOf(Organization::class),
+      extractor = { resource -> resource.manufacturer.map { it.manufacturer } },
+    )
+
+  public val Role: SearchParam<Ingredient, CodeableConcept> =
+    SimpleSearchParam<Ingredient, CodeableConcept>(
+      name = "role",
+      type = SearchParamType.fromCode("token"),
+      expression = "Ingredient.role",
+      extractor = { resource -> listOf(resource.role) },
+    )
+
+  public val Status: SearchParam<Ingredient, Any> =
+    SimpleSearchParam<Ingredient, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Ingredient.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val StrengthConcentrationQuantity: SearchParam<Ingredient, Any> =
+    SimpleSearchParam<Ingredient, Any>(
+      name = "strength-concentration-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "Ingredient.substance.strength.concentration.ofType(Quantity)",
+      extractor = { emptyList() },
+    )
+
+  public val StrengthConcentrationRatio: SearchParam<Ingredient, Any> =
+    SimpleSearchParam<Ingredient, Any>(
+      name = "strength-concentration-ratio",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Ingredient.substance.strength.concentration.ofType(Ratio)",
+      extractor = { emptyList() },
+    )
+
+  public val StrengthPresentationQuantity: SearchParam<Ingredient, Any> =
+    SimpleSearchParam<Ingredient, Any>(
+      name = "strength-presentation-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "Ingredient.substance.strength.presentation.ofType(Quantity)",
+      extractor = { emptyList() },
+    )
+
+  public val StrengthPresentationRatio: SearchParam<Ingredient, Any> =
+    SimpleSearchParam<Ingredient, Any>(
+      name = "strength-presentation-ratio",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Ingredient.substance.strength.presentation.ofType(Ratio)",
+      extractor = { emptyList() },
+    )
+
+  public val Substance: SearchParam<Ingredient, Reference> =
+    SimpleSearchParam<Ingredient, Reference>(
+      name = "substance",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Ingredient.substance.code.reference",
+      target = listOf(dev.ohs.fhir.model.r5.SubstanceDefinition::class),
+      extractor = { resource -> listOfNotNull(resource.substance.code.reference) },
+    )
+
+  public val SubstanceCode: SearchParam<Ingredient, CodeableConcept> =
+    SimpleSearchParam<Ingredient, CodeableConcept>(
+      name = "substance-code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Ingredient.substance.code.concept",
+      extractor = { resource -> listOfNotNull(resource.substance.code.concept) },
+    )
+
+  public val SubstanceDefinition: SearchParam<Ingredient, Reference> =
+    SimpleSearchParam<Ingredient, Reference>(
+      name = "substance-definition",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Ingredient.substance.code.reference",
+      target = listOf(dev.ohs.fhir.model.r5.SubstanceDefinition::class),
+      extractor = { resource -> listOfNotNull(resource.substance.code.reference) },
+    )
+
   /** All search parameters for the Ingredient resource type. */
   public val ALL: List<SearchParam<Ingredient, *>> =
     listOf(
@@ -52,176 +163,4 @@ public object IngredientSearchParam {
       SubstanceCode,
       SubstanceDefinition,
     )
-
-  public data object For : SearchParam<Ingredient, Reference> {
-    public override val name: String = "for"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Ingredient.for"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        MedicinalProductDefinition::class,
-        AdministrableProductDefinition::class,
-        ManufacturedItemDefinition::class,
-      )
-
-    public override fun extract(resource: Ingredient): List<Reference> = resource.`for`
-  }
-
-  public data object Function : SearchParam<Ingredient, CodeableConcept> {
-    public override val name: String = "function"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Ingredient.function"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Ingredient): List<CodeableConcept> = resource.function
-  }
-
-  public data object Identifier : SearchParam<Ingredient, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Ingredient.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Ingredient): List<dev.ohs.fhir.model.r5.Identifier> =
-      listOfNotNull(resource.identifier)
-  }
-
-  public data object Manufacturer : SearchParam<Ingredient, Reference> {
-    public override val name: String = "manufacturer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Ingredient.manufacturer.manufacturer"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: Ingredient): List<Reference> =
-      resource.manufacturer.map { it.manufacturer }
-  }
-
-  public data object Role : SearchParam<Ingredient, CodeableConcept> {
-    public override val name: String = "role"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Ingredient.role"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Ingredient): List<CodeableConcept> = listOf(resource.role)
-  }
-
-  public data object Status : SearchParam<Ingredient, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Ingredient.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Ingredient): List<Any> = listOf(resource.status)
-  }
-
-  public data object StrengthConcentrationQuantity : SearchParam<Ingredient, Any> {
-    public override val name: String = "strength-concentration-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: String =
-      "Ingredient.substance.strength.concentration.ofType(Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Ingredient): List<Any> = emptyList()
-  }
-
-  public data object StrengthConcentrationRatio : SearchParam<Ingredient, Any> {
-    public override val name: String = "strength-concentration-ratio"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: String =
-      "Ingredient.substance.strength.concentration.ofType(Ratio)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Ingredient): List<Any> = emptyList()
-  }
-
-  public data object StrengthPresentationQuantity : SearchParam<Ingredient, Any> {
-    public override val name: String = "strength-presentation-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: String =
-      "Ingredient.substance.strength.presentation.ofType(Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Ingredient): List<Any> = emptyList()
-  }
-
-  public data object StrengthPresentationRatio : SearchParam<Ingredient, Any> {
-    public override val name: String = "strength-presentation-ratio"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: String =
-      "Ingredient.substance.strength.presentation.ofType(Ratio)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Ingredient): List<Any> = emptyList()
-  }
-
-  public data object Substance : SearchParam<Ingredient, Reference> {
-    public override val name: String = "substance"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Ingredient.substance.code.reference"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.SubstanceDefinition::class)
-
-    public override fun extract(resource: Ingredient): List<Reference> =
-      listOfNotNull(resource.substance.code.reference)
-  }
-
-  public data object SubstanceCode : SearchParam<Ingredient, CodeableConcept> {
-    public override val name: String = "substance-code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Ingredient.substance.code.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Ingredient): List<CodeableConcept> =
-      listOfNotNull(resource.substance.code.concept)
-  }
-
-  public data object SubstanceDefinition : SearchParam<Ingredient, Reference> {
-    public override val name: String = "substance-definition"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Ingredient.substance.code.reference"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.SubstanceDefinition::class)
-
-    public override fun extract(resource: Ingredient): List<Reference> =
-      listOfNotNull(resource.substance.code.reference)
-  }
 }

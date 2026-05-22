@@ -20,58 +20,40 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.EnrollmentRequest
 import dev.ohs.fhir.model.r4b.EnrollmentResponse
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [EnrollmentResponse] resource type. */
 public object EnrollmentResponseSearchParam {
+  public val Identifier: SearchParam<EnrollmentResponse, Identifier> =
+    SimpleSearchParam<EnrollmentResponse, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "EnrollmentResponse.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Request: SearchParam<EnrollmentResponse, Reference> =
+    SimpleSearchParam<EnrollmentResponse, Reference>(
+      name = "request",
+      type = SearchParamType.fromCode("reference"),
+      expression = "EnrollmentResponse.request",
+      target = listOf(EnrollmentRequest::class),
+      extractor = { resource -> listOfNotNull(resource.request) },
+    )
+
+  public val Status: SearchParam<EnrollmentResponse, Any> =
+    SimpleSearchParam<EnrollmentResponse, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "EnrollmentResponse.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
   /** All search parameters for the EnrollmentResponse resource type. */
   public val ALL: List<SearchParam<EnrollmentResponse, *>> = listOf(Identifier, Request, Status)
-
-  public data object Identifier :
-    SearchParam<EnrollmentResponse, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "EnrollmentResponse.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: EnrollmentResponse
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
-  }
-
-  public data object Request : SearchParam<EnrollmentResponse, Reference> {
-    public override val name: String = "request"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "EnrollmentResponse.request"
-
-    public override val target: List<KClass<out Resource>> = listOf(EnrollmentRequest::class)
-
-    public override fun extract(resource: EnrollmentResponse): List<Reference> =
-      listOfNotNull(resource.request)
-  }
-
-  public data object Status : SearchParam<EnrollmentResponse, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "EnrollmentResponse.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: EnrollmentResponse): List<Any> =
-      listOfNotNull(resource.status)
-  }
 }

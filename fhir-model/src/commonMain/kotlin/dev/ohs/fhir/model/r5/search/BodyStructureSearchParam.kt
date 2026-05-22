@@ -20,82 +20,57 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.BodyStructure
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [BodyStructure] resource type. */
 public object BodyStructureSearchParam {
+  public val Excluded_structure: SearchParam<BodyStructure, Any> =
+    SimpleSearchParam<BodyStructure, Any>(
+      name = "excluded_structure",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.excludedStructure.structure",
+      extractor = { emptyList() },
+    )
+
+  public val Identifier: SearchParam<BodyStructure, Identifier> =
+    SimpleSearchParam<BodyStructure, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Included_structure: SearchParam<BodyStructure, CodeableConcept> =
+    SimpleSearchParam<BodyStructure, CodeableConcept>(
+      name = "included_structure",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.includedStructure.structure",
+      extractor = { resource -> resource.includedStructure.map { it.structure } },
+    )
+
+  public val Morphology: SearchParam<BodyStructure, CodeableConcept> =
+    SimpleSearchParam<BodyStructure, CodeableConcept>(
+      name = "morphology",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.morphology",
+      extractor = { resource -> listOfNotNull(resource.morphology) },
+    )
+
+  public val Patient: SearchParam<BodyStructure, Reference> =
+    SimpleSearchParam<BodyStructure, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "BodyStructure.patient",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
   /** All search parameters for the BodyStructure resource type. */
   public val ALL: List<SearchParam<BodyStructure, *>> =
     listOf(Excluded_structure, Identifier, Included_structure, Morphology, Patient)
-
-  public data object Excluded_structure : SearchParam<BodyStructure, Any> {
-    public override val name: String = "excluded_structure"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BodyStructure.excludedStructure.structure"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BodyStructure): List<Any> = emptyList()
-  }
-
-  public data object Identifier : SearchParam<BodyStructure, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BodyStructure.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BodyStructure): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Included_structure : SearchParam<BodyStructure, CodeableConcept> {
-    public override val name: String = "included_structure"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BodyStructure.includedStructure.structure"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BodyStructure): List<CodeableConcept> =
-      resource.includedStructure.map { it.structure }
-  }
-
-  public data object Morphology : SearchParam<BodyStructure, CodeableConcept> {
-    public override val name: String = "morphology"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BodyStructure.morphology"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BodyStructure): List<CodeableConcept> =
-      listOfNotNull(resource.morphology)
-  }
-
-  public data object Patient : SearchParam<BodyStructure, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "BodyStructure.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: BodyStructure): List<Reference> = listOf(resource.patient)
-  }
 }

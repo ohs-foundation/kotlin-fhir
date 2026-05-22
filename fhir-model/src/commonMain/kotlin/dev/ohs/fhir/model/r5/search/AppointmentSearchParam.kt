@@ -88,6 +88,7 @@ import dev.ohs.fhir.model.r5.Goal
 import dev.ohs.fhir.model.r5.GraphDefinition
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingSelection
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Immunization
@@ -144,7 +145,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -176,13 +176,390 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Appointment] resource type. */
 public object AppointmentSearchParam {
+  public val Actor: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "actor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.participant.actor",
+      target =
+        listOf(
+          HealthcareService::class,
+          CareTeam::class,
+          Device::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          dev.ohs.fhir.model.r5.Group::class,
+          dev.ohs.fhir.model.r5.Practitioner::class,
+          dev.ohs.fhir.model.r5.Location::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> resource.participant.mapNotNull { it.actor } },
+    )
+
+  public val AppointmentType: SearchParam<Appointment, CodeableConcept> =
+    SimpleSearchParam<Appointment, CodeableConcept>(
+      name = "appointment-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Appointment.appointmentType",
+      extractor = { resource -> listOfNotNull(resource.appointmentType) },
+    )
+
+  public val BasedOn: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "based-on",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.basedOn",
+      target =
+        listOf(
+          DeviceRequest::class,
+          ServiceRequest::class,
+          CarePlan::class,
+          MedicationRequest::class,
+        ),
+      extractor = { resource -> resource.basedOn },
+    )
+
+  public val Date: SearchParam<Appointment, Any> =
+    SimpleSearchParam<Appointment, Any>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression =
+        "AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn",
+      extractor = { emptyList() },
+    )
+
+  public val Group: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "group",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.participant.actor.where(resolve() is Group)",
+      target = listOf(dev.ohs.fhir.model.r5.Group::class),
+      extractor = { resource ->
+        resource.participant
+          .mapNotNull { it.actor }
+          .filter { it.reference?.value?.toString()?.contains("Group/") == true }
+      },
+    )
+
+  public val Identifier: SearchParam<Appointment, Identifier> =
+    SimpleSearchParam<Appointment, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Appointment.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Location: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "location",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.participant.actor.where(resolve() is Location)",
+      target = listOf(dev.ohs.fhir.model.r5.Location::class),
+      extractor = { resource ->
+        resource.participant
+          .mapNotNull { it.actor }
+          .filter { it.reference?.value?.toString()?.contains("Location/") == true }
+      },
+    )
+
+  public val PartStatus: SearchParam<Appointment, Any> =
+    SimpleSearchParam<Appointment, Any>(
+      name = "part-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Appointment.participant.status",
+      extractor = { resource -> resource.participant.map { it.status } },
+    )
+
+  public val Patient: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.participant.actor.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        resource.participant
+          .mapNotNull { it.actor }
+          .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
+      },
+    )
+
+  public val Practitioner: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "practitioner",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.participant.actor.where(resolve() is Practitioner)",
+      target = listOf(dev.ohs.fhir.model.r5.Practitioner::class),
+      extractor = { resource ->
+        resource.participant
+          .mapNotNull { it.actor }
+          .filter { it.reference?.value?.toString()?.contains("Practitioner/") == true }
+      },
+    )
+
+  public val ReasonCode: SearchParam<Appointment, CodeableConcept> =
+    SimpleSearchParam<Appointment, CodeableConcept>(
+      name = "reason-code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Appointment.reason.concept",
+      extractor = { resource -> resource.reason.mapNotNull { it.concept } },
+    )
+
+  public val ReasonReference: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "reason-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.reason.reference",
+      target =
+        listOf(
+          Procedure::class,
+          Observation::class,
+          ImmunizationRecommendation::class,
+          Condition::class,
+        ),
+      extractor = { resource -> resource.reason.mapNotNull { it.reference } },
+    )
+
+  public val RequestedPeriod: SearchParam<Appointment, Any> =
+    SimpleSearchParam<Appointment, Any>(
+      name = "requested-period",
+      type = SearchParamType.fromCode("date"),
+      expression = "requestedPeriod",
+      extractor = { emptyList() },
+    )
+
+  public val ServiceCategory: SearchParam<Appointment, CodeableConcept> =
+    SimpleSearchParam<Appointment, CodeableConcept>(
+      name = "service-category",
+      type = SearchParamType.fromCode("token"),
+      expression = "Appointment.serviceCategory",
+      extractor = { resource -> resource.serviceCategory },
+    )
+
+  public val ServiceType: SearchParam<Appointment, CodeableConcept> =
+    SimpleSearchParam<Appointment, CodeableConcept>(
+      name = "service-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Appointment.serviceType.concept",
+      extractor = { resource -> resource.serviceType.mapNotNull { it.concept } },
+    )
+
+  public val ServiceTypeReference: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "service-type-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.serviceType.reference",
+      target = listOf(HealthcareService::class),
+      extractor = { resource -> resource.serviceType.mapNotNull { it.reference } },
+    )
+
+  public val Slot: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "slot",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.slot",
+      target = listOf(dev.ohs.fhir.model.r5.Slot::class),
+      extractor = { resource -> resource.slot },
+    )
+
+  public val Specialty: SearchParam<Appointment, CodeableConcept> =
+    SimpleSearchParam<Appointment, CodeableConcept>(
+      name = "specialty",
+      type = SearchParamType.fromCode("token"),
+      expression = "Appointment.specialty",
+      extractor = { resource -> resource.specialty },
+    )
+
+  public val Status: SearchParam<Appointment, Any> =
+    SimpleSearchParam<Appointment, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Appointment.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.subject",
+      target = listOf(dev.ohs.fhir.model.r5.Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
+  public val SupportingInfo: SearchParam<Appointment, Reference> =
+    SimpleSearchParam<Appointment, Reference>(
+      name = "supporting-info",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Appointment.supportingInformation",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          dev.ohs.fhir.model.r5.Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          dev.ohs.fhir.model.r5.Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          dev.ohs.fhir.model.r5.Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          dev.ohs.fhir.model.r5.Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource -> resource.supportingInformation },
+    )
+
   /** All search parameters for the Appointment resource type. */
   public val ALL: CollectionsList<SearchParam<Appointment, *>> =
     listOf(
@@ -208,473 +585,4 @@ public object AppointmentSearchParam {
       Subject,
       SupportingInfo,
     )
-
-  public data object Actor : SearchParam<Appointment, Reference> {
-    public override val name: String = "actor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Appointment.participant.actor"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        HealthcareService::class,
-        CareTeam::class,
-        Device::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        dev.ohs.fhir.model.r5.Group::class,
-        dev.ohs.fhir.model.r5.Practitioner::class,
-        dev.ohs.fhir.model.r5.Location::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      resource.participant.mapNotNull { it.actor }
-  }
-
-  public data object AppointmentType : SearchParam<Appointment, CodeableConcept> {
-    public override val name: String = "appointment-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Appointment.appointmentType"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Appointment): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.appointmentType)
-  }
-
-  public data object BasedOn : SearchParam<Appointment, Reference> {
-    public override val name: String = "based-on"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Appointment.basedOn"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(DeviceRequest::class, ServiceRequest::class, CarePlan::class, MedicationRequest::class)
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      resource.basedOn
-  }
-
-  public data object Date : SearchParam<Appointment, Any> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String =
-      "AdverseEvent.occurrence.ofType(dateTime) | AdverseEvent.occurrence.ofType(Period) | AdverseEvent.occurrence.ofType(Timing) | AllergyIntolerance.recordedDate | (start | requestedPeriod.start).first() | AuditEvent.recorded | CarePlan.period | ClinicalImpression.date | Composition.date | Consent.date | DiagnosticReport.effective.ofType(dateTime) | DiagnosticReport.effective.ofType(Period) | DocumentReference.date | Encounter.actualPeriod | EpisodeOfCare.period | FamilyMemberHistory.date | Flag.period | (Immunization.occurrence.ofType(dateTime)) | ImmunizationEvaluation.date | ImmunizationRecommendation.date | Invoice.date | List.date | MeasureReport.date | NutritionIntake.occurrence.ofType(dateTime) | NutritionIntake.occurrence.ofType(Period) | Observation.effective.ofType(dateTime) | Observation.effective.ofType(Period) | Observation.effective.ofType(Timing) | Observation.effective.ofType(instant) | Procedure.occurrence.ofType(dateTime) | Procedure.occurrence.ofType(Period) | Procedure.occurrence.ofType(Timing) | ResearchSubject.period | (RiskAssessment.occurrence.ofType(dateTime)) | SupplyRequest.authoredOn"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Appointment): CollectionsList<Any> = emptyList()
-  }
-
-  public data object Group : SearchParam<Appointment, Reference> {
-    public override val name: String = "group"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "Appointment.participant.actor.where(resolve() is Group)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Group::class)
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      resource.participant
-        .mapNotNull { it.actor }
-        .filter { it.reference?.value?.toString()?.contains("Group/") == true }
-  }
-
-  public data object Identifier : SearchParam<Appointment, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Appointment.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: Appointment
-    ): CollectionsList<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Location : SearchParam<Appointment, Reference> {
-    public override val name: String = "location"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "Appointment.participant.actor.where(resolve() is Location)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Location::class)
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      resource.participant
-        .mapNotNull { it.actor }
-        .filter { it.reference?.value?.toString()?.contains("Location/") == true }
-  }
-
-  public data object PartStatus : SearchParam<Appointment, Any> {
-    public override val name: String = "part-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Appointment.participant.status"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Appointment): CollectionsList<Any> =
-      resource.participant.map { it.status }
-  }
-
-  public data object Patient : SearchParam<Appointment, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "Appointment.participant.actor.where(resolve() is Patient)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      resource.participant
-        .mapNotNull { it.actor }
-        .filter { it.reference?.value?.toString()?.contains("Patient/") == true }
-  }
-
-  public data object Practitioner : SearchParam<Appointment, Reference> {
-    public override val name: String = "practitioner"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "Appointment.participant.actor.where(resolve() is Practitioner)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Practitioner::class)
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      resource.participant
-        .mapNotNull { it.actor }
-        .filter { it.reference?.value?.toString()?.contains("Practitioner/") == true }
-  }
-
-  public data object ReasonCode : SearchParam<Appointment, CodeableConcept> {
-    public override val name: String = "reason-code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Appointment.reason.concept"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Appointment): CollectionsList<CodeableConcept> =
-      resource.reason.mapNotNull { it.concept }
-  }
-
-  public data object ReasonReference : SearchParam<Appointment, Reference> {
-    public override val name: String = "reason-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Appointment.reason.reference"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Procedure::class,
-        Observation::class,
-        ImmunizationRecommendation::class,
-        Condition::class,
-      )
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      resource.reason.mapNotNull { it.reference }
-  }
-
-  public data object RequestedPeriod : SearchParam<Appointment, Any> {
-    public override val name: String = "requested-period"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "requestedPeriod"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Appointment): CollectionsList<Any> = emptyList()
-  }
-
-  public data object ServiceCategory : SearchParam<Appointment, CodeableConcept> {
-    public override val name: String = "service-category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Appointment.serviceCategory"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Appointment): CollectionsList<CodeableConcept> =
-      resource.serviceCategory
-  }
-
-  public data object ServiceType : SearchParam<Appointment, CodeableConcept> {
-    public override val name: String = "service-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Appointment.serviceType.concept"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Appointment): CollectionsList<CodeableConcept> =
-      resource.serviceType.mapNotNull { it.concept }
-  }
-
-  public data object ServiceTypeReference : SearchParam<Appointment, Reference> {
-    public override val name: String = "service-type-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Appointment.serviceType.reference"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(HealthcareService::class)
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      resource.serviceType.mapNotNull { it.reference }
-  }
-
-  public data object Slot : SearchParam<Appointment, Reference> {
-    public override val name: String = "slot"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Appointment.slot"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Slot::class)
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> = resource.slot
-  }
-
-  public data object Specialty : SearchParam<Appointment, CodeableConcept> {
-    public override val name: String = "specialty"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Appointment.specialty"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Appointment): CollectionsList<CodeableConcept> =
-      resource.specialty
-  }
-
-  public data object Status : SearchParam<Appointment, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Appointment.status"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Appointment): CollectionsList<Any> =
-      listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<Appointment, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Appointment.subject"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Group::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      listOfNotNull(resource.subject)
-  }
-
-  public data object SupportingInfo : SearchParam<Appointment, Reference> {
-    public override val name: String = "supporting-info"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Appointment.supportingInformation"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        dev.ohs.fhir.model.r5.Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        dev.ohs.fhir.model.r5.Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        dev.ohs.fhir.model.r5.Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        dev.ohs.fhir.model.r5.Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Appointment): CollectionsList<Reference> =
-      resource.supportingInformation
-  }
 }

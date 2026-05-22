@@ -18,42 +18,31 @@
 
 package dev.ohs.fhir.model.r5.search
 
-import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Transport
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Transport] resource type. */
 public object TransportSearchParam {
+  public val Identifier: SearchParam<Transport, Identifier> =
+    SimpleSearchParam<Transport, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Transport.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Status: SearchParam<Transport, Any> =
+    SimpleSearchParam<Transport, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Transport.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
   /** All search parameters for the Transport resource type. */
   public val ALL: List<SearchParam<Transport, *>> = listOf(Identifier, Status)
-
-  public data object Identifier : SearchParam<Transport, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Transport.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Transport): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Status : SearchParam<Transport, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Transport.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Transport): List<Any> = listOfNotNull(resource.status)
-  }
 }

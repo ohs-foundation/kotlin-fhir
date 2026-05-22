@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4.DiagnosticReport
 import dev.ohs.fhir.model.r4.Encounter
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.ImagingStudy
 import dev.ohs.fhir.model.r4.Immunization
 import dev.ohs.fhir.model.r4.MedicationAdministration
@@ -38,18 +39,192 @@ import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Procedure
+import dev.ohs.fhir.model.r4.Quantity
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.SupplyDelivery
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ChargeItem] resource type. */
 public object ChargeItemSearchParam {
+  public val Account: SearchParam<ChargeItem, Reference> =
+    SimpleSearchParam<ChargeItem, Reference>(
+      name = "account",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ChargeItem.account",
+      target = listOf(dev.ohs.fhir.model.r4.Account::class),
+      extractor = { resource -> resource.account },
+    )
+
+  public val Code: SearchParam<ChargeItem, CodeableConcept> =
+    SimpleSearchParam<ChargeItem, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "ChargeItem.code",
+      extractor = { resource -> listOf(resource.code) },
+    )
+
+  public val Context: SearchParam<ChargeItem, Reference> =
+    SimpleSearchParam<ChargeItem, Reference>(
+      name = "context",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ChargeItem.context",
+      target = listOf(EpisodeOfCare::class, Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.context) },
+    )
+
+  public val EnteredDate: SearchParam<ChargeItem, DateTime> =
+    SimpleSearchParam<ChargeItem, DateTime>(
+      name = "entered-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "ChargeItem.enteredDate",
+      extractor = { resource -> listOfNotNull(resource.enteredDate) },
+    )
+
+  public val Enterer: SearchParam<ChargeItem, Reference> =
+    SimpleSearchParam<ChargeItem, Reference>(
+      name = "enterer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ChargeItem.enterer",
+      target =
+        listOf(
+          Practitioner::class,
+          Organization::class,
+          Device::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.enterer) },
+    )
+
+  public val FactorOverride: SearchParam<ChargeItem, Decimal> =
+    SimpleSearchParam<ChargeItem, Decimal>(
+      name = "factor-override",
+      type = SearchParamType.fromCode("number"),
+      expression = "ChargeItem.factorOverride",
+      extractor = { resource -> listOfNotNull(resource.factorOverride) },
+    )
+
+  public val Identifier: SearchParam<ChargeItem, Identifier> =
+    SimpleSearchParam<ChargeItem, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ChargeItem.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Occurrence: SearchParam<ChargeItem, ChargeItem.Occurrence> =
+    SimpleSearchParam<ChargeItem, ChargeItem.Occurrence>(
+      name = "occurrence",
+      type = SearchParamType.fromCode("date"),
+      expression = "ChargeItem.occurrence",
+      extractor = { resource -> listOfNotNull(resource.occurrence) },
+    )
+
+  public val Patient: SearchParam<ChargeItem, Reference> =
+    SimpleSearchParam<ChargeItem, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ChargeItem.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource ->
+        listOf(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val PerformerActor: SearchParam<ChargeItem, Reference> =
+    SimpleSearchParam<ChargeItem, Reference>(
+      name = "performer-actor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ChargeItem.performer.actor",
+      target =
+        listOf(
+          Practitioner::class,
+          Organization::class,
+          CareTeam::class,
+          Device::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> resource.performer.map { it.actor } },
+    )
+
+  public val PerformerFunction: SearchParam<ChargeItem, CodeableConcept> =
+    SimpleSearchParam<ChargeItem, CodeableConcept>(
+      name = "performer-function",
+      type = SearchParamType.fromCode("token"),
+      expression = "ChargeItem.performer.function",
+      extractor = { resource -> resource.performer.mapNotNull { it.function } },
+    )
+
+  public val PerformingOrganization: SearchParam<ChargeItem, Reference> =
+    SimpleSearchParam<ChargeItem, Reference>(
+      name = "performing-organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ChargeItem.performingOrganization",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.performingOrganization) },
+    )
+
+  public val PriceOverride: SearchParam<ChargeItem, Money> =
+    SimpleSearchParam<ChargeItem, Money>(
+      name = "price-override",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "ChargeItem.priceOverride",
+      extractor = { resource -> listOfNotNull(resource.priceOverride) },
+    )
+
+  public val Quantity: SearchParam<ChargeItem, Quantity> =
+    SimpleSearchParam<ChargeItem, Quantity>(
+      name = "quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "ChargeItem.quantity",
+      extractor = { resource -> listOfNotNull(resource.quantity) },
+    )
+
+  public val RequestingOrganization: SearchParam<ChargeItem, Reference> =
+    SimpleSearchParam<ChargeItem, Reference>(
+      name = "requesting-organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ChargeItem.requestingOrganization",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.requestingOrganization) },
+    )
+
+  public val Service: SearchParam<ChargeItem, Reference> =
+    SimpleSearchParam<ChargeItem, Reference>(
+      name = "service",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ChargeItem.service",
+      target =
+        listOf(
+          Immunization::class,
+          MedicationDispense::class,
+          SupplyDelivery::class,
+          Observation::class,
+          DiagnosticReport::class,
+          ImagingStudy::class,
+          MedicationAdministration::class,
+          Procedure::class,
+        ),
+      extractor = { resource -> resource.service },
+    )
+
+  public val Subject: SearchParam<ChargeItem, Reference> =
+    SimpleSearchParam<ChargeItem, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ChargeItem.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
   /** All search parameters for the ChargeItem resource type. */
   public val ALL: List<SearchParam<ChargeItem, *>> =
     listOf(
@@ -71,254 +246,4 @@ public object ChargeItemSearchParam {
       Service,
       Subject,
     )
-
-  public data object Account : SearchParam<ChargeItem, Reference> {
-    public override val name: String = "account"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ChargeItem.account"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Account::class)
-
-    public override fun extract(resource: ChargeItem): List<Reference> = resource.account
-  }
-
-  public data object Code : SearchParam<ChargeItem, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ChargeItem.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ChargeItem): List<CodeableConcept> = listOf(resource.code)
-  }
-
-  public data object Context : SearchParam<ChargeItem, Reference> {
-    public override val name: String = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ChargeItem.context"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(EpisodeOfCare::class, Encounter::class)
-
-    public override fun extract(resource: ChargeItem): List<Reference> =
-      listOfNotNull(resource.context)
-  }
-
-  public data object EnteredDate : SearchParam<ChargeItem, DateTime> {
-    public override val name: String = "entered-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "ChargeItem.enteredDate"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ChargeItem): List<DateTime> =
-      listOfNotNull(resource.enteredDate)
-  }
-
-  public data object Enterer : SearchParam<ChargeItem, Reference> {
-    public override val name: String = "enterer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ChargeItem.enterer"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Organization::class,
-        Device::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: ChargeItem): List<Reference> =
-      listOfNotNull(resource.enterer)
-  }
-
-  public data object FactorOverride : SearchParam<ChargeItem, Decimal> {
-    public override val name: String = "factor-override"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("number")
-
-    public override val expression: String = "ChargeItem.factorOverride"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ChargeItem): List<Decimal> =
-      listOfNotNull(resource.factorOverride)
-  }
-
-  public data object Identifier : SearchParam<ChargeItem, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ChargeItem.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ChargeItem): List<dev.ohs.fhir.model.r4.Identifier> =
-      resource.identifier
-  }
-
-  public data object Occurrence : SearchParam<ChargeItem, ChargeItem.Occurrence> {
-    public override val name: String = "occurrence"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "ChargeItem.occurrence"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ChargeItem): List<ChargeItem.Occurrence> =
-      listOfNotNull(resource.occurrence)
-  }
-
-  public data object Patient : SearchParam<ChargeItem, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ChargeItem.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Patient::class)
-
-    public override fun extract(resource: ChargeItem): List<Reference> =
-      listOf(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object PerformerActor : SearchParam<ChargeItem, Reference> {
-    public override val name: String = "performer-actor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ChargeItem.performer.actor"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Organization::class,
-        CareTeam::class,
-        Device::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: ChargeItem): List<Reference> =
-      resource.performer.map { it.actor }
-  }
-
-  public data object PerformerFunction : SearchParam<ChargeItem, CodeableConcept> {
-    public override val name: String = "performer-function"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ChargeItem.performer.function"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ChargeItem): List<CodeableConcept> =
-      resource.performer.mapNotNull { it.function }
-  }
-
-  public data object PerformingOrganization : SearchParam<ChargeItem, Reference> {
-    public override val name: String = "performing-organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ChargeItem.performingOrganization"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: ChargeItem): List<Reference> =
-      listOfNotNull(resource.performingOrganization)
-  }
-
-  public data object PriceOverride : SearchParam<ChargeItem, Money> {
-    public override val name: String = "price-override"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: String = "ChargeItem.priceOverride"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ChargeItem): List<Money> =
-      listOfNotNull(resource.priceOverride)
-  }
-
-  public data object Quantity : SearchParam<ChargeItem, dev.ohs.fhir.model.r4.Quantity> {
-    public override val name: String = "quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: String = "ChargeItem.quantity"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ChargeItem): List<dev.ohs.fhir.model.r4.Quantity> =
-      listOfNotNull(resource.quantity)
-  }
-
-  public data object RequestingOrganization : SearchParam<ChargeItem, Reference> {
-    public override val name: String = "requesting-organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ChargeItem.requestingOrganization"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: ChargeItem): List<Reference> =
-      listOfNotNull(resource.requestingOrganization)
-  }
-
-  public data object Service : SearchParam<ChargeItem, Reference> {
-    public override val name: String = "service"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ChargeItem.service"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Immunization::class,
-        MedicationDispense::class,
-        SupplyDelivery::class,
-        Observation::class,
-        DiagnosticReport::class,
-        ImagingStudy::class,
-        MedicationAdministration::class,
-        Procedure::class,
-      )
-
-    public override fun extract(resource: ChargeItem): List<Reference> = resource.service
-  }
-
-  public data object Subject : SearchParam<ChargeItem, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ChargeItem.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
-
-    public override fun extract(resource: ChargeItem): List<Reference> = listOf(resource.subject)
-  }
 }

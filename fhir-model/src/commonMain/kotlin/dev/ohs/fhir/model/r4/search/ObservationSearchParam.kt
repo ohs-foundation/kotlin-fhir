@@ -78,6 +78,7 @@ import dev.ohs.fhir.model.r4.GraphDefinition
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.GuidanceResponse
 import dev.ohs.fhir.model.r4.HealthcareService
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.ImagingStudy
 import dev.ohs.fhir.model.r4.Immunization
 import dev.ohs.fhir.model.r4.ImmunizationEvaluation
@@ -137,7 +138,6 @@ import dev.ohs.fhir.model.r4.ResearchDefinition
 import dev.ohs.fhir.model.r4.ResearchElementDefinition
 import dev.ohs.fhir.model.r4.ResearchStudy
 import dev.ohs.fhir.model.r4.ResearchSubject
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.RiskAssessment
 import dev.ohs.fhir.model.r4.RiskEvidenceSynthesis
 import dev.ohs.fhir.model.r4.Schedule
@@ -145,7 +145,7 @@ import dev.ohs.fhir.model.r4.SearchParameter
 import dev.ohs.fhir.model.r4.ServiceRequest
 import dev.ohs.fhir.model.r4.Slot
 import dev.ohs.fhir.model.r4.SpecimenDefinition
-import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.StructureDefinition
 import dev.ohs.fhir.model.r4.StructureMap
 import dev.ohs.fhir.model.r4.Subscription
@@ -167,13 +167,578 @@ import dev.ohs.fhir.model.r4.VerificationResult
 import dev.ohs.fhir.model.r4.VisionPrescription
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Observation] resource type. */
 public object ObservationSearchParam {
+  public val AminoAcidChange: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "amino-acid-change",
+      type = SearchParamType.fromCode("string"),
+      expression =
+        "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')",
+      extractor = { emptyList() },
+    )
+
+  public val BasedOn: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "based-on",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.basedOn",
+      target =
+        listOf(
+          CarePlan::class,
+          MedicationRequest::class,
+          NutritionOrder::class,
+          DeviceRequest::class,
+          ServiceRequest::class,
+          ImmunizationRecommendation::class,
+        ),
+      extractor = { resource -> resource.basedOn },
+    )
+
+  public val Category: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Code: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.code",
+      extractor = { resource -> listOf(resource.code) },
+    )
+
+  public val CodeValueConcept: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "code-value-concept",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Observation",
+      extractor = { emptyList() },
+    )
+
+  public val CodeValueDate: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "code-value-date",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Observation",
+      extractor = { emptyList() },
+    )
+
+  public val CodeValueQuantity: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "code-value-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Observation",
+      extractor = { emptyList() },
+    )
+
+  public val CodeValueString: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "code-value-string",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Observation",
+      extractor = { emptyList() },
+    )
+
+  public val ComboCode: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "combo-code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.code",
+      extractor = { resource -> listOf(resource.code) },
+    )
+
+  public val ComboCodeValueConcept: SearchParam<Observation, Observation.Component> =
+    SimpleSearchParam<Observation, Observation.Component>(
+      name = "combo-code-value-concept",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Observation.component",
+      extractor = { resource -> resource.component },
+    )
+
+  public val ComboCodeValueQuantity: SearchParam<Observation, Observation.Component> =
+    SimpleSearchParam<Observation, Observation.Component>(
+      name = "combo-code-value-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Observation.component",
+      extractor = { resource -> resource.component },
+    )
+
+  public val ComboDataAbsentReason: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "combo-data-absent-reason",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.dataAbsentReason",
+      extractor = { resource -> listOfNotNull(resource.dataAbsentReason) },
+    )
+
+  public val ComboValueConcept: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "combo-value-concept",
+      type = SearchParamType.fromCode("token"),
+      expression = "(Observation.value as CodeableConcept)",
+      extractor = { resource ->
+        listOfNotNull((resource.value as? Observation.Value.CodeableConcept)?.value)
+      },
+    )
+
+  public val ComboValueQuantity: SearchParam<Observation, Quantity> =
+    SimpleSearchParam<Observation, Quantity>(
+      name = "combo-value-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(Observation.value as Quantity)",
+      extractor = { resource ->
+        listOfNotNull((resource.value as? Observation.Value.Quantity)?.value)
+      },
+    )
+
+  public val ComponentCode: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "component-code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.component.code",
+      extractor = { resource -> resource.component.map { it.code } },
+    )
+
+  public val ComponentCodeValueConcept: SearchParam<Observation, Observation.Component> =
+    SimpleSearchParam<Observation, Observation.Component>(
+      name = "component-code-value-concept",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Observation.component",
+      extractor = { resource -> resource.component },
+    )
+
+  public val ComponentCodeValueQuantity: SearchParam<Observation, Observation.Component> =
+    SimpleSearchParam<Observation, Observation.Component>(
+      name = "component-code-value-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Observation.component",
+      extractor = { resource -> resource.component },
+    )
+
+  public val ComponentDataAbsentReason: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "component-data-absent-reason",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.component.dataAbsentReason",
+      extractor = { resource -> resource.component.mapNotNull { it.dataAbsentReason } },
+    )
+
+  public val ComponentValueConcept: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "component-value-concept",
+      type = SearchParamType.fromCode("token"),
+      expression = "(Observation.component.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.component.mapNotNull {
+          (it.value as? Observation.Component.Value.CodeableConcept)?.value
+        }
+      },
+    )
+
+  public val ComponentValueQuantity: SearchParam<Observation, Quantity> =
+    SimpleSearchParam<Observation, Quantity>(
+      name = "component-value-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(Observation.component.value as Quantity)",
+      extractor = { resource ->
+        resource.component.mapNotNull { (it.value as? Observation.Component.Value.Quantity)?.value }
+      },
+    )
+
+  public val DataAbsentReason: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "data-absent-reason",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.dataAbsentReason",
+      extractor = { resource -> listOfNotNull(resource.dataAbsentReason) },
+    )
+
+  public val Date: SearchParam<Observation, Observation.Effective> =
+    SimpleSearchParam<Observation, Observation.Effective>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Observation.effective",
+      extractor = { resource -> listOfNotNull(resource.effective) },
+    )
+
+  public val DerivedFrom: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "derived-from",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.derivedFrom",
+      target =
+        listOf(
+          Media::class,
+          Observation::class,
+          ImagingStudy::class,
+          MolecularSequence::class,
+          QuestionnaireResponse::class,
+          DocumentReference::class,
+        ),
+      extractor = { resource -> resource.derivedFrom },
+    )
+
+  public val Device: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "device",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.device",
+      target = listOf(dev.ohs.fhir.model.r4.Device::class, DeviceMetric::class),
+      extractor = { resource -> listOfNotNull(resource.device) },
+    )
+
+  public val DnaVariant: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "dna-variant",
+      type = SearchParamType.fromCode("string"),
+      expression =
+        "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')",
+      extractor = { emptyList() },
+    )
+
+  public val Encounter: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.encounter",
+      target = listOf(dev.ohs.fhir.model.r4.Encounter::class, EpisodeOfCare::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Focus: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "focus",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.focus",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          CatalogEntry::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          dev.ohs.fhir.model.r4.Device::class,
+          DeviceDefinition::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUseStatement::class,
+          DiagnosticReport::class,
+          DocumentManifest::class,
+          DocumentReference::class,
+          EffectEvidenceSynthesis::class,
+          dev.ohs.fhir.model.r4.Encounter::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          InsurancePlan::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R4List::class,
+          Location::class,
+          Measure::class,
+          MeasureReport::class,
+          Media::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProduct::class,
+          MedicinalProductAuthorization::class,
+          MedicinalProductContraindication::class,
+          MedicinalProductIndication::class,
+          MedicinalProductIngredient::class,
+          MedicinalProductInteraction::class,
+          MedicinalProductManufactured::class,
+          MedicinalProductPackaged::class,
+          MedicinalProductPharmaceutical::class,
+          MedicinalProductUndesirableEffect::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionOrder::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RelatedPerson::class,
+          RequestGroup::class,
+          ResearchDefinition::class,
+          ResearchElementDefinition::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          RiskEvidenceSynthesis::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          dev.ohs.fhir.model.r4.Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          Substance::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SubstanceSpecification::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestReport::class,
+          TestScript::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource -> resource.focus },
+    )
+
+  public val GeneAminoAcidChange: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "gene-amino-acid-change",
+      type = SearchParamType.fromCode("string"),
+      expression =
+        "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')",
+      extractor = { emptyList() },
+    )
+
+  public val GeneDnavariant: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "gene-dnavariant",
+      type = SearchParamType.fromCode("string"),
+      expression =
+        "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')",
+      extractor = { emptyList() },
+    )
+
+  public val GeneIdentifier: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "gene-identifier",
+      type = SearchParamType.fromCode("token"),
+      expression =
+        "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsGene')",
+      extractor = { emptyList() },
+    )
+
+  public val HasMember: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "has-member",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.hasMember",
+      target = listOf(Observation::class, MolecularSequence::class, QuestionnaireResponse::class),
+      extractor = { resource -> resource.hasMember },
+    )
+
+  public val Identifier: SearchParam<Observation, Identifier> =
+    SimpleSearchParam<Observation, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Method: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "method",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.method",
+      extractor = { resource -> listOfNotNull(resource.method) },
+    )
+
+  public val PartOf: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "part-of",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.partOf",
+      target =
+        listOf(
+          Immunization::class,
+          MedicationDispense::class,
+          MedicationAdministration::class,
+          Procedure::class,
+          ImagingStudy::class,
+          MedicationStatement::class,
+        ),
+      extractor = { resource -> resource.partOf },
+    )
+
+  public val Patient: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class),
+      extractor = { resource ->
+        listOfNotNull(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Performer: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "performer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.performer",
+      target =
+        listOf(
+          Practitioner::class,
+          Organization::class,
+          CareTeam::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> resource.performer },
+    )
+
+  public val Specimen: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "specimen",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.specimen",
+      target = listOf(dev.ohs.fhir.model.r4.Specimen::class),
+      extractor = { resource -> listOfNotNull(resource.specimen) },
+    )
+
+  public val Status: SearchParam<Observation, Any> =
+    SimpleSearchParam<Observation, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Observation.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<Observation, Reference> =
+    SimpleSearchParam<Observation, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Observation.subject",
+      target =
+        listOf(
+          Group::class,
+          dev.ohs.fhir.model.r4.Device::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          Location::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
+  public val ValueConcept: SearchParam<Observation, CodeableConcept> =
+    SimpleSearchParam<Observation, CodeableConcept>(
+      name = "value-concept",
+      type = SearchParamType.fromCode("token"),
+      expression = "(Observation.value as CodeableConcept)",
+      extractor = { resource ->
+        listOfNotNull((resource.value as? Observation.Value.CodeableConcept)?.value)
+      },
+    )
+
+  public val ValueDate: SearchParam<Observation, DateTime> =
+    SimpleSearchParam<Observation, DateTime>(
+      name = "value-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "(Observation.value as dateTime)",
+      extractor = { resource ->
+        listOfNotNull((resource.value as? Observation.Value.DateTime)?.value)
+      },
+    )
+
+  public val ValueQuantity: SearchParam<Observation, Quantity> =
+    SimpleSearchParam<Observation, Quantity>(
+      name = "value-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(Observation.value as Quantity)",
+      extractor = { resource ->
+        listOfNotNull((resource.value as? Observation.Value.Quantity)?.value)
+      },
+    )
+
+  public val ValueString: SearchParam<Observation, String> =
+    SimpleSearchParam<Observation, String>(
+      name = "value-string",
+      type = SearchParamType.fromCode("string"),
+      expression = "(Observation.value as string)",
+      extractor = { resource ->
+        listOfNotNull((resource.value as? Observation.Value.String)?.value)
+      },
+    )
+
   /** All search parameters for the Observation resource type. */
   public val ALL: CollectionsList<SearchParam<Observation, *>> =
     listOf(
@@ -221,753 +786,4 @@ public object ObservationSearchParam {
       ValueQuantity,
       ValueString,
     )
-
-  public data object AminoAcidChange : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "amino-acid-change"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString =
-      "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> = emptyList()
-  }
-
-  public data object BasedOn : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "based-on"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.basedOn"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        CarePlan::class,
-        MedicationRequest::class,
-        NutritionOrder::class,
-        DeviceRequest::class,
-        ServiceRequest::class,
-        ImmunizationRecommendation::class,
-      )
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> =
-      resource.basedOn
-  }
-
-  public data object Category : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.category"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      resource.category
-  }
-
-  public data object Code : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      listOf(resource.code)
-  }
-
-  public data object CodeValueConcept : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "code-value-concept"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Observation"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> = emptyList()
-  }
-
-  public data object CodeValueDate : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "code-value-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Observation"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> = emptyList()
-  }
-
-  public data object CodeValueQuantity : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "code-value-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Observation"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> = emptyList()
-  }
-
-  public data object CodeValueString : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "code-value-string"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Observation"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> = emptyList()
-  }
-
-  public data object ComboCode : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "combo-code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      listOf(resource.code)
-  }
-
-  public data object ComboCodeValueConcept : SearchParam<Observation, Observation.Component> {
-    public override val name: KotlinString = "combo-code-value-concept"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Observation.component"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Observation.Component> =
-      resource.component
-  }
-
-  public data object ComboCodeValueQuantity : SearchParam<Observation, Observation.Component> {
-    public override val name: KotlinString = "combo-code-value-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Observation.component"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Observation.Component> =
-      resource.component
-  }
-
-  public data object ComboDataAbsentReason : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "combo-data-absent-reason"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.dataAbsentReason"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.dataAbsentReason)
-  }
-
-  public data object ComboValueConcept : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "combo-value-concept"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "(Observation.value as CodeableConcept)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      listOfNotNull((resource.value as? Observation.Value.CodeableConcept)?.value)
-  }
-
-  public data object ComboValueQuantity : SearchParam<Observation, Quantity> {
-    public override val name: KotlinString = "combo-value-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString = "(Observation.value as Quantity)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Quantity> =
-      listOfNotNull((resource.value as? Observation.Value.Quantity)?.value)
-  }
-
-  public data object ComponentCode : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "component-code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.component.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      resource.component.map { it.code }
-  }
-
-  public data object ComponentCodeValueConcept : SearchParam<Observation, Observation.Component> {
-    public override val name: KotlinString = "component-code-value-concept"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Observation.component"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Observation.Component> =
-      resource.component
-  }
-
-  public data object ComponentCodeValueQuantity : SearchParam<Observation, Observation.Component> {
-    public override val name: KotlinString = "component-code-value-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Observation.component"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Observation.Component> =
-      resource.component
-  }
-
-  public data object ComponentDataAbsentReason : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "component-data-absent-reason"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.component.dataAbsentReason"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      resource.component.mapNotNull { it.dataAbsentReason }
-  }
-
-  public data object ComponentValueConcept : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "component-value-concept"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(Observation.component.value as CodeableConcept)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      resource.component.mapNotNull {
-        (it.value as? Observation.Component.Value.CodeableConcept)?.value
-      }
-  }
-
-  public data object ComponentValueQuantity : SearchParam<Observation, Quantity> {
-    public override val name: KotlinString = "component-value-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString = "(Observation.component.value as Quantity)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Quantity> =
-      resource.component.mapNotNull { (it.value as? Observation.Component.Value.Quantity)?.value }
-  }
-
-  public data object DataAbsentReason : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "data-absent-reason"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.dataAbsentReason"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.dataAbsentReason)
-  }
-
-  public data object Date : SearchParam<Observation, Observation.Effective> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "Observation.effective"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Observation.Effective> =
-      listOfNotNull(resource.effective)
-  }
-
-  public data object DerivedFrom : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "derived-from"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.derivedFrom"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Media::class,
-        Observation::class,
-        ImagingStudy::class,
-        MolecularSequence::class,
-        QuestionnaireResponse::class,
-        DocumentReference::class,
-      )
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> =
-      resource.derivedFrom
-  }
-
-  public data object Device : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "device"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.device"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Device::class, DeviceMetric::class)
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> =
-      listOfNotNull(resource.device)
-  }
-
-  public data object DnaVariant : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "dna-variant"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString =
-      "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> = emptyList()
-  }
-
-  public data object Encounter : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.encounter"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Encounter::class, EpisodeOfCare::class)
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Focus : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "focus"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.focus"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        CatalogEntry::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        dev.ohs.fhir.model.r4.Device::class,
-        DeviceDefinition::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUseStatement::class,
-        DiagnosticReport::class,
-        DocumentManifest::class,
-        DocumentReference::class,
-        EffectEvidenceSynthesis::class,
-        dev.ohs.fhir.model.r4.Encounter::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        InsurancePlan::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R4List::class,
-        Location::class,
-        Measure::class,
-        MeasureReport::class,
-        Media::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProduct::class,
-        MedicinalProductAuthorization::class,
-        MedicinalProductContraindication::class,
-        MedicinalProductIndication::class,
-        MedicinalProductIngredient::class,
-        MedicinalProductInteraction::class,
-        MedicinalProductManufactured::class,
-        MedicinalProductPackaged::class,
-        MedicinalProductPharmaceutical::class,
-        MedicinalProductUndesirableEffect::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionOrder::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RelatedPerson::class,
-        RequestGroup::class,
-        ResearchDefinition::class,
-        ResearchElementDefinition::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        RiskEvidenceSynthesis::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        dev.ohs.fhir.model.r4.Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        Substance::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SubstanceSpecification::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestReport::class,
-        TestScript::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> = resource.focus
-  }
-
-  public data object GeneAminoAcidChange : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "gene-amino-acid-change"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString =
-      "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsAminoAcidChangeName')"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> = emptyList()
-  }
-
-  public data object GeneDnavariant : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "gene-dnavariant"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString =
-      "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsDnaVariant')"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> = emptyList()
-  }
-
-  public data object GeneIdentifier : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "gene-identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "Observation.extension('http://hl7.org/fhir/StructureDefinition/observation-geneticsGene')"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> = emptyList()
-  }
-
-  public data object HasMember : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "has-member"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.hasMember"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Observation::class, MolecularSequence::class, QuestionnaireResponse::class)
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> =
-      resource.hasMember
-  }
-
-  public data object Identifier : SearchParam<Observation, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: Observation
-    ): CollectionsList<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Method : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "method"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.method"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.method)
-  }
-
-  public data object PartOf : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "part-of"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.partOf"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Immunization::class,
-        MedicationDispense::class,
-        MedicationAdministration::class,
-        Procedure::class,
-        ImagingStudy::class,
-        MedicationStatement::class,
-      )
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> = resource.partOf
-  }
-
-  public data object Patient : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.subject.where(resolve() is Patient)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> =
-      listOfNotNull(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Performer : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "performer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.performer"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Organization::class,
-        CareTeam::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> =
-      resource.performer
-  }
-
-  public data object Specimen : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "specimen"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.specimen"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Specimen::class)
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> =
-      listOfNotNull(resource.specimen)
-  }
-
-  public data object Status : SearchParam<Observation, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Observation.status"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Any> =
-      listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<Observation, Reference> {
-    public override val name: KotlinString = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Observation.subject"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Group::class,
-        dev.ohs.fhir.model.r4.Device::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        Location::class,
-      )
-
-    public override fun extract(resource: Observation): CollectionsList<Reference> =
-      listOfNotNull(resource.subject)
-  }
-
-  public data object ValueConcept : SearchParam<Observation, CodeableConcept> {
-    public override val name: KotlinString = "value-concept"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "(Observation.value as CodeableConcept)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<CodeableConcept> =
-      listOfNotNull((resource.value as? Observation.Value.CodeableConcept)?.value)
-  }
-
-  public data object ValueDate : SearchParam<Observation, DateTime> {
-    public override val name: KotlinString = "value-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "(Observation.value as dateTime)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<DateTime> =
-      listOfNotNull((resource.value as? Observation.Value.DateTime)?.value)
-  }
-
-  public data object ValueQuantity : SearchParam<Observation, Quantity> {
-    public override val name: KotlinString = "value-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString = "(Observation.value as Quantity)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<Quantity> =
-      listOfNotNull((resource.value as? Observation.Value.Quantity)?.value)
-  }
-
-  public data object ValueString : SearchParam<Observation, R4String> {
-    public override val name: KotlinString = "value-string"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "(Observation.value as string)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Observation): CollectionsList<R4String> =
-      listOfNotNull((resource.value as? Observation.Value.String)?.value)
-  }
 }

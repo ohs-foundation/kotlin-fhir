@@ -19,85 +19,56 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [SubstanceDefinition] resource type. */
 public object SubstanceDefinitionSearchParam {
+  public val Classification: SearchParam<SubstanceDefinition, CodeableConcept> =
+    SimpleSearchParam<SubstanceDefinition, CodeableConcept>(
+      name = "classification",
+      type = SearchParamType.fromCode("token"),
+      expression = "SubstanceDefinition.classification",
+      extractor = { resource -> resource.classification },
+    )
+
+  public val Code: SearchParam<SubstanceDefinition, CodeableConcept> =
+    SimpleSearchParam<SubstanceDefinition, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "SubstanceDefinition.code.code",
+      extractor = { resource -> resource.code.mapNotNull { it.code } },
+    )
+
+  public val Domain: SearchParam<SubstanceDefinition, CodeableConcept> =
+    SimpleSearchParam<SubstanceDefinition, CodeableConcept>(
+      name = "domain",
+      type = SearchParamType.fromCode("token"),
+      expression = "SubstanceDefinition.domain",
+      extractor = { resource -> listOfNotNull(resource.domain) },
+    )
+
+  public val Identifier: SearchParam<SubstanceDefinition, Identifier> =
+    SimpleSearchParam<SubstanceDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "SubstanceDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Name: SearchParam<SubstanceDefinition, String> =
+    SimpleSearchParam<SubstanceDefinition, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "SubstanceDefinition.name.name",
+      extractor = { resource -> resource.name.map { it.name } },
+    )
+
   /** All search parameters for the SubstanceDefinition resource type. */
   public val ALL: List<SearchParam<SubstanceDefinition, *>> =
     listOf(Classification, Code, Domain, Identifier, Name)
-
-  public data object Classification : SearchParam<SubstanceDefinition, CodeableConcept> {
-    public override val name: KotlinString = "classification"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "SubstanceDefinition.classification"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: SubstanceDefinition): List<CodeableConcept> =
-      resource.classification
-  }
-
-  public data object Code : SearchParam<SubstanceDefinition, CodeableConcept> {
-    public override val name: KotlinString = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "SubstanceDefinition.code.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: SubstanceDefinition): List<CodeableConcept> =
-      resource.code.mapNotNull { it.code }
-  }
-
-  public data object Domain : SearchParam<SubstanceDefinition, CodeableConcept> {
-    public override val name: KotlinString = "domain"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "SubstanceDefinition.domain"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: SubstanceDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.domain)
-  }
-
-  public data object Identifier :
-    SearchParam<SubstanceDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "SubstanceDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: SubstanceDefinition
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Name : SearchParam<SubstanceDefinition, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "SubstanceDefinition.name.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: SubstanceDefinition): List<R5String> =
-      resource.name.map { it.name }
-  }
 }

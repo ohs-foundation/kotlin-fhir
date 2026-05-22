@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4b.CareTeam
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DeviceMetric
 import dev.ohs.fhir.model.r4b.Group
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Media
 import dev.ohs.fhir.model.r4b.Organization
@@ -30,18 +31,147 @@ import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.RelatedPerson
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.ServiceRequest
 import dev.ohs.fhir.model.r4b.Specimen
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Media] resource type. */
 public object MediaSearchParam {
+  public val BasedOn: SearchParam<Media, Reference> =
+    SimpleSearchParam<Media, Reference>(
+      name = "based-on",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Media.basedOn",
+      target = listOf(CarePlan::class, ServiceRequest::class),
+      extractor = { resource -> resource.basedOn },
+    )
+
+  public val Created: SearchParam<Media, Media.Created> =
+    SimpleSearchParam<Media, Media.Created>(
+      name = "created",
+      type = SearchParamType.fromCode("date"),
+      expression = "Media.created",
+      extractor = { resource -> listOfNotNull(resource.created) },
+    )
+
+  public val Device: SearchParam<Media, Reference> =
+    SimpleSearchParam<Media, Reference>(
+      name = "device",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Media.device",
+      target = listOf(dev.ohs.fhir.model.r4b.Device::class, DeviceMetric::class),
+      extractor = { resource -> listOfNotNull(resource.device) },
+    )
+
+  public val Encounter: SearchParam<Media, Reference> =
+    SimpleSearchParam<Media, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Media.encounter",
+      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Identifier: SearchParam<Media, Identifier> =
+    SimpleSearchParam<Media, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Media.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Modality: SearchParam<Media, CodeableConcept> =
+    SimpleSearchParam<Media, CodeableConcept>(
+      name = "modality",
+      type = SearchParamType.fromCode("token"),
+      expression = "Media.modality",
+      extractor = { resource -> listOfNotNull(resource.modality) },
+    )
+
+  public val Operator: SearchParam<Media, Reference> =
+    SimpleSearchParam<Media, Reference>(
+      name = "operator",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Media.operator",
+      target =
+        listOf(
+          Practitioner::class,
+          Organization::class,
+          CareTeam::class,
+          dev.ohs.fhir.model.r4b.Device::class,
+          dev.ohs.fhir.model.r4b.Patient::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.operator) },
+    )
+
+  public val Patient: SearchParam<Media, Reference> =
+    SimpleSearchParam<Media, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Media.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource ->
+        listOfNotNull(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Site: SearchParam<Media, CodeableConcept> =
+    SimpleSearchParam<Media, CodeableConcept>(
+      name = "site",
+      type = SearchParamType.fromCode("token"),
+      expression = "Media.bodySite",
+      extractor = { resource -> listOfNotNull(resource.bodySite) },
+    )
+
+  public val Status: SearchParam<Media, Any> =
+    SimpleSearchParam<Media, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Media.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<Media, Reference> =
+    SimpleSearchParam<Media, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Media.subject",
+      target =
+        listOf(
+          Practitioner::class,
+          Group::class,
+          Specimen::class,
+          dev.ohs.fhir.model.r4b.Device::class,
+          dev.ohs.fhir.model.r4b.Patient::class,
+          PractitionerRole::class,
+          Location::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
+  public val Type: SearchParam<Media, CodeableConcept> =
+    SimpleSearchParam<Media, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Media.type",
+      extractor = { resource -> listOfNotNull(resource.type) },
+    )
+
+  public val View: SearchParam<Media, CodeableConcept> =
+    SimpleSearchParam<Media, CodeableConcept>(
+      name = "view",
+      type = SearchParamType.fromCode("token"),
+      expression = "Media.view",
+      extractor = { resource -> listOfNotNull(resource.view) },
+    )
+
   /** All search parameters for the Media resource type. */
   public val ALL: List<SearchParam<Media, *>> =
     listOf(
@@ -59,192 +189,4 @@ public object MediaSearchParam {
       Type,
       View,
     )
-
-  public data object BasedOn : SearchParam<Media, Reference> {
-    public override val name: String = "based-on"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Media.basedOn"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(CarePlan::class, ServiceRequest::class)
-
-    public override fun extract(resource: Media): List<Reference> = resource.basedOn
-  }
-
-  public data object Created : SearchParam<Media, Media.Created> {
-    public override val name: String = "created"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Media.created"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Media): List<Media.Created> =
-      listOfNotNull(resource.created)
-  }
-
-  public data object Device : SearchParam<Media, Reference> {
-    public override val name: String = "device"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Media.device"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Device::class, DeviceMetric::class)
-
-    public override fun extract(resource: Media): List<Reference> = listOfNotNull(resource.device)
-  }
-
-  public data object Encounter : SearchParam<Media, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Media.encounter"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Encounter::class)
-
-    public override fun extract(resource: Media): List<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Identifier : SearchParam<Media, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Media.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Media): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object Modality : SearchParam<Media, CodeableConcept> {
-    public override val name: String = "modality"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Media.modality"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Media): List<CodeableConcept> =
-      listOfNotNull(resource.modality)
-  }
-
-  public data object Operator : SearchParam<Media, Reference> {
-    public override val name: String = "operator"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Media.operator"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Organization::class,
-        CareTeam::class,
-        dev.ohs.fhir.model.r4b.Device::class,
-        dev.ohs.fhir.model.r4b.Patient::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: Media): List<Reference> = listOfNotNull(resource.operator)
-  }
-
-  public data object Patient : SearchParam<Media, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Media.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: Media): List<Reference> =
-      listOfNotNull(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Site : SearchParam<Media, CodeableConcept> {
-    public override val name: String = "site"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Media.bodySite"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Media): List<CodeableConcept> =
-      listOfNotNull(resource.bodySite)
-  }
-
-  public data object Status : SearchParam<Media, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Media.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Media): List<Any> = listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<Media, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Media.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Group::class,
-        Specimen::class,
-        dev.ohs.fhir.model.r4b.Device::class,
-        dev.ohs.fhir.model.r4b.Patient::class,
-        PractitionerRole::class,
-        Location::class,
-      )
-
-    public override fun extract(resource: Media): List<Reference> = listOfNotNull(resource.subject)
-  }
-
-  public data object Type : SearchParam<Media, CodeableConcept> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Media.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Media): List<CodeableConcept> =
-      listOfNotNull(resource.type)
-  }
-
-  public data object View : SearchParam<Media, CodeableConcept> {
-    public override val name: String = "view"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Media.view"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Media): List<CodeableConcept> =
-      listOfNotNull(resource.view)
-  }
 }

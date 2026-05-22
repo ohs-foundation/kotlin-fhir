@@ -20,88 +20,60 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProductDispense
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [BiologicallyDerivedProductDispense] resource type. */
 public object BiologicallyDerivedProductDispenseSearchParam {
+  public val Identifier: SearchParam<BiologicallyDerivedProductDispense, Identifier> =
+    SimpleSearchParam<BiologicallyDerivedProductDispense, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "BiologicallyDerivedProductDispense.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Patient: SearchParam<BiologicallyDerivedProductDispense, Reference> =
+    SimpleSearchParam<BiologicallyDerivedProductDispense, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "BiologicallyDerivedProductDispense.patient",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val Performer: SearchParam<BiologicallyDerivedProductDispense, Reference> =
+    SimpleSearchParam<BiologicallyDerivedProductDispense, Reference>(
+      name = "performer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "BiologicallyDerivedProductDispense.performer.actor",
+      target = listOf(Practitioner::class),
+      extractor = { resource -> resource.performer.map { it.actor } },
+    )
+
+  public val Product: SearchParam<BiologicallyDerivedProductDispense, Reference> =
+    SimpleSearchParam<BiologicallyDerivedProductDispense, Reference>(
+      name = "product",
+      type = SearchParamType.fromCode("reference"),
+      expression = "BiologicallyDerivedProductDispense.product",
+      target = listOf(BiologicallyDerivedProduct::class),
+      extractor = { resource -> listOf(resource.product) },
+    )
+
+  public val Status: SearchParam<BiologicallyDerivedProductDispense, Any> =
+    SimpleSearchParam<BiologicallyDerivedProductDispense, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "BiologicallyDerivedProductDispense.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the BiologicallyDerivedProductDispense resource type. */
   public val ALL: List<SearchParam<BiologicallyDerivedProductDispense, *>> =
     listOf(Identifier, Patient, Performer, Product, Status)
-
-  public data object Identifier :
-    SearchParam<BiologicallyDerivedProductDispense, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BiologicallyDerivedProductDispense.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: BiologicallyDerivedProductDispense
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Patient : SearchParam<BiologicallyDerivedProductDispense, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "BiologicallyDerivedProductDispense.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Reference> =
-      listOf(resource.patient)
-  }
-
-  public data object Performer : SearchParam<BiologicallyDerivedProductDispense, Reference> {
-    public override val name: String = "performer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "BiologicallyDerivedProductDispense.performer.actor"
-
-    public override val target: List<KClass<out Resource>> = listOf(Practitioner::class)
-
-    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Reference> =
-      resource.performer.map { it.actor }
-  }
-
-  public data object Product : SearchParam<BiologicallyDerivedProductDispense, Reference> {
-    public override val name: String = "product"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "BiologicallyDerivedProductDispense.product"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(BiologicallyDerivedProduct::class)
-
-    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Reference> =
-      listOf(resource.product)
-  }
-
-  public data object Status : SearchParam<BiologicallyDerivedProductDispense, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BiologicallyDerivedProductDispense.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BiologicallyDerivedProductDispense): List<Any> =
-      listOf(resource.status)
-  }
 }

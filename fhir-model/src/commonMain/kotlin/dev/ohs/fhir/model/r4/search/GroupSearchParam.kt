@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4.Boolean
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Medication
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Patient
@@ -29,17 +30,115 @@ import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.Substance
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Group] resource type. */
 public object GroupSearchParam {
+  public val Actual: SearchParam<Group, Boolean> =
+    SimpleSearchParam<Group, Boolean>(
+      name = "actual",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.actual",
+      extractor = { resource -> listOf(resource.actual) },
+    )
+
+  public val Characteristic: SearchParam<Group, CodeableConcept> =
+    SimpleSearchParam<Group, CodeableConcept>(
+      name = "characteristic",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.characteristic.code",
+      extractor = { resource -> resource.characteristic.map { it.code } },
+    )
+
+  public val CharacteristicValue: SearchParam<Group, Group.Characteristic> =
+    SimpleSearchParam<Group, Group.Characteristic>(
+      name = "characteristic-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Group.characteristic",
+      extractor = { resource -> resource.characteristic },
+    )
+
+  public val Code: SearchParam<Group, CodeableConcept> =
+    SimpleSearchParam<Group, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.code",
+      extractor = { resource -> listOfNotNull(resource.code) },
+    )
+
+  public val Exclude: SearchParam<Group, Boolean> =
+    SimpleSearchParam<Group, Boolean>(
+      name = "exclude",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.characteristic.exclude",
+      extractor = { resource -> resource.characteristic.map { it.exclude } },
+    )
+
+  public val Identifier: SearchParam<Group, Identifier> =
+    SimpleSearchParam<Group, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val ManagingEntity: SearchParam<Group, Reference> =
+    SimpleSearchParam<Group, Reference>(
+      name = "managing-entity",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Group.managingEntity",
+      target =
+        listOf(
+          Practitioner::class,
+          Organization::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.managingEntity) },
+    )
+
+  public val Member: SearchParam<Group, Reference> =
+    SimpleSearchParam<Group, Reference>(
+      name = "member",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Group.member.entity",
+      target =
+        listOf(
+          Practitioner::class,
+          Group::class,
+          Device::class,
+          Medication::class,
+          Patient::class,
+          Substance::class,
+          PractitionerRole::class,
+        ),
+      extractor = { resource -> resource.member.map { it.entity } },
+    )
+
+  public val Type: SearchParam<Group, Any> =
+    SimpleSearchParam<Group, Any>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.type",
+      extractor = { resource -> listOf(resource.type) },
+    )
+
+  public val Value: SearchParam<Group, CodeableConcept> =
+    SimpleSearchParam<Group, CodeableConcept>(
+      name = "value",
+      type = SearchParamType.fromCode("token"),
+      expression = "(Group.characteristic.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.characteristic.mapNotNull {
+          (it.value as? Group.Characteristic.Value.CodeableConcept)?.value
+        }
+      },
+    )
+
   /** All search parameters for the Group resource type. */
   public val ALL: List<SearchParam<Group, *>> =
     listOf(
@@ -54,149 +153,4 @@ public object GroupSearchParam {
       Type,
       Value,
     )
-
-  public data object Actual : SearchParam<Group, Boolean> {
-    public override val name: String = "actual"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Group.actual"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): List<Boolean> = listOf(resource.actual)
-  }
-
-  public data object Characteristic : SearchParam<Group, CodeableConcept> {
-    public override val name: String = "characteristic"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Group.characteristic.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): List<CodeableConcept> =
-      resource.characteristic.map { it.code }
-  }
-
-  public data object CharacteristicValue : SearchParam<Group, Group.Characteristic> {
-    public override val name: String = "characteristic-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: String = "Group.characteristic"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): List<Group.Characteristic> =
-      resource.characteristic
-  }
-
-  public data object Code : SearchParam<Group, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Group.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): List<CodeableConcept> =
-      listOfNotNull(resource.code)
-  }
-
-  public data object Exclude : SearchParam<Group, Boolean> {
-    public override val name: String = "exclude"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Group.characteristic.exclude"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): List<Boolean> =
-      resource.characteristic.map { it.exclude }
-  }
-
-  public data object Identifier : SearchParam<Group, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Group.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): List<dev.ohs.fhir.model.r4.Identifier> =
-      resource.identifier
-  }
-
-  public data object ManagingEntity : SearchParam<Group, Reference> {
-    public override val name: String = "managing-entity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Group.managingEntity"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Organization::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: Group): List<Reference> =
-      listOfNotNull(resource.managingEntity)
-  }
-
-  public data object Member : SearchParam<Group, Reference> {
-    public override val name: String = "member"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Group.member.entity"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Group::class,
-        Device::class,
-        Medication::class,
-        Patient::class,
-        Substance::class,
-        PractitionerRole::class,
-      )
-
-    public override fun extract(resource: Group): List<Reference> =
-      resource.member.map { it.entity }
-  }
-
-  public data object Type : SearchParam<Group, Any> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Group.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): List<Any> = listOf(resource.type)
-  }
-
-  public data object Value : SearchParam<Group, CodeableConcept> {
-    public override val name: String = "value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "(Group.characteristic.value as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): List<CodeableConcept> =
-      resource.characteristic.mapNotNull {
-        (it.value as? Group.Characteristic.Value.CodeableConcept)?.value
-      }
-  }
 }

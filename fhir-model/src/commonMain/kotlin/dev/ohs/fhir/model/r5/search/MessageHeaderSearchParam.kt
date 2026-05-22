@@ -148,7 +148,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -156,7 +155,7 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Slot
 import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.SpecimenDefinition
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.StructureMap
 import dev.ohs.fhir.model.r5.Subscription
@@ -182,13 +181,267 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [MessageHeader] resource type. */
 public object MessageHeaderSearchParam {
+  public val Author: SearchParam<MessageHeader, Reference> =
+    SimpleSearchParam<MessageHeader, Reference>(
+      name = "author",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MessageHeader.author",
+      target =
+        listOf(Device::class, Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.author) },
+    )
+
+  public val Code: SearchParam<MessageHeader, Any> =
+    SimpleSearchParam<MessageHeader, Any>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageHeader.response.code",
+      extractor = { resource -> listOfNotNull(resource.response?.code) },
+    )
+
+  public val Destination: SearchParam<MessageHeader, String> =
+    SimpleSearchParam<MessageHeader, String>(
+      name = "destination",
+      type = SearchParamType.fromCode("string"),
+      expression = "MessageHeader.destination.name",
+      extractor = { resource -> resource.destination.mapNotNull { it.name } },
+    )
+
+  public val Event: SearchParam<MessageHeader, Any> =
+    SimpleSearchParam<MessageHeader, Any>(
+      name = "event",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageHeader.event.ofType(Coding)",
+      extractor = { emptyList() },
+    )
+
+  public val Focus: SearchParam<MessageHeader, Reference> =
+    SimpleSearchParam<MessageHeader, Reference>(
+      name = "focus",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MessageHeader.focus",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource -> resource.focus },
+    )
+
+  public val Receiver: SearchParam<MessageHeader, Reference> =
+    SimpleSearchParam<MessageHeader, Reference>(
+      name = "receiver",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MessageHeader.destination.receiver",
+      target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> resource.destination.mapNotNull { it.receiver } },
+    )
+
+  public val ResponseId: SearchParam<MessageHeader, Identifier> =
+    SimpleSearchParam<MessageHeader, Identifier>(
+      name = "response-id",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageHeader.response.identifier",
+      extractor = { resource -> listOfNotNull(resource.response?.identifier) },
+    )
+
+  public val Responsible: SearchParam<MessageHeader, Reference> =
+    SimpleSearchParam<MessageHeader, Reference>(
+      name = "responsible",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MessageHeader.responsible",
+      target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.responsible) },
+    )
+
+  public val Sender: SearchParam<MessageHeader, Reference> =
+    SimpleSearchParam<MessageHeader, Reference>(
+      name = "sender",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MessageHeader.sender",
+      target =
+        listOf(Device::class, Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.sender) },
+    )
+
+  public val Source: SearchParam<MessageHeader, String> =
+    SimpleSearchParam<MessageHeader, String>(
+      name = "source",
+      type = SearchParamType.fromCode("string"),
+      expression = "MessageHeader.source.name",
+      extractor = { resource -> listOfNotNull(resource.source.name) },
+    )
+
+  public val Target: SearchParam<MessageHeader, Reference> =
+    SimpleSearchParam<MessageHeader, Reference>(
+      name = "target",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MessageHeader.destination.target",
+      target = listOf(Device::class),
+      extractor = { resource -> resource.destination.mapNotNull { it.target } },
+    )
+
   /** All search parameters for the MessageHeader resource type. */
   public val ALL: CollectionsList<SearchParam<MessageHeader, *>> =
     listOf(
@@ -204,310 +457,4 @@ public object MessageHeaderSearchParam {
       Source,
       Target,
     )
-
-  public data object Author : SearchParam<MessageHeader, Reference> {
-    public override val name: KotlinString = "author"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "MessageHeader.author"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Device::class, Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: MessageHeader): CollectionsList<Reference> =
-      listOfNotNull(resource.author)
-  }
-
-  public data object Code : SearchParam<MessageHeader, Any> {
-    public override val name: KotlinString = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageHeader.response.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageHeader): CollectionsList<Any> =
-      listOfNotNull(resource.response?.code)
-  }
-
-  public data object Destination : SearchParam<MessageHeader, R5String> {
-    public override val name: KotlinString = "destination"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "MessageHeader.destination.name"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageHeader): CollectionsList<R5String> =
-      resource.destination.mapNotNull { it.name }
-  }
-
-  public data object Event : SearchParam<MessageHeader, Any> {
-    public override val name: KotlinString = "event"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageHeader.event.ofType(Coding)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageHeader): CollectionsList<Any> = emptyList()
-  }
-
-  public data object Focus : SearchParam<MessageHeader, Reference> {
-    public override val name: KotlinString = "focus"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "MessageHeader.focus"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: MessageHeader): CollectionsList<Reference> =
-      resource.focus
-  }
-
-  public data object Receiver : SearchParam<MessageHeader, Reference> {
-    public override val name: KotlinString = "receiver"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "MessageHeader.destination.receiver"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: MessageHeader): CollectionsList<Reference> =
-      resource.destination.mapNotNull { it.receiver }
-  }
-
-  public data object ResponseId : SearchParam<MessageHeader, Identifier> {
-    public override val name: KotlinString = "response-id"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageHeader.response.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageHeader): CollectionsList<Identifier> =
-      listOfNotNull(resource.response?.identifier)
-  }
-
-  public data object Responsible : SearchParam<MessageHeader, Reference> {
-    public override val name: KotlinString = "responsible"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "MessageHeader.responsible"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: MessageHeader): CollectionsList<Reference> =
-      listOfNotNull(resource.responsible)
-  }
-
-  public data object Sender : SearchParam<MessageHeader, Reference> {
-    public override val name: KotlinString = "sender"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "MessageHeader.sender"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Device::class, Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: MessageHeader): CollectionsList<Reference> =
-      listOfNotNull(resource.sender)
-  }
-
-  public data object Source : SearchParam<MessageHeader, R5String> {
-    public override val name: KotlinString = "source"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "MessageHeader.source.name"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageHeader): CollectionsList<R5String> =
-      listOfNotNull(resource.source.name)
-  }
-
-  public data object Target : SearchParam<MessageHeader, Reference> {
-    public override val name: KotlinString = "target"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "MessageHeader.destination.target"
-
-    public override val target: CollectionsList<KClass<out Resource>> = listOf(Device::class)
-
-    public override fun extract(resource: MessageHeader): CollectionsList<Reference> =
-      resource.destination.mapNotNull { it.target }
-  }
 }

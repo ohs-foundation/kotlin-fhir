@@ -20,68 +20,48 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceUsage
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceUsage] resource type. */
 public object DeviceUsageSearchParam {
+  public val Device: SearchParam<DeviceUsage, CodeableConcept> =
+    SimpleSearchParam<DeviceUsage, CodeableConcept>(
+      name = "device",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceUsage.device.concept",
+      extractor = { resource -> listOfNotNull(resource.device.concept) },
+    )
+
+  public val Identifier: SearchParam<DeviceUsage, Identifier> =
+    SimpleSearchParam<DeviceUsage, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceUsage.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Patient: SearchParam<DeviceUsage, Reference> =
+    SimpleSearchParam<DeviceUsage, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DeviceUsage.patient",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val Status: SearchParam<DeviceUsage, Any> =
+    SimpleSearchParam<DeviceUsage, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceUsage.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the DeviceUsage resource type. */
   public val ALL: List<SearchParam<DeviceUsage, *>> = listOf(Device, Identifier, Patient, Status)
-
-  public data object Device : SearchParam<DeviceUsage, CodeableConcept> {
-    public override val name: String = "device"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "DeviceUsage.device.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceUsage): List<CodeableConcept> =
-      listOfNotNull(resource.device.concept)
-  }
-
-  public data object Identifier : SearchParam<DeviceUsage, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "DeviceUsage.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceUsage): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Patient : SearchParam<DeviceUsage, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "DeviceUsage.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: DeviceUsage): List<Reference> = listOf(resource.patient)
-  }
-
-  public data object Status : SearchParam<DeviceUsage, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "DeviceUsage.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceUsage): List<Any> = listOf(resource.status)
-  }
 }

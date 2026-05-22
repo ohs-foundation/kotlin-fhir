@@ -20,41 +20,29 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.FormularyItem
-import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [FormularyItem] resource type. */
 public object FormularyItemSearchParam {
+  public val Code: SearchParam<FormularyItem, CodeableConcept> =
+    SimpleSearchParam<FormularyItem, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "FormularyItem.code",
+      extractor = { resource -> listOfNotNull(resource.code) },
+    )
+
+  public val Identifier: SearchParam<FormularyItem, Identifier> =
+    SimpleSearchParam<FormularyItem, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "FormularyItem.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
   /** All search parameters for the FormularyItem resource type. */
   public val ALL: List<SearchParam<FormularyItem, *>> = listOf(Code, Identifier)
-
-  public data object Code : SearchParam<FormularyItem, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "FormularyItem.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: FormularyItem): List<CodeableConcept> =
-      listOfNotNull(resource.code)
-  }
-
-  public data object Identifier : SearchParam<FormularyItem, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "FormularyItem.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: FormularyItem): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
 }

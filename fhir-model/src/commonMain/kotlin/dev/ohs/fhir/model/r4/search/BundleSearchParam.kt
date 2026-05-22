@@ -19,81 +19,59 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.Bundle
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Instant
 import dev.ohs.fhir.model.r4.MessageHeader
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Bundle] resource type. */
 public object BundleSearchParam {
+  public val Composition: SearchParam<Bundle, Any> =
+    SimpleSearchParam<Bundle, Any>(
+      name = "composition",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Bundle.entry[0].resource",
+      target = listOf(dev.ohs.fhir.model.r4.Composition::class),
+      extractor = { emptyList() },
+    )
+
+  public val Identifier: SearchParam<Bundle, Identifier> =
+    SimpleSearchParam<Bundle, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Bundle.identifier",
+      extractor = { resource -> listOfNotNull(resource.identifier) },
+    )
+
+  public val Message: SearchParam<Bundle, Any> =
+    SimpleSearchParam<Bundle, Any>(
+      name = "message",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Bundle.entry[0].resource",
+      target = listOf(MessageHeader::class),
+      extractor = { emptyList() },
+    )
+
+  public val Timestamp: SearchParam<Bundle, Instant> =
+    SimpleSearchParam<Bundle, Instant>(
+      name = "timestamp",
+      type = SearchParamType.fromCode("date"),
+      expression = "Bundle.timestamp",
+      extractor = { resource -> listOfNotNull(resource.timestamp) },
+    )
+
+  public val Type: SearchParam<Bundle, Any> =
+    SimpleSearchParam<Bundle, Any>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Bundle.type",
+      extractor = { resource -> listOf(resource.type) },
+    )
+
   /** All search parameters for the Bundle resource type. */
   public val ALL: List<SearchParam<Bundle, *>> =
     listOf(Composition, Identifier, Message, Timestamp, Type)
-
-  public data object Composition : SearchParam<Bundle, Any> {
-    public override val name: String = "composition"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Bundle.entry[0].resource"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Composition::class)
-
-    public override fun extract(resource: Bundle): List<Any> = emptyList()
-  }
-
-  public data object Identifier : SearchParam<Bundle, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Bundle.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Bundle): List<dev.ohs.fhir.model.r4.Identifier> =
-      listOfNotNull(resource.identifier)
-  }
-
-  public data object Message : SearchParam<Bundle, Any> {
-    public override val name: String = "message"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Bundle.entry[0].resource"
-
-    public override val target: List<KClass<out Resource>> = listOf(MessageHeader::class)
-
-    public override fun extract(resource: Bundle): List<Any> = emptyList()
-  }
-
-  public data object Timestamp : SearchParam<Bundle, Instant> {
-    public override val name: String = "timestamp"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Bundle.timestamp"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Bundle): List<Instant> = listOfNotNull(resource.timestamp)
-  }
-
-  public data object Type : SearchParam<Bundle, Any> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Bundle.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Bundle): List<Any> = listOf(resource.type)
-  }
 }

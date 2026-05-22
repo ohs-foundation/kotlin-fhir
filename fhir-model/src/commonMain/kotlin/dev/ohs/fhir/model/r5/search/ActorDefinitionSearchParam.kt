@@ -22,20 +22,138 @@ import dev.ohs.fhir.model.r5.ActorDefinition
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ActorDefinition] resource type. */
 public object ActorDefinitionSearchParam {
+  public val Context: SearchParam<ActorDefinition, Any> =
+    SimpleSearchParam<ActorDefinition, Any>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(ActorDefinition.useContext.value.ofType(CodeableConcept))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextQuantity: SearchParam<ActorDefinition, Any> =
+    SimpleSearchParam<ActorDefinition, Any>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(ActorDefinition.useContext.value.ofType(Quantity))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextType: SearchParam<ActorDefinition, Coding> =
+    SimpleSearchParam<ActorDefinition, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "ActorDefinition.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<ActorDefinition, UsageContext> =
+    SimpleSearchParam<ActorDefinition, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "ActorDefinition.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<ActorDefinition, UsageContext> =
+    SimpleSearchParam<ActorDefinition, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "ActorDefinition.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<ActorDefinition, DateTime> =
+    SimpleSearchParam<ActorDefinition, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "ActorDefinition.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Description: SearchParam<ActorDefinition, Markdown> =
+    SimpleSearchParam<ActorDefinition, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "ActorDefinition.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Identifier: SearchParam<ActorDefinition, Identifier> =
+    SimpleSearchParam<ActorDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ActorDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<ActorDefinition, CodeableConcept> =
+    SimpleSearchParam<ActorDefinition, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "ActorDefinition.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Publisher: SearchParam<ActorDefinition, String> =
+    SimpleSearchParam<ActorDefinition, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "ActorDefinition.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<ActorDefinition, Any> =
+    SimpleSearchParam<ActorDefinition, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ActorDefinition.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Title: SearchParam<ActorDefinition, String> =
+    SimpleSearchParam<ActorDefinition, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "ActorDefinition.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Type: SearchParam<ActorDefinition, Any> =
+    SimpleSearchParam<ActorDefinition, Any>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "ActorDefinition.type",
+      extractor = { resource -> listOf(resource.type) },
+    )
+
+  public val Url: SearchParam<ActorDefinition, Uri> =
+    SimpleSearchParam<ActorDefinition, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "ActorDefinition.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Version: SearchParam<ActorDefinition, String> =
+    SimpleSearchParam<ActorDefinition, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "ActorDefinition.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the ActorDefinition resource type. */
   public val ALL: List<SearchParam<ActorDefinition, *>> =
     listOf(
@@ -55,194 +173,4 @@ public object ActorDefinitionSearchParam {
       Url,
       Version,
     )
-
-  public data object Context : SearchParam<ActorDefinition, Any> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(ActorDefinition.useContext.value.ofType(CodeableConcept))"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<Any> = emptyList()
-  }
-
-  public data object ContextQuantity : SearchParam<ActorDefinition, Any> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString =
-      "(ActorDefinition.useContext.value.ofType(Quantity))"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<Any> = emptyList()
-  }
-
-  public data object ContextType : SearchParam<ActorDefinition, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ActorDefinition.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<ActorDefinition, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "ActorDefinition.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<UsageContext> = resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<ActorDefinition, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "ActorDefinition.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<UsageContext> = resource.useContext
-  }
-
-  public data object Date : SearchParam<ActorDefinition, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "ActorDefinition.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Description : SearchParam<ActorDefinition, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ActorDefinition.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Identifier : SearchParam<ActorDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ActorDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<ActorDefinition, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ActorDefinition.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Publisher : SearchParam<ActorDefinition, R5String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ActorDefinition.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<R5String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<ActorDefinition, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ActorDefinition.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<Any> = listOf(resource.status)
-  }
-
-  public data object Title : SearchParam<ActorDefinition, R5String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ActorDefinition.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<R5String> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Type : SearchParam<ActorDefinition, Any> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ActorDefinition.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<Any> = listOf(resource.type)
-  }
-
-  public data object Url : SearchParam<ActorDefinition, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "ActorDefinition.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<Uri> = listOfNotNull(resource.url)
-  }
-
-  public data object Version : SearchParam<ActorDefinition, R5String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ActorDefinition.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ActorDefinition): List<R5String> =
-      listOfNotNull(resource.version)
-  }
 }

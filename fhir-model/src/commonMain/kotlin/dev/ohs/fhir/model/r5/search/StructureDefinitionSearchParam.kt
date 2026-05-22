@@ -23,22 +23,252 @@ import dev.ohs.fhir.model.r5.Canonical
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [StructureDefinition] resource type. */
 public object StructureDefinitionSearchParam {
+  public val Abstract: SearchParam<StructureDefinition, Boolean> =
+    SimpleSearchParam<StructureDefinition, Boolean>(
+      name = "abstract",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.abstract",
+      extractor = { resource -> listOf(resource.abstract) },
+    )
+
+  public val Base: SearchParam<StructureDefinition, Canonical> =
+    SimpleSearchParam<StructureDefinition, Canonical>(
+      name = "base",
+      type = SearchParamType.fromCode("reference"),
+      expression = "StructureDefinition.baseDefinition",
+      target = listOf(StructureDefinition::class),
+      extractor = { resource -> listOfNotNull(resource.baseDefinition) },
+    )
+
+  public val BasePath: SearchParam<StructureDefinition, String> =
+    SimpleSearchParam<StructureDefinition, String>(
+      name = "base-path",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.snapshot.element.base.path",
+      extractor = { resource ->
+        (resource.snapshot?.element ?: emptyList()).mapNotNull { it.base }.map { it.path }
+      },
+    )
+
+  public val Context: SearchParam<StructureDefinition, Any> =
+    SimpleSearchParam<StructureDefinition, Any>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(StructureDefinition.useContext.value.ofType(CodeableConcept))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextQuantity: SearchParam<StructureDefinition, Any> =
+    SimpleSearchParam<StructureDefinition, Any>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(StructureDefinition.useContext.value.ofType(Quantity))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextType: SearchParam<StructureDefinition, Coding> =
+    SimpleSearchParam<StructureDefinition, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<StructureDefinition, UsageContext> =
+    SimpleSearchParam<StructureDefinition, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "StructureDefinition.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<StructureDefinition, UsageContext> =
+    SimpleSearchParam<StructureDefinition, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "StructureDefinition.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<StructureDefinition, DateTime> =
+    SimpleSearchParam<StructureDefinition, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "StructureDefinition.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Derivation: SearchParam<StructureDefinition, Any> =
+    SimpleSearchParam<StructureDefinition, Any>(
+      name = "derivation",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.derivation",
+      extractor = { resource -> listOfNotNull(resource.derivation) },
+    )
+
+  public val Description: SearchParam<StructureDefinition, Markdown> =
+    SimpleSearchParam<StructureDefinition, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "StructureDefinition.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Experimental: SearchParam<StructureDefinition, Boolean> =
+    SimpleSearchParam<StructureDefinition, Boolean>(
+      name = "experimental",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.experimental",
+      extractor = { resource -> listOfNotNull(resource.experimental) },
+    )
+
+  public val ExtContext: SearchParam<StructureDefinition, StructureDefinition.Context> =
+    SimpleSearchParam<StructureDefinition, StructureDefinition.Context>(
+      name = "ext-context",
+      type = SearchParamType.fromCode("composite"),
+      expression = "StructureDefinition.context",
+      extractor = { resource -> resource.context },
+    )
+
+  public val ExtContextExpression: SearchParam<StructureDefinition, String> =
+    SimpleSearchParam<StructureDefinition, String>(
+      name = "ext-context-expression",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.context.expression",
+      extractor = { resource -> resource.context.map { it.expression } },
+    )
+
+  public val ExtContextType: SearchParam<StructureDefinition, Any> =
+    SimpleSearchParam<StructureDefinition, Any>(
+      name = "ext-context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.context.type",
+      extractor = { resource -> resource.context.map { it.type } },
+    )
+
+  public val Identifier: SearchParam<StructureDefinition, Identifier> =
+    SimpleSearchParam<StructureDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<StructureDefinition, CodeableConcept> =
+    SimpleSearchParam<StructureDefinition, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Keyword: SearchParam<StructureDefinition, Coding> =
+    SimpleSearchParam<StructureDefinition, Coding>(
+      name = "keyword",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.keyword",
+      extractor = { resource -> resource.keyword },
+    )
+
+  public val Kind: SearchParam<StructureDefinition, Any> =
+    SimpleSearchParam<StructureDefinition, Any>(
+      name = "kind",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.kind",
+      extractor = { resource -> listOf(resource.kind) },
+    )
+
+  public val Name: SearchParam<StructureDefinition, String> =
+    SimpleSearchParam<StructureDefinition, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "StructureDefinition.name",
+      extractor = { resource -> listOf(resource.name) },
+    )
+
+  public val Path: SearchParam<StructureDefinition, String> =
+    SimpleSearchParam<StructureDefinition, String>(
+      name = "path",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.snapshot.element.path",
+      extractor = { resource -> (resource.snapshot?.element ?: emptyList()).map { it.path } },
+    )
+
+  public val Publisher: SearchParam<StructureDefinition, String> =
+    SimpleSearchParam<StructureDefinition, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "StructureDefinition.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<StructureDefinition, Any> =
+    SimpleSearchParam<StructureDefinition, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Title: SearchParam<StructureDefinition, String> =
+    SimpleSearchParam<StructureDefinition, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "StructureDefinition.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Type: SearchParam<StructureDefinition, Uri> =
+    SimpleSearchParam<StructureDefinition, Uri>(
+      name = "type",
+      type = SearchParamType.fromCode("uri"),
+      expression = "StructureDefinition.type",
+      extractor = { resource -> listOf(resource.type) },
+    )
+
+  public val Url: SearchParam<StructureDefinition, Uri> =
+    SimpleSearchParam<StructureDefinition, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "StructureDefinition.url",
+      extractor = { resource -> listOf(resource.url) },
+    )
+
+  public val Valueset: SearchParam<StructureDefinition, Canonical> =
+    SimpleSearchParam<StructureDefinition, Canonical>(
+      name = "valueset",
+      type = SearchParamType.fromCode("reference"),
+      expression = "StructureDefinition.snapshot.element.binding.valueSet",
+      target = listOf(ValueSet::class),
+      extractor = { resource ->
+        (resource.snapshot?.element ?: emptyList())
+          .mapNotNull { it.binding }
+          .mapNotNull { it.valueSet }
+      },
+    )
+
+  public val Version: SearchParam<StructureDefinition, String> =
+    SimpleSearchParam<StructureDefinition, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureDefinition.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the StructureDefinition resource type. */
   public val ALL: List<SearchParam<StructureDefinition, *>> =
     listOf(
@@ -71,368 +301,4 @@ public object StructureDefinitionSearchParam {
       Valueset,
       Version,
     )
-
-  public data object Abstract : SearchParam<StructureDefinition, Boolean> {
-    public override val name: KotlinString = "abstract"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.abstract"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Boolean> =
-      listOf(resource.abstract)
-  }
-
-  public data object Base : SearchParam<StructureDefinition, Canonical> {
-    public override val name: KotlinString = "base"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "StructureDefinition.baseDefinition"
-
-    public override val target: List<KClass<out Resource>> = listOf(StructureDefinition::class)
-
-    public override fun extract(resource: StructureDefinition): List<Canonical> =
-      listOfNotNull(resource.baseDefinition)
-  }
-
-  public data object BasePath : SearchParam<StructureDefinition, R5String> {
-    public override val name: KotlinString = "base-path"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.snapshot.element.base.path"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<R5String> =
-      (resource.snapshot?.element ?: emptyList()).mapNotNull { it.base }.map { it.path }
-  }
-
-  public data object Context : SearchParam<StructureDefinition, Any> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(StructureDefinition.useContext.value.ofType(CodeableConcept))"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Any> = emptyList()
-  }
-
-  public data object ContextQuantity : SearchParam<StructureDefinition, Any> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString =
-      "(StructureDefinition.useContext.value.ofType(Quantity))"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Any> = emptyList()
-  }
-
-  public data object ContextType : SearchParam<StructureDefinition, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<StructureDefinition, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "StructureDefinition.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<UsageContext> =
-      resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<StructureDefinition, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "StructureDefinition.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<UsageContext> =
-      resource.useContext
-  }
-
-  public data object Date : SearchParam<StructureDefinition, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "StructureDefinition.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Derivation : SearchParam<StructureDefinition, Any> {
-    public override val name: KotlinString = "derivation"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.derivation"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Any> =
-      listOfNotNull(resource.derivation)
-  }
-
-  public data object Description : SearchParam<StructureDefinition, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "StructureDefinition.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Experimental : SearchParam<StructureDefinition, Boolean> {
-    public override val name: KotlinString = "experimental"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.experimental"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Boolean> =
-      listOfNotNull(resource.experimental)
-  }
-
-  public data object ExtContext : SearchParam<StructureDefinition, StructureDefinition.Context> {
-    public override val name: KotlinString = "ext-context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "StructureDefinition.context"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<StructureDefinition.Context> =
-      resource.context
-  }
-
-  public data object ExtContextExpression : SearchParam<StructureDefinition, R5String> {
-    public override val name: KotlinString = "ext-context-expression"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.context.expression"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<R5String> =
-      resource.context.map { it.expression }
-  }
-
-  public data object ExtContextType : SearchParam<StructureDefinition, Any> {
-    public override val name: KotlinString = "ext-context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.context.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Any> =
-      resource.context.map { it.type }
-  }
-
-  public data object Identifier :
-    SearchParam<StructureDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: StructureDefinition
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<StructureDefinition, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Keyword : SearchParam<StructureDefinition, Coding> {
-    public override val name: KotlinString = "keyword"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.keyword"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Coding> = resource.keyword
-  }
-
-  public data object Kind : SearchParam<StructureDefinition, Any> {
-    public override val name: KotlinString = "kind"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.kind"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Any> = listOf(resource.kind)
-  }
-
-  public data object Name : SearchParam<StructureDefinition, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "StructureDefinition.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<R5String> =
-      listOf(resource.name)
-  }
-
-  public data object Path : SearchParam<StructureDefinition, R5String> {
-    public override val name: KotlinString = "path"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.snapshot.element.path"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<R5String> =
-      (resource.snapshot?.element ?: emptyList()).map { it.path }
-  }
-
-  public data object Publisher : SearchParam<StructureDefinition, R5String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "StructureDefinition.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<R5String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<StructureDefinition, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Any> = listOf(resource.status)
-  }
-
-  public data object Title : SearchParam<StructureDefinition, R5String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "StructureDefinition.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<R5String> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Type : SearchParam<StructureDefinition, Uri> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "StructureDefinition.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Uri> = listOf(resource.type)
-  }
-
-  public data object Url : SearchParam<StructureDefinition, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "StructureDefinition.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<Uri> = listOf(resource.url)
-  }
-
-  public data object Valueset : SearchParam<StructureDefinition, Canonical> {
-    public override val name: KotlinString = "valueset"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "StructureDefinition.snapshot.element.binding.valueSet"
-
-    public override val target: List<KClass<out Resource>> = listOf(ValueSet::class)
-
-    public override fun extract(resource: StructureDefinition): List<Canonical> =
-      (resource.snapshot?.element ?: emptyList())
-        .mapNotNull { it.binding }
-        .mapNotNull { it.valueSet }
-  }
-
-  public data object Version : SearchParam<StructureDefinition, R5String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureDefinition.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureDefinition): List<R5String> =
-      listOfNotNull(resource.version)
-  }
 }

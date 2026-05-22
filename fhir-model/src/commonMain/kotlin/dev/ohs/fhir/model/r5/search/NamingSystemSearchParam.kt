@@ -93,6 +93,7 @@ import dev.ohs.fhir.model.r5.GraphDefinition
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingSelection
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Immunization
@@ -137,6 +138,7 @@ import dev.ohs.fhir.model.r5.Parameters
 import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
+import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Permission
 import dev.ohs.fhir.model.r5.Person
 import dev.ohs.fhir.model.r5.PlanDefinition
@@ -152,7 +154,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -160,7 +161,7 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Slot
 import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.SpecimenDefinition
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.StructureMap
 import dev.ohs.fhir.model.r5.Subscription
@@ -188,13 +189,549 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [NamingSystem] resource type. */
 public object NamingSystemSearchParam {
+  public val Contact: SearchParam<NamingSystem, String> =
+    SimpleSearchParam<NamingSystem, String>(
+      name = "contact",
+      type = SearchParamType.fromCode("string"),
+      expression = "NamingSystem.contact.name",
+      extractor = { resource -> resource.contact.mapNotNull { it.name } },
+    )
+
+  public val Context: SearchParam<NamingSystem, Any> =
+    SimpleSearchParam<NamingSystem, Any>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(NamingSystem.useContext.value.ofType(CodeableConcept))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextQuantity: SearchParam<NamingSystem, Any> =
+    SimpleSearchParam<NamingSystem, Any>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(NamingSystem.useContext.value.ofType(Quantity))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextType: SearchParam<NamingSystem, Coding> =
+    SimpleSearchParam<NamingSystem, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<NamingSystem, UsageContext> =
+    SimpleSearchParam<NamingSystem, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "NamingSystem.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<NamingSystem, UsageContext> =
+    SimpleSearchParam<NamingSystem, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "NamingSystem.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<NamingSystem, DateTime> =
+    SimpleSearchParam<NamingSystem, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "NamingSystem.date",
+      extractor = { resource -> listOf(resource.date) },
+    )
+
+  public val DerivedFrom: SearchParam<NamingSystem, Canonical> =
+    SimpleSearchParam<NamingSystem, Canonical>(
+      name = "derived-from",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NamingSystem.relatedArtifact.where(type='derived-from').resource",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource ->
+        resource.relatedArtifact
+          .filter { it.type?.value?.toString() == "derived-from" }
+          .mapNotNull { it.resource }
+      },
+    )
+
+  public val Description: SearchParam<NamingSystem, Markdown> =
+    SimpleSearchParam<NamingSystem, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "NamingSystem.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Effective: SearchParam<NamingSystem, Period> =
+    SimpleSearchParam<NamingSystem, Period>(
+      name = "effective",
+      type = SearchParamType.fromCode("date"),
+      expression = "NamingSystem.effectivePeriod",
+      extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
+    )
+
+  public val IdType: SearchParam<NamingSystem, Any> =
+    SimpleSearchParam<NamingSystem, Any>(
+      name = "id-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.uniqueId.type",
+      extractor = { resource -> resource.uniqueId.map { it.type } },
+    )
+
+  public val Identifier: SearchParam<NamingSystem, Identifier> =
+    SimpleSearchParam<NamingSystem, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<NamingSystem, CodeableConcept> =
+    SimpleSearchParam<NamingSystem, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Kind: SearchParam<NamingSystem, Any> =
+    SimpleSearchParam<NamingSystem, Any>(
+      name = "kind",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.kind",
+      extractor = { resource -> listOf(resource.kind) },
+    )
+
+  public val Name: SearchParam<NamingSystem, String> =
+    SimpleSearchParam<NamingSystem, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "NamingSystem.name",
+      extractor = { resource -> listOf(resource.name) },
+    )
+
+  public val Period: SearchParam<NamingSystem, Period> =
+    SimpleSearchParam<NamingSystem, Period>(
+      name = "period",
+      type = SearchParamType.fromCode("date"),
+      expression = "NamingSystem.uniqueId.period",
+      extractor = { resource -> resource.uniqueId.mapNotNull { it.period } },
+    )
+
+  public val Predecessor: SearchParam<NamingSystem, Canonical> =
+    SimpleSearchParam<NamingSystem, Canonical>(
+      name = "predecessor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NamingSystem.relatedArtifact.where(type='predecessor').resource",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource ->
+        resource.relatedArtifact
+          .filter { it.type?.value?.toString() == "predecessor" }
+          .mapNotNull { it.resource }
+      },
+    )
+
+  public val Publisher: SearchParam<NamingSystem, String> =
+    SimpleSearchParam<NamingSystem, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "NamingSystem.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Responsible: SearchParam<NamingSystem, String> =
+    SimpleSearchParam<NamingSystem, String>(
+      name = "responsible",
+      type = SearchParamType.fromCode("string"),
+      expression = "NamingSystem.responsible",
+      extractor = { resource -> listOfNotNull(resource.responsible) },
+    )
+
+  public val Status: SearchParam<NamingSystem, Any> =
+    SimpleSearchParam<NamingSystem, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Telecom: SearchParam<NamingSystem, ContactPoint> =
+    SimpleSearchParam<NamingSystem, ContactPoint>(
+      name = "telecom",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.contact.telecom",
+      extractor = { resource -> resource.contact.flatMap { it.telecom } },
+    )
+
+  public val Topic: SearchParam<NamingSystem, CodeableConcept> =
+    SimpleSearchParam<NamingSystem, CodeableConcept>(
+      name = "topic",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.topic",
+      extractor = { resource -> resource.topic },
+    )
+
+  public val Type: SearchParam<NamingSystem, CodeableConcept> =
+    SimpleSearchParam<NamingSystem, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.type",
+      extractor = { resource -> listOfNotNull(resource.type) },
+    )
+
+  public val Url: SearchParam<NamingSystem, Uri> =
+    SimpleSearchParam<NamingSystem, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "NamingSystem.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Value: SearchParam<NamingSystem, String> =
+    SimpleSearchParam<NamingSystem, String>(
+      name = "value",
+      type = SearchParamType.fromCode("string"),
+      expression = "NamingSystem.uniqueId.value",
+      extractor = { resource -> resource.uniqueId.map { it.value } },
+    )
+
+  public val Version: SearchParam<NamingSystem, String> =
+    SimpleSearchParam<NamingSystem, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "NamingSystem.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the NamingSystem resource type. */
   public val ALL: CollectionsList<SearchParam<NamingSystem, *>> =
     listOf(
@@ -225,671 +762,4 @@ public object NamingSystemSearchParam {
       Value,
       Version,
     )
-
-  public data object Contact : SearchParam<NamingSystem, R5String> {
-    public override val name: KotlinString = "contact"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "NamingSystem.contact.name"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<R5String> =
-      resource.contact.mapNotNull { it.name }
-  }
-
-  public data object Context : SearchParam<NamingSystem, Any> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(NamingSystem.useContext.value.ofType(CodeableConcept))"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Any> = emptyList()
-  }
-
-  public data object ContextQuantity : SearchParam<NamingSystem, Any> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString =
-      "(NamingSystem.useContext.value.ofType(Quantity))"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Any> = emptyList()
-  }
-
-  public data object ContextType : SearchParam<NamingSystem, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.useContext.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<NamingSystem, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "NamingSystem.useContext"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<UsageContext> =
-      resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<NamingSystem, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "NamingSystem.useContext"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<UsageContext> =
-      resource.useContext
-  }
-
-  public data object Date : SearchParam<NamingSystem, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "NamingSystem.date"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<DateTime> =
-      listOf(resource.date)
-  }
-
-  public data object DerivedFrom : SearchParam<NamingSystem, Canonical> {
-    public override val name: KotlinString = "derived-from"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "NamingSystem.relatedArtifact.where(type='derived-from').resource"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Canonical> =
-      resource.relatedArtifact
-        .filter { it.type?.value?.toString() == "derived-from" }
-        .mapNotNull { it.resource }
-  }
-
-  public data object Description : SearchParam<NamingSystem, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "NamingSystem.description"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Effective : SearchParam<NamingSystem, dev.ohs.fhir.model.r5.Period> {
-    public override val name: KotlinString = "effective"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "NamingSystem.effectivePeriod"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: NamingSystem
-    ): CollectionsList<dev.ohs.fhir.model.r5.Period> = listOfNotNull(resource.effectivePeriod)
-  }
-
-  public data object IdType : SearchParam<NamingSystem, Any> {
-    public override val name: KotlinString = "id-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.uniqueId.type"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Any> =
-      resource.uniqueId.map { it.type }
-  }
-
-  public data object Identifier : SearchParam<NamingSystem, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: NamingSystem
-    ): CollectionsList<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<NamingSystem, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.jurisdiction"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Kind : SearchParam<NamingSystem, Any> {
-    public override val name: KotlinString = "kind"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.kind"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Any> =
-      listOf(resource.kind)
-  }
-
-  public data object Name : SearchParam<NamingSystem, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "NamingSystem.name"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<R5String> =
-      listOf(resource.name)
-  }
-
-  public data object Period : SearchParam<NamingSystem, dev.ohs.fhir.model.r5.Period> {
-    public override val name: KotlinString = "period"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "NamingSystem.uniqueId.period"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: NamingSystem
-    ): CollectionsList<dev.ohs.fhir.model.r5.Period> = resource.uniqueId.mapNotNull { it.period }
-  }
-
-  public data object Predecessor : SearchParam<NamingSystem, Canonical> {
-    public override val name: KotlinString = "predecessor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "NamingSystem.relatedArtifact.where(type='predecessor').resource"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Canonical> =
-      resource.relatedArtifact
-        .filter { it.type?.value?.toString() == "predecessor" }
-        .mapNotNull { it.resource }
-  }
-
-  public data object Publisher : SearchParam<NamingSystem, R5String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "NamingSystem.publisher"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<R5String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Responsible : SearchParam<NamingSystem, R5String> {
-    public override val name: KotlinString = "responsible"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "NamingSystem.responsible"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<R5String> =
-      listOfNotNull(resource.responsible)
-  }
-
-  public data object Status : SearchParam<NamingSystem, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.status"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Any> =
-      listOf(resource.status)
-  }
-
-  public data object Telecom : SearchParam<NamingSystem, ContactPoint> {
-    public override val name: KotlinString = "telecom"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.contact.telecom"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<ContactPoint> =
-      resource.contact.flatMap { it.telecom }
-  }
-
-  public data object Topic : SearchParam<NamingSystem, CodeableConcept> {
-    public override val name: KotlinString = "topic"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.topic"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<CodeableConcept> =
-      resource.topic
-  }
-
-  public data object Type : SearchParam<NamingSystem, CodeableConcept> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.type"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.type)
-  }
-
-  public data object Url : SearchParam<NamingSystem, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "NamingSystem.url"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<Uri> =
-      listOfNotNull(resource.url)
-  }
-
-  public data object Value : SearchParam<NamingSystem, R5String> {
-    public override val name: KotlinString = "value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "NamingSystem.uniqueId.value"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<R5String> =
-      resource.uniqueId.map { it.value }
-  }
-
-  public data object Version : SearchParam<NamingSystem, R5String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "NamingSystem.version"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NamingSystem): CollectionsList<R5String> =
-      listOfNotNull(resource.version)
-  }
 }

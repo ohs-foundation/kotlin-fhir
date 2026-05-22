@@ -22,20 +22,126 @@ import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.ExampleScenario
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Quantity
-import dev.ohs.fhir.model.r4b.Resource
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ExampleScenario] resource type. */
 public object ExampleScenarioSearchParam {
+  public val Context: SearchParam<ExampleScenario, CodeableConcept> =
+    SimpleSearchParam<ExampleScenario, CodeableConcept>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(ExampleScenario.useContext.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+      },
+    )
+
+  public val ContextQuantity: SearchParam<ExampleScenario, Quantity> =
+    SimpleSearchParam<ExampleScenario, Quantity>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(ExampleScenario.useContext.value as Quantity)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+      },
+    )
+
+  public val ContextType: SearchParam<ExampleScenario, Coding> =
+    SimpleSearchParam<ExampleScenario, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "ExampleScenario.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<ExampleScenario, UsageContext> =
+    SimpleSearchParam<ExampleScenario, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "ExampleScenario.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<ExampleScenario, UsageContext> =
+    SimpleSearchParam<ExampleScenario, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "ExampleScenario.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<ExampleScenario, DateTime> =
+    SimpleSearchParam<ExampleScenario, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "ExampleScenario.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Identifier: SearchParam<ExampleScenario, Identifier> =
+    SimpleSearchParam<ExampleScenario, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ExampleScenario.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<ExampleScenario, CodeableConcept> =
+    SimpleSearchParam<ExampleScenario, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "ExampleScenario.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<ExampleScenario, String> =
+    SimpleSearchParam<ExampleScenario, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "ExampleScenario.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Publisher: SearchParam<ExampleScenario, String> =
+    SimpleSearchParam<ExampleScenario, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "ExampleScenario.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<ExampleScenario, Any> =
+    SimpleSearchParam<ExampleScenario, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ExampleScenario.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Url: SearchParam<ExampleScenario, Uri> =
+    SimpleSearchParam<ExampleScenario, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "ExampleScenario.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Version: SearchParam<ExampleScenario, String> =
+    SimpleSearchParam<ExampleScenario, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "ExampleScenario.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the ExampleScenario resource type. */
   public val ALL: List<SearchParam<ExampleScenario, *>> =
     listOf(
@@ -53,171 +159,4 @@ public object ExampleScenarioSearchParam {
       Url,
       Version,
     )
-
-  public data object Context : SearchParam<ExampleScenario, CodeableConcept> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(ExampleScenario.useContext.value as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<CodeableConcept> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
-  }
-
-  public data object ContextQuantity : SearchParam<ExampleScenario, Quantity> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString = "(ExampleScenario.useContext.value as Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<Quantity> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
-  }
-
-  public data object ContextType : SearchParam<ExampleScenario, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ExampleScenario.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<ExampleScenario, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "ExampleScenario.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<UsageContext> = resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<ExampleScenario, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "ExampleScenario.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<UsageContext> = resource.useContext
-  }
-
-  public data object Date : SearchParam<ExampleScenario, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "ExampleScenario.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Identifier : SearchParam<ExampleScenario, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ExampleScenario.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ExampleScenario
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<ExampleScenario, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ExampleScenario.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<ExampleScenario, R4bString> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ExampleScenario.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<R4bString> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Publisher : SearchParam<ExampleScenario, R4bString> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ExampleScenario.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<R4bString> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<ExampleScenario, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ExampleScenario.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<Any> = listOf(resource.status)
-  }
-
-  public data object Url : SearchParam<ExampleScenario, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "ExampleScenario.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<Uri> = listOfNotNull(resource.url)
-  }
-
-  public data object Version : SearchParam<ExampleScenario, R4bString> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ExampleScenario.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ExampleScenario): List<R4bString> =
-      listOfNotNull(resource.version)
-  }
 }

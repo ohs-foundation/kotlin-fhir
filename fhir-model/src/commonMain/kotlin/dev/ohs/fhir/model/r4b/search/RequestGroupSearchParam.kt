@@ -23,22 +23,148 @@ import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.Group
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.RelatedPerson
 import dev.ohs.fhir.model.r4b.RequestGroup
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [RequestGroup] resource type. */
 public object RequestGroupSearchParam {
+  public val Author: SearchParam<RequestGroup, Reference> =
+    SimpleSearchParam<RequestGroup, Reference>(
+      name = "author",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RequestGroup.author",
+      target = listOf(Practitioner::class, Device::class, PractitionerRole::class),
+      extractor = { resource -> listOfNotNull(resource.author) },
+    )
+
+  public val Authored: SearchParam<RequestGroup, DateTime> =
+    SimpleSearchParam<RequestGroup, DateTime>(
+      name = "authored",
+      type = SearchParamType.fromCode("date"),
+      expression = "RequestGroup.authoredOn",
+      extractor = { resource -> listOfNotNull(resource.authoredOn) },
+    )
+
+  public val Code: SearchParam<RequestGroup, CodeableConcept> =
+    SimpleSearchParam<RequestGroup, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "RequestGroup.code",
+      extractor = { resource -> listOfNotNull(resource.code) },
+    )
+
+  public val Encounter: SearchParam<RequestGroup, Reference> =
+    SimpleSearchParam<RequestGroup, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RequestGroup.encounter",
+      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val GroupIdentifier: SearchParam<RequestGroup, Identifier> =
+    SimpleSearchParam<RequestGroup, Identifier>(
+      name = "group-identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "RequestGroup.groupIdentifier",
+      extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
+    )
+
+  public val Identifier: SearchParam<RequestGroup, Identifier> =
+    SimpleSearchParam<RequestGroup, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "RequestGroup.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val InstantiatesCanonical: SearchParam<RequestGroup, Canonical> =
+    SimpleSearchParam<RequestGroup, Canonical>(
+      name = "instantiates-canonical",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RequestGroup.instantiatesCanonical",
+      extractor = { resource -> resource.instantiatesCanonical },
+    )
+
+  public val InstantiatesUri: SearchParam<RequestGroup, Uri> =
+    SimpleSearchParam<RequestGroup, Uri>(
+      name = "instantiates-uri",
+      type = SearchParamType.fromCode("uri"),
+      expression = "RequestGroup.instantiatesUri",
+      extractor = { resource -> resource.instantiatesUri },
+    )
+
+  public val Intent: SearchParam<RequestGroup, Any> =
+    SimpleSearchParam<RequestGroup, Any>(
+      name = "intent",
+      type = SearchParamType.fromCode("token"),
+      expression = "RequestGroup.intent",
+      extractor = { resource -> listOf(resource.intent) },
+    )
+
+  public val Participant: SearchParam<RequestGroup, Reference> =
+    SimpleSearchParam<RequestGroup, Reference>(
+      name = "participant",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RequestGroup.action.participant",
+      target =
+        listOf(
+          Practitioner::class,
+          Device::class,
+          dev.ohs.fhir.model.r4b.Patient::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> resource.action.flatMap { it.participant } },
+    )
+
+  public val Patient: SearchParam<RequestGroup, Reference> =
+    SimpleSearchParam<RequestGroup, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RequestGroup.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource ->
+        listOfNotNull(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Priority: SearchParam<RequestGroup, Any> =
+    SimpleSearchParam<RequestGroup, Any>(
+      name = "priority",
+      type = SearchParamType.fromCode("token"),
+      expression = "RequestGroup.priority",
+      extractor = { resource -> listOfNotNull(resource.priority) },
+    )
+
+  public val Status: SearchParam<RequestGroup, Any> =
+    SimpleSearchParam<RequestGroup, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "RequestGroup.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<RequestGroup, Reference> =
+    SimpleSearchParam<RequestGroup, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RequestGroup.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
   /** All search parameters for the RequestGroup resource type. */
   public val ALL: List<SearchParam<RequestGroup, *>> =
     listOf(
@@ -57,197 +183,4 @@ public object RequestGroupSearchParam {
       Status,
       Subject,
     )
-
-  public data object Author : SearchParam<RequestGroup, Reference> {
-    public override val name: String = "author"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RequestGroup.author"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Practitioner::class, Device::class, PractitionerRole::class)
-
-    public override fun extract(resource: RequestGroup): List<Reference> =
-      listOfNotNull(resource.author)
-  }
-
-  public data object Authored : SearchParam<RequestGroup, DateTime> {
-    public override val name: String = "authored"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "RequestGroup.authoredOn"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RequestGroup): List<DateTime> =
-      listOfNotNull(resource.authoredOn)
-  }
-
-  public data object Code : SearchParam<RequestGroup, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RequestGroup.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RequestGroup): List<CodeableConcept> =
-      listOfNotNull(resource.code)
-  }
-
-  public data object Encounter : SearchParam<RequestGroup, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RequestGroup.encounter"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Encounter::class)
-
-    public override fun extract(resource: RequestGroup): List<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object GroupIdentifier :
-    SearchParam<RequestGroup, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "group-identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RequestGroup.groupIdentifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RequestGroup): List<dev.ohs.fhir.model.r4b.Identifier> =
-      listOfNotNull(resource.groupIdentifier)
-  }
-
-  public data object Identifier : SearchParam<RequestGroup, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RequestGroup.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RequestGroup): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object InstantiatesCanonical : SearchParam<RequestGroup, Canonical> {
-    public override val name: String = "instantiates-canonical"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RequestGroup.instantiatesCanonical"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RequestGroup): List<Canonical> =
-      resource.instantiatesCanonical
-  }
-
-  public data object InstantiatesUri : SearchParam<RequestGroup, Uri> {
-    public override val name: String = "instantiates-uri"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: String = "RequestGroup.instantiatesUri"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RequestGroup): List<Uri> = resource.instantiatesUri
-  }
-
-  public data object Intent : SearchParam<RequestGroup, Any> {
-    public override val name: String = "intent"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RequestGroup.intent"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RequestGroup): List<Any> = listOf(resource.intent)
-  }
-
-  public data object Participant : SearchParam<RequestGroup, Reference> {
-    public override val name: String = "participant"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RequestGroup.action.participant"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Device::class,
-        dev.ohs.fhir.model.r4b.Patient::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: RequestGroup): List<Reference> =
-      resource.action.flatMap { it.participant }
-  }
-
-  public data object Patient : SearchParam<RequestGroup, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RequestGroup.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: RequestGroup): List<Reference> =
-      listOfNotNull(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Priority : SearchParam<RequestGroup, Any> {
-    public override val name: String = "priority"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RequestGroup.priority"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RequestGroup): List<Any> =
-      listOfNotNull(resource.priority)
-  }
-
-  public data object Status : SearchParam<RequestGroup, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RequestGroup.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RequestGroup): List<Any> = listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<RequestGroup, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RequestGroup.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: RequestGroup): List<Reference> =
-      listOfNotNull(resource.subject)
-  }
 }

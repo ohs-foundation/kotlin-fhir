@@ -222,7 +222,7 @@ The following FHIR value sets are excluded from Kotlin enum generation.
 
 ### Search Parameters
 
-The codegen reads `SearchParameter-*.json` files from the FHIR core packages and generates per-resource containers of typed search parameter `data object`s. This provides compile-time safe, discoverable access to FHIR search parameters.
+The codegen reads `SearchParameter-*.json` files from the FHIR core packages and generates per-resource containers of typed search parameters. This provides compile-time safe, discoverable access to FHIR search parameters.
 
 A `SearchParam<R, T>` sealed interface is generated in the `search` subpackage of each version package (e.g. `dev.ohs.fhir.model.r4.search`). It carries the metadata for a search parameter and the typed `extract` function:
 
@@ -234,7 +234,7 @@ A `SearchParam<R, T>` sealed interface is generated in the `search` subpackage o
 | `target`     | `List<KClass<out Resource>>` | Target resource types for reference search parameters.                            |
 | `extract`    | `(resource: R) -> List<T>`   | Pulls the values of type `T` out of a resource of type `R` for this search param. |
 
-For each resource type that has search parameters, a `{Resource}SearchParam` container `object` is generated. Each search parameter is a nested `data object` that implements `SearchParam<{Resource}, T>` with the value type `T` derived from the FHIRPath expression. An `ALL` property exposes every search parameter for the resource. For example, `PatientSearchParam` looks like:
+The interface has a single implementation, `SimpleSearchParam<R, T>`, which stores the metadata plus an `extractor` lambda. For each resource type that has search parameters, a `{Resource}SearchParam` container `object` is generated, exposing one `val` per search parameter (each a `SimpleSearchParam`) plus an `ALL` list. Using `val`s backed by one shared class — rather than a class per parameter — keeps the generated output to a single file per resource. For example, `PatientSearchParam` looks like:
 
 ```kotlin
 sealed interface SearchParam<in R : Resource, out T> {
@@ -245,23 +245,34 @@ sealed interface SearchParam<in R : Resource, out T> {
   fun extract(resource: R): List<T>
 }
 
-object PatientSearchParam {
-  data object Birthdate : SearchParam<Patient, Date> {
-    override val name = "birthdate"
-    override val type = SearchParamType.fromCode("date")
-    override val expression = "Patient.birthDate"
-    override val target = emptyList<KClass<out Resource>>()
-    override fun extract(resource: Patient) = listOfNotNull(resource.birthDate)
-  }
+class SimpleSearchParam<R : Resource, T>(
+  override val name: String,
+  override val type: SearchParamType,
+  override val expression: String,
+  override val target: List<KClass<out Resource>> = emptyList(),
+  private val extractor: (R) -> List<T>,
+) : SearchParam<R, T> {
+  override fun extract(resource: R): List<T> = extractor(resource)
+}
 
-  data object GeneralPractitioner : SearchParam<Patient, Reference> {
-    override val name = "general-practitioner"
-    override val type = SearchParamType.fromCode("reference")
-    override val expression = "Patient.generalPractitioner"
-    override val target = listOf(Practitioner::class, Organization::class, PractitionerRole::class)
-    override fun extract(resource: Patient) = resource.generalPractitioner
-  }
-  // ... one data object per search parameter
+object PatientSearchParam {
+  val Birthdate: SearchParam<Patient, Date> =
+    SimpleSearchParam(
+      name = "birthdate",
+      type = SearchParamType.fromCode("date"),
+      expression = "Patient.birthDate",
+      extractor = { resource -> listOfNotNull(resource.birthDate) },
+    )
+
+  val GeneralPractitioner: SearchParam<Patient, Reference> =
+    SimpleSearchParam(
+      name = "general-practitioner",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Patient.generalPractitioner",
+      target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
+      extractor = { resource -> resource.generalPractitioner },
+    )
+  // ... one val per search parameter
 
   val ALL: List<SearchParam<Patient, *>> = listOf(Birthdate, GeneralPractitioner, /* ... */)
 }

@@ -23,22 +23,101 @@ import dev.ohs.fhir.model.r4b.Canonical
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
 import dev.ohs.fhir.model.r4b.FamilyMemberHistory
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Measure
 import dev.ohs.fhir.model.r4b.OperationDefinition
 import dev.ohs.fhir.model.r4b.PlanDefinition
 import dev.ohs.fhir.model.r4b.Questionnaire
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [FamilyMemberHistory] resource type. */
 public object FamilyMemberHistorySearchParam {
+  public val Code: SearchParam<FamilyMemberHistory, CodeableConcept> =
+    SimpleSearchParam<FamilyMemberHistory, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "FamilyMemberHistory.condition.code",
+      extractor = { resource -> resource.condition.map { it.code } },
+    )
+
+  public val Date: SearchParam<FamilyMemberHistory, DateTime> =
+    SimpleSearchParam<FamilyMemberHistory, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "FamilyMemberHistory.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Identifier: SearchParam<FamilyMemberHistory, Identifier> =
+    SimpleSearchParam<FamilyMemberHistory, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "FamilyMemberHistory.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val InstantiatesCanonical: SearchParam<FamilyMemberHistory, Canonical> =
+    SimpleSearchParam<FamilyMemberHistory, Canonical>(
+      name = "instantiates-canonical",
+      type = SearchParamType.fromCode("reference"),
+      expression = "FamilyMemberHistory.instantiatesCanonical",
+      target =
+        listOf(
+          Questionnaire::class,
+          Measure::class,
+          PlanDefinition::class,
+          OperationDefinition::class,
+          ActivityDefinition::class,
+        ),
+      extractor = { resource -> resource.instantiatesCanonical },
+    )
+
+  public val InstantiatesUri: SearchParam<FamilyMemberHistory, Uri> =
+    SimpleSearchParam<FamilyMemberHistory, Uri>(
+      name = "instantiates-uri",
+      type = SearchParamType.fromCode("uri"),
+      expression = "FamilyMemberHistory.instantiatesUri",
+      extractor = { resource -> resource.instantiatesUri },
+    )
+
+  public val Patient: SearchParam<FamilyMemberHistory, Reference> =
+    SimpleSearchParam<FamilyMemberHistory, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "FamilyMemberHistory.patient",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val Relationship: SearchParam<FamilyMemberHistory, CodeableConcept> =
+    SimpleSearchParam<FamilyMemberHistory, CodeableConcept>(
+      name = "relationship",
+      type = SearchParamType.fromCode("token"),
+      expression = "FamilyMemberHistory.relationship",
+      extractor = { resource -> listOf(resource.relationship) },
+    )
+
+  public val Sex: SearchParam<FamilyMemberHistory, CodeableConcept> =
+    SimpleSearchParam<FamilyMemberHistory, CodeableConcept>(
+      name = "sex",
+      type = SearchParamType.fromCode("token"),
+      expression = "FamilyMemberHistory.sex",
+      extractor = { resource -> listOfNotNull(resource.sex) },
+    )
+
+  public val Status: SearchParam<FamilyMemberHistory, Any> =
+    SimpleSearchParam<FamilyMemberHistory, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "FamilyMemberHistory.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the FamilyMemberHistory resource type. */
   public val ALL: List<SearchParam<FamilyMemberHistory, *>> =
     listOf(
@@ -52,129 +131,4 @@ public object FamilyMemberHistorySearchParam {
       Sex,
       Status,
     )
-
-  public data object Code : SearchParam<FamilyMemberHistory, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "FamilyMemberHistory.condition.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: FamilyMemberHistory): List<CodeableConcept> =
-      resource.condition.map { it.code }
-  }
-
-  public data object Date : SearchParam<FamilyMemberHistory, DateTime> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "FamilyMemberHistory.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: FamilyMemberHistory): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Identifier :
-    SearchParam<FamilyMemberHistory, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "FamilyMemberHistory.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: FamilyMemberHistory
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
-  }
-
-  public data object InstantiatesCanonical : SearchParam<FamilyMemberHistory, Canonical> {
-    public override val name: String = "instantiates-canonical"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "FamilyMemberHistory.instantiatesCanonical"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Questionnaire::class,
-        Measure::class,
-        PlanDefinition::class,
-        OperationDefinition::class,
-        ActivityDefinition::class,
-      )
-
-    public override fun extract(resource: FamilyMemberHistory): List<Canonical> =
-      resource.instantiatesCanonical
-  }
-
-  public data object InstantiatesUri : SearchParam<FamilyMemberHistory, Uri> {
-    public override val name: String = "instantiates-uri"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: String = "FamilyMemberHistory.instantiatesUri"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: FamilyMemberHistory): List<Uri> = resource.instantiatesUri
-  }
-
-  public data object Patient : SearchParam<FamilyMemberHistory, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "FamilyMemberHistory.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: FamilyMemberHistory): List<Reference> =
-      listOf(resource.patient)
-  }
-
-  public data object Relationship : SearchParam<FamilyMemberHistory, CodeableConcept> {
-    public override val name: String = "relationship"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "FamilyMemberHistory.relationship"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: FamilyMemberHistory): List<CodeableConcept> =
-      listOf(resource.relationship)
-  }
-
-  public data object Sex : SearchParam<FamilyMemberHistory, CodeableConcept> {
-    public override val name: String = "sex"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "FamilyMemberHistory.sex"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: FamilyMemberHistory): List<CodeableConcept> =
-      listOfNotNull(resource.sex)
-  }
-
-  public data object Status : SearchParam<FamilyMemberHistory, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "FamilyMemberHistory.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: FamilyMemberHistory): List<Any> = listOf(resource.status)
-  }
 }

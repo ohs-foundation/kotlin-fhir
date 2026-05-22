@@ -24,23 +24,149 @@ import dev.ohs.fhir.model.r5.ClinicalUseDefinition
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.DeviceDefinition
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Medication
 import dev.ohs.fhir.model.r5.MedicinalProductDefinition
 import dev.ohs.fhir.model.r5.NutritionProduct
 import dev.ohs.fhir.model.r5.ObservationDefinition
 import dev.ohs.fhir.model.r5.PlanDefinition
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Substance
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ClinicalUseDefinition] resource type. */
 public object ClinicalUseDefinitionSearchParam {
+  public val Contraindication: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+    SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
+      name = "contraindication",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.concept",
+      extractor = { resource ->
+        listOfNotNull(resource.contraindication?.diseaseSymptomProcedure?.concept)
+      },
+    )
+
+  public val ContraindicationReference: SearchParam<ClinicalUseDefinition, Reference> =
+    SimpleSearchParam<ClinicalUseDefinition, Reference>(
+      name = "contraindication-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.reference",
+      target = listOf(ObservationDefinition::class),
+      extractor = { resource ->
+        listOfNotNull(resource.contraindication?.diseaseSymptomProcedure?.reference)
+      },
+    )
+
+  public val Effect: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+    SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
+      name = "effect",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.concept",
+      extractor = { resource ->
+        listOfNotNull(resource.undesirableEffect?.symptomConditionEffect?.concept)
+      },
+    )
+
+  public val EffectReference: SearchParam<ClinicalUseDefinition, Reference> =
+    SimpleSearchParam<ClinicalUseDefinition, Reference>(
+      name = "effect-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.reference",
+      target = listOf(ObservationDefinition::class),
+      extractor = { resource ->
+        listOfNotNull(resource.undesirableEffect?.symptomConditionEffect?.reference)
+      },
+    )
+
+  public val Identifier: SearchParam<ClinicalUseDefinition, Identifier> =
+    SimpleSearchParam<ClinicalUseDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClinicalUseDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Indication: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+    SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
+      name = "indication",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClinicalUseDefinition.indication.diseaseSymptomProcedure.concept",
+      extractor = { resource ->
+        listOfNotNull(resource.indication?.diseaseSymptomProcedure?.concept)
+      },
+    )
+
+  public val IndicationReference: SearchParam<ClinicalUseDefinition, Reference> =
+    SimpleSearchParam<ClinicalUseDefinition, Reference>(
+      name = "indication-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ClinicalUseDefinition.indication.diseaseSymptomProcedure.reference",
+      target = listOf(ObservationDefinition::class),
+      extractor = { resource ->
+        listOfNotNull(resource.indication?.diseaseSymptomProcedure?.reference)
+      },
+    )
+
+  public val Interaction: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+    SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
+      name = "interaction",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClinicalUseDefinition.interaction.type",
+      extractor = { resource -> listOfNotNull(resource.interaction?.type) },
+    )
+
+  public val Product: SearchParam<ClinicalUseDefinition, Reference> =
+    SimpleSearchParam<ClinicalUseDefinition, Reference>(
+      name = "product",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ClinicalUseDefinition.subject.where(resolve() is MedicinalProductDefinition)",
+      target = listOf(MedicinalProductDefinition::class),
+      extractor = { resource ->
+        resource.subject.filter {
+          it.reference?.value?.toString()?.contains("MedicinalProductDefinition/") == true
+        }
+      },
+    )
+
+  public val Status: SearchParam<ClinicalUseDefinition, CodeableConcept> =
+    SimpleSearchParam<ClinicalUseDefinition, CodeableConcept>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClinicalUseDefinition.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
+  public val Subject: SearchParam<ClinicalUseDefinition, Reference> =
+    SimpleSearchParam<ClinicalUseDefinition, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ClinicalUseDefinition.subject",
+      target =
+        listOf(
+          MedicinalProductDefinition::class,
+          Device::class,
+          DeviceDefinition::class,
+          NutritionProduct::class,
+          ActivityDefinition::class,
+          PlanDefinition::class,
+          BiologicallyDerivedProduct::class,
+          Substance::class,
+          Medication::class,
+        ),
+      extractor = { resource -> resource.subject },
+    )
+
+  public val Type: SearchParam<ClinicalUseDefinition, Any> =
+    SimpleSearchParam<ClinicalUseDefinition, Any>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClinicalUseDefinition.type",
+      extractor = { resource -> listOf(resource.type) },
+    )
+
   /** All search parameters for the ClinicalUseDefinition resource type. */
   public val ALL: List<SearchParam<ClinicalUseDefinition, *>> =
     listOf(
@@ -57,181 +183,4 @@ public object ClinicalUseDefinitionSearchParam {
       Subject,
       Type,
     )
-
-  public data object Contraindication : SearchParam<ClinicalUseDefinition, CodeableConcept> {
-    public override val name: String = "contraindication"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String =
-      "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.contraindication?.diseaseSymptomProcedure?.concept)
-  }
-
-  public data object ContraindicationReference : SearchParam<ClinicalUseDefinition, Reference> {
-    public override val name: String = "contraindication-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure.reference"
-
-    public override val target: List<KClass<out Resource>> = listOf(ObservationDefinition::class)
-
-    public override fun extract(resource: ClinicalUseDefinition): List<Reference> =
-      listOfNotNull(resource.contraindication?.diseaseSymptomProcedure?.reference)
-  }
-
-  public data object Effect : SearchParam<ClinicalUseDefinition, CodeableConcept> {
-    public override val name: String = "effect"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String =
-      "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.undesirableEffect?.symptomConditionEffect?.concept)
-  }
-
-  public data object EffectReference : SearchParam<ClinicalUseDefinition, Reference> {
-    public override val name: String = "effect-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect.reference"
-
-    public override val target: List<KClass<out Resource>> = listOf(ObservationDefinition::class)
-
-    public override fun extract(resource: ClinicalUseDefinition): List<Reference> =
-      listOfNotNull(resource.undesirableEffect?.symptomConditionEffect?.reference)
-  }
-
-  public data object Identifier :
-    SearchParam<ClinicalUseDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ClinicalUseDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ClinicalUseDefinition
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Indication : SearchParam<ClinicalUseDefinition, CodeableConcept> {
-    public override val name: String = "indication"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String =
-      "ClinicalUseDefinition.indication.diseaseSymptomProcedure.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.indication?.diseaseSymptomProcedure?.concept)
-  }
-
-  public data object IndicationReference : SearchParam<ClinicalUseDefinition, Reference> {
-    public override val name: String = "indication-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "ClinicalUseDefinition.indication.diseaseSymptomProcedure.reference"
-
-    public override val target: List<KClass<out Resource>> = listOf(ObservationDefinition::class)
-
-    public override fun extract(resource: ClinicalUseDefinition): List<Reference> =
-      listOfNotNull(resource.indication?.diseaseSymptomProcedure?.reference)
-  }
-
-  public data object Interaction : SearchParam<ClinicalUseDefinition, CodeableConcept> {
-    public override val name: String = "interaction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ClinicalUseDefinition.interaction.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.interaction?.type)
-  }
-
-  public data object Product : SearchParam<ClinicalUseDefinition, Reference> {
-    public override val name: String = "product"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "ClinicalUseDefinition.subject.where(resolve() is MedicinalProductDefinition)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(MedicinalProductDefinition::class)
-
-    public override fun extract(resource: ClinicalUseDefinition): List<Reference> =
-      resource.subject.filter {
-        it.reference?.value?.toString()?.contains("MedicinalProductDefinition/") == true
-      }
-  }
-
-  public data object Status : SearchParam<ClinicalUseDefinition, CodeableConcept> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ClinicalUseDefinition.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClinicalUseDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.status)
-  }
-
-  public data object Subject : SearchParam<ClinicalUseDefinition, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ClinicalUseDefinition.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        MedicinalProductDefinition::class,
-        Device::class,
-        DeviceDefinition::class,
-        NutritionProduct::class,
-        ActivityDefinition::class,
-        PlanDefinition::class,
-        BiologicallyDerivedProduct::class,
-        Substance::class,
-        Medication::class,
-      )
-
-    public override fun extract(resource: ClinicalUseDefinition): List<Reference> = resource.subject
-  }
-
-  public data object Type : SearchParam<ClinicalUseDefinition, Any> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ClinicalUseDefinition.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClinicalUseDefinition): List<Any> = listOf(resource.type)
-  }
 }

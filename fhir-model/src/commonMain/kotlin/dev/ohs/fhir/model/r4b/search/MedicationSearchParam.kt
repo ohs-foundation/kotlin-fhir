@@ -20,21 +20,99 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Medication
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Substance
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Medication] resource type. */
 public object MedicationSearchParam {
+  public val Code: SearchParam<Medication, CodeableConcept> =
+    SimpleSearchParam<Medication, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Medication.code",
+      extractor = { resource -> listOfNotNull(resource.code) },
+    )
+
+  public val ExpirationDate: SearchParam<Medication, DateTime> =
+    SimpleSearchParam<Medication, DateTime>(
+      name = "expiration-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Medication.batch.expirationDate",
+      extractor = { resource -> listOfNotNull(resource.batch?.expirationDate) },
+    )
+
+  public val Form: SearchParam<Medication, CodeableConcept> =
+    SimpleSearchParam<Medication, CodeableConcept>(
+      name = "form",
+      type = SearchParamType.fromCode("token"),
+      expression = "Medication.form",
+      extractor = { resource -> listOfNotNull(resource.form) },
+    )
+
+  public val Identifier: SearchParam<Medication, Identifier> =
+    SimpleSearchParam<Medication, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Medication.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Ingredient: SearchParam<Medication, Reference> =
+    SimpleSearchParam<Medication, Reference>(
+      name = "ingredient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "(Medication.ingredient.item as Reference)",
+      target = listOf(Medication::class, Substance::class),
+      extractor = { resource ->
+        resource.ingredient.mapNotNull { (it.item as? Medication.Ingredient.Item.Reference)?.value }
+      },
+    )
+
+  public val IngredientCode: SearchParam<Medication, CodeableConcept> =
+    SimpleSearchParam<Medication, CodeableConcept>(
+      name = "ingredient-code",
+      type = SearchParamType.fromCode("token"),
+      expression = "(Medication.ingredient.item as CodeableConcept)",
+      extractor = { resource ->
+        resource.ingredient.mapNotNull {
+          (it.item as? Medication.Ingredient.Item.CodeableConcept)?.value
+        }
+      },
+    )
+
+  public val LotNumber: SearchParam<Medication, String> =
+    SimpleSearchParam<Medication, String>(
+      name = "lot-number",
+      type = SearchParamType.fromCode("token"),
+      expression = "Medication.batch.lotNumber",
+      extractor = { resource -> listOfNotNull(resource.batch?.lotNumber) },
+    )
+
+  public val Manufacturer: SearchParam<Medication, Reference> =
+    SimpleSearchParam<Medication, Reference>(
+      name = "manufacturer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Medication.manufacturer",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.manufacturer) },
+    )
+
+  public val Status: SearchParam<Medication, Any> =
+    SimpleSearchParam<Medication, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Medication.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
   /** All search parameters for the Medication resource type. */
   public val ALL: List<SearchParam<Medication, *>> =
     listOf(
@@ -48,123 +126,4 @@ public object MedicationSearchParam {
       Manufacturer,
       Status,
     )
-
-  public data object Code : SearchParam<Medication, CodeableConcept> {
-    public override val name: KotlinString = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Medication.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Medication): List<CodeableConcept> =
-      listOfNotNull(resource.code)
-  }
-
-  public data object ExpirationDate : SearchParam<Medication, DateTime> {
-    public override val name: KotlinString = "expiration-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "Medication.batch.expirationDate"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Medication): List<DateTime> =
-      listOfNotNull(resource.batch?.expirationDate)
-  }
-
-  public data object Form : SearchParam<Medication, CodeableConcept> {
-    public override val name: KotlinString = "form"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Medication.form"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Medication): List<CodeableConcept> =
-      listOfNotNull(resource.form)
-  }
-
-  public data object Identifier : SearchParam<Medication, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Medication.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Medication): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object Ingredient : SearchParam<Medication, Reference> {
-    public override val name: KotlinString = "ingredient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "(Medication.ingredient.item as Reference)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Medication::class, Substance::class)
-
-    public override fun extract(resource: Medication): List<Reference> =
-      resource.ingredient.mapNotNull { (it.item as? Medication.Ingredient.Item.Reference)?.value }
-  }
-
-  public data object IngredientCode : SearchParam<Medication, CodeableConcept> {
-    public override val name: KotlinString = "ingredient-code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "(Medication.ingredient.item as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Medication): List<CodeableConcept> =
-      resource.ingredient.mapNotNull {
-        (it.item as? Medication.Ingredient.Item.CodeableConcept)?.value
-      }
-  }
-
-  public data object LotNumber : SearchParam<Medication, R4bString> {
-    public override val name: KotlinString = "lot-number"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Medication.batch.lotNumber"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Medication): List<R4bString> =
-      listOfNotNull(resource.batch?.lotNumber)
-  }
-
-  public data object Manufacturer : SearchParam<Medication, Reference> {
-    public override val name: KotlinString = "manufacturer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Medication.manufacturer"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: Medication): List<Reference> =
-      listOfNotNull(resource.manufacturer)
-  }
-
-  public data object Status : SearchParam<Medication, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Medication.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Medication): List<Any> = listOfNotNull(resource.status)
-  }
 }

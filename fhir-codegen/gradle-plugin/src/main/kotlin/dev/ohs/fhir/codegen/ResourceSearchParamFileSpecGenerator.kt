@@ -17,15 +17,14 @@
 package dev.ohs.fhir.codegen
 
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.WildcardTypeName
 import com.squareup.kotlinpoet.asClassName
 import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
@@ -34,24 +33,23 @@ import dev.ohs.fhir.codegen.searchparam.SearchParamCodeEmitter
 import dev.ohs.fhir.codegen.searchparam.SearchParamPattern
 import dev.ohs.fhir.codegen.searchparam.SearchParamTypeResolver
 import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
-import kotlin.reflect.KClass
 
 /**
  * Generates per-resource search parameter container objects.
  *
- * For each resource type (e.g. Patient), produces a `{Resource}SearchParam` plain `object`
- * containing one `data object` per search parameter. Each data object directly implements
- * [SearchParam]`<Resource, T>` with the concrete resource type and a value type `T` derived from
- * the search parameter's FHIRPath expression. The container also exposes an `ALL` list of every
- * search parameter for that resource.
+ * For each resource type (e.g. Patient), produces a `{Resource}SearchParam` plain `object` exposing
+ * one `val` per search parameter. Each `val` is a [SearchParam]`<Resource, T>` backed by a
+ * `SimpleSearchParam` instance: metadata plus an `extractor` lambda. The container also exposes an
+ * `ALL` list of every search parameter for that resource. This keeps the generated output to one
+ * file (and a handful of `val`s) per resource rather than a class file per search parameter.
  *
  * This object orchestrates KotlinPoet type/file building. The actual work of interpreting the
- * search parameter's FHIRPath expression and generating the `extract` body is split across the
- * `dev.ohs.fhir.codegen.searchparam` package:
+ * search parameter's FHIRPath expression and generating the extraction expression is split across
+ * the `dev.ohs.fhir.codegen.searchparam` package:
  * - [dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression] classifies the expression into a
  *   [SearchParamPattern].
  * - [SearchParamTypeResolver] maps a pattern to the type parameter `T`.
- * - [SearchParamCodeEmitter] emits the Kotlin source string for the `extract` body.
+ * - [SearchParamCodeEmitter] emits the Kotlin source string for the extraction.
  */
 object ResourceSearchParamFileSpecGenerator {
 
@@ -72,6 +70,7 @@ object ResourceSearchParamFileSpecGenerator {
   ): FileSpec {
     val searchPackageName = "$packageName.search"
     val searchParamInterfaceClassName = ClassName(searchPackageName, "SearchParam")
+    val simpleSearchParamClassName = ClassName(searchPackageName, "SimpleSearchParam")
     val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
     val resourceClassName = ClassName(packageName, resourceName)
     val containerObjectName = "${resourceName}SearchParam"
@@ -79,20 +78,27 @@ object ResourceSearchParamFileSpecGenerator {
     val resolver = FhirPathExpressionResolver(elementsByType)
     val dedupedParams = searchParams.distinctBy { it.code }.sortedBy { it.code }
 
+    // The generated `val`s share the object's scope, so a target whose simple name matches a `val`
+    // name (e.g. a `patient` search param produces a `Patient` val) would shadow the model class in
+    // `X::class` expression position. Such targets are fully-qualified instead.
+    val valNames = dedupedParams.mapTo(mutableSetOf()) { it.code.toPropertyName() }
+
     val containerObject =
       TypeSpec.objectBuilder(containerObjectName)
         .addModifiers(KModifier.PUBLIC)
         .addKdoc("Search parameters for the [%T] resource type.", resourceClassName)
         .apply {
           for (searchParam in dedupedParams) {
-            addType(
-              buildSearchParamDataObject(
+            addProperty(
+              buildSearchParamProperty(
                 searchParam,
                 packageName,
                 resourceName,
                 resourceClassName,
                 searchParamInterfaceClassName,
+                simpleSearchParamClassName,
                 searchParamTypeClassName,
+                valNames,
                 resolver,
               )
             )
@@ -108,7 +114,7 @@ object ResourceSearchParamFileSpecGenerator {
               .addModifiers(KModifier.PUBLIC)
               .addKdoc("All search parameters for the %L resource type.", resourceName)
               .initializer(
-                "listOf(${dedupedParams.joinToString(", ") { it.code.toDataObjectName() }})"
+                "listOf(${dedupedParams.joinToString(", ") { it.code.toPropertyName() }})"
               )
               .build()
           )
@@ -121,74 +127,64 @@ object ResourceSearchParamFileSpecGenerator {
       .build()
   }
 
-  private fun buildSearchParamDataObject(
+  private fun buildSearchParamProperty(
     searchParam: SearchParameterDefinition,
     packageName: String,
     resourceName: String,
     resourceClassName: ClassName,
     searchParamInterfaceClassName: ClassName,
+    simpleSearchParamClassName: ClassName,
     searchParamTypeClassName: ClassName,
+    valNames: Set<String>,
     resolver: FhirPathExpressionResolver,
-  ): TypeSpec {
-    val objectName = searchParam.code.toDataObjectName()
+  ): PropertySpec {
+    val propertyName = searchParam.code.toPropertyName()
 
     val resourceExpression = searchParam.extractExpressionForResource(resourceName)
     val pattern = parseSearchParamExpression(resourceExpression, resourceName, resolver)
     val (valueTypeName, extractionCode) = render(pattern, packageName, resourceName)
 
-    val parentType = searchParamInterfaceClassName.parameterizedBy(resourceClassName, valueTypeName)
-    val returnType = List::class.asClassName().parameterizedBy(valueTypeName)
+    val declaredType =
+      searchParamInterfaceClassName.parameterizedBy(resourceClassName, valueTypeName)
+    val concreteType = simpleSearchParamClassName.parameterizedBy(resourceClassName, valueTypeName)
 
-    return TypeSpec.objectBuilder(objectName)
-      .addModifiers(KModifier.PUBLIC, KModifier.DATA)
-      .addSuperinterface(parentType)
-      .addProperty(
-        PropertySpec.builder("name", String::class)
-          .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
-          .initializer("%S", searchParam.code)
-          .build()
-      )
-      .addProperty(
-        PropertySpec.builder("type", searchParamTypeClassName)
-          .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
-          .initializer("%T.fromCode(%S)", searchParamTypeClassName, searchParam.type)
-          .build()
-      )
-      .addProperty(
-        PropertySpec.builder("expression", String::class)
-          .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
-          .initializer("%S", resourceExpression)
-          .build()
-      )
-      .addProperty(
-        PropertySpec.builder(
-            "target",
-            List::class.asClassName()
-              .parameterizedBy(
-                KClass::class.asClassName()
-                  .parameterizedBy(WildcardTypeName.producerOf(ClassName(packageName, "Resource")))
-              ),
-          )
-          .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
-          .apply {
-            if (searchParam.target.isEmpty()) {
-              initializer("emptyList()")
-            } else {
-              val targetClassNames = searchParam.target.map { ClassName(packageName, it) }
-              val format = "listOf(${targetClassNames.joinToString(", ") { "%T::class" }})"
-              initializer(format, *targetClassNames.toTypedArray())
+    // The emitter produces a `return <expr>` statement (its historical extract()-body form); the
+    // extractor lambda needs the bare expression. Unsupported params emit `emptyList()`, which does
+    // not reference `resource`, so use a parameterless lambda to avoid an unused-parameter warning.
+    val extractionExpr = extractionCode.removePrefix("return ")
+    val extractorLambda =
+      if ("resource" in extractionExpr) "{ resource -> $extractionExpr }" else "{ $extractionExpr }"
+
+    val initializer =
+      CodeBlock.builder()
+        .add("%T(\n", concreteType)
+        .indent()
+        .add("name = %S,\n", searchParam.code)
+        .add("type = %T.fromCode(%S),\n", searchParamTypeClassName, searchParam.type)
+        .add("expression = %S,\n", resourceExpression)
+        .apply {
+          if (searchParam.target.isNotEmpty()) {
+            add("target = listOf(")
+            searchParam.target.forEachIndexed { index, target ->
+              if (index > 0) add(", ")
+              if (target in valNames) {
+                // Fully-qualify to force the class literal rather than the shadowing `val`.
+                add("%L", "$packageName.$target::class")
+              } else {
+                add("%T::class", ClassName(packageName, target))
+              }
             }
+            add("),\n")
           }
-          .build()
-      )
-      .addFunction(
-        FunSpec.builder("extract")
-          .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
-          .addParameter("resource", resourceClassName)
-          .returns(returnType)
-          .addCode(extractionCode)
-          .build()
-      )
+        }
+        .add("extractor = %L,\n", extractorLambda)
+        .unindent()
+        .add(")")
+        .build()
+
+    return PropertySpec.builder(propertyName, declaredType)
+      .addModifiers(KModifier.PUBLIC)
+      .initializer(initializer)
       .build()
   }
 
@@ -266,7 +262,7 @@ private fun SearchParameterDefinition.extractExpressionForResource(resourceName:
 }
 
 /**
- * Converts a search parameter code (e.g., "general-practitioner") to a data object name (e.g.,
+ * Converts a search parameter code (e.g., "general-practitioner") to a property name (e.g.,
  * "GeneralPractitioner").
  */
-private fun String.toDataObjectName(): String = split("-").joinToString("") { it.capitalized() }
+private fun String.toPropertyName(): String = split("-").joinToString("") { it.capitalized() }

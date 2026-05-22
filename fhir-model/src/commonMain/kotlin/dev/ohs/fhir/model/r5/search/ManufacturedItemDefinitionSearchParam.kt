@@ -19,86 +19,57 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ManufacturedItemDefinition] resource type. */
 public object ManufacturedItemDefinitionSearchParam {
+  public val DoseForm: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
+    SimpleSearchParam<ManufacturedItemDefinition, CodeableConcept>(
+      name = "dose-form",
+      type = SearchParamType.fromCode("token"),
+      expression = "ManufacturedItemDefinition.manufacturedDoseForm",
+      extractor = { resource -> listOf(resource.manufacturedDoseForm) },
+    )
+
+  public val Identifier: SearchParam<ManufacturedItemDefinition, Identifier> =
+    SimpleSearchParam<ManufacturedItemDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ManufacturedItemDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Ingredient: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
+    SimpleSearchParam<ManufacturedItemDefinition, CodeableConcept>(
+      name = "ingredient",
+      type = SearchParamType.fromCode("token"),
+      expression = "ManufacturedItemDefinition.ingredient",
+      extractor = { resource -> resource.ingredient },
+    )
+
+  public val Name: SearchParam<ManufacturedItemDefinition, String> =
+    SimpleSearchParam<ManufacturedItemDefinition, String>(
+      name = "name",
+      type = SearchParamType.fromCode("token"),
+      expression = "ManufacturedItemDefinition.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Status: SearchParam<ManufacturedItemDefinition, Any> =
+    SimpleSearchParam<ManufacturedItemDefinition, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ManufacturedItemDefinition.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the ManufacturedItemDefinition resource type. */
   public val ALL: List<SearchParam<ManufacturedItemDefinition, *>> =
     listOf(DoseForm, Identifier, Ingredient, Name, Status)
-
-  public data object DoseForm : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
-    public override val name: KotlinString = "dose-form"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ManufacturedItemDefinition.manufacturedDoseForm"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
-      listOf(resource.manufacturedDoseForm)
-  }
-
-  public data object Identifier :
-    SearchParam<ManufacturedItemDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ManufacturedItemDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ManufacturedItemDefinition
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Ingredient : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
-    public override val name: KotlinString = "ingredient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ManufacturedItemDefinition.ingredient"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
-      resource.ingredient
-  }
-
-  public data object Name : SearchParam<ManufacturedItemDefinition, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ManufacturedItemDefinition.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ManufacturedItemDefinition): List<R5String> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Status : SearchParam<ManufacturedItemDefinition, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ManufacturedItemDefinition.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ManufacturedItemDefinition): List<Any> =
-      listOf(resource.status)
-  }
 }

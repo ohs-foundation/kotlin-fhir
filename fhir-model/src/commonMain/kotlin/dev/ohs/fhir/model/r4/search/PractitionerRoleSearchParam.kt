@@ -22,18 +22,129 @@ import dev.ohs.fhir.model.r4.Boolean
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.ContactPoint
 import dev.ohs.fhir.model.r4.HealthcareService
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [PractitionerRole] resource type. */
 public object PractitionerRoleSearchParam {
+  public val Active: SearchParam<PractitionerRole, Boolean> =
+    SimpleSearchParam<PractitionerRole, Boolean>(
+      name = "active",
+      type = SearchParamType.fromCode("token"),
+      expression = "PractitionerRole.active",
+      extractor = { resource -> listOfNotNull(resource.active) },
+    )
+
+  public val Date: SearchParam<PractitionerRole, Period> =
+    SimpleSearchParam<PractitionerRole, Period>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "PractitionerRole.period",
+      extractor = { resource -> listOfNotNull(resource.period) },
+    )
+
+  public val Email: SearchParam<PractitionerRole, ContactPoint> =
+    SimpleSearchParam<PractitionerRole, ContactPoint>(
+      name = "email",
+      type = SearchParamType.fromCode("token"),
+      expression = "PractitionerRole.telecom.where(system='email')",
+      extractor = { resource ->
+        resource.telecom.filter { it.system?.value?.toString() == "email" }
+      },
+    )
+
+  public val Endpoint: SearchParam<PractitionerRole, Reference> =
+    SimpleSearchParam<PractitionerRole, Reference>(
+      name = "endpoint",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PractitionerRole.endpoint",
+      target = listOf(dev.ohs.fhir.model.r4.Endpoint::class),
+      extractor = { resource -> resource.endpoint },
+    )
+
+  public val Identifier: SearchParam<PractitionerRole, Identifier> =
+    SimpleSearchParam<PractitionerRole, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "PractitionerRole.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Location: SearchParam<PractitionerRole, Reference> =
+    SimpleSearchParam<PractitionerRole, Reference>(
+      name = "location",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PractitionerRole.location",
+      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      extractor = { resource -> resource.location },
+    )
+
+  public val Organization: SearchParam<PractitionerRole, Reference> =
+    SimpleSearchParam<PractitionerRole, Reference>(
+      name = "organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PractitionerRole.organization",
+      target = listOf(dev.ohs.fhir.model.r4.Organization::class),
+      extractor = { resource -> listOfNotNull(resource.organization) },
+    )
+
+  public val Phone: SearchParam<PractitionerRole, ContactPoint> =
+    SimpleSearchParam<PractitionerRole, ContactPoint>(
+      name = "phone",
+      type = SearchParamType.fromCode("token"),
+      expression = "PractitionerRole.telecom.where(system='phone')",
+      extractor = { resource ->
+        resource.telecom.filter { it.system?.value?.toString() == "phone" }
+      },
+    )
+
+  public val Practitioner: SearchParam<PractitionerRole, Reference> =
+    SimpleSearchParam<PractitionerRole, Reference>(
+      name = "practitioner",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PractitionerRole.practitioner",
+      target = listOf(dev.ohs.fhir.model.r4.Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.practitioner) },
+    )
+
+  public val Role: SearchParam<PractitionerRole, CodeableConcept> =
+    SimpleSearchParam<PractitionerRole, CodeableConcept>(
+      name = "role",
+      type = SearchParamType.fromCode("token"),
+      expression = "PractitionerRole.code",
+      extractor = { resource -> resource.code },
+    )
+
+  public val Service: SearchParam<PractitionerRole, Reference> =
+    SimpleSearchParam<PractitionerRole, Reference>(
+      name = "service",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PractitionerRole.healthcareService",
+      target = listOf(HealthcareService::class),
+      extractor = { resource -> resource.healthcareService },
+    )
+
+  public val Specialty: SearchParam<PractitionerRole, CodeableConcept> =
+    SimpleSearchParam<PractitionerRole, CodeableConcept>(
+      name = "specialty",
+      type = SearchParamType.fromCode("token"),
+      expression = "PractitionerRole.specialty",
+      extractor = { resource -> resource.specialty },
+    )
+
+  public val Telecom: SearchParam<PractitionerRole, ContactPoint> =
+    SimpleSearchParam<PractitionerRole, ContactPoint>(
+      name = "telecom",
+      type = SearchParamType.fromCode("token"),
+      expression = "PractitionerRole.telecom",
+      extractor = { resource -> resource.telecom },
+    )
+
   /** All search parameters for the PractitionerRole resource type. */
   public val ALL: List<SearchParam<PractitionerRole, *>> =
     listOf(
@@ -51,174 +162,4 @@ public object PractitionerRoleSearchParam {
       Specialty,
       Telecom,
     )
-
-  public data object Active : SearchParam<PractitionerRole, Boolean> {
-    public override val name: String = "active"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "PractitionerRole.active"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PractitionerRole): List<Boolean> =
-      listOfNotNull(resource.active)
-  }
-
-  public data object Date : SearchParam<PractitionerRole, Period> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "PractitionerRole.period"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PractitionerRole): List<Period> =
-      listOfNotNull(resource.period)
-  }
-
-  public data object Email : SearchParam<PractitionerRole, ContactPoint> {
-    public override val name: String = "email"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "PractitionerRole.telecom.where(system='email')"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PractitionerRole): List<ContactPoint> =
-      resource.telecom.filter { it.system?.value?.toString() == "email" }
-  }
-
-  public data object Endpoint : SearchParam<PractitionerRole, Reference> {
-    public override val name: String = "endpoint"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "PractitionerRole.endpoint"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Endpoint::class)
-
-    public override fun extract(resource: PractitionerRole): List<Reference> = resource.endpoint
-  }
-
-  public data object Identifier : SearchParam<PractitionerRole, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "PractitionerRole.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: PractitionerRole
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Location : SearchParam<PractitionerRole, Reference> {
-    public override val name: String = "location"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "PractitionerRole.location"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Location::class)
-
-    public override fun extract(resource: PractitionerRole): List<Reference> = resource.location
-  }
-
-  public data object Organization : SearchParam<PractitionerRole, Reference> {
-    public override val name: String = "organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "PractitionerRole.organization"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Organization::class)
-
-    public override fun extract(resource: PractitionerRole): List<Reference> =
-      listOfNotNull(resource.organization)
-  }
-
-  public data object Phone : SearchParam<PractitionerRole, ContactPoint> {
-    public override val name: String = "phone"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "PractitionerRole.telecom.where(system='phone')"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PractitionerRole): List<ContactPoint> =
-      resource.telecom.filter { it.system?.value?.toString() == "phone" }
-  }
-
-  public data object Practitioner : SearchParam<PractitionerRole, Reference> {
-    public override val name: String = "practitioner"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "PractitionerRole.practitioner"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Practitioner::class)
-
-    public override fun extract(resource: PractitionerRole): List<Reference> =
-      listOfNotNull(resource.practitioner)
-  }
-
-  public data object Role : SearchParam<PractitionerRole, CodeableConcept> {
-    public override val name: String = "role"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "PractitionerRole.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PractitionerRole): List<CodeableConcept> = resource.code
-  }
-
-  public data object Service : SearchParam<PractitionerRole, Reference> {
-    public override val name: String = "service"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "PractitionerRole.healthcareService"
-
-    public override val target: List<KClass<out Resource>> = listOf(HealthcareService::class)
-
-    public override fun extract(resource: PractitionerRole): List<Reference> =
-      resource.healthcareService
-  }
-
-  public data object Specialty : SearchParam<PractitionerRole, CodeableConcept> {
-    public override val name: String = "specialty"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "PractitionerRole.specialty"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PractitionerRole): List<CodeableConcept> =
-      resource.specialty
-  }
-
-  public data object Telecom : SearchParam<PractitionerRole, ContactPoint> {
-    public override val name: String = "telecom"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "PractitionerRole.telecom"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PractitionerRole): List<ContactPoint> = resource.telecom
-  }
 }

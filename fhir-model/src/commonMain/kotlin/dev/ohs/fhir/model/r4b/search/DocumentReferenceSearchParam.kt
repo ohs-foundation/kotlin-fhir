@@ -82,6 +82,7 @@ import dev.ohs.fhir.model.r4b.GraphDefinition
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.GuidanceResponse
 import dev.ohs.fhir.model.r4b.HealthcareService
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.ImagingStudy
 import dev.ohs.fhir.model.r4b.Immunization
 import dev.ohs.fhir.model.r4b.ImmunizationEvaluation
@@ -120,6 +121,7 @@ import dev.ohs.fhir.model.r4b.OrganizationAffiliation
 import dev.ohs.fhir.model.r4b.PackagedProductDefinition
 import dev.ohs.fhir.model.r4b.PaymentNotice
 import dev.ohs.fhir.model.r4b.PaymentReconciliation
+import dev.ohs.fhir.model.r4b.Period
 import dev.ohs.fhir.model.r4b.Person
 import dev.ohs.fhir.model.r4b.PlanDefinition
 import dev.ohs.fhir.model.r4b.Practitioner
@@ -136,7 +138,6 @@ import dev.ohs.fhir.model.r4b.ResearchDefinition
 import dev.ohs.fhir.model.r4b.ResearchElementDefinition
 import dev.ohs.fhir.model.r4b.ResearchStudy
 import dev.ohs.fhir.model.r4b.ResearchSubject
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.RiskAssessment
 import dev.ohs.fhir.model.r4b.Schedule
 import dev.ohs.fhir.model.r4b.SearchParameter
@@ -144,7 +145,7 @@ import dev.ohs.fhir.model.r4b.ServiceRequest
 import dev.ohs.fhir.model.r4b.Slot
 import dev.ohs.fhir.model.r4b.Specimen
 import dev.ohs.fhir.model.r4b.SpecimenDefinition
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.StructureDefinition
 import dev.ohs.fhir.model.r4b.StructureMap
 import dev.ohs.fhir.model.r4b.Subscription
@@ -164,13 +165,385 @@ import dev.ohs.fhir.model.r4b.VerificationResult
 import dev.ohs.fhir.model.r4b.VisionPrescription
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [DocumentReference] resource type. */
 public object DocumentReferenceSearchParam {
+  public val Authenticator: SearchParam<DocumentReference, Reference> =
+    SimpleSearchParam<DocumentReference, Reference>(
+      name = "authenticator",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DocumentReference.authenticator",
+      target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
+      extractor = { resource -> listOfNotNull(resource.authenticator) },
+    )
+
+  public val Author: SearchParam<DocumentReference, Reference> =
+    SimpleSearchParam<DocumentReference, Reference>(
+      name = "author",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DocumentReference.author",
+      target =
+        listOf(
+          Practitioner::class,
+          Organization::class,
+          Device::class,
+          dev.ohs.fhir.model.r4b.Patient::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> resource.author },
+    )
+
+  public val Category: SearchParam<DocumentReference, CodeableConcept> =
+    SimpleSearchParam<DocumentReference, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Contenttype: SearchParam<DocumentReference, Any> =
+    SimpleSearchParam<DocumentReference, Any>(
+      name = "contenttype",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.content.attachment.contentType",
+      extractor = { resource ->
+        resource.content.map { it.attachment }.mapNotNull { it.contentType }
+      },
+    )
+
+  public val Custodian: SearchParam<DocumentReference, Reference> =
+    SimpleSearchParam<DocumentReference, Reference>(
+      name = "custodian",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DocumentReference.custodian",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.custodian) },
+    )
+
+  public val Date: SearchParam<DocumentReference, Instant> =
+    SimpleSearchParam<DocumentReference, Instant>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "DocumentReference.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Description: SearchParam<DocumentReference, String> =
+    SimpleSearchParam<DocumentReference, String>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "DocumentReference.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Encounter: SearchParam<DocumentReference, Reference> =
+    SimpleSearchParam<DocumentReference, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DocumentReference.context.encounter.where(resolve() is Encounter)",
+      target = listOf(dev.ohs.fhir.model.r4b.Encounter::class),
+      extractor = { resource ->
+        (resource.context?.encounter ?: emptyList()).filter {
+          it.reference?.value?.toString()?.contains("Encounter/") == true
+        }
+      },
+    )
+
+  public val Event: SearchParam<DocumentReference, CodeableConcept> =
+    SimpleSearchParam<DocumentReference, CodeableConcept>(
+      name = "event",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.context.event",
+      extractor = { resource -> resource.context?.event ?: emptyList() },
+    )
+
+  public val Facility: SearchParam<DocumentReference, CodeableConcept> =
+    SimpleSearchParam<DocumentReference, CodeableConcept>(
+      name = "facility",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.context.facilityType",
+      extractor = { resource -> listOfNotNull(resource.context?.facilityType) },
+    )
+
+  public val Format: SearchParam<DocumentReference, Coding> =
+    SimpleSearchParam<DocumentReference, Coding>(
+      name = "format",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.content.format",
+      extractor = { resource -> resource.content.mapNotNull { it.format } },
+    )
+
+  public val Identifier: SearchParam<DocumentReference, Identifier> =
+    SimpleSearchParam<DocumentReference, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.masterIdentifier",
+      extractor = { resource -> listOfNotNull(resource.masterIdentifier) },
+    )
+
+  public val Language: SearchParam<DocumentReference, Any> =
+    SimpleSearchParam<DocumentReference, Any>(
+      name = "language",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.content.attachment.language",
+      extractor = { resource -> resource.content.map { it.attachment }.mapNotNull { it.language } },
+    )
+
+  public val Location: SearchParam<DocumentReference, Url> =
+    SimpleSearchParam<DocumentReference, Url>(
+      name = "location",
+      type = SearchParamType.fromCode("uri"),
+      expression = "DocumentReference.content.attachment.url",
+      extractor = { resource -> resource.content.map { it.attachment }.mapNotNull { it.url } },
+    )
+
+  public val Patient: SearchParam<DocumentReference, Reference> =
+    SimpleSearchParam<DocumentReference, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DocumentReference.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource ->
+        listOfNotNull(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Period: SearchParam<DocumentReference, Period> =
+    SimpleSearchParam<DocumentReference, Period>(
+      name = "period",
+      type = SearchParamType.fromCode("date"),
+      expression = "DocumentReference.context.period",
+      extractor = { resource -> listOfNotNull(resource.context?.period) },
+    )
+
+  public val Related: SearchParam<DocumentReference, Reference> =
+    SimpleSearchParam<DocumentReference, Reference>(
+      name = "related",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DocumentReference.context.related",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          CatalogEntry::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceDefinition::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUseStatement::class,
+          DiagnosticReport::class,
+          DocumentManifest::class,
+          DocumentReference::class,
+          dev.ohs.fhir.model.r4b.Encounter::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R4bList::class,
+          dev.ohs.fhir.model.r4b.Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Media::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          dev.ohs.fhir.model.r4b.Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestGroup::class,
+          ResearchDefinition::class,
+          ResearchElementDefinition::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestReport::class,
+          TestScript::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource -> resource.context?.related ?: emptyList() },
+    )
+
+  public val Relatesto: SearchParam<DocumentReference, Reference> =
+    SimpleSearchParam<DocumentReference, Reference>(
+      name = "relatesto",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DocumentReference.relatesTo.target",
+      target = listOf(DocumentReference::class),
+      extractor = { resource -> resource.relatesTo.map { it.target } },
+    )
+
+  public val Relation: SearchParam<DocumentReference, Any> =
+    SimpleSearchParam<DocumentReference, Any>(
+      name = "relation",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.relatesTo.code",
+      extractor = { resource -> resource.relatesTo.map { it.code } },
+    )
+
+  public val Relationship: SearchParam<DocumentReference, DocumentReference.RelatesTo> =
+    SimpleSearchParam<DocumentReference, DocumentReference.RelatesTo>(
+      name = "relationship",
+      type = SearchParamType.fromCode("composite"),
+      expression = "DocumentReference.relatesTo",
+      extractor = { resource -> resource.relatesTo },
+    )
+
+  public val SecurityLabel: SearchParam<DocumentReference, CodeableConcept> =
+    SimpleSearchParam<DocumentReference, CodeableConcept>(
+      name = "security-label",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.securityLabel",
+      extractor = { resource -> resource.securityLabel },
+    )
+
+  public val Setting: SearchParam<DocumentReference, CodeableConcept> =
+    SimpleSearchParam<DocumentReference, CodeableConcept>(
+      name = "setting",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.context.practiceSetting",
+      extractor = { resource -> listOfNotNull(resource.context?.practiceSetting) },
+    )
+
+  public val Status: SearchParam<DocumentReference, Any> =
+    SimpleSearchParam<DocumentReference, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<DocumentReference, Reference> =
+    SimpleSearchParam<DocumentReference, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DocumentReference.subject",
+      target =
+        listOf(
+          Practitioner::class,
+          Group::class,
+          Device::class,
+          dev.ohs.fhir.model.r4b.Patient::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
+  public val Type: SearchParam<DocumentReference, CodeableConcept> =
+    SimpleSearchParam<DocumentReference, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "DocumentReference.type",
+      extractor = { resource -> listOfNotNull(resource.type) },
+    )
+
   /** All search parameters for the DocumentReference resource type. */
   public val ALL: CollectionsList<SearchParam<DocumentReference, *>> =
     listOf(
@@ -200,500 +573,4 @@ public object DocumentReferenceSearchParam {
       Subject,
       Type,
     )
-
-  public data object Authenticator : SearchParam<DocumentReference, Reference> {
-    public override val name: KotlinString = "authenticator"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "DocumentReference.authenticator"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Practitioner::class, Organization::class, PractitionerRole::class)
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Reference> =
-      listOfNotNull(resource.authenticator)
-  }
-
-  public data object Author : SearchParam<DocumentReference, Reference> {
-    public override val name: KotlinString = "author"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "DocumentReference.author"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Organization::class,
-        Device::class,
-        dev.ohs.fhir.model.r4b.Patient::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Reference> =
-      resource.author
-  }
-
-  public data object Category : SearchParam<DocumentReference, CodeableConcept> {
-    public override val name: KotlinString = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.category"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<CodeableConcept> =
-      resource.category
-  }
-
-  public data object Contenttype : SearchParam<DocumentReference, Any> {
-    public override val name: KotlinString = "contenttype"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "DocumentReference.content.attachment.contentType"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Any> =
-      resource.content.map { it.attachment }.mapNotNull { it.contentType }
-  }
-
-  public data object Custodian : SearchParam<DocumentReference, Reference> {
-    public override val name: KotlinString = "custodian"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "DocumentReference.custodian"
-
-    public override val target: CollectionsList<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Reference> =
-      listOfNotNull(resource.custodian)
-  }
-
-  public data object Date : SearchParam<DocumentReference, Instant> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "DocumentReference.date"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Instant> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Description : SearchParam<DocumentReference, R4bString> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "DocumentReference.description"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<R4bString> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Encounter : SearchParam<DocumentReference, Reference> {
-    public override val name: KotlinString = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "DocumentReference.context.encounter.where(resolve() is Encounter)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Encounter::class)
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Reference> =
-      (resource.context?.encounter ?: emptyList()).filter {
-        it.reference?.value?.toString()?.contains("Encounter/") == true
-      }
-  }
-
-  public data object Event : SearchParam<DocumentReference, CodeableConcept> {
-    public override val name: KotlinString = "event"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.context.event"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<CodeableConcept> =
-      resource.context?.event ?: emptyList()
-  }
-
-  public data object Facility : SearchParam<DocumentReference, CodeableConcept> {
-    public override val name: KotlinString = "facility"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.context.facilityType"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.context?.facilityType)
-  }
-
-  public data object Format : SearchParam<DocumentReference, Coding> {
-    public override val name: KotlinString = "format"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.content.format"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Coding> =
-      resource.content.mapNotNull { it.format }
-  }
-
-  public data object Identifier :
-    SearchParam<DocumentReference, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.masterIdentifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: DocumentReference
-    ): CollectionsList<dev.ohs.fhir.model.r4b.Identifier> = listOfNotNull(resource.masterIdentifier)
-  }
-
-  public data object Language : SearchParam<DocumentReference, Any> {
-    public override val name: KotlinString = "language"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.content.attachment.language"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Any> =
-      resource.content.map { it.attachment }.mapNotNull { it.language }
-  }
-
-  public data object Location : SearchParam<DocumentReference, Url> {
-    public override val name: KotlinString = "location"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "DocumentReference.content.attachment.url"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Url> =
-      resource.content.map { it.attachment }.mapNotNull { it.url }
-  }
-
-  public data object Patient : SearchParam<DocumentReference, Reference> {
-    public override val name: KotlinString = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "DocumentReference.subject.where(resolve() is Patient)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Reference> =
-      listOfNotNull(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Period : SearchParam<DocumentReference, dev.ohs.fhir.model.r4b.Period> {
-    public override val name: KotlinString = "period"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "DocumentReference.context.period"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: DocumentReference
-    ): CollectionsList<dev.ohs.fhir.model.r4b.Period> = listOfNotNull(resource.context?.period)
-  }
-
-  public data object Related : SearchParam<DocumentReference, Reference> {
-    public override val name: KotlinString = "related"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "DocumentReference.context.related"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        CatalogEntry::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceDefinition::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUseStatement::class,
-        DiagnosticReport::class,
-        DocumentManifest::class,
-        DocumentReference::class,
-        dev.ohs.fhir.model.r4b.Encounter::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R4bList::class,
-        dev.ohs.fhir.model.r4b.Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Media::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        dev.ohs.fhir.model.r4b.Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestGroup::class,
-        ResearchDefinition::class,
-        ResearchElementDefinition::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestReport::class,
-        TestScript::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Reference> =
-      resource.context?.related ?: emptyList()
-  }
-
-  public data object Relatesto : SearchParam<DocumentReference, Reference> {
-    public override val name: KotlinString = "relatesto"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "DocumentReference.relatesTo.target"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(DocumentReference::class)
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Reference> =
-      resource.relatesTo.map { it.target }
-  }
-
-  public data object Relation : SearchParam<DocumentReference, Any> {
-    public override val name: KotlinString = "relation"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.relatesTo.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Any> =
-      resource.relatesTo.map { it.code }
-  }
-
-  public data object Relationship : SearchParam<DocumentReference, DocumentReference.RelatesTo> {
-    public override val name: KotlinString = "relationship"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "DocumentReference.relatesTo"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: DocumentReference
-    ): CollectionsList<DocumentReference.RelatesTo> = resource.relatesTo
-  }
-
-  public data object SecurityLabel : SearchParam<DocumentReference, CodeableConcept> {
-    public override val name: KotlinString = "security-label"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.securityLabel"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<CodeableConcept> =
-      resource.securityLabel
-  }
-
-  public data object Setting : SearchParam<DocumentReference, CodeableConcept> {
-    public override val name: KotlinString = "setting"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.context.practiceSetting"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.context?.practiceSetting)
-  }
-
-  public data object Status : SearchParam<DocumentReference, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.status"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Any> =
-      listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<DocumentReference, Reference> {
-    public override val name: KotlinString = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "DocumentReference.subject"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Group::class,
-        Device::class,
-        dev.ohs.fhir.model.r4b.Patient::class,
-      )
-
-    public override fun extract(resource: DocumentReference): CollectionsList<Reference> =
-      listOfNotNull(resource.subject)
-  }
-
-  public data object Type : SearchParam<DocumentReference, CodeableConcept> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DocumentReference.type"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DocumentReference): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.type)
-  }
 }

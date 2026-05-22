@@ -79,6 +79,7 @@ import dev.ohs.fhir.model.r4.GraphDefinition
 import dev.ohs.fhir.model.r4.Group
 import dev.ohs.fhir.model.r4.GuidanceResponse
 import dev.ohs.fhir.model.r4.HealthcareService
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.ImagingStudy
 import dev.ohs.fhir.model.r4.Immunization
 import dev.ohs.fhir.model.r4.ImmunizationEvaluation
@@ -137,7 +138,6 @@ import dev.ohs.fhir.model.r4.ResearchDefinition
 import dev.ohs.fhir.model.r4.ResearchElementDefinition
 import dev.ohs.fhir.model.r4.ResearchStudy
 import dev.ohs.fhir.model.r4.ResearchSubject
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.RiskAssessment
 import dev.ohs.fhir.model.r4.RiskEvidenceSynthesis
 import dev.ohs.fhir.model.r4.Schedule
@@ -167,13 +167,328 @@ import dev.ohs.fhir.model.r4.VerificationResult
 import dev.ohs.fhir.model.r4.VisionPrescription
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [CommunicationRequest] resource type. */
 public object CommunicationRequestSearchParam {
+  public val Authored: SearchParam<CommunicationRequest, DateTime> =
+    SimpleSearchParam<CommunicationRequest, DateTime>(
+      name = "authored",
+      type = SearchParamType.fromCode("date"),
+      expression = "CommunicationRequest.authoredOn",
+      extractor = { resource -> listOfNotNull(resource.authoredOn) },
+    )
+
+  public val BasedOn: SearchParam<CommunicationRequest, Reference> =
+    SimpleSearchParam<CommunicationRequest, Reference>(
+      name = "based-on",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CommunicationRequest.basedOn",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          CatalogEntry::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceDefinition::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUseStatement::class,
+          DiagnosticReport::class,
+          DocumentManifest::class,
+          DocumentReference::class,
+          EffectEvidenceSynthesis::class,
+          dev.ohs.fhir.model.r4.Encounter::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          InsurancePlan::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R4List::class,
+          Location::class,
+          Measure::class,
+          MeasureReport::class,
+          Media::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProduct::class,
+          MedicinalProductAuthorization::class,
+          MedicinalProductContraindication::class,
+          MedicinalProductIndication::class,
+          MedicinalProductIngredient::class,
+          MedicinalProductInteraction::class,
+          MedicinalProductManufactured::class,
+          MedicinalProductPackaged::class,
+          MedicinalProductPharmaceutical::class,
+          MedicinalProductUndesirableEffect::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionOrder::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RelatedPerson::class,
+          RequestGroup::class,
+          ResearchDefinition::class,
+          ResearchElementDefinition::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          RiskEvidenceSynthesis::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          Substance::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SubstanceSpecification::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestReport::class,
+          TestScript::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource -> resource.basedOn },
+    )
+
+  public val Category: SearchParam<CommunicationRequest, CodeableConcept> =
+    SimpleSearchParam<CommunicationRequest, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "CommunicationRequest.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Encounter: SearchParam<CommunicationRequest, Reference> =
+    SimpleSearchParam<CommunicationRequest, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CommunicationRequest.encounter",
+      target = listOf(dev.ohs.fhir.model.r4.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val GroupIdentifier: SearchParam<CommunicationRequest, Identifier> =
+    SimpleSearchParam<CommunicationRequest, Identifier>(
+      name = "group-identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "CommunicationRequest.groupIdentifier",
+      extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
+    )
+
+  public val Identifier: SearchParam<CommunicationRequest, Identifier> =
+    SimpleSearchParam<CommunicationRequest, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "CommunicationRequest.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Medium: SearchParam<CommunicationRequest, CodeableConcept> =
+    SimpleSearchParam<CommunicationRequest, CodeableConcept>(
+      name = "medium",
+      type = SearchParamType.fromCode("token"),
+      expression = "CommunicationRequest.medium",
+      extractor = { resource -> resource.medium },
+    )
+
+  public val Occurrence: SearchParam<CommunicationRequest, DateTime> =
+    SimpleSearchParam<CommunicationRequest, DateTime>(
+      name = "occurrence",
+      type = SearchParamType.fromCode("date"),
+      expression = "(CommunicationRequest.occurrence as dateTime)",
+      extractor = { resource ->
+        listOfNotNull((resource.occurrence as? CommunicationRequest.Occurrence.DateTime)?.value)
+      },
+    )
+
+  public val Patient: SearchParam<CommunicationRequest, Reference> =
+    SimpleSearchParam<CommunicationRequest, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CommunicationRequest.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource ->
+        listOfNotNull(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Priority: SearchParam<CommunicationRequest, Any> =
+    SimpleSearchParam<CommunicationRequest, Any>(
+      name = "priority",
+      type = SearchParamType.fromCode("token"),
+      expression = "CommunicationRequest.priority",
+      extractor = { resource -> listOfNotNull(resource.priority) },
+    )
+
+  public val Recipient: SearchParam<CommunicationRequest, Reference> =
+    SimpleSearchParam<CommunicationRequest, Reference>(
+      name = "recipient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CommunicationRequest.recipient",
+      target =
+        listOf(
+          Practitioner::class,
+          Group::class,
+          Organization::class,
+          CareTeam::class,
+          Device::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          HealthcareService::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> resource.recipient },
+    )
+
+  public val Replaces: SearchParam<CommunicationRequest, Reference> =
+    SimpleSearchParam<CommunicationRequest, Reference>(
+      name = "replaces",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CommunicationRequest.replaces",
+      target = listOf(CommunicationRequest::class),
+      extractor = { resource -> resource.replaces },
+    )
+
+  public val Requester: SearchParam<CommunicationRequest, Reference> =
+    SimpleSearchParam<CommunicationRequest, Reference>(
+      name = "requester",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CommunicationRequest.requester",
+      target =
+        listOf(
+          Practitioner::class,
+          Organization::class,
+          Device::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.requester) },
+    )
+
+  public val Sender: SearchParam<CommunicationRequest, Reference> =
+    SimpleSearchParam<CommunicationRequest, Reference>(
+      name = "sender",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CommunicationRequest.sender",
+      target =
+        listOf(
+          Practitioner::class,
+          Organization::class,
+          Device::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          HealthcareService::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.sender) },
+    )
+
+  public val Status: SearchParam<CommunicationRequest, Any> =
+    SimpleSearchParam<CommunicationRequest, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "CommunicationRequest.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<CommunicationRequest, Reference> =
+    SimpleSearchParam<CommunicationRequest, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CommunicationRequest.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
   /** All search parameters for the CommunicationRequest resource type. */
   public val ALL: CollectionsList<SearchParam<CommunicationRequest, *>> =
     listOf(
@@ -194,398 +509,4 @@ public object CommunicationRequestSearchParam {
       Status,
       Subject,
     )
-
-  public data object Authored : SearchParam<CommunicationRequest, DateTime> {
-    public override val name: String = "authored"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "CommunicationRequest.authoredOn"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<DateTime> =
-      listOfNotNull(resource.authoredOn)
-  }
-
-  public data object BasedOn : SearchParam<CommunicationRequest, Reference> {
-    public override val name: String = "based-on"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CommunicationRequest.basedOn"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        CatalogEntry::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceDefinition::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUseStatement::class,
-        DiagnosticReport::class,
-        DocumentManifest::class,
-        DocumentReference::class,
-        EffectEvidenceSynthesis::class,
-        dev.ohs.fhir.model.r4.Encounter::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        InsurancePlan::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R4List::class,
-        Location::class,
-        Measure::class,
-        MeasureReport::class,
-        Media::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProduct::class,
-        MedicinalProductAuthorization::class,
-        MedicinalProductContraindication::class,
-        MedicinalProductIndication::class,
-        MedicinalProductIngredient::class,
-        MedicinalProductInteraction::class,
-        MedicinalProductManufactured::class,
-        MedicinalProductPackaged::class,
-        MedicinalProductPharmaceutical::class,
-        MedicinalProductUndesirableEffect::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionOrder::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RelatedPerson::class,
-        RequestGroup::class,
-        ResearchDefinition::class,
-        ResearchElementDefinition::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        RiskEvidenceSynthesis::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        Substance::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SubstanceSpecification::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestReport::class,
-        TestScript::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Reference> =
-      resource.basedOn
-  }
-
-  public data object Category : SearchParam<CommunicationRequest, CodeableConcept> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "CommunicationRequest.category"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<CodeableConcept> =
-      resource.category
-  }
-
-  public data object Encounter : SearchParam<CommunicationRequest, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CommunicationRequest.encounter"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Encounter::class)
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object GroupIdentifier :
-    SearchParam<CommunicationRequest, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "group-identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "CommunicationRequest.groupIdentifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: CommunicationRequest
-    ): CollectionsList<dev.ohs.fhir.model.r4.Identifier> = listOfNotNull(resource.groupIdentifier)
-  }
-
-  public data object Identifier :
-    SearchParam<CommunicationRequest, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "CommunicationRequest.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: CommunicationRequest
-    ): CollectionsList<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Medium : SearchParam<CommunicationRequest, CodeableConcept> {
-    public override val name: String = "medium"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "CommunicationRequest.medium"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<CodeableConcept> =
-      resource.medium
-  }
-
-  public data object Occurrence : SearchParam<CommunicationRequest, DateTime> {
-    public override val name: String = "occurrence"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "(CommunicationRequest.occurrence as dateTime)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<DateTime> =
-      listOfNotNull((resource.occurrence as? CommunicationRequest.Occurrence.DateTime)?.value)
-  }
-
-  public data object Patient : SearchParam<CommunicationRequest, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "CommunicationRequest.subject.where(resolve() is Patient)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Patient::class)
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Reference> =
-      listOfNotNull(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Priority : SearchParam<CommunicationRequest, Any> {
-    public override val name: String = "priority"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "CommunicationRequest.priority"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Any> =
-      listOfNotNull(resource.priority)
-  }
-
-  public data object Recipient : SearchParam<CommunicationRequest, Reference> {
-    public override val name: String = "recipient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CommunicationRequest.recipient"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Group::class,
-        Organization::class,
-        CareTeam::class,
-        Device::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        HealthcareService::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Reference> =
-      resource.recipient
-  }
-
-  public data object Replaces : SearchParam<CommunicationRequest, Reference> {
-    public override val name: String = "replaces"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CommunicationRequest.replaces"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(CommunicationRequest::class)
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Reference> =
-      resource.replaces
-  }
-
-  public data object Requester : SearchParam<CommunicationRequest, Reference> {
-    public override val name: String = "requester"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CommunicationRequest.requester"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Organization::class,
-        Device::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Reference> =
-      listOfNotNull(resource.requester)
-  }
-
-  public data object Sender : SearchParam<CommunicationRequest, Reference> {
-    public override val name: String = "sender"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CommunicationRequest.sender"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Organization::class,
-        Device::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        HealthcareService::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Reference> =
-      listOfNotNull(resource.sender)
-  }
-
-  public data object Status : SearchParam<CommunicationRequest, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "CommunicationRequest.status"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Any> =
-      listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<CommunicationRequest, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CommunicationRequest.subject"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
-
-    public override fun extract(resource: CommunicationRequest): CollectionsList<Reference> =
-      listOfNotNull(resource.subject)
-  }
 }

@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4b.Boolean
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Device
 import dev.ohs.fhir.model.r4b.HealthcareService
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Location
 import dev.ohs.fhir.model.r4b.Patient
 import dev.ohs.fhir.model.r4b.Period
@@ -29,113 +30,80 @@ import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.RelatedPerson
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.Schedule
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Schedule] resource type. */
 public object ScheduleSearchParam {
+  public val Active: SearchParam<Schedule, Boolean> =
+    SimpleSearchParam<Schedule, Boolean>(
+      name = "active",
+      type = SearchParamType.fromCode("token"),
+      expression = "Schedule.active",
+      extractor = { resource -> listOfNotNull(resource.active) },
+    )
+
+  public val Actor: SearchParam<Schedule, Reference> =
+    SimpleSearchParam<Schedule, Reference>(
+      name = "actor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Schedule.actor",
+      target =
+        listOf(
+          Practitioner::class,
+          Device::class,
+          Patient::class,
+          HealthcareService::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+          Location::class,
+        ),
+      extractor = { resource -> resource.actor },
+    )
+
+  public val Date: SearchParam<Schedule, Period> =
+    SimpleSearchParam<Schedule, Period>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Schedule.planningHorizon",
+      extractor = { resource -> listOfNotNull(resource.planningHorizon) },
+    )
+
+  public val Identifier: SearchParam<Schedule, Identifier> =
+    SimpleSearchParam<Schedule, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Schedule.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val ServiceCategory: SearchParam<Schedule, CodeableConcept> =
+    SimpleSearchParam<Schedule, CodeableConcept>(
+      name = "service-category",
+      type = SearchParamType.fromCode("token"),
+      expression = "Schedule.serviceCategory",
+      extractor = { resource -> resource.serviceCategory },
+    )
+
+  public val ServiceType: SearchParam<Schedule, CodeableConcept> =
+    SimpleSearchParam<Schedule, CodeableConcept>(
+      name = "service-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Schedule.serviceType",
+      extractor = { resource -> resource.serviceType },
+    )
+
+  public val Specialty: SearchParam<Schedule, CodeableConcept> =
+    SimpleSearchParam<Schedule, CodeableConcept>(
+      name = "specialty",
+      type = SearchParamType.fromCode("token"),
+      expression = "Schedule.specialty",
+      extractor = { resource -> resource.specialty },
+    )
+
   /** All search parameters for the Schedule resource type. */
   public val ALL: List<SearchParam<Schedule, *>> =
     listOf(Active, Actor, Date, Identifier, ServiceCategory, ServiceType, Specialty)
-
-  public data object Active : SearchParam<Schedule, Boolean> {
-    public override val name: String = "active"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Schedule.active"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Schedule): List<Boolean> = listOfNotNull(resource.active)
-  }
-
-  public data object Actor : SearchParam<Schedule, Reference> {
-    public override val name: String = "actor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Schedule.actor"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Device::class,
-        Patient::class,
-        HealthcareService::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-        Location::class,
-      )
-
-    public override fun extract(resource: Schedule): List<Reference> = resource.actor
-  }
-
-  public data object Date : SearchParam<Schedule, Period> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Schedule.planningHorizon"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Schedule): List<Period> =
-      listOfNotNull(resource.planningHorizon)
-  }
-
-  public data object Identifier : SearchParam<Schedule, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Schedule.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Schedule): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object ServiceCategory : SearchParam<Schedule, CodeableConcept> {
-    public override val name: String = "service-category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Schedule.serviceCategory"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Schedule): List<CodeableConcept> =
-      resource.serviceCategory
-  }
-
-  public data object ServiceType : SearchParam<Schedule, CodeableConcept> {
-    public override val name: String = "service-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Schedule.serviceType"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Schedule): List<CodeableConcept> = resource.serviceType
-  }
-
-  public data object Specialty : SearchParam<Schedule, CodeableConcept> {
-    public override val name: String = "specialty"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Schedule.specialty"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Schedule): List<CodeableConcept> = resource.specialty
-  }
 }

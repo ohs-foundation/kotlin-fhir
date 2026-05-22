@@ -19,29 +19,21 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.SubstanceSpecification
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [SubstanceSpecification] resource type. */
 public object SubstanceSpecificationSearchParam {
+  public val Code: SearchParam<SubstanceSpecification, CodeableConcept> =
+    SimpleSearchParam<SubstanceSpecification, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "SubstanceSpecification.code.code",
+      extractor = { resource -> resource.code.mapNotNull { it.code } },
+    )
+
   /** All search parameters for the SubstanceSpecification resource type. */
   public val ALL: List<SearchParam<SubstanceSpecification, *>> = listOf(Code)
-
-  public data object Code : SearchParam<SubstanceSpecification, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "SubstanceSpecification.code.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: SubstanceSpecification): List<CodeableConcept> =
-      resource.code.mapNotNull { it.code }
-  }
 }

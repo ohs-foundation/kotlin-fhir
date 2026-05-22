@@ -60,6 +60,7 @@ import dev.ohs.fhir.model.r5.Contract
 import dev.ohs.fhir.model.r5.Coverage
 import dev.ohs.fhir.model.r5.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r5.CoverageEligibilityResponse
+import dev.ohs.fhir.model.r5.Date
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.DetectedIssue
 import dev.ohs.fhir.model.r5.Device
@@ -92,6 +93,7 @@ import dev.ohs.fhir.model.r5.GraphDefinition
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingSelection
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Immunization
@@ -134,6 +136,7 @@ import dev.ohs.fhir.model.r5.PackagedProductDefinition
 import dev.ohs.fhir.model.r5.Parameters
 import dev.ohs.fhir.model.r5.PaymentNotice
 import dev.ohs.fhir.model.r5.PaymentReconciliation
+import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Permission
 import dev.ohs.fhir.model.r5.Person
 import dev.ohs.fhir.model.r5.PlanDefinition
@@ -150,7 +153,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -183,13 +185,366 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Consent] resource type. */
 public object ConsentSearchParam {
+  public val Action: SearchParam<Consent, CodeableConcept> =
+    SimpleSearchParam<Consent, CodeableConcept>(
+      name = "action",
+      type = SearchParamType.fromCode("token"),
+      expression = "Consent.provision.action",
+      extractor = { resource -> resource.provision.flatMap { it.action } },
+    )
+
+  public val Actor: SearchParam<Consent, Reference> =
+    SimpleSearchParam<Consent, Reference>(
+      name = "actor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Consent.provision.actor.reference",
+      target =
+        listOf(
+          Device::class,
+          CareTeam::class,
+          Organization::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Group::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource ->
+        resource.provision.flatMap { it.actor }.mapNotNull { it.reference }
+      },
+    )
+
+  public val Category: SearchParam<Consent, CodeableConcept> =
+    SimpleSearchParam<Consent, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "Consent.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Controller: SearchParam<Consent, Reference> =
+    SimpleSearchParam<Consent, Reference>(
+      name = "controller",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Consent.controller",
+      target =
+        listOf(
+          HealthcareService::class,
+          Organization::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> resource.controller },
+    )
+
+  public val Data: SearchParam<Consent, Reference> =
+    SimpleSearchParam<Consent, Reference>(
+      name = "data",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Consent.provision.data.reference",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource -> resource.provision.flatMap { it.data }.map { it.reference } },
+    )
+
+  public val Date: SearchParam<Consent, Date> =
+    SimpleSearchParam<Consent, Date>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Consent.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Grantee: SearchParam<Consent, Reference> =
+    SimpleSearchParam<Consent, Reference>(
+      name = "grantee",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Consent.grantee",
+      target =
+        listOf(
+          HealthcareService::class,
+          CareTeam::class,
+          Organization::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> resource.grantee },
+    )
+
+  public val Identifier: SearchParam<Consent, Identifier> =
+    SimpleSearchParam<Consent, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Consent.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Manager: SearchParam<Consent, Reference> =
+    SimpleSearchParam<Consent, Reference>(
+      name = "manager",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Consent.manager",
+      target =
+        listOf(
+          HealthcareService::class,
+          Organization::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> resource.manager },
+    )
+
+  public val Patient: SearchParam<Consent, Reference> =
+    SimpleSearchParam<Consent, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Consent.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOfNotNull(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Period: SearchParam<Consent, Period> =
+    SimpleSearchParam<Consent, Period>(
+      name = "period",
+      type = SearchParamType.fromCode("date"),
+      expression = "Consent.provision.period",
+      extractor = { resource -> resource.provision.mapNotNull { it.period } },
+    )
+
+  public val Purpose: SearchParam<Consent, Coding> =
+    SimpleSearchParam<Consent, Coding>(
+      name = "purpose",
+      type = SearchParamType.fromCode("token"),
+      expression = "Consent.provision.purpose",
+      extractor = { resource -> resource.provision.flatMap { it.purpose } },
+    )
+
+  public val SecurityLabel: SearchParam<Consent, Coding> =
+    SimpleSearchParam<Consent, Coding>(
+      name = "security-label",
+      type = SearchParamType.fromCode("token"),
+      expression = "Consent.provision.securityLabel",
+      extractor = { resource -> resource.provision.flatMap { it.securityLabel } },
+    )
+
+  public val SourceReference: SearchParam<Consent, Reference> =
+    SimpleSearchParam<Consent, Reference>(
+      name = "source-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Consent.sourceReference",
+      target =
+        listOf(
+          Consent::class,
+          DocumentReference::class,
+          Contract::class,
+          QuestionnaireResponse::class,
+        ),
+      extractor = { resource -> resource.sourceReference },
+    )
+
+  public val Status: SearchParam<Consent, Any> =
+    SimpleSearchParam<Consent, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Consent.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<Consent, Reference> =
+    SimpleSearchParam<Consent, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Consent.subject",
+      target = listOf(Practitioner::class, Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
+  public val Verified: SearchParam<Consent, Boolean> =
+    SimpleSearchParam<Consent, Boolean>(
+      name = "verified",
+      type = SearchParamType.fromCode("token"),
+      expression = "Consent.verification.verified",
+      extractor = { resource -> resource.verification.map { it.verified } },
+    )
+
+  public val VerifiedDate: SearchParam<Consent, DateTime> =
+    SimpleSearchParam<Consent, DateTime>(
+      name = "verified-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Consent.verification.verificationDate",
+      extractor = { resource -> resource.verification.flatMap { it.verificationDate } },
+    )
+
   /** All search parameters for the Consent resource type. */
   public val ALL: CollectionsList<SearchParam<Consent, *>> =
     listOf(
@@ -212,436 +567,4 @@ public object ConsentSearchParam {
       Verified,
       VerifiedDate,
     )
-
-  public data object Action : SearchParam<Consent, CodeableConcept> {
-    public override val name: String = "action"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Consent.provision.action"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Consent): CollectionsList<CodeableConcept> =
-      resource.provision.flatMap { it.action }
-  }
-
-  public data object Actor : SearchParam<Consent, Reference> {
-    public override val name: String = "actor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Consent.provision.actor.reference"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Device::class,
-        CareTeam::class,
-        Organization::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Group::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: Consent): CollectionsList<Reference> =
-      resource.provision.flatMap { it.actor }.mapNotNull { it.reference }
-  }
-
-  public data object Category : SearchParam<Consent, CodeableConcept> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Consent.category"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Consent): CollectionsList<CodeableConcept> =
-      resource.category
-  }
-
-  public data object Controller : SearchParam<Consent, Reference> {
-    public override val name: String = "controller"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Consent.controller"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        HealthcareService::class,
-        Organization::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: Consent): CollectionsList<Reference> = resource.controller
-  }
-
-  public data object Data : SearchParam<Consent, Reference> {
-    public override val name: String = "data"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Consent.provision.data.reference"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Consent): CollectionsList<Reference> =
-      resource.provision.flatMap { it.data }.map { it.reference }
-  }
-
-  public data object Date : SearchParam<Consent, dev.ohs.fhir.model.r5.Date> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Consent.date"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Consent): CollectionsList<dev.ohs.fhir.model.r5.Date> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Grantee : SearchParam<Consent, Reference> {
-    public override val name: String = "grantee"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Consent.grantee"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        HealthcareService::class,
-        CareTeam::class,
-        Organization::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: Consent): CollectionsList<Reference> = resource.grantee
-  }
-
-  public data object Identifier : SearchParam<Consent, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Consent.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: Consent
-    ): CollectionsList<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Manager : SearchParam<Consent, Reference> {
-    public override val name: String = "manager"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Consent.manager"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        HealthcareService::class,
-        Organization::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: Consent): CollectionsList<Reference> = resource.manager
-  }
-
-  public data object Patient : SearchParam<Consent, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Consent.subject.where(resolve() is Patient)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Consent): CollectionsList<Reference> =
-      listOfNotNull(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Period : SearchParam<Consent, dev.ohs.fhir.model.r5.Period> {
-    public override val name: String = "period"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Consent.provision.period"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Consent): CollectionsList<dev.ohs.fhir.model.r5.Period> =
-      resource.provision.mapNotNull { it.period }
-  }
-
-  public data object Purpose : SearchParam<Consent, Coding> {
-    public override val name: String = "purpose"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Consent.provision.purpose"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Consent): CollectionsList<Coding> =
-      resource.provision.flatMap { it.purpose }
-  }
-
-  public data object SecurityLabel : SearchParam<Consent, Coding> {
-    public override val name: String = "security-label"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Consent.provision.securityLabel"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Consent): CollectionsList<Coding> =
-      resource.provision.flatMap { it.securityLabel }
-  }
-
-  public data object SourceReference : SearchParam<Consent, Reference> {
-    public override val name: String = "source-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Consent.sourceReference"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Consent::class,
-        DocumentReference::class,
-        Contract::class,
-        QuestionnaireResponse::class,
-      )
-
-    public override fun extract(resource: Consent): CollectionsList<Reference> =
-      resource.sourceReference
-  }
-
-  public data object Status : SearchParam<Consent, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Consent.status"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Consent): CollectionsList<Any> = listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<Consent, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Consent.subject"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Practitioner::class, Group::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Consent): CollectionsList<Reference> =
-      listOfNotNull(resource.subject)
-  }
-
-  public data object Verified : SearchParam<Consent, Boolean> {
-    public override val name: String = "verified"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Consent.verification.verified"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Consent): CollectionsList<Boolean> =
-      resource.verification.map { it.verified }
-  }
-
-  public data object VerifiedDate : SearchParam<Consent, DateTime> {
-    public override val name: String = "verified-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Consent.verification.verificationDate"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Consent): CollectionsList<DateTime> =
-      resource.verification.flatMap { it.verificationDate }
-  }
 }

@@ -114,8 +114,12 @@ class SearchParamTest :
             @Suppress("UNCHECKED_CAST")
             val allSearchParams = allProperty.get(containerInstance) as List<Any>
 
-            // Build a map from data object name to search param instance
-            val searchParamsByName = allSearchParams.associateBy { it::class.simpleName!! }
+            // Every entry is a SimpleSearchParam, so key by the `name` property rather than the
+            // class name.
+            val searchParamsByName =
+              allSearchParams.associateBy { sp ->
+                sp::class.memberProperties.first { it.name == "name" }.call(sp) as String
+              }
 
             val dedupedExpected = expectedParams.distinctBy { it.code }.sortedBy { it.code }
 
@@ -129,9 +133,9 @@ class SearchParamTest :
                 "$resourceName.$dataObjectName should have name '${expected.code}' and type '${expected.type}'"
               ) {
                 val actual =
-                  searchParamsByName[dataObjectName]
+                  searchParamsByName[expected.code]
                     ?: error(
-                      "Missing search param $dataObjectName on ${resourceName}SearchParam. Available: ${searchParamsByName.keys}"
+                      "Missing search param ${expected.code} on ${resourceName}SearchParam. Available: ${searchParamsByName.keys}"
                     )
 
                 // Verify it implements SearchParam

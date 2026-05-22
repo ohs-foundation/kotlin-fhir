@@ -90,6 +90,7 @@ import dev.ohs.fhir.model.r5.GraphDefinition
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingSelection
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Immunization
@@ -149,7 +150,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -157,7 +157,7 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Slot
 import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.SpecimenDefinition
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.StructureMap
 import dev.ohs.fhir.model.r5.Subscription
@@ -183,13 +183,289 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Group] resource type. */
 public object GroupSearchParam {
+  public val Characteristic: SearchParam<Group, CodeableConcept> =
+    SimpleSearchParam<Group, CodeableConcept>(
+      name = "characteristic",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.characteristic.code",
+      extractor = { resource -> resource.characteristic.map { it.code } },
+    )
+
+  public val CharacteristicReference: SearchParam<Group, Any> =
+    SimpleSearchParam<Group, Any>(
+      name = "characteristic-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "(Group.characteristic.value.ofType(Reference))",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { emptyList() },
+    )
+
+  public val CharacteristicValue: SearchParam<Group, Group.Characteristic> =
+    SimpleSearchParam<Group, Group.Characteristic>(
+      name = "characteristic-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Group.characteristic",
+      extractor = { resource -> resource.characteristic },
+    )
+
+  public val Code: SearchParam<Group, CodeableConcept> =
+    SimpleSearchParam<Group, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.code",
+      extractor = { resource -> listOfNotNull(resource.code) },
+    )
+
+  public val Exclude: SearchParam<Group, Boolean> =
+    SimpleSearchParam<Group, Boolean>(
+      name = "exclude",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.characteristic.exclude",
+      extractor = { resource -> resource.characteristic.map { it.exclude } },
+    )
+
+  public val Identifier: SearchParam<Group, Identifier> =
+    SimpleSearchParam<Group, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val ManagingEntity: SearchParam<Group, Reference> =
+    SimpleSearchParam<Group, Reference>(
+      name = "managing-entity",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Group.managingEntity",
+      target =
+        listOf(
+          Organization::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Practitioner::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.managingEntity) },
+    )
+
+  public val Member: SearchParam<Group, Reference> =
+    SimpleSearchParam<Group, Reference>(
+      name = "member",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Group.member.entity",
+      target =
+        listOf(
+          HealthcareService::class,
+          CareTeam::class,
+          Device::class,
+          Organization::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Group::class,
+          Practitioner::class,
+          Specimen::class,
+          Location::class,
+          Patient::class,
+        ),
+      extractor = { resource -> resource.member.map { it.entity } },
+    )
+
+  public val Membership: SearchParam<Group, Any> =
+    SimpleSearchParam<Group, Any>(
+      name = "membership",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.membership",
+      extractor = { resource -> listOf(resource.membership) },
+    )
+
+  public val Name: SearchParam<Group, String> =
+    SimpleSearchParam<Group, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "Group.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Type: SearchParam<Group, Any> =
+    SimpleSearchParam<Group, Any>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Group.type",
+      extractor = { resource -> listOf(resource.type) },
+    )
+
+  public val Value: SearchParam<Group, Any> =
+    SimpleSearchParam<Group, Any>(
+      name = "value",
+      type = SearchParamType.fromCode("token"),
+      expression = "(Group.characteristic.value.ofType(CodeableConcept))",
+      extractor = { emptyList() },
+    )
+
   /** All search parameters for the Group resource type. */
   public val ALL: CollectionsList<SearchParam<Group, *>> =
     listOf(
@@ -206,337 +482,4 @@ public object GroupSearchParam {
       Type,
       Value,
     )
-
-  public data object Characteristic : SearchParam<Group, CodeableConcept> {
-    public override val name: KotlinString = "characteristic"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Group.characteristic.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): CollectionsList<CodeableConcept> =
-      resource.characteristic.map { it.code }
-  }
-
-  public data object CharacteristicReference : SearchParam<Group, Any> {
-    public override val name: KotlinString = "characteristic-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "(Group.characteristic.value.ofType(Reference))"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Group): CollectionsList<Any> = emptyList()
-  }
-
-  public data object CharacteristicValue : SearchParam<Group, Group.Characteristic> {
-    public override val name: KotlinString = "characteristic-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Group.characteristic"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): CollectionsList<Group.Characteristic> =
-      resource.characteristic
-  }
-
-  public data object Code : SearchParam<Group, CodeableConcept> {
-    public override val name: KotlinString = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Group.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.code)
-  }
-
-  public data object Exclude : SearchParam<Group, Boolean> {
-    public override val name: KotlinString = "exclude"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Group.characteristic.exclude"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): CollectionsList<Boolean> =
-      resource.characteristic.map { it.exclude }
-  }
-
-  public data object Identifier : SearchParam<Group, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Group.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: Group
-    ): CollectionsList<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object ManagingEntity : SearchParam<Group, Reference> {
-    public override val name: KotlinString = "managing-entity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Group.managingEntity"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Organization::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Practitioner::class,
-      )
-
-    public override fun extract(resource: Group): CollectionsList<Reference> =
-      listOfNotNull(resource.managingEntity)
-  }
-
-  public data object Member : SearchParam<Group, Reference> {
-    public override val name: KotlinString = "member"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Group.member.entity"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        HealthcareService::class,
-        CareTeam::class,
-        Device::class,
-        Organization::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Group::class,
-        Practitioner::class,
-        Specimen::class,
-        Location::class,
-        Patient::class,
-      )
-
-    public override fun extract(resource: Group): CollectionsList<Reference> =
-      resource.member.map { it.entity }
-  }
-
-  public data object Membership : SearchParam<Group, Any> {
-    public override val name: KotlinString = "membership"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Group.membership"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): CollectionsList<Any> = listOf(resource.membership)
-  }
-
-  public data object Name : SearchParam<Group, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Group.name"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): CollectionsList<R5String> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Type : SearchParam<Group, Any> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Group.type"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): CollectionsList<Any> = listOf(resource.type)
-  }
-
-  public data object Value : SearchParam<Group, Any> {
-    public override val name: KotlinString = "value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(Group.characteristic.value.ofType(CodeableConcept))"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Group): CollectionsList<Any> = emptyList()
-  }
 }

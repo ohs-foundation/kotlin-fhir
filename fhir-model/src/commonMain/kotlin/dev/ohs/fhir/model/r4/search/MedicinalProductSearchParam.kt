@@ -19,57 +19,39 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.MedicinalProduct
-import dev.ohs.fhir.model.r4.Resource
-import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicinalProduct] resource type. */
 public object MedicinalProductSearchParam {
+  public val Identifier: SearchParam<MedicinalProduct, Identifier> =
+    SimpleSearchParam<MedicinalProduct, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicinalProduct.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Name: SearchParam<MedicinalProduct, String> =
+    SimpleSearchParam<MedicinalProduct, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "MedicinalProduct.name.productName",
+      extractor = { resource -> resource.name.map { it.productName } },
+    )
+
+  public val NameLanguage: SearchParam<MedicinalProduct, CodeableConcept> =
+    SimpleSearchParam<MedicinalProduct, CodeableConcept>(
+      name = "name-language",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicinalProduct.name.countryLanguage.language",
+      extractor = { resource -> resource.name.flatMap { it.countryLanguage }.map { it.language } },
+    )
+
   /** All search parameters for the MedicinalProduct resource type. */
   public val ALL: List<SearchParam<MedicinalProduct, *>> = listOf(Identifier, Name, NameLanguage)
-
-  public data object Identifier : SearchParam<MedicinalProduct, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MedicinalProduct.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: MedicinalProduct
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Name : SearchParam<MedicinalProduct, R4String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "MedicinalProduct.name.productName"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MedicinalProduct): List<R4String> =
-      resource.name.map { it.productName }
-  }
-
-  public data object NameLanguage : SearchParam<MedicinalProduct, CodeableConcept> {
-    public override val name: KotlinString = "name-language"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MedicinalProduct.name.countryLanguage.language"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MedicinalProduct): List<CodeableConcept> =
-      resource.name.flatMap { it.countryLanguage }.map { it.language }
-  }
 }

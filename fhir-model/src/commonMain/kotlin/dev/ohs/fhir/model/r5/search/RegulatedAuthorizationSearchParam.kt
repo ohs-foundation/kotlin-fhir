@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r5.ActivityDefinition
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceDefinition
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Ingredient
 import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.ManufacturedItemDefinition
@@ -35,128 +36,89 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RegulatedAuthorization
 import dev.ohs.fhir.model.r5.ResearchStudy
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.SubstanceDefinition
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [RegulatedAuthorization] resource type. */
 public object RegulatedAuthorizationSearchParam {
+  public val Case: SearchParam<RegulatedAuthorization, Identifier> =
+    SimpleSearchParam<RegulatedAuthorization, Identifier>(
+      name = "case",
+      type = SearchParamType.fromCode("token"),
+      expression = "RegulatedAuthorization.case.identifier",
+      extractor = { resource -> listOfNotNull(resource.case?.identifier) },
+    )
+
+  public val CaseType: SearchParam<RegulatedAuthorization, CodeableConcept> =
+    SimpleSearchParam<RegulatedAuthorization, CodeableConcept>(
+      name = "case-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "RegulatedAuthorization.case.type",
+      extractor = { resource -> listOfNotNull(resource.case?.type) },
+    )
+
+  public val Holder: SearchParam<RegulatedAuthorization, Reference> =
+    SimpleSearchParam<RegulatedAuthorization, Reference>(
+      name = "holder",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RegulatedAuthorization.holder",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.holder) },
+    )
+
+  public val Identifier: SearchParam<RegulatedAuthorization, Identifier> =
+    SimpleSearchParam<RegulatedAuthorization, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "RegulatedAuthorization.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Region: SearchParam<RegulatedAuthorization, CodeableConcept> =
+    SimpleSearchParam<RegulatedAuthorization, CodeableConcept>(
+      name = "region",
+      type = SearchParamType.fromCode("token"),
+      expression = "RegulatedAuthorization.region",
+      extractor = { resource -> resource.region },
+    )
+
+  public val Status: SearchParam<RegulatedAuthorization, CodeableConcept> =
+    SimpleSearchParam<RegulatedAuthorization, CodeableConcept>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "RegulatedAuthorization.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
+  public val Subject: SearchParam<RegulatedAuthorization, Reference> =
+    SimpleSearchParam<RegulatedAuthorization, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RegulatedAuthorization.subject",
+      target =
+        listOf(
+          Ingredient::class,
+          Organization::class,
+          ObservationDefinition::class,
+          ActivityDefinition::class,
+          PlanDefinition::class,
+          BiologicallyDerivedProduct::class,
+          Practitioner::class,
+          PackagedProductDefinition::class,
+          SubstanceDefinition::class,
+          Location::class,
+          MedicinalProductDefinition::class,
+          NutritionProduct::class,
+          DeviceDefinition::class,
+          ResearchStudy::class,
+          ManufacturedItemDefinition::class,
+        ),
+      extractor = { resource -> resource.subject },
+    )
+
   /** All search parameters for the RegulatedAuthorization resource type. */
   public val ALL: List<SearchParam<RegulatedAuthorization, *>> =
     listOf(Case, CaseType, Holder, Identifier, Region, Status, Subject)
-
-  public data object Case : SearchParam<RegulatedAuthorization, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "case"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RegulatedAuthorization.case.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: RegulatedAuthorization
-    ): List<dev.ohs.fhir.model.r5.Identifier> = listOfNotNull(resource.case?.identifier)
-  }
-
-  public data object CaseType : SearchParam<RegulatedAuthorization, CodeableConcept> {
-    public override val name: String = "case-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RegulatedAuthorization.case.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RegulatedAuthorization): List<CodeableConcept> =
-      listOfNotNull(resource.case?.type)
-  }
-
-  public data object Holder : SearchParam<RegulatedAuthorization, Reference> {
-    public override val name: String = "holder"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RegulatedAuthorization.holder"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: RegulatedAuthorization): List<Reference> =
-      listOfNotNull(resource.holder)
-  }
-
-  public data object Identifier :
-    SearchParam<RegulatedAuthorization, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RegulatedAuthorization.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: RegulatedAuthorization
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Region : SearchParam<RegulatedAuthorization, CodeableConcept> {
-    public override val name: String = "region"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RegulatedAuthorization.region"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RegulatedAuthorization): List<CodeableConcept> =
-      resource.region
-  }
-
-  public data object Status : SearchParam<RegulatedAuthorization, CodeableConcept> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RegulatedAuthorization.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RegulatedAuthorization): List<CodeableConcept> =
-      listOfNotNull(resource.status)
-  }
-
-  public data object Subject : SearchParam<RegulatedAuthorization, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RegulatedAuthorization.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Ingredient::class,
-        Organization::class,
-        ObservationDefinition::class,
-        ActivityDefinition::class,
-        PlanDefinition::class,
-        BiologicallyDerivedProduct::class,
-        Practitioner::class,
-        PackagedProductDefinition::class,
-        SubstanceDefinition::class,
-        Location::class,
-        MedicinalProductDefinition::class,
-        NutritionProduct::class,
-        DeviceDefinition::class,
-        ResearchStudy::class,
-        ManufacturedItemDefinition::class,
-      )
-
-    public override fun extract(resource: RegulatedAuthorization): List<Reference> =
-      resource.subject
-  }
 }

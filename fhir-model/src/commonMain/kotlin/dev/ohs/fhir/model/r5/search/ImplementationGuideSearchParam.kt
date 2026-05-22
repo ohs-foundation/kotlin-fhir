@@ -93,6 +93,7 @@ import dev.ohs.fhir.model.r5.GraphDefinition
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingSelection
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Immunization
@@ -160,7 +161,7 @@ import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.Slot
 import dev.ohs.fhir.model.r5.Specimen
 import dev.ohs.fhir.model.r5.SpecimenDefinition
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.StructureDefinition
 import dev.ohs.fhir.model.r5.StructureMap
 import dev.ohs.fhir.model.r5.Subscription
@@ -188,13 +189,328 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ImplementationGuide] resource type. */
 public object ImplementationGuideSearchParam {
+  public val Context: SearchParam<ImplementationGuide, Any> =
+    SimpleSearchParam<ImplementationGuide, Any>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(ImplementationGuide.useContext.value.ofType(CodeableConcept))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextQuantity: SearchParam<ImplementationGuide, Any> =
+    SimpleSearchParam<ImplementationGuide, Any>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(ImplementationGuide.useContext.value.ofType(Quantity))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextType: SearchParam<ImplementationGuide, Coding> =
+    SimpleSearchParam<ImplementationGuide, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImplementationGuide.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<ImplementationGuide, UsageContext> =
+    SimpleSearchParam<ImplementationGuide, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "ImplementationGuide.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<ImplementationGuide, UsageContext> =
+    SimpleSearchParam<ImplementationGuide, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "ImplementationGuide.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<ImplementationGuide, DateTime> =
+    SimpleSearchParam<ImplementationGuide, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "ImplementationGuide.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val DependsOn: SearchParam<ImplementationGuide, Canonical> =
+    SimpleSearchParam<ImplementationGuide, Canonical>(
+      name = "depends-on",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImplementationGuide.dependsOn.uri",
+      target = listOf(ImplementationGuide::class),
+      extractor = { resource -> resource.dependsOn.map { it.uri } },
+    )
+
+  public val Description: SearchParam<ImplementationGuide, Markdown> =
+    SimpleSearchParam<ImplementationGuide, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "ImplementationGuide.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Experimental: SearchParam<ImplementationGuide, Boolean> =
+    SimpleSearchParam<ImplementationGuide, Boolean>(
+      name = "experimental",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImplementationGuide.experimental",
+      extractor = { resource -> listOfNotNull(resource.experimental) },
+    )
+
+  public val Global: SearchParam<ImplementationGuide, Canonical> =
+    SimpleSearchParam<ImplementationGuide, Canonical>(
+      name = "global",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImplementationGuide.global.profile",
+      target = listOf(StructureDefinition::class),
+      extractor = { resource -> resource.global.map { it.profile } },
+    )
+
+  public val Identifier: SearchParam<ImplementationGuide, Identifier> =
+    SimpleSearchParam<ImplementationGuide, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImplementationGuide.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<ImplementationGuide, CodeableConcept> =
+    SimpleSearchParam<ImplementationGuide, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImplementationGuide.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<ImplementationGuide, String> =
+    SimpleSearchParam<ImplementationGuide, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "ImplementationGuide.name",
+      extractor = { resource -> listOf(resource.name) },
+    )
+
+  public val Publisher: SearchParam<ImplementationGuide, String> =
+    SimpleSearchParam<ImplementationGuide, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "ImplementationGuide.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Resource: SearchParam<ImplementationGuide, Reference> =
+    SimpleSearchParam<ImplementationGuide, Reference>(
+      name = "resource",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImplementationGuide.definition.resource.reference",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource ->
+        (resource.definition?.resource ?: emptyList()).map { it.reference }
+      },
+    )
+
+  public val Status: SearchParam<ImplementationGuide, Any> =
+    SimpleSearchParam<ImplementationGuide, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImplementationGuide.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Title: SearchParam<ImplementationGuide, String> =
+    SimpleSearchParam<ImplementationGuide, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "ImplementationGuide.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Url: SearchParam<ImplementationGuide, Uri> =
+    SimpleSearchParam<ImplementationGuide, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "ImplementationGuide.url",
+      extractor = { resource -> listOf(resource.url) },
+    )
+
+  public val Version: SearchParam<ImplementationGuide, String> =
+    SimpleSearchParam<ImplementationGuide, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImplementationGuide.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the ImplementationGuide resource type. */
   public val ALL: CollectionsList<SearchParam<ImplementationGuide, *>> =
     listOf(
@@ -218,432 +534,4 @@ public object ImplementationGuideSearchParam {
       Url,
       Version,
     )
-
-  public data object Context : SearchParam<ImplementationGuide, Any> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(ImplementationGuide.useContext.value.ofType(CodeableConcept))"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Any> = emptyList()
-  }
-
-  public data object ContextQuantity : SearchParam<ImplementationGuide, Any> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString =
-      "(ImplementationGuide.useContext.value.ofType(Quantity))"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Any> = emptyList()
-  }
-
-  public data object ContextType : SearchParam<ImplementationGuide, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ImplementationGuide.useContext.code"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<ImplementationGuide, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "ImplementationGuide.useContext"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<UsageContext> =
-      resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<ImplementationGuide, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "ImplementationGuide.useContext"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<UsageContext> =
-      resource.useContext
-  }
-
-  public data object Date : SearchParam<ImplementationGuide, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "ImplementationGuide.date"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object DependsOn : SearchParam<ImplementationGuide, Canonical> {
-    public override val name: KotlinString = "depends-on"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ImplementationGuide.dependsOn.uri"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      listOf(ImplementationGuide::class)
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Canonical> =
-      resource.dependsOn.map { it.uri }
-  }
-
-  public data object Description : SearchParam<ImplementationGuide, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ImplementationGuide.description"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Experimental : SearchParam<ImplementationGuide, Boolean> {
-    public override val name: KotlinString = "experimental"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ImplementationGuide.experimental"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Boolean> =
-      listOfNotNull(resource.experimental)
-  }
-
-  public data object Global : SearchParam<ImplementationGuide, Canonical> {
-    public override val name: KotlinString = "global"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ImplementationGuide.global.profile"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      listOf(StructureDefinition::class)
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Canonical> =
-      resource.global.map { it.profile }
-  }
-
-  public data object Identifier :
-    SearchParam<ImplementationGuide, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ImplementationGuide.identifier"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(
-      resource: ImplementationGuide
-    ): CollectionsList<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<ImplementationGuide, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ImplementationGuide.jurisdiction"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<ImplementationGuide, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ImplementationGuide.name"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<R5String> =
-      listOf(resource.name)
-  }
-
-  public data object Publisher : SearchParam<ImplementationGuide, R5String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ImplementationGuide.publisher"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<R5String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Resource : SearchParam<ImplementationGuide, Reference> {
-    public override val name: KotlinString = "resource"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString =
-      "ImplementationGuide.definition.resource.reference"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Reference> =
-      (resource.definition?.resource ?: emptyList()).map { it.reference }
-  }
-
-  public data object Status : SearchParam<ImplementationGuide, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ImplementationGuide.status"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Any> =
-      listOf(resource.status)
-  }
-
-  public data object Title : SearchParam<ImplementationGuide, R5String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ImplementationGuide.title"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<R5String> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Url : SearchParam<ImplementationGuide, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "ImplementationGuide.url"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<Uri> =
-      listOf(resource.url)
-  }
-
-  public data object Version : SearchParam<ImplementationGuide, R5String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ImplementationGuide.version"
-
-    public override val target: CollectionsList<KClass<out dev.ohs.fhir.model.r5.Resource>> =
-      emptyList()
-
-    public override fun extract(resource: ImplementationGuide): CollectionsList<R5String> =
-      listOfNotNull(resource.version)
-  }
 }

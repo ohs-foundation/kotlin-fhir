@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Device
 import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Invoice
 import dev.ohs.fhir.model.r4.Money
 import dev.ohs.fhir.model.r4.Organization
@@ -29,16 +30,136 @@ import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.RelatedPerson
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Invoice] resource type. */
 public object InvoiceSearchParam {
+  public val Account: SearchParam<Invoice, Reference> =
+    SimpleSearchParam<Invoice, Reference>(
+      name = "account",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Invoice.account",
+      target = listOf(dev.ohs.fhir.model.r4.Account::class),
+      extractor = { resource -> listOfNotNull(resource.account) },
+    )
+
+  public val Date: SearchParam<Invoice, DateTime> =
+    SimpleSearchParam<Invoice, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Invoice.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Identifier: SearchParam<Invoice, Identifier> =
+    SimpleSearchParam<Invoice, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Invoice.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Issuer: SearchParam<Invoice, Reference> =
+    SimpleSearchParam<Invoice, Reference>(
+      name = "issuer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Invoice.issuer",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.issuer) },
+    )
+
+  public val Participant: SearchParam<Invoice, Reference> =
+    SimpleSearchParam<Invoice, Reference>(
+      name = "participant",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Invoice.participant.actor",
+      target =
+        listOf(
+          Practitioner::class,
+          Organization::class,
+          Device::class,
+          dev.ohs.fhir.model.r4.Patient::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> resource.participant.map { it.actor } },
+    )
+
+  public val ParticipantRole: SearchParam<Invoice, CodeableConcept> =
+    SimpleSearchParam<Invoice, CodeableConcept>(
+      name = "participant-role",
+      type = SearchParamType.fromCode("token"),
+      expression = "Invoice.participant.role",
+      extractor = { resource -> resource.participant.mapNotNull { it.role } },
+    )
+
+  public val Patient: SearchParam<Invoice, Reference> =
+    SimpleSearchParam<Invoice, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Invoice.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource ->
+        listOfNotNull(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Recipient: SearchParam<Invoice, Reference> =
+    SimpleSearchParam<Invoice, Reference>(
+      name = "recipient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Invoice.recipient",
+      target =
+        listOf(Organization::class, dev.ohs.fhir.model.r4.Patient::class, RelatedPerson::class),
+      extractor = { resource -> listOfNotNull(resource.recipient) },
+    )
+
+  public val Status: SearchParam<Invoice, Any> =
+    SimpleSearchParam<Invoice, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Invoice.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<Invoice, Reference> =
+    SimpleSearchParam<Invoice, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Invoice.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
+  public val Totalgross: SearchParam<Invoice, Money> =
+    SimpleSearchParam<Invoice, Money>(
+      name = "totalgross",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "Invoice.totalGross",
+      extractor = { resource -> listOfNotNull(resource.totalGross) },
+    )
+
+  public val Totalnet: SearchParam<Invoice, Money> =
+    SimpleSearchParam<Invoice, Money>(
+      name = "totalnet",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "Invoice.totalNet",
+      extractor = { resource -> listOfNotNull(resource.totalNet) },
+    )
+
+  public val Type: SearchParam<Invoice, CodeableConcept> =
+    SimpleSearchParam<Invoice, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Invoice.type",
+      extractor = { resource -> listOfNotNull(resource.type) },
+    )
+
   /** All search parameters for the Invoice resource type. */
   public val ALL: List<SearchParam<Invoice, *>> =
     listOf(
@@ -56,182 +177,4 @@ public object InvoiceSearchParam {
       Totalnet,
       Type,
     )
-
-  public data object Account : SearchParam<Invoice, Reference> {
-    public override val name: String = "account"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Invoice.account"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Account::class)
-
-    public override fun extract(resource: Invoice): List<Reference> =
-      listOfNotNull(resource.account)
-  }
-
-  public data object Date : SearchParam<Invoice, DateTime> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Invoice.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Invoice): List<DateTime> = listOfNotNull(resource.date)
-  }
-
-  public data object Identifier : SearchParam<Invoice, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Invoice.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Invoice): List<dev.ohs.fhir.model.r4.Identifier> =
-      resource.identifier
-  }
-
-  public data object Issuer : SearchParam<Invoice, Reference> {
-    public override val name: String = "issuer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Invoice.issuer"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: Invoice): List<Reference> = listOfNotNull(resource.issuer)
-  }
-
-  public data object Participant : SearchParam<Invoice, Reference> {
-    public override val name: String = "participant"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Invoice.participant.actor"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Practitioner::class,
-        Organization::class,
-        Device::class,
-        dev.ohs.fhir.model.r4.Patient::class,
-        PractitionerRole::class,
-        RelatedPerson::class,
-      )
-
-    public override fun extract(resource: Invoice): List<Reference> =
-      resource.participant.map { it.actor }
-  }
-
-  public data object ParticipantRole : SearchParam<Invoice, CodeableConcept> {
-    public override val name: String = "participant-role"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Invoice.participant.role"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Invoice): List<CodeableConcept> =
-      resource.participant.mapNotNull { it.role }
-  }
-
-  public data object Patient : SearchParam<Invoice, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Invoice.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Patient::class)
-
-    public override fun extract(resource: Invoice): List<Reference> =
-      listOfNotNull(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Recipient : SearchParam<Invoice, Reference> {
-    public override val name: String = "recipient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Invoice.recipient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Organization::class, dev.ohs.fhir.model.r4.Patient::class, RelatedPerson::class)
-
-    public override fun extract(resource: Invoice): List<Reference> =
-      listOfNotNull(resource.recipient)
-  }
-
-  public data object Status : SearchParam<Invoice, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Invoice.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Invoice): List<Any> = listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<Invoice, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Invoice.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
-
-    public override fun extract(resource: Invoice): List<Reference> =
-      listOfNotNull(resource.subject)
-  }
-
-  public data object Totalgross : SearchParam<Invoice, Money> {
-    public override val name: String = "totalgross"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: String = "Invoice.totalGross"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Invoice): List<Money> = listOfNotNull(resource.totalGross)
-  }
-
-  public data object Totalnet : SearchParam<Invoice, Money> {
-    public override val name: String = "totalnet"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: String = "Invoice.totalNet"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Invoice): List<Money> = listOfNotNull(resource.totalNet)
-  }
-
-  public data object Type : SearchParam<Invoice, CodeableConcept> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Invoice.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Invoice): List<CodeableConcept> =
-      listOfNotNull(resource.type)
-  }
 }

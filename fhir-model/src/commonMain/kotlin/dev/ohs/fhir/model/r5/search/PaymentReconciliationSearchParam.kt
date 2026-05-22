@@ -21,6 +21,7 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.Account
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Encounter
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.PaymentReconciliation
@@ -28,18 +29,100 @@ import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Task
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [PaymentReconciliation] resource type. */
 public object PaymentReconciliationSearchParam {
+  public val AllocationAccount: SearchParam<PaymentReconciliation, Reference> =
+    SimpleSearchParam<PaymentReconciliation, Reference>(
+      name = "allocation-account",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PaymentReconciliation.allocation.account",
+      target = listOf(Account::class),
+      extractor = { resource -> resource.allocation.mapNotNull { it.account } },
+    )
+
+  public val AllocationEncounter: SearchParam<PaymentReconciliation, Reference> =
+    SimpleSearchParam<PaymentReconciliation, Reference>(
+      name = "allocation-encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PaymentReconciliation.allocation.encounter",
+      target = listOf(Encounter::class),
+      extractor = { resource -> resource.allocation.mapNotNull { it.encounter } },
+    )
+
+  public val Created: SearchParam<PaymentReconciliation, DateTime> =
+    SimpleSearchParam<PaymentReconciliation, DateTime>(
+      name = "created",
+      type = SearchParamType.fromCode("date"),
+      expression = "PaymentReconciliation.created",
+      extractor = { resource -> listOf(resource.created) },
+    )
+
+  public val Disposition: SearchParam<PaymentReconciliation, String> =
+    SimpleSearchParam<PaymentReconciliation, String>(
+      name = "disposition",
+      type = SearchParamType.fromCode("string"),
+      expression = "PaymentReconciliation.disposition",
+      extractor = { resource -> listOfNotNull(resource.disposition) },
+    )
+
+  public val Identifier: SearchParam<PaymentReconciliation, Identifier> =
+    SimpleSearchParam<PaymentReconciliation, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "PaymentReconciliation.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Outcome: SearchParam<PaymentReconciliation, Any> =
+    SimpleSearchParam<PaymentReconciliation, Any>(
+      name = "outcome",
+      type = SearchParamType.fromCode("token"),
+      expression = "PaymentReconciliation.outcome",
+      extractor = { resource -> listOfNotNull(resource.outcome) },
+    )
+
+  public val PaymentIssuer: SearchParam<PaymentReconciliation, Reference> =
+    SimpleSearchParam<PaymentReconciliation, Reference>(
+      name = "payment-issuer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PaymentReconciliation.paymentIssuer",
+      target = listOf(Organization::class, RelatedPerson::class, Patient::class),
+      extractor = { resource -> listOfNotNull(resource.paymentIssuer) },
+    )
+
+  public val Request: SearchParam<PaymentReconciliation, Reference> =
+    SimpleSearchParam<PaymentReconciliation, Reference>(
+      name = "request",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PaymentReconciliation.request",
+      target = listOf(Task::class),
+      extractor = { resource -> listOfNotNull(resource.request) },
+    )
+
+  public val Requestor: SearchParam<PaymentReconciliation, Reference> =
+    SimpleSearchParam<PaymentReconciliation, Reference>(
+      name = "requestor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "PaymentReconciliation.requestor",
+      target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.requestor) },
+    )
+
+  public val Status: SearchParam<PaymentReconciliation, Any> =
+    SimpleSearchParam<PaymentReconciliation, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "PaymentReconciliation.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the PaymentReconciliation resource type. */
   public val ALL: List<SearchParam<PaymentReconciliation, *>> =
     listOf(
@@ -54,138 +137,4 @@ public object PaymentReconciliationSearchParam {
       Requestor,
       Status,
     )
-
-  public data object AllocationAccount : SearchParam<PaymentReconciliation, Reference> {
-    public override val name: KotlinString = "allocation-account"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "PaymentReconciliation.allocation.account"
-
-    public override val target: List<KClass<out Resource>> = listOf(Account::class)
-
-    public override fun extract(resource: PaymentReconciliation): List<Reference> =
-      resource.allocation.mapNotNull { it.account }
-  }
-
-  public data object AllocationEncounter : SearchParam<PaymentReconciliation, Reference> {
-    public override val name: KotlinString = "allocation-encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "PaymentReconciliation.allocation.encounter"
-
-    public override val target: List<KClass<out Resource>> = listOf(Encounter::class)
-
-    public override fun extract(resource: PaymentReconciliation): List<Reference> =
-      resource.allocation.mapNotNull { it.encounter }
-  }
-
-  public data object Created : SearchParam<PaymentReconciliation, DateTime> {
-    public override val name: KotlinString = "created"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "PaymentReconciliation.created"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PaymentReconciliation): List<DateTime> =
-      listOf(resource.created)
-  }
-
-  public data object Disposition : SearchParam<PaymentReconciliation, R5String> {
-    public override val name: KotlinString = "disposition"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "PaymentReconciliation.disposition"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PaymentReconciliation): List<R5String> =
-      listOfNotNull(resource.disposition)
-  }
-
-  public data object Identifier :
-    SearchParam<PaymentReconciliation, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "PaymentReconciliation.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: PaymentReconciliation
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Outcome : SearchParam<PaymentReconciliation, Any> {
-    public override val name: KotlinString = "outcome"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "PaymentReconciliation.outcome"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PaymentReconciliation): List<Any> =
-      listOfNotNull(resource.outcome)
-  }
-
-  public data object PaymentIssuer : SearchParam<PaymentReconciliation, Reference> {
-    public override val name: KotlinString = "payment-issuer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "PaymentReconciliation.paymentIssuer"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Organization::class, RelatedPerson::class, Patient::class)
-
-    public override fun extract(resource: PaymentReconciliation): List<Reference> =
-      listOfNotNull(resource.paymentIssuer)
-  }
-
-  public data object Request : SearchParam<PaymentReconciliation, Reference> {
-    public override val name: KotlinString = "request"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "PaymentReconciliation.request"
-
-    public override val target: List<KClass<out Resource>> = listOf(Task::class)
-
-    public override fun extract(resource: PaymentReconciliation): List<Reference> =
-      listOfNotNull(resource.request)
-  }
-
-  public data object Requestor : SearchParam<PaymentReconciliation, Reference> {
-    public override val name: KotlinString = "requestor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "PaymentReconciliation.requestor"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: PaymentReconciliation): List<Reference> =
-      listOfNotNull(resource.requestor)
-  }
-
-  public data object Status : SearchParam<PaymentReconciliation, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "PaymentReconciliation.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: PaymentReconciliation): List<Any> =
-      listOf(resource.status)
-  }
 }

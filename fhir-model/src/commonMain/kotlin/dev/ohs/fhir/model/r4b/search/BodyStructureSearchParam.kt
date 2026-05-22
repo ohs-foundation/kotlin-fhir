@@ -20,69 +20,48 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.BodyStructure
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [BodyStructure] resource type. */
 public object BodyStructureSearchParam {
+  public val Identifier: SearchParam<BodyStructure, Identifier> =
+    SimpleSearchParam<BodyStructure, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Location: SearchParam<BodyStructure, CodeableConcept> =
+    SimpleSearchParam<BodyStructure, CodeableConcept>(
+      name = "location",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.location",
+      extractor = { resource -> listOfNotNull(resource.location) },
+    )
+
+  public val Morphology: SearchParam<BodyStructure, CodeableConcept> =
+    SimpleSearchParam<BodyStructure, CodeableConcept>(
+      name = "morphology",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.morphology",
+      extractor = { resource -> listOfNotNull(resource.morphology) },
+    )
+
+  public val Patient: SearchParam<BodyStructure, Reference> =
+    SimpleSearchParam<BodyStructure, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "BodyStructure.patient",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
   /** All search parameters for the BodyStructure resource type. */
   public val ALL: List<SearchParam<BodyStructure, *>> =
     listOf(Identifier, Location, Morphology, Patient)
-
-  public data object Identifier : SearchParam<BodyStructure, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BodyStructure.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BodyStructure): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object Location : SearchParam<BodyStructure, CodeableConcept> {
-    public override val name: String = "location"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BodyStructure.location"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BodyStructure): List<CodeableConcept> =
-      listOfNotNull(resource.location)
-  }
-
-  public data object Morphology : SearchParam<BodyStructure, CodeableConcept> {
-    public override val name: String = "morphology"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BodyStructure.morphology"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BodyStructure): List<CodeableConcept> =
-      listOfNotNull(resource.morphology)
-  }
-
-  public data object Patient : SearchParam<BodyStructure, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "BodyStructure.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: BodyStructure): List<Reference> = listOf(resource.patient)
-  }
 }

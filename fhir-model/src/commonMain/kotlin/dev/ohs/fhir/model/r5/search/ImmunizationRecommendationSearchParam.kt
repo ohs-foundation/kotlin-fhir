@@ -90,6 +90,7 @@ import dev.ohs.fhir.model.r5.GraphDefinition
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingSelection
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Immunization
@@ -148,7 +149,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -180,289 +180,241 @@ import dev.ohs.fhir.model.r5.ValueSet
 import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ImmunizationRecommendation] resource type. */
 public object ImmunizationRecommendationSearchParam {
+  public val Date: SearchParam<ImmunizationRecommendation, DateTime> =
+    SimpleSearchParam<ImmunizationRecommendation, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "ImmunizationRecommendation.date",
+      extractor = { resource -> listOf(resource.date) },
+    )
+
+  public val Identifier: SearchParam<ImmunizationRecommendation, Identifier> =
+    SimpleSearchParam<ImmunizationRecommendation, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImmunizationRecommendation.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Information: SearchParam<ImmunizationRecommendation, Reference> =
+    SimpleSearchParam<ImmunizationRecommendation, Reference>(
+      name = "information",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImmunizationRecommendation.recommendation.supportingPatientInformation",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource ->
+        resource.recommendation.flatMap { it.supportingPatientInformation }
+      },
+    )
+
+  public val Patient: SearchParam<ImmunizationRecommendation, Reference> =
+    SimpleSearchParam<ImmunizationRecommendation, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImmunizationRecommendation.patient",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val Status: SearchParam<ImmunizationRecommendation, CodeableConcept> =
+    SimpleSearchParam<ImmunizationRecommendation, CodeableConcept>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImmunizationRecommendation.recommendation.forecastStatus",
+      extractor = { resource -> resource.recommendation.map { it.forecastStatus } },
+    )
+
+  public val Support: SearchParam<ImmunizationRecommendation, Reference> =
+    SimpleSearchParam<ImmunizationRecommendation, Reference>(
+      name = "support",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImmunizationRecommendation.recommendation.supportingImmunization",
+      target = listOf(ImmunizationEvaluation::class, Immunization::class),
+      extractor = { resource -> resource.recommendation.flatMap { it.supportingImmunization } },
+    )
+
+  public val TargetDisease: SearchParam<ImmunizationRecommendation, CodeableConcept> =
+    SimpleSearchParam<ImmunizationRecommendation, CodeableConcept>(
+      name = "target-disease",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImmunizationRecommendation.recommendation.targetDisease",
+      extractor = { resource -> resource.recommendation.flatMap { it.targetDisease } },
+    )
+
+  public val VaccineType: SearchParam<ImmunizationRecommendation, CodeableConcept> =
+    SimpleSearchParam<ImmunizationRecommendation, CodeableConcept>(
+      name = "vaccine-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImmunizationRecommendation.recommendation.vaccineCode",
+      extractor = { resource -> resource.recommendation.flatMap { it.vaccineCode } },
+    )
+
   /** All search parameters for the ImmunizationRecommendation resource type. */
   public val ALL: CollectionsList<SearchParam<ImmunizationRecommendation, *>> =
     listOf(Date, Identifier, Information, Patient, Status, Support, TargetDisease, VaccineType)
-
-  public data object Date : SearchParam<ImmunizationRecommendation, DateTime> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "ImmunizationRecommendation.date"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImmunizationRecommendation): CollectionsList<DateTime> =
-      listOf(resource.date)
-  }
-
-  public data object Identifier :
-    SearchParam<ImmunizationRecommendation, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImmunizationRecommendation.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ImmunizationRecommendation
-    ): CollectionsList<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Information : SearchParam<ImmunizationRecommendation, Reference> {
-    public override val name: String = "information"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "ImmunizationRecommendation.recommendation.supportingPatientInformation"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: ImmunizationRecommendation): CollectionsList<Reference> =
-      resource.recommendation.flatMap { it.supportingPatientInformation }
-  }
-
-  public data object Patient : SearchParam<ImmunizationRecommendation, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImmunizationRecommendation.patient"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: ImmunizationRecommendation): CollectionsList<Reference> =
-      listOf(resource.patient)
-  }
-
-  public data object Status : SearchParam<ImmunizationRecommendation, CodeableConcept> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String =
-      "ImmunizationRecommendation.recommendation.forecastStatus"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ImmunizationRecommendation
-    ): CollectionsList<CodeableConcept> = resource.recommendation.map { it.forecastStatus }
-  }
-
-  public data object Support : SearchParam<ImmunizationRecommendation, Reference> {
-    public override val name: String = "support"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "ImmunizationRecommendation.recommendation.supportingImmunization"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(ImmunizationEvaluation::class, Immunization::class)
-
-    public override fun extract(resource: ImmunizationRecommendation): CollectionsList<Reference> =
-      resource.recommendation.flatMap { it.supportingImmunization }
-  }
-
-  public data object TargetDisease : SearchParam<ImmunizationRecommendation, CodeableConcept> {
-    public override val name: String = "target-disease"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String =
-      "ImmunizationRecommendation.recommendation.targetDisease"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ImmunizationRecommendation
-    ): CollectionsList<CodeableConcept> = resource.recommendation.flatMap { it.targetDisease }
-  }
-
-  public data object VaccineType : SearchParam<ImmunizationRecommendation, CodeableConcept> {
-    public override val name: String = "vaccine-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImmunizationRecommendation.recommendation.vaccineCode"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ImmunizationRecommendation
-    ): CollectionsList<CodeableConcept> = resource.recommendation.flatMap { it.vaccineCode }
-  }
 }

@@ -23,21 +23,186 @@ import dev.ohs.fhir.model.r4b.CodeSystem
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Quantity
-import dev.ohs.fhir.model.r4b.Resource
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [CodeSystem] resource type. */
 public object CodeSystemSearchParam {
+  public val Code: SearchParam<CodeSystem, Any> =
+    SimpleSearchParam<CodeSystem, Any>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "CodeSystem.concept.code",
+      extractor = { resource -> resource.concept.map { it.code } },
+    )
+
+  public val ContentMode: SearchParam<CodeSystem, Any> =
+    SimpleSearchParam<CodeSystem, Any>(
+      name = "content-mode",
+      type = SearchParamType.fromCode("token"),
+      expression = "CodeSystem.content",
+      extractor = { resource -> listOf(resource.content) },
+    )
+
+  public val Context: SearchParam<CodeSystem, CodeableConcept> =
+    SimpleSearchParam<CodeSystem, CodeableConcept>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(CodeSystem.useContext.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+      },
+    )
+
+  public val ContextQuantity: SearchParam<CodeSystem, Quantity> =
+    SimpleSearchParam<CodeSystem, Quantity>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(CodeSystem.useContext.value as Quantity)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+      },
+    )
+
+  public val ContextType: SearchParam<CodeSystem, Coding> =
+    SimpleSearchParam<CodeSystem, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "CodeSystem.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<CodeSystem, UsageContext> =
+    SimpleSearchParam<CodeSystem, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "CodeSystem.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<CodeSystem, UsageContext> =
+    SimpleSearchParam<CodeSystem, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "CodeSystem.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<CodeSystem, DateTime> =
+    SimpleSearchParam<CodeSystem, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "CodeSystem.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Description: SearchParam<CodeSystem, Markdown> =
+    SimpleSearchParam<CodeSystem, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "CodeSystem.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Identifier: SearchParam<CodeSystem, Identifier> =
+    SimpleSearchParam<CodeSystem, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "CodeSystem.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<CodeSystem, CodeableConcept> =
+    SimpleSearchParam<CodeSystem, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "CodeSystem.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Language: SearchParam<CodeSystem, Any> =
+    SimpleSearchParam<CodeSystem, Any>(
+      name = "language",
+      type = SearchParamType.fromCode("token"),
+      expression = "CodeSystem.concept.designation.language",
+      extractor = { resource ->
+        resource.concept.flatMap { it.designation }.mapNotNull { it.language }
+      },
+    )
+
+  public val Name: SearchParam<CodeSystem, String> =
+    SimpleSearchParam<CodeSystem, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "CodeSystem.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Publisher: SearchParam<CodeSystem, String> =
+    SimpleSearchParam<CodeSystem, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "CodeSystem.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<CodeSystem, Any> =
+    SimpleSearchParam<CodeSystem, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "CodeSystem.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Supplements: SearchParam<CodeSystem, Canonical> =
+    SimpleSearchParam<CodeSystem, Canonical>(
+      name = "supplements",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CodeSystem.supplements",
+      target = listOf(CodeSystem::class),
+      extractor = { resource -> listOfNotNull(resource.supplements) },
+    )
+
+  public val System: SearchParam<CodeSystem, Uri> =
+    SimpleSearchParam<CodeSystem, Uri>(
+      name = "system",
+      type = SearchParamType.fromCode("uri"),
+      expression = "CodeSystem.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Title: SearchParam<CodeSystem, String> =
+    SimpleSearchParam<CodeSystem, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "CodeSystem.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Url: SearchParam<CodeSystem, Uri> =
+    SimpleSearchParam<CodeSystem, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "CodeSystem.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Version: SearchParam<CodeSystem, String> =
+    SimpleSearchParam<CodeSystem, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "CodeSystem.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the CodeSystem resource type. */
   public val ALL: List<SearchParam<CodeSystem, *>> =
     listOf(
@@ -62,256 +227,4 @@ public object CodeSystemSearchParam {
       Url,
       Version,
     )
-
-  public data object Code : SearchParam<CodeSystem, Any> {
-    public override val name: KotlinString = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "CodeSystem.concept.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<Any> = resource.concept.map { it.code }
-  }
-
-  public data object ContentMode : SearchParam<CodeSystem, Any> {
-    public override val name: KotlinString = "content-mode"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "CodeSystem.content"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<Any> = listOf(resource.content)
-  }
-
-  public data object Context : SearchParam<CodeSystem, CodeableConcept> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(CodeSystem.useContext.value as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<CodeableConcept> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
-  }
-
-  public data object ContextQuantity : SearchParam<CodeSystem, Quantity> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString = "(CodeSystem.useContext.value as Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<Quantity> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
-  }
-
-  public data object ContextType : SearchParam<CodeSystem, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "CodeSystem.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<CodeSystem, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "CodeSystem.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<UsageContext> = resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<CodeSystem, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "CodeSystem.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<UsageContext> = resource.useContext
-  }
-
-  public data object Date : SearchParam<CodeSystem, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "CodeSystem.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<DateTime> = listOfNotNull(resource.date)
-  }
-
-  public data object Description : SearchParam<CodeSystem, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "CodeSystem.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Identifier : SearchParam<CodeSystem, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "CodeSystem.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<CodeSystem, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "CodeSystem.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<CodeableConcept> = resource.jurisdiction
-  }
-
-  public data object Language : SearchParam<CodeSystem, Any> {
-    public override val name: KotlinString = "language"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "CodeSystem.concept.designation.language"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<Any> =
-      resource.concept.flatMap { it.designation }.mapNotNull { it.language }
-  }
-
-  public data object Name : SearchParam<CodeSystem, R4bString> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "CodeSystem.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<R4bString> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Publisher : SearchParam<CodeSystem, R4bString> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "CodeSystem.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<R4bString> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<CodeSystem, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "CodeSystem.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<Any> = listOf(resource.status)
-  }
-
-  public data object Supplements : SearchParam<CodeSystem, Canonical> {
-    public override val name: KotlinString = "supplements"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "CodeSystem.supplements"
-
-    public override val target: List<KClass<out Resource>> = listOf(CodeSystem::class)
-
-    public override fun extract(resource: CodeSystem): List<Canonical> =
-      listOfNotNull(resource.supplements)
-  }
-
-  public data object System : SearchParam<CodeSystem, Uri> {
-    public override val name: KotlinString = "system"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "CodeSystem.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<Uri> = listOfNotNull(resource.url)
-  }
-
-  public data object Title : SearchParam<CodeSystem, R4bString> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "CodeSystem.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<R4bString> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Url : SearchParam<CodeSystem, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "CodeSystem.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<Uri> = listOfNotNull(resource.url)
-  }
-
-  public data object Version : SearchParam<CodeSystem, R4bString> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "CodeSystem.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CodeSystem): List<R4bString> =
-      listOfNotNull(resource.version)
-  }
 }

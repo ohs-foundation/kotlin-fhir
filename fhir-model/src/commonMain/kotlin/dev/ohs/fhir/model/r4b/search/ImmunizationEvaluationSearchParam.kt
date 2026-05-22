@@ -20,114 +20,76 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Immunization
 import dev.ohs.fhir.model.r4b.ImmunizationEvaluation
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ImmunizationEvaluation] resource type. */
 public object ImmunizationEvaluationSearchParam {
+  public val Date: SearchParam<ImmunizationEvaluation, DateTime> =
+    SimpleSearchParam<ImmunizationEvaluation, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "ImmunizationEvaluation.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val DoseStatus: SearchParam<ImmunizationEvaluation, CodeableConcept> =
+    SimpleSearchParam<ImmunizationEvaluation, CodeableConcept>(
+      name = "dose-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImmunizationEvaluation.doseStatus",
+      extractor = { resource -> listOf(resource.doseStatus) },
+    )
+
+  public val Identifier: SearchParam<ImmunizationEvaluation, Identifier> =
+    SimpleSearchParam<ImmunizationEvaluation, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImmunizationEvaluation.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val ImmunizationEvent: SearchParam<ImmunizationEvaluation, Reference> =
+    SimpleSearchParam<ImmunizationEvaluation, Reference>(
+      name = "immunization-event",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImmunizationEvaluation.immunizationEvent",
+      target = listOf(Immunization::class),
+      extractor = { resource -> listOf(resource.immunizationEvent) },
+    )
+
+  public val Patient: SearchParam<ImmunizationEvaluation, Reference> =
+    SimpleSearchParam<ImmunizationEvaluation, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ImmunizationEvaluation.patient",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val Status: SearchParam<ImmunizationEvaluation, Any> =
+    SimpleSearchParam<ImmunizationEvaluation, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImmunizationEvaluation.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val TargetDisease: SearchParam<ImmunizationEvaluation, CodeableConcept> =
+    SimpleSearchParam<ImmunizationEvaluation, CodeableConcept>(
+      name = "target-disease",
+      type = SearchParamType.fromCode("token"),
+      expression = "ImmunizationEvaluation.targetDisease",
+      extractor = { resource -> listOf(resource.targetDisease) },
+    )
+
   /** All search parameters for the ImmunizationEvaluation resource type. */
   public val ALL: List<SearchParam<ImmunizationEvaluation, *>> =
     listOf(Date, DoseStatus, Identifier, ImmunizationEvent, Patient, Status, TargetDisease)
-
-  public data object Date : SearchParam<ImmunizationEvaluation, DateTime> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "ImmunizationEvaluation.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImmunizationEvaluation): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object DoseStatus : SearchParam<ImmunizationEvaluation, CodeableConcept> {
-    public override val name: String = "dose-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImmunizationEvaluation.doseStatus"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImmunizationEvaluation): List<CodeableConcept> =
-      listOf(resource.doseStatus)
-  }
-
-  public data object Identifier :
-    SearchParam<ImmunizationEvaluation, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImmunizationEvaluation.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ImmunizationEvaluation
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
-  }
-
-  public data object ImmunizationEvent : SearchParam<ImmunizationEvaluation, Reference> {
-    public override val name: String = "immunization-event"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImmunizationEvaluation.immunizationEvent"
-
-    public override val target: List<KClass<out Resource>> = listOf(Immunization::class)
-
-    public override fun extract(resource: ImmunizationEvaluation): List<Reference> =
-      listOf(resource.immunizationEvent)
-  }
-
-  public data object Patient : SearchParam<ImmunizationEvaluation, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "ImmunizationEvaluation.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: ImmunizationEvaluation): List<Reference> =
-      listOf(resource.patient)
-  }
-
-  public data object Status : SearchParam<ImmunizationEvaluation, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImmunizationEvaluation.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImmunizationEvaluation): List<Any> =
-      listOf(resource.status)
-  }
-
-  public data object TargetDisease : SearchParam<ImmunizationEvaluation, CodeableConcept> {
-    public override val name: String = "target-disease"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ImmunizationEvaluation.targetDisease"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ImmunizationEvaluation): List<CodeableConcept> =
-      listOf(resource.targetDisease)
-  }
 }

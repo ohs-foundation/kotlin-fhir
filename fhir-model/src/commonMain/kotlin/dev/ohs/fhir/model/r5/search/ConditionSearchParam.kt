@@ -88,6 +88,7 @@ import dev.ohs.fhir.model.r5.GraphDefinition
 import dev.ohs.fhir.model.r5.Group
 import dev.ohs.fhir.model.r5.GuidanceResponse
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ImagingSelection
 import dev.ohs.fhir.model.r5.ImagingStudy
 import dev.ohs.fhir.model.r5.Immunization
@@ -146,7 +147,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -179,13 +179,365 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Condition] resource type. */
 public object ConditionSearchParam {
+  public val AbatementAge: SearchParam<Condition, Any> =
+    SimpleSearchParam<Condition, Any>(
+      name = "abatement-age",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "Condition.abatement.ofType(Age)",
+      extractor = { emptyList() },
+    )
+
+  public val AbatementDate: SearchParam<Condition, Any> =
+    SimpleSearchParam<Condition, Any>(
+      name = "abatement-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Condition.abatement.ofType(dateTime)",
+      extractor = { emptyList() },
+    )
+
+  public val AbatementString: SearchParam<Condition, Any> =
+    SimpleSearchParam<Condition, Any>(
+      name = "abatement-string",
+      type = SearchParamType.fromCode("string"),
+      expression = "Condition.abatement.ofType(string)",
+      extractor = { emptyList() },
+    )
+
+  public val BodySite: SearchParam<Condition, CodeableConcept> =
+    SimpleSearchParam<Condition, CodeableConcept>(
+      name = "body-site",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.bodySite",
+      extractor = { resource -> resource.bodySite },
+    )
+
+  public val Category: SearchParam<Condition, CodeableConcept> =
+    SimpleSearchParam<Condition, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val ClinicalStatus: SearchParam<Condition, CodeableConcept> =
+    SimpleSearchParam<Condition, CodeableConcept>(
+      name = "clinical-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.clinicalStatus",
+      extractor = { resource -> listOf(resource.clinicalStatus) },
+    )
+
+  public val Code: SearchParam<Condition, CodeableConcept> =
+    SimpleSearchParam<Condition, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.code",
+      extractor = { resource -> listOfNotNull(resource.code) },
+    )
+
+  public val Encounter: SearchParam<Condition, Reference> =
+    SimpleSearchParam<Condition, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Condition.encounter",
+      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Evidence: SearchParam<Condition, CodeableConcept> =
+    SimpleSearchParam<Condition, CodeableConcept>(
+      name = "evidence",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.evidence.concept",
+      extractor = { resource -> resource.evidence.mapNotNull { it.concept } },
+    )
+
+  public val EvidenceDetail: SearchParam<Condition, Reference> =
+    SimpleSearchParam<Condition, Reference>(
+      name = "evidence-detail",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Condition.evidence.reference",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          dev.ohs.fhir.model.r5.Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          dev.ohs.fhir.model.r5.Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource -> resource.evidence.mapNotNull { it.reference } },
+    )
+
+  public val Identifier: SearchParam<Condition, Identifier> =
+    SimpleSearchParam<Condition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val OnsetAge: SearchParam<Condition, Any> =
+    SimpleSearchParam<Condition, Any>(
+      name = "onset-age",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "Condition.onset.ofType(Age)",
+      extractor = { emptyList() },
+    )
+
+  public val OnsetDate: SearchParam<Condition, Any> =
+    SimpleSearchParam<Condition, Any>(
+      name = "onset-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Condition.onset.ofType(dateTime)",
+      extractor = { emptyList() },
+    )
+
+  public val OnsetInfo: SearchParam<Condition, Any> =
+    SimpleSearchParam<Condition, Any>(
+      name = "onset-info",
+      type = SearchParamType.fromCode("string"),
+      expression = "Condition.onset.ofType(string)",
+      extractor = { emptyList() },
+    )
+
+  public val ParticipantActor: SearchParam<Condition, Reference> =
+    SimpleSearchParam<Condition, Reference>(
+      name = "participant-actor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Condition.participant.actor",
+      target =
+        listOf(
+          Device::class,
+          Organization::class,
+          CareTeam::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> resource.participant.map { it.actor } },
+    )
+
+  public val ParticipantFunction: SearchParam<Condition, CodeableConcept> =
+    SimpleSearchParam<Condition, CodeableConcept>(
+      name = "participant-function",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.participant.function",
+      extractor = { resource -> resource.participant.mapNotNull { it.function } },
+    )
+
+  public val Patient: SearchParam<Condition, Reference> =
+    SimpleSearchParam<Condition, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Condition.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOf(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val RecordedDate: SearchParam<Condition, DateTime> =
+    SimpleSearchParam<Condition, DateTime>(
+      name = "recorded-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Condition.recordedDate",
+      extractor = { resource -> listOfNotNull(resource.recordedDate) },
+    )
+
+  public val Severity: SearchParam<Condition, CodeableConcept> =
+    SimpleSearchParam<Condition, CodeableConcept>(
+      name = "severity",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.severity",
+      extractor = { resource -> listOfNotNull(resource.severity) },
+    )
+
+  public val Stage: SearchParam<Condition, CodeableConcept> =
+    SimpleSearchParam<Condition, CodeableConcept>(
+      name = "stage",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.stage.summary",
+      extractor = { resource -> resource.stage.mapNotNull { it.summary } },
+    )
+
+  public val Subject: SearchParam<Condition, Reference> =
+    SimpleSearchParam<Condition, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Condition.subject",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
+  public val VerificationStatus: SearchParam<Condition, CodeableConcept> =
+    SimpleSearchParam<Condition, CodeableConcept>(
+      name = "verification-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Condition.verificationStatus",
+      extractor = { resource -> listOfNotNull(resource.verificationStatus) },
+    )
+
   /** All search parameters for the Condition resource type. */
   public val ALL: CollectionsList<SearchParam<Condition, *>> =
     listOf(
@@ -212,458 +564,4 @@ public object ConditionSearchParam {
       Subject,
       VerificationStatus,
     )
-
-  public data object AbatementAge : SearchParam<Condition, Any> {
-    public override val name: String = "abatement-age"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: String = "Condition.abatement.ofType(Age)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<Any> = emptyList()
-  }
-
-  public data object AbatementDate : SearchParam<Condition, Any> {
-    public override val name: String = "abatement-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Condition.abatement.ofType(dateTime)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<Any> = emptyList()
-  }
-
-  public data object AbatementString : SearchParam<Condition, Any> {
-    public override val name: String = "abatement-string"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: String = "Condition.abatement.ofType(string)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<Any> = emptyList()
-  }
-
-  public data object BodySite : SearchParam<Condition, CodeableConcept> {
-    public override val name: String = "body-site"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.bodySite"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<CodeableConcept> =
-      resource.bodySite
-  }
-
-  public data object Category : SearchParam<Condition, CodeableConcept> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.category"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<CodeableConcept> =
-      resource.category
-  }
-
-  public data object ClinicalStatus : SearchParam<Condition, CodeableConcept> {
-    public override val name: String = "clinical-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.clinicalStatus"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<CodeableConcept> =
-      listOf(resource.clinicalStatus)
-  }
-
-  public data object Code : SearchParam<Condition, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.code"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.code)
-  }
-
-  public data object Encounter : SearchParam<Condition, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Condition.encounter"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Encounter::class)
-
-    public override fun extract(resource: Condition): CollectionsList<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Evidence : SearchParam<Condition, CodeableConcept> {
-    public override val name: String = "evidence"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.evidence.concept"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<CodeableConcept> =
-      resource.evidence.mapNotNull { it.concept }
-  }
-
-  public data object EvidenceDetail : SearchParam<Condition, Reference> {
-    public override val name: String = "evidence-detail"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Condition.evidence.reference"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        dev.ohs.fhir.model.r5.Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        dev.ohs.fhir.model.r5.Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: Condition): CollectionsList<Reference> =
-      resource.evidence.mapNotNull { it.reference }
-  }
-
-  public data object Identifier : SearchParam<Condition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.identifier"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: Condition
-    ): CollectionsList<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object OnsetAge : SearchParam<Condition, Any> {
-    public override val name: String = "onset-age"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: String = "Condition.onset.ofType(Age)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<Any> = emptyList()
-  }
-
-  public data object OnsetDate : SearchParam<Condition, Any> {
-    public override val name: String = "onset-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Condition.onset.ofType(dateTime)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<Any> = emptyList()
-  }
-
-  public data object OnsetInfo : SearchParam<Condition, Any> {
-    public override val name: String = "onset-info"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: String = "Condition.onset.ofType(string)"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<Any> = emptyList()
-  }
-
-  public data object ParticipantActor : SearchParam<Condition, Reference> {
-    public override val name: String = "participant-actor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Condition.participant.actor"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Device::class,
-        Organization::class,
-        CareTeam::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: Condition): CollectionsList<Reference> =
-      resource.participant.map { it.actor }
-  }
-
-  public data object ParticipantFunction : SearchParam<Condition, CodeableConcept> {
-    public override val name: String = "participant-function"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.participant.function"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<CodeableConcept> =
-      resource.participant.mapNotNull { it.function }
-  }
-
-  public data object Patient : SearchParam<Condition, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Condition.subject.where(resolve() is Patient)"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Condition): CollectionsList<Reference> =
-      listOf(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object RecordedDate : SearchParam<Condition, DateTime> {
-    public override val name: String = "recorded-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Condition.recordedDate"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<DateTime> =
-      listOfNotNull(resource.recordedDate)
-  }
-
-  public data object Severity : SearchParam<Condition, CodeableConcept> {
-    public override val name: String = "severity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.severity"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.severity)
-  }
-
-  public data object Stage : SearchParam<Condition, CodeableConcept> {
-    public override val name: String = "stage"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.stage.summary"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<CodeableConcept> =
-      resource.stage.mapNotNull { it.summary }
-  }
-
-  public data object Subject : SearchParam<Condition, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Condition.subject"
-
-    public override val target: CollectionsList<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: Condition): CollectionsList<Reference> =
-      listOf(resource.subject)
-  }
-
-  public data object VerificationStatus : SearchParam<Condition, CodeableConcept> {
-    public override val name: String = "verification-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Condition.verificationStatus"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Condition): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.verificationStatus)
-  }
 }

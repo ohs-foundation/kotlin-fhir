@@ -19,60 +19,41 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.MedicinalProductPharmaceutical
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicinalProductPharmaceutical] resource type. */
 public object MedicinalProductPharmaceuticalSearchParam {
+  public val Identifier: SearchParam<MedicinalProductPharmaceutical, Identifier> =
+    SimpleSearchParam<MedicinalProductPharmaceutical, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicinalProductPharmaceutical.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Route: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
+    SimpleSearchParam<MedicinalProductPharmaceutical, CodeableConcept>(
+      name = "route",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicinalProductPharmaceutical.routeOfAdministration.code",
+      extractor = { resource -> resource.routeOfAdministration.map { it.code } },
+    )
+
+  public val TargetSpecies: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
+    SimpleSearchParam<MedicinalProductPharmaceutical, CodeableConcept>(
+      name = "target-species",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicinalProductPharmaceutical.routeOfAdministration.targetSpecies.code",
+      extractor = { resource ->
+        resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }
+      },
+    )
+
   /** All search parameters for the MedicinalProductPharmaceutical resource type. */
   public val ALL: List<SearchParam<MedicinalProductPharmaceutical, *>> =
     listOf(Identifier, Route, TargetSpecies)
-
-  public data object Identifier :
-    SearchParam<MedicinalProductPharmaceutical, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MedicinalProductPharmaceutical.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: MedicinalProductPharmaceutical
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Route : SearchParam<MedicinalProductPharmaceutical, CodeableConcept> {
-    public override val name: String = "route"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String =
-      "MedicinalProductPharmaceutical.routeOfAdministration.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MedicinalProductPharmaceutical): List<CodeableConcept> =
-      resource.routeOfAdministration.map { it.code }
-  }
-
-  public data object TargetSpecies : SearchParam<MedicinalProductPharmaceutical, CodeableConcept> {
-    public override val name: String = "target-species"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String =
-      "MedicinalProductPharmaceutical.routeOfAdministration.targetSpecies.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MedicinalProductPharmaceutical): List<CodeableConcept> =
-      resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }
-  }
 }

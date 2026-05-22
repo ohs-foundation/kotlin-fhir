@@ -20,19 +20,125 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Device
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Reference
-import dev.ohs.fhir.model.r4.Resource
-import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Device] resource type. */
 public object DeviceSearchParam {
+  public val DeviceName: SearchParam<Device, String> =
+    SimpleSearchParam<Device, String>(
+      name = "device-name",
+      type = SearchParamType.fromCode("string"),
+      expression = "Device.deviceName.name",
+      extractor = { resource -> resource.deviceName.map { it.name } },
+    )
+
+  public val Din: SearchParam<Device, Any> =
+    SimpleSearchParam<Device, Any>(
+      name = "din",
+      type = SearchParamType.fromCode("token"),
+      expression =
+        "Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')",
+      extractor = { emptyList() },
+    )
+
+  public val Identifier: SearchParam<Device, Identifier> =
+    SimpleSearchParam<Device, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Device.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Location: SearchParam<Device, Reference> =
+    SimpleSearchParam<Device, Reference>(
+      name = "location",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Device.location",
+      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      extractor = { resource -> listOfNotNull(resource.location) },
+    )
+
+  public val Manufacturer: SearchParam<Device, String> =
+    SimpleSearchParam<Device, String>(
+      name = "manufacturer",
+      type = SearchParamType.fromCode("string"),
+      expression = "Device.manufacturer",
+      extractor = { resource -> listOfNotNull(resource.manufacturer) },
+    )
+
+  public val Model: SearchParam<Device, String> =
+    SimpleSearchParam<Device, String>(
+      name = "model",
+      type = SearchParamType.fromCode("string"),
+      expression = "Device.modelNumber",
+      extractor = { resource -> listOfNotNull(resource.modelNumber) },
+    )
+
+  public val Organization: SearchParam<Device, Reference> =
+    SimpleSearchParam<Device, Reference>(
+      name = "organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Device.owner",
+      target = listOf(dev.ohs.fhir.model.r4.Organization::class),
+      extractor = { resource -> listOfNotNull(resource.owner) },
+    )
+
+  public val Patient: SearchParam<Device, Reference> =
+    SimpleSearchParam<Device, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Device.patient",
+      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.patient) },
+    )
+
+  public val Status: SearchParam<Device, Any> =
+    SimpleSearchParam<Device, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Device.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
+  public val Type: SearchParam<Device, CodeableConcept> =
+    SimpleSearchParam<Device, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Device.type",
+      extractor = { resource -> listOfNotNull(resource.type) },
+    )
+
+  public val UdiCarrier: SearchParam<Device, String> =
+    SimpleSearchParam<Device, String>(
+      name = "udi-carrier",
+      type = SearchParamType.fromCode("string"),
+      expression = "Device.udiCarrier.carrierHRF",
+      extractor = { resource -> resource.udiCarrier.mapNotNull { it.carrierHRF } },
+    )
+
+  public val UdiDi: SearchParam<Device, String> =
+    SimpleSearchParam<Device, String>(
+      name = "udi-di",
+      type = SearchParamType.fromCode("string"),
+      expression = "Device.udiCarrier.deviceIdentifier",
+      extractor = { resource -> resource.udiCarrier.mapNotNull { it.deviceIdentifier } },
+    )
+
+  public val Url: SearchParam<Device, Uri> =
+    SimpleSearchParam<Device, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "Device.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
   /** All search parameters for the Device resource type. */
   public val ALL: List<SearchParam<Device, *>> =
     listOf(
@@ -50,172 +156,4 @@ public object DeviceSearchParam {
       UdiDi,
       Url,
     )
-
-  public data object DeviceName : SearchParam<Device, R4String> {
-    public override val name: KotlinString = "device-name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Device.deviceName.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<R4String> =
-      resource.deviceName.map { it.name }
-  }
-
-  public data object Din : SearchParam<Device, Any> {
-    public override val name: KotlinString = "din"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<Any> = emptyList()
-  }
-
-  public data object Identifier : SearchParam<Device, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Device.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<dev.ohs.fhir.model.r4.Identifier> =
-      resource.identifier
-  }
-
-  public data object Location : SearchParam<Device, Reference> {
-    public override val name: KotlinString = "location"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Device.location"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Location::class)
-
-    public override fun extract(resource: Device): List<Reference> =
-      listOfNotNull(resource.location)
-  }
-
-  public data object Manufacturer : SearchParam<Device, R4String> {
-    public override val name: KotlinString = "manufacturer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Device.manufacturer"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<R4String> =
-      listOfNotNull(resource.manufacturer)
-  }
-
-  public data object Model : SearchParam<Device, R4String> {
-    public override val name: KotlinString = "model"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Device.modelNumber"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<R4String> =
-      listOfNotNull(resource.modelNumber)
-  }
-
-  public data object Organization : SearchParam<Device, Reference> {
-    public override val name: KotlinString = "organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Device.owner"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Organization::class)
-
-    public override fun extract(resource: Device): List<Reference> = listOfNotNull(resource.owner)
-  }
-
-  public data object Patient : SearchParam<Device, Reference> {
-    public override val name: KotlinString = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Device.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Patient::class)
-
-    public override fun extract(resource: Device): List<Reference> = listOfNotNull(resource.patient)
-  }
-
-  public data object Status : SearchParam<Device, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Device.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<Any> = listOfNotNull(resource.status)
-  }
-
-  public data object Type : SearchParam<Device, CodeableConcept> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Device.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<CodeableConcept> =
-      listOfNotNull(resource.type)
-  }
-
-  public data object UdiCarrier : SearchParam<Device, R4String> {
-    public override val name: KotlinString = "udi-carrier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Device.udiCarrier.carrierHRF"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<R4String> =
-      resource.udiCarrier.mapNotNull { it.carrierHRF }
-  }
-
-  public data object UdiDi : SearchParam<Device, R4String> {
-    public override val name: KotlinString = "udi-di"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Device.udiCarrier.deviceIdentifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<R4String> =
-      resource.udiCarrier.mapNotNull { it.deviceIdentifier }
-  }
-
-  public data object Url : SearchParam<Device, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "Device.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Device): List<Uri> = listOfNotNull(resource.url)
-  }
 }

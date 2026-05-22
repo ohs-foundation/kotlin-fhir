@@ -149,7 +149,6 @@ import dev.ohs.fhir.model.r5.RequestOrchestration
 import dev.ohs.fhir.model.r5.Requirements
 import dev.ohs.fhir.model.r5.ResearchStudy
 import dev.ohs.fhir.model.r5.ResearchSubject
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.Schedule
 import dev.ohs.fhir.model.r5.SearchParameter
@@ -182,13 +181,256 @@ import dev.ohs.fhir.model.r5.VerificationResult
 import dev.ohs.fhir.model.r5.VisionPrescription
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List as CollectionsList
-import kotlin.reflect.KClass
 
 /** Search parameters for the [VerificationResult] resource type. */
 public object VerificationResultSearchParam {
+  public val AttestationMethod: SearchParam<VerificationResult, CodeableConcept> =
+    SimpleSearchParam<VerificationResult, CodeableConcept>(
+      name = "attestation-method",
+      type = SearchParamType.fromCode("token"),
+      expression = "VerificationResult.attestation.communicationMethod",
+      extractor = { resource -> listOfNotNull(resource.attestation?.communicationMethod) },
+    )
+
+  public val AttestationOnbehalfof: SearchParam<VerificationResult, Reference> =
+    SimpleSearchParam<VerificationResult, Reference>(
+      name = "attestation-onbehalfof",
+      type = SearchParamType.fromCode("reference"),
+      expression = "VerificationResult.attestation.onBehalfOf",
+      target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.attestation?.onBehalfOf) },
+    )
+
+  public val AttestationWho: SearchParam<VerificationResult, Reference> =
+    SimpleSearchParam<VerificationResult, Reference>(
+      name = "attestation-who",
+      type = SearchParamType.fromCode("reference"),
+      expression = "VerificationResult.attestation.who",
+      target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.attestation?.who) },
+    )
+
+  public val PrimarysourceDate: SearchParam<VerificationResult, DateTime> =
+    SimpleSearchParam<VerificationResult, DateTime>(
+      name = "primarysource-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "VerificationResult.primarySource.validationDate",
+      extractor = { resource -> resource.primarySource.mapNotNull { it.validationDate } },
+    )
+
+  public val PrimarysourceType: SearchParam<VerificationResult, CodeableConcept> =
+    SimpleSearchParam<VerificationResult, CodeableConcept>(
+      name = "primarysource-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "VerificationResult.primarySource.type",
+      extractor = { resource -> resource.primarySource.flatMap { it.type } },
+    )
+
+  public val PrimarysourceWho: SearchParam<VerificationResult, Reference> =
+    SimpleSearchParam<VerificationResult, Reference>(
+      name = "primarysource-who",
+      type = SearchParamType.fromCode("reference"),
+      expression = "VerificationResult.primarySource.who",
+      target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> resource.primarySource.mapNotNull { it.who } },
+    )
+
+  public val Status: SearchParam<VerificationResult, Any> =
+    SimpleSearchParam<VerificationResult, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "VerificationResult.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val StatusDate: SearchParam<VerificationResult, DateTime> =
+    SimpleSearchParam<VerificationResult, DateTime>(
+      name = "status-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "VerificationResult.statusDate",
+      extractor = { resource -> listOfNotNull(resource.statusDate) },
+    )
+
+  public val Target: SearchParam<VerificationResult, Reference> =
+    SimpleSearchParam<VerificationResult, Reference>(
+      name = "target",
+      type = SearchParamType.fromCode("reference"),
+      expression = "VerificationResult.target",
+      target =
+        listOf(
+          Account::class,
+          ActivityDefinition::class,
+          ActorDefinition::class,
+          AdministrableProductDefinition::class,
+          AdverseEvent::class,
+          AllergyIntolerance::class,
+          Appointment::class,
+          AppointmentResponse::class,
+          ArtifactAssessment::class,
+          AuditEvent::class,
+          Basic::class,
+          Binary::class,
+          BiologicallyDerivedProduct::class,
+          BiologicallyDerivedProductDispense::class,
+          BodyStructure::class,
+          Bundle::class,
+          CapabilityStatement::class,
+          CarePlan::class,
+          CareTeam::class,
+          ChargeItem::class,
+          ChargeItemDefinition::class,
+          Citation::class,
+          Claim::class,
+          ClaimResponse::class,
+          ClinicalImpression::class,
+          ClinicalUseDefinition::class,
+          CodeSystem::class,
+          Communication::class,
+          CommunicationRequest::class,
+          CompartmentDefinition::class,
+          Composition::class,
+          ConceptMap::class,
+          Condition::class,
+          ConditionDefinition::class,
+          Consent::class,
+          Contract::class,
+          Coverage::class,
+          CoverageEligibilityRequest::class,
+          CoverageEligibilityResponse::class,
+          DetectedIssue::class,
+          Device::class,
+          DeviceAssociation::class,
+          DeviceDefinition::class,
+          DeviceDispense::class,
+          DeviceMetric::class,
+          DeviceRequest::class,
+          DeviceUsage::class,
+          DiagnosticReport::class,
+          DocumentReference::class,
+          Encounter::class,
+          EncounterHistory::class,
+          Endpoint::class,
+          EnrollmentRequest::class,
+          EnrollmentResponse::class,
+          EpisodeOfCare::class,
+          EventDefinition::class,
+          Evidence::class,
+          EvidenceReport::class,
+          EvidenceVariable::class,
+          ExampleScenario::class,
+          ExplanationOfBenefit::class,
+          FamilyMemberHistory::class,
+          Flag::class,
+          FormularyItem::class,
+          GenomicStudy::class,
+          Goal::class,
+          GraphDefinition::class,
+          Group::class,
+          GuidanceResponse::class,
+          HealthcareService::class,
+          ImagingSelection::class,
+          ImagingStudy::class,
+          Immunization::class,
+          ImmunizationEvaluation::class,
+          ImmunizationRecommendation::class,
+          ImplementationGuide::class,
+          Ingredient::class,
+          InsurancePlan::class,
+          InventoryItem::class,
+          InventoryReport::class,
+          Invoice::class,
+          Library::class,
+          Linkage::class,
+          R5List::class,
+          Location::class,
+          ManufacturedItemDefinition::class,
+          Measure::class,
+          MeasureReport::class,
+          Medication::class,
+          MedicationAdministration::class,
+          MedicationDispense::class,
+          MedicationKnowledge::class,
+          MedicationRequest::class,
+          MedicationStatement::class,
+          MedicinalProductDefinition::class,
+          MessageDefinition::class,
+          MessageHeader::class,
+          MolecularSequence::class,
+          NamingSystem::class,
+          NutritionIntake::class,
+          NutritionOrder::class,
+          NutritionProduct::class,
+          Observation::class,
+          ObservationDefinition::class,
+          OperationDefinition::class,
+          OperationOutcome::class,
+          Organization::class,
+          OrganizationAffiliation::class,
+          PackagedProductDefinition::class,
+          Parameters::class,
+          Patient::class,
+          PaymentNotice::class,
+          PaymentReconciliation::class,
+          Permission::class,
+          Person::class,
+          PlanDefinition::class,
+          Practitioner::class,
+          PractitionerRole::class,
+          Procedure::class,
+          Provenance::class,
+          Questionnaire::class,
+          QuestionnaireResponse::class,
+          RegulatedAuthorization::class,
+          RelatedPerson::class,
+          RequestOrchestration::class,
+          Requirements::class,
+          ResearchStudy::class,
+          ResearchSubject::class,
+          RiskAssessment::class,
+          Schedule::class,
+          SearchParameter::class,
+          ServiceRequest::class,
+          Slot::class,
+          Specimen::class,
+          SpecimenDefinition::class,
+          StructureDefinition::class,
+          StructureMap::class,
+          Subscription::class,
+          SubscriptionStatus::class,
+          SubscriptionTopic::class,
+          Substance::class,
+          SubstanceDefinition::class,
+          SubstanceNucleicAcid::class,
+          SubstancePolymer::class,
+          SubstanceProtein::class,
+          SubstanceReferenceInformation::class,
+          SubstanceSourceMaterial::class,
+          SupplyDelivery::class,
+          SupplyRequest::class,
+          Task::class,
+          TerminologyCapabilities::class,
+          TestPlan::class,
+          TestReport::class,
+          TestScript::class,
+          Transport::class,
+          ValueSet::class,
+          VerificationResult::class,
+          VisionPrescription::class,
+        ),
+      extractor = { resource -> resource.target },
+    )
+
+  public val ValidatorOrganization: SearchParam<VerificationResult, Reference> =
+    SimpleSearchParam<VerificationResult, Reference>(
+      name = "validator-organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "VerificationResult.validator.organization",
+      target = listOf(Organization::class),
+      extractor = { resource -> resource.validator.map { it.organization } },
+    )
+
   /** All search parameters for the VerificationResult resource type. */
   public val ALL: CollectionsList<SearchParam<VerificationResult, *>> =
     listOf(
@@ -203,297 +445,4 @@ public object VerificationResultSearchParam {
       Target,
       ValidatorOrganization,
     )
-
-  public data object AttestationMethod : SearchParam<VerificationResult, CodeableConcept> {
-    public override val name: String = "attestation-method"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "VerificationResult.attestation.communicationMethod"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: VerificationResult): CollectionsList<CodeableConcept> =
-      listOfNotNull(resource.attestation?.communicationMethod)
-  }
-
-  public data object AttestationOnbehalfof : SearchParam<VerificationResult, Reference> {
-    public override val name: String = "attestation-onbehalfof"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "VerificationResult.attestation.onBehalfOf"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: VerificationResult): CollectionsList<Reference> =
-      listOfNotNull(resource.attestation?.onBehalfOf)
-  }
-
-  public data object AttestationWho : SearchParam<VerificationResult, Reference> {
-    public override val name: String = "attestation-who"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "VerificationResult.attestation.who"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: VerificationResult): CollectionsList<Reference> =
-      listOfNotNull(resource.attestation?.who)
-  }
-
-  public data object PrimarysourceDate : SearchParam<VerificationResult, DateTime> {
-    public override val name: String = "primarysource-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "VerificationResult.primarySource.validationDate"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: VerificationResult): CollectionsList<DateTime> =
-      resource.primarySource.mapNotNull { it.validationDate }
-  }
-
-  public data object PrimarysourceType : SearchParam<VerificationResult, CodeableConcept> {
-    public override val name: String = "primarysource-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "VerificationResult.primarySource.type"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: VerificationResult): CollectionsList<CodeableConcept> =
-      resource.primarySource.flatMap { it.type }
-  }
-
-  public data object PrimarysourceWho : SearchParam<VerificationResult, Reference> {
-    public override val name: String = "primarysource-who"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "VerificationResult.primarySource.who"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: VerificationResult): CollectionsList<Reference> =
-      resource.primarySource.mapNotNull { it.who }
-  }
-
-  public data object Status : SearchParam<VerificationResult, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "VerificationResult.status"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: VerificationResult): CollectionsList<Any> =
-      listOf(resource.status)
-  }
-
-  public data object StatusDate : SearchParam<VerificationResult, DateTime> {
-    public override val name: String = "status-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "VerificationResult.statusDate"
-
-    public override val target: CollectionsList<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: VerificationResult): CollectionsList<DateTime> =
-      listOfNotNull(resource.statusDate)
-  }
-
-  public data object Target : SearchParam<VerificationResult, Reference> {
-    public override val name: String = "target"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "VerificationResult.target"
-
-    public override val target: CollectionsList<KClass<out Resource>> =
-      listOf(
-        Account::class,
-        ActivityDefinition::class,
-        ActorDefinition::class,
-        AdministrableProductDefinition::class,
-        AdverseEvent::class,
-        AllergyIntolerance::class,
-        Appointment::class,
-        AppointmentResponse::class,
-        ArtifactAssessment::class,
-        AuditEvent::class,
-        Basic::class,
-        Binary::class,
-        BiologicallyDerivedProduct::class,
-        BiologicallyDerivedProductDispense::class,
-        BodyStructure::class,
-        Bundle::class,
-        CapabilityStatement::class,
-        CarePlan::class,
-        CareTeam::class,
-        ChargeItem::class,
-        ChargeItemDefinition::class,
-        Citation::class,
-        Claim::class,
-        ClaimResponse::class,
-        ClinicalImpression::class,
-        ClinicalUseDefinition::class,
-        CodeSystem::class,
-        Communication::class,
-        CommunicationRequest::class,
-        CompartmentDefinition::class,
-        Composition::class,
-        ConceptMap::class,
-        Condition::class,
-        ConditionDefinition::class,
-        Consent::class,
-        Contract::class,
-        Coverage::class,
-        CoverageEligibilityRequest::class,
-        CoverageEligibilityResponse::class,
-        DetectedIssue::class,
-        Device::class,
-        DeviceAssociation::class,
-        DeviceDefinition::class,
-        DeviceDispense::class,
-        DeviceMetric::class,
-        DeviceRequest::class,
-        DeviceUsage::class,
-        DiagnosticReport::class,
-        DocumentReference::class,
-        Encounter::class,
-        EncounterHistory::class,
-        Endpoint::class,
-        EnrollmentRequest::class,
-        EnrollmentResponse::class,
-        EpisodeOfCare::class,
-        EventDefinition::class,
-        Evidence::class,
-        EvidenceReport::class,
-        EvidenceVariable::class,
-        ExampleScenario::class,
-        ExplanationOfBenefit::class,
-        FamilyMemberHistory::class,
-        Flag::class,
-        FormularyItem::class,
-        GenomicStudy::class,
-        Goal::class,
-        GraphDefinition::class,
-        Group::class,
-        GuidanceResponse::class,
-        HealthcareService::class,
-        ImagingSelection::class,
-        ImagingStudy::class,
-        Immunization::class,
-        ImmunizationEvaluation::class,
-        ImmunizationRecommendation::class,
-        ImplementationGuide::class,
-        Ingredient::class,
-        InsurancePlan::class,
-        InventoryItem::class,
-        InventoryReport::class,
-        Invoice::class,
-        Library::class,
-        Linkage::class,
-        R5List::class,
-        Location::class,
-        ManufacturedItemDefinition::class,
-        Measure::class,
-        MeasureReport::class,
-        Medication::class,
-        MedicationAdministration::class,
-        MedicationDispense::class,
-        MedicationKnowledge::class,
-        MedicationRequest::class,
-        MedicationStatement::class,
-        MedicinalProductDefinition::class,
-        MessageDefinition::class,
-        MessageHeader::class,
-        MolecularSequence::class,
-        NamingSystem::class,
-        NutritionIntake::class,
-        NutritionOrder::class,
-        NutritionProduct::class,
-        Observation::class,
-        ObservationDefinition::class,
-        OperationDefinition::class,
-        OperationOutcome::class,
-        Organization::class,
-        OrganizationAffiliation::class,
-        PackagedProductDefinition::class,
-        Parameters::class,
-        Patient::class,
-        PaymentNotice::class,
-        PaymentReconciliation::class,
-        Permission::class,
-        Person::class,
-        PlanDefinition::class,
-        Practitioner::class,
-        PractitionerRole::class,
-        Procedure::class,
-        Provenance::class,
-        Questionnaire::class,
-        QuestionnaireResponse::class,
-        RegulatedAuthorization::class,
-        RelatedPerson::class,
-        RequestOrchestration::class,
-        Requirements::class,
-        ResearchStudy::class,
-        ResearchSubject::class,
-        RiskAssessment::class,
-        Schedule::class,
-        SearchParameter::class,
-        ServiceRequest::class,
-        Slot::class,
-        Specimen::class,
-        SpecimenDefinition::class,
-        StructureDefinition::class,
-        StructureMap::class,
-        Subscription::class,
-        SubscriptionStatus::class,
-        SubscriptionTopic::class,
-        Substance::class,
-        SubstanceDefinition::class,
-        SubstanceNucleicAcid::class,
-        SubstancePolymer::class,
-        SubstanceProtein::class,
-        SubstanceReferenceInformation::class,
-        SubstanceSourceMaterial::class,
-        SupplyDelivery::class,
-        SupplyRequest::class,
-        Task::class,
-        TerminologyCapabilities::class,
-        TestPlan::class,
-        TestReport::class,
-        TestScript::class,
-        Transport::class,
-        ValueSet::class,
-        VerificationResult::class,
-        VisionPrescription::class,
-      )
-
-    public override fun extract(resource: VerificationResult): CollectionsList<Reference> =
-      resource.target
-  }
-
-  public data object ValidatorOrganization : SearchParam<VerificationResult, Reference> {
-    public override val name: String = "validator-organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "VerificationResult.validator.organization"
-
-    public override val target: CollectionsList<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: VerificationResult): CollectionsList<Reference> =
-      resource.validator.map { it.organization }
-  }
 }

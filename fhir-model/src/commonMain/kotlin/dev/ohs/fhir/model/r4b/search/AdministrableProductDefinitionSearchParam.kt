@@ -21,129 +21,86 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.AdministrableProductDefinition
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DeviceDefinition
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.ManufacturedItemDefinition
 import dev.ohs.fhir.model.r4b.MedicinalProductDefinition
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [AdministrableProductDefinition] resource type. */
 public object AdministrableProductDefinitionSearchParam {
+  public val Device: SearchParam<AdministrableProductDefinition, Reference> =
+    SimpleSearchParam<AdministrableProductDefinition, Reference>(
+      name = "device",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AdministrableProductDefinition.device",
+      target = listOf(DeviceDefinition::class),
+      extractor = { resource -> listOfNotNull(resource.device) },
+    )
+
+  public val DoseForm: SearchParam<AdministrableProductDefinition, CodeableConcept> =
+    SimpleSearchParam<AdministrableProductDefinition, CodeableConcept>(
+      name = "dose-form",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdministrableProductDefinition.administrableDoseForm",
+      extractor = { resource -> listOfNotNull(resource.administrableDoseForm) },
+    )
+
+  public val FormOf: SearchParam<AdministrableProductDefinition, Reference> =
+    SimpleSearchParam<AdministrableProductDefinition, Reference>(
+      name = "form-of",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AdministrableProductDefinition.formOf",
+      target = listOf(MedicinalProductDefinition::class),
+      extractor = { resource -> resource.formOf },
+    )
+
+  public val Identifier: SearchParam<AdministrableProductDefinition, Identifier> =
+    SimpleSearchParam<AdministrableProductDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdministrableProductDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Ingredient: SearchParam<AdministrableProductDefinition, CodeableConcept> =
+    SimpleSearchParam<AdministrableProductDefinition, CodeableConcept>(
+      name = "ingredient",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdministrableProductDefinition.ingredient",
+      extractor = { resource -> resource.ingredient },
+    )
+
+  public val ManufacturedItem: SearchParam<AdministrableProductDefinition, Reference> =
+    SimpleSearchParam<AdministrableProductDefinition, Reference>(
+      name = "manufactured-item",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AdministrableProductDefinition.producedFrom",
+      target = listOf(ManufacturedItemDefinition::class),
+      extractor = { resource -> resource.producedFrom },
+    )
+
+  public val Route: SearchParam<AdministrableProductDefinition, CodeableConcept> =
+    SimpleSearchParam<AdministrableProductDefinition, CodeableConcept>(
+      name = "route",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdministrableProductDefinition.routeOfAdministration.code",
+      extractor = { resource -> resource.routeOfAdministration.map { it.code } },
+    )
+
+  public val TargetSpecies: SearchParam<AdministrableProductDefinition, CodeableConcept> =
+    SimpleSearchParam<AdministrableProductDefinition, CodeableConcept>(
+      name = "target-species",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdministrableProductDefinition.routeOfAdministration.targetSpecies.code",
+      extractor = { resource ->
+        resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }
+      },
+    )
+
   /** All search parameters for the AdministrableProductDefinition resource type. */
   public val ALL: List<SearchParam<AdministrableProductDefinition, *>> =
     listOf(Device, DoseForm, FormOf, Identifier, Ingredient, ManufacturedItem, Route, TargetSpecies)
-
-  public data object Device : SearchParam<AdministrableProductDefinition, Reference> {
-    public override val name: String = "device"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AdministrableProductDefinition.device"
-
-    public override val target: List<KClass<out Resource>> = listOf(DeviceDefinition::class)
-
-    public override fun extract(resource: AdministrableProductDefinition): List<Reference> =
-      listOfNotNull(resource.device)
-  }
-
-  public data object DoseForm : SearchParam<AdministrableProductDefinition, CodeableConcept> {
-    public override val name: String = "dose-form"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AdministrableProductDefinition.administrableDoseForm"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.administrableDoseForm)
-  }
-
-  public data object FormOf : SearchParam<AdministrableProductDefinition, Reference> {
-    public override val name: String = "form-of"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AdministrableProductDefinition.formOf"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(MedicinalProductDefinition::class)
-
-    public override fun extract(resource: AdministrableProductDefinition): List<Reference> =
-      resource.formOf
-  }
-
-  public data object Identifier :
-    SearchParam<AdministrableProductDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AdministrableProductDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: AdministrableProductDefinition
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
-  }
-
-  public data object Ingredient : SearchParam<AdministrableProductDefinition, CodeableConcept> {
-    public override val name: String = "ingredient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AdministrableProductDefinition.ingredient"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
-      resource.ingredient
-  }
-
-  public data object ManufacturedItem : SearchParam<AdministrableProductDefinition, Reference> {
-    public override val name: String = "manufactured-item"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AdministrableProductDefinition.producedFrom"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(ManufacturedItemDefinition::class)
-
-    public override fun extract(resource: AdministrableProductDefinition): List<Reference> =
-      resource.producedFrom
-  }
-
-  public data object Route : SearchParam<AdministrableProductDefinition, CodeableConcept> {
-    public override val name: String = "route"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String =
-      "AdministrableProductDefinition.routeOfAdministration.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
-      resource.routeOfAdministration.map { it.code }
-  }
-
-  public data object TargetSpecies : SearchParam<AdministrableProductDefinition, CodeableConcept> {
-    public override val name: String = "target-species"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String =
-      "AdministrableProductDefinition.routeOfAdministration.targetSpecies.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdministrableProductDefinition): List<CodeableConcept> =
-      resource.routeOfAdministration.flatMap { it.targetSpecies }.map { it.code }
-  }
 }

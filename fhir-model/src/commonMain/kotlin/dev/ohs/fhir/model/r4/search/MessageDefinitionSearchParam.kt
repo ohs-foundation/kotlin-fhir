@@ -23,23 +23,178 @@ import dev.ohs.fhir.model.r4.Canonical
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.MessageDefinition
 import dev.ohs.fhir.model.r4.PlanDefinition
 import dev.ohs.fhir.model.r4.Quantity
-import dev.ohs.fhir.model.r4.Resource
-import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [MessageDefinition] resource type. */
 public object MessageDefinitionSearchParam {
+  public val Category: SearchParam<MessageDefinition, Any> =
+    SimpleSearchParam<MessageDefinition, Any>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageDefinition.category",
+      extractor = { resource -> listOfNotNull(resource.category) },
+    )
+
+  public val Context: SearchParam<MessageDefinition, CodeableConcept> =
+    SimpleSearchParam<MessageDefinition, CodeableConcept>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(MessageDefinition.useContext.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+      },
+    )
+
+  public val ContextQuantity: SearchParam<MessageDefinition, Quantity> =
+    SimpleSearchParam<MessageDefinition, Quantity>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(MessageDefinition.useContext.value as Quantity)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+      },
+    )
+
+  public val ContextType: SearchParam<MessageDefinition, Coding> =
+    SimpleSearchParam<MessageDefinition, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageDefinition.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<MessageDefinition, UsageContext> =
+    SimpleSearchParam<MessageDefinition, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "MessageDefinition.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<MessageDefinition, UsageContext> =
+    SimpleSearchParam<MessageDefinition, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "MessageDefinition.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<MessageDefinition, DateTime> =
+    SimpleSearchParam<MessageDefinition, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "MessageDefinition.date",
+      extractor = { resource -> listOf(resource.date) },
+    )
+
+  public val Description: SearchParam<MessageDefinition, Markdown> =
+    SimpleSearchParam<MessageDefinition, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "MessageDefinition.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Event: SearchParam<MessageDefinition, MessageDefinition.Event> =
+    SimpleSearchParam<MessageDefinition, MessageDefinition.Event>(
+      name = "event",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageDefinition.event",
+      extractor = { resource -> listOf(resource.event) },
+    )
+
+  public val Focus: SearchParam<MessageDefinition, Any> =
+    SimpleSearchParam<MessageDefinition, Any>(
+      name = "focus",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageDefinition.focus.code",
+      extractor = { resource -> resource.focus.map { it.code } },
+    )
+
+  public val Identifier: SearchParam<MessageDefinition, Identifier> =
+    SimpleSearchParam<MessageDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<MessageDefinition, CodeableConcept> =
+    SimpleSearchParam<MessageDefinition, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageDefinition.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<MessageDefinition, String> =
+    SimpleSearchParam<MessageDefinition, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "MessageDefinition.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Parent: SearchParam<MessageDefinition, Canonical> =
+    SimpleSearchParam<MessageDefinition, Canonical>(
+      name = "parent",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MessageDefinition.parent",
+      target = listOf(PlanDefinition::class, ActivityDefinition::class),
+      extractor = { resource -> resource.parent },
+    )
+
+  public val Publisher: SearchParam<MessageDefinition, String> =
+    SimpleSearchParam<MessageDefinition, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "MessageDefinition.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<MessageDefinition, Any> =
+    SimpleSearchParam<MessageDefinition, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageDefinition.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Title: SearchParam<MessageDefinition, String> =
+    SimpleSearchParam<MessageDefinition, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "MessageDefinition.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Url: SearchParam<MessageDefinition, Uri> =
+    SimpleSearchParam<MessageDefinition, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "MessageDefinition.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Version: SearchParam<MessageDefinition, String> =
+    SimpleSearchParam<MessageDefinition, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "MessageDefinition.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the MessageDefinition resource type. */
   public val ALL: List<SearchParam<MessageDefinition, *>> =
     listOf(
@@ -63,252 +218,4 @@ public object MessageDefinitionSearchParam {
       Url,
       Version,
     )
-
-  public data object Category : SearchParam<MessageDefinition, Any> {
-    public override val name: KotlinString = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageDefinition.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<Any> =
-      listOfNotNull(resource.category)
-  }
-
-  public data object Context : SearchParam<MessageDefinition, CodeableConcept> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(MessageDefinition.useContext.value as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<CodeableConcept> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
-  }
-
-  public data object ContextQuantity : SearchParam<MessageDefinition, Quantity> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString =
-      "(MessageDefinition.useContext.value as Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<Quantity> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
-  }
-
-  public data object ContextType : SearchParam<MessageDefinition, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageDefinition.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<MessageDefinition, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "MessageDefinition.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<UsageContext> =
-      resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<MessageDefinition, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "MessageDefinition.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<UsageContext> =
-      resource.useContext
-  }
-
-  public data object Date : SearchParam<MessageDefinition, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "MessageDefinition.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<DateTime> = listOf(resource.date)
-  }
-
-  public data object Description : SearchParam<MessageDefinition, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "MessageDefinition.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Event : SearchParam<MessageDefinition, MessageDefinition.Event> {
-    public override val name: KotlinString = "event"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageDefinition.event"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<MessageDefinition.Event> =
-      listOf(resource.event)
-  }
-
-  public data object Focus : SearchParam<MessageDefinition, Any> {
-    public override val name: KotlinString = "focus"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageDefinition.focus.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<Any> =
-      resource.focus.map { it.code }
-  }
-
-  public data object Identifier : SearchParam<MessageDefinition, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: MessageDefinition
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<MessageDefinition, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageDefinition.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<MessageDefinition, R4String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "MessageDefinition.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<R4String> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Parent : SearchParam<MessageDefinition, Canonical> {
-    public override val name: KotlinString = "parent"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "MessageDefinition.parent"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(PlanDefinition::class, ActivityDefinition::class)
-
-    public override fun extract(resource: MessageDefinition): List<Canonical> = resource.parent
-  }
-
-  public data object Publisher : SearchParam<MessageDefinition, R4String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "MessageDefinition.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<R4String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<MessageDefinition, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageDefinition.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<Any> = listOf(resource.status)
-  }
-
-  public data object Title : SearchParam<MessageDefinition, R4String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "MessageDefinition.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<R4String> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Url : SearchParam<MessageDefinition, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "MessageDefinition.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<Uri> =
-      listOfNotNull(resource.url)
-  }
-
-  public data object Version : SearchParam<MessageDefinition, R4String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "MessageDefinition.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MessageDefinition): List<R4String> =
-      listOfNotNull(resource.version)
-  }
 }

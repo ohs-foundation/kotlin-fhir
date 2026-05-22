@@ -20,95 +20,66 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Endpoint
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Endpoint] resource type. */
 public object EndpointSearchParam {
+  public val ConnectionType: SearchParam<Endpoint, CodeableConcept> =
+    SimpleSearchParam<Endpoint, CodeableConcept>(
+      name = "connection-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Endpoint.connectionType",
+      extractor = { resource -> resource.connectionType },
+    )
+
+  public val Identifier: SearchParam<Endpoint, Identifier> =
+    SimpleSearchParam<Endpoint, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Endpoint.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Name: SearchParam<Endpoint, String> =
+    SimpleSearchParam<Endpoint, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "Endpoint.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Organization: SearchParam<Endpoint, Reference> =
+    SimpleSearchParam<Endpoint, Reference>(
+      name = "organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Endpoint.managingOrganization",
+      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      extractor = { resource -> listOfNotNull(resource.managingOrganization) },
+    )
+
+  public val PayloadType: SearchParam<Endpoint, CodeableConcept> =
+    SimpleSearchParam<Endpoint, CodeableConcept>(
+      name = "payload-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Endpoint.payload.type",
+      extractor = { resource -> resource.payload.flatMap { it.type } },
+    )
+
+  public val Status: SearchParam<Endpoint, Any> =
+    SimpleSearchParam<Endpoint, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Endpoint.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the Endpoint resource type. */
   public val ALL: List<SearchParam<Endpoint, *>> =
     listOf(ConnectionType, Identifier, Name, Organization, PayloadType, Status)
-
-  public data object ConnectionType : SearchParam<Endpoint, CodeableConcept> {
-    public override val name: KotlinString = "connection-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Endpoint.connectionType"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Endpoint): List<CodeableConcept> = resource.connectionType
-  }
-
-  public data object Identifier : SearchParam<Endpoint, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Endpoint.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Endpoint): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Name : SearchParam<Endpoint, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Endpoint.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Endpoint): List<R5String> = listOfNotNull(resource.name)
-  }
-
-  public data object Organization : SearchParam<Endpoint, Reference> {
-    public override val name: KotlinString = "organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Endpoint.managingOrganization"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Organization::class)
-
-    public override fun extract(resource: Endpoint): List<Reference> =
-      listOfNotNull(resource.managingOrganization)
-  }
-
-  public data object PayloadType : SearchParam<Endpoint, CodeableConcept> {
-    public override val name: KotlinString = "payload-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Endpoint.payload.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Endpoint): List<CodeableConcept> =
-      resource.payload.flatMap { it.type }
-  }
-
-  public data object Status : SearchParam<Endpoint, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Endpoint.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Endpoint): List<Any> = listOf(resource.status)
-  }
 }

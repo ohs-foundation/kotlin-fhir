@@ -21,151 +21,114 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.AppointmentResponse
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [AppointmentResponse] resource type. */
 public object AppointmentResponseSearchParam {
+  public val Actor: SearchParam<AppointmentResponse, Reference> =
+    SimpleSearchParam<AppointmentResponse, Reference>(
+      name = "actor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AppointmentResponse.actor",
+      target =
+        listOf(
+          HealthcareService::class,
+          Device::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          dev.ohs.fhir.model.r5.Group::class,
+          dev.ohs.fhir.model.r5.Practitioner::class,
+          dev.ohs.fhir.model.r5.Location::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.actor) },
+    )
+
+  public val Appointment: SearchParam<AppointmentResponse, Reference> =
+    SimpleSearchParam<AppointmentResponse, Reference>(
+      name = "appointment",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AppointmentResponse.appointment",
+      target = listOf(dev.ohs.fhir.model.r5.Appointment::class),
+      extractor = { resource -> listOf(resource.appointment) },
+    )
+
+  public val Group: SearchParam<AppointmentResponse, Reference> =
+    SimpleSearchParam<AppointmentResponse, Reference>(
+      name = "group",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AppointmentResponse.actor.where(resolve() is Group)",
+      target = listOf(dev.ohs.fhir.model.r5.Group::class),
+      extractor = { resource ->
+        listOfNotNull(resource.actor).filter {
+          it.reference?.value?.toString()?.contains("Group/") == true
+        }
+      },
+    )
+
+  public val Identifier: SearchParam<AppointmentResponse, Identifier> =
+    SimpleSearchParam<AppointmentResponse, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "AppointmentResponse.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Location: SearchParam<AppointmentResponse, Reference> =
+    SimpleSearchParam<AppointmentResponse, Reference>(
+      name = "location",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AppointmentResponse.actor.where(resolve() is Location)",
+      target = listOf(dev.ohs.fhir.model.r5.Location::class),
+      extractor = { resource ->
+        listOfNotNull(resource.actor).filter {
+          it.reference?.value?.toString()?.contains("Location/") == true
+        }
+      },
+    )
+
+  public val PartStatus: SearchParam<AppointmentResponse, Any> =
+    SimpleSearchParam<AppointmentResponse, Any>(
+      name = "part-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "AppointmentResponse.participantStatus",
+      extractor = { resource -> listOf(resource.participantStatus) },
+    )
+
+  public val Patient: SearchParam<AppointmentResponse, Reference> =
+    SimpleSearchParam<AppointmentResponse, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AppointmentResponse.actor.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOfNotNull(resource.actor).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Practitioner: SearchParam<AppointmentResponse, Reference> =
+    SimpleSearchParam<AppointmentResponse, Reference>(
+      name = "practitioner",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AppointmentResponse.actor.where(resolve() is Practitioner)",
+      target = listOf(dev.ohs.fhir.model.r5.Practitioner::class),
+      extractor = { resource ->
+        listOfNotNull(resource.actor).filter {
+          it.reference?.value?.toString()?.contains("Practitioner/") == true
+        }
+      },
+    )
+
   /** All search parameters for the AppointmentResponse resource type. */
   public val ALL: List<SearchParam<AppointmentResponse, *>> =
     listOf(Actor, Appointment, Group, Identifier, Location, PartStatus, Patient, Practitioner)
-
-  public data object Actor : SearchParam<AppointmentResponse, Reference> {
-    public override val name: String = "actor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AppointmentResponse.actor"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        HealthcareService::class,
-        Device::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        dev.ohs.fhir.model.r5.Group::class,
-        dev.ohs.fhir.model.r5.Practitioner::class,
-        dev.ohs.fhir.model.r5.Location::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: AppointmentResponse): List<Reference> =
-      listOfNotNull(resource.actor)
-  }
-
-  public data object Appointment : SearchParam<AppointmentResponse, Reference> {
-    public override val name: String = "appointment"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AppointmentResponse.appointment"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Appointment::class)
-
-    public override fun extract(resource: AppointmentResponse): List<Reference> =
-      listOf(resource.appointment)
-  }
-
-  public data object Group : SearchParam<AppointmentResponse, Reference> {
-    public override val name: String = "group"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AppointmentResponse.actor.where(resolve() is Group)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Group::class)
-
-    public override fun extract(resource: AppointmentResponse): List<Reference> =
-      listOfNotNull(resource.actor).filter {
-        it.reference?.value?.toString()?.contains("Group/") == true
-      }
-  }
-
-  public data object Identifier :
-    SearchParam<AppointmentResponse, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AppointmentResponse.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: AppointmentResponse
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Location : SearchParam<AppointmentResponse, Reference> {
-    public override val name: String = "location"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "AppointmentResponse.actor.where(resolve() is Location)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Location::class)
-
-    public override fun extract(resource: AppointmentResponse): List<Reference> =
-      listOfNotNull(resource.actor).filter {
-        it.reference?.value?.toString()?.contains("Location/") == true
-      }
-  }
-
-  public data object PartStatus : SearchParam<AppointmentResponse, Any> {
-    public override val name: String = "part-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AppointmentResponse.participantStatus"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AppointmentResponse): List<Any> =
-      listOf(resource.participantStatus)
-  }
-
-  public data object Patient : SearchParam<AppointmentResponse, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AppointmentResponse.actor.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: AppointmentResponse): List<Reference> =
-      listOfNotNull(resource.actor).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Practitioner : SearchParam<AppointmentResponse, Reference> {
-    public override val name: String = "practitioner"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "AppointmentResponse.actor.where(resolve() is Practitioner)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Practitioner::class)
-
-    public override fun extract(resource: AppointmentResponse): List<Reference> =
-      listOfNotNull(resource.actor).filter {
-        it.reference?.value?.toString()?.contains("Practitioner/") == true
-      }
-  }
 }

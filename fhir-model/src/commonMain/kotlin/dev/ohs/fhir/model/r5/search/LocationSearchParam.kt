@@ -18,21 +18,160 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Address
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Location
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Location] resource type. */
 public object LocationSearchParam {
+  public val Address: SearchParam<Location, Address> =
+    SimpleSearchParam<Location, Address>(
+      name = "address",
+      type = SearchParamType.fromCode("string"),
+      expression = "Location.address",
+      extractor = { resource -> listOfNotNull(resource.address) },
+    )
+
+  public val AddressCity: SearchParam<Location, String> =
+    SimpleSearchParam<Location, String>(
+      name = "address-city",
+      type = SearchParamType.fromCode("string"),
+      expression = "Location.address.city",
+      extractor = { resource -> listOfNotNull(resource.address?.city) },
+    )
+
+  public val AddressCountry: SearchParam<Location, String> =
+    SimpleSearchParam<Location, String>(
+      name = "address-country",
+      type = SearchParamType.fromCode("string"),
+      expression = "Location.address.country",
+      extractor = { resource -> listOfNotNull(resource.address?.country) },
+    )
+
+  public val AddressPostalcode: SearchParam<Location, String> =
+    SimpleSearchParam<Location, String>(
+      name = "address-postalcode",
+      type = SearchParamType.fromCode("string"),
+      expression = "Location.address.postalCode",
+      extractor = { resource -> listOfNotNull(resource.address?.postalCode) },
+    )
+
+  public val AddressState: SearchParam<Location, String> =
+    SimpleSearchParam<Location, String>(
+      name = "address-state",
+      type = SearchParamType.fromCode("string"),
+      expression = "Location.address.state",
+      extractor = { resource -> listOfNotNull(resource.address?.state) },
+    )
+
+  public val AddressUse: SearchParam<Location, Any> =
+    SimpleSearchParam<Location, Any>(
+      name = "address-use",
+      type = SearchParamType.fromCode("token"),
+      expression = "Location.address.use",
+      extractor = { resource -> listOfNotNull(resource.address?.use) },
+    )
+
+  public val Characteristic: SearchParam<Location, CodeableConcept> =
+    SimpleSearchParam<Location, CodeableConcept>(
+      name = "characteristic",
+      type = SearchParamType.fromCode("token"),
+      expression = "Location.characteristic",
+      extractor = { resource -> resource.characteristic },
+    )
+
+  public val Contains: SearchParam<Location, Any> =
+    SimpleSearchParam<Location, Any>(
+      name = "contains",
+      type = SearchParamType.fromCode("special"),
+      expression =
+        "Location.extension('http://hl7.org/fhir/StructureDefinition/location-boundary-geojson').value",
+      extractor = { emptyList() },
+    )
+
+  public val Endpoint: SearchParam<Location, Reference> =
+    SimpleSearchParam<Location, Reference>(
+      name = "endpoint",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Location.endpoint",
+      target = listOf(dev.ohs.fhir.model.r5.Endpoint::class),
+      extractor = { resource -> resource.endpoint },
+    )
+
+  public val Identifier: SearchParam<Location, Identifier> =
+    SimpleSearchParam<Location, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Location.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Name: SearchParam<Location, String> =
+    SimpleSearchParam<Location, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "Location.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Near: SearchParam<Location, Location.Position> =
+    SimpleSearchParam<Location, Location.Position>(
+      name = "near",
+      type = SearchParamType.fromCode("special"),
+      expression = "Location.position",
+      extractor = { resource -> listOfNotNull(resource.position) },
+    )
+
+  public val OperationalStatus: SearchParam<Location, Coding> =
+    SimpleSearchParam<Location, Coding>(
+      name = "operational-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Location.operationalStatus",
+      extractor = { resource -> listOfNotNull(resource.operationalStatus) },
+    )
+
+  public val Organization: SearchParam<Location, Reference> =
+    SimpleSearchParam<Location, Reference>(
+      name = "organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Location.managingOrganization",
+      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      extractor = { resource -> listOfNotNull(resource.managingOrganization) },
+    )
+
+  public val Partof: SearchParam<Location, Reference> =
+    SimpleSearchParam<Location, Reference>(
+      name = "partof",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Location.partOf",
+      target = listOf(Location::class),
+      extractor = { resource -> listOfNotNull(resource.partOf) },
+    )
+
+  public val Status: SearchParam<Location, Any> =
+    SimpleSearchParam<Location, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Location.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
+  public val Type: SearchParam<Location, CodeableConcept> =
+    SimpleSearchParam<Location, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Location.type",
+      extractor = { resource -> resource.type },
+    )
+
   /** All search parameters for the Location resource type. */
   public val ALL: List<SearchParam<Location, *>> =
     listOf(
@@ -54,222 +193,4 @@ public object LocationSearchParam {
       Status,
       Type,
     )
-
-  public data object Address : SearchParam<Location, dev.ohs.fhir.model.r5.Address> {
-    public override val name: KotlinString = "address"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Location.address"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<dev.ohs.fhir.model.r5.Address> =
-      listOfNotNull(resource.address)
-  }
-
-  public data object AddressCity : SearchParam<Location, R5String> {
-    public override val name: KotlinString = "address-city"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Location.address.city"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<R5String> =
-      listOfNotNull(resource.address?.city)
-  }
-
-  public data object AddressCountry : SearchParam<Location, R5String> {
-    public override val name: KotlinString = "address-country"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Location.address.country"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<R5String> =
-      listOfNotNull(resource.address?.country)
-  }
-
-  public data object AddressPostalcode : SearchParam<Location, R5String> {
-    public override val name: KotlinString = "address-postalcode"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Location.address.postalCode"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<R5String> =
-      listOfNotNull(resource.address?.postalCode)
-  }
-
-  public data object AddressState : SearchParam<Location, R5String> {
-    public override val name: KotlinString = "address-state"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Location.address.state"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<R5String> =
-      listOfNotNull(resource.address?.state)
-  }
-
-  public data object AddressUse : SearchParam<Location, Any> {
-    public override val name: KotlinString = "address-use"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Location.address.use"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<Any> =
-      listOfNotNull(resource.address?.use)
-  }
-
-  public data object Characteristic : SearchParam<Location, CodeableConcept> {
-    public override val name: KotlinString = "characteristic"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Location.characteristic"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<CodeableConcept> = resource.characteristic
-  }
-
-  public data object Contains : SearchParam<Location, Any> {
-    public override val name: KotlinString = "contains"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("special")
-
-    public override val expression: KotlinString =
-      "Location.extension('http://hl7.org/fhir/StructureDefinition/location-boundary-geojson').value"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<Any> = emptyList()
-  }
-
-  public data object Endpoint : SearchParam<Location, Reference> {
-    public override val name: KotlinString = "endpoint"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Location.endpoint"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Endpoint::class)
-
-    public override fun extract(resource: Location): List<Reference> = resource.endpoint
-  }
-
-  public data object Identifier : SearchParam<Location, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Location.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Name : SearchParam<Location, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Location.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<R5String> = listOfNotNull(resource.name)
-  }
-
-  public data object Near : SearchParam<Location, Location.Position> {
-    public override val name: KotlinString = "near"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("special")
-
-    public override val expression: KotlinString = "Location.position"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<Location.Position> =
-      listOfNotNull(resource.position)
-  }
-
-  public data object OperationalStatus : SearchParam<Location, Coding> {
-    public override val name: KotlinString = "operational-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Location.operationalStatus"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<Coding> =
-      listOfNotNull(resource.operationalStatus)
-  }
-
-  public data object Organization : SearchParam<Location, Reference> {
-    public override val name: KotlinString = "organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Location.managingOrganization"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Organization::class)
-
-    public override fun extract(resource: Location): List<Reference> =
-      listOfNotNull(resource.managingOrganization)
-  }
-
-  public data object Partof : SearchParam<Location, Reference> {
-    public override val name: KotlinString = "partof"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Location.partOf"
-
-    public override val target: List<KClass<out Resource>> = listOf(Location::class)
-
-    public override fun extract(resource: Location): List<Reference> =
-      listOfNotNull(resource.partOf)
-  }
-
-  public data object Status : SearchParam<Location, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Location.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<Any> = listOfNotNull(resource.status)
-  }
-
-  public data object Type : SearchParam<Location, CodeableConcept> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Location.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Location): List<CodeableConcept> = resource.type
-  }
 }

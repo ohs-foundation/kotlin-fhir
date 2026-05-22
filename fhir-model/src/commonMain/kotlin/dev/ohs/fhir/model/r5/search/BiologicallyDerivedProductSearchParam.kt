@@ -21,19 +21,83 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [BiologicallyDerivedProduct] resource type. */
 public object BiologicallyDerivedProductSearchParam {
+  public val BiologicalSourceEvent: SearchParam<BiologicallyDerivedProduct, Identifier> =
+    SimpleSearchParam<BiologicallyDerivedProduct, Identifier>(
+      name = "biological-source-event",
+      type = SearchParamType.fromCode("token"),
+      expression = "BiologicallyDerivedProduct.biologicalSourceEvent",
+      extractor = { resource -> listOfNotNull(resource.biologicalSourceEvent) },
+    )
+
+  public val Code: SearchParam<BiologicallyDerivedProduct, CodeableConcept> =
+    SimpleSearchParam<BiologicallyDerivedProduct, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "BiologicallyDerivedProduct.productCode",
+      extractor = { resource -> listOfNotNull(resource.productCode) },
+    )
+
+  public val Collector: SearchParam<BiologicallyDerivedProduct, Reference> =
+    SimpleSearchParam<BiologicallyDerivedProduct, Reference>(
+      name = "collector",
+      type = SearchParamType.fromCode("reference"),
+      expression = "BiologicallyDerivedProduct.collection.collector",
+      target = listOf(PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.collection?.collector) },
+    )
+
+  public val Identifier: SearchParam<BiologicallyDerivedProduct, Identifier> =
+    SimpleSearchParam<BiologicallyDerivedProduct, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "BiologicallyDerivedProduct.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val ProductCategory: SearchParam<BiologicallyDerivedProduct, Coding> =
+    SimpleSearchParam<BiologicallyDerivedProduct, Coding>(
+      name = "product-category",
+      type = SearchParamType.fromCode("token"),
+      expression = "BiologicallyDerivedProduct.productCategory",
+      extractor = { resource -> listOfNotNull(resource.productCategory) },
+    )
+
+  public val ProductStatus: SearchParam<BiologicallyDerivedProduct, Coding> =
+    SimpleSearchParam<BiologicallyDerivedProduct, Coding>(
+      name = "product-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "BiologicallyDerivedProduct.productStatus",
+      extractor = { resource -> listOfNotNull(resource.productStatus) },
+    )
+
+  public val Request: SearchParam<BiologicallyDerivedProduct, Reference> =
+    SimpleSearchParam<BiologicallyDerivedProduct, Reference>(
+      name = "request",
+      type = SearchParamType.fromCode("reference"),
+      expression = "BiologicallyDerivedProduct.request",
+      target = listOf(ServiceRequest::class),
+      extractor = { resource -> resource.request },
+    )
+
+  public val SerialNumber: SearchParam<BiologicallyDerivedProduct, Identifier> =
+    SimpleSearchParam<BiologicallyDerivedProduct, Identifier>(
+      name = "serial-number",
+      type = SearchParamType.fromCode("token"),
+      expression = "BiologicallyDerivedProduct.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
   /** All search parameters for the BiologicallyDerivedProduct resource type. */
   public val ALL: List<SearchParam<BiologicallyDerivedProduct, *>> =
     listOf(
@@ -46,115 +110,4 @@ public object BiologicallyDerivedProductSearchParam {
       Request,
       SerialNumber,
     )
-
-  public data object BiologicalSourceEvent :
-    SearchParam<BiologicallyDerivedProduct, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "biological-source-event"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BiologicallyDerivedProduct.biologicalSourceEvent"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: BiologicallyDerivedProduct
-    ): List<dev.ohs.fhir.model.r5.Identifier> = listOfNotNull(resource.biologicalSourceEvent)
-  }
-
-  public data object Code : SearchParam<BiologicallyDerivedProduct, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BiologicallyDerivedProduct.productCode"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BiologicallyDerivedProduct): List<CodeableConcept> =
-      listOfNotNull(resource.productCode)
-  }
-
-  public data object Collector : SearchParam<BiologicallyDerivedProduct, Reference> {
-    public override val name: String = "collector"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "BiologicallyDerivedProduct.collection.collector"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: BiologicallyDerivedProduct): List<Reference> =
-      listOfNotNull(resource.collection?.collector)
-  }
-
-  public data object Identifier :
-    SearchParam<BiologicallyDerivedProduct, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BiologicallyDerivedProduct.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: BiologicallyDerivedProduct
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object ProductCategory : SearchParam<BiologicallyDerivedProduct, Coding> {
-    public override val name: String = "product-category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BiologicallyDerivedProduct.productCategory"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BiologicallyDerivedProduct): List<Coding> =
-      listOfNotNull(resource.productCategory)
-  }
-
-  public data object ProductStatus : SearchParam<BiologicallyDerivedProduct, Coding> {
-    public override val name: String = "product-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BiologicallyDerivedProduct.productStatus"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: BiologicallyDerivedProduct): List<Coding> =
-      listOfNotNull(resource.productStatus)
-  }
-
-  public data object Request : SearchParam<BiologicallyDerivedProduct, Reference> {
-    public override val name: String = "request"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "BiologicallyDerivedProduct.request"
-
-    public override val target: List<KClass<out Resource>> = listOf(ServiceRequest::class)
-
-    public override fun extract(resource: BiologicallyDerivedProduct): List<Reference> =
-      resource.request
-  }
-
-  public data object SerialNumber :
-    SearchParam<BiologicallyDerivedProduct, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "serial-number"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "BiologicallyDerivedProduct.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: BiologicallyDerivedProduct
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
 }

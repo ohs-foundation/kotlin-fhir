@@ -21,21 +21,115 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
 import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [RiskAssessment] resource type. */
 public object RiskAssessmentSearchParam {
+  public val Condition: SearchParam<RiskAssessment, Reference> =
+    SimpleSearchParam<RiskAssessment, Reference>(
+      name = "condition",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RiskAssessment.condition",
+      target = listOf(dev.ohs.fhir.model.r5.Condition::class),
+      extractor = { resource -> listOfNotNull(resource.condition) },
+    )
+
+  public val Date: SearchParam<RiskAssessment, Any> =
+    SimpleSearchParam<RiskAssessment, Any>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "(RiskAssessment.occurrence.ofType(dateTime))",
+      extractor = { emptyList() },
+    )
+
+  public val Encounter: SearchParam<RiskAssessment, Reference> =
+    SimpleSearchParam<RiskAssessment, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RiskAssessment.encounter",
+      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Identifier: SearchParam<RiskAssessment, Identifier> =
+    SimpleSearchParam<RiskAssessment, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "RiskAssessment.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Method: SearchParam<RiskAssessment, CodeableConcept> =
+    SimpleSearchParam<RiskAssessment, CodeableConcept>(
+      name = "method",
+      type = SearchParamType.fromCode("token"),
+      expression = "RiskAssessment.method",
+      extractor = { resource -> listOfNotNull(resource.method) },
+    )
+
+  public val Patient: SearchParam<RiskAssessment, Reference> =
+    SimpleSearchParam<RiskAssessment, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RiskAssessment.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOf(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Performer: SearchParam<RiskAssessment, Reference> =
+    SimpleSearchParam<RiskAssessment, Reference>(
+      name = "performer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RiskAssessment.performer",
+      target =
+        listOf(
+          Device::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> listOfNotNull(resource.performer) },
+    )
+
+  public val Probability: SearchParam<RiskAssessment, Any> =
+    SimpleSearchParam<RiskAssessment, Any>(
+      name = "probability",
+      type = SearchParamType.fromCode("number"),
+      expression = "RiskAssessment.prediction.probability.ofType(decimal)",
+      extractor = { emptyList() },
+    )
+
+  public val Risk: SearchParam<RiskAssessment, CodeableConcept> =
+    SimpleSearchParam<RiskAssessment, CodeableConcept>(
+      name = "risk",
+      type = SearchParamType.fromCode("token"),
+      expression = "RiskAssessment.prediction.qualitativeRisk",
+      extractor = { resource -> resource.prediction.mapNotNull { it.qualitativeRisk } },
+    )
+
+  public val Subject: SearchParam<RiskAssessment, Reference> =
+    SimpleSearchParam<RiskAssessment, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RiskAssessment.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
   /** All search parameters for the RiskAssessment resource type. */
   public val ALL: List<SearchParam<RiskAssessment, *>> =
     listOf(
@@ -50,145 +144,4 @@ public object RiskAssessmentSearchParam {
       Risk,
       Subject,
     )
-
-  public data object Condition : SearchParam<RiskAssessment, Reference> {
-    public override val name: String = "condition"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RiskAssessment.condition"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Condition::class)
-
-    public override fun extract(resource: RiskAssessment): List<Reference> =
-      listOfNotNull(resource.condition)
-  }
-
-  public data object Date : SearchParam<RiskAssessment, Any> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "(RiskAssessment.occurrence.ofType(dateTime))"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
-  }
-
-  public data object Encounter : SearchParam<RiskAssessment, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RiskAssessment.encounter"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Encounter::class)
-
-    public override fun extract(resource: RiskAssessment): List<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Identifier : SearchParam<RiskAssessment, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RiskAssessment.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskAssessment): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Method : SearchParam<RiskAssessment, CodeableConcept> {
-    public override val name: String = "method"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RiskAssessment.method"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskAssessment): List<CodeableConcept> =
-      listOfNotNull(resource.method)
-  }
-
-  public data object Patient : SearchParam<RiskAssessment, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RiskAssessment.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: RiskAssessment): List<Reference> =
-      listOf(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Performer : SearchParam<RiskAssessment, Reference> {
-    public override val name: String = "performer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RiskAssessment.performer"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Device::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: RiskAssessment): List<Reference> =
-      listOfNotNull(resource.performer)
-  }
-
-  public data object Probability : SearchParam<RiskAssessment, Any> {
-    public override val name: String = "probability"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("number")
-
-    public override val expression: String = "RiskAssessment.prediction.probability.ofType(decimal)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskAssessment): List<Any> = emptyList()
-  }
-
-  public data object Risk : SearchParam<RiskAssessment, CodeableConcept> {
-    public override val name: String = "risk"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "RiskAssessment.prediction.qualitativeRisk"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskAssessment): List<CodeableConcept> =
-      resource.prediction.mapNotNull { it.qualitativeRisk }
-  }
-
-  public data object Subject : SearchParam<RiskAssessment, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "RiskAssessment.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: RiskAssessment): List<Reference> =
-      listOf(resource.subject)
-  }
 }

@@ -35,16 +35,125 @@ import dev.ohs.fhir.model.r4b.Procedure
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.RelatedPerson
 import dev.ohs.fhir.model.r4b.ResearchStudy
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [AdverseEvent] resource type. */
 public object AdverseEventSearchParam {
+  public val Actuality: SearchParam<AdverseEvent, Any> =
+    SimpleSearchParam<AdverseEvent, Any>(
+      name = "actuality",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdverseEvent.actuality",
+      extractor = { resource -> listOf(resource.actuality) },
+    )
+
+  public val Category: SearchParam<AdverseEvent, CodeableConcept> =
+    SimpleSearchParam<AdverseEvent, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdverseEvent.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Date: SearchParam<AdverseEvent, DateTime> =
+    SimpleSearchParam<AdverseEvent, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "AdverseEvent.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Event: SearchParam<AdverseEvent, CodeableConcept> =
+    SimpleSearchParam<AdverseEvent, CodeableConcept>(
+      name = "event",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdverseEvent.event",
+      extractor = { resource -> listOfNotNull(resource.event) },
+    )
+
+  public val Location: SearchParam<AdverseEvent, Reference> =
+    SimpleSearchParam<AdverseEvent, Reference>(
+      name = "location",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AdverseEvent.location",
+      target = listOf(dev.ohs.fhir.model.r4b.Location::class),
+      extractor = { resource -> listOfNotNull(resource.location) },
+    )
+
+  public val Recorder: SearchParam<AdverseEvent, Reference> =
+    SimpleSearchParam<AdverseEvent, Reference>(
+      name = "recorder",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AdverseEvent.recorder",
+      target =
+        listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class),
+      extractor = { resource -> listOfNotNull(resource.recorder) },
+    )
+
+  public val Resultingcondition: SearchParam<AdverseEvent, Reference> =
+    SimpleSearchParam<AdverseEvent, Reference>(
+      name = "resultingcondition",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AdverseEvent.resultingCondition",
+      target = listOf(Condition::class),
+      extractor = { resource -> resource.resultingCondition },
+    )
+
+  public val Seriousness: SearchParam<AdverseEvent, CodeableConcept> =
+    SimpleSearchParam<AdverseEvent, CodeableConcept>(
+      name = "seriousness",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdverseEvent.seriousness",
+      extractor = { resource -> listOfNotNull(resource.seriousness) },
+    )
+
+  public val Severity: SearchParam<AdverseEvent, CodeableConcept> =
+    SimpleSearchParam<AdverseEvent, CodeableConcept>(
+      name = "severity",
+      type = SearchParamType.fromCode("token"),
+      expression = "AdverseEvent.severity",
+      extractor = { resource -> listOfNotNull(resource.severity) },
+    )
+
+  public val Study: SearchParam<AdverseEvent, Reference> =
+    SimpleSearchParam<AdverseEvent, Reference>(
+      name = "study",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AdverseEvent.study",
+      target = listOf(ResearchStudy::class),
+      extractor = { resource -> resource.study },
+    )
+
+  public val Subject: SearchParam<AdverseEvent, Reference> =
+    SimpleSearchParam<AdverseEvent, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AdverseEvent.subject",
+      target = listOf(Practitioner::class, Group::class, Patient::class, RelatedPerson::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
+  public val Substance: SearchParam<AdverseEvent, Reference> =
+    SimpleSearchParam<AdverseEvent, Reference>(
+      name = "substance",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AdverseEvent.suspectEntity.instance",
+      target =
+        listOf(
+          Immunization::class,
+          Device::class,
+          Medication::class,
+          Procedure::class,
+          dev.ohs.fhir.model.r4b.Substance::class,
+          MedicationAdministration::class,
+          MedicationStatement::class,
+        ),
+      extractor = { resource -> resource.suspectEntity.map { it.instance } },
+    )
+
   /** All search parameters for the AdverseEvent resource type. */
   public val ALL: List<SearchParam<AdverseEvent, *>> =
     listOf(
@@ -61,168 +170,4 @@ public object AdverseEventSearchParam {
       Subject,
       Substance,
     )
-
-  public data object Actuality : SearchParam<AdverseEvent, Any> {
-    public override val name: String = "actuality"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AdverseEvent.actuality"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdverseEvent): List<Any> = listOf(resource.actuality)
-  }
-
-  public data object Category : SearchParam<AdverseEvent, CodeableConcept> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AdverseEvent.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdverseEvent): List<CodeableConcept> = resource.category
-  }
-
-  public data object Date : SearchParam<AdverseEvent, DateTime> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "AdverseEvent.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdverseEvent): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Event : SearchParam<AdverseEvent, CodeableConcept> {
-    public override val name: String = "event"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AdverseEvent.event"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdverseEvent): List<CodeableConcept> =
-      listOfNotNull(resource.event)
-  }
-
-  public data object Location : SearchParam<AdverseEvent, Reference> {
-    public override val name: String = "location"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AdverseEvent.location"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Location::class)
-
-    public override fun extract(resource: AdverseEvent): List<Reference> =
-      listOfNotNull(resource.location)
-  }
-
-  public data object Recorder : SearchParam<AdverseEvent, Reference> {
-    public override val name: String = "recorder"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AdverseEvent.recorder"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Practitioner::class, Patient::class, PractitionerRole::class, RelatedPerson::class)
-
-    public override fun extract(resource: AdverseEvent): List<Reference> =
-      listOfNotNull(resource.recorder)
-  }
-
-  public data object Resultingcondition : SearchParam<AdverseEvent, Reference> {
-    public override val name: String = "resultingcondition"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AdverseEvent.resultingCondition"
-
-    public override val target: List<KClass<out Resource>> = listOf(Condition::class)
-
-    public override fun extract(resource: AdverseEvent): List<Reference> =
-      resource.resultingCondition
-  }
-
-  public data object Seriousness : SearchParam<AdverseEvent, CodeableConcept> {
-    public override val name: String = "seriousness"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AdverseEvent.seriousness"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdverseEvent): List<CodeableConcept> =
-      listOfNotNull(resource.seriousness)
-  }
-
-  public data object Severity : SearchParam<AdverseEvent, CodeableConcept> {
-    public override val name: String = "severity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AdverseEvent.severity"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AdverseEvent): List<CodeableConcept> =
-      listOfNotNull(resource.severity)
-  }
-
-  public data object Study : SearchParam<AdverseEvent, Reference> {
-    public override val name: String = "study"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AdverseEvent.study"
-
-    public override val target: List<KClass<out Resource>> = listOf(ResearchStudy::class)
-
-    public override fun extract(resource: AdverseEvent): List<Reference> = resource.study
-  }
-
-  public data object Subject : SearchParam<AdverseEvent, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AdverseEvent.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Practitioner::class, Group::class, Patient::class, RelatedPerson::class)
-
-    public override fun extract(resource: AdverseEvent): List<Reference> = listOf(resource.subject)
-  }
-
-  public data object Substance : SearchParam<AdverseEvent, Reference> {
-    public override val name: String = "substance"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AdverseEvent.suspectEntity.instance"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Immunization::class,
-        Device::class,
-        Medication::class,
-        Procedure::class,
-        dev.ohs.fhir.model.r4b.Substance::class,
-        MedicationAdministration::class,
-        MedicationStatement::class,
-      )
-
-    public override fun extract(resource: AdverseEvent): List<Reference> =
-      resource.suspectEntity.map { it.instance }
-  }
 }

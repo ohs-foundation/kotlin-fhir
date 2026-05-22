@@ -19,6 +19,7 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.PlanDefinition
@@ -26,17 +27,123 @@ import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
 import dev.ohs.fhir.model.r4.ResearchStudy
-import dev.ohs.fhir.model.r4.Resource
-import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ResearchStudy] resource type. */
 public object ResearchStudySearchParam {
+  public val Category: SearchParam<ResearchStudy, CodeableConcept> =
+    SimpleSearchParam<ResearchStudy, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "ResearchStudy.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Date: SearchParam<ResearchStudy, Period> =
+    SimpleSearchParam<ResearchStudy, Period>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "ResearchStudy.period",
+      extractor = { resource -> listOfNotNull(resource.period) },
+    )
+
+  public val Focus: SearchParam<ResearchStudy, CodeableConcept> =
+    SimpleSearchParam<ResearchStudy, CodeableConcept>(
+      name = "focus",
+      type = SearchParamType.fromCode("token"),
+      expression = "ResearchStudy.focus",
+      extractor = { resource -> resource.focus },
+    )
+
+  public val Identifier: SearchParam<ResearchStudy, Identifier> =
+    SimpleSearchParam<ResearchStudy, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ResearchStudy.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Keyword: SearchParam<ResearchStudy, CodeableConcept> =
+    SimpleSearchParam<ResearchStudy, CodeableConcept>(
+      name = "keyword",
+      type = SearchParamType.fromCode("token"),
+      expression = "ResearchStudy.keyword",
+      extractor = { resource -> resource.keyword },
+    )
+
+  public val Location: SearchParam<ResearchStudy, CodeableConcept> =
+    SimpleSearchParam<ResearchStudy, CodeableConcept>(
+      name = "location",
+      type = SearchParamType.fromCode("token"),
+      expression = "ResearchStudy.location",
+      extractor = { resource -> resource.location },
+    )
+
+  public val Partof: SearchParam<ResearchStudy, Reference> =
+    SimpleSearchParam<ResearchStudy, Reference>(
+      name = "partof",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ResearchStudy.partOf",
+      target = listOf(ResearchStudy::class),
+      extractor = { resource -> resource.partOf },
+    )
+
+  public val Principalinvestigator: SearchParam<ResearchStudy, Reference> =
+    SimpleSearchParam<ResearchStudy, Reference>(
+      name = "principalinvestigator",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ResearchStudy.principalInvestigator",
+      target = listOf(Practitioner::class, PractitionerRole::class),
+      extractor = { resource -> listOfNotNull(resource.principalInvestigator) },
+    )
+
+  public val Protocol: SearchParam<ResearchStudy, Reference> =
+    SimpleSearchParam<ResearchStudy, Reference>(
+      name = "protocol",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ResearchStudy.protocol",
+      target = listOf(PlanDefinition::class),
+      extractor = { resource -> resource.protocol },
+    )
+
+  public val Site: SearchParam<ResearchStudy, Reference> =
+    SimpleSearchParam<ResearchStudy, Reference>(
+      name = "site",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ResearchStudy.site",
+      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      extractor = { resource -> resource.site },
+    )
+
+  public val Sponsor: SearchParam<ResearchStudy, Reference> =
+    SimpleSearchParam<ResearchStudy, Reference>(
+      name = "sponsor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ResearchStudy.sponsor",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.sponsor) },
+    )
+
+  public val Status: SearchParam<ResearchStudy, Any> =
+    SimpleSearchParam<ResearchStudy, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ResearchStudy.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Title: SearchParam<ResearchStudy, String> =
+    SimpleSearchParam<ResearchStudy, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "ResearchStudy.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
   /** All search parameters for the ResearchStudy resource type. */
   public val ALL: List<SearchParam<ResearchStudy, *>> =
     listOf(
@@ -54,167 +161,4 @@ public object ResearchStudySearchParam {
       Status,
       Title,
     )
-
-  public data object Category : SearchParam<ResearchStudy, CodeableConcept> {
-    public override val name: KotlinString = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ResearchStudy.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.category
-  }
-
-  public data object Date : SearchParam<ResearchStudy, Period> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "ResearchStudy.period"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ResearchStudy): List<Period> =
-      listOfNotNull(resource.period)
-  }
-
-  public data object Focus : SearchParam<ResearchStudy, CodeableConcept> {
-    public override val name: KotlinString = "focus"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ResearchStudy.focus"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.focus
-  }
-
-  public data object Identifier : SearchParam<ResearchStudy, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ResearchStudy.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ResearchStudy): List<dev.ohs.fhir.model.r4.Identifier> =
-      resource.identifier
-  }
-
-  public data object Keyword : SearchParam<ResearchStudy, CodeableConcept> {
-    public override val name: KotlinString = "keyword"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ResearchStudy.keyword"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.keyword
-  }
-
-  public data object Location : SearchParam<ResearchStudy, CodeableConcept> {
-    public override val name: KotlinString = "location"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ResearchStudy.location"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ResearchStudy): List<CodeableConcept> = resource.location
-  }
-
-  public data object Partof : SearchParam<ResearchStudy, Reference> {
-    public override val name: KotlinString = "partof"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ResearchStudy.partOf"
-
-    public override val target: List<KClass<out Resource>> = listOf(ResearchStudy::class)
-
-    public override fun extract(resource: ResearchStudy): List<Reference> = resource.partOf
-  }
-
-  public data object Principalinvestigator : SearchParam<ResearchStudy, Reference> {
-    public override val name: KotlinString = "principalinvestigator"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ResearchStudy.principalInvestigator"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Practitioner::class, PractitionerRole::class)
-
-    public override fun extract(resource: ResearchStudy): List<Reference> =
-      listOfNotNull(resource.principalInvestigator)
-  }
-
-  public data object Protocol : SearchParam<ResearchStudy, Reference> {
-    public override val name: KotlinString = "protocol"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ResearchStudy.protocol"
-
-    public override val target: List<KClass<out Resource>> = listOf(PlanDefinition::class)
-
-    public override fun extract(resource: ResearchStudy): List<Reference> = resource.protocol
-  }
-
-  public data object Site : SearchParam<ResearchStudy, Reference> {
-    public override val name: KotlinString = "site"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ResearchStudy.site"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Location::class)
-
-    public override fun extract(resource: ResearchStudy): List<Reference> = resource.site
-  }
-
-  public data object Sponsor : SearchParam<ResearchStudy, Reference> {
-    public override val name: KotlinString = "sponsor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ResearchStudy.sponsor"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: ResearchStudy): List<Reference> =
-      listOfNotNull(resource.sponsor)
-  }
-
-  public data object Status : SearchParam<ResearchStudy, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ResearchStudy.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ResearchStudy): List<Any> = listOf(resource.status)
-  }
-
-  public data object Title : SearchParam<ResearchStudy, R4String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ResearchStudy.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ResearchStudy): List<R4String> =
-      listOfNotNull(resource.title)
-  }
 }

@@ -19,71 +19,51 @@
 package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.InventoryItem
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Patient
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [InventoryItem] resource type. */
 public object InventoryItemSearchParam {
+  public val Code: SearchParam<InventoryItem, CodeableConcept> =
+    SimpleSearchParam<InventoryItem, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "InventoryItem.code",
+      extractor = { resource -> resource.code },
+    )
+
+  public val Identifier: SearchParam<InventoryItem, Identifier> =
+    SimpleSearchParam<InventoryItem, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "InventoryItem.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Status: SearchParam<InventoryItem, Any> =
+    SimpleSearchParam<InventoryItem, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "InventoryItem.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<InventoryItem, Reference> =
+    SimpleSearchParam<InventoryItem, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "InventoryItem.instance.subject",
+      target = listOf(Organization::class, Patient::class),
+      extractor = { resource -> listOfNotNull(resource.instance?.subject) },
+    )
+
   /** All search parameters for the InventoryItem resource type. */
   public val ALL: List<SearchParam<InventoryItem, *>> = listOf(Code, Identifier, Status, Subject)
-
-  public data object Code : SearchParam<InventoryItem, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "InventoryItem.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InventoryItem): List<CodeableConcept> = resource.code
-  }
-
-  public data object Identifier : SearchParam<InventoryItem, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "InventoryItem.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InventoryItem): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Status : SearchParam<InventoryItem, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "InventoryItem.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InventoryItem): List<Any> = listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<InventoryItem, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "InventoryItem.instance.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Organization::class, Patient::class)
-
-    public override fun extract(resource: InventoryItem): List<Reference> =
-      listOfNotNull(resource.instance?.subject)
-  }
 }

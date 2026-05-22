@@ -21,22 +21,144 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Quantity
-import dev.ohs.fhir.model.r4b.Resource
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.StructureMap
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [StructureMap] resource type. */
 public object StructureMapSearchParam {
+  public val Context: SearchParam<StructureMap, CodeableConcept> =
+    SimpleSearchParam<StructureMap, CodeableConcept>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(StructureMap.useContext.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+      },
+    )
+
+  public val ContextQuantity: SearchParam<StructureMap, Quantity> =
+    SimpleSearchParam<StructureMap, Quantity>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(StructureMap.useContext.value as Quantity)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+      },
+    )
+
+  public val ContextType: SearchParam<StructureMap, Coding> =
+    SimpleSearchParam<StructureMap, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureMap.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<StructureMap, UsageContext> =
+    SimpleSearchParam<StructureMap, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "StructureMap.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<StructureMap, UsageContext> =
+    SimpleSearchParam<StructureMap, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "StructureMap.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<StructureMap, DateTime> =
+    SimpleSearchParam<StructureMap, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "StructureMap.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Description: SearchParam<StructureMap, Markdown> =
+    SimpleSearchParam<StructureMap, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "StructureMap.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Identifier: SearchParam<StructureMap, Identifier> =
+    SimpleSearchParam<StructureMap, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureMap.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<StructureMap, CodeableConcept> =
+    SimpleSearchParam<StructureMap, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureMap.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<StructureMap, String> =
+    SimpleSearchParam<StructureMap, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "StructureMap.name",
+      extractor = { resource -> listOf(resource.name) },
+    )
+
+  public val Publisher: SearchParam<StructureMap, String> =
+    SimpleSearchParam<StructureMap, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "StructureMap.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<StructureMap, Any> =
+    SimpleSearchParam<StructureMap, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureMap.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Title: SearchParam<StructureMap, String> =
+    SimpleSearchParam<StructureMap, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "StructureMap.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Url: SearchParam<StructureMap, Uri> =
+    SimpleSearchParam<StructureMap, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "StructureMap.url",
+      extractor = { resource -> listOf(resource.url) },
+    )
+
+  public val Version: SearchParam<StructureMap, String> =
+    SimpleSearchParam<StructureMap, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "StructureMap.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the StructureMap resource type. */
   public val ALL: List<SearchParam<StructureMap, *>> =
     listOf(
@@ -56,195 +178,4 @@ public object StructureMapSearchParam {
       Url,
       Version,
     )
-
-  public data object Context : SearchParam<StructureMap, CodeableConcept> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(StructureMap.useContext.value as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<CodeableConcept> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
-  }
-
-  public data object ContextQuantity : SearchParam<StructureMap, Quantity> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString = "(StructureMap.useContext.value as Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<Quantity> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
-  }
-
-  public data object ContextType : SearchParam<StructureMap, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureMap.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<StructureMap, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "StructureMap.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<UsageContext> = resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<StructureMap, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "StructureMap.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<UsageContext> = resource.useContext
-  }
-
-  public data object Date : SearchParam<StructureMap, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "StructureMap.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Description : SearchParam<StructureMap, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "StructureMap.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Identifier : SearchParam<StructureMap, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureMap.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<StructureMap, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureMap.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<StructureMap, R4bString> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "StructureMap.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<R4bString> = listOf(resource.name)
-  }
-
-  public data object Publisher : SearchParam<StructureMap, R4bString> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "StructureMap.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<R4bString> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<StructureMap, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureMap.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<Any> = listOf(resource.status)
-  }
-
-  public data object Title : SearchParam<StructureMap, R4bString> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "StructureMap.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<R4bString> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Url : SearchParam<StructureMap, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "StructureMap.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<Uri> = listOf(resource.url)
-  }
-
-  public data object Version : SearchParam<StructureMap, R4bString> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "StructureMap.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: StructureMap): List<R4bString> =
-      listOfNotNull(resource.version)
-  }
 }

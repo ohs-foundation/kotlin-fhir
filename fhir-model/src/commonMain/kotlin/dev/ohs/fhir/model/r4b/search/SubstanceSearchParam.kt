@@ -20,18 +20,86 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Identifier
+import dev.ohs.fhir.model.r4b.Quantity
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.Substance
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Substance] resource type. */
 public object SubstanceSearchParam {
+  public val Category: SearchParam<Substance, CodeableConcept> =
+    SimpleSearchParam<Substance, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "Substance.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Code: SearchParam<Substance, CodeableConcept> =
+    SimpleSearchParam<Substance, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Substance.code",
+      extractor = { resource -> listOf(resource.code) },
+    )
+
+  public val ContainerIdentifier: SearchParam<Substance, Identifier> =
+    SimpleSearchParam<Substance, Identifier>(
+      name = "container-identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Substance.instance.identifier",
+      extractor = { resource -> resource.instance.mapNotNull { it.identifier } },
+    )
+
+  public val Expiry: SearchParam<Substance, DateTime> =
+    SimpleSearchParam<Substance, DateTime>(
+      name = "expiry",
+      type = SearchParamType.fromCode("date"),
+      expression = "Substance.instance.expiry",
+      extractor = { resource -> resource.instance.mapNotNull { it.expiry } },
+    )
+
+  public val Identifier: SearchParam<Substance, Identifier> =
+    SimpleSearchParam<Substance, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Substance.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Quantity: SearchParam<Substance, Quantity> =
+    SimpleSearchParam<Substance, Quantity>(
+      name = "quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "Substance.instance.quantity",
+      extractor = { resource -> resource.instance.mapNotNull { it.quantity } },
+    )
+
+  public val Status: SearchParam<Substance, Any> =
+    SimpleSearchParam<Substance, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Substance.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
+  public val SubstanceReference: SearchParam<Substance, Reference> =
+    SimpleSearchParam<Substance, Reference>(
+      name = "substance-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "(Substance.ingredient.substance as Reference)",
+      target = listOf(Substance::class),
+      extractor = { resource ->
+        resource.ingredient.mapNotNull {
+          (it.substance as? Substance.Ingredient.Substance.Reference)?.value
+        }
+      },
+    )
+
   /** All search parameters for the Substance resource type. */
   public val ALL: List<SearchParam<Substance, *>> =
     listOf(
@@ -44,108 +112,4 @@ public object SubstanceSearchParam {
       Status,
       SubstanceReference,
     )
-
-  public data object Category : SearchParam<Substance, CodeableConcept> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Substance.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Substance): List<CodeableConcept> = resource.category
-  }
-
-  public data object Code : SearchParam<Substance, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Substance.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Substance): List<CodeableConcept> = listOf(resource.code)
-  }
-
-  public data object ContainerIdentifier :
-    SearchParam<Substance, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "container-identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Substance.instance.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Substance): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.instance.mapNotNull { it.identifier }
-  }
-
-  public data object Expiry : SearchParam<Substance, DateTime> {
-    public override val name: String = "expiry"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Substance.instance.expiry"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Substance): List<DateTime> =
-      resource.instance.mapNotNull { it.expiry }
-  }
-
-  public data object Identifier : SearchParam<Substance, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Substance.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Substance): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object Quantity : SearchParam<Substance, dev.ohs.fhir.model.r4b.Quantity> {
-    public override val name: String = "quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: String = "Substance.instance.quantity"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Substance): List<dev.ohs.fhir.model.r4b.Quantity> =
-      resource.instance.mapNotNull { it.quantity }
-  }
-
-  public data object Status : SearchParam<Substance, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Substance.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Substance): List<Any> = listOfNotNull(resource.status)
-  }
-
-  public data object SubstanceReference : SearchParam<Substance, Reference> {
-    public override val name: String = "substance-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "(Substance.ingredient.substance as Reference)"
-
-    public override val target: List<KClass<out Resource>> = listOf(Substance::class)
-
-    public override fun extract(resource: Substance): List<Reference> =
-      resource.ingredient.mapNotNull {
-        (it.substance as? Substance.Ingredient.Substance.Reference)?.value
-      }
-  }
 }

@@ -18,46 +18,33 @@
 
 package dev.ohs.fhir.model.r4.search
 
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.MedicinalProduct
 import dev.ohs.fhir.model.r4.MedicinalProductPackaged
 import dev.ohs.fhir.model.r4.Reference
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicinalProductPackaged] resource type. */
 public object MedicinalProductPackagedSearchParam {
+  public val Identifier: SearchParam<MedicinalProductPackaged, Identifier> =
+    SimpleSearchParam<MedicinalProductPackaged, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicinalProductPackaged.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Subject: SearchParam<MedicinalProductPackaged, Reference> =
+    SimpleSearchParam<MedicinalProductPackaged, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicinalProductPackaged.subject",
+      target = listOf(MedicinalProduct::class),
+      extractor = { resource -> resource.subject },
+    )
+
   /** All search parameters for the MedicinalProductPackaged resource type. */
   public val ALL: List<SearchParam<MedicinalProductPackaged, *>> = listOf(Identifier, Subject)
-
-  public data object Identifier :
-    SearchParam<MedicinalProductPackaged, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MedicinalProductPackaged.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: MedicinalProductPackaged
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Subject : SearchParam<MedicinalProductPackaged, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "MedicinalProductPackaged.subject"
-
-    public override val target: List<KClass<out Resource>> = listOf(MedicinalProduct::class)
-
-    public override fun extract(resource: MedicinalProductPackaged): List<Reference> =
-      resource.subject
-  }
 }

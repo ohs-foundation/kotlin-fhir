@@ -20,56 +20,39 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.DeviceDefinition
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceDefinition] resource type. */
 public object DeviceDefinitionSearchParam {
+  public val Identifier: SearchParam<DeviceDefinition, Identifier> =
+    SimpleSearchParam<DeviceDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Parent: SearchParam<DeviceDefinition, Reference> =
+    SimpleSearchParam<DeviceDefinition, Reference>(
+      name = "parent",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DeviceDefinition.parentDevice",
+      target = listOf(DeviceDefinition::class),
+      extractor = { resource -> listOfNotNull(resource.parentDevice) },
+    )
+
+  public val Type: SearchParam<DeviceDefinition, CodeableConcept> =
+    SimpleSearchParam<DeviceDefinition, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceDefinition.type",
+      extractor = { resource -> listOfNotNull(resource.type) },
+    )
+
   /** All search parameters for the DeviceDefinition resource type. */
   public val ALL: List<SearchParam<DeviceDefinition, *>> = listOf(Identifier, Parent, Type)
-
-  public data object Identifier : SearchParam<DeviceDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "DeviceDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: DeviceDefinition
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
-  }
-
-  public data object Parent : SearchParam<DeviceDefinition, Reference> {
-    public override val name: String = "parent"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "DeviceDefinition.parentDevice"
-
-    public override val target: List<KClass<out Resource>> = listOf(DeviceDefinition::class)
-
-    public override fun extract(resource: DeviceDefinition): List<Reference> =
-      listOfNotNull(resource.parentDevice)
-  }
-
-  public data object Type : SearchParam<DeviceDefinition, CodeableConcept> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "DeviceDefinition.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.type)
-  }
 }

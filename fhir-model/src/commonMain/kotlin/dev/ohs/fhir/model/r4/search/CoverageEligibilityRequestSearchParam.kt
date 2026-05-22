@@ -20,118 +20,80 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CoverageEligibilityRequest
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Location
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [CoverageEligibilityRequest] resource type. */
 public object CoverageEligibilityRequestSearchParam {
+  public val Created: SearchParam<CoverageEligibilityRequest, DateTime> =
+    SimpleSearchParam<CoverageEligibilityRequest, DateTime>(
+      name = "created",
+      type = SearchParamType.fromCode("date"),
+      expression = "CoverageEligibilityRequest.created",
+      extractor = { resource -> listOf(resource.created) },
+    )
+
+  public val Enterer: SearchParam<CoverageEligibilityRequest, Reference> =
+    SimpleSearchParam<CoverageEligibilityRequest, Reference>(
+      name = "enterer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CoverageEligibilityRequest.enterer",
+      target = listOf(Practitioner::class, PractitionerRole::class),
+      extractor = { resource -> listOfNotNull(resource.enterer) },
+    )
+
+  public val Facility: SearchParam<CoverageEligibilityRequest, Reference> =
+    SimpleSearchParam<CoverageEligibilityRequest, Reference>(
+      name = "facility",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CoverageEligibilityRequest.facility",
+      target = listOf(Location::class),
+      extractor = { resource -> listOfNotNull(resource.facility) },
+    )
+
+  public val Identifier: SearchParam<CoverageEligibilityRequest, Identifier> =
+    SimpleSearchParam<CoverageEligibilityRequest, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "CoverageEligibilityRequest.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Patient: SearchParam<CoverageEligibilityRequest, Reference> =
+    SimpleSearchParam<CoverageEligibilityRequest, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CoverageEligibilityRequest.patient",
+      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val Provider: SearchParam<CoverageEligibilityRequest, Reference> =
+    SimpleSearchParam<CoverageEligibilityRequest, Reference>(
+      name = "provider",
+      type = SearchParamType.fromCode("reference"),
+      expression = "CoverageEligibilityRequest.provider",
+      target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
+      extractor = { resource -> listOfNotNull(resource.provider) },
+    )
+
+  public val Status: SearchParam<CoverageEligibilityRequest, Any> =
+    SimpleSearchParam<CoverageEligibilityRequest, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "CoverageEligibilityRequest.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the CoverageEligibilityRequest resource type. */
   public val ALL: List<SearchParam<CoverageEligibilityRequest, *>> =
     listOf(Created, Enterer, Facility, Identifier, Patient, Provider, Status)
-
-  public data object Created : SearchParam<CoverageEligibilityRequest, DateTime> {
-    public override val name: String = "created"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "CoverageEligibilityRequest.created"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CoverageEligibilityRequest): List<DateTime> =
-      listOf(resource.created)
-  }
-
-  public data object Enterer : SearchParam<CoverageEligibilityRequest, Reference> {
-    public override val name: String = "enterer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CoverageEligibilityRequest.enterer"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Practitioner::class, PractitionerRole::class)
-
-    public override fun extract(resource: CoverageEligibilityRequest): List<Reference> =
-      listOfNotNull(resource.enterer)
-  }
-
-  public data object Facility : SearchParam<CoverageEligibilityRequest, Reference> {
-    public override val name: String = "facility"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CoverageEligibilityRequest.facility"
-
-    public override val target: List<KClass<out Resource>> = listOf(Location::class)
-
-    public override fun extract(resource: CoverageEligibilityRequest): List<Reference> =
-      listOfNotNull(resource.facility)
-  }
-
-  public data object Identifier :
-    SearchParam<CoverageEligibilityRequest, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "CoverageEligibilityRequest.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: CoverageEligibilityRequest
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Patient : SearchParam<CoverageEligibilityRequest, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CoverageEligibilityRequest.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Patient::class)
-
-    public override fun extract(resource: CoverageEligibilityRequest): List<Reference> =
-      listOf(resource.patient)
-  }
-
-  public data object Provider : SearchParam<CoverageEligibilityRequest, Reference> {
-    public override val name: String = "provider"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "CoverageEligibilityRequest.provider"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Practitioner::class, Organization::class, PractitionerRole::class)
-
-    public override fun extract(resource: CoverageEligibilityRequest): List<Reference> =
-      listOfNotNull(resource.provider)
-  }
-
-  public data object Status : SearchParam<CoverageEligibilityRequest, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "CoverageEligibilityRequest.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: CoverageEligibilityRequest): List<Any> =
-      listOf(resource.status)
-  }
 }

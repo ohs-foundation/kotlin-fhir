@@ -20,19 +20,91 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.HealthcareService
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Instant
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.Slot
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Slot] resource type. */
 public object SlotSearchParam {
+  public val AppointmentType: SearchParam<Slot, CodeableConcept> =
+    SimpleSearchParam<Slot, CodeableConcept>(
+      name = "appointment-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Slot.appointmentType",
+      extractor = { resource -> resource.appointmentType },
+    )
+
+  public val Identifier: SearchParam<Slot, Identifier> =
+    SimpleSearchParam<Slot, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Slot.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Schedule: SearchParam<Slot, Reference> =
+    SimpleSearchParam<Slot, Reference>(
+      name = "schedule",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Slot.schedule",
+      target = listOf(dev.ohs.fhir.model.r5.Schedule::class),
+      extractor = { resource -> listOf(resource.schedule) },
+    )
+
+  public val ServiceCategory: SearchParam<Slot, CodeableConcept> =
+    SimpleSearchParam<Slot, CodeableConcept>(
+      name = "service-category",
+      type = SearchParamType.fromCode("token"),
+      expression = "Slot.serviceCategory",
+      extractor = { resource -> resource.serviceCategory },
+    )
+
+  public val ServiceType: SearchParam<Slot, CodeableConcept> =
+    SimpleSearchParam<Slot, CodeableConcept>(
+      name = "service-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Slot.serviceType.concept",
+      extractor = { resource -> resource.serviceType.mapNotNull { it.concept } },
+    )
+
+  public val ServiceTypeReference: SearchParam<Slot, Reference> =
+    SimpleSearchParam<Slot, Reference>(
+      name = "service-type-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Slot.serviceType.reference",
+      target = listOf(HealthcareService::class),
+      extractor = { resource -> resource.serviceType.mapNotNull { it.reference } },
+    )
+
+  public val Specialty: SearchParam<Slot, CodeableConcept> =
+    SimpleSearchParam<Slot, CodeableConcept>(
+      name = "specialty",
+      type = SearchParamType.fromCode("token"),
+      expression = "Slot.specialty",
+      extractor = { resource -> resource.specialty },
+    )
+
+  public val Start: SearchParam<Slot, Instant> =
+    SimpleSearchParam<Slot, Instant>(
+      name = "start",
+      type = SearchParamType.fromCode("date"),
+      expression = "Slot.start",
+      extractor = { resource -> listOf(resource.start) },
+    )
+
+  public val Status: SearchParam<Slot, Any> =
+    SimpleSearchParam<Slot, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Slot.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the Slot resource type. */
   public val ALL: List<SearchParam<Slot, *>> =
     listOf(
@@ -46,116 +118,4 @@ public object SlotSearchParam {
       Start,
       Status,
     )
-
-  public data object AppointmentType : SearchParam<Slot, CodeableConcept> {
-    public override val name: String = "appointment-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Slot.appointmentType"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Slot): List<CodeableConcept> = resource.appointmentType
-  }
-
-  public data object Identifier : SearchParam<Slot, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Slot.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Slot): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Schedule : SearchParam<Slot, Reference> {
-    public override val name: String = "schedule"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Slot.schedule"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Schedule::class)
-
-    public override fun extract(resource: Slot): List<Reference> = listOf(resource.schedule)
-  }
-
-  public data object ServiceCategory : SearchParam<Slot, CodeableConcept> {
-    public override val name: String = "service-category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Slot.serviceCategory"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Slot): List<CodeableConcept> = resource.serviceCategory
-  }
-
-  public data object ServiceType : SearchParam<Slot, CodeableConcept> {
-    public override val name: String = "service-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Slot.serviceType.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Slot): List<CodeableConcept> =
-      resource.serviceType.mapNotNull { it.concept }
-  }
-
-  public data object ServiceTypeReference : SearchParam<Slot, Reference> {
-    public override val name: String = "service-type-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Slot.serviceType.reference"
-
-    public override val target: List<KClass<out Resource>> = listOf(HealthcareService::class)
-
-    public override fun extract(resource: Slot): List<Reference> =
-      resource.serviceType.mapNotNull { it.reference }
-  }
-
-  public data object Specialty : SearchParam<Slot, CodeableConcept> {
-    public override val name: String = "specialty"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Slot.specialty"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Slot): List<CodeableConcept> = resource.specialty
-  }
-
-  public data object Start : SearchParam<Slot, Instant> {
-    public override val name: String = "start"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Slot.start"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Slot): List<Instant> = listOf(resource.start)
-  }
-
-  public data object Status : SearchParam<Slot, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Slot.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Slot): List<Any> = listOf(resource.status)
-  }
 }

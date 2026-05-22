@@ -23,22 +23,156 @@ import dev.ohs.fhir.model.r5.CareTeam
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Observation
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [AllergyIntolerance] resource type. */
 public object AllergyIntoleranceSearchParam {
+  public val Category: SearchParam<AllergyIntolerance, Any> =
+    SimpleSearchParam<AllergyIntolerance, Any>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val ClinicalStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
+    SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
+      name = "clinical-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.clinicalStatus",
+      extractor = { resource -> listOfNotNull(resource.clinicalStatus) },
+    )
+
+  public val Code: SearchParam<AllergyIntolerance, CodeableConcept> =
+    SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.code",
+      extractor = { resource -> listOfNotNull(resource.code) },
+    )
+
+  public val Criticality: SearchParam<AllergyIntolerance, Any> =
+    SimpleSearchParam<AllergyIntolerance, Any>(
+      name = "criticality",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.criticality",
+      extractor = { resource -> listOfNotNull(resource.criticality) },
+    )
+
+  public val Date: SearchParam<AllergyIntolerance, DateTime> =
+    SimpleSearchParam<AllergyIntolerance, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "AllergyIntolerance.recordedDate",
+      extractor = { resource -> listOfNotNull(resource.recordedDate) },
+    )
+
+  public val Identifier: SearchParam<AllergyIntolerance, Identifier> =
+    SimpleSearchParam<AllergyIntolerance, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val LastDate: SearchParam<AllergyIntolerance, DateTime> =
+    SimpleSearchParam<AllergyIntolerance, DateTime>(
+      name = "last-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "AllergyIntolerance.lastOccurrence",
+      extractor = { resource -> listOfNotNull(resource.lastOccurrence) },
+    )
+
+  public val ManifestationCode: SearchParam<AllergyIntolerance, CodeableConcept> =
+    SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
+      name = "manifestation-code",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.reaction.manifestation.concept",
+      extractor = { resource ->
+        resource.reaction.flatMap { it.manifestation }.mapNotNull { it.concept }
+      },
+    )
+
+  public val ManifestationReference: SearchParam<AllergyIntolerance, Reference> =
+    SimpleSearchParam<AllergyIntolerance, Reference>(
+      name = "manifestation-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AllergyIntolerance.reaction.manifestation.reference",
+      target = listOf(Observation::class),
+      extractor = { resource ->
+        resource.reaction.flatMap { it.manifestation }.mapNotNull { it.reference }
+      },
+    )
+
+  public val Participant: SearchParam<AllergyIntolerance, Reference> =
+    SimpleSearchParam<AllergyIntolerance, Reference>(
+      name = "participant",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AllergyIntolerance.participant.actor",
+      target =
+        listOf(
+          Device::class,
+          Organization::class,
+          CareTeam::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> resource.participant.map { it.actor } },
+    )
+
+  public val Patient: SearchParam<AllergyIntolerance, Reference> =
+    SimpleSearchParam<AllergyIntolerance, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "AllergyIntolerance.patient",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val Route: SearchParam<AllergyIntolerance, CodeableConcept> =
+    SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
+      name = "route",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.reaction.exposureRoute",
+      extractor = { resource -> resource.reaction.mapNotNull { it.exposureRoute } },
+    )
+
+  public val Severity: SearchParam<AllergyIntolerance, Any> =
+    SimpleSearchParam<AllergyIntolerance, Any>(
+      name = "severity",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.reaction.severity",
+      extractor = { resource -> resource.reaction.mapNotNull { it.severity } },
+    )
+
+  public val Type: SearchParam<AllergyIntolerance, CodeableConcept> =
+    SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.type",
+      extractor = { resource -> listOfNotNull(resource.type) },
+    )
+
+  public val VerificationStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
+    SimpleSearchParam<AllergyIntolerance, CodeableConcept>(
+      name = "verification-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "AllergyIntolerance.verificationStatus",
+      extractor = { resource -> listOfNotNull(resource.verificationStatus) },
+    )
+
   /** All search parameters for the AllergyIntolerance resource type. */
   public val ALL: List<SearchParam<AllergyIntolerance, *>> =
     listOf(
@@ -58,210 +192,4 @@ public object AllergyIntoleranceSearchParam {
       Type,
       VerificationStatus,
     )
-
-  public data object Category : SearchParam<AllergyIntolerance, Any> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<Any> = resource.category
-  }
-
-  public data object ClinicalStatus : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val name: String = "clinical-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.clinicalStatus"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
-      listOfNotNull(resource.clinicalStatus)
-  }
-
-  public data object Code : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
-      listOfNotNull(resource.code)
-  }
-
-  public data object Criticality : SearchParam<AllergyIntolerance, Any> {
-    public override val name: String = "criticality"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.criticality"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<Any> =
-      listOfNotNull(resource.criticality)
-  }
-
-  public data object Date : SearchParam<AllergyIntolerance, DateTime> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "AllergyIntolerance.recordedDate"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<DateTime> =
-      listOfNotNull(resource.recordedDate)
-  }
-
-  public data object Identifier :
-    SearchParam<AllergyIntolerance, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: AllergyIntolerance
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object LastDate : SearchParam<AllergyIntolerance, DateTime> {
-    public override val name: String = "last-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "AllergyIntolerance.lastOccurrence"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<DateTime> =
-      listOfNotNull(resource.lastOccurrence)
-  }
-
-  public data object ManifestationCode : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val name: String = "manifestation-code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.reaction.manifestation.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
-      resource.reaction.flatMap { it.manifestation }.mapNotNull { it.concept }
-  }
-
-  public data object ManifestationReference : SearchParam<AllergyIntolerance, Reference> {
-    public override val name: String = "manifestation-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AllergyIntolerance.reaction.manifestation.reference"
-
-    public override val target: List<KClass<out Resource>> = listOf(Observation::class)
-
-    public override fun extract(resource: AllergyIntolerance): List<Reference> =
-      resource.reaction.flatMap { it.manifestation }.mapNotNull { it.reference }
-  }
-
-  public data object Participant : SearchParam<AllergyIntolerance, Reference> {
-    public override val name: String = "participant"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AllergyIntolerance.participant.actor"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Device::class,
-        Organization::class,
-        CareTeam::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: AllergyIntolerance): List<Reference> =
-      resource.participant.map { it.actor }
-  }
-
-  public data object Patient : SearchParam<AllergyIntolerance, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "AllergyIntolerance.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: AllergyIntolerance): List<Reference> =
-      listOf(resource.patient)
-  }
-
-  public data object Route : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val name: String = "route"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.reaction.exposureRoute"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
-      resource.reaction.mapNotNull { it.exposureRoute }
-  }
-
-  public data object Severity : SearchParam<AllergyIntolerance, Any> {
-    public override val name: String = "severity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.reaction.severity"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<Any> =
-      resource.reaction.mapNotNull { it.severity }
-  }
-
-  public data object Type : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
-      listOfNotNull(resource.type)
-  }
-
-  public data object VerificationStatus : SearchParam<AllergyIntolerance, CodeableConcept> {
-    public override val name: String = "verification-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "AllergyIntolerance.verificationStatus"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: AllergyIntolerance): List<CodeableConcept> =
-      listOfNotNull(resource.verificationStatus)
-  }
 }

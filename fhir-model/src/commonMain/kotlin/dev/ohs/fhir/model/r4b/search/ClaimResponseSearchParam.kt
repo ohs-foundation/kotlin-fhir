@@ -22,21 +22,111 @@ import dev.ohs.fhir.model.r4b.Claim
 import dev.ohs.fhir.model.r4b.ClaimResponse
 import dev.ohs.fhir.model.r4b.Date
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Practitioner
 import dev.ohs.fhir.model.r4b.PractitionerRole
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ClaimResponse] resource type. */
 public object ClaimResponseSearchParam {
+  public val Created: SearchParam<ClaimResponse, DateTime> =
+    SimpleSearchParam<ClaimResponse, DateTime>(
+      name = "created",
+      type = SearchParamType.fromCode("date"),
+      expression = "ClaimResponse.created",
+      extractor = { resource -> listOf(resource.created) },
+    )
+
+  public val Disposition: SearchParam<ClaimResponse, String> =
+    SimpleSearchParam<ClaimResponse, String>(
+      name = "disposition",
+      type = SearchParamType.fromCode("string"),
+      expression = "ClaimResponse.disposition",
+      extractor = { resource -> listOfNotNull(resource.disposition) },
+    )
+
+  public val Identifier: SearchParam<ClaimResponse, Identifier> =
+    SimpleSearchParam<ClaimResponse, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClaimResponse.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Insurer: SearchParam<ClaimResponse, Reference> =
+    SimpleSearchParam<ClaimResponse, Reference>(
+      name = "insurer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ClaimResponse.insurer",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOf(resource.insurer) },
+    )
+
+  public val Outcome: SearchParam<ClaimResponse, Any> =
+    SimpleSearchParam<ClaimResponse, Any>(
+      name = "outcome",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClaimResponse.outcome",
+      extractor = { resource -> listOf(resource.outcome) },
+    )
+
+  public val Patient: SearchParam<ClaimResponse, Reference> =
+    SimpleSearchParam<ClaimResponse, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ClaimResponse.patient",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val PaymentDate: SearchParam<ClaimResponse, Date> =
+    SimpleSearchParam<ClaimResponse, Date>(
+      name = "payment-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "ClaimResponse.payment.date",
+      extractor = { resource -> listOfNotNull(resource.payment?.date) },
+    )
+
+  public val Request: SearchParam<ClaimResponse, Reference> =
+    SimpleSearchParam<ClaimResponse, Reference>(
+      name = "request",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ClaimResponse.request",
+      target = listOf(Claim::class),
+      extractor = { resource -> listOfNotNull(resource.request) },
+    )
+
+  public val Requestor: SearchParam<ClaimResponse, Reference> =
+    SimpleSearchParam<ClaimResponse, Reference>(
+      name = "requestor",
+      type = SearchParamType.fromCode("reference"),
+      expression = "ClaimResponse.requestor",
+      target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
+      extractor = { resource -> listOfNotNull(resource.requestor) },
+    )
+
+  public val Status: SearchParam<ClaimResponse, Any> =
+    SimpleSearchParam<ClaimResponse, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClaimResponse.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Use: SearchParam<ClaimResponse, Any> =
+    SimpleSearchParam<ClaimResponse, Any>(
+      name = "use",
+      type = SearchParamType.fromCode("token"),
+      expression = "ClaimResponse.use",
+      extractor = { resource -> listOf(resource.use) },
+    )
+
   /** All search parameters for the ClaimResponse resource type. */
   public val ALL: List<SearchParam<ClaimResponse, *>> =
     listOf(
@@ -52,143 +142,4 @@ public object ClaimResponseSearchParam {
       Status,
       Use,
     )
-
-  public data object Created : SearchParam<ClaimResponse, DateTime> {
-    public override val name: KotlinString = "created"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "ClaimResponse.created"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClaimResponse): List<DateTime> = listOf(resource.created)
-  }
-
-  public data object Disposition : SearchParam<ClaimResponse, R4bString> {
-    public override val name: KotlinString = "disposition"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ClaimResponse.disposition"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClaimResponse): List<R4bString> =
-      listOfNotNull(resource.disposition)
-  }
-
-  public data object Identifier : SearchParam<ClaimResponse, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ClaimResponse.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClaimResponse): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object Insurer : SearchParam<ClaimResponse, Reference> {
-    public override val name: KotlinString = "insurer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ClaimResponse.insurer"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: ClaimResponse): List<Reference> = listOf(resource.insurer)
-  }
-
-  public data object Outcome : SearchParam<ClaimResponse, Any> {
-    public override val name: KotlinString = "outcome"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ClaimResponse.outcome"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClaimResponse): List<Any> = listOf(resource.outcome)
-  }
-
-  public data object Patient : SearchParam<ClaimResponse, Reference> {
-    public override val name: KotlinString = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ClaimResponse.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: ClaimResponse): List<Reference> = listOf(resource.patient)
-  }
-
-  public data object PaymentDate : SearchParam<ClaimResponse, Date> {
-    public override val name: KotlinString = "payment-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "ClaimResponse.payment.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClaimResponse): List<Date> =
-      listOfNotNull(resource.payment?.date)
-  }
-
-  public data object Request : SearchParam<ClaimResponse, Reference> {
-    public override val name: KotlinString = "request"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ClaimResponse.request"
-
-    public override val target: List<KClass<out Resource>> = listOf(Claim::class)
-
-    public override fun extract(resource: ClaimResponse): List<Reference> =
-      listOfNotNull(resource.request)
-  }
-
-  public data object Requestor : SearchParam<ClaimResponse, Reference> {
-    public override val name: KotlinString = "requestor"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "ClaimResponse.requestor"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Practitioner::class, Organization::class, PractitionerRole::class)
-
-    public override fun extract(resource: ClaimResponse): List<Reference> =
-      listOfNotNull(resource.requestor)
-  }
-
-  public data object Status : SearchParam<ClaimResponse, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ClaimResponse.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClaimResponse): List<Any> = listOf(resource.status)
-  }
-
-  public data object Use : SearchParam<ClaimResponse, Any> {
-    public override val name: KotlinString = "use"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ClaimResponse.use"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ClaimResponse): List<Any> = listOf(resource.use)
-  }
 }

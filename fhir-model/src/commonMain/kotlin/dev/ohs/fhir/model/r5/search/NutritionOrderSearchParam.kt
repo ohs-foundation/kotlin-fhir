@@ -21,20 +21,128 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DateTime
 import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.NutritionOrder
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [NutritionOrder] resource type. */
 public object NutritionOrderSearchParam {
+  public val Additive: SearchParam<NutritionOrder, CodeableConcept> =
+    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+      name = "additive",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.enteralFormula.additive.type.concept",
+      extractor = { resource ->
+        (resource.enteralFormula?.additive ?: emptyList())
+          .mapNotNull { it.type }
+          .mapNotNull { it.concept }
+      },
+    )
+
+  public val Datetime: SearchParam<NutritionOrder, DateTime> =
+    SimpleSearchParam<NutritionOrder, DateTime>(
+      name = "datetime",
+      type = SearchParamType.fromCode("date"),
+      expression = "NutritionOrder.dateTime",
+      extractor = { resource -> listOf(resource.dateTime) },
+    )
+
+  public val Encounter: SearchParam<NutritionOrder, Reference> =
+    SimpleSearchParam<NutritionOrder, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NutritionOrder.encounter",
+      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Formula: SearchParam<NutritionOrder, CodeableConcept> =
+    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+      name = "formula",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.enteralFormula.baseFormulaType.concept",
+      extractor = { resource -> listOfNotNull(resource.enteralFormula?.baseFormulaType?.concept) },
+    )
+
+  public val GroupIdentifier: SearchParam<NutritionOrder, Identifier> =
+    SimpleSearchParam<NutritionOrder, Identifier>(
+      name = "group-identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.groupIdentifier",
+      extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
+    )
+
+  public val Identifier: SearchParam<NutritionOrder, Identifier> =
+    SimpleSearchParam<NutritionOrder, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Oraldiet: SearchParam<NutritionOrder, CodeableConcept> =
+    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+      name = "oraldiet",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.oralDiet.type",
+      extractor = { resource -> resource.oralDiet?.type ?: emptyList() },
+    )
+
+  public val Patient: SearchParam<NutritionOrder, Reference> =
+    SimpleSearchParam<NutritionOrder, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NutritionOrder.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOf(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Provider: SearchParam<NutritionOrder, Reference> =
+    SimpleSearchParam<NutritionOrder, Reference>(
+      name = "provider",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NutritionOrder.orderer",
+      target = listOf(PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.orderer) },
+    )
+
+  public val Status: SearchParam<NutritionOrder, Any> =
+    SimpleSearchParam<NutritionOrder, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<NutritionOrder, Reference> =
+    SimpleSearchParam<NutritionOrder, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NutritionOrder.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
+  public val Supplement: SearchParam<NutritionOrder, CodeableConcept> =
+    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+      name = "supplement",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.supplement.type.concept",
+      extractor = { resource ->
+        resource.supplement.mapNotNull { it.type }.mapNotNull { it.concept }
+      },
+    )
+
   /** All search parameters for the NutritionOrder resource type. */
   public val ALL: List<SearchParam<NutritionOrder, *>> =
     listOf(
@@ -51,168 +159,4 @@ public object NutritionOrderSearchParam {
       Subject,
       Supplement,
     )
-
-  public data object Additive : SearchParam<NutritionOrder, CodeableConcept> {
-    public override val name: String = "additive"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "NutritionOrder.enteralFormula.additive.type.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NutritionOrder): List<CodeableConcept> =
-      (resource.enteralFormula?.additive ?: emptyList())
-        .mapNotNull { it.type }
-        .mapNotNull { it.concept }
-  }
-
-  public data object Datetime : SearchParam<NutritionOrder, DateTime> {
-    public override val name: String = "datetime"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "NutritionOrder.dateTime"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NutritionOrder): List<DateTime> =
-      listOf(resource.dateTime)
-  }
-
-  public data object Encounter : SearchParam<NutritionOrder, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "NutritionOrder.encounter"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Encounter::class)
-
-    public override fun extract(resource: NutritionOrder): List<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Formula : SearchParam<NutritionOrder, CodeableConcept> {
-    public override val name: String = "formula"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "NutritionOrder.enteralFormula.baseFormulaType.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NutritionOrder): List<CodeableConcept> =
-      listOfNotNull(resource.enteralFormula?.baseFormulaType?.concept)
-  }
-
-  public data object GroupIdentifier :
-    SearchParam<NutritionOrder, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "group-identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "NutritionOrder.groupIdentifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NutritionOrder): List<dev.ohs.fhir.model.r5.Identifier> =
-      listOfNotNull(resource.groupIdentifier)
-  }
-
-  public data object Identifier : SearchParam<NutritionOrder, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "NutritionOrder.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NutritionOrder): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Oraldiet : SearchParam<NutritionOrder, CodeableConcept> {
-    public override val name: String = "oraldiet"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "NutritionOrder.oralDiet.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NutritionOrder): List<CodeableConcept> =
-      resource.oralDiet?.type ?: emptyList()
-  }
-
-  public data object Patient : SearchParam<NutritionOrder, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "NutritionOrder.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: NutritionOrder): List<Reference> =
-      listOf(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Provider : SearchParam<NutritionOrder, Reference> {
-    public override val name: String = "provider"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "NutritionOrder.orderer"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: NutritionOrder): List<Reference> =
-      listOfNotNull(resource.orderer)
-  }
-
-  public data object Status : SearchParam<NutritionOrder, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "NutritionOrder.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NutritionOrder): List<Any> = listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<NutritionOrder, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "NutritionOrder.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: NutritionOrder): List<Reference> =
-      listOf(resource.subject)
-  }
-
-  public data object Supplement : SearchParam<NutritionOrder, CodeableConcept> {
-    public override val name: String = "supplement"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "NutritionOrder.supplement.type.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NutritionOrder): List<CodeableConcept> =
-      resource.supplement.mapNotNull { it.type }.mapNotNull { it.concept }
-  }
 }

@@ -18,24 +18,164 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Address
 import dev.ohs.fhir.model.r4b.Boolean
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.ContactPoint
 import dev.ohs.fhir.model.r4b.Date
 import dev.ohs.fhir.model.r4b.HumanName
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Reference
 import dev.ohs.fhir.model.r4b.RelatedPerson
-import dev.ohs.fhir.model.r4b.Resource
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [RelatedPerson] resource type. */
 public object RelatedPersonSearchParam {
+  public val Active: SearchParam<RelatedPerson, Boolean> =
+    SimpleSearchParam<RelatedPerson, Boolean>(
+      name = "active",
+      type = SearchParamType.fromCode("token"),
+      expression = "RelatedPerson.active",
+      extractor = { resource -> listOfNotNull(resource.active) },
+    )
+
+  public val Address: SearchParam<RelatedPerson, Address> =
+    SimpleSearchParam<RelatedPerson, Address>(
+      name = "address",
+      type = SearchParamType.fromCode("string"),
+      expression = "RelatedPerson.address",
+      extractor = { resource -> resource.address },
+    )
+
+  public val AddressCity: SearchParam<RelatedPerson, String> =
+    SimpleSearchParam<RelatedPerson, String>(
+      name = "address-city",
+      type = SearchParamType.fromCode("string"),
+      expression = "RelatedPerson.address.city",
+      extractor = { resource -> resource.address.mapNotNull { it.city } },
+    )
+
+  public val AddressCountry: SearchParam<RelatedPerson, String> =
+    SimpleSearchParam<RelatedPerson, String>(
+      name = "address-country",
+      type = SearchParamType.fromCode("string"),
+      expression = "RelatedPerson.address.country",
+      extractor = { resource -> resource.address.mapNotNull { it.country } },
+    )
+
+  public val AddressPostalcode: SearchParam<RelatedPerson, String> =
+    SimpleSearchParam<RelatedPerson, String>(
+      name = "address-postalcode",
+      type = SearchParamType.fromCode("string"),
+      expression = "RelatedPerson.address.postalCode",
+      extractor = { resource -> resource.address.mapNotNull { it.postalCode } },
+    )
+
+  public val AddressState: SearchParam<RelatedPerson, String> =
+    SimpleSearchParam<RelatedPerson, String>(
+      name = "address-state",
+      type = SearchParamType.fromCode("string"),
+      expression = "RelatedPerson.address.state",
+      extractor = { resource -> resource.address.mapNotNull { it.state } },
+    )
+
+  public val AddressUse: SearchParam<RelatedPerson, Any> =
+    SimpleSearchParam<RelatedPerson, Any>(
+      name = "address-use",
+      type = SearchParamType.fromCode("token"),
+      expression = "RelatedPerson.address.use",
+      extractor = { resource -> resource.address.mapNotNull { it.use } },
+    )
+
+  public val Birthdate: SearchParam<RelatedPerson, Date> =
+    SimpleSearchParam<RelatedPerson, Date>(
+      name = "birthdate",
+      type = SearchParamType.fromCode("date"),
+      expression = "RelatedPerson.birthDate",
+      extractor = { resource -> listOfNotNull(resource.birthDate) },
+    )
+
+  public val Email: SearchParam<RelatedPerson, ContactPoint> =
+    SimpleSearchParam<RelatedPerson, ContactPoint>(
+      name = "email",
+      type = SearchParamType.fromCode("token"),
+      expression = "RelatedPerson.telecom.where(system='email')",
+      extractor = { resource ->
+        resource.telecom.filter { it.system?.value?.toString() == "email" }
+      },
+    )
+
+  public val Gender: SearchParam<RelatedPerson, Any> =
+    SimpleSearchParam<RelatedPerson, Any>(
+      name = "gender",
+      type = SearchParamType.fromCode("token"),
+      expression = "RelatedPerson.gender",
+      extractor = { resource -> listOfNotNull(resource.gender) },
+    )
+
+  public val Identifier: SearchParam<RelatedPerson, Identifier> =
+    SimpleSearchParam<RelatedPerson, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "RelatedPerson.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Name: SearchParam<RelatedPerson, HumanName> =
+    SimpleSearchParam<RelatedPerson, HumanName>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "RelatedPerson.name",
+      extractor = { resource -> resource.name },
+    )
+
+  public val Patient: SearchParam<RelatedPerson, Reference> =
+    SimpleSearchParam<RelatedPerson, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "RelatedPerson.patient",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val Phone: SearchParam<RelatedPerson, ContactPoint> =
+    SimpleSearchParam<RelatedPerson, ContactPoint>(
+      name = "phone",
+      type = SearchParamType.fromCode("token"),
+      expression = "RelatedPerson.telecom.where(system='phone')",
+      extractor = { resource ->
+        resource.telecom.filter { it.system?.value?.toString() == "phone" }
+      },
+    )
+
+  public val Phonetic: SearchParam<RelatedPerson, HumanName> =
+    SimpleSearchParam<RelatedPerson, HumanName>(
+      name = "phonetic",
+      type = SearchParamType.fromCode("string"),
+      expression = "RelatedPerson.name",
+      extractor = { resource -> resource.name },
+    )
+
+  public val Relationship: SearchParam<RelatedPerson, CodeableConcept> =
+    SimpleSearchParam<RelatedPerson, CodeableConcept>(
+      name = "relationship",
+      type = SearchParamType.fromCode("token"),
+      expression = "RelatedPerson.relationship",
+      extractor = { resource -> resource.relationship },
+    )
+
+  public val Telecom: SearchParam<RelatedPerson, ContactPoint> =
+    SimpleSearchParam<RelatedPerson, ContactPoint>(
+      name = "telecom",
+      type = SearchParamType.fromCode("token"),
+      expression = "RelatedPerson.telecom",
+      extractor = { resource -> resource.telecom },
+    )
+
   /** All search parameters for the RelatedPerson resource type. */
   public val ALL: List<SearchParam<RelatedPerson, *>> =
     listOf(
@@ -57,221 +197,4 @@ public object RelatedPersonSearchParam {
       Relationship,
       Telecom,
     )
-
-  public data object Active : SearchParam<RelatedPerson, Boolean> {
-    public override val name: KotlinString = "active"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RelatedPerson.active"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<Boolean> =
-      listOfNotNull(resource.active)
-  }
-
-  public data object Address : SearchParam<RelatedPerson, dev.ohs.fhir.model.r4b.Address> {
-    public override val name: KotlinString = "address"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RelatedPerson.address"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<dev.ohs.fhir.model.r4b.Address> =
-      resource.address
-  }
-
-  public data object AddressCity : SearchParam<RelatedPerson, R4bString> {
-    public override val name: KotlinString = "address-city"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RelatedPerson.address.city"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<R4bString> =
-      resource.address.mapNotNull { it.city }
-  }
-
-  public data object AddressCountry : SearchParam<RelatedPerson, R4bString> {
-    public override val name: KotlinString = "address-country"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RelatedPerson.address.country"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<R4bString> =
-      resource.address.mapNotNull { it.country }
-  }
-
-  public data object AddressPostalcode : SearchParam<RelatedPerson, R4bString> {
-    public override val name: KotlinString = "address-postalcode"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RelatedPerson.address.postalCode"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<R4bString> =
-      resource.address.mapNotNull { it.postalCode }
-  }
-
-  public data object AddressState : SearchParam<RelatedPerson, R4bString> {
-    public override val name: KotlinString = "address-state"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RelatedPerson.address.state"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<R4bString> =
-      resource.address.mapNotNull { it.state }
-  }
-
-  public data object AddressUse : SearchParam<RelatedPerson, Any> {
-    public override val name: KotlinString = "address-use"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RelatedPerson.address.use"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<Any> =
-      resource.address.mapNotNull { it.use }
-  }
-
-  public data object Birthdate : SearchParam<RelatedPerson, Date> {
-    public override val name: KotlinString = "birthdate"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "RelatedPerson.birthDate"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<Date> =
-      listOfNotNull(resource.birthDate)
-  }
-
-  public data object Email : SearchParam<RelatedPerson, ContactPoint> {
-    public override val name: KotlinString = "email"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RelatedPerson.telecom.where(system='email')"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<ContactPoint> =
-      resource.telecom.filter { it.system?.value?.toString() == "email" }
-  }
-
-  public data object Gender : SearchParam<RelatedPerson, Any> {
-    public override val name: KotlinString = "gender"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RelatedPerson.gender"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<Any> = listOfNotNull(resource.gender)
-  }
-
-  public data object Identifier : SearchParam<RelatedPerson, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RelatedPerson.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object Name : SearchParam<RelatedPerson, HumanName> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RelatedPerson.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<HumanName> = resource.name
-  }
-
-  public data object Patient : SearchParam<RelatedPerson, Reference> {
-    public override val name: KotlinString = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "RelatedPerson.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: RelatedPerson): List<Reference> = listOf(resource.patient)
-  }
-
-  public data object Phone : SearchParam<RelatedPerson, ContactPoint> {
-    public override val name: KotlinString = "phone"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RelatedPerson.telecom.where(system='phone')"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<ContactPoint> =
-      resource.telecom.filter { it.system?.value?.toString() == "phone" }
-  }
-
-  public data object Phonetic : SearchParam<RelatedPerson, HumanName> {
-    public override val name: KotlinString = "phonetic"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RelatedPerson.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<HumanName> = resource.name
-  }
-
-  public data object Relationship : SearchParam<RelatedPerson, CodeableConcept> {
-    public override val name: KotlinString = "relationship"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RelatedPerson.relationship"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<CodeableConcept> =
-      resource.relationship
-  }
-
-  public data object Telecom : SearchParam<RelatedPerson, ContactPoint> {
-    public override val name: KotlinString = "telecom"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RelatedPerson.telecom"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RelatedPerson): List<ContactPoint> = resource.telecom
-  }
 }

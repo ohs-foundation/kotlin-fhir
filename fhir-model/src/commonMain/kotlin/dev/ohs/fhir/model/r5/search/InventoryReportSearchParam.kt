@@ -21,80 +21,64 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.BiologicallyDerivedProduct
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Device
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.InventoryItem
 import dev.ohs.fhir.model.r5.InventoryReport
 import dev.ohs.fhir.model.r5.Medication
 import dev.ohs.fhir.model.r5.NutritionProduct
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [InventoryReport] resource type. */
 public object InventoryReportSearchParam {
+  public val Identifier: SearchParam<InventoryReport, Identifier> =
+    SimpleSearchParam<InventoryReport, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "InventoryReport.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Item: SearchParam<InventoryReport, CodeableConcept> =
+    SimpleSearchParam<InventoryReport, CodeableConcept>(
+      name = "item",
+      type = SearchParamType.fromCode("token"),
+      expression = "InventoryReport.inventoryListing.item.item.concept",
+      extractor = { resource ->
+        resource.inventoryListing.flatMap { it.item }.map { it.item }.mapNotNull { it.concept }
+      },
+    )
+
+  public val ItemReference: SearchParam<InventoryReport, Reference> =
+    SimpleSearchParam<InventoryReport, Reference>(
+      name = "item-reference",
+      type = SearchParamType.fromCode("reference"),
+      expression = "InventoryReport.inventoryListing.item.item.reference",
+      target =
+        listOf(
+          Device::class,
+          InventoryItem::class,
+          NutritionProduct::class,
+          BiologicallyDerivedProduct::class,
+          Medication::class,
+        ),
+      extractor = { resource ->
+        resource.inventoryListing.flatMap { it.item }.map { it.item }.mapNotNull { it.reference }
+      },
+    )
+
+  public val Status: SearchParam<InventoryReport, Any> =
+    SimpleSearchParam<InventoryReport, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "InventoryReport.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the InventoryReport resource type. */
   public val ALL: List<SearchParam<InventoryReport, *>> =
     listOf(Identifier, Item, ItemReference, Status)
-
-  public data object Identifier : SearchParam<InventoryReport, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "InventoryReport.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InventoryReport): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Item : SearchParam<InventoryReport, CodeableConcept> {
-    public override val name: String = "item"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "InventoryReport.inventoryListing.item.item.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InventoryReport): List<CodeableConcept> =
-      resource.inventoryListing.flatMap { it.item }.map { it.item }.mapNotNull { it.concept }
-  }
-
-  public data object ItemReference : SearchParam<InventoryReport, Reference> {
-    public override val name: String = "item-reference"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "InventoryReport.inventoryListing.item.item.reference"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Device::class,
-        InventoryItem::class,
-        NutritionProduct::class,
-        BiologicallyDerivedProduct::class,
-        Medication::class,
-      )
-
-    public override fun extract(resource: InventoryReport): List<Reference> =
-      resource.inventoryListing.flatMap { it.item }.map { it.item }.mapNotNull { it.reference }
-  }
-
-  public data object Status : SearchParam<InventoryReport, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "InventoryReport.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: InventoryReport): List<Any> = listOf(resource.status)
-  }
 }

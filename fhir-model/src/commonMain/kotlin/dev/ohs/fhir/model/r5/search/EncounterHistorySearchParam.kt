@@ -20,88 +20,63 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.EncounterHistory
 import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [EncounterHistory] resource type. */
 public object EncounterHistorySearchParam {
+  public val Encounter: SearchParam<EncounterHistory, Reference> =
+    SimpleSearchParam<EncounterHistory, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "EncounterHistory.encounter",
+      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Identifier: SearchParam<EncounterHistory, Identifier> =
+    SimpleSearchParam<EncounterHistory, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "EncounterHistory.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Patient: SearchParam<EncounterHistory, Reference> =
+    SimpleSearchParam<EncounterHistory, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "EncounterHistory.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOfNotNull(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Status: SearchParam<EncounterHistory, Any> =
+    SimpleSearchParam<EncounterHistory, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "EncounterHistory.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<EncounterHistory, Reference> =
+    SimpleSearchParam<EncounterHistory, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "EncounterHistory.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
   /** All search parameters for the EncounterHistory resource type. */
   public val ALL: List<SearchParam<EncounterHistory, *>> =
     listOf(Encounter, Identifier, Patient, Status, Subject)
-
-  public data object Encounter : SearchParam<EncounterHistory, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "EncounterHistory.encounter"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Encounter::class)
-
-    public override fun extract(resource: EncounterHistory): List<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Identifier : SearchParam<EncounterHistory, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "EncounterHistory.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: EncounterHistory
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Patient : SearchParam<EncounterHistory, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "EncounterHistory.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: EncounterHistory): List<Reference> =
-      listOfNotNull(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Status : SearchParam<EncounterHistory, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "EncounterHistory.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: EncounterHistory): List<Any> = listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<EncounterHistory, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "EncounterHistory.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: EncounterHistory): List<Reference> =
-      listOfNotNull(resource.subject)
-  }
 }

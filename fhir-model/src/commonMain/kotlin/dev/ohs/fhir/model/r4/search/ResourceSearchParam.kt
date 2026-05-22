@@ -25,127 +25,84 @@ import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Resource] resource type. */
 public object ResourceSearchParam {
+  public val _content: SearchParam<Resource, Any> =
+    SimpleSearchParam<Resource, Any>(
+      name = "_content",
+      type = SearchParamType.fromCode("string"),
+      expression = "",
+      extractor = { emptyList() },
+    )
+
+  public val _filter: SearchParam<Resource, Any> =
+    SimpleSearchParam<Resource, Any>(
+      name = "_filter",
+      type = SearchParamType.fromCode("special"),
+      expression = "",
+      extractor = { emptyList() },
+    )
+
+  public val _id: SearchParam<Resource, Any> =
+    SimpleSearchParam<Resource, Any>(
+      name = "_id",
+      type = SearchParamType.fromCode("token"),
+      expression = "id",
+      extractor = { emptyList() },
+    )
+
+  public val _lastUpdated: SearchParam<Resource, Instant> =
+    SimpleSearchParam<Resource, Instant>(
+      name = "_lastUpdated",
+      type = SearchParamType.fromCode("date"),
+      expression = "Resource.meta.lastUpdated",
+      extractor = { resource -> listOfNotNull(resource.meta?.lastUpdated) },
+    )
+
+  public val _profile: SearchParam<Resource, Canonical> =
+    SimpleSearchParam<Resource, Canonical>(
+      name = "_profile",
+      type = SearchParamType.fromCode("uri"),
+      expression = "Resource.meta.profile",
+      extractor = { resource -> resource.meta?.profile ?: emptyList() },
+    )
+
+  public val _query: SearchParam<Resource, Any> =
+    SimpleSearchParam<Resource, Any>(
+      name = "_query",
+      type = SearchParamType.fromCode("token"),
+      expression = "",
+      extractor = { emptyList() },
+    )
+
+  public val _security: SearchParam<Resource, Coding> =
+    SimpleSearchParam<Resource, Coding>(
+      name = "_security",
+      type = SearchParamType.fromCode("token"),
+      expression = "Resource.meta.security",
+      extractor = { resource -> resource.meta?.security ?: emptyList() },
+    )
+
+  public val _source: SearchParam<Resource, Uri> =
+    SimpleSearchParam<Resource, Uri>(
+      name = "_source",
+      type = SearchParamType.fromCode("uri"),
+      expression = "Resource.meta.source",
+      extractor = { resource -> listOfNotNull(resource.meta?.source) },
+    )
+
+  public val _tag: SearchParam<Resource, Coding> =
+    SimpleSearchParam<Resource, Coding>(
+      name = "_tag",
+      type = SearchParamType.fromCode("token"),
+      expression = "Resource.meta.tag",
+      extractor = { resource -> resource.meta?.tag ?: emptyList() },
+    )
+
   /** All search parameters for the Resource resource type. */
   public val ALL: List<SearchParam<Resource, *>> =
     listOf(_content, _filter, _id, _lastUpdated, _profile, _query, _security, _source, _tag)
-
-  public data object _content : SearchParam<Resource, Any> {
-    public override val name: String = "_content"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: String = ""
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Resource): List<Any> = emptyList()
-  }
-
-  public data object _filter : SearchParam<Resource, Any> {
-    public override val name: String = "_filter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("special")
-
-    public override val expression: String = ""
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Resource): List<Any> = emptyList()
-  }
-
-  public data object _id : SearchParam<Resource, Any> {
-    public override val name: String = "_id"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "id"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Resource): List<Any> = emptyList()
-  }
-
-  public data object _lastUpdated : SearchParam<Resource, Instant> {
-    public override val name: String = "_lastUpdated"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "Resource.meta.lastUpdated"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Resource): List<Instant> =
-      listOfNotNull(resource.meta?.lastUpdated)
-  }
-
-  public data object _profile : SearchParam<Resource, Canonical> {
-    public override val name: String = "_profile"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: String = "Resource.meta.profile"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Resource): List<Canonical> =
-      resource.meta?.profile ?: emptyList()
-  }
-
-  public data object _query : SearchParam<Resource, Any> {
-    public override val name: String = "_query"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = ""
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Resource): List<Any> = emptyList()
-  }
-
-  public data object _security : SearchParam<Resource, Coding> {
-    public override val name: String = "_security"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Resource.meta.security"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Resource): List<Coding> =
-      resource.meta?.security ?: emptyList()
-  }
-
-  public data object _source : SearchParam<Resource, Uri> {
-    public override val name: String = "_source"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: String = "Resource.meta.source"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Resource): List<Uri> =
-      listOfNotNull(resource.meta?.source)
-  }
-
-  public data object _tag : SearchParam<Resource, Coding> {
-    public override val name: String = "_tag"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Resource.meta.tag"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Resource): List<Coding> =
-      resource.meta?.tag ?: emptyList()
-  }
 }

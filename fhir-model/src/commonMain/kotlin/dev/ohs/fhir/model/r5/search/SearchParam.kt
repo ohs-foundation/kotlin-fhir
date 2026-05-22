@@ -39,3 +39,17 @@ public sealed interface SearchParam<in R : Resource, out T> {
   /** Extracts the values for this search parameter from the given [resource]. */
   public fun extract(resource: R): List<T>
 }
+
+/**
+ * The single [SearchParam] implementation: metadata plus an [extractor] lambda that does the value
+ * extraction.
+ */
+public class SimpleSearchParam<R : Resource, T>(
+  public override val name: String,
+  public override val type: SearchParamType,
+  public override val expression: String,
+  public override val target: List<KClass<out Resource>> = emptyList(),
+  private val extractor: (R) -> List<T>,
+) : SearchParam<R, T> {
+  public override fun extract(resource: R): List<T> = extractor(resource)
+}

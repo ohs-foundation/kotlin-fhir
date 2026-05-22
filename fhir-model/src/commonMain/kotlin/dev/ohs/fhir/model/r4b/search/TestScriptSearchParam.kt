@@ -21,22 +21,154 @@ package dev.ohs.fhir.model.r4b.search
 import dev.ohs.fhir.model.r4b.CodeableConcept
 import dev.ohs.fhir.model.r4b.Coding
 import dev.ohs.fhir.model.r4b.DateTime
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Markdown
 import dev.ohs.fhir.model.r4b.Quantity
-import dev.ohs.fhir.model.r4b.Resource
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.TestScript
 import dev.ohs.fhir.model.r4b.Uri
 import dev.ohs.fhir.model.r4b.UsageContext
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [TestScript] resource type. */
 public object TestScriptSearchParam {
+  public val Context: SearchParam<TestScript, CodeableConcept> =
+    SimpleSearchParam<TestScript, CodeableConcept>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(TestScript.useContext.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+      },
+    )
+
+  public val ContextQuantity: SearchParam<TestScript, Quantity> =
+    SimpleSearchParam<TestScript, Quantity>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(TestScript.useContext.value as Quantity)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+      },
+    )
+
+  public val ContextType: SearchParam<TestScript, Coding> =
+    SimpleSearchParam<TestScript, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "TestScript.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<TestScript, UsageContext> =
+    SimpleSearchParam<TestScript, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "TestScript.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<TestScript, UsageContext> =
+    SimpleSearchParam<TestScript, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "TestScript.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<TestScript, DateTime> =
+    SimpleSearchParam<TestScript, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "TestScript.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Description: SearchParam<TestScript, Markdown> =
+    SimpleSearchParam<TestScript, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "TestScript.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Identifier: SearchParam<TestScript, Identifier> =
+    SimpleSearchParam<TestScript, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "TestScript.identifier",
+      extractor = { resource -> listOfNotNull(resource.identifier) },
+    )
+
+  public val Jurisdiction: SearchParam<TestScript, CodeableConcept> =
+    SimpleSearchParam<TestScript, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "TestScript.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<TestScript, String> =
+    SimpleSearchParam<TestScript, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "TestScript.name",
+      extractor = { resource -> listOf(resource.name) },
+    )
+
+  public val Publisher: SearchParam<TestScript, String> =
+    SimpleSearchParam<TestScript, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "TestScript.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<TestScript, Any> =
+    SimpleSearchParam<TestScript, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "TestScript.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val TestscriptCapability: SearchParam<TestScript, String> =
+    SimpleSearchParam<TestScript, String>(
+      name = "testscript-capability",
+      type = SearchParamType.fromCode("string"),
+      expression = "TestScript.metadata.capability.description",
+      extractor = { resource ->
+        (resource.metadata?.capability ?: emptyList()).mapNotNull { it.description }
+      },
+    )
+
+  public val Title: SearchParam<TestScript, String> =
+    SimpleSearchParam<TestScript, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "TestScript.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Url: SearchParam<TestScript, Uri> =
+    SimpleSearchParam<TestScript, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "TestScript.url",
+      extractor = { resource -> listOf(resource.url) },
+    )
+
+  public val Version: SearchParam<TestScript, String> =
+    SimpleSearchParam<TestScript, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "TestScript.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the TestScript resource type. */
   public val ALL: List<SearchParam<TestScript, *>> =
     listOf(
@@ -57,206 +189,4 @@ public object TestScriptSearchParam {
       Url,
       Version,
     )
-
-  public data object Context : SearchParam<TestScript, CodeableConcept> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(TestScript.useContext.value as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<CodeableConcept> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
-  }
-
-  public data object ContextQuantity : SearchParam<TestScript, Quantity> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString = "(TestScript.useContext.value as Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<Quantity> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
-  }
-
-  public data object ContextType : SearchParam<TestScript, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "TestScript.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<TestScript, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "TestScript.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<UsageContext> = resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<TestScript, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "TestScript.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<UsageContext> = resource.useContext
-  }
-
-  public data object Date : SearchParam<TestScript, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "TestScript.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<DateTime> = listOfNotNull(resource.date)
-  }
-
-  public data object Description : SearchParam<TestScript, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "TestScript.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Identifier : SearchParam<TestScript, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "TestScript.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<dev.ohs.fhir.model.r4b.Identifier> =
-      listOfNotNull(resource.identifier)
-  }
-
-  public data object Jurisdiction : SearchParam<TestScript, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "TestScript.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<CodeableConcept> = resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<TestScript, R4bString> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "TestScript.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<R4bString> = listOf(resource.name)
-  }
-
-  public data object Publisher : SearchParam<TestScript, R4bString> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "TestScript.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<R4bString> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<TestScript, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "TestScript.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<Any> = listOf(resource.status)
-  }
-
-  public data object TestscriptCapability : SearchParam<TestScript, R4bString> {
-    public override val name: KotlinString = "testscript-capability"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "TestScript.metadata.capability.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<R4bString> =
-      (resource.metadata?.capability ?: emptyList()).mapNotNull { it.description }
-  }
-
-  public data object Title : SearchParam<TestScript, R4bString> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "TestScript.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<R4bString> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Url : SearchParam<TestScript, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "TestScript.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<Uri> = listOf(resource.url)
-  }
-
-  public data object Version : SearchParam<TestScript, R4bString> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "TestScript.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TestScript): List<R4bString> =
-      listOfNotNull(resource.version)
-  }
 }

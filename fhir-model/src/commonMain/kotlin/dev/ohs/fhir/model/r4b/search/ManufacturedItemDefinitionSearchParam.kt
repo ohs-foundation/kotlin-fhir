@@ -19,58 +19,39 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.ManufacturedItemDefinition
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ManufacturedItemDefinition] resource type. */
 public object ManufacturedItemDefinitionSearchParam {
+  public val DoseForm: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
+    SimpleSearchParam<ManufacturedItemDefinition, CodeableConcept>(
+      name = "dose-form",
+      type = SearchParamType.fromCode("token"),
+      expression = "ManufacturedItemDefinition.manufacturedDoseForm",
+      extractor = { resource -> listOf(resource.manufacturedDoseForm) },
+    )
+
+  public val Identifier: SearchParam<ManufacturedItemDefinition, Identifier> =
+    SimpleSearchParam<ManufacturedItemDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ManufacturedItemDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Ingredient: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
+    SimpleSearchParam<ManufacturedItemDefinition, CodeableConcept>(
+      name = "ingredient",
+      type = SearchParamType.fromCode("token"),
+      expression = "ManufacturedItemDefinition.ingredient",
+      extractor = { resource -> resource.ingredient },
+    )
+
   /** All search parameters for the ManufacturedItemDefinition resource type. */
   public val ALL: List<SearchParam<ManufacturedItemDefinition, *>> =
     listOf(DoseForm, Identifier, Ingredient)
-
-  public data object DoseForm : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
-    public override val name: String = "dose-form"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ManufacturedItemDefinition.manufacturedDoseForm"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
-      listOf(resource.manufacturedDoseForm)
-  }
-
-  public data object Identifier :
-    SearchParam<ManufacturedItemDefinition, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ManufacturedItemDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ManufacturedItemDefinition
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
-  }
-
-  public data object Ingredient : SearchParam<ManufacturedItemDefinition, CodeableConcept> {
-    public override val name: String = "ingredient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ManufacturedItemDefinition.ingredient"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ManufacturedItemDefinition): List<CodeableConcept> =
-      resource.ingredient
-  }
 }

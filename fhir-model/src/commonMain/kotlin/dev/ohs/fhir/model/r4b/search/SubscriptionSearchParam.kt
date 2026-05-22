@@ -19,93 +19,65 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.ContactPoint
-import dev.ohs.fhir.model.r4b.Resource
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.Subscription
+import dev.ohs.fhir.model.r4b.Url
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Subscription] resource type. */
 public object SubscriptionSearchParam {
+  public val Contact: SearchParam<Subscription, ContactPoint> =
+    SimpleSearchParam<Subscription, ContactPoint>(
+      name = "contact",
+      type = SearchParamType.fromCode("token"),
+      expression = "Subscription.contact",
+      extractor = { resource -> resource.contact },
+    )
+
+  public val Criteria: SearchParam<Subscription, String> =
+    SimpleSearchParam<Subscription, String>(
+      name = "criteria",
+      type = SearchParamType.fromCode("string"),
+      expression = "Subscription.criteria",
+      extractor = { resource -> listOf(resource.criteria) },
+    )
+
+  public val Payload: SearchParam<Subscription, Any> =
+    SimpleSearchParam<Subscription, Any>(
+      name = "payload",
+      type = SearchParamType.fromCode("token"),
+      expression = "Subscription.channel.payload",
+      extractor = { resource -> listOfNotNull(resource.channel.payload) },
+    )
+
+  public val Status: SearchParam<Subscription, Any> =
+    SimpleSearchParam<Subscription, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Subscription.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Type: SearchParam<Subscription, Any> =
+    SimpleSearchParam<Subscription, Any>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Subscription.channel.type",
+      extractor = { resource -> listOf(resource.channel.type) },
+    )
+
+  public val Url: SearchParam<Subscription, Url> =
+    SimpleSearchParam<Subscription, Url>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "Subscription.channel.endpoint",
+      extractor = { resource -> listOfNotNull(resource.channel.endpoint) },
+    )
+
   /** All search parameters for the Subscription resource type. */
   public val ALL: List<SearchParam<Subscription, *>> =
     listOf(Contact, Criteria, Payload, Status, Type, Url)
-
-  public data object Contact : SearchParam<Subscription, ContactPoint> {
-    public override val name: KotlinString = "contact"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Subscription.contact"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Subscription): List<ContactPoint> = resource.contact
-  }
-
-  public data object Criteria : SearchParam<Subscription, R4bString> {
-    public override val name: KotlinString = "criteria"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Subscription.criteria"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Subscription): List<R4bString> = listOf(resource.criteria)
-  }
-
-  public data object Payload : SearchParam<Subscription, Any> {
-    public override val name: KotlinString = "payload"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Subscription.channel.payload"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Subscription): List<Any> =
-      listOfNotNull(resource.channel.payload)
-  }
-
-  public data object Status : SearchParam<Subscription, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Subscription.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Subscription): List<Any> = listOf(resource.status)
-  }
-
-  public data object Type : SearchParam<Subscription, Any> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Subscription.channel.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Subscription): List<Any> = listOf(resource.channel.type)
-  }
-
-  public data object Url : SearchParam<Subscription, dev.ohs.fhir.model.r4b.Url> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "Subscription.channel.endpoint"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Subscription): List<dev.ohs.fhir.model.r4b.Url> =
-      listOfNotNull(resource.channel.endpoint)
-  }
 }

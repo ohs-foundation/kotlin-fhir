@@ -21,22 +21,188 @@ package dev.ohs.fhir.model.r5.search
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coding
 import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Markdown
 import dev.ohs.fhir.model.r5.Period
 import dev.ohs.fhir.model.r5.Questionnaire
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.UsageContext
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Questionnaire] resource type. */
 public object QuestionnaireSearchParam {
+  public val ComboCode: SearchParam<Questionnaire, Coding> =
+    SimpleSearchParam<Questionnaire, Coding>(
+      name = "combo-code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Questionnaire.code",
+      extractor = { resource -> resource.code },
+    )
+
+  public val Context: SearchParam<Questionnaire, Any> =
+    SimpleSearchParam<Questionnaire, Any>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(Questionnaire.useContext.value.ofType(CodeableConcept))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextQuantity: SearchParam<Questionnaire, Any> =
+    SimpleSearchParam<Questionnaire, Any>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(Questionnaire.useContext.value.ofType(Quantity))",
+      extractor = { emptyList() },
+    )
+
+  public val ContextType: SearchParam<Questionnaire, Coding> =
+    SimpleSearchParam<Questionnaire, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Questionnaire.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<Questionnaire, UsageContext> =
+    SimpleSearchParam<Questionnaire, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Questionnaire.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<Questionnaire, UsageContext> =
+    SimpleSearchParam<Questionnaire, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "Questionnaire.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<Questionnaire, DateTime> =
+    SimpleSearchParam<Questionnaire, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "Questionnaire.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Definition: SearchParam<Questionnaire, Uri> =
+    SimpleSearchParam<Questionnaire, Uri>(
+      name = "definition",
+      type = SearchParamType.fromCode("uri"),
+      expression = "Questionnaire.item.definition",
+      extractor = { resource -> resource.item.mapNotNull { it.definition } },
+    )
+
+  public val Description: SearchParam<Questionnaire, Markdown> =
+    SimpleSearchParam<Questionnaire, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "Questionnaire.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Effective: SearchParam<Questionnaire, Period> =
+    SimpleSearchParam<Questionnaire, Period>(
+      name = "effective",
+      type = SearchParamType.fromCode("date"),
+      expression = "Questionnaire.effectivePeriod",
+      extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
+    )
+
+  public val Identifier: SearchParam<Questionnaire, Identifier> =
+    SimpleSearchParam<Questionnaire, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Questionnaire.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val ItemCode: SearchParam<Questionnaire, Coding> =
+    SimpleSearchParam<Questionnaire, Coding>(
+      name = "item-code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Questionnaire.item.code",
+      extractor = { resource -> resource.item.flatMap { it.code } },
+    )
+
+  public val Jurisdiction: SearchParam<Questionnaire, CodeableConcept> =
+    SimpleSearchParam<Questionnaire, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "Questionnaire.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<Questionnaire, String> =
+    SimpleSearchParam<Questionnaire, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "Questionnaire.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Publisher: SearchParam<Questionnaire, String> =
+    SimpleSearchParam<Questionnaire, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "Questionnaire.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val QuestionnaireCode: SearchParam<Questionnaire, Coding> =
+    SimpleSearchParam<Questionnaire, Coding>(
+      name = "questionnaire-code",
+      type = SearchParamType.fromCode("token"),
+      expression = "Questionnaire.code",
+      extractor = { resource -> resource.code },
+    )
+
+  public val Status: SearchParam<Questionnaire, Any> =
+    SimpleSearchParam<Questionnaire, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Questionnaire.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val SubjectType: SearchParam<Questionnaire, Any> =
+    SimpleSearchParam<Questionnaire, Any>(
+      name = "subject-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Questionnaire.subjectType",
+      extractor = { resource -> resource.subjectType },
+    )
+
+  public val Title: SearchParam<Questionnaire, String> =
+    SimpleSearchParam<Questionnaire, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "Questionnaire.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Url: SearchParam<Questionnaire, Uri> =
+    SimpleSearchParam<Questionnaire, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "Questionnaire.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Version: SearchParam<Questionnaire, String> =
+    SimpleSearchParam<Questionnaire, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "Questionnaire.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the Questionnaire resource type. */
   public val ALL: List<SearchParam<Questionnaire, *>> =
     listOf(
@@ -62,270 +228,4 @@ public object QuestionnaireSearchParam {
       Url,
       Version,
     )
-
-  public data object ComboCode : SearchParam<Questionnaire, Coding> {
-    public override val name: KotlinString = "combo-code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Questionnaire.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Coding> = resource.code
-  }
-
-  public data object Context : SearchParam<Questionnaire, Any> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(Questionnaire.useContext.value.ofType(CodeableConcept))"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Any> = emptyList()
-  }
-
-  public data object ContextQuantity : SearchParam<Questionnaire, Any> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString =
-      "(Questionnaire.useContext.value.ofType(Quantity))"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Any> = emptyList()
-  }
-
-  public data object ContextType : SearchParam<Questionnaire, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Questionnaire.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<Questionnaire, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Questionnaire.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<UsageContext> = resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<Questionnaire, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "Questionnaire.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<UsageContext> = resource.useContext
-  }
-
-  public data object Date : SearchParam<Questionnaire, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "Questionnaire.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Definition : SearchParam<Questionnaire, Uri> {
-    public override val name: KotlinString = "definition"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "Questionnaire.item.definition"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Uri> =
-      resource.item.mapNotNull { it.definition }
-  }
-
-  public data object Description : SearchParam<Questionnaire, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Questionnaire.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Effective : SearchParam<Questionnaire, Period> {
-    public override val name: KotlinString = "effective"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "Questionnaire.effectivePeriod"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Period> =
-      listOfNotNull(resource.effectivePeriod)
-  }
-
-  public data object Identifier : SearchParam<Questionnaire, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Questionnaire.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object ItemCode : SearchParam<Questionnaire, Coding> {
-    public override val name: KotlinString = "item-code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Questionnaire.item.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Coding> =
-      resource.item.flatMap { it.code }
-  }
-
-  public data object Jurisdiction : SearchParam<Questionnaire, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Questionnaire.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<Questionnaire, R5String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Questionnaire.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<R5String> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Publisher : SearchParam<Questionnaire, R5String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Questionnaire.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<R5String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object QuestionnaireCode : SearchParam<Questionnaire, Coding> {
-    public override val name: KotlinString = "questionnaire-code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Questionnaire.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Coding> = resource.code
-  }
-
-  public data object Status : SearchParam<Questionnaire, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Questionnaire.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Any> = listOf(resource.status)
-  }
-
-  public data object SubjectType : SearchParam<Questionnaire, Any> {
-    public override val name: KotlinString = "subject-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Questionnaire.subjectType"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Any> = resource.subjectType
-  }
-
-  public data object Title : SearchParam<Questionnaire, R5String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Questionnaire.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<R5String> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Url : SearchParam<Questionnaire, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "Questionnaire.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<Uri> = listOfNotNull(resource.url)
-  }
-
-  public data object Version : SearchParam<Questionnaire, R5String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Questionnaire.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Questionnaire): List<R5String> =
-      listOfNotNull(resource.version)
-  }
 }

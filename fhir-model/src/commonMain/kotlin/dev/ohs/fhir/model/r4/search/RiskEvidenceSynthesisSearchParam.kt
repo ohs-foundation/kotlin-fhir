@@ -21,23 +21,153 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.Quantity
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.RiskEvidenceSynthesis
-import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [RiskEvidenceSynthesis] resource type. */
 public object RiskEvidenceSynthesisSearchParam {
+  public val Context: SearchParam<RiskEvidenceSynthesis, CodeableConcept> =
+    SimpleSearchParam<RiskEvidenceSynthesis, CodeableConcept>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(RiskEvidenceSynthesis.useContext.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+      },
+    )
+
+  public val ContextQuantity: SearchParam<RiskEvidenceSynthesis, Quantity> =
+    SimpleSearchParam<RiskEvidenceSynthesis, Quantity>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(RiskEvidenceSynthesis.useContext.value as Quantity)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+      },
+    )
+
+  public val ContextType: SearchParam<RiskEvidenceSynthesis, Coding> =
+    SimpleSearchParam<RiskEvidenceSynthesis, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "RiskEvidenceSynthesis.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<RiskEvidenceSynthesis, UsageContext> =
+    SimpleSearchParam<RiskEvidenceSynthesis, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "RiskEvidenceSynthesis.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<RiskEvidenceSynthesis, UsageContext> =
+    SimpleSearchParam<RiskEvidenceSynthesis, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "RiskEvidenceSynthesis.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<RiskEvidenceSynthesis, DateTime> =
+    SimpleSearchParam<RiskEvidenceSynthesis, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "RiskEvidenceSynthesis.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Description: SearchParam<RiskEvidenceSynthesis, Markdown> =
+    SimpleSearchParam<RiskEvidenceSynthesis, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "RiskEvidenceSynthesis.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Effective: SearchParam<RiskEvidenceSynthesis, Period> =
+    SimpleSearchParam<RiskEvidenceSynthesis, Period>(
+      name = "effective",
+      type = SearchParamType.fromCode("date"),
+      expression = "RiskEvidenceSynthesis.effectivePeriod",
+      extractor = { resource -> listOfNotNull(resource.effectivePeriod) },
+    )
+
+  public val Identifier: SearchParam<RiskEvidenceSynthesis, Identifier> =
+    SimpleSearchParam<RiskEvidenceSynthesis, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "RiskEvidenceSynthesis.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Jurisdiction: SearchParam<RiskEvidenceSynthesis, CodeableConcept> =
+    SimpleSearchParam<RiskEvidenceSynthesis, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "RiskEvidenceSynthesis.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<RiskEvidenceSynthesis, String> =
+    SimpleSearchParam<RiskEvidenceSynthesis, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "RiskEvidenceSynthesis.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Publisher: SearchParam<RiskEvidenceSynthesis, String> =
+    SimpleSearchParam<RiskEvidenceSynthesis, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "RiskEvidenceSynthesis.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<RiskEvidenceSynthesis, Any> =
+    SimpleSearchParam<RiskEvidenceSynthesis, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "RiskEvidenceSynthesis.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Title: SearchParam<RiskEvidenceSynthesis, String> =
+    SimpleSearchParam<RiskEvidenceSynthesis, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "RiskEvidenceSynthesis.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Url: SearchParam<RiskEvidenceSynthesis, Uri> =
+    SimpleSearchParam<RiskEvidenceSynthesis, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "RiskEvidenceSynthesis.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Version: SearchParam<RiskEvidenceSynthesis, String> =
+    SimpleSearchParam<RiskEvidenceSynthesis, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "RiskEvidenceSynthesis.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the RiskEvidenceSynthesis resource type. */
   public val ALL: List<SearchParam<RiskEvidenceSynthesis, *>> =
     listOf(
@@ -58,216 +188,4 @@ public object RiskEvidenceSynthesisSearchParam {
       Url,
       Version,
     )
-
-  public data object Context : SearchParam<RiskEvidenceSynthesis, CodeableConcept> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(RiskEvidenceSynthesis.useContext.value as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<CodeableConcept> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
-  }
-
-  public data object ContextQuantity : SearchParam<RiskEvidenceSynthesis, Quantity> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString =
-      "(RiskEvidenceSynthesis.useContext.value as Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<Quantity> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
-  }
-
-  public data object ContextType : SearchParam<RiskEvidenceSynthesis, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<RiskEvidenceSynthesis, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<UsageContext> =
-      resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<RiskEvidenceSynthesis, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<UsageContext> =
-      resource.useContext
-  }
-
-  public data object Date : SearchParam<RiskEvidenceSynthesis, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Description : SearchParam<RiskEvidenceSynthesis, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Effective : SearchParam<RiskEvidenceSynthesis, Period> {
-    public override val name: KotlinString = "effective"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.effectivePeriod"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<Period> =
-      listOfNotNull(resource.effectivePeriod)
-  }
-
-  public data object Identifier :
-    SearchParam<RiskEvidenceSynthesis, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: RiskEvidenceSynthesis
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Jurisdiction : SearchParam<RiskEvidenceSynthesis, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<RiskEvidenceSynthesis, R4String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<R4String> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Publisher : SearchParam<RiskEvidenceSynthesis, R4String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<R4String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<RiskEvidenceSynthesis, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<Any> =
-      listOf(resource.status)
-  }
-
-  public data object Title : SearchParam<RiskEvidenceSynthesis, R4String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<R4String> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Url : SearchParam<RiskEvidenceSynthesis, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<Uri> =
-      listOfNotNull(resource.url)
-  }
-
-  public data object Version : SearchParam<RiskEvidenceSynthesis, R4String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "RiskEvidenceSynthesis.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: RiskEvidenceSynthesis): List<R4String> =
-      listOfNotNull(resource.version)
-  }
 }

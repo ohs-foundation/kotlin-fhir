@@ -20,17 +20,73 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.DeviceDefinition
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceDefinition] resource type. */
 public object DeviceDefinitionSearchParam {
+  public val DeviceName: SearchParam<DeviceDefinition, String> =
+    SimpleSearchParam<DeviceDefinition, String>(
+      name = "device-name",
+      type = SearchParamType.fromCode("string"),
+      expression = "DeviceDefinition.deviceName.name",
+      extractor = { resource -> resource.deviceName.map { it.name } },
+    )
+
+  public val Identifier: SearchParam<DeviceDefinition, Identifier> =
+    SimpleSearchParam<DeviceDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceDefinition.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Manufacturer: SearchParam<DeviceDefinition, Reference> =
+    SimpleSearchParam<DeviceDefinition, Reference>(
+      name = "manufacturer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DeviceDefinition.manufacturer",
+      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      extractor = { resource -> listOfNotNull(resource.manufacturer) },
+    )
+
+  public val Organization: SearchParam<DeviceDefinition, Reference> =
+    SimpleSearchParam<DeviceDefinition, Reference>(
+      name = "organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DeviceDefinition.owner",
+      target = listOf(dev.ohs.fhir.model.r5.Organization::class),
+      extractor = { resource -> listOfNotNull(resource.owner) },
+    )
+
+  public val Specification: SearchParam<DeviceDefinition, CodeableConcept> =
+    SimpleSearchParam<DeviceDefinition, CodeableConcept>(
+      name = "specification",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceDefinition.conformsTo.specification",
+      extractor = { resource -> resource.conformsTo.map { it.specification } },
+    )
+
+  public val SpecificationVersion: SearchParam<DeviceDefinition, DeviceDefinition.ConformsTo> =
+    SimpleSearchParam<DeviceDefinition, DeviceDefinition.ConformsTo>(
+      name = "specification-version",
+      type = SearchParamType.fromCode("composite"),
+      expression = "DeviceDefinition.conformsTo",
+      extractor = { resource -> resource.conformsTo },
+    )
+
+  public val Type: SearchParam<DeviceDefinition, CodeableConcept> =
+    SimpleSearchParam<DeviceDefinition, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceDefinition.conformsTo.category",
+      extractor = { resource -> resource.conformsTo.mapNotNull { it.category } },
+    )
+
   /** All search parameters for the DeviceDefinition resource type. */
   public val ALL: List<SearchParam<DeviceDefinition, *>> =
     listOf(
@@ -42,99 +98,4 @@ public object DeviceDefinitionSearchParam {
       SpecificationVersion,
       Type,
     )
-
-  public data object DeviceName : SearchParam<DeviceDefinition, R5String> {
-    public override val name: KotlinString = "device-name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "DeviceDefinition.deviceName.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceDefinition): List<R5String> =
-      resource.deviceName.map { it.name }
-  }
-
-  public data object Identifier : SearchParam<DeviceDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DeviceDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: DeviceDefinition
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Manufacturer : SearchParam<DeviceDefinition, Reference> {
-    public override val name: KotlinString = "manufacturer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "DeviceDefinition.manufacturer"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Organization::class)
-
-    public override fun extract(resource: DeviceDefinition): List<Reference> =
-      listOfNotNull(resource.manufacturer)
-  }
-
-  public data object Organization : SearchParam<DeviceDefinition, Reference> {
-    public override val name: KotlinString = "organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "DeviceDefinition.owner"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Organization::class)
-
-    public override fun extract(resource: DeviceDefinition): List<Reference> =
-      listOfNotNull(resource.owner)
-  }
-
-  public data object Specification : SearchParam<DeviceDefinition, CodeableConcept> {
-    public override val name: KotlinString = "specification"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DeviceDefinition.conformsTo.specification"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceDefinition): List<CodeableConcept> =
-      resource.conformsTo.map { it.specification }
-  }
-
-  public data object SpecificationVersion :
-    SearchParam<DeviceDefinition, DeviceDefinition.ConformsTo> {
-    public override val name: KotlinString = "specification-version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "DeviceDefinition.conformsTo"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceDefinition): List<DeviceDefinition.ConformsTo> =
-      resource.conformsTo
-  }
-
-  public data object Type : SearchParam<DeviceDefinition, CodeableConcept> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "DeviceDefinition.conformsTo.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DeviceDefinition): List<CodeableConcept> =
-      resource.conformsTo.mapNotNull { it.category }
-  }
 }

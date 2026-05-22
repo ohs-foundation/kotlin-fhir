@@ -18,89 +18,63 @@
 
 package dev.ohs.fhir.model.r5.search
 
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.SupplyDelivery
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [SupplyDelivery] resource type. */
 public object SupplyDeliverySearchParam {
+  public val Identifier: SearchParam<SupplyDelivery, Identifier> =
+    SimpleSearchParam<SupplyDelivery, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "SupplyDelivery.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Patient: SearchParam<SupplyDelivery, Reference> =
+    SimpleSearchParam<SupplyDelivery, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "SupplyDelivery.patient",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.patient) },
+    )
+
+  public val Receiver: SearchParam<SupplyDelivery, Reference> =
+    SimpleSearchParam<SupplyDelivery, Reference>(
+      name = "receiver",
+      type = SearchParamType.fromCode("reference"),
+      expression = "SupplyDelivery.receiver",
+      target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> resource.receiver },
+    )
+
+  public val Status: SearchParam<SupplyDelivery, Any> =
+    SimpleSearchParam<SupplyDelivery, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "SupplyDelivery.status",
+      extractor = { resource -> listOfNotNull(resource.status) },
+    )
+
+  public val Supplier: SearchParam<SupplyDelivery, Reference> =
+    SimpleSearchParam<SupplyDelivery, Reference>(
+      name = "supplier",
+      type = SearchParamType.fromCode("reference"),
+      expression = "SupplyDelivery.supplier",
+      target = listOf(Organization::class, PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.supplier) },
+    )
+
   /** All search parameters for the SupplyDelivery resource type. */
   public val ALL: List<SearchParam<SupplyDelivery, *>> =
     listOf(Identifier, Patient, Receiver, Status, Supplier)
-
-  public data object Identifier : SearchParam<SupplyDelivery, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "SupplyDelivery.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: SupplyDelivery): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Patient : SearchParam<SupplyDelivery, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "SupplyDelivery.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: SupplyDelivery): List<Reference> =
-      listOfNotNull(resource.patient)
-  }
-
-  public data object Receiver : SearchParam<SupplyDelivery, Reference> {
-    public override val name: String = "receiver"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "SupplyDelivery.receiver"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: SupplyDelivery): List<Reference> = resource.receiver
-  }
-
-  public data object Status : SearchParam<SupplyDelivery, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "SupplyDelivery.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: SupplyDelivery): List<Any> =
-      listOfNotNull(resource.status)
-  }
-
-  public data object Supplier : SearchParam<SupplyDelivery, Reference> {
-    public override val name: String = "supplier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "SupplyDelivery.supplier"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Organization::class, PractitionerRole::class, Practitioner::class)
-
-    public override fun extract(resource: SupplyDelivery): List<Reference> =
-      listOfNotNull(resource.supplier)
-  }
 }

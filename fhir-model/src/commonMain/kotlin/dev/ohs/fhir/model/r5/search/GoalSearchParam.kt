@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Condition
 import dev.ohs.fhir.model.r5.Goal
 import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.MedicationRequest
 import dev.ohs.fhir.model.r5.MedicationStatement
 import dev.ohs.fhir.model.r5.NutritionOrder
@@ -29,18 +30,120 @@ import dev.ohs.fhir.model.r5.Observation
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Procedure
 import dev.ohs.fhir.model.r5.Reference
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.RiskAssessment
 import dev.ohs.fhir.model.r5.ServiceRequest
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Goal] resource type. */
 public object GoalSearchParam {
+  public val AchievementStatus: SearchParam<Goal, CodeableConcept> =
+    SimpleSearchParam<Goal, CodeableConcept>(
+      name = "achievement-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Goal.achievementStatus",
+      extractor = { resource -> listOfNotNull(resource.achievementStatus) },
+    )
+
+  public val Addresses: SearchParam<Goal, Reference> =
+    SimpleSearchParam<Goal, Reference>(
+      name = "addresses",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Goal.addresses",
+      target =
+        listOf(
+          RiskAssessment::class,
+          Procedure::class,
+          Observation::class,
+          MedicationStatement::class,
+          ServiceRequest::class,
+          MedicationRequest::class,
+          Condition::class,
+          NutritionOrder::class,
+        ),
+      extractor = { resource -> resource.addresses },
+    )
+
+  public val Category: SearchParam<Goal, CodeableConcept> =
+    SimpleSearchParam<Goal, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "Goal.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Description: SearchParam<Goal, CodeableConcept> =
+    SimpleSearchParam<Goal, CodeableConcept>(
+      name = "description",
+      type = SearchParamType.fromCode("token"),
+      expression = "Goal.description",
+      extractor = { resource -> listOf(resource.description) },
+    )
+
+  public val Identifier: SearchParam<Goal, Identifier> =
+    SimpleSearchParam<Goal, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Goal.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val LifecycleStatus: SearchParam<Goal, Any> =
+    SimpleSearchParam<Goal, Any>(
+      name = "lifecycle-status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Goal.lifecycleStatus",
+      extractor = { resource -> listOf(resource.lifecycleStatus) },
+    )
+
+  public val Patient: SearchParam<Goal, Reference> =
+    SimpleSearchParam<Goal, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Goal.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOf(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val StartDate: SearchParam<Goal, Any> =
+    SimpleSearchParam<Goal, Any>(
+      name = "start-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "(Goal.start.ofType(date))",
+      extractor = { emptyList() },
+    )
+
+  public val Subject: SearchParam<Goal, Reference> =
+    SimpleSearchParam<Goal, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Goal.subject",
+      target = listOf(Organization::class, Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
+  public val TargetDate: SearchParam<Goal, Any> =
+    SimpleSearchParam<Goal, Any>(
+      name = "target-date",
+      type = SearchParamType.fromCode("date"),
+      expression = "(Goal.target.due.ofType(date))",
+      extractor = { emptyList() },
+    )
+
+  public val TargetMeasure: SearchParam<Goal, CodeableConcept> =
+    SimpleSearchParam<Goal, CodeableConcept>(
+      name = "target-measure",
+      type = SearchParamType.fromCode("token"),
+      expression = "Goal.target.measure",
+      extractor = { resource -> resource.target.mapNotNull { it.measure } },
+    )
+
   /** All search parameters for the Goal resource type. */
   public val ALL: List<SearchParam<Goal, *>> =
     listOf(
@@ -56,155 +159,4 @@ public object GoalSearchParam {
       TargetDate,
       TargetMeasure,
     )
-
-  public data object AchievementStatus : SearchParam<Goal, CodeableConcept> {
-    public override val name: String = "achievement-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Goal.achievementStatus"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Goal): List<CodeableConcept> =
-      listOfNotNull(resource.achievementStatus)
-  }
-
-  public data object Addresses : SearchParam<Goal, Reference> {
-    public override val name: String = "addresses"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Goal.addresses"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        RiskAssessment::class,
-        Procedure::class,
-        Observation::class,
-        MedicationStatement::class,
-        ServiceRequest::class,
-        MedicationRequest::class,
-        Condition::class,
-        NutritionOrder::class,
-      )
-
-    public override fun extract(resource: Goal): List<Reference> = resource.addresses
-  }
-
-  public data object Category : SearchParam<Goal, CodeableConcept> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Goal.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Goal): List<CodeableConcept> = resource.category
-  }
-
-  public data object Description : SearchParam<Goal, CodeableConcept> {
-    public override val name: String = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Goal.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Goal): List<CodeableConcept> =
-      listOf(resource.description)
-  }
-
-  public data object Identifier : SearchParam<Goal, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Goal.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Goal): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object LifecycleStatus : SearchParam<Goal, Any> {
-    public override val name: String = "lifecycle-status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Goal.lifecycleStatus"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Goal): List<Any> = listOf(resource.lifecycleStatus)
-  }
-
-  public data object Patient : SearchParam<Goal, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Goal.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Goal): List<Reference> =
-      listOf(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object StartDate : SearchParam<Goal, Any> {
-    public override val name: String = "start-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "(Goal.start.ofType(date))"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Goal): List<Any> = emptyList()
-  }
-
-  public data object Subject : SearchParam<Goal, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "Goal.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Organization::class, Group::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Goal): List<Reference> = listOf(resource.subject)
-  }
-
-  public data object TargetDate : SearchParam<Goal, Any> {
-    public override val name: String = "target-date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "(Goal.target.due.ofType(date))"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Goal): List<Any> = emptyList()
-  }
-
-  public data object TargetMeasure : SearchParam<Goal, CodeableConcept> {
-    public override val name: String = "target-measure"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "Goal.target.measure"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Goal): List<CodeableConcept> =
-      resource.target.mapNotNull { it.measure }
-  }
 }

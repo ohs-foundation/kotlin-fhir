@@ -20,22 +20,124 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.MedicationStatement
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Practitioner
 import dev.ohs.fhir.model.r5.PractitionerRole
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
-import dev.ohs.fhir.model.r5.Resource
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [MedicationStatement] resource type. */
 public object MedicationStatementSearchParam {
+  public val Adherence: SearchParam<MedicationStatement, CodeableConcept> =
+    SimpleSearchParam<MedicationStatement, CodeableConcept>(
+      name = "adherence",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicationStatement.adherence.code",
+      extractor = { resource -> listOfNotNull(resource.adherence?.code) },
+    )
+
+  public val Category: SearchParam<MedicationStatement, CodeableConcept> =
+    SimpleSearchParam<MedicationStatement, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicationStatement.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Code: SearchParam<MedicationStatement, CodeableConcept> =
+    SimpleSearchParam<MedicationStatement, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicationStatement.medication.concept",
+      extractor = { resource -> listOfNotNull(resource.medication.concept) },
+    )
+
+  public val Effective: SearchParam<MedicationStatement, Any> =
+    SimpleSearchParam<MedicationStatement, Any>(
+      name = "effective",
+      type = SearchParamType.fromCode("date"),
+      expression = "MedicationStatement.effective.ofType(dateTime)",
+      extractor = { emptyList() },
+    )
+
+  public val Encounter: SearchParam<MedicationStatement, Reference> =
+    SimpleSearchParam<MedicationStatement, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationStatement.encounter",
+      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Identifier: SearchParam<MedicationStatement, Identifier> =
+    SimpleSearchParam<MedicationStatement, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicationStatement.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Medication: SearchParam<MedicationStatement, Reference> =
+    SimpleSearchParam<MedicationStatement, Reference>(
+      name = "medication",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationStatement.medication.reference",
+      target = listOf(dev.ohs.fhir.model.r5.Medication::class),
+      extractor = { resource -> listOfNotNull(resource.medication.reference) },
+    )
+
+  public val Patient: SearchParam<MedicationStatement, Reference> =
+    SimpleSearchParam<MedicationStatement, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationStatement.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOf(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Source: SearchParam<MedicationStatement, Reference> =
+    SimpleSearchParam<MedicationStatement, Reference>(
+      name = "source",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationStatement.informationSource",
+      target =
+        listOf(
+          Organization::class,
+          RelatedPerson::class,
+          PractitionerRole::class,
+          Practitioner::class,
+          dev.ohs.fhir.model.r5.Patient::class,
+        ),
+      extractor = { resource -> resource.informationSource },
+    )
+
+  public val Status: SearchParam<MedicationStatement, Any> =
+    SimpleSearchParam<MedicationStatement, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicationStatement.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<MedicationStatement, Reference> =
+    SimpleSearchParam<MedicationStatement, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationStatement.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
   /** All search parameters for the MedicationStatement resource type. */
   public val ALL: List<SearchParam<MedicationStatement, *>> =
     listOf(
@@ -51,161 +153,4 @@ public object MedicationStatementSearchParam {
       Status,
       Subject,
     )
-
-  public data object Adherence : SearchParam<MedicationStatement, CodeableConcept> {
-    public override val name: String = "adherence"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MedicationStatement.adherence.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MedicationStatement): List<CodeableConcept> =
-      listOfNotNull(resource.adherence?.code)
-  }
-
-  public data object Category : SearchParam<MedicationStatement, CodeableConcept> {
-    public override val name: String = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MedicationStatement.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MedicationStatement): List<CodeableConcept> =
-      resource.category
-  }
-
-  public data object Code : SearchParam<MedicationStatement, CodeableConcept> {
-    public override val name: String = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MedicationStatement.medication.concept"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MedicationStatement): List<CodeableConcept> =
-      listOfNotNull(resource.medication.concept)
-  }
-
-  public data object Effective : SearchParam<MedicationStatement, Any> {
-    public override val name: String = "effective"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "MedicationStatement.effective.ofType(dateTime)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MedicationStatement): List<Any> = emptyList()
-  }
-
-  public data object Encounter : SearchParam<MedicationStatement, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "MedicationStatement.encounter"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Encounter::class)
-
-    public override fun extract(resource: MedicationStatement): List<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Identifier :
-    SearchParam<MedicationStatement, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MedicationStatement.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: MedicationStatement
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
-
-  public data object Medication : SearchParam<MedicationStatement, Reference> {
-    public override val name: String = "medication"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "MedicationStatement.medication.reference"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Medication::class)
-
-    public override fun extract(resource: MedicationStatement): List<Reference> =
-      listOfNotNull(resource.medication.reference)
-  }
-
-  public data object Patient : SearchParam<MedicationStatement, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String =
-      "MedicationStatement.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: MedicationStatement): List<Reference> =
-      listOf(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Source : SearchParam<MedicationStatement, Reference> {
-    public override val name: String = "source"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "MedicationStatement.informationSource"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(
-        Organization::class,
-        RelatedPerson::class,
-        PractitionerRole::class,
-        Practitioner::class,
-        dev.ohs.fhir.model.r5.Patient::class,
-      )
-
-    public override fun extract(resource: MedicationStatement): List<Reference> =
-      resource.informationSource
-  }
-
-  public data object Status : SearchParam<MedicationStatement, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MedicationStatement.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MedicationStatement): List<Any> = listOf(resource.status)
-  }
-
-  public data object Subject : SearchParam<MedicationStatement, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "MedicationStatement.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: MedicationStatement): List<Reference> =
-      listOf(resource.subject)
-  }
 }

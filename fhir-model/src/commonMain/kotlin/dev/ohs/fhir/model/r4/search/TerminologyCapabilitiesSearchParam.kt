@@ -23,20 +23,133 @@ import dev.ohs.fhir.model.r4.Coding
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Quantity
-import dev.ohs.fhir.model.r4.Resource
-import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.TerminologyCapabilities
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [TerminologyCapabilities] resource type. */
 public object TerminologyCapabilitiesSearchParam {
+  public val Context: SearchParam<TerminologyCapabilities, CodeableConcept> =
+    SimpleSearchParam<TerminologyCapabilities, CodeableConcept>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(TerminologyCapabilities.useContext.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+      },
+    )
+
+  public val ContextQuantity: SearchParam<TerminologyCapabilities, Quantity> =
+    SimpleSearchParam<TerminologyCapabilities, Quantity>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(TerminologyCapabilities.useContext.value as Quantity)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+      },
+    )
+
+  public val ContextType: SearchParam<TerminologyCapabilities, Coding> =
+    SimpleSearchParam<TerminologyCapabilities, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "TerminologyCapabilities.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<TerminologyCapabilities, UsageContext> =
+    SimpleSearchParam<TerminologyCapabilities, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "TerminologyCapabilities.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<TerminologyCapabilities, UsageContext> =
+    SimpleSearchParam<TerminologyCapabilities, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "TerminologyCapabilities.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<TerminologyCapabilities, DateTime> =
+    SimpleSearchParam<TerminologyCapabilities, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "TerminologyCapabilities.date",
+      extractor = { resource -> listOf(resource.date) },
+    )
+
+  public val Description: SearchParam<TerminologyCapabilities, Markdown> =
+    SimpleSearchParam<TerminologyCapabilities, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "TerminologyCapabilities.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Jurisdiction: SearchParam<TerminologyCapabilities, CodeableConcept> =
+    SimpleSearchParam<TerminologyCapabilities, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "TerminologyCapabilities.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<TerminologyCapabilities, String> =
+    SimpleSearchParam<TerminologyCapabilities, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "TerminologyCapabilities.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Publisher: SearchParam<TerminologyCapabilities, String> =
+    SimpleSearchParam<TerminologyCapabilities, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "TerminologyCapabilities.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Status: SearchParam<TerminologyCapabilities, Any> =
+    SimpleSearchParam<TerminologyCapabilities, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "TerminologyCapabilities.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Title: SearchParam<TerminologyCapabilities, String> =
+    SimpleSearchParam<TerminologyCapabilities, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "TerminologyCapabilities.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Url: SearchParam<TerminologyCapabilities, Uri> =
+    SimpleSearchParam<TerminologyCapabilities, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "TerminologyCapabilities.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Version: SearchParam<TerminologyCapabilities, String> =
+    SimpleSearchParam<TerminologyCapabilities, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "TerminologyCapabilities.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the TerminologyCapabilities resource type. */
   public val ALL: List<SearchParam<TerminologyCapabilities, *>> =
     listOf(
@@ -55,188 +168,4 @@ public object TerminologyCapabilitiesSearchParam {
       Url,
       Version,
     )
-
-  public data object Context : SearchParam<TerminologyCapabilities, CodeableConcept> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(TerminologyCapabilities.useContext.value as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<CodeableConcept> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
-  }
-
-  public data object ContextQuantity : SearchParam<TerminologyCapabilities, Quantity> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString =
-      "(TerminologyCapabilities.useContext.value as Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<Quantity> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
-  }
-
-  public data object ContextType : SearchParam<TerminologyCapabilities, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<TerminologyCapabilities, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<UsageContext> =
-      resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<TerminologyCapabilities, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<UsageContext> =
-      resource.useContext
-  }
-
-  public data object Date : SearchParam<TerminologyCapabilities, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<DateTime> =
-      listOf(resource.date)
-  }
-
-  public data object Description : SearchParam<TerminologyCapabilities, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Jurisdiction : SearchParam<TerminologyCapabilities, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<TerminologyCapabilities, R4String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<R4String> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Publisher : SearchParam<TerminologyCapabilities, R4String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<R4String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Status : SearchParam<TerminologyCapabilities, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<Any> =
-      listOf(resource.status)
-  }
-
-  public data object Title : SearchParam<TerminologyCapabilities, R4String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<R4String> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Url : SearchParam<TerminologyCapabilities, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<Uri> =
-      listOfNotNull(resource.url)
-  }
-
-  public data object Version : SearchParam<TerminologyCapabilities, R4String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "TerminologyCapabilities.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: TerminologyCapabilities): List<R4String> =
-      listOfNotNull(resource.version)
-  }
 }

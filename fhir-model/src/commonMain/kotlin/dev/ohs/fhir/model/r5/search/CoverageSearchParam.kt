@@ -20,20 +20,130 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.Coverage
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.Organization
 import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.RelatedPerson
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Coverage] resource type. */
 public object CoverageSearchParam {
+  public val Beneficiary: SearchParam<Coverage, Reference> =
+    SimpleSearchParam<Coverage, Reference>(
+      name = "beneficiary",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Coverage.beneficiary",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.beneficiary) },
+    )
+
+  public val ClassType: SearchParam<Coverage, CodeableConcept> =
+    SimpleSearchParam<Coverage, CodeableConcept>(
+      name = "class-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Coverage.class.type",
+      extractor = { resource -> resource.`class`.map { it.type } },
+    )
+
+  public val ClassValue: SearchParam<Coverage, Identifier> =
+    SimpleSearchParam<Coverage, Identifier>(
+      name = "class-value",
+      type = SearchParamType.fromCode("token"),
+      expression = "Coverage.class.value",
+      extractor = { resource -> resource.`class`.map { it.value } },
+    )
+
+  public val Dependent: SearchParam<Coverage, String> =
+    SimpleSearchParam<Coverage, String>(
+      name = "dependent",
+      type = SearchParamType.fromCode("string"),
+      expression = "Coverage.dependent",
+      extractor = { resource -> listOfNotNull(resource.dependent) },
+    )
+
+  public val Identifier: SearchParam<Coverage, Identifier> =
+    SimpleSearchParam<Coverage, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Coverage.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Insurer: SearchParam<Coverage, Reference> =
+    SimpleSearchParam<Coverage, Reference>(
+      name = "insurer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Coverage.insurer",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.insurer) },
+    )
+
+  public val Patient: SearchParam<Coverage, Reference> =
+    SimpleSearchParam<Coverage, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Coverage.beneficiary",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.beneficiary) },
+    )
+
+  public val PaymentbyParty: SearchParam<Coverage, Reference> =
+    SimpleSearchParam<Coverage, Reference>(
+      name = "paymentby-party",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Coverage.paymentBy.party",
+      target =
+        listOf(Organization::class, RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> resource.paymentBy.map { it.party } },
+    )
+
+  public val PolicyHolder: SearchParam<Coverage, Reference> =
+    SimpleSearchParam<Coverage, Reference>(
+      name = "policy-holder",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Coverage.policyHolder",
+      target =
+        listOf(Organization::class, RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.policyHolder) },
+    )
+
+  public val Status: SearchParam<Coverage, Any> =
+    SimpleSearchParam<Coverage, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "Coverage.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subscriber: SearchParam<Coverage, Reference> =
+    SimpleSearchParam<Coverage, Reference>(
+      name = "subscriber",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Coverage.subscriber",
+      target = listOf(RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.subscriber) },
+    )
+
+  public val Subscriberid: SearchParam<Coverage, Identifier> =
+    SimpleSearchParam<Coverage, Identifier>(
+      name = "subscriberid",
+      type = SearchParamType.fromCode("token"),
+      expression = "Coverage.subscriberId",
+      extractor = { resource -> resource.subscriberId },
+    )
+
+  public val Type: SearchParam<Coverage, CodeableConcept> =
+    SimpleSearchParam<Coverage, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Coverage.type",
+      extractor = { resource -> listOfNotNull(resource.type) },
+    )
+
   /** All search parameters for the Coverage resource type. */
   public val ALL: List<SearchParam<Coverage, *>> =
     listOf(
@@ -51,175 +161,4 @@ public object CoverageSearchParam {
       Subscriberid,
       Type,
     )
-
-  public data object Beneficiary : SearchParam<Coverage, Reference> {
-    public override val name: KotlinString = "beneficiary"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Coverage.beneficiary"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Coverage): List<Reference> = listOf(resource.beneficiary)
-  }
-
-  public data object ClassType : SearchParam<Coverage, CodeableConcept> {
-    public override val name: KotlinString = "class-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Coverage.class.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Coverage): List<CodeableConcept> =
-      resource.`class`.map { it.type }
-  }
-
-  public data object ClassValue : SearchParam<Coverage, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "class-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Coverage.class.value"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Coverage): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.`class`.map { it.value }
-  }
-
-  public data object Dependent : SearchParam<Coverage, R5String> {
-    public override val name: KotlinString = "dependent"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Coverage.dependent"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Coverage): List<R5String> =
-      listOfNotNull(resource.dependent)
-  }
-
-  public data object Identifier : SearchParam<Coverage, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Coverage.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Coverage): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.identifier
-  }
-
-  public data object Insurer : SearchParam<Coverage, Reference> {
-    public override val name: KotlinString = "insurer"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Coverage.insurer"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: Coverage): List<Reference> =
-      listOfNotNull(resource.insurer)
-  }
-
-  public data object Patient : SearchParam<Coverage, Reference> {
-    public override val name: KotlinString = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Coverage.beneficiary"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Coverage): List<Reference> = listOf(resource.beneficiary)
-  }
-
-  public data object PaymentbyParty : SearchParam<Coverage, Reference> {
-    public override val name: KotlinString = "paymentby-party"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Coverage.paymentBy.party"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Organization::class, RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Coverage): List<Reference> =
-      resource.paymentBy.map { it.party }
-  }
-
-  public data object PolicyHolder : SearchParam<Coverage, Reference> {
-    public override val name: KotlinString = "policy-holder"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Coverage.policyHolder"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Organization::class, RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Coverage): List<Reference> =
-      listOfNotNull(resource.policyHolder)
-  }
-
-  public data object Status : SearchParam<Coverage, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Coverage.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Coverage): List<Any> = listOf(resource.status)
-  }
-
-  public data object Subscriber : SearchParam<Coverage, Reference> {
-    public override val name: KotlinString = "subscriber"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Coverage.subscriber"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(RelatedPerson::class, dev.ohs.fhir.model.r5.Patient::class)
-
-    public override fun extract(resource: Coverage): List<Reference> =
-      listOfNotNull(resource.subscriber)
-  }
-
-  public data object Subscriberid : SearchParam<Coverage, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "subscriberid"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Coverage.subscriberId"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Coverage): List<dev.ohs.fhir.model.r5.Identifier> =
-      resource.subscriberId
-  }
-
-  public data object Type : SearchParam<Coverage, CodeableConcept> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Coverage.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Coverage): List<CodeableConcept> =
-      listOfNotNull(resource.type)
-  }
 }

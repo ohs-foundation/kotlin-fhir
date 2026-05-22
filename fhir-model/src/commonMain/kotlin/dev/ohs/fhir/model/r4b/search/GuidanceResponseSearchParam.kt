@@ -20,75 +20,53 @@ package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.Group
 import dev.ohs.fhir.model.r4b.GuidanceResponse
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [GuidanceResponse] resource type. */
 public object GuidanceResponseSearchParam {
+  public val Identifier: SearchParam<GuidanceResponse, Identifier> =
+    SimpleSearchParam<GuidanceResponse, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "GuidanceResponse.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Patient: SearchParam<GuidanceResponse, Reference> =
+    SimpleSearchParam<GuidanceResponse, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "GuidanceResponse.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource ->
+        listOfNotNull(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Request: SearchParam<GuidanceResponse, Identifier> =
+    SimpleSearchParam<GuidanceResponse, Identifier>(
+      name = "request",
+      type = SearchParamType.fromCode("token"),
+      expression = "GuidanceResponse.requestIdentifier",
+      extractor = { resource -> listOfNotNull(resource.requestIdentifier) },
+    )
+
+  public val Subject: SearchParam<GuidanceResponse, Reference> =
+    SimpleSearchParam<GuidanceResponse, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "GuidanceResponse.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.subject) },
+    )
+
   /** All search parameters for the GuidanceResponse resource type. */
   public val ALL: List<SearchParam<GuidanceResponse, *>> =
     listOf(Identifier, Patient, Request, Subject)
-
-  public data object Identifier : SearchParam<GuidanceResponse, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "GuidanceResponse.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: GuidanceResponse
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
-  }
-
-  public data object Patient : SearchParam<GuidanceResponse, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "GuidanceResponse.subject.where(resolve() is Patient)"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: GuidanceResponse): List<Reference> =
-      listOfNotNull(resource.subject).filter {
-        it.reference?.value?.toString()?.contains("Patient/") == true
-      }
-  }
-
-  public data object Request : SearchParam<GuidanceResponse, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "request"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "GuidanceResponse.requestIdentifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: GuidanceResponse
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = listOfNotNull(resource.requestIdentifier)
-  }
-
-  public data object Subject : SearchParam<GuidanceResponse, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "GuidanceResponse.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: GuidanceResponse): List<Reference> =
-      listOfNotNull(resource.subject)
-  }
 }

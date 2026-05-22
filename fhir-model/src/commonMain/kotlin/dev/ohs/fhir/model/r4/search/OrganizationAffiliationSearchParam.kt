@@ -22,19 +22,139 @@ import dev.ohs.fhir.model.r4.Boolean
 import dev.ohs.fhir.model.r4.CodeableConcept
 import dev.ohs.fhir.model.r4.ContactPoint
 import dev.ohs.fhir.model.r4.HealthcareService
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Organization
 import dev.ohs.fhir.model.r4.OrganizationAffiliation
 import dev.ohs.fhir.model.r4.Period
 import dev.ohs.fhir.model.r4.Reference
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [OrganizationAffiliation] resource type. */
 public object OrganizationAffiliationSearchParam {
+  public val Active: SearchParam<OrganizationAffiliation, Boolean> =
+    SimpleSearchParam<OrganizationAffiliation, Boolean>(
+      name = "active",
+      type = SearchParamType.fromCode("token"),
+      expression = "OrganizationAffiliation.active",
+      extractor = { resource -> listOfNotNull(resource.active) },
+    )
+
+  public val Date: SearchParam<OrganizationAffiliation, Period> =
+    SimpleSearchParam<OrganizationAffiliation, Period>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "OrganizationAffiliation.period",
+      extractor = { resource -> listOfNotNull(resource.period) },
+    )
+
+  public val Email: SearchParam<OrganizationAffiliation, ContactPoint> =
+    SimpleSearchParam<OrganizationAffiliation, ContactPoint>(
+      name = "email",
+      type = SearchParamType.fromCode("token"),
+      expression = "OrganizationAffiliation.telecom.where(system='email')",
+      extractor = { resource ->
+        resource.telecom.filter { it.system?.value?.toString() == "email" }
+      },
+    )
+
+  public val Endpoint: SearchParam<OrganizationAffiliation, Reference> =
+    SimpleSearchParam<OrganizationAffiliation, Reference>(
+      name = "endpoint",
+      type = SearchParamType.fromCode("reference"),
+      expression = "OrganizationAffiliation.endpoint",
+      target = listOf(dev.ohs.fhir.model.r4.Endpoint::class),
+      extractor = { resource -> resource.endpoint },
+    )
+
+  public val Identifier: SearchParam<OrganizationAffiliation, Identifier> =
+    SimpleSearchParam<OrganizationAffiliation, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "OrganizationAffiliation.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Location: SearchParam<OrganizationAffiliation, Reference> =
+    SimpleSearchParam<OrganizationAffiliation, Reference>(
+      name = "location",
+      type = SearchParamType.fromCode("reference"),
+      expression = "OrganizationAffiliation.location",
+      target = listOf(dev.ohs.fhir.model.r4.Location::class),
+      extractor = { resource -> resource.location },
+    )
+
+  public val Network: SearchParam<OrganizationAffiliation, Reference> =
+    SimpleSearchParam<OrganizationAffiliation, Reference>(
+      name = "network",
+      type = SearchParamType.fromCode("reference"),
+      expression = "OrganizationAffiliation.network",
+      target = listOf(Organization::class),
+      extractor = { resource -> resource.network },
+    )
+
+  public val ParticipatingOrganization: SearchParam<OrganizationAffiliation, Reference> =
+    SimpleSearchParam<OrganizationAffiliation, Reference>(
+      name = "participating-organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "OrganizationAffiliation.participatingOrganization",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.participatingOrganization) },
+    )
+
+  public val Phone: SearchParam<OrganizationAffiliation, ContactPoint> =
+    SimpleSearchParam<OrganizationAffiliation, ContactPoint>(
+      name = "phone",
+      type = SearchParamType.fromCode("token"),
+      expression = "OrganizationAffiliation.telecom.where(system='phone')",
+      extractor = { resource ->
+        resource.telecom.filter { it.system?.value?.toString() == "phone" }
+      },
+    )
+
+  public val PrimaryOrganization: SearchParam<OrganizationAffiliation, Reference> =
+    SimpleSearchParam<OrganizationAffiliation, Reference>(
+      name = "primary-organization",
+      type = SearchParamType.fromCode("reference"),
+      expression = "OrganizationAffiliation.organization",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.organization) },
+    )
+
+  public val Role: SearchParam<OrganizationAffiliation, CodeableConcept> =
+    SimpleSearchParam<OrganizationAffiliation, CodeableConcept>(
+      name = "role",
+      type = SearchParamType.fromCode("token"),
+      expression = "OrganizationAffiliation.code",
+      extractor = { resource -> resource.code },
+    )
+
+  public val Service: SearchParam<OrganizationAffiliation, Reference> =
+    SimpleSearchParam<OrganizationAffiliation, Reference>(
+      name = "service",
+      type = SearchParamType.fromCode("reference"),
+      expression = "OrganizationAffiliation.healthcareService",
+      target = listOf(HealthcareService::class),
+      extractor = { resource -> resource.healthcareService },
+    )
+
+  public val Specialty: SearchParam<OrganizationAffiliation, CodeableConcept> =
+    SimpleSearchParam<OrganizationAffiliation, CodeableConcept>(
+      name = "specialty",
+      type = SearchParamType.fromCode("token"),
+      expression = "OrganizationAffiliation.specialty",
+      extractor = { resource -> resource.specialty },
+    )
+
+  public val Telecom: SearchParam<OrganizationAffiliation, ContactPoint> =
+    SimpleSearchParam<OrganizationAffiliation, ContactPoint>(
+      name = "telecom",
+      type = SearchParamType.fromCode("token"),
+      expression = "OrganizationAffiliation.telecom",
+      extractor = { resource -> resource.telecom },
+    )
+
   /** All search parameters for the OrganizationAffiliation resource type. */
   public val ALL: List<SearchParam<OrganizationAffiliation, *>> =
     listOf(
@@ -53,190 +173,4 @@ public object OrganizationAffiliationSearchParam {
       Specialty,
       Telecom,
     )
-
-  public data object Active : SearchParam<OrganizationAffiliation, Boolean> {
-    public override val name: String = "active"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "OrganizationAffiliation.active"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: OrganizationAffiliation): List<Boolean> =
-      listOfNotNull(resource.active)
-  }
-
-  public data object Date : SearchParam<OrganizationAffiliation, Period> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "OrganizationAffiliation.period"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: OrganizationAffiliation): List<Period> =
-      listOfNotNull(resource.period)
-  }
-
-  public data object Email : SearchParam<OrganizationAffiliation, ContactPoint> {
-    public override val name: String = "email"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "OrganizationAffiliation.telecom.where(system='email')"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
-      resource.telecom.filter { it.system?.value?.toString() == "email" }
-  }
-
-  public data object Endpoint : SearchParam<OrganizationAffiliation, Reference> {
-    public override val name: String = "endpoint"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "OrganizationAffiliation.endpoint"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Endpoint::class)
-
-    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
-      resource.endpoint
-  }
-
-  public data object Identifier :
-    SearchParam<OrganizationAffiliation, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "OrganizationAffiliation.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: OrganizationAffiliation
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Location : SearchParam<OrganizationAffiliation, Reference> {
-    public override val name: String = "location"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "OrganizationAffiliation.location"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Location::class)
-
-    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
-      resource.location
-  }
-
-  public data object Network : SearchParam<OrganizationAffiliation, Reference> {
-    public override val name: String = "network"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "OrganizationAffiliation.network"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
-      resource.network
-  }
-
-  public data object ParticipatingOrganization : SearchParam<OrganizationAffiliation, Reference> {
-    public override val name: String = "participating-organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "OrganizationAffiliation.participatingOrganization"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
-      listOfNotNull(resource.participatingOrganization)
-  }
-
-  public data object Phone : SearchParam<OrganizationAffiliation, ContactPoint> {
-    public override val name: String = "phone"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "OrganizationAffiliation.telecom.where(system='phone')"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
-      resource.telecom.filter { it.system?.value?.toString() == "phone" }
-  }
-
-  public data object PrimaryOrganization : SearchParam<OrganizationAffiliation, Reference> {
-    public override val name: String = "primary-organization"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "OrganizationAffiliation.organization"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
-      listOfNotNull(resource.organization)
-  }
-
-  public data object Role : SearchParam<OrganizationAffiliation, CodeableConcept> {
-    public override val name: String = "role"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "OrganizationAffiliation.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: OrganizationAffiliation): List<CodeableConcept> =
-      resource.code
-  }
-
-  public data object Service : SearchParam<OrganizationAffiliation, Reference> {
-    public override val name: String = "service"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "OrganizationAffiliation.healthcareService"
-
-    public override val target: List<KClass<out Resource>> = listOf(HealthcareService::class)
-
-    public override fun extract(resource: OrganizationAffiliation): List<Reference> =
-      resource.healthcareService
-  }
-
-  public data object Specialty : SearchParam<OrganizationAffiliation, CodeableConcept> {
-    public override val name: String = "specialty"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "OrganizationAffiliation.specialty"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: OrganizationAffiliation): List<CodeableConcept> =
-      resource.specialty
-  }
-
-  public data object Telecom : SearchParam<OrganizationAffiliation, ContactPoint> {
-    public override val name: String = "telecom"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "OrganizationAffiliation.telecom"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: OrganizationAffiliation): List<ContactPoint> =
-      resource.telecom
-  }
 }

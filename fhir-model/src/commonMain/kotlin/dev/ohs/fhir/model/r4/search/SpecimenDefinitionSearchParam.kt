@@ -19,57 +19,40 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.CodeableConcept
-import dev.ohs.fhir.model.r4.Resource
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.SpecimenDefinition
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [SpecimenDefinition] resource type. */
 public object SpecimenDefinitionSearchParam {
+  public val Container: SearchParam<SpecimenDefinition, CodeableConcept> =
+    SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
+      name = "container",
+      type = SearchParamType.fromCode("token"),
+      expression = "SpecimenDefinition.typeTested.container.type",
+      extractor = { resource ->
+        resource.typeTested.mapNotNull { it.container }.mapNotNull { it.type }
+      },
+    )
+
+  public val Identifier: SearchParam<SpecimenDefinition, Identifier> =
+    SimpleSearchParam<SpecimenDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "SpecimenDefinition.identifier",
+      extractor = { resource -> listOfNotNull(resource.identifier) },
+    )
+
+  public val Type: SearchParam<SpecimenDefinition, CodeableConcept> =
+    SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "SpecimenDefinition.typeCollected",
+      extractor = { resource -> listOfNotNull(resource.typeCollected) },
+    )
+
   /** All search parameters for the SpecimenDefinition resource type. */
   public val ALL: List<SearchParam<SpecimenDefinition, *>> = listOf(Container, Identifier, Type)
-
-  public data object Container : SearchParam<SpecimenDefinition, CodeableConcept> {
-    public override val name: String = "container"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "SpecimenDefinition.typeTested.container.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
-      resource.typeTested.mapNotNull { it.container }.mapNotNull { it.type }
-  }
-
-  public data object Identifier :
-    SearchParam<SpecimenDefinition, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "SpecimenDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: SpecimenDefinition
-    ): List<dev.ohs.fhir.model.r4.Identifier> = listOfNotNull(resource.identifier)
-  }
-
-  public data object Type : SearchParam<SpecimenDefinition, CodeableConcept> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "SpecimenDefinition.typeCollected"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: SpecimenDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.typeCollected)
-  }
 }

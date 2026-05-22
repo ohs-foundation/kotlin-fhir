@@ -18,21 +18,126 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Address
 import dev.ohs.fhir.model.r4b.Boolean
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Organization
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
-import dev.ohs.fhir.model.r4b.String as R4bString
+import dev.ohs.fhir.model.r4b.String
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [Organization] resource type. */
 public object OrganizationSearchParam {
+  public val Active: SearchParam<Organization, Boolean> =
+    SimpleSearchParam<Organization, Boolean>(
+      name = "active",
+      type = SearchParamType.fromCode("token"),
+      expression = "Organization.active",
+      extractor = { resource -> listOfNotNull(resource.active) },
+    )
+
+  public val Address: SearchParam<Organization, Address> =
+    SimpleSearchParam<Organization, Address>(
+      name = "address",
+      type = SearchParamType.fromCode("string"),
+      expression = "Organization.address",
+      extractor = { resource -> resource.address },
+    )
+
+  public val AddressCity: SearchParam<Organization, String> =
+    SimpleSearchParam<Organization, String>(
+      name = "address-city",
+      type = SearchParamType.fromCode("string"),
+      expression = "Organization.address.city",
+      extractor = { resource -> resource.address.mapNotNull { it.city } },
+    )
+
+  public val AddressCountry: SearchParam<Organization, String> =
+    SimpleSearchParam<Organization, String>(
+      name = "address-country",
+      type = SearchParamType.fromCode("string"),
+      expression = "Organization.address.country",
+      extractor = { resource -> resource.address.mapNotNull { it.country } },
+    )
+
+  public val AddressPostalcode: SearchParam<Organization, String> =
+    SimpleSearchParam<Organization, String>(
+      name = "address-postalcode",
+      type = SearchParamType.fromCode("string"),
+      expression = "Organization.address.postalCode",
+      extractor = { resource -> resource.address.mapNotNull { it.postalCode } },
+    )
+
+  public val AddressState: SearchParam<Organization, String> =
+    SimpleSearchParam<Organization, String>(
+      name = "address-state",
+      type = SearchParamType.fromCode("string"),
+      expression = "Organization.address.state",
+      extractor = { resource -> resource.address.mapNotNull { it.state } },
+    )
+
+  public val AddressUse: SearchParam<Organization, Any> =
+    SimpleSearchParam<Organization, Any>(
+      name = "address-use",
+      type = SearchParamType.fromCode("token"),
+      expression = "Organization.address.use",
+      extractor = { resource -> resource.address.mapNotNull { it.use } },
+    )
+
+  public val Endpoint: SearchParam<Organization, Reference> =
+    SimpleSearchParam<Organization, Reference>(
+      name = "endpoint",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Organization.endpoint",
+      target = listOf(dev.ohs.fhir.model.r4b.Endpoint::class),
+      extractor = { resource -> resource.endpoint },
+    )
+
+  public val Identifier: SearchParam<Organization, Identifier> =
+    SimpleSearchParam<Organization, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "Organization.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Name: SearchParam<Organization, String> =
+    SimpleSearchParam<Organization, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "Organization.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Partof: SearchParam<Organization, Reference> =
+    SimpleSearchParam<Organization, Reference>(
+      name = "partof",
+      type = SearchParamType.fromCode("reference"),
+      expression = "Organization.partOf",
+      target = listOf(Organization::class),
+      extractor = { resource -> listOfNotNull(resource.partOf) },
+    )
+
+  public val Phonetic: SearchParam<Organization, String> =
+    SimpleSearchParam<Organization, String>(
+      name = "phonetic",
+      type = SearchParamType.fromCode("string"),
+      expression = "Organization.name",
+      extractor = { resource -> listOfNotNull(resource.name) },
+    )
+
+  public val Type: SearchParam<Organization, CodeableConcept> =
+    SimpleSearchParam<Organization, CodeableConcept>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "Organization.type",
+      extractor = { resource -> resource.type },
+    )
+
   /** All search parameters for the Organization resource type. */
   public val ALL: List<SearchParam<Organization, *>> =
     listOf(
@@ -50,172 +155,4 @@ public object OrganizationSearchParam {
       Phonetic,
       Type,
     )
-
-  public data object Active : SearchParam<Organization, Boolean> {
-    public override val name: KotlinString = "active"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Organization.active"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<Boolean> =
-      listOfNotNull(resource.active)
-  }
-
-  public data object Address : SearchParam<Organization, dev.ohs.fhir.model.r4b.Address> {
-    public override val name: KotlinString = "address"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Organization.address"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<dev.ohs.fhir.model.r4b.Address> =
-      resource.address
-  }
-
-  public data object AddressCity : SearchParam<Organization, R4bString> {
-    public override val name: KotlinString = "address-city"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Organization.address.city"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<R4bString> =
-      resource.address.mapNotNull { it.city }
-  }
-
-  public data object AddressCountry : SearchParam<Organization, R4bString> {
-    public override val name: KotlinString = "address-country"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Organization.address.country"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<R4bString> =
-      resource.address.mapNotNull { it.country }
-  }
-
-  public data object AddressPostalcode : SearchParam<Organization, R4bString> {
-    public override val name: KotlinString = "address-postalcode"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Organization.address.postalCode"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<R4bString> =
-      resource.address.mapNotNull { it.postalCode }
-  }
-
-  public data object AddressState : SearchParam<Organization, R4bString> {
-    public override val name: KotlinString = "address-state"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Organization.address.state"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<R4bString> =
-      resource.address.mapNotNull { it.state }
-  }
-
-  public data object AddressUse : SearchParam<Organization, Any> {
-    public override val name: KotlinString = "address-use"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Organization.address.use"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<Any> =
-      resource.address.mapNotNull { it.use }
-  }
-
-  public data object Endpoint : SearchParam<Organization, Reference> {
-    public override val name: KotlinString = "endpoint"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Organization.endpoint"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Endpoint::class)
-
-    public override fun extract(resource: Organization): List<Reference> = resource.endpoint
-  }
-
-  public data object Identifier : SearchParam<Organization, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Organization.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<dev.ohs.fhir.model.r4b.Identifier> =
-      resource.identifier
-  }
-
-  public data object Name : SearchParam<Organization, R4bString> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Organization.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<R4bString> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Partof : SearchParam<Organization, Reference> {
-    public override val name: KotlinString = "partof"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: KotlinString = "Organization.partOf"
-
-    public override val target: List<KClass<out Resource>> = listOf(Organization::class)
-
-    public override fun extract(resource: Organization): List<Reference> =
-      listOfNotNull(resource.partOf)
-  }
-
-  public data object Phonetic : SearchParam<Organization, R4bString> {
-    public override val name: KotlinString = "phonetic"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "Organization.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<R4bString> =
-      listOfNotNull(resource.name)
-  }
-
-  public data object Type : SearchParam<Organization, CodeableConcept> {
-    public override val name: KotlinString = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "Organization.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: Organization): List<CodeableConcept> = resource.type
-  }
 }

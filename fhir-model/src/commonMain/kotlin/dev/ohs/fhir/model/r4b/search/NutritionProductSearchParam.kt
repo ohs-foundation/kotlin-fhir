@@ -18,43 +18,31 @@
 
 package dev.ohs.fhir.model.r4b.search
 
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.NutritionProduct
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [NutritionProduct] resource type. */
 public object NutritionProductSearchParam {
+  public val Identifier: SearchParam<NutritionProduct, Identifier> =
+    SimpleSearchParam<NutritionProduct, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionProduct.instance.identifier",
+      extractor = { resource -> resource.instance?.identifier ?: emptyList() },
+    )
+
+  public val Status: SearchParam<NutritionProduct, Any> =
+    SimpleSearchParam<NutritionProduct, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionProduct.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the NutritionProduct resource type. */
   public val ALL: List<SearchParam<NutritionProduct, *>> = listOf(Identifier, Status)
-
-  public data object Identifier : SearchParam<NutritionProduct, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "NutritionProduct.instance.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: NutritionProduct
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.instance?.identifier ?: emptyList()
-  }
-
-  public data object Status : SearchParam<NutritionProduct, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "NutritionProduct.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: NutritionProduct): List<Any> = listOf(resource.status)
-  }
 }

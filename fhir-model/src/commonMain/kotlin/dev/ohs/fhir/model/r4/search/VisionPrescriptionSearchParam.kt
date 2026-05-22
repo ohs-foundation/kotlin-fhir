@@ -21,103 +21,70 @@ package dev.ohs.fhir.model.r4.search
 import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.EpisodeOfCare
 import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Practitioner
 import dev.ohs.fhir.model.r4.PractitionerRole
 import dev.ohs.fhir.model.r4.Reference
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.VisionPrescription
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [VisionPrescription] resource type. */
 public object VisionPrescriptionSearchParam {
+  public val Datewritten: SearchParam<VisionPrescription, DateTime> =
+    SimpleSearchParam<VisionPrescription, DateTime>(
+      name = "datewritten",
+      type = SearchParamType.fromCode("date"),
+      expression = "VisionPrescription.dateWritten",
+      extractor = { resource -> listOf(resource.dateWritten) },
+    )
+
+  public val Encounter: SearchParam<VisionPrescription, Reference> =
+    SimpleSearchParam<VisionPrescription, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "VisionPrescription.encounter",
+      target = listOf(dev.ohs.fhir.model.r4.Encounter::class, EpisodeOfCare::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Identifier: SearchParam<VisionPrescription, Identifier> =
+    SimpleSearchParam<VisionPrescription, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "VisionPrescription.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Patient: SearchParam<VisionPrescription, Reference> =
+    SimpleSearchParam<VisionPrescription, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "VisionPrescription.patient",
+      target = listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  public val Prescriber: SearchParam<VisionPrescription, Reference> =
+    SimpleSearchParam<VisionPrescription, Reference>(
+      name = "prescriber",
+      type = SearchParamType.fromCode("reference"),
+      expression = "VisionPrescription.prescriber",
+      target = listOf(Practitioner::class, PractitionerRole::class),
+      extractor = { resource -> listOf(resource.prescriber) },
+    )
+
+  public val Status: SearchParam<VisionPrescription, Any> =
+    SimpleSearchParam<VisionPrescription, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "VisionPrescription.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
   /** All search parameters for the VisionPrescription resource type. */
   public val ALL: List<SearchParam<VisionPrescription, *>> =
     listOf(Datewritten, Encounter, Identifier, Patient, Prescriber, Status)
-
-  public data object Datewritten : SearchParam<VisionPrescription, DateTime> {
-    public override val name: String = "datewritten"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "VisionPrescription.dateWritten"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: VisionPrescription): List<DateTime> =
-      listOf(resource.dateWritten)
-  }
-
-  public data object Encounter : SearchParam<VisionPrescription, Reference> {
-    public override val name: String = "encounter"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "VisionPrescription.encounter"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Encounter::class, EpisodeOfCare::class)
-
-    public override fun extract(resource: VisionPrescription): List<Reference> =
-      listOfNotNull(resource.encounter)
-  }
-
-  public data object Identifier :
-    SearchParam<VisionPrescription, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "VisionPrescription.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: VisionPrescription
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Patient : SearchParam<VisionPrescription, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "VisionPrescription.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
-
-    public override fun extract(resource: VisionPrescription): List<Reference> =
-      listOf(resource.patient)
-  }
-
-  public data object Prescriber : SearchParam<VisionPrescription, Reference> {
-    public override val name: String = "prescriber"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "VisionPrescription.prescriber"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Practitioner::class, PractitionerRole::class)
-
-    public override fun extract(resource: VisionPrescription): List<Reference> =
-      listOf(resource.prescriber)
-  }
-
-  public data object Status : SearchParam<VisionPrescription, Any> {
-    public override val name: String = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "VisionPrescription.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: VisionPrescription): List<Any> = listOf(resource.status)
-  }
 }

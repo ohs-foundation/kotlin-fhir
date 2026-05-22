@@ -20,43 +20,29 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.ArtifactAssessment
 import dev.ohs.fhir.model.r5.DateTime
-import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ArtifactAssessment] resource type. */
 public object ArtifactAssessmentSearchParam {
+  public val Date: SearchParam<ArtifactAssessment, DateTime> =
+    SimpleSearchParam<ArtifactAssessment, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "ArtifactAssessment.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Identifier: SearchParam<ArtifactAssessment, Identifier> =
+    SimpleSearchParam<ArtifactAssessment, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ArtifactAssessment.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
   /** All search parameters for the ArtifactAssessment resource type. */
   public val ALL: List<SearchParam<ArtifactAssessment, *>> = listOf(Date, Identifier)
-
-  public data object Date : SearchParam<ArtifactAssessment, DateTime> {
-    public override val name: String = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: String = "ArtifactAssessment.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ArtifactAssessment): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Identifier :
-    SearchParam<ArtifactAssessment, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "ArtifactAssessment.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ArtifactAssessment
-    ): List<dev.ohs.fhir.model.r5.Identifier> = resource.identifier
-  }
 }

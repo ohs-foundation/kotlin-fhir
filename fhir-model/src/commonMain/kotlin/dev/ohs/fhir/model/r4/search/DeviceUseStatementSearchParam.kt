@@ -20,74 +20,50 @@ package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.DeviceUseStatement
 import dev.ohs.fhir.model.r4.Group
+import dev.ohs.fhir.model.r4.Identifier
 import dev.ohs.fhir.model.r4.Reference
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [DeviceUseStatement] resource type. */
 public object DeviceUseStatementSearchParam {
+  public val Device: SearchParam<DeviceUseStatement, Reference> =
+    SimpleSearchParam<DeviceUseStatement, Reference>(
+      name = "device",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DeviceUseStatement.device",
+      target = listOf(dev.ohs.fhir.model.r4.Device::class),
+      extractor = { resource -> listOf(resource.device) },
+    )
+
+  public val Identifier: SearchParam<DeviceUseStatement, Identifier> =
+    SimpleSearchParam<DeviceUseStatement, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "DeviceUseStatement.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Patient: SearchParam<DeviceUseStatement, Reference> =
+    SimpleSearchParam<DeviceUseStatement, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DeviceUseStatement.subject",
+      target = listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
+  public val Subject: SearchParam<DeviceUseStatement, Reference> =
+    SimpleSearchParam<DeviceUseStatement, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "DeviceUseStatement.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
   /** All search parameters for the DeviceUseStatement resource type. */
   public val ALL: List<SearchParam<DeviceUseStatement, *>> =
     listOf(Device, Identifier, Patient, Subject)
-
-  public data object Device : SearchParam<DeviceUseStatement, Reference> {
-    public override val name: String = "device"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "DeviceUseStatement.device"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Device::class)
-
-    public override fun extract(resource: DeviceUseStatement): List<Reference> =
-      listOf(resource.device)
-  }
-
-  public data object Identifier :
-    SearchParam<DeviceUseStatement, dev.ohs.fhir.model.r4.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "DeviceUseStatement.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: DeviceUseStatement
-    ): List<dev.ohs.fhir.model.r4.Identifier> = resource.identifier
-  }
-
-  public data object Patient : SearchParam<DeviceUseStatement, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "DeviceUseStatement.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4.Patient::class, Group::class)
-
-    public override fun extract(resource: DeviceUseStatement): List<Reference> =
-      listOf(resource.subject)
-  }
-
-  public data object Subject : SearchParam<DeviceUseStatement, Reference> {
-    public override val name: String = "subject"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "DeviceUseStatement.subject"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(Group::class, dev.ohs.fhir.model.r4.Patient::class)
-
-    public override fun extract(resource: DeviceUseStatement): List<Reference> =
-      listOf(resource.subject)
-  }
 }

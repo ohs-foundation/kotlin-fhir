@@ -24,19 +24,132 @@ import dev.ohs.fhir.model.r4.DateTime
 import dev.ohs.fhir.model.r4.GraphDefinition
 import dev.ohs.fhir.model.r4.Markdown
 import dev.ohs.fhir.model.r4.Quantity
-import dev.ohs.fhir.model.r4.Resource
-import dev.ohs.fhir.model.r4.String as R4String
+import dev.ohs.fhir.model.r4.String
 import dev.ohs.fhir.model.r4.Uri
 import dev.ohs.fhir.model.r4.UsageContext
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [GraphDefinition] resource type. */
 public object GraphDefinitionSearchParam {
+  public val Context: SearchParam<GraphDefinition, CodeableConcept> =
+    SimpleSearchParam<GraphDefinition, CodeableConcept>(
+      name = "context",
+      type = SearchParamType.fromCode("token"),
+      expression = "(GraphDefinition.useContext.value as CodeableConcept)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+      },
+    )
+
+  public val ContextQuantity: SearchParam<GraphDefinition, Quantity> =
+    SimpleSearchParam<GraphDefinition, Quantity>(
+      name = "context-quantity",
+      type = SearchParamType.fromCode("quantity"),
+      expression = "(GraphDefinition.useContext.value as Quantity)",
+      extractor = { resource ->
+        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+      },
+    )
+
+  public val ContextType: SearchParam<GraphDefinition, Coding> =
+    SimpleSearchParam<GraphDefinition, Coding>(
+      name = "context-type",
+      type = SearchParamType.fromCode("token"),
+      expression = "GraphDefinition.useContext.code",
+      extractor = { resource -> resource.useContext.map { it.code } },
+    )
+
+  public val ContextTypeQuantity: SearchParam<GraphDefinition, UsageContext> =
+    SimpleSearchParam<GraphDefinition, UsageContext>(
+      name = "context-type-quantity",
+      type = SearchParamType.fromCode("composite"),
+      expression = "GraphDefinition.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val ContextTypeValue: SearchParam<GraphDefinition, UsageContext> =
+    SimpleSearchParam<GraphDefinition, UsageContext>(
+      name = "context-type-value",
+      type = SearchParamType.fromCode("composite"),
+      expression = "GraphDefinition.useContext",
+      extractor = { resource -> resource.useContext },
+    )
+
+  public val Date: SearchParam<GraphDefinition, DateTime> =
+    SimpleSearchParam<GraphDefinition, DateTime>(
+      name = "date",
+      type = SearchParamType.fromCode("date"),
+      expression = "GraphDefinition.date",
+      extractor = { resource -> listOfNotNull(resource.date) },
+    )
+
+  public val Description: SearchParam<GraphDefinition, Markdown> =
+    SimpleSearchParam<GraphDefinition, Markdown>(
+      name = "description",
+      type = SearchParamType.fromCode("string"),
+      expression = "GraphDefinition.description",
+      extractor = { resource -> listOfNotNull(resource.description) },
+    )
+
+  public val Jurisdiction: SearchParam<GraphDefinition, CodeableConcept> =
+    SimpleSearchParam<GraphDefinition, CodeableConcept>(
+      name = "jurisdiction",
+      type = SearchParamType.fromCode("token"),
+      expression = "GraphDefinition.jurisdiction",
+      extractor = { resource -> resource.jurisdiction },
+    )
+
+  public val Name: SearchParam<GraphDefinition, String> =
+    SimpleSearchParam<GraphDefinition, String>(
+      name = "name",
+      type = SearchParamType.fromCode("string"),
+      expression = "GraphDefinition.name",
+      extractor = { resource -> listOf(resource.name) },
+    )
+
+  public val Publisher: SearchParam<GraphDefinition, String> =
+    SimpleSearchParam<GraphDefinition, String>(
+      name = "publisher",
+      type = SearchParamType.fromCode("string"),
+      expression = "GraphDefinition.publisher",
+      extractor = { resource -> listOfNotNull(resource.publisher) },
+    )
+
+  public val Start: SearchParam<GraphDefinition, Any> =
+    SimpleSearchParam<GraphDefinition, Any>(
+      name = "start",
+      type = SearchParamType.fromCode("token"),
+      expression = "GraphDefinition.start",
+      extractor = { resource -> listOf(resource.start) },
+    )
+
+  public val Status: SearchParam<GraphDefinition, Any> =
+    SimpleSearchParam<GraphDefinition, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "GraphDefinition.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Url: SearchParam<GraphDefinition, Uri> =
+    SimpleSearchParam<GraphDefinition, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "GraphDefinition.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
+  public val Version: SearchParam<GraphDefinition, String> =
+    SimpleSearchParam<GraphDefinition, String>(
+      name = "version",
+      type = SearchParamType.fromCode("token"),
+      expression = "GraphDefinition.version",
+      extractor = { resource -> listOfNotNull(resource.version) },
+    )
+
   /** All search parameters for the GraphDefinition resource type. */
   public val ALL: List<SearchParam<GraphDefinition, *>> =
     listOf(
@@ -55,181 +168,4 @@ public object GraphDefinitionSearchParam {
       Url,
       Version,
     )
-
-  public data object Context : SearchParam<GraphDefinition, CodeableConcept> {
-    public override val name: KotlinString = "context"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString =
-      "(GraphDefinition.useContext.value as CodeableConcept)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<CodeableConcept> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
-  }
-
-  public data object ContextQuantity : SearchParam<GraphDefinition, Quantity> {
-    public override val name: KotlinString = "context-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("quantity")
-
-    public override val expression: KotlinString = "(GraphDefinition.useContext.value as Quantity)"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<Quantity> =
-      resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
-  }
-
-  public data object ContextType : SearchParam<GraphDefinition, Coding> {
-    public override val name: KotlinString = "context-type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "GraphDefinition.useContext.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<Coding> =
-      resource.useContext.map { it.code }
-  }
-
-  public data object ContextTypeQuantity : SearchParam<GraphDefinition, UsageContext> {
-    public override val name: KotlinString = "context-type-quantity"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "GraphDefinition.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<UsageContext> = resource.useContext
-  }
-
-  public data object ContextTypeValue : SearchParam<GraphDefinition, UsageContext> {
-    public override val name: KotlinString = "context-type-value"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: KotlinString = "GraphDefinition.useContext"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<UsageContext> = resource.useContext
-  }
-
-  public data object Date : SearchParam<GraphDefinition, DateTime> {
-    public override val name: KotlinString = "date"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("date")
-
-    public override val expression: KotlinString = "GraphDefinition.date"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<DateTime> =
-      listOfNotNull(resource.date)
-  }
-
-  public data object Description : SearchParam<GraphDefinition, Markdown> {
-    public override val name: KotlinString = "description"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "GraphDefinition.description"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<Markdown> =
-      listOfNotNull(resource.description)
-  }
-
-  public data object Jurisdiction : SearchParam<GraphDefinition, CodeableConcept> {
-    public override val name: KotlinString = "jurisdiction"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "GraphDefinition.jurisdiction"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<CodeableConcept> =
-      resource.jurisdiction
-  }
-
-  public data object Name : SearchParam<GraphDefinition, R4String> {
-    public override val name: KotlinString = "name"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "GraphDefinition.name"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<R4String> = listOf(resource.name)
-  }
-
-  public data object Publisher : SearchParam<GraphDefinition, R4String> {
-    public override val name: KotlinString = "publisher"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "GraphDefinition.publisher"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<R4String> =
-      listOfNotNull(resource.publisher)
-  }
-
-  public data object Start : SearchParam<GraphDefinition, Any> {
-    public override val name: KotlinString = "start"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "GraphDefinition.start"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<Any> = listOf(resource.start)
-  }
-
-  public data object Status : SearchParam<GraphDefinition, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "GraphDefinition.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<Any> = listOf(resource.status)
-  }
-
-  public data object Url : SearchParam<GraphDefinition, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "GraphDefinition.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<Uri> = listOfNotNull(resource.url)
-  }
-
-  public data object Version : SearchParam<GraphDefinition, R4String> {
-    public override val name: KotlinString = "version"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "GraphDefinition.version"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: GraphDefinition): List<R4String> =
-      listOfNotNull(resource.version)
-  }
 }

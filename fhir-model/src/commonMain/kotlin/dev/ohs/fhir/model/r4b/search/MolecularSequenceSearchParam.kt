@@ -19,19 +19,126 @@
 package dev.ohs.fhir.model.r4b.search
 
 import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Identifier
 import dev.ohs.fhir.model.r4b.Integer
 import dev.ohs.fhir.model.r4b.MolecularSequence
 import dev.ohs.fhir.model.r4b.Reference
-import dev.ohs.fhir.model.r4b.Resource
 import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [MolecularSequence] resource type. */
 public object MolecularSequenceSearchParam {
+  public val Chromosome: SearchParam<MolecularSequence, CodeableConcept> =
+    SimpleSearchParam<MolecularSequence, CodeableConcept>(
+      name = "chromosome",
+      type = SearchParamType.fromCode("token"),
+      expression = "MolecularSequence.referenceSeq.chromosome",
+      extractor = { resource -> listOfNotNull(resource.referenceSeq?.chromosome) },
+    )
+
+  public val ChromosomeVariantCoordinate:
+    SearchParam<MolecularSequence, MolecularSequence.Variant> =
+    SimpleSearchParam<MolecularSequence, MolecularSequence.Variant>(
+      name = "chromosome-variant-coordinate",
+      type = SearchParamType.fromCode("composite"),
+      expression = "MolecularSequence.variant",
+      extractor = { resource -> resource.variant },
+    )
+
+  public val ChromosomeWindowCoordinate:
+    SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> =
+    SimpleSearchParam<MolecularSequence, MolecularSequence.ReferenceSeq>(
+      name = "chromosome-window-coordinate",
+      type = SearchParamType.fromCode("composite"),
+      expression = "MolecularSequence.referenceSeq",
+      extractor = { resource -> listOfNotNull(resource.referenceSeq) },
+    )
+
+  public val Identifier: SearchParam<MolecularSequence, Identifier> =
+    SimpleSearchParam<MolecularSequence, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "MolecularSequence.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Patient: SearchParam<MolecularSequence, Reference> =
+    SimpleSearchParam<MolecularSequence, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MolecularSequence.patient",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource -> listOfNotNull(resource.patient) },
+    )
+
+  public val Referenceseqid: SearchParam<MolecularSequence, CodeableConcept> =
+    SimpleSearchParam<MolecularSequence, CodeableConcept>(
+      name = "referenceseqid",
+      type = SearchParamType.fromCode("token"),
+      expression = "MolecularSequence.referenceSeq.referenceSeqId",
+      extractor = { resource -> listOfNotNull(resource.referenceSeq?.referenceSeqId) },
+    )
+
+  public val ReferenceseqidVariantCoordinate:
+    SearchParam<MolecularSequence, MolecularSequence.Variant> =
+    SimpleSearchParam<MolecularSequence, MolecularSequence.Variant>(
+      name = "referenceseqid-variant-coordinate",
+      type = SearchParamType.fromCode("composite"),
+      expression = "MolecularSequence.variant",
+      extractor = { resource -> resource.variant },
+    )
+
+  public val ReferenceseqidWindowCoordinate:
+    SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> =
+    SimpleSearchParam<MolecularSequence, MolecularSequence.ReferenceSeq>(
+      name = "referenceseqid-window-coordinate",
+      type = SearchParamType.fromCode("composite"),
+      expression = "MolecularSequence.referenceSeq",
+      extractor = { resource -> listOfNotNull(resource.referenceSeq) },
+    )
+
+  public val Type: SearchParam<MolecularSequence, Any> =
+    SimpleSearchParam<MolecularSequence, Any>(
+      name = "type",
+      type = SearchParamType.fromCode("token"),
+      expression = "MolecularSequence.type",
+      extractor = { resource -> listOfNotNull(resource.type) },
+    )
+
+  public val VariantEnd: SearchParam<MolecularSequence, Integer> =
+    SimpleSearchParam<MolecularSequence, Integer>(
+      name = "variant-end",
+      type = SearchParamType.fromCode("number"),
+      expression = "MolecularSequence.variant.end",
+      extractor = { resource -> resource.variant.mapNotNull { it.end } },
+    )
+
+  public val VariantStart: SearchParam<MolecularSequence, Integer> =
+    SimpleSearchParam<MolecularSequence, Integer>(
+      name = "variant-start",
+      type = SearchParamType.fromCode("number"),
+      expression = "MolecularSequence.variant.start",
+      extractor = { resource -> resource.variant.mapNotNull { it.start } },
+    )
+
+  public val WindowEnd: SearchParam<MolecularSequence, Integer> =
+    SimpleSearchParam<MolecularSequence, Integer>(
+      name = "window-end",
+      type = SearchParamType.fromCode("number"),
+      expression = "MolecularSequence.referenceSeq.windowEnd",
+      extractor = { resource -> listOfNotNull(resource.referenceSeq?.windowEnd) },
+    )
+
+  public val WindowStart: SearchParam<MolecularSequence, Integer> =
+    SimpleSearchParam<MolecularSequence, Integer>(
+      name = "window-start",
+      type = SearchParamType.fromCode("number"),
+      expression = "MolecularSequence.referenceSeq.windowStart",
+      extractor = { resource -> listOfNotNull(resource.referenceSeq?.windowStart) },
+    )
+
   /** All search parameters for the MolecularSequence resource type. */
   public val ALL: List<SearchParam<MolecularSequence, *>> =
     listOf(
@@ -49,180 +156,4 @@ public object MolecularSequenceSearchParam {
       WindowEnd,
       WindowStart,
     )
-
-  public data object Chromosome : SearchParam<MolecularSequence, CodeableConcept> {
-    public override val name: String = "chromosome"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MolecularSequence.referenceSeq.chromosome"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<CodeableConcept> =
-      listOfNotNull(resource.referenceSeq?.chromosome)
-  }
-
-  public data object ChromosomeVariantCoordinate :
-    SearchParam<MolecularSequence, MolecularSequence.Variant> {
-    public override val name: String = "chromosome-variant-coordinate"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: String = "MolecularSequence.variant"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<MolecularSequence.Variant> =
-      resource.variant
-  }
-
-  public data object ChromosomeWindowCoordinate :
-    SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> {
-    public override val name: String = "chromosome-window-coordinate"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: String = "MolecularSequence.referenceSeq"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<MolecularSequence.ReferenceSeq> =
-      listOfNotNull(resource.referenceSeq)
-  }
-
-  public data object Identifier :
-    SearchParam<MolecularSequence, dev.ohs.fhir.model.r4b.Identifier> {
-    public override val name: String = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MolecularSequence.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: MolecularSequence
-    ): List<dev.ohs.fhir.model.r4b.Identifier> = resource.identifier
-  }
-
-  public data object Patient : SearchParam<MolecularSequence, Reference> {
-    public override val name: String = "patient"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("reference")
-
-    public override val expression: String = "MolecularSequence.patient"
-
-    public override val target: List<KClass<out Resource>> =
-      listOf(dev.ohs.fhir.model.r4b.Patient::class)
-
-    public override fun extract(resource: MolecularSequence): List<Reference> =
-      listOfNotNull(resource.patient)
-  }
-
-  public data object Referenceseqid : SearchParam<MolecularSequence, CodeableConcept> {
-    public override val name: String = "referenceseqid"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MolecularSequence.referenceSeq.referenceSeqId"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<CodeableConcept> =
-      listOfNotNull(resource.referenceSeq?.referenceSeqId)
-  }
-
-  public data object ReferenceseqidVariantCoordinate :
-    SearchParam<MolecularSequence, MolecularSequence.Variant> {
-    public override val name: String = "referenceseqid-variant-coordinate"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: String = "MolecularSequence.variant"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<MolecularSequence.Variant> =
-      resource.variant
-  }
-
-  public data object ReferenceseqidWindowCoordinate :
-    SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> {
-    public override val name: String = "referenceseqid-window-coordinate"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("composite")
-
-    public override val expression: String = "MolecularSequence.referenceSeq"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<MolecularSequence.ReferenceSeq> =
-      listOfNotNull(resource.referenceSeq)
-  }
-
-  public data object Type : SearchParam<MolecularSequence, Any> {
-    public override val name: String = "type"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: String = "MolecularSequence.type"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<Any> =
-      listOfNotNull(resource.type)
-  }
-
-  public data object VariantEnd : SearchParam<MolecularSequence, Integer> {
-    public override val name: String = "variant-end"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("number")
-
-    public override val expression: String = "MolecularSequence.variant.end"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<Integer> =
-      resource.variant.mapNotNull { it.end }
-  }
-
-  public data object VariantStart : SearchParam<MolecularSequence, Integer> {
-    public override val name: String = "variant-start"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("number")
-
-    public override val expression: String = "MolecularSequence.variant.start"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<Integer> =
-      resource.variant.mapNotNull { it.start }
-  }
-
-  public data object WindowEnd : SearchParam<MolecularSequence, Integer> {
-    public override val name: String = "window-end"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("number")
-
-    public override val expression: String = "MolecularSequence.referenceSeq.windowEnd"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<Integer> =
-      listOfNotNull(resource.referenceSeq?.windowEnd)
-  }
-
-  public data object WindowStart : SearchParam<MolecularSequence, Integer> {
-    public override val name: String = "window-start"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("number")
-
-    public override val expression: String = "MolecularSequence.referenceSeq.windowStart"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: MolecularSequence): List<Integer> =
-      listOfNotNull(resource.referenceSeq?.windowStart)
-  }
 }

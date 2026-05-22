@@ -19,28 +19,21 @@
 package dev.ohs.fhir.model.r4.search
 
 import dev.ohs.fhir.model.r4.DomainResource
-import dev.ohs.fhir.model.r4.Resource
 import dev.ohs.fhir.model.r4.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [DomainResource] resource type. */
 public object DomainResourceSearchParam {
+  public val _text: SearchParam<DomainResource, Any> =
+    SimpleSearchParam<DomainResource, Any>(
+      name = "_text",
+      type = SearchParamType.fromCode("string"),
+      expression = "",
+      extractor = { emptyList() },
+    )
+
   /** All search parameters for the DomainResource resource type. */
   public val ALL: List<SearchParam<DomainResource, *>> = listOf(_text)
-
-  public data object _text : SearchParam<DomainResource, Any> {
-    public override val name: String = "_text"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: String = ""
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: DomainResource): List<Any> = emptyList()
-  }
 }

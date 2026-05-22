@@ -20,126 +20,82 @@ package dev.ohs.fhir.model.r5.search
 
 import dev.ohs.fhir.model.r5.Boolean
 import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Identifier
 import dev.ohs.fhir.model.r5.ObservationDefinition
-import dev.ohs.fhir.model.r5.Resource
-import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.String
 import dev.ohs.fhir.model.r5.Uri
 import dev.ohs.fhir.model.r5.terminologies.SearchParamType
 import kotlin.Any
-import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
-import kotlin.reflect.KClass
 
 /** Search parameters for the [ObservationDefinition] resource type. */
 public object ObservationDefinitionSearchParam {
+  public val Category: SearchParam<ObservationDefinition, CodeableConcept> =
+    SimpleSearchParam<ObservationDefinition, CodeableConcept>(
+      name = "category",
+      type = SearchParamType.fromCode("token"),
+      expression = "ObservationDefinition.category",
+      extractor = { resource -> resource.category },
+    )
+
+  public val Code: SearchParam<ObservationDefinition, CodeableConcept> =
+    SimpleSearchParam<ObservationDefinition, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "ObservationDefinition.code",
+      extractor = { resource -> listOf(resource.code) },
+    )
+
+  public val Experimental: SearchParam<ObservationDefinition, Boolean> =
+    SimpleSearchParam<ObservationDefinition, Boolean>(
+      name = "experimental",
+      type = SearchParamType.fromCode("token"),
+      expression = "ObservationDefinition.experimental",
+      extractor = { resource -> listOfNotNull(resource.experimental) },
+    )
+
+  public val Identifier: SearchParam<ObservationDefinition, Identifier> =
+    SimpleSearchParam<ObservationDefinition, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "ObservationDefinition.identifier",
+      extractor = { resource -> listOfNotNull(resource.identifier) },
+    )
+
+  public val Method: SearchParam<ObservationDefinition, CodeableConcept> =
+    SimpleSearchParam<ObservationDefinition, CodeableConcept>(
+      name = "method",
+      type = SearchParamType.fromCode("token"),
+      expression = "ObservationDefinition.method",
+      extractor = { resource -> listOfNotNull(resource.method) },
+    )
+
+  public val Status: SearchParam<ObservationDefinition, Any> =
+    SimpleSearchParam<ObservationDefinition, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "ObservationDefinition.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Title: SearchParam<ObservationDefinition, String> =
+    SimpleSearchParam<ObservationDefinition, String>(
+      name = "title",
+      type = SearchParamType.fromCode("string"),
+      expression = "ObservationDefinition.title",
+      extractor = { resource -> listOfNotNull(resource.title) },
+    )
+
+  public val Url: SearchParam<ObservationDefinition, Uri> =
+    SimpleSearchParam<ObservationDefinition, Uri>(
+      name = "url",
+      type = SearchParamType.fromCode("uri"),
+      expression = "ObservationDefinition.url",
+      extractor = { resource -> listOfNotNull(resource.url) },
+    )
+
   /** All search parameters for the ObservationDefinition resource type. */
   public val ALL: List<SearchParam<ObservationDefinition, *>> =
     listOf(Category, Code, Experimental, Identifier, Method, Status, Title, Url)
-
-  public data object Category : SearchParam<ObservationDefinition, CodeableConcept> {
-    public override val name: KotlinString = "category"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ObservationDefinition.category"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ObservationDefinition): List<CodeableConcept> =
-      resource.category
-  }
-
-  public data object Code : SearchParam<ObservationDefinition, CodeableConcept> {
-    public override val name: KotlinString = "code"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ObservationDefinition.code"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ObservationDefinition): List<CodeableConcept> =
-      listOf(resource.code)
-  }
-
-  public data object Experimental : SearchParam<ObservationDefinition, Boolean> {
-    public override val name: KotlinString = "experimental"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ObservationDefinition.experimental"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ObservationDefinition): List<Boolean> =
-      listOfNotNull(resource.experimental)
-  }
-
-  public data object Identifier :
-    SearchParam<ObservationDefinition, dev.ohs.fhir.model.r5.Identifier> {
-    public override val name: KotlinString = "identifier"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ObservationDefinition.identifier"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(
-      resource: ObservationDefinition
-    ): List<dev.ohs.fhir.model.r5.Identifier> = listOfNotNull(resource.identifier)
-  }
-
-  public data object Method : SearchParam<ObservationDefinition, CodeableConcept> {
-    public override val name: KotlinString = "method"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ObservationDefinition.method"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ObservationDefinition): List<CodeableConcept> =
-      listOfNotNull(resource.method)
-  }
-
-  public data object Status : SearchParam<ObservationDefinition, Any> {
-    public override val name: KotlinString = "status"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("token")
-
-    public override val expression: KotlinString = "ObservationDefinition.status"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ObservationDefinition): List<Any> =
-      listOf(resource.status)
-  }
-
-  public data object Title : SearchParam<ObservationDefinition, R5String> {
-    public override val name: KotlinString = "title"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("string")
-
-    public override val expression: KotlinString = "ObservationDefinition.title"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ObservationDefinition): List<R5String> =
-      listOfNotNull(resource.title)
-  }
-
-  public data object Url : SearchParam<ObservationDefinition, Uri> {
-    public override val name: KotlinString = "url"
-
-    public override val type: SearchParamType = SearchParamType.fromCode("uri")
-
-    public override val expression: KotlinString = "ObservationDefinition.url"
-
-    public override val target: List<KClass<out Resource>> = emptyList()
-
-    public override fun extract(resource: ObservationDefinition): List<Uri> =
-      listOfNotNull(resource.url)
-  }
 }

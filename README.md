@@ -234,11 +234,7 @@ FHIR resource or element containing primitive data types cannot be directly mapp
 To address this, the library generates one hand-rolled `KSerializer` per FHIR type (e.g.
 `PatientSerializer`). Each serializer describes the flat FHIR JSON wire shape via
 `buildClassSerialDescriptor` — one descriptor slot per wire key, including the `_field` sidecar
-keys for primitive extensions (e.g. `gender` + `_gender`). Encode and decode stream field-by-field
-through kotlinx's `CompositeEncoder` / `CompositeDecoder`: no intermediate surrogate instance, no
-`JsonObject` materialization, no flatten/unflatten pass. The same body services both
-`StreamingJsonDecoder` and `JsonTreeDecoder` — kotlinx picks the decoder, the generated serializer
-just walks its composite.
+keys for primitive extensions (e.g. `gender` + `_gender`).
 
 Choice types (e.g. `Patient.multipleBirth`) are expanded into per-expansion keys on the same flat
 descriptor (`multipleBirthBoolean`, `_multipleBirthBoolean`, `multipleBirthInteger`,
@@ -506,11 +502,16 @@ fun main() {
 }
 ```
 
-### Non Json Serializers
+### Non-JSON Serializers
 
-The FHIR Resource models work with any serializer, but only JSON is tested against the FHIR Spec.
+The FHIR Resource models work with any serializer, but only
+[JSON](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md) is extensively
+tested and considered stable. Formats like `CBOR` should work fine, but are not currently tested.
 
-Other formats can change version to version due to drift in the indexing.
+Binary formats such as `protobuf` are reliant on the internal indexing of the serializer
+descriptors. While these indexes are deterministically generated, they are arbitrary and not
+currently guaranteed to be stable across kotlin-fhir versions. This means using `protobuf` is not
+guaranteed to be wire compatible across versions of `kotlin-fhir`.
 
 ### Serialization and deserialization
 
@@ -544,7 +545,17 @@ val example = """
 val json = Json {
     // configure Json here
     // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md#json-configuration
-    // note that most configs are ignored for FHIR resources
+
+    // These configurations have no effect on FHIR serialization/deserialization by design
+    // explicitNulls, encodeDefaults, useAlternativeNames,
+    // serializersModule (assuming you don't override FHIR resources), classDiscriminator
+
+    // These configurations can affect how serialization occurs, but are generally compatible with FHIR
+    // ignoreUnknownKeys, isLenient, allowComments, allowTrailingComma, prettyPrintIndent,
+    // coerceInputValues, decodeEnumsCaseInsensitive
+
+    // Changing these will break FHIR wire compatibility
+    // useArrayPolymorphism, namingStrategy
 }
 
 // if you know the exact FHIR type you can deserialize directly to a Patient instance

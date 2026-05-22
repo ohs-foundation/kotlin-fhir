@@ -664,10 +664,10 @@ internal object ImplementationGuideDefinitionResourceSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       reference = reference!!,
       fhirVersion =
-        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(__i)!!),
-            _fhirVersion?.getOrNull(__i),
+            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            _fhirVersion?.getOrNull(index),
           )
         }),
       name = R4bString.of(name, _name),
@@ -712,17 +712,17 @@ internal object ImplementationGuideDefinitionResourceSerializer :
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.fhirVersionSerInner2, it)
     }
-    when (val __d = value.example) {
+    when (val choice = value.example) {
       null -> {}
       is ImplementationGuide.Definition.Resource.Example.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.fhirVersionSerInner2, it)
         }
       }
       is ImplementationGuide.Definition.Resource.Example.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.fhirVersionSerInner2, it)
         }
       }
@@ -859,16 +859,16 @@ internal object ImplementationGuideDefinitionPageSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.name) {
+    when (val choice = value.name) {
       null -> {}
       is ImplementationGuide.Definition.Page.Name.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameUrlSer, it)
         }
       }
       is ImplementationGuide.Definition.Page.Name.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.nameReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.nameReferenceSer, choice.value)
       }
     }
     ((value.title.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
@@ -1211,12 +1211,12 @@ internal object ImplementationGuideManifestSerializer : KSerializer<Implementati
       resource = resource ?: listOf(),
       page = page ?: listOf(),
       image =
-        (kotlin.collections.List(maxOf(image?.size ?: 0, _image?.size ?: 0)) { __i ->
-          R4bString.of(image?.getOrNull(__i)?.let { it }, _image?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(image?.size ?: 0, _image?.size ?: 0)) { index ->
+          R4bString.of(image?.getOrNull(index)?.let { it }, _image?.getOrNull(index))!!
         }),
       other =
-        (kotlin.collections.List(maxOf(other?.size ?: 0, _other?.size ?: 0)) { __i ->
-          R4bString.of(other?.getOrNull(__i)?.let { it }, _other?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(other?.size ?: 0, _other?.size ?: 0)) { index ->
+          R4bString.of(other?.getOrNull(index)?.let { it }, _other?.getOrNull(index))!!
         }),
     )
   }
@@ -1402,17 +1402,17 @@ internal object ImplementationGuideManifestResourceSerializer :
     (value.reference)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
     }
-    when (val __d = value.example) {
+    when (val choice = value.example) {
       null -> {}
       is ImplementationGuide.Manifest.Resource.Example.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.exampleBooleanSer, it)
         }
       }
       is ImplementationGuide.Manifest.Resource.Example.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.exampleBooleanSer, it)
         }
       }
@@ -1509,8 +1509,8 @@ internal object ImplementationGuideManifestPageSerializer :
       name = R4bString.of(name, _name)!!,
       title = R4bString.of(title, _title),
       anchor =
-        (kotlin.collections.List(maxOf(anchor?.size ?: 0, _anchor?.size ?: 0)) { __i ->
-          R4bString.of(anchor?.getOrNull(__i)?.let { it }, _anchor?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(anchor?.size ?: 0, _anchor?.size ?: 0)) { index ->
+          R4bString.of(anchor?.getOrNull(index)?.let { it }, _anchor?.getOrNull(index))!!
         }),
     )
   }
@@ -1851,10 +1851,10 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
       license =
         license?.let { Enumeration.of(ImplementationGuide.SPDXLicense.fromCode(it), _license) },
       fhirVersion =
-        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(__i)!!),
-            _fhirVersion?.getOrNull(__i),
+            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            _fhirVersion?.getOrNull(index),
           )
         }),
       dependsOn = dependsOn ?: listOf(),

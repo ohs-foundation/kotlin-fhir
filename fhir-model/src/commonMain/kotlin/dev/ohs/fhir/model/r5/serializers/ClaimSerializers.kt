@@ -328,16 +328,16 @@ internal object ClaimEventSerializer : KSerializer<Claim.Event> {
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`when`) {
+    when (val choice = value.`when`) {
       null -> {}
       is Claim.Event.When.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.whenDateTimeSer, it)
         }
       }
       is Claim.Event.When.Period -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.whenPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.whenPeriodSer, choice.value)
       }
     }
   }
@@ -647,43 +647,43 @@ internal object ClaimSupportingInfoSerializer : KSerializer<Claim.SupportingInfo
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.categorySer, it)
     }
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.categorySer, it) }
-    when (val __d = value.timing) {
+    when (val choice = value.timing) {
       null -> {}
       is Claim.SupportingInfo.Timing.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.sequenceSer, it)
         }
       }
       is Claim.SupportingInfo.Timing.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timingPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timingPeriodSer, choice.value)
       }
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Claim.SupportingInfo.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.sequenceSer, it)
         }
       }
       is Claim.SupportingInfo.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.sequenceSer, it)
         }
       }
       is Claim.SupportingInfo.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueQuantitySer, choice.value)
       }
       is Claim.SupportingInfo.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueAttachmentSer, choice.value)
       }
       is Claim.SupportingInfo.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueReferenceSer, choice.value)
       }
       is Claim.SupportingInfo.Value.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueIdentifierSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueIdentifierSer, choice.value)
       }
     }
     (value.reason)?.let {
@@ -828,18 +828,23 @@ internal object ClaimDiagnosisSerializer : KSerializer<Claim.Diagnosis> {
     (value.sequence.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
-    when (val __d = value.diagnosis) {
+    when (val choice = value.diagnosis) {
       null -> {}
       is Claim.Diagnosis.Diagnosis.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           5,
           Hoisted.diagnosisCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is Claim.Diagnosis.Diagnosis.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.diagnosisReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          6,
+          Hoisted.diagnosisReferenceSer,
+          choice.value,
+        )
       }
     }
     if (value.type.isNotEmpty())
@@ -985,13 +990,18 @@ internal object ClaimProcedureSerializer : KSerializer<Claim.Procedure> {
     (value.date?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.sequenceSer, it)
     }
-    when (val __d = value.procedure) {
+    when (val choice = value.procedure) {
       null -> {}
       is Claim.Procedure.Procedure.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSerInner, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSerInner, choice.value)
       }
       is Claim.Procedure.Procedure.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.procedureReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          9,
+          Hoisted.procedureReferenceSer,
+          choice.value,
+        )
       }
     }
     if (value.udi.isNotEmpty())
@@ -1123,8 +1133,8 @@ internal object ClaimInsuranceSerializer : KSerializer<Claim.Insurance> {
       coverage = coverage!!,
       businessArrangement = R5String.of(businessArrangement, _businessArrangement),
       preAuthRef =
-        (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { __i ->
-          R5String.of(preAuthRef?.getOrNull(__i)?.let { it }, _preAuthRef?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { index ->
+          R5String.of(preAuthRef?.getOrNull(index)?.let { it }, _preAuthRef?.getOrNull(index))!!
         }),
       claimResponse = claimResponse,
     )
@@ -1287,13 +1297,13 @@ internal object ClaimAccidentSerializer : KSerializer<Claim.Accident> {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.dateSer, it)
     }
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
-    when (val __d = value.location) {
+    when (val choice = value.location) {
       null -> {}
       is Claim.Accident.Location.Address -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.locationAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.locationAddressSer, choice.value)
       }
       is Claim.Accident.Location.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.locationReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.locationReferenceSer, choice.value)
       }
     }
   }
@@ -1638,37 +1648,37 @@ internal object ClaimItemSerializer : KSerializer<Claim.Item> {
       careTeamSequence =
         (kotlin.collections.List(
           maxOf(careTeamSequence?.size ?: 0, _careTeamSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            careTeamSequence?.getOrNull(__i)?.let { it },
-            _careTeamSequence?.getOrNull(__i),
+            careTeamSequence?.getOrNull(index)?.let { it },
+            _careTeamSequence?.getOrNull(index),
           )!!
         }),
       diagnosisSequence =
         (kotlin.collections.List(
           maxOf(diagnosisSequence?.size ?: 0, _diagnosisSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            diagnosisSequence?.getOrNull(__i)?.let { it },
-            _diagnosisSequence?.getOrNull(__i),
+            diagnosisSequence?.getOrNull(index)?.let { it },
+            _diagnosisSequence?.getOrNull(index),
           )!!
         }),
       procedureSequence =
         (kotlin.collections.List(
           maxOf(procedureSequence?.size ?: 0, _procedureSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            procedureSequence?.getOrNull(__i)?.let { it },
-            _procedureSequence?.getOrNull(__i),
+            procedureSequence?.getOrNull(index)?.let { it },
+            _procedureSequence?.getOrNull(index),
           )!!
         }),
       informationSequence =
         (kotlin.collections.List(
           maxOf(informationSequence?.size ?: 0, _informationSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            informationSequence?.getOrNull(__i)?.let { it },
-            _informationSequence?.getOrNull(__i),
+            informationSequence?.getOrNull(index)?.let { it },
+            _informationSequence?.getOrNull(index),
           )!!
         }),
       revenue = revenue,
@@ -1757,28 +1767,28 @@ internal object ClaimItemSerializer : KSerializer<Claim.Item> {
       encoder.encodeSerializableElement(descriptor, 19, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 20, Hoisted.modifierSer, value.programCode)
-    when (val __d = value.serviced) {
+    when (val choice = value.serviced) {
       null -> {}
       is Claim.Item.Serviced.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 21, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 21, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 22, Hoisted.sequenceSer, it)
         }
       }
       is Claim.Item.Serviced.Period -> {
-        encoder.encodeSerializableElement(descriptor, 23, Hoisted.servicedPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 23, Hoisted.servicedPeriodSer, choice.value)
       }
     }
-    when (val __d = value.location) {
+    when (val choice = value.location) {
       null -> {}
       is Claim.Item.Location.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 24, Hoisted.revenueSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 24, Hoisted.revenueSer, choice.value)
       }
       is Claim.Item.Location.Address -> {
-        encoder.encodeSerializableElement(descriptor, 25, Hoisted.locationAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 25, Hoisted.locationAddressSer, choice.value)
       }
       is Claim.Item.Location.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 26, Hoisted.requestSerInner, __d.value)
+        encoder.encodeSerializableElement(descriptor, 26, Hoisted.requestSerInner, choice.value)
       }
     }
     (value.patientPaid)?.let {

@@ -147,10 +147,10 @@ internal object CodeSystemFilterSerializer : KSerializer<CodeSystem.Filter> {
       code = Code.of(code, _code)!!,
       description = R4String.of(description, _description),
       `operator` =
-        (kotlin.collections.List(maxOf(`operator`?.size ?: 0, _operator?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(`operator`?.size ?: 0, _operator?.size ?: 0)) { index ->
           Enumeration.of(
-            CodeSystem.FilterOperator.fromCode(`operator`?.getOrNull(__i)!!),
-            _operator?.getOrNull(__i),
+            CodeSystem.FilterOperator.fromCode(`operator`?.getOrNull(index)!!),
+            _operator?.getOrNull(index),
           )
         }),
       `value` = R4String.of(`value`, _value)!!,
@@ -727,46 +727,46 @@ internal object CodeSystemConceptPropertySerializer : KSerializer<CodeSystem.Con
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is CodeSystem.Concept.Property.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, it)
         }
       }
       is CodeSystem.Concept.Property.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueCodingSer, choice.value)
       }
       is CodeSystem.Concept.Property.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.codeSer, it)
         }
       }
       is CodeSystem.Concept.Property.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.codeSer, it)
         }
       }
       is CodeSystem.Concept.Property.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.codeSer, it)
         }
       }
       is CodeSystem.Concept.Property.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.codeSer, it)
         }
       }
       is CodeSystem.Concept.Property.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.codeSer, it)
         }
       }

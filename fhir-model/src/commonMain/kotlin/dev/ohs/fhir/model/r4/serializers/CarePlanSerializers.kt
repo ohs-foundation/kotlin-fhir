@@ -477,16 +477,19 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       code = code,
       reasonCode = reasonCode ?: listOf(),
@@ -560,17 +563,17 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
     (value.doNotPerform?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 17, Hoisted.kindSer, it)
     }
-    when (val __d = value.scheduled) {
+    when (val choice = value.scheduled) {
       null -> {}
       is CarePlan.Activity.Detail.Scheduled.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 18, Hoisted.scheduledTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 18, Hoisted.scheduledTimingSer, choice.value)
       }
       is CarePlan.Activity.Detail.Scheduled.Period -> {
-        encoder.encodeSerializableElement(descriptor, 19, Hoisted.scheduledPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 19, Hoisted.scheduledPeriodSer, choice.value)
       }
       is CarePlan.Activity.Detail.Scheduled.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 20, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 20, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 21, Hoisted.kindSer, it)
         }
       }
@@ -580,17 +583,17 @@ internal object CarePlanActivityDetailSerializer : KSerializer<CarePlan.Activity
     }
     if (value.performer.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 23, Hoisted.reasonReferenceSer, value.performer)
-    when (val __d = value.product) {
+    when (val choice = value.product) {
       null -> {}
       is CarePlan.Activity.Detail.Product.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 24, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 24, Hoisted.codeSer, choice.value)
       }
       is CarePlan.Activity.Detail.Product.Reference -> {
         encoder.encodeSerializableElement(
           descriptor,
           25,
           Hoisted.reasonReferenceSerInner,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -941,16 +944,19 @@ internal object CarePlanSerializer : KSerializer<CarePlan> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),

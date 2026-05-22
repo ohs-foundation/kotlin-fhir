@@ -695,17 +695,17 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       derivedFromUri =
-        (kotlin.collections.List(maxOf(derivedFromUri?.size ?: 0, _derivedFromUri?.size ?: 0)) { __i
-          ->
-          Uri.of(derivedFromUri?.getOrNull(__i)?.let { it }, _derivedFromUri?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(derivedFromUri?.size ?: 0, _derivedFromUri?.size ?: 0)) {
+          index ->
+          Uri.of(derivedFromUri?.getOrNull(index)?.let { it }, _derivedFromUri?.getOrNull(index))!!
         }),
       partOf =
-        (kotlin.collections.List(maxOf(partOf?.size ?: 0, _partOf?.size ?: 0)) { __i ->
-          Canonical.of(partOf?.getOrNull(__i)?.let { it }, _partOf?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(partOf?.size ?: 0, _partOf?.size ?: 0)) { index ->
+          Canonical.of(partOf?.getOrNull(index)?.let { it }, _partOf?.getOrNull(index))!!
         }),
       replaces =
-        (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { __i ->
-          Canonical.of(replaces?.getOrNull(__i)?.let { it }, _replaces?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { index ->
+          Canonical.of(replaces?.getOrNull(index)?.let { it }, _replaces?.getOrNull(index))!!
         }),
       status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
       experimental = R5Boolean.of(experimental, _experimental),
@@ -810,13 +810,13 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is ChargeItemDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -830,7 +830,7 @@ internal object ChargeItemDefinitionSerializer : KSerializer<ChargeItemDefinitio
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

@@ -434,11 +434,11 @@ internal object MedicationRequestSubstitutionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.allowed) {
+    when (val choice = value.allowed) {
       null -> {}
       is MedicationRequest.Substitution.Allowed.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.allowedBooleanSer, it)
         }
       }
@@ -447,7 +447,7 @@ internal object MedicationRequestSubstitutionSerializer :
           descriptor,
           5,
           Hoisted.allowedCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -958,16 +958,19 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       groupIdentifier = groupIdentifier,
@@ -1105,13 +1108,13 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
         it,
       )
     }
-    when (val __d = value.reported) {
+    when (val choice = value.reported) {
       null -> {}
       is MedicationRequest.Reported.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 21 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             22 + descriptorOffset,
@@ -1125,18 +1128,18 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
           descriptor,
           23 + descriptorOffset,
           Hoisted.reportedReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }
-    when (val __d = value.medication) {
+    when (val choice = value.medication) {
       null -> {}
       is MedicationRequest.Medication.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           24 + descriptorOffset,
           Hoisted.statusReasonSer,
-          __d.value,
+          choice.value,
         )
       }
       is MedicationRequest.Medication.Reference -> {
@@ -1144,7 +1147,7 @@ internal object MedicationRequestSerializer : KSerializer<MedicationRequest> {
           descriptor,
           25 + descriptorOffset,
           Hoisted.reportedReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

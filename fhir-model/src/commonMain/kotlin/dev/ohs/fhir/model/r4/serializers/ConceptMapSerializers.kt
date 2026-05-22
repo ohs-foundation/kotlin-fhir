@@ -1213,13 +1213,13 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         it,
       )
     }
-    when (val __d = value.source) {
+    when (val choice = value.source) {
       null -> {}
       is ConceptMap.Source.Uri -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 36 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             37 + descriptorOffset,
@@ -1229,10 +1229,10 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         }
       }
       is ConceptMap.Source.Canonical -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 38 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             39 + descriptorOffset,
@@ -1242,13 +1242,13 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         }
       }
     }
-    when (val __d = value.target) {
+    when (val choice = value.target) {
       null -> {}
       is ConceptMap.Target.Uri -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 40 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             41 + descriptorOffset,
@@ -1258,10 +1258,10 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         }
       }
       is ConceptMap.Target.Canonical -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 42 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             43 + descriptorOffset,

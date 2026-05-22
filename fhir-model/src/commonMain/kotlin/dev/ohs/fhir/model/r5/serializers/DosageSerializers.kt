@@ -129,25 +129,25 @@ internal object DosageDoseAndRateSerializer : KSerializer<Dosage.DoseAndRate> {
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 2, Hoisted.typeSer, it) }
-    when (val __d = value.dose) {
+    when (val choice = value.dose) {
       null -> {}
       is Dosage.DoseAndRate.Dose.Range -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.doseRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.doseRangeSer, choice.value)
       }
       is Dosage.DoseAndRate.Dose.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.doseQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.doseQuantitySer, choice.value)
       }
     }
-    when (val __d = value.rate) {
+    when (val choice = value.rate) {
       null -> {}
       is Dosage.DoseAndRate.Rate.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.rateRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.rateRatioSer, choice.value)
       }
       is Dosage.DoseAndRate.Rate.Range -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.doseRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.doseRangeSer, choice.value)
       }
       is Dosage.DoseAndRate.Rate.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.doseQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.doseQuantitySer, choice.value)
       }
     }
   }

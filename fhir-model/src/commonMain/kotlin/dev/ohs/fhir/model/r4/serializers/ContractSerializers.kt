@@ -416,13 +416,18 @@ internal object ContractTermSerializer : KSerializer<Contract.Term> {
     (value.applies)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.appliesSer, it)
     }
-    when (val __d = value.topic) {
+    when (val choice = value.topic) {
       null -> {}
       is Contract.Term.Topic.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.topicCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          7,
+          Hoisted.topicCodeableConceptSer,
+          choice.value,
+        )
       }
       is Contract.Term.Topic.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.topicReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.topicReferenceSer, choice.value)
       }
     }
     (value.type)?.let {
@@ -565,8 +570,8 @@ internal object ContractTermSecurityLabelSerializer : KSerializer<Contract.Term.
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       number =
-        (kotlin.collections.List(maxOf(number?.size ?: 0, _number?.size ?: 0)) { __i ->
-          UnsignedInt.of(number?.getOrNull(__i)?.let { it }, _number?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(number?.size ?: 0, _number?.size ?: 0)) { index ->
+          UnsignedInt.of(number?.getOrNull(index)?.let { it }, _number?.getOrNull(index))!!
         }),
       classification = classification!!,
       category = category ?: listOf(),
@@ -763,16 +768,16 @@ internal object ContractTermOfferSerializer : KSerializer<Contract.Term.Offer> {
       answer = answer ?: listOf(),
       text = R4String.of(text, _text),
       linkId =
-        (kotlin.collections.List(maxOf(linkId?.size ?: 0, _linkId?.size ?: 0)) { __i ->
-          R4String.of(linkId?.getOrNull(__i)?.let { it }, _linkId?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(linkId?.size ?: 0, _linkId?.size ?: 0)) { index ->
+          R4String.of(linkId?.getOrNull(index)?.let { it }, _linkId?.getOrNull(index))!!
         }),
       securityLabelNumber =
         (kotlin.collections.List(
           maxOf(securityLabelNumber?.size ?: 0, _securityLabelNumber?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           UnsignedInt.of(
-            securityLabelNumber?.getOrNull(__i)?.let { it },
-            _securityLabelNumber?.getOrNull(__i),
+            securityLabelNumber?.getOrNull(index)?.let { it },
+            _securityLabelNumber?.getOrNull(index),
           )!!
         }),
     )
@@ -1126,71 +1131,71 @@ internal object ContractTermOfferAnswerSerializer : KSerializer<Contract.Term.Of
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Contract.Term.Offer.Answer.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueBooleanSer, it)
         }
       }
       is Contract.Term.Offer.Answer.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 5, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueBooleanSer, it)
         }
       }
       is Contract.Term.Offer.Answer.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueBooleanSer, it)
         }
       }
       is Contract.Term.Offer.Answer.Value.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueBooleanSer, it)
         }
       }
       is Contract.Term.Offer.Answer.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueBooleanSer, it)
         }
       }
       is Contract.Term.Offer.Answer.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 13, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueBooleanSer, it)
         }
       }
       is Contract.Term.Offer.Answer.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueBooleanSer, it)
         }
       }
       is Contract.Term.Offer.Answer.Value.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.valueBooleanSer, it)
         }
       }
       is Contract.Term.Offer.Answer.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 19, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 19, Hoisted.valueAttachmentSer, choice.value)
       }
       is Contract.Term.Offer.Answer.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 20, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 20, Hoisted.valueCodingSer, choice.value)
       }
       is Contract.Term.Offer.Answer.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 21, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 21, Hoisted.valueQuantitySer, choice.value)
       }
       is Contract.Term.Offer.Answer.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 22, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 22, Hoisted.valueReferenceSer, choice.value)
       }
     }
   }
@@ -1402,17 +1407,17 @@ internal object ContractTermAssetSerializer : KSerializer<Contract.Term.Asset> {
       usePeriod = usePeriod ?: listOf(),
       text = R4String.of(text, _text),
       linkId =
-        (kotlin.collections.List(maxOf(linkId?.size ?: 0, _linkId?.size ?: 0)) { __i ->
-          R4String.of(linkId?.getOrNull(__i)?.let { it }, _linkId?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(linkId?.size ?: 0, _linkId?.size ?: 0)) { index ->
+          R4String.of(linkId?.getOrNull(index)?.let { it }, _linkId?.getOrNull(index))!!
         }),
       answer = answer ?: listOf(),
       securityLabelNumber =
         (kotlin.collections.List(
           maxOf(securityLabelNumber?.size ?: 0, _securityLabelNumber?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           UnsignedInt.of(
-            securityLabelNumber?.getOrNull(__i)?.let { it },
-            _securityLabelNumber?.getOrNull(__i),
+            securityLabelNumber?.getOrNull(index)?.let { it },
+            _securityLabelNumber?.getOrNull(index),
           )!!
         }),
       valuedItem = valuedItem ?: listOf(),
@@ -1838,16 +1843,16 @@ internal object ContractTermAssetValuedItemSerializer :
       responsible = responsible,
       recipient = recipient,
       linkId =
-        (kotlin.collections.List(maxOf(linkId?.size ?: 0, _linkId?.size ?: 0)) { __i ->
-          R4String.of(linkId?.getOrNull(__i)?.let { it }, _linkId?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(linkId?.size ?: 0, _linkId?.size ?: 0)) { index ->
+          R4String.of(linkId?.getOrNull(index)?.let { it }, _linkId?.getOrNull(index))!!
         }),
       securityLabelNumber =
         (kotlin.collections.List(
           maxOf(securityLabelNumber?.size ?: 0, _securityLabelNumber?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           UnsignedInt.of(
-            securityLabelNumber?.getOrNull(__i)?.let { it },
-            _securityLabelNumber?.getOrNull(__i),
+            securityLabelNumber?.getOrNull(index)?.let { it },
+            _securityLabelNumber?.getOrNull(index),
           )!!
         }),
     )
@@ -1867,18 +1872,18 @@ internal object ContractTermAssetValuedItemSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.entity) {
+    when (val choice = value.entity) {
       null -> {}
       is Contract.Term.Asset.ValuedItem.Entity.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           3,
           Hoisted.entityCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is Contract.Term.Asset.ValuedItem.Entity.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.entityReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.entityReferenceSer, choice.value)
       }
     }
     (value.identifier)?.let {
@@ -2254,15 +2259,18 @@ internal object ContractTermActionSerializer : KSerializer<Contract.Term.Action>
       subject = subject ?: listOf(),
       intent = intent!!,
       linkId =
-        (kotlin.collections.List(maxOf(linkId?.size ?: 0, _linkId?.size ?: 0)) { __i ->
-          R4String.of(linkId?.getOrNull(__i)?.let { it }, _linkId?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(linkId?.size ?: 0, _linkId?.size ?: 0)) { index ->
+          R4String.of(linkId?.getOrNull(index)?.let { it }, _linkId?.getOrNull(index))!!
         }),
       status = status!!,
       context = context,
       contextLinkId =
-        (kotlin.collections.List(maxOf(contextLinkId?.size ?: 0, _contextLinkId?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(contextLinkId?.size ?: 0, _contextLinkId?.size ?: 0)) { index
           ->
-          R4String.of(contextLinkId?.getOrNull(__i)?.let { it }, _contextLinkId?.getOrNull(__i))!!
+          R4String.of(
+            contextLinkId?.getOrNull(index)?.let { it },
+            _contextLinkId?.getOrNull(index),
+          )!!
         }),
       occurrence =
         Contract.Term.Action.Occurrence.from(
@@ -2273,10 +2281,10 @@ internal object ContractTermActionSerializer : KSerializer<Contract.Term.Action>
       requester = requester ?: listOf(),
       requesterLinkId =
         (kotlin.collections.List(maxOf(requesterLinkId?.size ?: 0, _requesterLinkId?.size ?: 0)) {
-          __i ->
+          index ->
           R4String.of(
-            requesterLinkId?.getOrNull(__i)?.let { it },
-            _requesterLinkId?.getOrNull(__i),
+            requesterLinkId?.getOrNull(index)?.let { it },
+            _requesterLinkId?.getOrNull(index),
           )!!
         }),
       performerType = performerType ?: listOf(),
@@ -2284,30 +2292,31 @@ internal object ContractTermActionSerializer : KSerializer<Contract.Term.Action>
       performer = performer,
       performerLinkId =
         (kotlin.collections.List(maxOf(performerLinkId?.size ?: 0, _performerLinkId?.size ?: 0)) {
-          __i ->
+          index ->
           R4String.of(
-            performerLinkId?.getOrNull(__i)?.let { it },
-            _performerLinkId?.getOrNull(__i),
+            performerLinkId?.getOrNull(index)?.let { it },
+            _performerLinkId?.getOrNull(index),
           )!!
         }),
       reasonCode = reasonCode ?: listOf(),
       reasonReference = reasonReference ?: listOf(),
       reason =
-        (kotlin.collections.List(maxOf(reason?.size ?: 0, _reason?.size ?: 0)) { __i ->
-          R4String.of(reason?.getOrNull(__i)?.let { it }, _reason?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(reason?.size ?: 0, _reason?.size ?: 0)) { index ->
+          R4String.of(reason?.getOrNull(index)?.let { it }, _reason?.getOrNull(index))!!
         }),
       reasonLinkId =
-        (kotlin.collections.List(maxOf(reasonLinkId?.size ?: 0, _reasonLinkId?.size ?: 0)) { __i ->
-          R4String.of(reasonLinkId?.getOrNull(__i)?.let { it }, _reasonLinkId?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(reasonLinkId?.size ?: 0, _reasonLinkId?.size ?: 0)) { index
+          ->
+          R4String.of(reasonLinkId?.getOrNull(index)?.let { it }, _reasonLinkId?.getOrNull(index))!!
         }),
       note = note ?: listOf(),
       securityLabelNumber =
         (kotlin.collections.List(
           maxOf(securityLabelNumber?.size ?: 0, _securityLabelNumber?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           UnsignedInt.of(
-            securityLabelNumber?.getOrNull(__i)?.let { it },
-            _securityLabelNumber?.getOrNull(__i),
+            securityLabelNumber?.getOrNull(index)?.let { it },
+            _securityLabelNumber?.getOrNull(index),
           )!!
         }),
     )
@@ -2348,19 +2357,19 @@ internal object ContractTermActionSerializer : KSerializer<Contract.Term.Action>
     (value.contextLinkId.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.linkIdSer2, it)
     }
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is Contract.Term.Action.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.doNotPerformSer, it)
         }
       }
       is Contract.Term.Action.Occurrence.Period -> {
-        encoder.encodeSerializableElement(descriptor, 16, Hoisted.occurrencePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 16, Hoisted.occurrencePeriodSer, choice.value)
       }
       is Contract.Term.Action.Occurrence.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 17, Hoisted.occurrenceTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 17, Hoisted.occurrenceTimingSer, choice.value)
       }
     }
     if (value.requester.isNotEmpty())
@@ -2733,13 +2742,13 @@ internal object ContractFriendlySerializer : KSerializer<Contract.Friendly> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.content) {
+    when (val choice = value.content) {
       null -> {}
       is Contract.Friendly.Content.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, choice.value)
       }
       is Contract.Friendly.Content.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentReferenceSer, choice.value)
       }
     }
   }
@@ -2835,13 +2844,13 @@ internal object ContractLegalSerializer : KSerializer<Contract.Legal> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.content) {
+    when (val choice = value.content) {
       null -> {}
       is Contract.Legal.Content.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, choice.value)
       }
       is Contract.Legal.Content.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentReferenceSer, choice.value)
       }
     }
   }
@@ -2937,13 +2946,13 @@ internal object ContractRuleSerializer : KSerializer<Contract.Rule> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.content) {
+    when (val choice = value.content) {
       null -> {}
       is Contract.Rule.Content.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, choice.value)
       }
       is Contract.Rule.Content.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentReferenceSer, choice.value)
       }
     }
   }
@@ -3347,8 +3356,8 @@ internal object ContractSerializer : KSerializer<Contract> {
       title = R4String.of(title, _title),
       subtitle = R4String.of(subtitle, _subtitle),
       alias =
-        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { __i ->
-          R4String.of(alias?.getOrNull(__i)?.let { it }, _alias?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
+          R4String.of(alias?.getOrNull(index)?.let { it }, _alias?.getOrNull(index))!!
         }),
       author = author,
       scope = scope,
@@ -3602,14 +3611,14 @@ internal object ContractSerializer : KSerializer<Contract> {
         it,
       )
     }
-    when (val __d = value.topic) {
+    when (val choice = value.topic) {
       null -> {}
       is Contract.Topic.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           40 + descriptorOffset,
           Hoisted.legalStateSer,
-          __d.value,
+          choice.value,
         )
       }
       is Contract.Topic.Reference -> {
@@ -3617,7 +3626,7 @@ internal object ContractSerializer : KSerializer<Contract> {
           descriptor,
           41 + descriptorOffset,
           Hoisted.instantiatesCanonicalSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -3693,14 +3702,14 @@ internal object ContractSerializer : KSerializer<Contract> {
         Hoisted.ruleSer,
         value.rule,
       )
-    when (val __d = value.legallyBinding) {
+    when (val choice = value.legallyBinding) {
       null -> {}
       is Contract.LegallyBinding.Attachment -> {
         encoder.encodeSerializableElement(
           descriptor,
           52 + descriptorOffset,
           Hoisted.legallyBindingAttachmentSer,
-          __d.value,
+          choice.value,
         )
       }
       is Contract.LegallyBinding.Reference -> {
@@ -3708,7 +3717,7 @@ internal object ContractSerializer : KSerializer<Contract> {
           descriptor,
           53 + descriptorOffset,
           Hoisted.instantiatesCanonicalSer,
-          __d.value,
+          choice.value,
         )
       }
     }

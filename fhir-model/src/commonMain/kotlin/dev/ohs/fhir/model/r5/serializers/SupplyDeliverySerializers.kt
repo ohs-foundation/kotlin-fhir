@@ -137,13 +137,18 @@ internal object SupplyDeliverySuppliedItemSerializer : KSerializer<SupplyDeliver
     (value.quantity)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.quantitySer, it)
     }
-    when (val __d = value.item) {
+    when (val choice = value.item) {
       null -> {}
       is SupplyDelivery.SuppliedItem.Item.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.itemCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          4,
+          Hoisted.itemCodeableConceptSer,
+          choice.value,
+        )
       }
       is SupplyDelivery.SuppliedItem.Item.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.itemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.itemReferenceSer, choice.value)
       }
     }
   }
@@ -473,13 +478,13 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
         Hoisted.suppliedItemSer,
         value.suppliedItem,
       )
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is SupplyDelivery.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             19 + descriptorOffset,
@@ -493,7 +498,7 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
           descriptor,
           20 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is SupplyDelivery.Occurrence.Timing -> {
@@ -501,7 +506,7 @@ internal object SupplyDeliverySerializer : KSerializer<SupplyDelivery> {
           descriptor,
           21 + descriptorOffset,
           Hoisted.occurrenceTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

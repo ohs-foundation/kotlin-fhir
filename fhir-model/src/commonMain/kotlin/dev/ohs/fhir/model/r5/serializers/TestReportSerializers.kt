@@ -671,17 +671,17 @@ internal object TestReportSetupActionAssertRequirementSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.link) {
+    when (val choice = value.link) {
       null -> {}
       is TestReport.Setup.Action.Assert.Requirement.Link.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.linkUriSer, it)
         }
       }
       is TestReport.Setup.Action.Assert.Requirement.Link.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.linkUriSer, it)
         }
       }

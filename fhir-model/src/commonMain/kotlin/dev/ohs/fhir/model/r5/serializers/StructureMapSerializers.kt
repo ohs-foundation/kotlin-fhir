@@ -1047,10 +1047,10 @@ internal object StructureMapGroupRuleTargetSerializer :
       element = R5String.of(element, _element),
       variable = Id.of(variable, _variable),
       listMode =
-        (kotlin.collections.List(maxOf(listMode?.size ?: 0, _listMode?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(listMode?.size ?: 0, _listMode?.size ?: 0)) { index ->
           Enumeration.of(
-            StructureMap.StructureMapTargetListMode.fromCode(listMode?.getOrNull(__i)!!),
-            _listMode?.getOrNull(__i),
+            StructureMap.StructureMapTargetListMode.fromCode(listMode?.getOrNull(index)!!),
+            _listMode?.getOrNull(index),
           )
         }),
       listRuleId = Id.of(listRuleId, _listRuleId),
@@ -1273,57 +1273,57 @@ internal object StructureMapGroupRuleTargetParameterSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is StructureMap.Group.Rule.Target.Parameter.Value.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueIdSer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueIdSer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueIdSer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueIdSer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 11, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueIdSer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueIdSer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 15, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueIdSer, it)
         }
       }
       is StructureMap.Group.Rule.Target.Parameter.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.valueIdSer, it)
         }
       }
@@ -1751,8 +1751,8 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       structure = structure ?: listOf(),
       `import` =
-        (kotlin.collections.List(maxOf(`import`?.size ?: 0, _import?.size ?: 0)) { __i ->
-          Canonical.of(`import`?.getOrNull(__i)?.let { it }, _import?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(`import`?.size ?: 0, _import?.size ?: 0)) { index ->
+          Canonical.of(`import`?.getOrNull(index)?.let { it }, _import?.getOrNull(index))!!
         }),
       `const` = `const` ?: listOf(),
       group = group ?: listOf(),
@@ -1842,13 +1842,13 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is StructureMap.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1862,7 +1862,7 @@ internal object StructureMapSerializer : KSerializer<StructureMap> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

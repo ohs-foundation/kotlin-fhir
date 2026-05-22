@@ -494,8 +494,8 @@ internal object ResearchDefinitionSerializer : KSerializer<ResearchDefinition> {
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
       comment =
-        (kotlin.collections.List(maxOf(comment?.size ?: 0, _comment?.size ?: 0)) { __i ->
-          R4bString.of(comment?.getOrNull(__i)?.let { it }, _comment?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(comment?.size ?: 0, _comment?.size ?: 0)) { index ->
+          R4bString.of(comment?.getOrNull(index)?.let { it }, _comment?.getOrNull(index))!!
         }),
       useContext = useContext ?: listOf(),
       jurisdiction = jurisdiction ?: listOf(),
@@ -512,8 +512,8 @@ internal object ResearchDefinitionSerializer : KSerializer<ResearchDefinition> {
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
       library =
-        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { __i ->
-          Canonical.of(library?.getOrNull(__i)?.let { it }, _library?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
+          Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
       population = population!!,
       exposure = exposure,
@@ -671,14 +671,14 @@ internal object ResearchDefinitionSerializer : KSerializer<ResearchDefinition> {
         it,
       )
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is ResearchDefinition.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           27 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is ResearchDefinition.Subject.Reference -> {
@@ -686,7 +686,7 @@ internal object ResearchDefinitionSerializer : KSerializer<ResearchDefinition> {
           descriptor,
           28 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

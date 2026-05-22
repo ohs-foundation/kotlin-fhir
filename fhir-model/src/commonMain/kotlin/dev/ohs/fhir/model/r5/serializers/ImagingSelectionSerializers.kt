@@ -247,8 +247,8 @@ internal object ImagingSelectionInstanceSerializer : KSerializer<ImagingSelectio
       number = UnsignedInt.of(number, _number),
       sopClass = sopClass,
       subset =
-        (kotlin.collections.List(maxOf(subset?.size ?: 0, _subset?.size ?: 0)) { __i ->
-          R5String.of(subset?.getOrNull(__i)?.let { it }, _subset?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(subset?.size ?: 0, _subset?.size ?: 0)) { index ->
+          R5String.of(subset?.getOrNull(index)?.let { it }, _subset?.getOrNull(index))!!
         }),
       imageRegion2D = imageRegion2D ?: listOf(),
       imageRegion3D = imageRegion3D ?: listOf(),
@@ -409,8 +409,8 @@ internal object ImagingSelectionInstanceImageRegion2DSerializer :
           _regionType,
         ),
       coordinate =
-        (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { __i ->
-          Decimal.of(coordinate?.getOrNull(__i)?.let { it }, _coordinate?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { index ->
+          Decimal.of(coordinate?.getOrNull(index)?.let { it }, _coordinate?.getOrNull(index))!!
         }),
     )
   }
@@ -536,8 +536,8 @@ internal object ImagingSelectionInstanceImageRegion3DSerializer :
           _regionType,
         ),
       coordinate =
-        (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { __i ->
-          Decimal.of(coordinate?.getOrNull(__i)?.let { it }, _coordinate?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(coordinate?.size ?: 0, _coordinate?.size ?: 0)) { index ->
+          Decimal.of(coordinate?.getOrNull(index)?.let { it }, _coordinate?.getOrNull(index))!!
         }),
     )
   }

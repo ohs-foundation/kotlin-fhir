@@ -173,10 +173,10 @@ internal object SubscriptionTopicResourceTriggerSerializer :
       supportedInteraction =
         (kotlin.collections.List(
           maxOf(supportedInteraction?.size ?: 0, _supportedInteraction?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Enumeration.of(
-            SubscriptionTopic.InteractionTrigger.fromCode(supportedInteraction?.getOrNull(__i)!!),
-            _supportedInteraction?.getOrNull(__i),
+            SubscriptionTopic.InteractionTrigger.fromCode(supportedInteraction?.getOrNull(index)!!),
+            _supportedInteraction?.getOrNull(index),
           )
         }),
       queryCriteria = queryCriteria,
@@ -601,10 +601,10 @@ internal object SubscriptionTopicCanFilterBySerializer :
       filterParameter = R4bString.of(filterParameter, _filterParameter)!!,
       filterDefinition = Uri.of(filterDefinition, _filterDefinition),
       modifier =
-        (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            SubscriptionTopic.SubscriptionSearchModifier.fromCode(modifier?.getOrNull(__i)!!),
-            _modifier?.getOrNull(__i),
+            SubscriptionTopic.SubscriptionSearchModifier.fromCode(modifier?.getOrNull(index)!!),
+            _modifier?.getOrNull(index),
           )
         }),
     )
@@ -750,12 +750,12 @@ internal object SubscriptionTopicNotificationShapeSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       resource = Uri.of(resource, _resource)!!,
       include =
-        (kotlin.collections.List(maxOf(include?.size ?: 0, _include?.size ?: 0)) { __i ->
-          R4bString.of(include?.getOrNull(__i)?.let { it }, _include?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(include?.size ?: 0, _include?.size ?: 0)) { index ->
+          R4bString.of(include?.getOrNull(index)?.let { it }, _include?.getOrNull(index))!!
         }),
       revInclude =
-        (kotlin.collections.List(maxOf(revInclude?.size ?: 0, _revInclude?.size ?: 0)) { __i ->
-          R4bString.of(revInclude?.getOrNull(__i)?.let { it }, _revInclude?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(revInclude?.size ?: 0, _revInclude?.size ?: 0)) { index ->
+          R4bString.of(revInclude?.getOrNull(index)?.let { it }, _revInclude?.getOrNull(index))!!
         }),
     )
   }
@@ -1123,8 +1123,8 @@ internal object SubscriptionTopicSerializer : KSerializer<SubscriptionTopic> {
       version = R4bString.of(version, _version),
       title = R4bString.of(title, _title),
       derivedFrom =
-        (kotlin.collections.List(maxOf(derivedFrom?.size ?: 0, _derivedFrom?.size ?: 0)) { __i ->
-          Canonical.of(derivedFrom?.getOrNull(__i)?.let { it }, _derivedFrom?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(derivedFrom?.size ?: 0, _derivedFrom?.size ?: 0)) { index ->
+          Canonical.of(derivedFrom?.getOrNull(index)?.let { it }, _derivedFrom?.getOrNull(index))!!
         }),
       status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
       experimental = R4bBoolean.of(experimental, _experimental),

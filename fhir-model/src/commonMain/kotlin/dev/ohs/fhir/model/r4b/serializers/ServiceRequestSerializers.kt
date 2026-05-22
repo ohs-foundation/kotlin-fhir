@@ -494,16 +494,19 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
@@ -731,14 +734,14 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
         Hoisted.categorySer,
         value.orderDetail,
       )
-    when (val __d = value.quantity) {
+    when (val choice = value.quantity) {
       null -> {}
       is ServiceRequest.Quantity.Quantity -> {
         encoder.encodeSerializableElement(
           descriptor,
           29 + descriptorOffset,
           Hoisted.quantityQuantitySer,
-          __d.value,
+          choice.value,
         )
       }
       is ServiceRequest.Quantity.Ratio -> {
@@ -746,7 +749,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           30 + descriptorOffset,
           Hoisted.quantityRatioSer,
-          __d.value,
+          choice.value,
         )
       }
       is ServiceRequest.Quantity.Range -> {
@@ -754,7 +757,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           31 + descriptorOffset,
           Hoisted.quantityRangeSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -774,13 +777,13 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
         it,
       )
     }
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is ServiceRequest.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 34 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             35 + descriptorOffset,
@@ -794,7 +797,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           36 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is ServiceRequest.Occurrence.Timing -> {
@@ -802,17 +805,17 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           37 + descriptorOffset,
           Hoisted.occurrenceTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
-    when (val __d = value.asNeeded) {
+    when (val choice = value.asNeeded) {
       null -> {}
       is ServiceRequest.AsNeeded.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 38 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             39 + descriptorOffset,
@@ -826,7 +829,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           40 + descriptorOffset,
           Hoisted.categorySerInner,
-          __d.value,
+          choice.value,
         )
       }
     }

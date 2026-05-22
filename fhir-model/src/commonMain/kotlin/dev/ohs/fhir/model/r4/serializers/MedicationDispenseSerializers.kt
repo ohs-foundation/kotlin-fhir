@@ -695,14 +695,14 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
         it,
       )
     }
-    when (val __d = value.statusReason) {
+    when (val choice = value.statusReason) {
       null -> {}
       is MedicationDispense.StatusReason.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           14 + descriptorOffset,
           Hoisted.statusReasonCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is MedicationDispense.StatusReason.Reference -> {
@@ -710,7 +710,7 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
           descriptor,
           15 + descriptorOffset,
           Hoisted.partOfSerInner,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -722,14 +722,14 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
         it,
       )
     }
-    when (val __d = value.medication) {
+    when (val choice = value.medication) {
       null -> {}
       is MedicationDispense.Medication.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           17 + descriptorOffset,
           Hoisted.statusReasonCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is MedicationDispense.Medication.Reference -> {
@@ -737,7 +737,7 @@ internal object MedicationDispenseSerializer : KSerializer<MedicationDispense> {
           descriptor,
           18 + descriptorOffset,
           Hoisted.partOfSerInner,
-          __d.value,
+          choice.value,
         )
       }
     }

@@ -234,17 +234,17 @@ internal object SubstanceAmountSerializer : KSerializer<SubstanceAmount> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.amount) {
+    when (val choice = value.amount) {
       null -> {}
       is SubstanceAmount.Amount.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.amountQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.amountQuantitySer, choice.value)
       }
       is SubstanceAmount.Amount.Range -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.amountRangeSer, choice.value)
       }
       is SubstanceAmount.Amount.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.amountStringSer, it)
         }
       }

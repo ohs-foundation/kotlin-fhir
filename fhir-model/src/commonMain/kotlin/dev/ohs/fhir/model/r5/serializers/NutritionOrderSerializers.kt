@@ -1210,13 +1210,13 @@ internal object NutritionOrderEnteralFormulaAdministrationSerializer :
     (value.quantity)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.quantitySer, it)
     }
-    when (val __d = value.rate) {
+    when (val choice = value.rate) {
       null -> {}
       is NutritionOrder.EnteralFormula.Administration.Rate.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.quantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.quantitySer, choice.value)
       }
       is NutritionOrder.EnteralFormula.Administration.Rate.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.rateRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.rateRatioSer, choice.value)
       }
     }
   }
@@ -1703,20 +1703,24 @@ internal object NutritionOrderSerializer : KSerializer<NutritionOrder> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       instantiates =
-        (kotlin.collections.List(maxOf(instantiates?.size ?: 0, _instantiates?.size ?: 0)) { __i ->
-          Uri.of(instantiates?.getOrNull(__i)?.let { it }, _instantiates?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(instantiates?.size ?: 0, _instantiates?.size ?: 0)) { index
+          ->
+          Uri.of(instantiates?.getOrNull(index)?.let { it }, _instantiates?.getOrNull(index))!!
         }),
       basedOn = basedOn ?: listOf(),
       groupIdentifier = groupIdentifier,

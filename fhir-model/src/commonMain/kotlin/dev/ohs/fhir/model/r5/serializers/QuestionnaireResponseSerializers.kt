@@ -390,71 +390,71 @@ internal object QuestionnaireResponseItemAnswerSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is QuestionnaireResponse.Item.Answer.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueBooleanSer, it)
         }
       }
       is QuestionnaireResponse.Item.Answer.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 5, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueBooleanSer, it)
         }
       }
       is QuestionnaireResponse.Item.Answer.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueBooleanSer, it)
         }
       }
       is QuestionnaireResponse.Item.Answer.Value.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueBooleanSer, it)
         }
       }
       is QuestionnaireResponse.Item.Answer.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueBooleanSer, it)
         }
       }
       is QuestionnaireResponse.Item.Answer.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 13, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueBooleanSer, it)
         }
       }
       is QuestionnaireResponse.Item.Answer.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueBooleanSer, it)
         }
       }
       is QuestionnaireResponse.Item.Answer.Value.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.valueBooleanSer, it)
         }
       }
       is QuestionnaireResponse.Item.Answer.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 19, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 19, Hoisted.valueAttachmentSer, choice.value)
       }
       is QuestionnaireResponse.Item.Answer.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 20, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 20, Hoisted.valueCodingSer, choice.value)
       }
       is QuestionnaireResponse.Item.Answer.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 21, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 21, Hoisted.valueQuantitySer, choice.value)
       }
       is QuestionnaireResponse.Item.Answer.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 22, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 22, Hoisted.valueReferenceSer, choice.value)
       }
     }
     if (value.item.isNotEmpty())

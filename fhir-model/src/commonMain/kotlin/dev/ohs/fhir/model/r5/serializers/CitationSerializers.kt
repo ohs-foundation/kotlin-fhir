@@ -3101,13 +3101,13 @@ internal object CitationSerializer : KSerializer<Citation> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is Citation.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -3121,7 +3121,7 @@ internal object CitationSerializer : KSerializer<Citation> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

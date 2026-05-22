@@ -1009,8 +1009,8 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
       type = type,
       specialization = specialization ?: listOf(),
       version =
-        (kotlin.collections.List(maxOf(version?.size ?: 0, _version?.size ?: 0)) { __i ->
-          R4bString.of(version?.getOrNull(__i)?.let { it }, _version?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(version?.size ?: 0, _version?.size ?: 0)) { index ->
+          R4bString.of(version?.getOrNull(index)?.let { it }, _version?.getOrNull(index))!!
         }),
       safety = safety ?: listOf(),
       shelfLifeStorage = shelfLifeStorage ?: listOf(),
@@ -1099,13 +1099,13 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
         Hoisted.udiDeviceIdentifierSer,
         value.udiDeviceIdentifier,
       )
-    when (val __d = value.manufacturer) {
+    when (val choice = value.manufacturer) {
       null -> {}
       is DeviceDefinition.Manufacturer.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             13 + descriptorOffset,
@@ -1119,7 +1119,7 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
           descriptor,
           14 + descriptorOffset,
           Hoisted.manufacturerReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

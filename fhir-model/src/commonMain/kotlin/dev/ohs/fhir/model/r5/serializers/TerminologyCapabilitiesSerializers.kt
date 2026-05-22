@@ -504,16 +504,16 @@ internal object TerminologyCapabilitiesCodeSystemVersionSerializer :
       isDefault = R5Boolean.of(isDefault, _isDefault),
       compositional = R5Boolean.of(compositional, _compositional),
       language =
-        (kotlin.collections.List(maxOf(language?.size ?: 0, _language?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(language?.size ?: 0, _language?.size ?: 0)) { index ->
           Enumeration.of(
-            TerminologyCapabilities.CommonLanguages.fromCode(language?.getOrNull(__i)!!),
-            _language?.getOrNull(__i),
+            TerminologyCapabilities.CommonLanguages.fromCode(language?.getOrNull(index)!!),
+            _language?.getOrNull(index),
           )
         }),
       filter = filter ?: listOf(),
       `property` =
-        (kotlin.collections.List(maxOf(`property`?.size ?: 0, _property?.size ?: 0)) { __i ->
-          Code.of(`property`?.getOrNull(__i)?.let { it }, _property?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(`property`?.size ?: 0, _property?.size ?: 0)) { index ->
+          Code.of(`property`?.getOrNull(index)?.let { it }, _property?.getOrNull(index))!!
         }),
     )
   }
@@ -648,8 +648,8 @@ internal object TerminologyCapabilitiesCodeSystemVersionFilterSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       code = Code.of(code, _code)!!,
       op =
-        (kotlin.collections.List(maxOf(op?.size ?: 0, _op?.size ?: 0)) { __i ->
-          Code.of(op?.getOrNull(__i)?.let { it }, _op?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(op?.size ?: 0, _op?.size ?: 0)) { index ->
+          Code.of(op?.getOrNull(index)?.let { it }, _op?.getOrNull(index))!!
         }),
     )
   }
@@ -1664,13 +1664,13 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is TerminologyCapabilities.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1684,7 +1684,7 @@ internal object TerminologyCapabilitiesSerializer : KSerializer<TerminologyCapab
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

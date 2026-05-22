@@ -164,8 +164,8 @@ internal object ValueSetComposeSerializer : KSerializer<ValueSet.Compose> {
       include = include ?: listOf(),
       exclude = exclude ?: listOf(),
       `property` =
-        (kotlin.collections.List(maxOf(`property`?.size ?: 0, _property?.size ?: 0)) { __i ->
-          R5String.of(`property`?.getOrNull(__i)?.let { it }, _property?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(`property`?.size ?: 0, _property?.size ?: 0)) { index ->
+          R5String.of(`property`?.getOrNull(index)?.let { it }, _property?.getOrNull(index))!!
         }),
     )
   }
@@ -333,8 +333,8 @@ internal object ValueSetComposeIncludeSerializer : KSerializer<ValueSet.Compose.
       concept = concept ?: listOf(),
       filter = filter ?: listOf(),
       valueSet =
-        (kotlin.collections.List(maxOf(valueSet?.size ?: 0, _valueSet?.size ?: 0)) { __i ->
-          Canonical.of(valueSet?.getOrNull(__i)?.let { it }, _valueSet?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(valueSet?.size ?: 0, _valueSet?.size ?: 0)) { index ->
+          Canonical.of(valueSet?.getOrNull(index)?.let { it }, _valueSet?.getOrNull(index))!!
         }),
       copyright = R5String.of(copyright, _copyright),
     )
@@ -1094,49 +1094,49 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
     (value.name.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ValueSet.Expansion.Parameter.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 11, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.nameSer, it)
         }
       }
@@ -1604,46 +1604,46 @@ internal object ValueSetExpansionContainsPropertySerializer :
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ValueSet.Expansion.Contains.Property.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueCodingSer, choice.value)
       }
       is ValueSet.Expansion.Contains.Property.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.codeSer, it)
         }
       }
@@ -1813,46 +1813,46 @@ internal object ValueSetExpansionContainsPropertySubPropertySerializer :
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ValueSet.Expansion.Contains.Property.SubProperty.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.SubProperty.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueCodingSer, choice.value)
       }
       is ValueSet.Expansion.Contains.Property.SubProperty.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.SubProperty.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.SubProperty.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.SubProperty.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.codeSer, it)
         }
       }
       is ValueSet.Expansion.Contains.Property.SubProperty.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.codeSer, it)
         }
       }
@@ -2456,13 +2456,13 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is ValueSet.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -2476,7 +2476,7 @@ internal object ValueSetSerializer : KSerializer<ValueSet> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

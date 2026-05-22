@@ -309,14 +309,14 @@ internal object MedicinalProductAuthorizationProcedureSerializer :
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.identifierSer, it)
     }
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
-    when (val __d = value.date) {
+    when (val choice = value.date) {
       null -> {}
       is MedicinalProductAuthorization.Procedure.Date.Period -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.datePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.datePeriodSer, choice.value)
       }
       is MedicinalProductAuthorization.Procedure.Date.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.dateDateTimeSer, it)
         }
       }

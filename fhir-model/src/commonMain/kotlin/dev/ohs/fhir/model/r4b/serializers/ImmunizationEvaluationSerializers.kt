@@ -427,11 +427,13 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
         it,
       )
     }
-    when (val __d = value.doseNumber) {
+    when (val choice = value.doseNumber) {
       null -> {}
       is ImmunizationEvaluation.DoseNumber.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 25 + descriptorOffset, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let {
+          encoder.encodeIntElement(descriptor, 25 + descriptorOffset, it)
+        }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             26 + descriptorOffset,
@@ -441,10 +443,10 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
         }
       }
       is ImmunizationEvaluation.DoseNumber.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             28 + descriptorOffset,
@@ -454,11 +456,13 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
         }
       }
     }
-    when (val __d = value.seriesDoses) {
+    when (val choice = value.seriesDoses) {
       null -> {}
       is ImmunizationEvaluation.SeriesDoses.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 29 + descriptorOffset, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let {
+          encoder.encodeIntElement(descriptor, 29 + descriptorOffset, it)
+        }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             30 + descriptorOffset,
@@ -468,10 +472,10 @@ internal object ImmunizationEvaluationSerializer : KSerializer<ImmunizationEvalu
         }
       }
       is ImmunizationEvaluation.SeriesDoses.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 31 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             32 + descriptorOffset,

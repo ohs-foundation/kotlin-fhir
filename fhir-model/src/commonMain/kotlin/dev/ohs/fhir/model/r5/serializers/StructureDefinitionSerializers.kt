@@ -843,10 +843,10 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
       contextInvariant =
         (kotlin.collections.List(
           maxOf(contextInvariant?.size ?: 0, _contextInvariant?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           R5String.of(
-            contextInvariant?.getOrNull(__i)?.let { it },
-            _contextInvariant?.getOrNull(__i),
+            contextInvariant?.getOrNull(index)?.let { it },
+            _contextInvariant?.getOrNull(index),
           )!!
         }),
       type = Uri.of(type, _type)!!,
@@ -943,13 +943,13 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is StructureDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -963,7 +963,7 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

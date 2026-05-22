@@ -1072,20 +1072,20 @@ internal object SubstanceSourceMaterialSerializer : KSerializer<SubstanceSourceM
       parentSubstanceName =
         (kotlin.collections.List(
           maxOf(parentSubstanceName?.size ?: 0, _parentSubstanceName?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           R5String.of(
-            parentSubstanceName?.getOrNull(__i)?.let { it },
-            _parentSubstanceName?.getOrNull(__i),
+            parentSubstanceName?.getOrNull(index)?.let { it },
+            _parentSubstanceName?.getOrNull(index),
           )!!
         }),
       countryOfOrigin = countryOfOrigin ?: listOf(),
       geographicalLocation =
         (kotlin.collections.List(
           maxOf(geographicalLocation?.size ?: 0, _geographicalLocation?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           R5String.of(
-            geographicalLocation?.getOrNull(__i)?.let { it },
-            _geographicalLocation?.getOrNull(__i),
+            geographicalLocation?.getOrNull(index)?.let { it },
+            _geographicalLocation?.getOrNull(index),
           )!!
         }),
       developmentStage = developmentStage,

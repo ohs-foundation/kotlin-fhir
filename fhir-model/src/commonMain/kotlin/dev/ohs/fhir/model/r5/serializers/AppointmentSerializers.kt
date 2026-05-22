@@ -402,31 +402,31 @@ internal object AppointmentRecurrenceTemplateSerializer :
       lastOccurrenceDate = Date.of(FhirDate.fromString(lastOccurrenceDate), _lastOccurrenceDate),
       occurrenceCount = PositiveInt.of(occurrenceCount, _occurrenceCount),
       occurrenceDate =
-        (kotlin.collections.List(maxOf(occurrenceDate?.size ?: 0, _occurrenceDate?.size ?: 0)) { __i
-          ->
+        (kotlin.collections.List(maxOf(occurrenceDate?.size ?: 0, _occurrenceDate?.size ?: 0)) {
+          index ->
           Date.of(
-            occurrenceDate?.getOrNull(__i)?.let { FhirDate.fromString(it) },
-            _occurrenceDate?.getOrNull(__i),
+            occurrenceDate?.getOrNull(index)?.let { FhirDate.fromString(it) },
+            _occurrenceDate?.getOrNull(index),
           )!!
         }),
       weeklyTemplate = weeklyTemplate,
       monthlyTemplate = monthlyTemplate,
       yearlyTemplate = yearlyTemplate,
       excludingDate =
-        (kotlin.collections.List(maxOf(excludingDate?.size ?: 0, _excludingDate?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(excludingDate?.size ?: 0, _excludingDate?.size ?: 0)) { index
           ->
           Date.of(
-            excludingDate?.getOrNull(__i)?.let { FhirDate.fromString(it) },
-            _excludingDate?.getOrNull(__i),
+            excludingDate?.getOrNull(index)?.let { FhirDate.fromString(it) },
+            _excludingDate?.getOrNull(index),
           )!!
         }),
       excludingRecurrenceId =
         (kotlin.collections.List(
           maxOf(excludingRecurrenceId?.size ?: 0, _excludingRecurrenceId?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            excludingRecurrenceId?.getOrNull(__i)?.let { it },
-            _excludingRecurrenceId?.getOrNull(__i),
+            excludingRecurrenceId?.getOrNull(index)?.let { it },
+            _excludingRecurrenceId?.getOrNull(index),
           )!!
         }),
     )

@@ -208,8 +208,8 @@ internal object ArtifactAssessmentContentSerializer : KSerializer<ArtifactAssess
       quantity = quantity,
       author = author,
       path =
-        (kotlin.collections.List(maxOf(path?.size ?: 0, _path?.size ?: 0)) { __i ->
-          Uri.of(path?.getOrNull(__i)?.let { it }, _path?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(path?.size ?: 0, _path?.size ?: 0)) { index ->
+          Uri.of(path?.getOrNull(index)?.let { it }, _path?.getOrNull(index))!!
         }),
       relatedArtifact = relatedArtifact ?: listOf(),
       freeToShare = R5Boolean.of(freeToShare, _freeToShare),
@@ -624,21 +624,21 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
         it,
       )
     }
-    when (val __d = value.citeAs) {
+    when (val choice = value.citeAs) {
       null -> {}
       is ArtifactAssessment.CiteAs.Reference -> {
         encoder.encodeSerializableElement(
           descriptor,
           13 + descriptorOffset,
           Hoisted.citeAsReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ArtifactAssessment.CiteAs.Markdown -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             15 + descriptorOffset,
@@ -692,21 +692,21 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
         it,
       )
     }
-    when (val __d = value.artifact) {
+    when (val choice = value.artifact) {
       null -> {}
       is ArtifactAssessment.Artifact.Reference -> {
         encoder.encodeSerializableElement(
           descriptor,
           24 + descriptorOffset,
           Hoisted.citeAsReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ArtifactAssessment.Artifact.Canonical -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             26 + descriptorOffset,
@@ -716,10 +716,10 @@ internal object ArtifactAssessmentSerializer : KSerializer<ArtifactAssessment> {
         }
       }
       is ArtifactAssessment.Artifact.Uri -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             28 + descriptorOffset,

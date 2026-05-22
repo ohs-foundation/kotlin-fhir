@@ -255,17 +255,22 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
     (value.sequence?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
-    when (val __d = value.chargeItem) {
+    when (val choice = value.chargeItem) {
       null -> {}
       is Invoice.LineItem.ChargeItem.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.chargeItemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.chargeItemReferenceSer,
+          choice.value,
+        )
       }
       is Invoice.LineItem.ChargeItem.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           6,
           Hoisted.chargeItemCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
     }

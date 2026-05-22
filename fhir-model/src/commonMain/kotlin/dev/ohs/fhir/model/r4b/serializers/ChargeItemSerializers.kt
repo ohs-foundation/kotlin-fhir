@@ -467,17 +467,17 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       definitionUri =
-        (kotlin.collections.List(maxOf(definitionUri?.size ?: 0, _definitionUri?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(definitionUri?.size ?: 0, _definitionUri?.size ?: 0)) { index
           ->
-          Uri.of(definitionUri?.getOrNull(__i)?.let { it }, _definitionUri?.getOrNull(__i))!!
+          Uri.of(definitionUri?.getOrNull(index)?.let { it }, _definitionUri?.getOrNull(index))!!
         }),
       definitionCanonical =
         (kotlin.collections.List(
           maxOf(definitionCanonical?.size ?: 0, _definitionCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            definitionCanonical?.getOrNull(__i)?.let { it },
-            _definitionCanonical?.getOrNull(__i),
+            definitionCanonical?.getOrNull(index)?.let { it },
+            _definitionCanonical?.getOrNull(index),
           )!!
         }),
       status = Enumeration.of(ChargeItem.ChargeItemStatus.fromCode(status!!), _status),
@@ -643,13 +643,13 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
         it,
       )
     }
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is ChargeItem.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             22 + descriptorOffset,
@@ -663,7 +663,7 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
           descriptor,
           23 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is ChargeItem.Occurrence.Timing -> {
@@ -671,7 +671,7 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
           descriptor,
           24 + descriptorOffset,
           Hoisted.occurrenceTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -779,14 +779,14 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
         Hoisted.partOfSer,
         value.service,
       )
-    when (val __d = value.product) {
+    when (val choice = value.product) {
       null -> {}
       is ChargeItem.Product.Reference -> {
         encoder.encodeSerializableElement(
           descriptor,
           41 + descriptorOffset,
           Hoisted.partOfSerInner,
-          __d.value,
+          choice.value,
         )
       }
       is ChargeItem.Product.CodeableConcept -> {
@@ -794,7 +794,7 @@ internal object ChargeItemSerializer : KSerializer<ChargeItem> {
           descriptor,
           42 + descriptorOffset,
           Hoisted.codeSer,
-          __d.value,
+          choice.value,
         )
       }
     }

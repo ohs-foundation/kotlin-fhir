@@ -267,21 +267,21 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
       periodMax = Decimal.of(periodMax, _periodMax),
       periodUnit = periodUnit?.let { Enumeration.of(Timing.UnitsOfTime.fromCode(it), _periodUnit) },
       dayOfWeek =
-        (kotlin.collections.List(maxOf(dayOfWeek?.size ?: 0, _dayOfWeek?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(dayOfWeek?.size ?: 0, _dayOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            Timing.DaysOfWeek.fromCode(dayOfWeek?.getOrNull(__i)!!),
-            _dayOfWeek?.getOrNull(__i),
+            Timing.DaysOfWeek.fromCode(dayOfWeek?.getOrNull(index)!!),
+            _dayOfWeek?.getOrNull(index),
           )
         }),
       timeOfDay =
-        (kotlin.collections.List(maxOf(timeOfDay?.size ?: 0, _timeOfDay?.size ?: 0)) { __i ->
-          Time.of(timeOfDay?.getOrNull(__i)?.let { it }, _timeOfDay?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(timeOfDay?.size ?: 0, _timeOfDay?.size ?: 0)) { index ->
+          Time.of(timeOfDay?.getOrNull(index)?.let { it }, _timeOfDay?.getOrNull(index))!!
         }),
       `when` =
-        (kotlin.collections.List(maxOf(`when`?.size ?: 0, _when?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(`when`?.size ?: 0, _when?.size ?: 0)) { index ->
           Enumeration.of(
-            Timing.EventTiming.fromCode(`when`?.getOrNull(__i)!!),
-            _when?.getOrNull(__i),
+            Timing.EventTiming.fromCode(`when`?.getOrNull(index)!!),
+            _when?.getOrNull(index),
           )
         }),
       offset = UnsignedInt.of(offset, _offset),
@@ -292,16 +292,16 @@ internal object TimingRepeatSerializer : KSerializer<Timing.Repeat> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    when (val __d = value.bounds) {
+    when (val choice = value.bounds) {
       null -> {}
       is Timing.Repeat.Bounds.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 2, Hoisted.boundsDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 2, Hoisted.boundsDurationSer, choice.value)
       }
       is Timing.Repeat.Bounds.Range -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.boundsRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.boundsRangeSer, choice.value)
       }
       is Timing.Repeat.Bounds.Period -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.boundsPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.boundsPeriodSer, choice.value)
       }
     }
     ((value.count?.value))?.let { encoder.encodeIntElement(descriptor, 5, it) }
@@ -469,10 +469,10 @@ internal object TimingSerializer : KSerializer<Timing> {
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       event =
-        (kotlin.collections.List(maxOf(event?.size ?: 0, _event?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(event?.size ?: 0, _event?.size ?: 0)) { index ->
           DateTime.of(
-            event?.getOrNull(__i)?.let { FhirDateTime.fromString(it) },
-            _event?.getOrNull(__i),
+            event?.getOrNull(index)?.let { FhirDateTime.fromString(it) },
+            _event?.getOrNull(index),
           )!!
         }),
       repeat = repeat,

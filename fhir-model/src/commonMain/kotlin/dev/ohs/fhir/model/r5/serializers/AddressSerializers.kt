@@ -148,8 +148,8 @@ internal object AddressSerializer : KSerializer<Address> {
       type = type?.let { Enumeration.of(Address.AddressType.fromCode(it), _type) },
       text = R5String.of(text, _text),
       line =
-        (kotlin.collections.List(maxOf(line?.size ?: 0, _line?.size ?: 0)) { __i ->
-          R5String.of(line?.getOrNull(__i)?.let { it }, _line?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(line?.size ?: 0, _line?.size ?: 0)) { index ->
+          R5String.of(line?.getOrNull(index)?.let { it }, _line?.getOrNull(index))!!
         }),
       city = R5String.of(city, _city),
       district = R5String.of(district, _district),

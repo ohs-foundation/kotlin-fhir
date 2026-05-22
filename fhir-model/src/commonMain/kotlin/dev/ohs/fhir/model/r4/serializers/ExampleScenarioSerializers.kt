@@ -1414,8 +1414,8 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
       instance = instance ?: listOf(),
       process = process ?: listOf(),
       workflow =
-        (kotlin.collections.List(maxOf(workflow?.size ?: 0, _workflow?.size ?: 0)) { __i ->
-          Canonical.of(workflow?.getOrNull(__i)?.let { it }, _workflow?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(workflow?.size ?: 0, _workflow?.size ?: 0)) { index ->
+          Canonical.of(workflow?.getOrNull(index)?.let { it }, _workflow?.getOrNull(index))!!
         }),
     )
   }

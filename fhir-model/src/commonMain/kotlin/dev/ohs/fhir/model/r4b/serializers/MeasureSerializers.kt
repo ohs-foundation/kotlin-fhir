@@ -1148,8 +1148,8 @@ internal object MeasureSerializer : KSerializer<Measure> {
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
       library =
-        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { __i ->
-          Canonical.of(library?.getOrNull(__i)?.let { it }, _library?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
+          Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
       disclaimer = Markdown.of(disclaimer, _disclaimer),
       scoring = scoring,
@@ -1162,8 +1162,8 @@ internal object MeasureSerializer : KSerializer<Measure> {
         Markdown.of(clinicalRecommendationStatement, _clinicalRecommendationStatement),
       improvementNotation = improvementNotation,
       definition =
-        (kotlin.collections.List(maxOf(definition?.size ?: 0, _definition?.size ?: 0)) { __i ->
-          Markdown.of(definition?.getOrNull(__i)?.let { it }, _definition?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(definition?.size ?: 0, _definition?.size ?: 0)) { index ->
+          Markdown.of(definition?.getOrNull(index)?.let { it }, _definition?.getOrNull(index))!!
         }),
       guidance = Markdown.of(guidance, _guidance),
       group = group ?: listOf(),
@@ -1309,14 +1309,14 @@ internal object MeasureSerializer : KSerializer<Measure> {
         it,
       )
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is Measure.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           25 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is Measure.Subject.Reference -> {
@@ -1324,7 +1324,7 @@ internal object MeasureSerializer : KSerializer<Measure> {
           descriptor,
           26 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

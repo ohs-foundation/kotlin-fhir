@@ -477,11 +477,11 @@ internal object MedicationRequestSubstitutionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.allowed) {
+    when (val choice = value.allowed) {
       null -> {}
       is MedicationRequest.Substitution.Allowed.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.allowedBooleanSer, it)
         }
       }
@@ -490,7 +490,7 @@ internal object MedicationRequestSubstitutionSerializer :
           descriptor,
           5,
           Hoisted.allowedCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
     }

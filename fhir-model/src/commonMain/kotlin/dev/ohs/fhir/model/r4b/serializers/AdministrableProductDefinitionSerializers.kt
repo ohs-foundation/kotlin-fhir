@@ -177,28 +177,28 @@ internal object AdministrableProductDefinitionPropertySerializer :
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is AdministrableProductDefinition.Property.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, choice.value)
       }
       is AdministrableProductDefinition.Property.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, choice.value)
       }
       is AdministrableProductDefinition.Property.Value.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueDateSer, it)
         }
       }
       is AdministrableProductDefinition.Property.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueDateSer, it)
         }
       }
       is AdministrableProductDefinition.Property.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueAttachmentSer, choice.value)
       }
     }
     (value.status)?.let { encoder.encodeSerializableElement(descriptor, 11, Hoisted.typeSer, it) }

@@ -553,13 +553,13 @@ internal object TestScriptMetadataCapabilitySerializer :
       validated = R4Boolean.of(validated, _validated)!!,
       description = R4String.of(description, _description),
       origin =
-        (kotlin.collections.List(maxOf(origin?.size ?: 0, _origin?.size ?: 0)) { __i ->
-          Integer.of(origin?.getOrNull(__i)?.let { it }, _origin?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(origin?.size ?: 0, _origin?.size ?: 0)) { index ->
+          Integer.of(origin?.getOrNull(index)?.let { it }, _origin?.getOrNull(index))!!
         }),
       destination = Integer.of(destination, _destination),
       link =
-        (kotlin.collections.List(maxOf(link?.size ?: 0, _link?.size ?: 0)) { __i ->
-          Uri.of(link?.getOrNull(__i)?.let { it }, _link?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(link?.size ?: 0, _link?.size ?: 0)) { index ->
+          Uri.of(link?.getOrNull(index)?.let { it }, _link?.getOrNull(index))!!
         }),
       capabilities = Canonical.of(capabilities, _capabilities)!!,
     )

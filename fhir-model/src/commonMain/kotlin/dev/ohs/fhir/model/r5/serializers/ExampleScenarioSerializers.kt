@@ -340,17 +340,17 @@ internal object ExampleScenarioInstanceSerializer : KSerializer<ExampleScenario.
     (value.structureVersion?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.keySer, it)
     }
-    when (val __d = value.structureProfile) {
+    when (val choice = value.structureProfile) {
       null -> {}
       is ExampleScenario.Instance.StructureProfile.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.keySer, it)
         }
       }
       is ExampleScenario.Instance.StructureProfile.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.keySer, it)
         }
       }
@@ -1622,13 +1622,13 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is ExampleScenario.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1642,7 +1642,7 @@ internal object ExampleScenarioSerializer : KSerializer<ExampleScenario> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

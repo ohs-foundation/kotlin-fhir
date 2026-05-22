@@ -241,14 +241,19 @@ internal object EvidenceVariableCharacteristicSerializer :
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, it)
     }
-    when (val __d = value.definition) {
+    when (val choice = value.definition) {
       null -> {}
       is EvidenceVariable.Characteristic.Definition.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.definitionReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.definitionReferenceSer,
+          choice.value,
+        )
       }
       is EvidenceVariable.Characteristic.Definition.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.descriptionSer, it)
         }
       }
@@ -257,11 +262,16 @@ internal object EvidenceVariableCharacteristicSerializer :
           descriptor,
           8,
           Hoisted.definitionCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is EvidenceVariable.Characteristic.Definition.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.definitionExpressionSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          9,
+          Hoisted.definitionExpressionSer,
+          choice.value,
+        )
       }
     }
     (value.method)?.let {
@@ -514,16 +524,21 @@ internal object EvidenceVariableCategorySerializer : KSerializer<EvidenceVariabl
     (value.name?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is EvidenceVariable.Category.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.valueCodeableConceptSer,
+          choice.value,
+        )
       }
       is EvidenceVariable.Category.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueQuantitySer, choice.value)
       }
       is EvidenceVariable.Category.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueRangeSer, choice.value)
       }
     }
   }

@@ -153,8 +153,8 @@ internal object ClaimResponseItemSerializer : KSerializer<ClaimResponse.Item> {
       modifierExtension = modifierExtension ?: listOf(),
       itemSequence = PositiveInt.of(itemSequence, _itemSequence)!!,
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       adjudication = adjudication ?: listOf(),
       detail = detail ?: listOf(),
@@ -431,8 +431,8 @@ internal object ClaimResponseItemDetailSerializer : KSerializer<ClaimResponse.It
       modifierExtension = modifierExtension ?: listOf(),
       detailSequence = PositiveInt.of(detailSequence, _detailSequence)!!,
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       adjudication = adjudication ?: listOf(),
       subDetail = subDetail ?: listOf(),
@@ -581,8 +581,8 @@ internal object ClaimResponseItemDetailSubDetailSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       subDetailSequence = PositiveInt.of(subDetailSequence, _subDetailSequence)!!,
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       adjudication = adjudication ?: listOf(),
     )
@@ -903,24 +903,28 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       itemSequence =
-        (kotlin.collections.List(maxOf(itemSequence?.size ?: 0, _itemSequence?.size ?: 0)) { __i ->
-          PositiveInt.of(itemSequence?.getOrNull(__i)?.let { it }, _itemSequence?.getOrNull(__i))!!
-        }),
-      detailSequence =
-        (kotlin.collections.List(maxOf(detailSequence?.size ?: 0, _detailSequence?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(itemSequence?.size ?: 0, _itemSequence?.size ?: 0)) { index
           ->
           PositiveInt.of(
-            detailSequence?.getOrNull(__i)?.let { it },
-            _detailSequence?.getOrNull(__i),
+            itemSequence?.getOrNull(index)?.let { it },
+            _itemSequence?.getOrNull(index),
+          )!!
+        }),
+      detailSequence =
+        (kotlin.collections.List(maxOf(detailSequence?.size ?: 0, _detailSequence?.size ?: 0)) {
+          index ->
+          PositiveInt.of(
+            detailSequence?.getOrNull(index)?.let { it },
+            _detailSequence?.getOrNull(index),
           )!!
         }),
       subdetailSequence =
         (kotlin.collections.List(
           maxOf(subdetailSequence?.size ?: 0, _subdetailSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            subdetailSequence?.getOrNull(__i)?.let { it },
-            _subdetailSequence?.getOrNull(__i),
+            subdetailSequence?.getOrNull(index)?.let { it },
+            _subdetailSequence?.getOrNull(index),
           )!!
         }),
       provider = provider ?: listOf(),
@@ -945,8 +949,8 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       bodySite = bodySite,
       subSite = subSite ?: listOf(),
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       adjudication = adjudication ?: listOf(),
       detail = detail ?: listOf(),
@@ -991,28 +995,28 @@ internal object ClaimResponseAddItemSerializer : KSerializer<ClaimResponse.AddIt
       encoder.encodeSerializableElement(descriptor, 11, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.modifierSer, value.programCode)
-    when (val __d = value.serviced) {
+    when (val choice = value.serviced) {
       null -> {}
       is ClaimResponse.AddItem.Serviced.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.itemSequenceSerInner2, it)
         }
       }
       is ClaimResponse.AddItem.Serviced.Period -> {
-        encoder.encodeSerializableElement(descriptor, 15, Hoisted.servicedPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 15, Hoisted.servicedPeriodSer, choice.value)
       }
     }
-    when (val __d = value.location) {
+    when (val choice = value.location) {
       null -> {}
       is ClaimResponse.AddItem.Location.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 16, Hoisted.productOrServiceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 16, Hoisted.productOrServiceSer, choice.value)
       }
       is ClaimResponse.AddItem.Location.Address -> {
-        encoder.encodeSerializableElement(descriptor, 17, Hoisted.locationAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 17, Hoisted.locationAddressSer, choice.value)
       }
       is ClaimResponse.AddItem.Location.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 18, Hoisted.providerSerInner, __d.value)
+        encoder.encodeSerializableElement(descriptor, 18, Hoisted.providerSerInner, choice.value)
       }
     }
     (value.quantity)?.let {
@@ -1222,8 +1226,8 @@ internal object ClaimResponseAddItemDetailSerializer : KSerializer<ClaimResponse
       factor = Decimal.of(factor, _factor),
       net = net,
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       adjudication = adjudication ?: listOf(),
       subDetail = subDetail ?: listOf(),
@@ -1432,8 +1436,8 @@ internal object ClaimResponseAddItemDetailSubDetailSerializer :
       factor = Decimal.of(factor, _factor),
       net = net,
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       adjudication = adjudication ?: listOf(),
     )

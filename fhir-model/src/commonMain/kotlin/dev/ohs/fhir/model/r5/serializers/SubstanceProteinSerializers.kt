@@ -381,10 +381,10 @@ internal object SubstanceProteinSerializer : KSerializer<SubstanceProtein> {
       disulfideLinkage =
         (kotlin.collections.List(
           maxOf(disulfideLinkage?.size ?: 0, _disulfideLinkage?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           R5String.of(
-            disulfideLinkage?.getOrNull(__i)?.let { it },
-            _disulfideLinkage?.getOrNull(__i),
+            disulfideLinkage?.getOrNull(index)?.let { it },
+            _disulfideLinkage?.getOrNull(index),
           )!!
         }),
       subunit = subunit ?: listOf(),

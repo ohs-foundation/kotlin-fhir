@@ -487,16 +487,19 @@ internal object CarePlanSerializer : KSerializer<CarePlan> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),

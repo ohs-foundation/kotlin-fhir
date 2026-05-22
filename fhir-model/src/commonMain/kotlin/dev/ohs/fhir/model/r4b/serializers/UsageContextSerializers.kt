@@ -132,19 +132,24 @@ internal object UsageContextSerializer : KSerializer<UsageContext> {
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 2, Hoisted.codeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is UsageContext.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          3,
+          Hoisted.valueCodeableConceptSer,
+          choice.value,
+        )
       }
       is UsageContext.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
       is UsageContext.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueRangeSer, choice.value)
       }
       is UsageContext.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueReferenceSer, choice.value)
       }
     }
   }

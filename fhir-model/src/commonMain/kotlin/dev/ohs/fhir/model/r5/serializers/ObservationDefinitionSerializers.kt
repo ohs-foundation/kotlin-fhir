@@ -390,10 +390,12 @@ internal object ObservationDefinitionComponentSerializer :
       permittedDataType =
         (kotlin.collections.List(
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Enumeration.of(
-            ObservationDefinition.ObservationDataType.fromCode(permittedDataType?.getOrNull(__i)!!),
-            _permittedDataType?.getOrNull(__i),
+            ObservationDefinition.ObservationDataType.fromCode(
+              permittedDataType?.getOrNull(index)!!
+            ),
+            _permittedDataType?.getOrNull(index),
           )
         }),
       permittedUnit = permittedUnit ?: listOf(),
@@ -979,16 +981,16 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       derivedFromCanonical =
         (kotlin.collections.List(
           maxOf(derivedFromCanonical?.size ?: 0, _derivedFromCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            derivedFromCanonical?.getOrNull(__i)?.let { it },
-            _derivedFromCanonical?.getOrNull(__i),
+            derivedFromCanonical?.getOrNull(index)?.let { it },
+            _derivedFromCanonical?.getOrNull(index),
           )!!
         }),
       derivedFromUri =
-        (kotlin.collections.List(maxOf(derivedFromUri?.size ?: 0, _derivedFromUri?.size ?: 0)) { __i
-          ->
-          Uri.of(derivedFromUri?.getOrNull(__i)?.let { it }, _derivedFromUri?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(derivedFromUri?.size ?: 0, _derivedFromUri?.size ?: 0)) {
+          index ->
+          Uri.of(derivedFromUri?.getOrNull(index)?.let { it }, _derivedFromUri?.getOrNull(index))!!
         }),
       subject = subject ?: listOf(),
       performerType = performerType,
@@ -997,10 +999,12 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       permittedDataType =
         (kotlin.collections.List(
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Enumeration.of(
-            ObservationDefinition.ObservationDataType.fromCode(permittedDataType?.getOrNull(__i)!!),
-            _permittedDataType?.getOrNull(__i),
+            ObservationDefinition.ObservationDataType.fromCode(
+              permittedDataType?.getOrNull(index)!!
+            ),
+            _permittedDataType?.getOrNull(index),
           )
         }),
       multipleResultsAllowed = R5Boolean.of(multipleResultsAllowed, _multipleResultsAllowed),
@@ -1100,13 +1104,13 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is ObservationDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1120,7 +1124,7 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

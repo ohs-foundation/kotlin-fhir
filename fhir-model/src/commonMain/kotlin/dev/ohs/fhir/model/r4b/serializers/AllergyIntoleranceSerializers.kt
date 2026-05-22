@@ -467,10 +467,10 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
       type =
         type?.let { Enumeration.of(AllergyIntolerance.AllergyIntoleranceType.fromCode(it), _type) },
       category =
-        (kotlin.collections.List(maxOf(category?.size ?: 0, _category?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(category?.size ?: 0, _category?.size ?: 0)) { index ->
           Enumeration.of(
-            AllergyIntolerance.AllergyIntoleranceCategory.fromCode(category?.getOrNull(__i)!!),
-            _category?.getOrNull(__i),
+            AllergyIntolerance.AllergyIntoleranceCategory.fromCode(category?.getOrNull(index)!!),
+            _category?.getOrNull(index),
           )
         }),
       criticality =
@@ -621,13 +621,13 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 21 + descriptorOffset, Hoisted.patientSer, it)
     }
-    when (val __d = value.onset) {
+    when (val choice = value.onset) {
       null -> {}
       is AllergyIntolerance.Onset.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             23 + descriptorOffset,
@@ -641,7 +641,7 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
           descriptor,
           24 + descriptorOffset,
           Hoisted.onsetAgeSer,
-          __d.value,
+          choice.value,
         )
       }
       is AllergyIntolerance.Onset.Period -> {
@@ -649,7 +649,7 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
           descriptor,
           25 + descriptorOffset,
           Hoisted.onsetPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is AllergyIntolerance.Onset.Range -> {
@@ -657,14 +657,14 @@ internal object AllergyIntoleranceSerializer : KSerializer<AllergyIntolerance> {
           descriptor,
           26 + descriptorOffset,
           Hoisted.onsetRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is AllergyIntolerance.Onset.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             28 + descriptorOffset,

@@ -580,14 +580,14 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
         it,
       )
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is EventDefinition.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           25 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is EventDefinition.Subject.Reference -> {
@@ -595,7 +595,7 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
           descriptor,
           26 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

@@ -686,16 +686,19 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
@@ -876,13 +879,13 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
         it,
       )
     }
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is NutritionIntake.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             24 + descriptorOffset,
@@ -896,7 +899,7 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
           descriptor,
           25 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -911,13 +914,13 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
         it,
       )
     }
-    when (val __d = value.reported) {
+    when (val choice = value.reported) {
       null -> {}
       is NutritionIntake.Reported.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 28 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             29 + descriptorOffset,
@@ -931,7 +934,7 @@ internal object NutritionIntakeSerializer : KSerializer<NutritionIntake> {
           descriptor,
           30 + descriptorOffset,
           Hoisted.basedOnSerInner,
-          __d.value,
+          choice.value,
         )
       }
     }

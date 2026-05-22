@@ -489,13 +489,13 @@ internal object TerminologyCapabilitiesCodeSystemVersionSerializer :
       isDefault = R4Boolean.of(isDefault, _isDefault),
       compositional = R4Boolean.of(compositional, _compositional),
       language =
-        (kotlin.collections.List(maxOf(language?.size ?: 0, _language?.size ?: 0)) { __i ->
-          Code.of(language?.getOrNull(__i)?.let { it }, _language?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(language?.size ?: 0, _language?.size ?: 0)) { index ->
+          Code.of(language?.getOrNull(index)?.let { it }, _language?.getOrNull(index))!!
         }),
       filter = filter ?: listOf(),
       `property` =
-        (kotlin.collections.List(maxOf(`property`?.size ?: 0, _property?.size ?: 0)) { __i ->
-          Code.of(`property`?.getOrNull(__i)?.let { it }, _property?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(`property`?.size ?: 0, _property?.size ?: 0)) { index ->
+          Code.of(`property`?.getOrNull(index)?.let { it }, _property?.getOrNull(index))!!
         }),
     )
   }
@@ -630,8 +630,8 @@ internal object TerminologyCapabilitiesCodeSystemVersionFilterSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       code = Code.of(code, _code)!!,
       op =
-        (kotlin.collections.List(maxOf(op?.size ?: 0, _op?.size ?: 0)) { __i ->
-          Code.of(op?.getOrNull(__i)?.let { it }, _op?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(op?.size ?: 0, _op?.size ?: 0)) { index ->
+          Code.of(op?.getOrNull(index)?.let { it }, _op?.getOrNull(index))!!
         }),
     )
   }

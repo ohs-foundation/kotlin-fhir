@@ -304,32 +304,32 @@ internal object ImmunizationRecommendationRecommendationSerializer :
     (value.series?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 12, Hoisted.descriptionSer, it)
     }
-    when (val __d = value.doseNumber) {
+    when (val choice = value.doseNumber) {
       null -> {}
       is ImmunizationRecommendation.Recommendation.DoseNumber.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 13, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 13, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.descriptionSer, it)
         }
       }
       is ImmunizationRecommendation.Recommendation.DoseNumber.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.descriptionSer, it)
         }
       }
     }
-    when (val __d = value.seriesDoses) {
+    when (val choice = value.seriesDoses) {
       null -> {}
       is ImmunizationRecommendation.Recommendation.SeriesDoses.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.descriptionSer, it)
         }
       }
       is ImmunizationRecommendation.Recommendation.SeriesDoses.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 19, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 19, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 20, Hoisted.descriptionSer, it)
         }
       }

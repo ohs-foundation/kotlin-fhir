@@ -419,8 +419,8 @@ internal object CapabilityStatementRestSerializer : KSerializer<CapabilityStatem
       searchParam = searchParam ?: listOf(),
       operation = operation ?: listOf(),
       compartment =
-        (kotlin.collections.List(maxOf(compartment?.size ?: 0, _compartment?.size ?: 0)) { __i ->
-          Canonical.of(compartment?.getOrNull(__i)?.let { it }, _compartment?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(compartment?.size ?: 0, _compartment?.size ?: 0)) { index ->
+          Canonical.of(compartment?.getOrNull(index)?.let { it }, _compartment?.getOrNull(index))!!
         }),
     )
   }
@@ -895,10 +895,10 @@ internal object CapabilityStatementRestResourceSerializer :
       supportedProfile =
         (kotlin.collections.List(
           maxOf(supportedProfile?.size ?: 0, _supportedProfile?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            supportedProfile?.getOrNull(__i)?.let { it },
-            _supportedProfile?.getOrNull(__i),
+            supportedProfile?.getOrNull(index)?.let { it },
+            _supportedProfile?.getOrNull(index),
           )!!
         }),
       documentation = Markdown.of(documentation, _documentation),
@@ -924,24 +924,29 @@ internal object CapabilityStatementRestResourceSerializer :
         },
       referencePolicy =
         (kotlin.collections.List(maxOf(referencePolicy?.size ?: 0, _referencePolicy?.size ?: 0)) {
-          __i ->
+          index ->
           Enumeration.of(
-            CapabilityStatement.ReferenceHandlingPolicy.fromCode(referencePolicy?.getOrNull(__i)!!),
-            _referencePolicy?.getOrNull(__i),
+            CapabilityStatement.ReferenceHandlingPolicy.fromCode(
+              referencePolicy?.getOrNull(index)!!
+            ),
+            _referencePolicy?.getOrNull(index),
           )
         }),
       searchInclude =
-        (kotlin.collections.List(maxOf(searchInclude?.size ?: 0, _searchInclude?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(searchInclude?.size ?: 0, _searchInclude?.size ?: 0)) { index
           ->
-          R4bString.of(searchInclude?.getOrNull(__i)?.let { it }, _searchInclude?.getOrNull(__i))!!
+          R4bString.of(
+            searchInclude?.getOrNull(index)?.let { it },
+            _searchInclude?.getOrNull(index),
+          )!!
         }),
       searchRevInclude =
         (kotlin.collections.List(
           maxOf(searchRevInclude?.size ?: 0, _searchRevInclude?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           R4bString.of(
-            searchRevInclude?.getOrNull(__i)?.let { it },
-            _searchRevInclude?.getOrNull(__i),
+            searchRevInclude?.getOrNull(index)?.let { it },
+            _searchRevInclude?.getOrNull(index),
           )!!
         }),
       searchParam = searchParam ?: listOf(),
@@ -2341,31 +2346,35 @@ internal object CapabilityStatementSerializer : KSerializer<CapabilityStatement>
       copyright = Markdown.of(copyright, _copyright),
       kind = Enumeration.of(CapabilityStatement.CapabilityStatementKind.fromCode(kind!!), _kind),
       instantiates =
-        (kotlin.collections.List(maxOf(instantiates?.size ?: 0, _instantiates?.size ?: 0)) { __i ->
-          Canonical.of(instantiates?.getOrNull(__i)?.let { it }, _instantiates?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(instantiates?.size ?: 0, _instantiates?.size ?: 0)) { index
+          ->
+          Canonical.of(
+            instantiates?.getOrNull(index)?.let { it },
+            _instantiates?.getOrNull(index),
+          )!!
         }),
       imports =
-        (kotlin.collections.List(maxOf(imports?.size ?: 0, _imports?.size ?: 0)) { __i ->
-          Canonical.of(imports?.getOrNull(__i)?.let { it }, _imports?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(imports?.size ?: 0, _imports?.size ?: 0)) { index ->
+          Canonical.of(imports?.getOrNull(index)?.let { it }, _imports?.getOrNull(index))!!
         }),
       software = software,
       implementation = implementation,
       fhirVersion = Enumeration.of(FHIRVersion.fromCode(fhirVersion!!), _fhirVersion),
       format =
-        (kotlin.collections.List(maxOf(format?.size ?: 0, _format?.size ?: 0)) { __i ->
-          Code.of(format?.getOrNull(__i)?.let { it }, _format?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(format?.size ?: 0, _format?.size ?: 0)) { index ->
+          Code.of(format?.getOrNull(index)?.let { it }, _format?.getOrNull(index))!!
         }),
       patchFormat =
-        (kotlin.collections.List(maxOf(patchFormat?.size ?: 0, _patchFormat?.size ?: 0)) { __i ->
-          Code.of(patchFormat?.getOrNull(__i)?.let { it }, _patchFormat?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(patchFormat?.size ?: 0, _patchFormat?.size ?: 0)) { index ->
+          Code.of(patchFormat?.getOrNull(index)?.let { it }, _patchFormat?.getOrNull(index))!!
         }),
       implementationGuide =
         (kotlin.collections.List(
           maxOf(implementationGuide?.size ?: 0, _implementationGuide?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            implementationGuide?.getOrNull(__i)?.let { it },
-            _implementationGuide?.getOrNull(__i),
+            implementationGuide?.getOrNull(index)?.let { it },
+            _implementationGuide?.getOrNull(index),
           )!!
         }),
       rest = rest ?: listOf(),

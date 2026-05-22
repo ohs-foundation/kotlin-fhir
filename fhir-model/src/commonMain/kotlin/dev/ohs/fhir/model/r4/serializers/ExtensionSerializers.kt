@@ -803,217 +803,227 @@ internal object ExtensionSerializer : KSerializer<Extension> {
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
     (value.url)?.let { encoder.encodeStringElement(descriptor, 2, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Extension.Value.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 15, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 19, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 19, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 20, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 21, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 21, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 22, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Markdown -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 23, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 23, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 24, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Oid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 25, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 25, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 26, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 27, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 27, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 28, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 29, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 29, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 30, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 31, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 32, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 33, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 33, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 34, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 35, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 35, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 36, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 37, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 37, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 38, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Uuid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 39, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 39, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 40, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Extension.Value.Address -> {
-        encoder.encodeSerializableElement(descriptor, 41, Hoisted.valueAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 41, Hoisted.valueAddressSer, choice.value)
       }
       is Extension.Value.Age -> {
-        encoder.encodeSerializableElement(descriptor, 42, Hoisted.valueAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 42, Hoisted.valueAgeSer, choice.value)
       }
       is Extension.Value.Annotation -> {
-        encoder.encodeSerializableElement(descriptor, 43, Hoisted.valueAnnotationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 43, Hoisted.valueAnnotationSer, choice.value)
       }
       is Extension.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 44, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 44, Hoisted.valueAttachmentSer, choice.value)
       }
       is Extension.Value.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           45,
           Hoisted.valueCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is Extension.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 46, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 46, Hoisted.valueCodingSer, choice.value)
       }
       is Extension.Value.ContactPoint -> {
-        encoder.encodeSerializableElement(descriptor, 47, Hoisted.valueContactPointSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          47,
+          Hoisted.valueContactPointSer,
+          choice.value,
+        )
       }
       is Extension.Value.Count -> {
-        encoder.encodeSerializableElement(descriptor, 48, Hoisted.valueCountSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 48, Hoisted.valueCountSer, choice.value)
       }
       is Extension.Value.Distance -> {
-        encoder.encodeSerializableElement(descriptor, 49, Hoisted.valueDistanceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 49, Hoisted.valueDistanceSer, choice.value)
       }
       is Extension.Value.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 50, Hoisted.valueDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 50, Hoisted.valueDurationSer, choice.value)
       }
       is Extension.Value.HumanName -> {
-        encoder.encodeSerializableElement(descriptor, 51, Hoisted.valueHumanNameSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 51, Hoisted.valueHumanNameSer, choice.value)
       }
       is Extension.Value.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 52, Hoisted.valueIdentifierSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 52, Hoisted.valueIdentifierSer, choice.value)
       }
       is Extension.Value.Money -> {
-        encoder.encodeSerializableElement(descriptor, 53, Hoisted.valueMoneySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 53, Hoisted.valueMoneySer, choice.value)
       }
       is Extension.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 54, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 54, Hoisted.valuePeriodSer, choice.value)
       }
       is Extension.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 55, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 55, Hoisted.valueQuantitySer, choice.value)
       }
       is Extension.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 56, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 56, Hoisted.valueRangeSer, choice.value)
       }
       is Extension.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 57, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 57, Hoisted.valueRatioSer, choice.value)
       }
       is Extension.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 58, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 58, Hoisted.valueReferenceSer, choice.value)
       }
       is Extension.Value.SampledData -> {
-        encoder.encodeSerializableElement(descriptor, 59, Hoisted.valueSampledDataSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 59, Hoisted.valueSampledDataSer, choice.value)
       }
       is Extension.Value.Signature -> {
-        encoder.encodeSerializableElement(descriptor, 60, Hoisted.valueSignatureSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 60, Hoisted.valueSignatureSer, choice.value)
       }
       is Extension.Value.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 61, Hoisted.valueTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 61, Hoisted.valueTimingSer, choice.value)
       }
       is Extension.Value.ContactDetail -> {
-        encoder.encodeSerializableElement(descriptor, 62, Hoisted.valueContactDetailSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          62,
+          Hoisted.valueContactDetailSer,
+          choice.value,
+        )
       }
       is Extension.Value.Contributor -> {
-        encoder.encodeSerializableElement(descriptor, 63, Hoisted.valueContributorSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 63, Hoisted.valueContributorSer, choice.value)
       }
       is Extension.Value.DataRequirement -> {
         encoder.encodeSerializableElement(
           descriptor,
           64,
           Hoisted.valueDataRequirementSer,
-          __d.value,
+          choice.value,
         )
       }
       is Extension.Value.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 65, Hoisted.valueExpressionSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 65, Hoisted.valueExpressionSer, choice.value)
       }
       is Extension.Value.ParameterDefinition -> {
         encoder.encodeSerializableElement(
           descriptor,
           66,
           Hoisted.valueParameterDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is Extension.Value.RelatedArtifact -> {
@@ -1021,7 +1031,7 @@ internal object ExtensionSerializer : KSerializer<Extension> {
           descriptor,
           67,
           Hoisted.valueRelatedArtifactSer,
-          __d.value,
+          choice.value,
         )
       }
       is Extension.Value.TriggerDefinition -> {
@@ -1029,17 +1039,22 @@ internal object ExtensionSerializer : KSerializer<Extension> {
           descriptor,
           68,
           Hoisted.valueTriggerDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is Extension.Value.UsageContext -> {
-        encoder.encodeSerializableElement(descriptor, 69, Hoisted.valueUsageContextSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          69,
+          Hoisted.valueUsageContextSer,
+          choice.value,
+        )
       }
       is Extension.Value.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 70, Hoisted.valueDosageSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 70, Hoisted.valueDosageSer, choice.value)
       }
       is Extension.Value.Meta -> {
-        encoder.encodeSerializableElement(descriptor, 71, Hoisted.valueMetaSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 71, Hoisted.valueMetaSer, choice.value)
       }
     }
   }

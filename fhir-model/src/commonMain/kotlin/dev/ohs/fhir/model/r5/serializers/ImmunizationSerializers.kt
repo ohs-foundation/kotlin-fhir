@@ -999,13 +999,13 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
         Hoisted.basedOnSer,
         value.supportingInformation,
       )
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is Immunization.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 25 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             26 + descriptorOffset,
@@ -1015,10 +1015,10 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
         }
       }
       is Immunization.Occurrence.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             28 + descriptorOffset,

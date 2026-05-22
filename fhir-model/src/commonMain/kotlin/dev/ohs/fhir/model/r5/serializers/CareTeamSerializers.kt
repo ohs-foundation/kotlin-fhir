@@ -154,13 +154,13 @@ internal object CareTeamParticipantSerializer : KSerializer<CareTeam.Participant
     (value.onBehalfOf)?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.memberSer, it)
     }
-    when (val __d = value.coverage) {
+    when (val choice = value.coverage) {
       null -> {}
       is CareTeam.Participant.Coverage.Period -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.coveragePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.coveragePeriodSer, choice.value)
       }
       is CareTeam.Participant.Coverage.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.coverageTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.coverageTimingSer, choice.value)
       }
     }
   }

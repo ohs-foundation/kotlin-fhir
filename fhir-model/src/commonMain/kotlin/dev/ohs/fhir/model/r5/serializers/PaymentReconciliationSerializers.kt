@@ -239,20 +239,20 @@ internal object PaymentReconciliationAllocationSerializer :
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.identifierSer, it)
     }
     (value.target)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.targetSer, it) }
-    when (val __d = value.targetItem) {
+    when (val choice = value.targetItem) {
       null -> {}
       is PaymentReconciliation.Allocation.TargetItem.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.targetItemStringSer, it)
         }
       }
       is PaymentReconciliation.Allocation.TargetItem.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.identifierSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.identifierSer, choice.value)
       }
       is PaymentReconciliation.Allocation.TargetItem.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.targetItemStringSer, it)
         }
       }

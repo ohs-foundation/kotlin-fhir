@@ -314,8 +314,8 @@ internal object MeasureGroupSerializer : KSerializer<Measure.Group> {
       rateAggregation = Markdown.of(rateAggregation, _rateAggregation),
       improvementNotation = improvementNotation,
       library =
-        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { __i ->
-          Canonical.of(library?.getOrNull(__i)?.let { it }, _library?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
+          Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
       population = population ?: listOf(),
       stratifier = stratifier ?: listOf(),
@@ -344,13 +344,13 @@ internal object MeasureGroupSerializer : KSerializer<Measure.Group> {
     }
     if (value.type.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, value.type)
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is Measure.Group.Subject.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.codeSer, choice.value)
       }
       is Measure.Group.Subject.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.subjectReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.subjectReferenceSer, choice.value)
       }
     }
     ((value.basis?.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
@@ -1535,8 +1535,8 @@ internal object MeasureSerializer : KSerializer<Measure> {
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
       library =
-        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { __i ->
-          Canonical.of(library?.getOrNull(__i)?.let { it }, _library?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
+          Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
       disclaimer = Markdown.of(disclaimer, _disclaimer),
       scoring = scoring,
@@ -1639,13 +1639,13 @@ internal object MeasureSerializer : KSerializer<Measure> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is Measure.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1659,7 +1659,7 @@ internal object MeasureSerializer : KSerializer<Measure> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -1718,14 +1718,14 @@ internal object MeasureSerializer : KSerializer<Measure> {
         it,
       )
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is Measure.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           28 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is Measure.Subject.Reference -> {
@@ -1733,7 +1733,7 @@ internal object MeasureSerializer : KSerializer<Measure> {
           descriptor,
           29 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

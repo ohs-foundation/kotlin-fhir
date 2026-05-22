@@ -121,8 +121,8 @@ internal object EndpointPayloadSerializer : KSerializer<Endpoint.Payload> {
       modifierExtension = modifierExtension ?: listOf(),
       type = type ?: listOf(),
       mimeType =
-        (kotlin.collections.List(maxOf(mimeType?.size ?: 0, _mimeType?.size ?: 0)) { __i ->
-          Code.of(mimeType?.getOrNull(__i)?.let { it }, _mimeType?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(mimeType?.size ?: 0, _mimeType?.size ?: 0)) { index ->
+          Code.of(mimeType?.getOrNull(index)?.let { it }, _mimeType?.getOrNull(index))!!
         }),
     )
   }
@@ -391,8 +391,8 @@ internal object EndpointSerializer : KSerializer<Endpoint> {
       payload = payload ?: listOf(),
       address = Url.of(address, _address)!!,
       `header` =
-        (kotlin.collections.List(maxOf(`header`?.size ?: 0, _header?.size ?: 0)) { __i ->
-          R5String.of(`header`?.getOrNull(__i)?.let { it }, _header?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(`header`?.size ?: 0, _header?.size ?: 0)) { index ->
+          R5String.of(`header`?.getOrNull(index)?.let { it }, _header?.getOrNull(index))!!
         }),
     )
   }

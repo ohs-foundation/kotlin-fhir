@@ -211,10 +211,10 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
       key = Id.of(key, _key)!!,
       label = R5String.of(label, _label),
       conformance =
-        (kotlin.collections.List(maxOf(conformance?.size ?: 0, _conformance?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(conformance?.size ?: 0, _conformance?.size ?: 0)) { index ->
           Enumeration.of(
-            Requirements.ConformanceExpectation.fromCode(conformance?.getOrNull(__i)!!),
-            _conformance?.getOrNull(__i),
+            Requirements.ConformanceExpectation.fromCode(conformance?.getOrNull(index)!!),
+            _conformance?.getOrNull(index),
           )
         }),
       conditionality = R5Boolean.of(conditionality, _conditionality),
@@ -222,12 +222,12 @@ internal object RequirementsStatementSerializer : KSerializer<Requirements.State
       derivedFrom = R5String.of(derivedFrom, _derivedFrom),
       parent = R5String.of(parent, _parent),
       satisfiedBy =
-        (kotlin.collections.List(maxOf(satisfiedBy?.size ?: 0, _satisfiedBy?.size ?: 0)) { __i ->
-          Url.of(satisfiedBy?.getOrNull(__i)?.let { it }, _satisfiedBy?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(satisfiedBy?.size ?: 0, _satisfiedBy?.size ?: 0)) { index ->
+          Url.of(satisfiedBy?.getOrNull(index)?.let { it }, _satisfiedBy?.getOrNull(index))!!
         }),
       reference =
-        (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { __i ->
-          Url.of(reference?.getOrNull(__i)?.let { it }, _reference?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { index ->
+          Url.of(reference?.getOrNull(index)?.let { it }, _reference?.getOrNull(index))!!
         }),
       source = source ?: listOf(),
     )
@@ -637,16 +637,16 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
       copyright = Markdown.of(copyright, _copyright),
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       derivedFrom =
-        (kotlin.collections.List(maxOf(derivedFrom?.size ?: 0, _derivedFrom?.size ?: 0)) { __i ->
-          Canonical.of(derivedFrom?.getOrNull(__i)?.let { it }, _derivedFrom?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(derivedFrom?.size ?: 0, _derivedFrom?.size ?: 0)) { index ->
+          Canonical.of(derivedFrom?.getOrNull(index)?.let { it }, _derivedFrom?.getOrNull(index))!!
         }),
       reference =
-        (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { __i ->
-          Url.of(reference?.getOrNull(__i)?.let { it }, _reference?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { index ->
+          Url.of(reference?.getOrNull(index)?.let { it }, _reference?.getOrNull(index))!!
         }),
       actor =
-        (kotlin.collections.List(maxOf(actor?.size ?: 0, _actor?.size ?: 0)) { __i ->
-          Canonical.of(actor?.getOrNull(__i)?.let { it }, _actor?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(actor?.size ?: 0, _actor?.size ?: 0)) { index ->
+          Canonical.of(actor?.getOrNull(index)?.let { it }, _actor?.getOrNull(index))!!
         }),
       statement = statement ?: listOf(),
     )
@@ -735,13 +735,13 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is Requirements.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -755,7 +755,7 @@ internal object RequirementsSerializer : KSerializer<Requirements> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

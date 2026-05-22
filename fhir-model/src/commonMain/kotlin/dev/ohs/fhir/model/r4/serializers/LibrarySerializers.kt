@@ -609,14 +609,14 @@ internal object LibrarySerializer : KSerializer<Library> {
     (value.type)?.let {
       encoder.encodeSerializableElement(descriptor, 25 + descriptorOffset, Hoisted.typeSer, it)
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is Library.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           26 + descriptorOffset,
           Hoisted.typeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Library.Subject.Reference -> {
@@ -624,7 +624,7 @@ internal object LibrarySerializer : KSerializer<Library> {
           descriptor,
           27 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

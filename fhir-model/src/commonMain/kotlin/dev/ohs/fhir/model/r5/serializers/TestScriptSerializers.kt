@@ -575,13 +575,13 @@ internal object TestScriptMetadataCapabilitySerializer :
       validated = R5Boolean.of(validated, _validated)!!,
       description = R5String.of(description, _description),
       origin =
-        (kotlin.collections.List(maxOf(origin?.size ?: 0, _origin?.size ?: 0)) { __i ->
-          Integer.of(origin?.getOrNull(__i)?.let { it }, _origin?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(origin?.size ?: 0, _origin?.size ?: 0)) { index ->
+          Integer.of(origin?.getOrNull(index)?.let { it }, _origin?.getOrNull(index))!!
         }),
       destination = Integer.of(destination, _destination),
       link =
-        (kotlin.collections.List(maxOf(link?.size ?: 0, _link?.size ?: 0)) { __i ->
-          Uri.of(link?.getOrNull(__i)?.let { it }, _link?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(link?.size ?: 0, _link?.size ?: 0)) { index ->
+          Uri.of(link?.getOrNull(index)?.let { it }, _link?.getOrNull(index))!!
         }),
       capabilities = Canonical.of(capabilities, _capabilities)!!,
     )
@@ -2138,17 +2138,17 @@ internal object TestScriptSetupActionAssertRequirementSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.link) {
+    when (val choice = value.link) {
       null -> {}
       is TestScript.Setup.Action.Assert.Requirement.Link.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.linkUriSer, it)
         }
       }
       is TestScript.Setup.Action.Assert.Requirement.Link.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.linkUriSer, it)
         }
       }
@@ -2903,8 +2903,8 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
       scope = scope ?: listOf(),
       fixture = fixture ?: listOf(),
       profile =
-        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { __i ->
-          Canonical.of(profile?.getOrNull(__i)?.let { it }, _profile?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
+          Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!
         }),
       variable = variable ?: listOf(),
       setup = setup,
@@ -2996,13 +2996,13 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is TestScript.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -3016,7 +3016,7 @@ internal object TestScriptSerializer : KSerializer<TestScript> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

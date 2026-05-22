@@ -317,14 +317,19 @@ internal object EvidenceVariableCharacteristicSerializer :
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, it)
     }
-    when (val __d = value.definition) {
+    when (val choice = value.definition) {
       null -> {}
       is EvidenceVariable.Characteristic.Definition.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.definitionReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.definitionReferenceSer,
+          choice.value,
+        )
       }
       is EvidenceVariable.Characteristic.Definition.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.descriptionSer, it)
         }
       }
@@ -333,18 +338,23 @@ internal object EvidenceVariableCharacteristicSerializer :
           descriptor,
           8,
           Hoisted.definitionCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is EvidenceVariable.Characteristic.Definition.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.definitionExpressionSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          9,
+          Hoisted.definitionExpressionSer,
+          choice.value,
+        )
       }
       is EvidenceVariable.Characteristic.Definition.DataRequirement -> {
         encoder.encodeSerializableElement(
           descriptor,
           10,
           Hoisted.definitionDataRequirementSer,
-          __d.value,
+          choice.value,
         )
       }
       is EvidenceVariable.Characteristic.Definition.TriggerDefinition -> {
@@ -352,7 +362,7 @@ internal object EvidenceVariableCharacteristicSerializer :
           descriptor,
           11,
           Hoisted.definitionTriggerDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -362,11 +372,11 @@ internal object EvidenceVariableCharacteristicSerializer :
     (value.exclude?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 14, Hoisted.descriptionSer, it)
     }
-    when (val __d = value.participantEffective) {
+    when (val choice = value.participantEffective) {
       null -> {}
       is EvidenceVariable.Characteristic.ParticipantEffective.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 15, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.descriptionSer, it)
         }
       }
@@ -375,7 +385,7 @@ internal object EvidenceVariableCharacteristicSerializer :
           descriptor,
           17,
           Hoisted.participantEffectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is EvidenceVariable.Characteristic.ParticipantEffective.Duration -> {
@@ -383,7 +393,7 @@ internal object EvidenceVariableCharacteristicSerializer :
           descriptor,
           18,
           Hoisted.participantEffectiveDurationSer,
-          __d.value,
+          choice.value,
         )
       }
       is EvidenceVariable.Characteristic.ParticipantEffective.Timing -> {
@@ -391,7 +401,7 @@ internal object EvidenceVariableCharacteristicSerializer :
           descriptor,
           19,
           Hoisted.participantEffectiveTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

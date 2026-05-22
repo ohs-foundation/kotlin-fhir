@@ -150,18 +150,23 @@ internal object SubstanceIngredientSerializer : KSerializer<Substance.Ingredient
     (value.quantity)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.quantitySer, it)
     }
-    when (val __d = value.substance) {
+    when (val choice = value.substance) {
       null -> {}
       is Substance.Ingredient.Substance.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           4,
           Hoisted.substanceCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is Substance.Ingredient.Substance.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.substanceReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.substanceReferenceSer,
+          choice.value,
+        )
       }
     }
   }

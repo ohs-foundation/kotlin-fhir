@@ -253,13 +253,13 @@ internal object MedicationAdministrationDosageSerializer :
     (value.route)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.siteSer, it) }
     (value.method)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.siteSer, it) }
     (value.dose)?.let { encoder.encodeSerializableElement(descriptor, 8, Hoisted.doseSer, it) }
-    when (val __d = value.rate) {
+    when (val choice = value.rate) {
       null -> {}
       is MedicationAdministration.Dosage.Rate.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.rateRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.rateRatioSer, choice.value)
       }
       is MedicationAdministration.Dosage.Rate.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.doseSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.doseSer, choice.value)
       }
     }
   }
@@ -549,8 +549,9 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
       modifierExtension = modifierExtension ?: listOf(),
       identifier = identifier ?: listOf(),
       instantiates =
-        (kotlin.collections.List(maxOf(instantiates?.size ?: 0, _instantiates?.size ?: 0)) { __i ->
-          Uri.of(instantiates?.getOrNull(__i)?.let { it }, _instantiates?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(instantiates?.size ?: 0, _instantiates?.size ?: 0)) { index
+          ->
+          Uri.of(instantiates?.getOrNull(index)?.let { it }, _instantiates?.getOrNull(index))!!
         }),
       partOf = partOf ?: listOf(),
       status =
@@ -693,14 +694,14 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
         it,
       )
     }
-    when (val __d = value.medication) {
+    when (val choice = value.medication) {
       null -> {}
       is MedicationAdministration.Medication.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           18 + descriptorOffset,
           Hoisted.statusReasonSerInner,
-          __d.value,
+          choice.value,
         )
       }
       is MedicationAdministration.Medication.Reference -> {
@@ -708,7 +709,7 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
           descriptor,
           19 + descriptorOffset,
           Hoisted.partOfSerInner,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -735,13 +736,13 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
         Hoisted.partOfSer,
         value.supportingInformation,
       )
-    when (val __d = value.effective) {
+    when (val choice = value.effective) {
       null -> {}
       is MedicationAdministration.Effective.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             24 + descriptorOffset,
@@ -755,7 +756,7 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
           descriptor,
           25 + descriptorOffset,
           Hoisted.effectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

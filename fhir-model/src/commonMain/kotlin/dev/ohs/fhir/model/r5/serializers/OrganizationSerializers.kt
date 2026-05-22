@@ -345,8 +345,8 @@ internal object OrganizationSerializer : KSerializer<Organization> {
       type = type ?: listOf(),
       name = R5String.of(name, _name),
       alias =
-        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { __i ->
-          R5String.of(alias?.getOrNull(__i)?.let { it }, _alias?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
+          R5String.of(alias?.getOrNull(index)?.let { it }, _alias?.getOrNull(index))!!
         }),
       description = Markdown.of(description, _description),
       contact = contact ?: listOf(),

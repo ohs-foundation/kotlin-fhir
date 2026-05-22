@@ -164,21 +164,21 @@ internal object MedicationIngredientSerializer : KSerializer<Medication.Ingredie
     (value.isActive?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.isActiveSer, it)
     }
-    when (val __d = value.strength) {
+    when (val choice = value.strength) {
       null -> {}
       is Medication.Ingredient.Strength.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.strengthRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.strengthRatioSer, choice.value)
       }
       is Medication.Ingredient.Strength.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           7,
           Hoisted.strengthCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is Medication.Ingredient.Strength.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.strengthQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.strengthQuantitySer, choice.value)
       }
     }
   }

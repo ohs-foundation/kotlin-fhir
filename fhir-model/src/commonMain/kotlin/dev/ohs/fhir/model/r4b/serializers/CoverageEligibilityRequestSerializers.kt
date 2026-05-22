@@ -414,10 +414,10 @@ internal object CoverageEligibilityRequestItemSerializer :
       supportingInfoSequence =
         (kotlin.collections.List(
           maxOf(supportingInfoSequence?.size ?: 0, _supportingInfoSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            supportingInfoSequence?.getOrNull(__i)?.let { it },
-            _supportingInfoSequence?.getOrNull(__i),
+            supportingInfoSequence?.getOrNull(index)?.let { it },
+            _supportingInfoSequence?.getOrNull(index),
           )!!
         }),
       category = category,
@@ -608,18 +608,23 @@ internal object CoverageEligibilityRequestItemDiagnosisSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.diagnosis) {
+    when (val choice = value.diagnosis) {
       null -> {}
       is CoverageEligibilityRequest.Item.Diagnosis.Diagnosis.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           3,
           Hoisted.diagnosisCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is CoverageEligibilityRequest.Item.Diagnosis.Diagnosis.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.diagnosisReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          4,
+          Hoisted.diagnosisReferenceSer,
+          choice.value,
+        )
       }
     }
   }
@@ -863,12 +868,12 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
         ),
       priority = priority,
       purpose =
-        (kotlin.collections.List(maxOf(purpose?.size ?: 0, _purpose?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(purpose?.size ?: 0, _purpose?.size ?: 0)) { index ->
           Enumeration.of(
             CoverageEligibilityRequest.EligibilityRequestPurpose.fromCode(
-              purpose?.getOrNull(__i)!!
+              purpose?.getOrNull(index)!!
             ),
-            _purpose?.getOrNull(__i),
+            _purpose?.getOrNull(index),
           )
         }),
       patient = patient!!,
@@ -974,13 +979,13 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
     (value.patient)?.let {
       encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.patientSer, it)
     }
-    when (val __d = value.serviced) {
+    when (val choice = value.serviced) {
       null -> {}
       is CoverageEligibilityRequest.Serviced.Date -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             18 + descriptorOffset,
@@ -994,7 +999,7 @@ internal object CoverageEligibilityRequestSerializer : KSerializer<CoverageEligi
           descriptor,
           19 + descriptorOffset,
           Hoisted.servicedPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

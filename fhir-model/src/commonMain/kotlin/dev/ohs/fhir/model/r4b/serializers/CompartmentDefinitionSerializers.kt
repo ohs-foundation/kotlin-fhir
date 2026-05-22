@@ -130,8 +130,8 @@ internal object CompartmentDefinitionResourceSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       code = Enumeration.of(ResourceType.fromCode(code!!), _code),
       `param` =
-        (kotlin.collections.List(maxOf(`param`?.size ?: 0, _param?.size ?: 0)) { __i ->
-          R4bString.of(`param`?.getOrNull(__i)?.let { it }, _param?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(`param`?.size ?: 0, _param?.size ?: 0)) { index ->
+          R4bString.of(`param`?.getOrNull(index)?.let { it }, _param?.getOrNull(index))!!
         }),
       documentation = R4bString.of(documentation, _documentation),
     )

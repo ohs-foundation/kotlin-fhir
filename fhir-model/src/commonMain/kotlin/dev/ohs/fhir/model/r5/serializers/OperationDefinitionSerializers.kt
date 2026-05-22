@@ -241,10 +241,10 @@ internal object OperationDefinitionParameterSerializer :
       name = Code.of(name, _name)!!,
       use = Enumeration.of(OperationDefinition.OperationParameterUse.fromCode(use!!), _use),
       scope =
-        (kotlin.collections.List(maxOf(scope?.size ?: 0, _scope?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(scope?.size ?: 0, _scope?.size ?: 0)) { index ->
           Enumeration.of(
-            OperationDefinition.OperationParameterScope.fromCode(scope?.getOrNull(__i)!!),
-            _scope?.getOrNull(__i),
+            OperationDefinition.OperationParameterScope.fromCode(scope?.getOrNull(index)!!),
+            _scope?.getOrNull(index),
           )
         }),
       min = Integer.of(min, _min)!!,
@@ -252,16 +252,19 @@ internal object OperationDefinitionParameterSerializer :
       documentation = Markdown.of(documentation, _documentation),
       type = type?.let { Enumeration.of(FHIRTypes.fromCode(it), _type) },
       allowedType =
-        (kotlin.collections.List(maxOf(allowedType?.size ?: 0, _allowedType?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(allowedType?.size ?: 0, _allowedType?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRTypes.fromCode(allowedType?.getOrNull(__i)!!),
-            _allowedType?.getOrNull(__i),
+            FHIRTypes.fromCode(allowedType?.getOrNull(index)!!),
+            _allowedType?.getOrNull(index),
           )
         }),
       targetProfile =
-        (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { index
           ->
-          Canonical.of(targetProfile?.getOrNull(__i)?.let { it }, _targetProfile?.getOrNull(__i))!!
+          Canonical.of(
+            targetProfile?.getOrNull(index)?.let { it },
+            _targetProfile?.getOrNull(index),
+          )!!
         }),
       searchType = searchType?.let { Enumeration.of(SearchParamType.fromCode(it), _searchType) },
       binding = binding,
@@ -658,9 +661,12 @@ internal object OperationDefinitionOverloadSerializer : KSerializer<OperationDef
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       parameterName =
-        (kotlin.collections.List(maxOf(parameterName?.size ?: 0, _parameterName?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(parameterName?.size ?: 0, _parameterName?.size ?: 0)) { index
           ->
-          R5String.of(parameterName?.getOrNull(__i)?.let { it }, _parameterName?.getOrNull(__i))!!
+          R5String.of(
+            parameterName?.getOrNull(index)?.let { it },
+            _parameterName?.getOrNull(index),
+          )!!
         }),
       comment = R5String.of(comment, _comment),
     )
@@ -1092,12 +1098,12 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
       comment = Markdown.of(comment, _comment),
       base = Canonical.of(base, _base),
       resource =
-        (kotlin.collections.List(maxOf(resource?.size ?: 0, _resource?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(resource?.size ?: 0, _resource?.size ?: 0)) { index ->
           Enumeration.of(
             OperationDefinition.VersionIndependentResourceTypesAll.fromCode(
-              resource?.getOrNull(__i)!!
+              resource?.getOrNull(index)!!
             ),
-            _resource?.getOrNull(__i),
+            _resource?.getOrNull(index),
           )
         }),
       system = R5Boolean.of(system, _system)!!,
@@ -1193,13 +1199,13 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is OperationDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1213,7 +1219,7 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

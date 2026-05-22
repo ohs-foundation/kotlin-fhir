@@ -560,10 +560,10 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       code = Code.of(code, _code)!!,
       base =
-        (kotlin.collections.List(maxOf(base?.size ?: 0, _base?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(base?.size ?: 0, _base?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.VersionIndependentResourceTypesAll.fromCode(base?.getOrNull(__i)!!),
-            _base?.getOrNull(__i),
+            SearchParameter.VersionIndependentResourceTypesAll.fromCode(base?.getOrNull(index)!!),
+            _base?.getOrNull(index),
           )
         }),
       type = Enumeration.of(SearchParamType.fromCode(type!!), _type),
@@ -574,31 +574,31 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         },
       constraint = R5String.of(constraint, _constraint),
       target =
-        (kotlin.collections.List(maxOf(target?.size ?: 0, _target?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(target?.size ?: 0, _target?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.VersionIndependentResourceTypesAll.fromCode(target?.getOrNull(__i)!!),
-            _target?.getOrNull(__i),
+            SearchParameter.VersionIndependentResourceTypesAll.fromCode(target?.getOrNull(index)!!),
+            _target?.getOrNull(index),
           )
         }),
       multipleOr = R5Boolean.of(multipleOr, _multipleOr),
       multipleAnd = R5Boolean.of(multipleAnd, _multipleAnd),
       comparator =
-        (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.SearchComparator.fromCode(comparator?.getOrNull(__i)!!),
-            _comparator?.getOrNull(__i),
+            SearchParameter.SearchComparator.fromCode(comparator?.getOrNull(index)!!),
+            _comparator?.getOrNull(index),
           )
         }),
       modifier =
-        (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.SearchModifierCode.fromCode(modifier?.getOrNull(__i)!!),
-            _modifier?.getOrNull(__i),
+            SearchParameter.SearchModifierCode.fromCode(modifier?.getOrNull(index)!!),
+            _modifier?.getOrNull(index),
           )
         }),
       chain =
-        (kotlin.collections.List(maxOf(chain?.size ?: 0, _chain?.size ?: 0)) { __i ->
-          R5String.of(chain?.getOrNull(__i)?.let { it }, _chain?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(chain?.size ?: 0, _chain?.size ?: 0)) { index ->
+          R5String.of(chain?.getOrNull(index)?.let { it }, _chain?.getOrNull(index))!!
         }),
       component = component ?: listOf(),
     )
@@ -687,13 +687,13 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is SearchParameter.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -707,7 +707,7 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

@@ -397,19 +397,19 @@ internal object MolecularSequenceRelativeStartingSequenceSerializer :
     (value.chromosome)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.genomeAssemblySer, it)
     }
-    when (val __d = value.sequence) {
+    when (val choice = value.sequence) {
       null -> {}
       is MolecularSequence.Relative.StartingSequence.Sequence.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.genomeAssemblySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.genomeAssemblySer, choice.value)
       }
       is MolecularSequence.Relative.StartingSequence.Sequence.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.sequenceStringSer, it)
         }
       }
       is MolecularSequence.Relative.StartingSequence.Sequence.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.sequenceReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.sequenceReferenceSer, choice.value)
       }
     }
     ((value.windowStart?.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }

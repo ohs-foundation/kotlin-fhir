@@ -497,14 +497,14 @@ internal object DeviceUsageSerializer : KSerializer<DeviceUsage> {
         it,
       )
     }
-    when (val __d = value.timing) {
+    when (val choice = value.timing) {
       null -> {}
       is DeviceUsage.Timing.Timing -> {
         encoder.encodeSerializableElement(
           descriptor,
           18 + descriptorOffset,
           Hoisted.timingTimingSer,
-          __d.value,
+          choice.value,
         )
       }
       is DeviceUsage.Timing.Period -> {
@@ -512,14 +512,14 @@ internal object DeviceUsageSerializer : KSerializer<DeviceUsage> {
           descriptor,
           19 + descriptorOffset,
           Hoisted.timingPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is DeviceUsage.Timing.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             21 + descriptorOffset,

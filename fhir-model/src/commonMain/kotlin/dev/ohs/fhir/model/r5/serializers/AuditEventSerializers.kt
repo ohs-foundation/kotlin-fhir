@@ -273,8 +273,8 @@ internal object AuditEventAgentSerializer : KSerializer<AuditEvent.Agent> {
       requestor = R5Boolean.of(requestor, _requestor),
       location = location,
       policy =
-        (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { __i ->
-          Uri.of(policy?.getOrNull(__i)?.let { it }, _policy?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { index ->
+          Uri.of(policy?.getOrNull(index)?.let { it }, _policy?.getOrNull(index))!!
         }),
       network =
         AuditEvent.Agent.Network.from(
@@ -312,20 +312,20 @@ internal object AuditEventAgentSerializer : KSerializer<AuditEvent.Agent> {
     (value.policy.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.policySer2, it)
     }
-    when (val __d = value.network) {
+    when (val choice = value.network) {
       null -> {}
       is AuditEvent.Agent.Network.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.whoSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 11, Hoisted.whoSer, choice.value)
       }
       is AuditEvent.Agent.Network.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.requestorSer, it)
         }
       }
       is AuditEvent.Agent.Network.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.requestorSer, it)
         }
       }
@@ -753,58 +753,58 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is AuditEvent.Entity.Detail.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
       is AuditEvent.Entity.Detail.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, choice.value)
       }
       is AuditEvent.Entity.Detail.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueStringSer, it)
         }
       }
       is AuditEvent.Entity.Detail.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueStringSer, it)
         }
       }
       is AuditEvent.Entity.Detail.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueStringSer, it)
         }
       }
       is AuditEvent.Entity.Detail.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, choice.value)
       }
       is AuditEvent.Entity.Detail.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueRatioSer, choice.value)
       }
       is AuditEvent.Entity.Detail.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 14, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueStringSer, it)
         }
       }
       is AuditEvent.Entity.Detail.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 16, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 16, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueStringSer, it)
         }
       }
       is AuditEvent.Entity.Detail.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 18, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 18, Hoisted.valuePeriodSer, choice.value)
       }
       is AuditEvent.Entity.Detail.Value.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 19, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 19, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 20, Hoisted.valueStringSer, it)
         }
       }
@@ -1153,21 +1153,21 @@ internal object AuditEventSerializer : KSerializer<AuditEvent> {
         it,
       )
     }
-    when (val __d = value.occurred) {
+    when (val choice = value.occurred) {
       null -> {}
       is AuditEvent.Occurred.Period -> {
         encoder.encodeSerializableElement(
           descriptor,
           16 + descriptorOffset,
           Hoisted.occurredPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is AuditEvent.Occurred.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             18 + descriptorOffset,

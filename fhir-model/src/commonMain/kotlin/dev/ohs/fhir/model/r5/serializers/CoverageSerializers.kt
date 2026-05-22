@@ -356,13 +356,13 @@ internal object CoverageCostToBeneficiarySerializer : KSerializer<Coverage.CostT
     (value.network)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
     (value.unit)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, it) }
     (value.term)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Coverage.CostToBeneficiary.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueQuantitySer, choice.value)
       }
       is Coverage.CostToBeneficiary.Value.Money -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueMoneySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueMoneySer, choice.value)
       }
     }
     if (value.exception.isNotEmpty())

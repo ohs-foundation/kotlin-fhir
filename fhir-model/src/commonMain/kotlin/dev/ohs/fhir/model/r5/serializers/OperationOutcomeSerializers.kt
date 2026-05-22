@@ -159,12 +159,12 @@ internal object OperationOutcomeIssueSerializer : KSerializer<OperationOutcome.I
       details = details,
       diagnostics = R5String.of(diagnostics, _diagnostics),
       location =
-        (kotlin.collections.List(maxOf(location?.size ?: 0, _location?.size ?: 0)) { __i ->
-          R5String.of(location?.getOrNull(__i)?.let { it }, _location?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(location?.size ?: 0, _location?.size ?: 0)) { index ->
+          R5String.of(location?.getOrNull(index)?.let { it }, _location?.getOrNull(index))!!
         }),
       expression =
-        (kotlin.collections.List(maxOf(expression?.size ?: 0, _expression?.size ?: 0)) { __i ->
-          R5String.of(expression?.getOrNull(__i)?.let { it }, _expression?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(expression?.size ?: 0, _expression?.size ?: 0)) { index ->
+          R5String.of(expression?.getOrNull(index)?.let { it }, _expression?.getOrNull(index))!!
         }),
     )
   }

@@ -355,32 +355,32 @@ internal object NutritionProductProductCharacteristicSerializer :
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is NutritionProduct.ProductCharacteristic.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, choice.value)
       }
       is NutritionProduct.ProductCharacteristic.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueStringSer, it)
         }
       }
       is NutritionProduct.ProductCharacteristic.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueQuantitySer, choice.value)
       }
       is NutritionProduct.ProductCharacteristic.Value.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueStringSer, it)
         }
       }
       is NutritionProduct.ProductCharacteristic.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueAttachmentSer, choice.value)
       }
       is NutritionProduct.ProductCharacteristic.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 11, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 11, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueStringSer, it)
         }
       }

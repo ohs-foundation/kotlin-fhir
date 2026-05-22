@@ -162,12 +162,12 @@ internal object ProdCharacteristicSerializer : KSerializer<ProdCharacteristic> {
       externalDiameter = externalDiameter,
       shape = R4bString.of(shape, _shape),
       color =
-        (kotlin.collections.List(maxOf(color?.size ?: 0, _color?.size ?: 0)) { __i ->
-          R4bString.of(color?.getOrNull(__i)?.let { it }, _color?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(color?.size ?: 0, _color?.size ?: 0)) { index ->
+          R4bString.of(color?.getOrNull(index)?.let { it }, _color?.getOrNull(index))!!
         }),
       imprint =
-        (kotlin.collections.List(maxOf(imprint?.size ?: 0, _imprint?.size ?: 0)) { __i ->
-          R4bString.of(imprint?.getOrNull(__i)?.let { it }, _imprint?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(imprint?.size ?: 0, _imprint?.size ?: 0)) { index ->
+          R4bString.of(imprint?.getOrNull(index)?.let { it }, _imprint?.getOrNull(index))!!
         }),
       image = image ?: listOf(),
       scoring = scoring,

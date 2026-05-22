@@ -343,22 +343,32 @@ internal object EvidenceVariableCharacteristicSerializer :
     (value.definitionByCombination)?.let {
       encoder.encodeSerializableElement(descriptor, 18, Hoisted.definitionByCombinationSer, it)
     }
-    when (val __d = value.instances) {
+    when (val choice = value.instances) {
       null -> {}
       is EvidenceVariable.Characteristic.Instances.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 19, Hoisted.instancesQuantitySer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          19,
+          Hoisted.instancesQuantitySer,
+          choice.value,
+        )
       }
       is EvidenceVariable.Characteristic.Instances.Range -> {
-        encoder.encodeSerializableElement(descriptor, 20, Hoisted.instancesRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 20, Hoisted.instancesRangeSer, choice.value)
       }
     }
-    when (val __d = value.duration) {
+    when (val choice = value.duration) {
       null -> {}
       is EvidenceVariable.Characteristic.Duration.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 21, Hoisted.instancesQuantitySer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          21,
+          Hoisted.instancesQuantitySer,
+          choice.value,
+        )
       }
       is EvidenceVariable.Characteristic.Duration.Range -> {
-        encoder.encodeSerializableElement(descriptor, 22, Hoisted.instancesRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 22, Hoisted.instancesRangeSer, choice.value)
       }
     }
     if (value.timeFromEvent.isNotEmpty())
@@ -551,29 +561,29 @@ internal object EvidenceVariableCharacteristicDefinitionByTypeAndValueSerializer
     if (value.method.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.methodSer, value.method)
     (value.device)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.deviceSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is EvidenceVariable.Characteristic.DefinitionByTypeAndValue.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, choice.value)
       }
       is EvidenceVariable.Characteristic.DefinitionByTypeAndValue.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueBooleanSer, it)
         }
       }
       is EvidenceVariable.Characteristic.DefinitionByTypeAndValue.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueQuantitySer, choice.value)
       }
       is EvidenceVariable.Characteristic.DefinitionByTypeAndValue.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueRangeSer, choice.value)
       }
       is EvidenceVariable.Characteristic.DefinitionByTypeAndValue.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.deviceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 11, Hoisted.deviceSer, choice.value)
       }
       is EvidenceVariable.Characteristic.DefinitionByTypeAndValue.Value.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueBooleanSer, it)
         }
       }
@@ -874,23 +884,28 @@ internal object EvidenceVariableCharacteristicTimeFromEventSerializer :
     }
     if (value.note.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.noteSer, value.note)
-    when (val __d = value.event) {
+    when (val choice = value.event) {
       null -> {}
       is EvidenceVariable.Characteristic.TimeFromEvent.Event.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.eventCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          6,
+          Hoisted.eventCodeableConceptSer,
+          choice.value,
+        )
       }
       is EvidenceVariable.Characteristic.TimeFromEvent.Event.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.eventReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.eventReferenceSer, choice.value)
       }
       is EvidenceVariable.Characteristic.TimeFromEvent.Event.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.descriptionSer, it)
         }
       }
       is EvidenceVariable.Characteristic.TimeFromEvent.Event.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.descriptionSer, it)
         }
       }
@@ -1014,16 +1029,21 @@ internal object EvidenceVariableCategorySerializer : KSerializer<EvidenceVariabl
     (value.name?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is EvidenceVariable.Category.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.valueCodeableConceptSer,
+          choice.value,
+        )
       }
       is EvidenceVariable.Category.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueQuantitySer, choice.value)
       }
       is EvidenceVariable.Category.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueRangeSer, choice.value)
       }
     }
   }
@@ -1530,13 +1550,13 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is EvidenceVariable.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1550,7 +1570,7 @@ internal object EvidenceVariableSerializer : KSerializer<EvidenceVariable> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

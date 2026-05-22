@@ -365,37 +365,37 @@ internal object PlanDefinitionGoalTargetSerializer : KSerializer<PlanDefinition.
     (value.measure)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.measureSer, it)
     }
-    when (val __d = value.detail) {
+    when (val choice = value.detail) {
       null -> {}
       is PlanDefinition.Goal.Target.Detail.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.detailQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.detailQuantitySer, choice.value)
       }
       is PlanDefinition.Goal.Target.Detail.Range -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.detailRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.detailRangeSer, choice.value)
       }
       is PlanDefinition.Goal.Target.Detail.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.measureSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.measureSer, choice.value)
       }
       is PlanDefinition.Goal.Target.Detail.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.detailStringSer, it)
         }
       }
       is PlanDefinition.Goal.Target.Detail.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.detailStringSer, it)
         }
       }
       is PlanDefinition.Goal.Target.Detail.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.detailStringSer, it)
         }
       }
       is PlanDefinition.Goal.Target.Detail.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 13, Hoisted.detailRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 13, Hoisted.detailRatioSer, choice.value)
       }
     }
     (value.due)?.let { encoder.encodeSerializableElement(descriptor, 14, Hoisted.dueSer, it) }
@@ -983,8 +983,8 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
       reason = reason ?: listOf(),
       documentation = documentation ?: listOf(),
       goalId =
-        (kotlin.collections.List(maxOf(goalId?.size ?: 0, _goalId?.size ?: 0)) { __i ->
-          Id.of(goalId?.getOrNull(__i)?.let { it }, _goalId?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(goalId?.size ?: 0, _goalId?.size ?: 0)) { index ->
+          Id.of(goalId?.getOrNull(index)?.let { it }, _goalId?.getOrNull(index))!!
         }),
       subject =
         PlanDefinition.Action.Subject.from(
@@ -1087,17 +1087,17 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
     (value.goalId.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 19, Hoisted.goalIdSer2, it)
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is PlanDefinition.Action.Subject.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 20, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 20, Hoisted.codeSer, choice.value)
       }
       is PlanDefinition.Action.Subject.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 21, Hoisted.subjectReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 21, Hoisted.subjectReferenceSer, choice.value)
       }
       is PlanDefinition.Action.Subject.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 22, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 22, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 23, Hoisted.linkIdSer, it)
         }
       }
@@ -1117,19 +1117,19 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
         Hoisted.relatedActionSer,
         value.relatedAction,
       )
-    when (val __d = value.timing) {
+    when (val choice = value.timing) {
       null -> {}
       is PlanDefinition.Action.Timing.Age -> {
-        encoder.encodeSerializableElement(descriptor, 29, Hoisted.timingAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 29, Hoisted.timingAgeSer, choice.value)
       }
       is PlanDefinition.Action.Timing.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 30, Hoisted.timingDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 30, Hoisted.timingDurationSer, choice.value)
       }
       is PlanDefinition.Action.Timing.Range -> {
-        encoder.encodeSerializableElement(descriptor, 31, Hoisted.timingRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 31, Hoisted.timingRangeSer, choice.value)
       }
       is PlanDefinition.Action.Timing.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 32, Hoisted.timingTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 32, Hoisted.timingTimingSer, choice.value)
       }
     }
     (value.location)?.let {
@@ -1168,17 +1168,17 @@ internal object PlanDefinitionActionSerializer : KSerializer<PlanDefinition.Acti
     (value.cardinalityBehavior?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 45, Hoisted.linkIdSer, it)
     }
-    when (val __d = value.definition) {
+    when (val choice = value.definition) {
       null -> {}
       is PlanDefinition.Action.Definition.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 46, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 46, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 47, Hoisted.linkIdSer, it)
         }
       }
       is PlanDefinition.Action.Definition.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 48, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 48, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 49, Hoisted.linkIdSer, it)
         }
       }
@@ -1713,13 +1713,13 @@ internal object PlanDefinitionActionRelatedActionSerializer :
     (value.endRelationship?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.targetIdSer, it)
     }
-    when (val __d = value.offset) {
+    when (val choice = value.offset) {
       null -> {}
       is PlanDefinition.Action.RelatedAction.Offset.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.offsetDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.offsetDurationSer, choice.value)
       }
       is PlanDefinition.Action.RelatedAction.Offset.Range -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.offsetRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.offsetRangeSer, choice.value)
       }
     }
   }
@@ -2431,8 +2431,8 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
       library =
-        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { __i ->
-          Canonical.of(library?.getOrNull(__i)?.let { it }, _library?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
+          Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
       goal = goal ?: listOf(),
       actor = actor ?: listOf(),
@@ -2528,13 +2528,13 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is PlanDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -2548,7 +2548,7 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -2610,14 +2610,14 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
         it,
       )
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is PlanDefinition.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           29 + descriptorOffset,
           Hoisted.typeSer,
-          __d.value,
+          choice.value,
         )
       }
       is PlanDefinition.Subject.Reference -> {
@@ -2625,14 +2625,14 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
           descriptor,
           30 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is PlanDefinition.Subject.Canonical -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 31 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             32 + descriptorOffset,
@@ -2839,13 +2839,13 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
         Hoisted.actionSer,
         value.action,
       )
-    when (val __d = value.asNeeded) {
+    when (val choice = value.asNeeded) {
       null -> {}
       is PlanDefinition.AsNeeded.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 66 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             67 + descriptorOffset,
@@ -2859,7 +2859,7 @@ internal object PlanDefinitionSerializer : KSerializer<PlanDefinition> {
           descriptor,
           68 + descriptorOffset,
           Hoisted.typeSer,
-          __d.value,
+          choice.value,
         )
       }
     }

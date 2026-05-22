@@ -769,13 +769,13 @@ internal object PatientSerializer : KSerializer<Patient> {
         it,
       )
     }
-    when (val __d = value.deceased) {
+    when (val choice = value.deceased) {
       null -> {}
       is Patient.Deceased.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 19 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             20 + descriptorOffset,
@@ -785,10 +785,10 @@ internal object PatientSerializer : KSerializer<Patient> {
         }
       }
       is Patient.Deceased.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             22 + descriptorOffset,
@@ -813,13 +813,13 @@ internal object PatientSerializer : KSerializer<Patient> {
         it,
       )
     }
-    when (val __d = value.multipleBirth) {
+    when (val choice = value.multipleBirth) {
       null -> {}
       is Patient.MultipleBirth.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 25 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             26 + descriptorOffset,
@@ -829,8 +829,10 @@ internal object PatientSerializer : KSerializer<Patient> {
         }
       }
       is Patient.MultipleBirth.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 27 + descriptorOffset, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let {
+          encoder.encodeIntElement(descriptor, 27 + descriptorOffset, it)
+        }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             28 + descriptorOffset,

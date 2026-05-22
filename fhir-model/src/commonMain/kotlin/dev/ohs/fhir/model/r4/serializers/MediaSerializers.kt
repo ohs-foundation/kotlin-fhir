@@ -436,13 +436,13 @@ internal object MediaSerializer : KSerializer<Media> {
         it,
       )
     }
-    when (val __d = value.created) {
+    when (val choice = value.created) {
       null -> {}
       is Media.Created.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             21 + descriptorOffset,
@@ -456,7 +456,7 @@ internal object MediaSerializer : KSerializer<Media> {
           descriptor,
           22 + descriptorOffset,
           Hoisted.createdPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

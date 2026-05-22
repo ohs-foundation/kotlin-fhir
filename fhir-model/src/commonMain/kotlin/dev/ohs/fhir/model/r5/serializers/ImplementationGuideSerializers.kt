@@ -679,18 +679,18 @@ internal object ImplementationGuideDefinitionResourceSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       reference = reference!!,
       fhirVersion =
-        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(__i)!!),
-            _fhirVersion?.getOrNull(__i),
+            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            _fhirVersion?.getOrNull(index),
           )
         }),
       name = R5String.of(name, _name),
       description = Markdown.of(description, _description),
       isExample = R5Boolean.of(isExample, _isExample),
       profile =
-        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { __i ->
-          Canonical.of(profile?.getOrNull(__i)?.let { it }, _profile?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
+          Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!
         }),
       groupingId = Id.of(groupingId, _groupingId),
     )
@@ -893,23 +893,23 @@ internal object ImplementationGuideDefinitionPageSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.source) {
+    when (val choice = value.source) {
       null -> {}
       is ImplementationGuide.Definition.Page.Source.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.sourceUrlSer, it)
         }
       }
       is ImplementationGuide.Definition.Page.Source.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.sourceUrlSer, it)
         }
       }
       is ImplementationGuide.Definition.Page.Source.Markdown -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.sourceUrlSer, it)
         }
       }
@@ -1252,12 +1252,12 @@ internal object ImplementationGuideManifestSerializer : KSerializer<Implementati
       resource = resource ?: listOf(),
       page = page ?: listOf(),
       image =
-        (kotlin.collections.List(maxOf(image?.size ?: 0, _image?.size ?: 0)) { __i ->
-          R5String.of(image?.getOrNull(__i)?.let { it }, _image?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(image?.size ?: 0, _image?.size ?: 0)) { index ->
+          R5String.of(image?.getOrNull(index)?.let { it }, _image?.getOrNull(index))!!
         }),
       other =
-        (kotlin.collections.List(maxOf(other?.size ?: 0, _other?.size ?: 0)) { __i ->
-          R5String.of(other?.getOrNull(__i)?.let { it }, _other?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(other?.size ?: 0, _other?.size ?: 0)) { index ->
+          R5String.of(other?.getOrNull(index)?.let { it }, _other?.getOrNull(index))!!
         }),
     )
   }
@@ -1410,8 +1410,8 @@ internal object ImplementationGuideManifestResourceSerializer :
       reference = reference!!,
       isExample = R5Boolean.of(isExample, _isExample),
       profile =
-        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { __i ->
-          Canonical.of(profile?.getOrNull(__i)?.let { it }, _profile?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
+          Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!
         }),
       relativePath = Url.of(relativePath, _relativePath),
     )
@@ -1544,8 +1544,8 @@ internal object ImplementationGuideManifestPageSerializer :
       name = R5String.of(name, _name)!!,
       title = R5String.of(title, _title),
       anchor =
-        (kotlin.collections.List(maxOf(anchor?.size ?: 0, _anchor?.size ?: 0)) { __i ->
-          R5String.of(anchor?.getOrNull(__i)?.let { it }, _anchor?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(anchor?.size ?: 0, _anchor?.size ?: 0)) { index ->
+          R5String.of(anchor?.getOrNull(index)?.let { it }, _anchor?.getOrNull(index))!!
         }),
     )
   }
@@ -1937,10 +1937,10 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
       license =
         license?.let { Enumeration.of(ImplementationGuide.SPDXLicense.fromCode(it), _license) },
       fhirVersion =
-        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(fhirVersion?.size ?: 0, _fhirVersion?.size ?: 0)) { index ->
           Enumeration.of(
-            FHIRVersion.fromCode(fhirVersion?.getOrNull(__i)!!),
-            _fhirVersion?.getOrNull(__i),
+            FHIRVersion.fromCode(fhirVersion?.getOrNull(index)!!),
+            _fhirVersion?.getOrNull(index),
           )
         }),
       dependsOn = dependsOn ?: listOf(),
@@ -2033,13 +2033,13 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is ImplementationGuide.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -2053,7 +2053,7 @@ internal object ImplementationGuideSerializer : KSerializer<ImplementationGuide>
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

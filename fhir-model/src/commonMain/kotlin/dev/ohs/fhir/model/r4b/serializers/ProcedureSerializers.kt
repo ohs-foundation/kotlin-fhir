@@ -606,16 +606,19 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),
@@ -812,13 +815,13 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
         it,
       )
     }
-    when (val __d = value.performed) {
+    when (val choice = value.performed) {
       null -> {}
       is Procedure.Performed.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             25 + descriptorOffset,
@@ -832,14 +835,14 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
           descriptor,
           26 + descriptorOffset,
           Hoisted.performedPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is Procedure.Performed.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             28 + descriptorOffset,
@@ -853,7 +856,7 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
           descriptor,
           29 + descriptorOffset,
           Hoisted.performedAgeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Procedure.Performed.Range -> {
@@ -861,7 +864,7 @@ internal object ProcedureSerializer : KSerializer<Procedure> {
           descriptor,
           30 + descriptorOffset,
           Hoisted.performedRangeSer,
-          __d.value,
+          choice.value,
         )
       }
     }

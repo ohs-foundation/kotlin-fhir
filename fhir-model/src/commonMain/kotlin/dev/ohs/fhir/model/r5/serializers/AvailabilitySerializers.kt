@@ -150,10 +150,10 @@ internal object AvailabilityAvailableTimeSerializer : KSerializer<Availability.A
       id = id,
       extension = extension ?: listOf(),
       daysOfWeek =
-        (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            Availability.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(__i)!!),
-            _daysOfWeek?.getOrNull(__i),
+            Availability.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(index)!!),
+            _daysOfWeek?.getOrNull(index),
           )
         }),
       allDay = R5Boolean.of(allDay, _allDay),

@@ -37,54 +37,62 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
   fun generate(packageName: String, subclasses: List<ClassName>): FileSpec {
     val sorted = subclasses.sorted()
     val serializersPackage = "$packageName.serializers"
-    val resourceCN = ClassName(packageName, "Resource")
+    val resourceClassName = ClassName(packageName, "Resource")
 
-    val abstractPolymorphicSerializerCN =
+    val abstractPolymorphicSerializerClassName =
       ClassName("kotlinx.serialization.internal", "AbstractPolymorphicSerializer")
-    val internalSerializationApiCN = ClassName("kotlinx.serialization", "InternalSerializationApi")
-    val experimentalSerializationApiCN =
+    val internalSerializationApiClassName =
+      ClassName("kotlinx.serialization", "InternalSerializationApi")
+    val experimentalSerializationApiClassName =
       ClassName("kotlinx.serialization", "ExperimentalSerializationApi")
-    val deserializationStrategyCN = ClassName("kotlinx.serialization", "DeserializationStrategy")
-    val serializationStrategyCN = ClassName("kotlinx.serialization", "SerializationStrategy")
-    val serialDescriptorCN = ClassName("kotlinx.serialization.descriptors", "SerialDescriptor")
-    val polymorphicKindCN = ClassName("kotlinx.serialization.descriptors", "PolymorphicKind")
-    val serialKindCN = ClassName("kotlinx.serialization.descriptors", "SerialKind")
-    val buildSerialDescriptorMN =
+    val deserializationStrategyClassName =
+      ClassName("kotlinx.serialization", "DeserializationStrategy")
+    val serializationStrategyClassName = ClassName("kotlinx.serialization", "SerializationStrategy")
+    val serialDescriptorClassName =
+      ClassName("kotlinx.serialization.descriptors", "SerialDescriptor")
+    val polymorphicKindClassName = ClassName("kotlinx.serialization.descriptors", "PolymorphicKind")
+    val serialKindClassName = ClassName("kotlinx.serialization.descriptors", "SerialKind")
+    val buildSerialDescriptorMemberName =
       MemberName("kotlinx.serialization.descriptors", "buildSerialDescriptor")
-    val builtinsSerializerMN = MemberName("kotlinx.serialization.builtins", "serializer")
-    val compositeDecoderCN = ClassName("kotlinx.serialization.encoding", "CompositeDecoder")
-    val encoderCN = ClassName("kotlinx.serialization.encoding", "Encoder")
-    val kClassCN = ClassName("kotlin.reflect", "KClass")
-    val mapCN = ClassName("kotlin.collections", "Map")
-    val mapOfMN = MemberName("kotlin.collections", "mapOf")
-    val jsonClassDiscriminatorCN = ClassName("kotlinx.serialization.json", "JsonClassDiscriminator")
-    val stringCN = ClassName("kotlin", "String")
+    val builtinsSerializerMemberName = MemberName("kotlinx.serialization.builtins", "serializer")
+    val compositeDecoderClassName = ClassName("kotlinx.serialization.encoding", "CompositeDecoder")
+    val encoderClassName = ClassName("kotlinx.serialization.encoding", "Encoder")
+    val kClassClassName = ClassName("kotlin.reflect", "KClass")
+    val mapClassName = ClassName("kotlin.collections", "Map")
+    val mapOfMemberName = MemberName("kotlin.collections", "mapOf")
+    val jsonClassDiscriminatorClassName =
+      ClassName("kotlinx.serialization.json", "JsonClassDiscriminator")
+    val stringClassName = ClassName("kotlin", "String")
 
     val kSerializerOutResourceTN =
       ClassName("kotlinx.serialization", "KSerializer")
-        .parameterizedBy(WildcardTypeName.producerOf(resourceCN))
+        .parameterizedBy(WildcardTypeName.producerOf(resourceClassName))
 
     val baseClassProp =
-      PropertySpec.builder("baseClass", kClassCN.parameterizedBy(resourceCN))
+      PropertySpec.builder("baseClass", kClassClassName.parameterizedBy(resourceClassName))
         .addModifiers(KModifier.OVERRIDE)
-        .initializer("%T::class", resourceCN)
+        .initializer("%T::class", resourceClassName)
         .build()
 
     val byNameInit =
       CodeBlock.builder()
         .apply {
-          add("%M(\n", mapOfMN)
+          add("%M(\n", mapOfMemberName)
           indent()
           for (sc in sorted) {
-            val polySerCN = ClassName(serializersPackage, "${sc.simpleName}PolymorphicSerializer")
-            add("%S to %T,\n", sc.simpleName, polySerCN)
+            val polySerClassName =
+              ClassName(serializersPackage, "${sc.simpleName}PolymorphicSerializer")
+            add("%S to %T,\n", sc.simpleName, polySerClassName)
           }
           unindent()
           add(")")
         }
         .build()
     val byNameProp =
-      PropertySpec.builder("byName", mapCN.parameterizedBy(stringCN, kSerializerOutResourceTN))
+      PropertySpec.builder(
+          "byName",
+          mapClassName.parameterizedBy(stringClassName, kSerializerOutResourceTN),
+        )
         .addModifiers(KModifier.PRIVATE)
         .initializer(byNameInit)
         .build()
@@ -92,12 +100,13 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
     val byClassInit =
       CodeBlock.builder()
         .apply {
-          add("%M(\n", mapOfMN)
+          add("%M(\n", mapOfMemberName)
           indent()
           for (sc in sorted) {
-            val concreteCN = ClassName(packageName, sc.simpleName)
-            val polySerCN = ClassName(serializersPackage, "${sc.simpleName}PolymorphicSerializer")
-            add("%T::class to %T,\n", concreteCN, polySerCN)
+            val concreteClassName = ClassName(packageName, sc.simpleName)
+            val polySerClassName =
+              ClassName(serializersPackage, "${sc.simpleName}PolymorphicSerializer")
+            add("%T::class to %T,\n", concreteClassName, polySerClassName)
           }
           unindent()
           add(")")
@@ -106,7 +115,10 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
     val byClassProp =
       PropertySpec.builder(
           "byClass",
-          mapCN.parameterizedBy(kClassCN.parameterizedBy(STAR), kSerializerOutResourceTN),
+          mapClassName.parameterizedBy(
+            kClassClassName.parameterizedBy(STAR),
+            kSerializerOutResourceTN,
+          ),
         )
         .addModifiers(KModifier.PRIVATE)
         .initializer(byClassInit)
@@ -117,30 +129,40 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
     val descriptorInit =
       CodeBlock.builder()
         .apply {
-          add("%M(%S, %T.SEALED) {\n", buildSerialDescriptorMN, "Resource", polymorphicKindCN)
+          add(
+            "%M(%S, %T.SEALED) {\n",
+            buildSerialDescriptorMemberName,
+            "Resource",
+            polymorphicKindClassName,
+          )
           indent()
           add("// `SealedClassSerializer` convention: slot 0 is named \"type\" even when\n")
           add("// `@JsonClassDiscriminator` overrides the wire key — kotlinx-json reads the\n")
           add("// actual key from `descriptor.annotations`, not from this slot's name.\n")
-          add("element(%S, %T.%M().descriptor)\n", "type", stringCN, builtinsSerializerMN)
+          add(
+            "element(%S, %T.%M().descriptor)\n",
+            "type",
+            stringClassName,
+            builtinsSerializerMemberName,
+          )
           add(
             "val valueDesc = %M(%S, %T.CONTEXTUAL) {\n",
-            buildSerialDescriptorMN,
+            buildSerialDescriptorMemberName,
             "kotlinx.serialization.Sealed<Resource>",
-            serialKindCN,
+            serialKindClassName,
           )
           indent()
           add("for ((name, ser) in byName) element(name, ser.descriptor)\n")
           unindent()
           add("}\n")
           add("element(%S, valueDesc)\n", "value")
-          add("annotations = listOf(%T(%S))\n", jsonClassDiscriminatorCN, "resourceType")
+          add("annotations = listOf(%T(%S))\n", jsonClassDiscriminatorClassName, "resourceType")
           unindent()
           add("}")
         }
         .build()
     val descriptorProp =
-      PropertySpec.builder("descriptor", serialDescriptorCN)
+      PropertySpec.builder("descriptor", serialDescriptorClassName)
         .addModifiers(KModifier.OVERRIDE)
         .initializer(descriptorInit)
         .build()
@@ -151,25 +173,29 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
         .addAnnotation(
           AnnotationSpec.builder(Suppress::class).addMember("%S", "UNCHECKED_CAST").build()
         )
-        .addParameter("encoder", encoderCN)
-        .addParameter("value", resourceCN)
-        .returns(serializationStrategyCN.parameterizedBy(resourceCN).copy(nullable = true))
+        .addParameter("encoder", encoderClassName)
+        .addParameter("value", resourceClassName)
+        .returns(
+          serializationStrategyClassName.parameterizedBy(resourceClassName).copy(nullable = true)
+        )
         // `byClass[…]` returns `KSerializer<out Resource>?`; the override needs the invariant
         // `SerializationStrategy<Resource>?`. We've already looked up by `value::class`, so the
         // cast is sound.
         .addCode(
           "return (byClass[value::class] ?: super.findPolymorphicSerializerOrNull(encoder, value))" +
             " as %T?\n",
-          serializationStrategyCN.parameterizedBy(resourceCN),
+          serializationStrategyClassName.parameterizedBy(resourceClassName),
         )
         .build()
 
     val findDecodeFn =
       FunSpec.builder("findPolymorphicSerializerOrNull")
         .addModifiers(KModifier.OVERRIDE)
-        .addParameter("decoder", compositeDecoderCN)
-        .addParameter("klassName", stringCN.copy(nullable = true))
-        .returns(deserializationStrategyCN.parameterizedBy(resourceCN).copy(nullable = true))
+        .addParameter("decoder", compositeDecoderClassName)
+        .addParameter("klassName", stringClassName.copy(nullable = true))
+        .returns(
+          deserializationStrategyClassName.parameterizedBy(resourceClassName).copy(nullable = true)
+        )
         .addCode(
           "return byName[klassName] ?: super.findPolymorphicSerializerOrNull(decoder, klassName)\n"
         )
@@ -180,11 +206,11 @@ object FhirResourcePolymorphicSerializerFileSpecGenerator {
         .addModifiers(KModifier.INTERNAL)
         .addAnnotation(
           AnnotationSpec.builder(ClassName("kotlin", "OptIn"))
-            .addMember("%T::class", internalSerializationApiCN)
-            .addMember("%T::class", experimentalSerializationApiCN)
+            .addMember("%T::class", internalSerializationApiClassName)
+            .addMember("%T::class", experimentalSerializationApiClassName)
             .build()
         )
-        .superclass(abstractPolymorphicSerializerCN.parameterizedBy(resourceCN))
+        .superclass(abstractPolymorphicSerializerClassName.parameterizedBy(resourceClassName))
         .addProperty(baseClassProp)
         .addProperty(byNameProp)
         .addProperty(byClassProp)

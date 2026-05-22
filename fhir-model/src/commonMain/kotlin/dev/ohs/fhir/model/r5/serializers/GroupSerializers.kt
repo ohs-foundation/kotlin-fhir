@@ -175,25 +175,25 @@ internal object GroupCharacteristicSerializer : KSerializer<Group.Characteristic
         value.modifierExtension,
       )
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Group.Characteristic.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, choice.value)
       }
       is Group.Characteristic.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueBooleanSer, it)
         }
       }
       is Group.Characteristic.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueQuantitySer, choice.value)
       }
       is Group.Characteristic.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueRangeSer, choice.value)
       }
       is Group.Characteristic.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueReferenceSer, choice.value)
       }
     }
     ((value.exclude.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }

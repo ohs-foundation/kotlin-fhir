@@ -939,8 +939,8 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
       library =
-        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { __i ->
-          Canonical.of(library?.getOrNull(__i)?.let { it }, _library?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
+          Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
       kind = kind?.let { Enumeration.of(RequestResourceTypes.fromCode(it), _kind) },
       profile = Canonical.of(profile, _profile),
@@ -967,28 +967,28 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
       specimenRequirement =
         (kotlin.collections.List(
           maxOf(specimenRequirement?.size ?: 0, _specimenRequirement?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            specimenRequirement?.getOrNull(__i)?.let { it },
-            _specimenRequirement?.getOrNull(__i),
+            specimenRequirement?.getOrNull(index)?.let { it },
+            _specimenRequirement?.getOrNull(index),
           )!!
         }),
       observationRequirement =
         (kotlin.collections.List(
           maxOf(observationRequirement?.size ?: 0, _observationRequirement?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            observationRequirement?.getOrNull(__i)?.let { it },
-            _observationRequirement?.getOrNull(__i),
+            observationRequirement?.getOrNull(index)?.let { it },
+            _observationRequirement?.getOrNull(index),
           )!!
         }),
       observationResultRequirement =
         (kotlin.collections.List(
           maxOf(observationResultRequirement?.size ?: 0, _observationResultRequirement?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            observationResultRequirement?.getOrNull(__i)?.let { it },
-            _observationResultRequirement?.getOrNull(__i),
+            observationResultRequirement?.getOrNull(index)?.let { it },
+            _observationResultRequirement?.getOrNull(index),
           )!!
         }),
       transform = Canonical.of(transform, _transform),
@@ -1079,13 +1079,13 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is ActivityDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1099,7 +1099,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -1158,14 +1158,14 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
         it,
       )
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is ActivityDefinition.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           28 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is ActivityDefinition.Subject.Reference -> {
@@ -1173,14 +1173,14 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
           descriptor,
           29 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ActivityDefinition.Subject.Canonical -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             31 + descriptorOffset,
@@ -1429,14 +1429,14 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
         it,
       )
     }
-    when (val __d = value.timing) {
+    when (val choice = value.timing) {
       null -> {}
       is ActivityDefinition.Timing.Timing -> {
         encoder.encodeSerializableElement(
           descriptor,
           73 + descriptorOffset,
           Hoisted.timingTimingSer,
-          __d.value,
+          choice.value,
         )
       }
       is ActivityDefinition.Timing.Age -> {
@@ -1444,7 +1444,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
           descriptor,
           74 + descriptorOffset,
           Hoisted.timingAgeSer,
-          __d.value,
+          choice.value,
         )
       }
       is ActivityDefinition.Timing.Range -> {
@@ -1452,7 +1452,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
           descriptor,
           75 + descriptorOffset,
           Hoisted.timingRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is ActivityDefinition.Timing.Duration -> {
@@ -1460,17 +1460,17 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
           descriptor,
           76 + descriptorOffset,
           Hoisted.timingDurationSer,
-          __d.value,
+          choice.value,
         )
       }
     }
-    when (val __d = value.asNeeded) {
+    when (val choice = value.asNeeded) {
       null -> {}
       is ActivityDefinition.AsNeeded.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 77 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             78 + descriptorOffset,
@@ -1484,7 +1484,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
           descriptor,
           79 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -1498,14 +1498,14 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
         Hoisted.participantSer,
         value.participant,
       )
-    when (val __d = value.product) {
+    when (val choice = value.product) {
       null -> {}
       is ActivityDefinition.Product.Reference -> {
         encoder.encodeSerializableElement(
           descriptor,
           82 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ActivityDefinition.Product.CodeableConcept -> {
@@ -1513,7 +1513,7 @@ internal object ActivityDefinitionSerializer : KSerializer<ActivityDefinition> {
           descriptor,
           83 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
     }

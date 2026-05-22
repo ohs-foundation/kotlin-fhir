@@ -247,16 +247,16 @@ internal object ExplanationOfBenefitEventSerializer : KSerializer<ExplanationOfB
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`when`) {
+    when (val choice = value.`when`) {
       null -> {}
       is ExplanationOfBenefit.Event.When.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.whenDateTimeSer, it)
         }
       }
       is ExplanationOfBenefit.Event.When.Period -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.whenPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.whenPeriodSer, choice.value)
       }
     }
   }
@@ -653,43 +653,43 @@ internal object ExplanationOfBenefitSupportingInfoSerializer :
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.categorySer, it)
     }
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.categorySer, it) }
-    when (val __d = value.timing) {
+    when (val choice = value.timing) {
       null -> {}
       is ExplanationOfBenefit.SupportingInfo.Timing.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.sequenceSer, it)
         }
       }
       is ExplanationOfBenefit.SupportingInfo.Timing.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timingPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timingPeriodSer, choice.value)
       }
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ExplanationOfBenefit.SupportingInfo.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.sequenceSer, it)
         }
       }
       is ExplanationOfBenefit.SupportingInfo.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.sequenceSer, it)
         }
       }
       is ExplanationOfBenefit.SupportingInfo.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueQuantitySer, choice.value)
       }
       is ExplanationOfBenefit.SupportingInfo.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueAttachmentSer, choice.value)
       }
       is ExplanationOfBenefit.SupportingInfo.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueReferenceSer, choice.value)
       }
       is ExplanationOfBenefit.SupportingInfo.Value.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueIdentifierSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueIdentifierSer, choice.value)
       }
     }
     (value.reason)?.let { encoder.encodeSerializableElement(descriptor, 18, Hoisted.reasonSer, it) }
@@ -842,18 +842,23 @@ internal object ExplanationOfBenefitDiagnosisSerializer :
     (value.sequence.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
-    when (val __d = value.diagnosis) {
+    when (val choice = value.diagnosis) {
       null -> {}
       is ExplanationOfBenefit.Diagnosis.Diagnosis.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           5,
           Hoisted.diagnosisCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is ExplanationOfBenefit.Diagnosis.Diagnosis.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.diagnosisReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          6,
+          Hoisted.diagnosisReferenceSer,
+          choice.value,
+        )
       }
     }
     if (value.type.isNotEmpty())
@@ -1007,13 +1012,18 @@ internal object ExplanationOfBenefitProcedureSerializer :
     (value.date?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.sequenceSer, it)
     }
-    when (val __d = value.procedure) {
+    when (val choice = value.procedure) {
       null -> {}
       is ExplanationOfBenefit.Procedure.Procedure.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSerInner, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSerInner, choice.value)
       }
       is ExplanationOfBenefit.Procedure.Procedure.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.procedureReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          9,
+          Hoisted.procedureReferenceSer,
+          choice.value,
+        )
       }
     }
     if (value.udi.isNotEmpty())
@@ -1116,8 +1126,8 @@ internal object ExplanationOfBenefitInsuranceSerializer :
       focal = R5Boolean.of(focal, _focal)!!,
       coverage = coverage!!,
       preAuthRef =
-        (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { __i ->
-          R5String.of(preAuthRef?.getOrNull(__i)?.let { it }, _preAuthRef?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { index ->
+          R5String.of(preAuthRef?.getOrNull(index)?.let { it }, _preAuthRef?.getOrNull(index))!!
         }),
     )
   }
@@ -1267,13 +1277,13 @@ internal object ExplanationOfBenefitAccidentSerializer :
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.dateSer, it)
     }
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
-    when (val __d = value.location) {
+    when (val choice = value.location) {
       null -> {}
       is ExplanationOfBenefit.Accident.Location.Address -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.locationAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.locationAddressSer, choice.value)
       }
       is ExplanationOfBenefit.Accident.Location.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.locationReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.locationReferenceSer, choice.value)
       }
     }
   }
@@ -1665,37 +1675,37 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       careTeamSequence =
         (kotlin.collections.List(
           maxOf(careTeamSequence?.size ?: 0, _careTeamSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            careTeamSequence?.getOrNull(__i)?.let { it },
-            _careTeamSequence?.getOrNull(__i),
+            careTeamSequence?.getOrNull(index)?.let { it },
+            _careTeamSequence?.getOrNull(index),
           )!!
         }),
       diagnosisSequence =
         (kotlin.collections.List(
           maxOf(diagnosisSequence?.size ?: 0, _diagnosisSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            diagnosisSequence?.getOrNull(__i)?.let { it },
-            _diagnosisSequence?.getOrNull(__i),
+            diagnosisSequence?.getOrNull(index)?.let { it },
+            _diagnosisSequence?.getOrNull(index),
           )!!
         }),
       procedureSequence =
         (kotlin.collections.List(
           maxOf(procedureSequence?.size ?: 0, _procedureSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            procedureSequence?.getOrNull(__i)?.let { it },
-            _procedureSequence?.getOrNull(__i),
+            procedureSequence?.getOrNull(index)?.let { it },
+            _procedureSequence?.getOrNull(index),
           )!!
         }),
       informationSequence =
         (kotlin.collections.List(
           maxOf(informationSequence?.size ?: 0, _informationSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            informationSequence?.getOrNull(__i)?.let { it },
-            _informationSequence?.getOrNull(__i),
+            informationSequence?.getOrNull(index)?.let { it },
+            _informationSequence?.getOrNull(index),
           )!!
         }),
       traceNumber = traceNumber ?: listOf(),
@@ -1727,8 +1737,8 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       bodySite = bodySite ?: listOf(),
       encounter = encounter ?: listOf(),
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       reviewOutcome = reviewOutcome,
       adjudication = adjudication ?: listOf(),
@@ -1795,28 +1805,28 @@ internal object ExplanationOfBenefitItemSerializer : KSerializer<ExplanationOfBe
       encoder.encodeSerializableElement(descriptor, 19, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 20, Hoisted.modifierSer, value.programCode)
-    when (val __d = value.serviced) {
+    when (val choice = value.serviced) {
       null -> {}
       is ExplanationOfBenefit.Item.Serviced.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 21, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 21, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 22, Hoisted.sequenceSer, it)
         }
       }
       is ExplanationOfBenefit.Item.Serviced.Period -> {
-        encoder.encodeSerializableElement(descriptor, 23, Hoisted.servicedPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 23, Hoisted.servicedPeriodSer, choice.value)
       }
     }
-    when (val __d = value.location) {
+    when (val choice = value.location) {
       null -> {}
       is ExplanationOfBenefit.Item.Location.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 24, Hoisted.revenueSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 24, Hoisted.revenueSer, choice.value)
       }
       is ExplanationOfBenefit.Item.Location.Address -> {
-        encoder.encodeSerializableElement(descriptor, 25, Hoisted.locationAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 25, Hoisted.locationAddressSer, choice.value)
       }
       is ExplanationOfBenefit.Item.Location.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 26, Hoisted.requestSerInner, __d.value)
+        encoder.encodeSerializableElement(descriptor, 26, Hoisted.requestSerInner, choice.value)
       }
     }
     (value.patientPaid)?.let {
@@ -2460,8 +2470,8 @@ internal object ExplanationOfBenefitItemDetailSerializer :
       net = net,
       udi = udi ?: listOf(),
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       reviewOutcome = reviewOutcome,
       adjudication = adjudication ?: listOf(),
@@ -2783,8 +2793,8 @@ internal object ExplanationOfBenefitItemDetailSubDetailSerializer :
       net = net,
       udi = udi ?: listOf(),
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       reviewOutcome = reviewOutcome,
       adjudication = adjudication ?: listOf(),
@@ -3196,24 +3206,28 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       itemSequence =
-        (kotlin.collections.List(maxOf(itemSequence?.size ?: 0, _itemSequence?.size ?: 0)) { __i ->
-          PositiveInt.of(itemSequence?.getOrNull(__i)?.let { it }, _itemSequence?.getOrNull(__i))!!
-        }),
-      detailSequence =
-        (kotlin.collections.List(maxOf(detailSequence?.size ?: 0, _detailSequence?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(itemSequence?.size ?: 0, _itemSequence?.size ?: 0)) { index
           ->
           PositiveInt.of(
-            detailSequence?.getOrNull(__i)?.let { it },
-            _detailSequence?.getOrNull(__i),
+            itemSequence?.getOrNull(index)?.let { it },
+            _itemSequence?.getOrNull(index),
+          )!!
+        }),
+      detailSequence =
+        (kotlin.collections.List(maxOf(detailSequence?.size ?: 0, _detailSequence?.size ?: 0)) {
+          index ->
+          PositiveInt.of(
+            detailSequence?.getOrNull(index)?.let { it },
+            _detailSequence?.getOrNull(index),
           )!!
         }),
       subDetailSequence =
         (kotlin.collections.List(
           maxOf(subDetailSequence?.size ?: 0, _subDetailSequence?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           PositiveInt.of(
-            subDetailSequence?.getOrNull(__i)?.let { it },
-            _subDetailSequence?.getOrNull(__i),
+            subDetailSequence?.getOrNull(index)?.let { it },
+            _subDetailSequence?.getOrNull(index),
           )!!
         }),
       traceNumber = traceNumber ?: listOf(),
@@ -3243,8 +3257,8 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       net = net,
       bodySite = bodySite ?: listOf(),
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       reviewOutcome = reviewOutcome,
       adjudication = adjudication ?: listOf(),
@@ -3300,28 +3314,28 @@ internal object ExplanationOfBenefitAddItemSerializer : KSerializer<ExplanationO
       encoder.encodeSerializableElement(descriptor, 15, Hoisted.modifierSer, value.modifier)
     if (value.programCode.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 16, Hoisted.modifierSer, value.programCode)
-    when (val __d = value.serviced) {
+    when (val choice = value.serviced) {
       null -> {}
       is ExplanationOfBenefit.AddItem.Serviced.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.itemSequenceSerInner2, it)
         }
       }
       is ExplanationOfBenefit.AddItem.Serviced.Period -> {
-        encoder.encodeSerializableElement(descriptor, 19, Hoisted.servicedPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 19, Hoisted.servicedPeriodSer, choice.value)
       }
     }
-    when (val __d = value.location) {
+    when (val choice = value.location) {
       null -> {}
       is ExplanationOfBenefit.AddItem.Location.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 20, Hoisted.revenueSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 20, Hoisted.revenueSer, choice.value)
       }
       is ExplanationOfBenefit.AddItem.Location.Address -> {
-        encoder.encodeSerializableElement(descriptor, 21, Hoisted.locationAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 21, Hoisted.locationAddressSer, choice.value)
       }
       is ExplanationOfBenefit.AddItem.Location.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 22, Hoisted.providerSerInner, __d.value)
+        encoder.encodeSerializableElement(descriptor, 22, Hoisted.providerSerInner, choice.value)
       }
     }
     (value.patientPaid)?.let {
@@ -3697,8 +3711,8 @@ internal object ExplanationOfBenefitAddItemDetailSerializer :
       tax = tax,
       net = net,
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       reviewOutcome = reviewOutcome,
       adjudication = adjudication ?: listOf(),
@@ -3976,8 +3990,8 @@ internal object ExplanationOfBenefitAddItemDetailSubDetailSerializer :
       tax = tax,
       net = net,
       noteNumber =
-        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { __i ->
-          PositiveInt.of(noteNumber?.getOrNull(__i)?.let { it }, _noteNumber?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(noteNumber?.size ?: 0, _noteNumber?.size ?: 0)) { index ->
+          PositiveInt.of(noteNumber?.getOrNull(index)?.let { it }, _noteNumber?.getOrNull(index))!!
         }),
       reviewOutcome = reviewOutcome,
       adjudication = adjudication ?: listOf(),
@@ -4706,34 +4720,34 @@ internal object ExplanationOfBenefitBenefitBalanceFinancialSerializer :
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.allowed) {
+    when (val choice = value.allowed) {
       null -> {}
       is ExplanationOfBenefit.BenefitBalance.Financial.Allowed.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.allowedUnsignedIntSer, it)
         }
       }
       is ExplanationOfBenefit.BenefitBalance.Financial.Allowed.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.allowedUnsignedIntSer, it)
         }
       }
       is ExplanationOfBenefit.BenefitBalance.Financial.Allowed.Money -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.allowedMoneySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.allowedMoneySer, choice.value)
       }
     }
-    when (val __d = value.used) {
+    when (val choice = value.used) {
       null -> {}
       is ExplanationOfBenefit.BenefitBalance.Financial.Used.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.allowedUnsignedIntSer, it)
         }
       }
       is ExplanationOfBenefit.BenefitBalance.Financial.Used.Money -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.allowedMoneySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 11, Hoisted.allowedMoneySer, choice.value)
       }
     }
   }
@@ -5260,8 +5274,8 @@ internal object ExplanationOfBenefitSerializer : KSerializer<ExplanationOfBenefi
       decision = decision,
       disposition = R5String.of(disposition, _disposition),
       preAuthRef =
-        (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { __i ->
-          R5String.of(preAuthRef?.getOrNull(__i)?.let { it }, _preAuthRef?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(preAuthRef?.size ?: 0, _preAuthRef?.size ?: 0)) { index ->
+          R5String.of(preAuthRef?.getOrNull(index)?.let { it }, _preAuthRef?.getOrNull(index))!!
         }),
       preAuthRefPeriod = preAuthRefPeriod ?: listOf(),
       diagnosisRelatedGroup = diagnosisRelatedGroup,

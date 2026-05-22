@@ -355,13 +355,13 @@ internal object MedicationKnowledgeCostSerializer : KSerializer<MedicationKnowle
     (value.source?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.sourceSer, it)
     }
-    when (val __d = value.cost) {
+    when (val choice = value.cost) {
       null -> {}
       is MedicationKnowledge.Cost.Cost.Money -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.costMoneySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.costMoneySer, choice.value)
       }
       is MedicationKnowledge.Cost.Cost.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, choice.value)
       }
     }
   }
@@ -969,16 +969,16 @@ internal object MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientChar
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is MedicationKnowledge.IndicationGuideline.DosingGuideline.PatientCharacteristic.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, choice.value)
       }
       is MedicationKnowledge.IndicationGuideline.DosingGuideline.PatientCharacteristic.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, choice.value)
       }
       is MedicationKnowledge.IndicationGuideline.DosingGuideline.PatientCharacteristic.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueRangeSer, choice.value)
       }
     }
   }
@@ -1103,17 +1103,17 @@ internal object MedicationKnowledgeMedicineClassificationSerializer :
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.source) {
+    when (val choice = value.source) {
       null -> {}
       is MedicationKnowledge.MedicineClassification.Source.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.sourceStringSer, it)
         }
       }
       is MedicationKnowledge.MedicineClassification.Source.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.sourceStringSer, it)
         }
       }
@@ -1486,16 +1486,16 @@ internal object MedicationKnowledgeStorageGuidelineEnvironmentalSettingSerialize
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is MedicationKnowledge.StorageGuideline.EnvironmentalSetting.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
       is MedicationKnowledge.StorageGuideline.EnvironmentalSetting.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueRangeSer, choice.value)
       }
       is MedicationKnowledge.StorageGuideline.EnvironmentalSetting.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, choice.value)
       }
     }
   }
@@ -2118,16 +2118,16 @@ internal object MedicationKnowledgeDefinitionalIngredientSerializer :
       )
     (value.item)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemSer, it) }
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
-    when (val __d = value.strength) {
+    when (val choice = value.strength) {
       null -> {}
       is MedicationKnowledge.Definitional.Ingredient.Strength.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.strengthRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.strengthRatioSer, choice.value)
       }
       is MedicationKnowledge.Definitional.Ingredient.Strength.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, choice.value)
       }
       is MedicationKnowledge.Definitional.Ingredient.Strength.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.strengthQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.strengthQuantitySer, choice.value)
       }
     }
   }
@@ -2264,28 +2264,28 @@ internal object MedicationKnowledgeDefinitionalDrugCharacteristicSerializer :
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is MedicationKnowledge.Definitional.DrugCharacteristic.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, choice.value)
       }
       is MedicationKnowledge.Definitional.DrugCharacteristic.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueStringSer, it)
         }
       }
       is MedicationKnowledge.Definitional.DrugCharacteristic.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueQuantitySer, choice.value)
       }
       is MedicationKnowledge.Definitional.DrugCharacteristic.Value.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueStringSer, it)
         }
       }
       is MedicationKnowledge.Definitional.DrugCharacteristic.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueAttachmentSer, choice.value)
       }
     }
   }
@@ -2633,8 +2633,8 @@ internal object MedicationKnowledgeSerializer : KSerializer<MedicationKnowledge>
       author = author,
       intendedJurisdiction = intendedJurisdiction ?: listOf(),
       name =
-        (kotlin.collections.List(maxOf(name?.size ?: 0, _name?.size ?: 0)) { __i ->
-          R5String.of(name?.getOrNull(__i)?.let { it }, _name?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(name?.size ?: 0, _name?.size ?: 0)) { index ->
+          R5String.of(name?.getOrNull(index)?.let { it }, _name?.getOrNull(index))!!
         }),
       relatedMedicationKnowledge = relatedMedicationKnowledge ?: listOf(),
       associatedMedication = associatedMedication ?: listOf(),

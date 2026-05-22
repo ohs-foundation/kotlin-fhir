@@ -688,37 +688,37 @@ internal object DevicePropertySerializer : KSerializer<Device.Property> {
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Device.Property.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
       is Device.Property.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, choice.value)
       }
       is Device.Property.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueStringSer, it)
         }
       }
       is Device.Property.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueStringSer, it)
         }
       }
       is Device.Property.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueStringSer, it)
         }
       }
       is Device.Property.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, choice.value)
       }
       is Device.Property.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueAttachmentSer, choice.value)
       }
     }
   }

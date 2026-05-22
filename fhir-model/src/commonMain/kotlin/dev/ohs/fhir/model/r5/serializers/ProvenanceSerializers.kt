@@ -459,8 +459,8 @@ internal object ProvenanceSerializer : KSerializer<Provenance> {
         ),
       recorded = Instant.of(FhirDateTime.fromString(recorded), _recorded),
       policy =
-        (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { __i ->
-          Uri.of(policy?.getOrNull(__i)?.let { it }, _policy?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { index ->
+          Uri.of(policy?.getOrNull(index)?.let { it }, _policy?.getOrNull(index))!!
         }),
       location = location,
       authorization = authorization ?: listOf(),
@@ -537,21 +537,21 @@ internal object ProvenanceSerializer : KSerializer<Provenance> {
         Hoisted.targetSer,
         value.target,
       )
-    when (val __d = value.occurred) {
+    when (val choice = value.occurred) {
       null -> {}
       is Provenance.Occurred.Period -> {
         encoder.encodeSerializableElement(
           descriptor,
           11 + descriptorOffset,
           Hoisted.occurredPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is Provenance.Occurred.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             13 + descriptorOffset,

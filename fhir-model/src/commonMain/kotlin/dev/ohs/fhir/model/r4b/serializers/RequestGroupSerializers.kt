@@ -389,28 +389,28 @@ internal object RequestGroupActionSerializer : KSerializer<RequestGroup.Action> 
         Hoisted.relatedActionSer,
         value.relatedAction,
       )
-    when (val __d = value.timing) {
+    when (val choice = value.timing) {
       null -> {}
       is RequestGroup.Action.Timing.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.prefixSer, it)
         }
       }
       is RequestGroup.Action.Timing.Age -> {
-        encoder.encodeSerializableElement(descriptor, 19, Hoisted.timingAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 19, Hoisted.timingAgeSer, choice.value)
       }
       is RequestGroup.Action.Timing.Period -> {
-        encoder.encodeSerializableElement(descriptor, 20, Hoisted.timingPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 20, Hoisted.timingPeriodSer, choice.value)
       }
       is RequestGroup.Action.Timing.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 21, Hoisted.timingDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 21, Hoisted.timingDurationSer, choice.value)
       }
       is RequestGroup.Action.Timing.Range -> {
-        encoder.encodeSerializableElement(descriptor, 22, Hoisted.timingRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 22, Hoisted.timingRangeSer, choice.value)
       }
       is RequestGroup.Action.Timing.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 23, Hoisted.timingTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 23, Hoisted.timingTimingSer, choice.value)
       }
     }
     if (value.participant.isNotEmpty())
@@ -703,13 +703,13 @@ internal object RequestGroupActionRelatedActionSerializer :
     (value.relationship.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.actionIdSer, it)
     }
-    when (val __d = value.offset) {
+    when (val choice = value.offset) {
       null -> {}
       is RequestGroup.Action.RelatedAction.Offset.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.offsetDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.offsetDurationSer, choice.value)
       }
       is RequestGroup.Action.RelatedAction.Offset.Range -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.offsetRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.offsetRangeSer, choice.value)
       }
     }
   }
@@ -994,16 +994,19 @@ internal object RequestGroupSerializer : KSerializer<RequestGroup> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),

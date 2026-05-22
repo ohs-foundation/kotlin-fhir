@@ -256,13 +256,13 @@ internal object MedicationAdministrationDosageSerializer :
     (value.route)?.let { encoder.encodeSerializableElement(descriptor, 6, Hoisted.siteSer, it) }
     (value.method)?.let { encoder.encodeSerializableElement(descriptor, 7, Hoisted.siteSer, it) }
     (value.dose)?.let { encoder.encodeSerializableElement(descriptor, 8, Hoisted.doseSer, it) }
-    when (val __d = value.rate) {
+    when (val choice = value.rate) {
       null -> {}
       is MedicationAdministration.Dosage.Rate.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.rateRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.rateRatioSer, choice.value)
       }
       is MedicationAdministration.Dosage.Rate.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.doseSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.doseSer, choice.value)
       }
     }
   }
@@ -718,13 +718,13 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
         Hoisted.basedOnSer,
         value.supportingInformation,
       )
-    when (val __d = value.occurence) {
+    when (val choice = value.occurence) {
       null -> {}
       is MedicationAdministration.Occurence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             22 + descriptorOffset,
@@ -738,7 +738,7 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
           descriptor,
           23 + descriptorOffset,
           Hoisted.occurencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is MedicationAdministration.Occurence.Timing -> {
@@ -746,7 +746,7 @@ internal object MedicationAdministrationSerializer : KSerializer<MedicationAdmin
           descriptor,
           24 + descriptorOffset,
           Hoisted.occurenceTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

@@ -593,13 +593,13 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, Hoisted.subjectSer, it)
     }
-    when (val __d = value.identified) {
+    when (val choice = value.identified) {
       null -> {}
       is DetectedIssue.Identified.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             20 + descriptorOffset,
@@ -613,7 +613,7 @@ internal object DetectedIssueSerializer : KSerializer<DetectedIssue> {
           descriptor,
           21 + descriptorOffset,
           Hoisted.identifiedPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

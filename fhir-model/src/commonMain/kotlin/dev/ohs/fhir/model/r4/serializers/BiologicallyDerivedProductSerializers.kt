@@ -166,16 +166,16 @@ internal object BiologicallyDerivedProductCollectionSerializer :
     (value.source)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.collectorSer, it)
     }
-    when (val __d = value.collected) {
+    when (val choice = value.collected) {
       null -> {}
       is BiologicallyDerivedProduct.Collection.Collected.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.collectedDateTimeSer, it)
         }
       }
       is BiologicallyDerivedProduct.Collection.Collected.Period -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.collectedPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.collectedPeriodSer, choice.value)
       }
     }
   }
@@ -307,16 +307,16 @@ internal object BiologicallyDerivedProductProcessingSerializer :
     (value.additive)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.additiveSer, it)
     }
-    when (val __d = value.time) {
+    when (val choice = value.time) {
       null -> {}
       is BiologicallyDerivedProduct.Processing.Time.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.descriptionSer, it)
         }
       }
       is BiologicallyDerivedProduct.Processing.Time.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timePeriodSer, choice.value)
       }
     }
   }
@@ -432,16 +432,16 @@ internal object BiologicallyDerivedProductManipulationSerializer :
     (value.description?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.descriptionSer, it)
     }
-    when (val __d = value.time) {
+    when (val choice = value.time) {
       null -> {}
       is BiologicallyDerivedProduct.Manipulation.Time.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.descriptionSer, it)
         }
       }
       is BiologicallyDerivedProduct.Manipulation.Time.Period -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.timePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.timePeriodSer, choice.value)
       }
     }
   }

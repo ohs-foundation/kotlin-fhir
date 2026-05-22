@@ -190,16 +190,16 @@ internal object SpecimenCollectionSerializer : KSerializer<Specimen.Collection> 
     (value.collector)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.collectorSer, it)
     }
-    when (val __d = value.collected) {
+    when (val choice = value.collected) {
       null -> {}
       is Specimen.Collection.Collected.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.collectedDateTimeSer, it)
         }
       }
       is Specimen.Collection.Collected.Period -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.collectedPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.collectedPeriodSer, choice.value)
       }
     }
     (value.duration)?.let {
@@ -212,13 +212,13 @@ internal object SpecimenCollectionSerializer : KSerializer<Specimen.Collection> 
     (value.bodySite)?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.methodSer, it)
     }
-    when (val __d = value.fastingStatus) {
+    when (val choice = value.fastingStatus) {
       null -> {}
       is Specimen.Collection.FastingStatus.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.methodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 11, Hoisted.methodSer, choice.value)
       }
       is Specimen.Collection.FastingStatus.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 12, Hoisted.durationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.durationSer, choice.value)
       }
     }
   }
@@ -353,16 +353,16 @@ internal object SpecimenProcessingSerializer : KSerializer<Specimen.Processing> 
     }
     if (value.additive.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.additiveSer, value.additive)
-    when (val __d = value.time) {
+    when (val choice = value.time) {
       null -> {}
       is Specimen.Processing.Time.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.descriptionSer, it)
         }
       }
       is Specimen.Processing.Time.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timePeriodSer, choice.value)
       }
     }
   }
@@ -507,13 +507,18 @@ internal object SpecimenContainerSerializer : KSerializer<Specimen.Container> {
     (value.specimenQuantity)?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.capacitySer, it)
     }
-    when (val __d = value.additive) {
+    when (val choice = value.additive) {
       null -> {}
       is Specimen.Container.Additive.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.typeSer, choice.value)
       }
       is Specimen.Container.Additive.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.additiveReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          10,
+          Hoisted.additiveReferenceSer,
+          choice.value,
+        )
       }
     }
   }

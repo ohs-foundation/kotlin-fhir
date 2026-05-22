@@ -515,13 +515,13 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
         it,
       )
     }
-    when (val __d = value.effective) {
+    when (val choice = value.effective) {
       null -> {}
       is MedicationStatement.Effective.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             19 + descriptorOffset,
@@ -535,7 +535,7 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
           descriptor,
           20 + descriptorOffset,
           Hoisted.effectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is MedicationStatement.Effective.Timing -> {
@@ -543,7 +543,7 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
           descriptor,
           21 + descriptorOffset,
           Hoisted.effectiveTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

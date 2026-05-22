@@ -739,8 +739,8 @@ internal object DeviceDefinitionConformsToSerializer : KSerializer<DeviceDefinit
       category = category,
       specification = specification!!,
       version =
-        (kotlin.collections.List(maxOf(version?.size ?: 0, _version?.size ?: 0)) { __i ->
-          R5String.of(version?.getOrNull(__i)?.let { it }, _version?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(version?.size ?: 0, _version?.size ?: 0)) { index ->
+          R5String.of(version?.getOrNull(index)?.let { it }, _version?.getOrNull(index))!!
         }),
       source = source ?: listOf(),
     )
@@ -1395,37 +1395,37 @@ internal object DeviceDefinitionPropertySerializer : KSerializer<DeviceDefinitio
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is DeviceDefinition.Property.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
       is DeviceDefinition.Property.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, choice.value)
       }
       is DeviceDefinition.Property.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueStringSer, it)
         }
       }
       is DeviceDefinition.Property.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueStringSer, it)
         }
       }
       is DeviceDefinition.Property.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueStringSer, it)
         }
       }
       is DeviceDefinition.Property.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, choice.value)
       }
       is DeviceDefinition.Property.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueAttachmentSer, choice.value)
       }
     }
   }
@@ -2459,12 +2459,12 @@ internal object DeviceDefinitionSerializer : KSerializer<DeviceDefinition> {
       productionIdentifierInUDI =
         (kotlin.collections.List(
           maxOf(productionIdentifierInUDI?.size ?: 0, _productionIdentifierInUDI?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Enumeration.of(
             DeviceDefinition.DeviceProductionIdentifierInUDI.fromCode(
-              productionIdentifierInUDI?.getOrNull(__i)!!
+              productionIdentifierInUDI?.getOrNull(index)!!
             ),
-            _productionIdentifierInUDI?.getOrNull(__i),
+            _productionIdentifierInUDI?.getOrNull(index),
           )
         }),
       guideline = guideline,

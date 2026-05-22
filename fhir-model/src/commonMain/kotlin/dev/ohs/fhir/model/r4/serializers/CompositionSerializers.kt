@@ -243,13 +243,13 @@ internal object CompositionRelatesToSerializer : KSerializer<Composition.Relates
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
-    when (val __d = value.target) {
+    when (val choice = value.target) {
       null -> {}
       is Composition.RelatesTo.Target.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.targetIdentifierSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.targetIdentifierSer, choice.value)
       }
       is Composition.RelatesTo.Target.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.targetReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.targetReferenceSer, choice.value)
       }
     }
   }

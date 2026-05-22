@@ -487,18 +487,18 @@ internal object GenomicStudyAnalysisInputSerializer : KSerializer<GenomicStudy.A
       )
     (value.`file`)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.fileSer, it) }
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
-    when (val __d = value.generatedBy) {
+    when (val choice = value.generatedBy) {
       null -> {}
       is GenomicStudy.Analysis.Input.GeneratedBy.Identifier -> {
         encoder.encodeSerializableElement(
           descriptor,
           5,
           Hoisted.generatedByIdentifierSer,
-          __d.value,
+          choice.value,
         )
       }
       is GenomicStudy.Analysis.Input.GeneratedBy.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.fileSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.fileSer, choice.value)
       }
     }
   }

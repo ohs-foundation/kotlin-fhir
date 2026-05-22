@@ -389,13 +389,13 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
       type = Enumeration.of(ActorDefinition.ExampleScenarioActorType.fromCode(type!!), _type),
       documentation = Markdown.of(documentation, _documentation),
       reference =
-        (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { __i ->
-          Url.of(reference?.getOrNull(__i)?.let { it }, _reference?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(reference?.size ?: 0, _reference?.size ?: 0)) { index ->
+          Url.of(reference?.getOrNull(index)?.let { it }, _reference?.getOrNull(index))!!
         }),
       capabilities = Canonical.of(capabilities, _capabilities),
       derivedFrom =
-        (kotlin.collections.List(maxOf(derivedFrom?.size ?: 0, _derivedFrom?.size ?: 0)) { __i ->
-          Canonical.of(derivedFrom?.getOrNull(__i)?.let { it }, _derivedFrom?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(derivedFrom?.size ?: 0, _derivedFrom?.size ?: 0)) { index ->
+          Canonical.of(derivedFrom?.getOrNull(index)?.let { it }, _derivedFrom?.getOrNull(index))!!
         }),
     )
   }
@@ -483,13 +483,13 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is ActorDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -503,7 +503,7 @@ internal object ActorDefinitionSerializer : KSerializer<ActorDefinition> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

@@ -609,16 +609,16 @@ internal object TestPlanTestCaseTestRunScriptSerializer :
     (value.language)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.languageSer, it)
     }
-    when (val __d = value.source) {
+    when (val choice = value.source) {
       null -> {}
       is TestPlan.TestCase.TestRun.Script.Source.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.sourceStringSer, it)
         }
       }
       is TestPlan.TestCase.TestRun.Script.Source.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.sourceReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.sourceReferenceSer, choice.value)
       }
     }
   }
@@ -727,16 +727,16 @@ internal object TestPlanTestCaseTestDataSerializer : KSerializer<TestPlan.TestCa
     (value.content)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentSer, it)
     }
-    when (val __d = value.source) {
+    when (val choice = value.source) {
       null -> {}
       is TestPlan.TestCase.TestData.Source.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.sourceStringSer, it)
         }
       }
       is TestPlan.TestCase.TestData.Source.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.contentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.contentSer, choice.value)
       }
     }
   }
@@ -1269,13 +1269,13 @@ internal object TestPlanSerializer : KSerializer<TestPlan> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is TestPlan.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1289,7 +1289,7 @@ internal object TestPlanSerializer : KSerializer<TestPlan> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

@@ -427,20 +427,20 @@ internal object DocumentReferenceContentProfileSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is DocumentReference.Content.Profile.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.valueCodingSer, choice.value)
       }
       is DocumentReference.Content.Profile.Value.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueUriSer, it)
         }
       }
       is DocumentReference.Content.Profile.Value.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueUriSer, it)
         }
       }

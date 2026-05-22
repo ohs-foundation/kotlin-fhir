@@ -651,66 +651,71 @@ internal object InventoryItemCharacteristicSerializer : KSerializer<InventoryIte
     (value.characteristicType)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.characteristicTypeSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is InventoryItem.Characteristic.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueStringSer, it)
         }
       }
       is InventoryItem.Characteristic.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueStringSer, it)
         }
       }
       is InventoryItem.Characteristic.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 8, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueStringSer, it)
         }
       }
       is InventoryItem.Characteristic.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueStringSer, it)
         }
       }
       is InventoryItem.Characteristic.Value.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueStringSer, it)
         }
       }
       is InventoryItem.Characteristic.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueStringSer, it)
         }
       }
       is InventoryItem.Characteristic.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueQuantitySer, choice.value)
       }
       is InventoryItem.Characteristic.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueRangeSer, choice.value)
       }
       is InventoryItem.Characteristic.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 18, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 18, Hoisted.valueRatioSer, choice.value)
       }
       is InventoryItem.Characteristic.Value.Annotation -> {
-        encoder.encodeSerializableElement(descriptor, 19, Hoisted.valueAnnotationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 19, Hoisted.valueAnnotationSer, choice.value)
       }
       is InventoryItem.Characteristic.Value.Address -> {
-        encoder.encodeSerializableElement(descriptor, 20, Hoisted.valueAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 20, Hoisted.valueAddressSer, choice.value)
       }
       is InventoryItem.Characteristic.Value.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 21, Hoisted.valueDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 21, Hoisted.valueDurationSer, choice.value)
       }
       is InventoryItem.Characteristic.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 22, Hoisted.characteristicTypeSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          22,
+          Hoisted.characteristicTypeSer,
+          choice.value,
+        )
       }
     }
   }

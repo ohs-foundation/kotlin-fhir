@@ -725,9 +725,12 @@ internal object VerificationResultSerializer : KSerializer<VerificationResult> {
       modifierExtension = modifierExtension ?: listOf(),
       target = target ?: listOf(),
       targetLocation =
-        (kotlin.collections.List(maxOf(targetLocation?.size ?: 0, _targetLocation?.size ?: 0)) { __i
-          ->
-          R4String.of(targetLocation?.getOrNull(__i)?.let { it }, _targetLocation?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(targetLocation?.size ?: 0, _targetLocation?.size ?: 0)) {
+          index ->
+          R4String.of(
+            targetLocation?.getOrNull(index)?.let { it },
+            _targetLocation?.getOrNull(index),
+          )!!
         }),
       need = need,
       status = Enumeration.of(VerificationResult.Status.fromCode(status!!), _status),

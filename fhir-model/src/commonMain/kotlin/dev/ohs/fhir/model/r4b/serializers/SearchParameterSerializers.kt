@@ -499,8 +499,8 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
       purpose = Markdown.of(purpose, _purpose),
       code = Code.of(code, _code)!!,
       base =
-        (kotlin.collections.List(maxOf(base?.size ?: 0, _base?.size ?: 0)) { __i ->
-          Enumeration.of(ResourceType.fromCode(base?.getOrNull(__i)!!), _base?.getOrNull(__i))
+        (kotlin.collections.List(maxOf(base?.size ?: 0, _base?.size ?: 0)) { index ->
+          Enumeration.of(ResourceType.fromCode(base?.getOrNull(index)!!), _base?.getOrNull(index))
         }),
       type = Enumeration.of(SearchParamType.fromCode(type!!), _type),
       expression = R4bString.of(expression, _expression),
@@ -510,28 +510,31 @@ internal object SearchParameterSerializer : KSerializer<SearchParameter> {
           Enumeration.of(SearchParameter.XPathUsageType.fromCode(it), _xpathUsage)
         },
       target =
-        (kotlin.collections.List(maxOf(target?.size ?: 0, _target?.size ?: 0)) { __i ->
-          Enumeration.of(ResourceType.fromCode(target?.getOrNull(__i)!!), _target?.getOrNull(__i))
+        (kotlin.collections.List(maxOf(target?.size ?: 0, _target?.size ?: 0)) { index ->
+          Enumeration.of(
+            ResourceType.fromCode(target?.getOrNull(index)!!),
+            _target?.getOrNull(index),
+          )
         }),
       multipleOr = R4bBoolean.of(multipleOr, _multipleOr),
       multipleAnd = R4bBoolean.of(multipleAnd, _multipleAnd),
       comparator =
-        (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(comparator?.size ?: 0, _comparator?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.SearchComparator.fromCode(comparator?.getOrNull(__i)!!),
-            _comparator?.getOrNull(__i),
+            SearchParameter.SearchComparator.fromCode(comparator?.getOrNull(index)!!),
+            _comparator?.getOrNull(index),
           )
         }),
       modifier =
-        (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(modifier?.size ?: 0, _modifier?.size ?: 0)) { index ->
           Enumeration.of(
-            SearchParameter.SearchModifierCode.fromCode(modifier?.getOrNull(__i)!!),
-            _modifier?.getOrNull(__i),
+            SearchParameter.SearchModifierCode.fromCode(modifier?.getOrNull(index)!!),
+            _modifier?.getOrNull(index),
           )
         }),
       chain =
-        (kotlin.collections.List(maxOf(chain?.size ?: 0, _chain?.size ?: 0)) { __i ->
-          R4bString.of(chain?.getOrNull(__i)?.let { it }, _chain?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(chain?.size ?: 0, _chain?.size ?: 0)) { index ->
+          R4bString.of(chain?.getOrNull(index)?.let { it }, _chain?.getOrNull(index))!!
         }),
       component = component ?: listOf(),
     )

@@ -155,20 +155,20 @@ internal object DeviceRequestParameterSerializer : KSerializer<DeviceRequest.Par
         value.modifierExtension,
       )
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is DeviceRequest.Parameter.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, choice.value)
       }
       is DeviceRequest.Parameter.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, choice.value)
       }
       is DeviceRequest.Parameter.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueRangeSer, choice.value)
       }
       is DeviceRequest.Parameter.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueBooleanSer, it)
         }
       }
@@ -537,16 +537,19 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
@@ -778,13 +781,13 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
         it,
       )
     }
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is DeviceRequest.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 32 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             33 + descriptorOffset,
@@ -798,7 +801,7 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
           descriptor,
           34 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is DeviceRequest.Occurrence.Timing -> {
@@ -806,7 +809,7 @@ internal object DeviceRequestSerializer : KSerializer<DeviceRequest> {
           descriptor,
           35 + descriptorOffset,
           Hoisted.occurrenceTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

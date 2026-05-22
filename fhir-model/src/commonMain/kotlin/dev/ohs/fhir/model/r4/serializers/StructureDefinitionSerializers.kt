@@ -811,10 +811,10 @@ internal object StructureDefinitionSerializer : KSerializer<StructureDefinition>
       contextInvariant =
         (kotlin.collections.List(
           maxOf(contextInvariant?.size ?: 0, _contextInvariant?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           R4String.of(
-            contextInvariant?.getOrNull(__i)?.let { it },
-            _contextInvariant?.getOrNull(__i),
+            contextInvariant?.getOrNull(index)?.let { it },
+            _contextInvariant?.getOrNull(index),
           )!!
         }),
       type = Uri.of(type, _type)!!,

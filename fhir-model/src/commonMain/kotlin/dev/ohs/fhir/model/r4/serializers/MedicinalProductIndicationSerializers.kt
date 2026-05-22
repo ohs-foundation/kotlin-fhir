@@ -156,18 +156,23 @@ internal object MedicinalProductIndicationOtherTherapySerializer :
     (value.therapyRelationshipType)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.therapyRelationshipTypeSer, it)
     }
-    when (val __d = value.medication) {
+    when (val choice = value.medication) {
       null -> {}
       is MedicinalProductIndication.OtherTherapy.Medication.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           4,
           Hoisted.therapyRelationshipTypeSer,
-          __d.value,
+          choice.value,
         )
       }
       is MedicinalProductIndication.OtherTherapy.Medication.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.medicationReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.medicationReferenceSer,
+          choice.value,
+        )
       }
     }
   }

@@ -153,16 +153,16 @@ internal object HumanNameSerializer : KSerializer<HumanName> {
       text = R5String.of(text, _text),
       family = R5String.of(family, _family),
       given =
-        (kotlin.collections.List(maxOf(given?.size ?: 0, _given?.size ?: 0)) { __i ->
-          R5String.of(given?.getOrNull(__i)?.let { it }, _given?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(given?.size ?: 0, _given?.size ?: 0)) { index ->
+          R5String.of(given?.getOrNull(index)?.let { it }, _given?.getOrNull(index))!!
         }),
       prefix =
-        (kotlin.collections.List(maxOf(prefix?.size ?: 0, _prefix?.size ?: 0)) { __i ->
-          R5String.of(prefix?.getOrNull(__i)?.let { it }, _prefix?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(prefix?.size ?: 0, _prefix?.size ?: 0)) { index ->
+          R5String.of(prefix?.getOrNull(index)?.let { it }, _prefix?.getOrNull(index))!!
         }),
       suffix =
-        (kotlin.collections.List(maxOf(suffix?.size ?: 0, _suffix?.size ?: 0)) { __i ->
-          R5String.of(suffix?.getOrNull(__i)?.let { it }, _suffix?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(suffix?.size ?: 0, _suffix?.size ?: 0)) { index ->
+          R5String.of(suffix?.getOrNull(index)?.let { it }, _suffix?.getOrNull(index))!!
         }),
       period = period,
     )

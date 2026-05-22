@@ -752,10 +752,10 @@ internal object PermissionSerializer : KSerializer<Permission> {
       status = Enumeration.of(Permission.PermissionStatus.fromCode(status!!), _status),
       asserter = asserter,
       date =
-        (kotlin.collections.List(maxOf(date?.size ?: 0, _date?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(date?.size ?: 0, _date?.size ?: 0)) { index ->
           DateTime.of(
-            date?.getOrNull(__i)?.let { FhirDateTime.fromString(it) },
-            _date?.getOrNull(__i),
+            date?.getOrNull(index)?.let { FhirDateTime.fromString(it) },
+            _date?.getOrNull(index),
           )!!
         }),
       validity = validity,

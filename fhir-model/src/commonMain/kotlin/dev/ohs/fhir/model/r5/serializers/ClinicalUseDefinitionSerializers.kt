@@ -514,14 +514,14 @@ internal object ClinicalUseDefinitionIndicationSerializer :
     (value.intendedEffect)?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.diseaseSymptomProcedureSer, it)
     }
-    when (val __d = value.duration) {
+    when (val choice = value.duration) {
       null -> {}
       is ClinicalUseDefinition.Indication.Duration.Range -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.durationRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.durationRangeSer, choice.value)
       }
       is ClinicalUseDefinition.Indication.Duration.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.durationStringSer, it)
         }
       }
@@ -785,13 +785,18 @@ internal object ClinicalUseDefinitionInteractionInteractantSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.item) {
+    when (val choice = value.item) {
       null -> {}
       is ClinicalUseDefinition.Interaction.Interactant.Item.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
       is ClinicalUseDefinition.Interaction.Interactant.Item.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.itemCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          4,
+          Hoisted.itemCodeableConceptSer,
+          choice.value,
+        )
       }
     }
   }
@@ -1244,8 +1249,8 @@ internal object ClinicalUseDefinitionSerializer : KSerializer<ClinicalUseDefinit
       interaction = interaction,
       population = population ?: listOf(),
       library =
-        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { __i ->
-          Canonical.of(library?.getOrNull(__i)?.let { it }, _library?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
+          Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
       undesirableEffect = undesirableEffect,
       warning = warning,

@@ -203,14 +203,14 @@ internal object SubstanceDefinitionMoietySerializer : KSerializer<SubstanceDefin
     (value.molecularFormula?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 10, Hoisted.nameSer, it)
     }
-    when (val __d = value.amount) {
+    when (val choice = value.amount) {
       null -> {}
       is SubstanceDefinition.Moiety.Amount.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.amountQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 11, Hoisted.amountQuantitySer, choice.value)
       }
       is SubstanceDefinition.Moiety.Amount.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.nameSer, it)
         }
       }
@@ -459,28 +459,28 @@ internal object SubstanceDefinitionPropertySerializer : KSerializer<SubstanceDef
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is SubstanceDefinition.Property.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, choice.value)
       }
       is SubstanceDefinition.Property.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, choice.value)
       }
       is SubstanceDefinition.Property.Value.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueDateSer, it)
         }
       }
       is SubstanceDefinition.Property.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueDateSer, it)
         }
       }
       is SubstanceDefinition.Property.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueAttachmentSer, choice.value)
       }
     }
   }
@@ -1535,14 +1535,14 @@ internal object SubstanceDefinitionRelationshipSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.substanceDefinition) {
+    when (val choice = value.substanceDefinition) {
       null -> {}
       is SubstanceDefinition.Relationship.SubstanceDefinition.Reference -> {
         encoder.encodeSerializableElement(
           descriptor,
           3,
           Hoisted.substanceDefinitionReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is SubstanceDefinition.Relationship.SubstanceDefinition.CodeableConcept -> {
@@ -1550,7 +1550,7 @@ internal object SubstanceDefinitionRelationshipSerializer :
           descriptor,
           4,
           Hoisted.substanceDefinitionCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -1566,17 +1566,17 @@ internal object SubstanceDefinitionRelationshipSerializer :
     (value.isDefining?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.isDefiningSer, it)
     }
-    when (val __d = value.amount) {
+    when (val choice = value.amount) {
       null -> {}
       is SubstanceDefinition.Relationship.Amount.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.amountQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.amountQuantitySer, choice.value)
       }
       is SubstanceDefinition.Relationship.Amount.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.amountRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.amountRatioSer, choice.value)
       }
       is SubstanceDefinition.Relationship.Amount.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.isDefiningSer, it)
         }
       }

@@ -139,14 +139,14 @@ internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.period) {
+    when (val choice = value.period) {
       null -> {}
       is ProductShelfLife.Period.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodDurationSer, choice.value)
       }
       is ProductShelfLife.Period.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodStringSer, it)
         }
       }

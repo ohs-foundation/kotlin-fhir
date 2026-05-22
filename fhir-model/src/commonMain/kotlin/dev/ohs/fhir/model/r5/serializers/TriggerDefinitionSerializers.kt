@@ -196,23 +196,23 @@ internal object TriggerDefinitionSerializer : KSerializer<TriggerDefinition> {
     (value.subscriptionTopic?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, it)
     }
-    when (val __d = value.timing) {
+    when (val choice = value.timing) {
       null -> {}
       is TriggerDefinition.Timing.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timingTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.timingTimingSer, choice.value)
       }
       is TriggerDefinition.Timing.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.timingReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.timingReferenceSer, choice.value)
       }
       is TriggerDefinition.Timing.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 11, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.typeSer, it)
         }
       }
       is TriggerDefinition.Timing.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.typeSer, it)
         }
       }

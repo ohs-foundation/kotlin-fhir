@@ -417,14 +417,14 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
         it,
       )
     }
-    when (val __d = value.medication) {
+    when (val choice = value.medication) {
       null -> {}
       is MedicationStatement.Medication.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           17 + descriptorOffset,
           Hoisted.statusReasonSerInner,
-          __d.value,
+          choice.value,
         )
       }
       is MedicationStatement.Medication.Reference -> {
@@ -432,7 +432,7 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
           descriptor,
           18 + descriptorOffset,
           Hoisted.basedOnSerInner,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -452,13 +452,13 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
         it,
       )
     }
-    when (val __d = value.effective) {
+    when (val choice = value.effective) {
       null -> {}
       is MedicationStatement.Effective.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             22 + descriptorOffset,
@@ -472,7 +472,7 @@ internal object MedicationStatementSerializer : KSerializer<MedicationStatement>
           descriptor,
           23 + descriptorOffset,
           Hoisted.effectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

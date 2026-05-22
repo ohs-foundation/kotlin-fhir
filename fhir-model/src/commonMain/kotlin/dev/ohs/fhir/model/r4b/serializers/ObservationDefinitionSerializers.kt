@@ -602,10 +602,12 @@ internal object ObservationDefinitionSerializer : KSerializer<ObservationDefinit
       permittedDataType =
         (kotlin.collections.List(
           maxOf(permittedDataType?.size ?: 0, _permittedDataType?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Enumeration.of(
-            ObservationDefinition.ObservationDataType.fromCode(permittedDataType?.getOrNull(__i)!!),
-            _permittedDataType?.getOrNull(__i),
+            ObservationDefinition.ObservationDataType.fromCode(
+              permittedDataType?.getOrNull(index)!!
+            ),
+            _permittedDataType?.getOrNull(index),
           )
         }),
       multipleResultsAllowed = R4bBoolean.of(multipleResultsAllowed, _multipleResultsAllowed),

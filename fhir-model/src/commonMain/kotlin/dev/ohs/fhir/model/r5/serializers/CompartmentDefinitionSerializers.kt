@@ -147,8 +147,8 @@ internal object CompartmentDefinitionResourceSerializer :
       modifierExtension = modifierExtension ?: listOf(),
       code = Enumeration.of(ResourceType.fromCode(code!!), _code),
       `param` =
-        (kotlin.collections.List(maxOf(`param`?.size ?: 0, _param?.size ?: 0)) { __i ->
-          R5String.of(`param`?.getOrNull(__i)?.let { it }, _param?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(`param`?.size ?: 0, _param?.size ?: 0)) { index ->
+          R5String.of(`param`?.getOrNull(index)?.let { it }, _param?.getOrNull(index))!!
         }),
       documentation = R5String.of(documentation, _documentation),
       startParam = Uri.of(startParam, _startParam),
@@ -548,13 +548,13 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is CompartmentDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             15 + descriptorOffset,
@@ -568,7 +568,7 @@ internal object CompartmentDefinitionSerializer : KSerializer<CompartmentDefinit
           descriptor,
           16 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

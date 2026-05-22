@@ -639,21 +639,21 @@ internal object MessageHeaderSerializer : KSerializer<MessageHeader> {
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.event) {
+    when (val choice = value.event) {
       null -> {}
       is MessageHeader.Event.Coding -> {
         encoder.encodeSerializableElement(
           descriptor,
           10 + descriptorOffset,
           Hoisted.eventCodingSer,
-          __d.value,
+          choice.value,
         )
       }
       is MessageHeader.Event.Uri -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 11 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             12 + descriptorOffset,

@@ -38,36 +38,38 @@ import com.squareup.kotlinpoet.TypeSpec
  */
 object BigDecimalSerializerFileSpecGenerator {
   fun generate(packageName: String): FileSpec {
-    val bigDecimalCN = ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal")
-    val kSerializerCN = ClassName("kotlinx.serialization", "KSerializer")
-    val serialDescriptorCN = ClassName("kotlinx.serialization.descriptors", "SerialDescriptor")
-    val primitiveDescriptorCN =
+    val bigDecimalClassName = ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal")
+    val kSerializerClassName = ClassName("kotlinx.serialization", "KSerializer")
+    val serialDescriptorClassName =
+      ClassName("kotlinx.serialization.descriptors", "SerialDescriptor")
+    val primitiveDescriptorClassName =
       ClassName("kotlinx.serialization.descriptors", "PrimitiveSerialDescriptor")
-    val primitiveKindCN = ClassName("kotlinx.serialization.descriptors", "PrimitiveKind")
-    val encoderCN = ClassName("kotlinx.serialization.encoding", "Encoder")
-    val decoderCN = ClassName("kotlinx.serialization.encoding", "Decoder")
-    val jsonEncoderCN = ClassName("kotlinx.serialization.json", "JsonEncoder")
-    val jsonDecoderCN = ClassName("kotlinx.serialization.json", "JsonDecoder")
-    val jsonPrimitiveCN = ClassName("kotlinx.serialization.json", "JsonPrimitive")
-    val jsonUnquotedLiteralMN =
+    val primitiveKindClassName = ClassName("kotlinx.serialization.descriptors", "PrimitiveKind")
+    val encoderClassName = ClassName("kotlinx.serialization.encoding", "Encoder")
+    val decoderClassName = ClassName("kotlinx.serialization.encoding", "Decoder")
+    val jsonEncoderClassName = ClassName("kotlinx.serialization.json", "JsonEncoder")
+    val jsonDecoderClassName = ClassName("kotlinx.serialization.json", "JsonDecoder")
+    val jsonPrimitiveClassName = ClassName("kotlinx.serialization.json", "JsonPrimitive")
+    val jsonUnquotedLiteralMemberName =
       com.squareup.kotlinpoet.MemberName("kotlinx.serialization.json", "JsonUnquotedLiteral")
-    val experimentalOptInCN = ClassName("kotlinx.serialization", "ExperimentalSerializationApi")
+    val experimentalOptInClassName =
+      ClassName("kotlinx.serialization", "ExperimentalSerializationApi")
 
     val serializeFn =
       FunSpec.builder("serialize")
         .addModifiers(KModifier.OVERRIDE)
         .addAnnotation(
           AnnotationSpec.builder(ClassName("kotlin", "OptIn"))
-            .addMember("%T::class", experimentalOptInCN)
+            .addMember("%T::class", experimentalOptInClassName)
             .build()
         )
-        .addParameter("encoder", encoderCN)
-        .addParameter("value", bigDecimalCN)
-        .beginControlFlow("if (encoder is %T)", jsonEncoderCN)
+        .addParameter("encoder", encoderClassName)
+        .addParameter("value", bigDecimalClassName)
+        .beginControlFlow("if (encoder is %T)", jsonEncoderClassName)
         .addStatement(
           "encoder.encodeSerializableValue(%T.serializer(), %M(value.toPlainString()))",
-          jsonPrimitiveCN,
-          jsonUnquotedLiteralMN,
+          jsonPrimitiveClassName,
+          jsonUnquotedLiteralMemberName,
         )
         .nextControlFlow("else")
         .addStatement("encoder.encodeString(value.toPlainString())")
@@ -77,16 +79,16 @@ object BigDecimalSerializerFileSpecGenerator {
     val deserializeFn =
       FunSpec.builder("deserialize")
         .addModifiers(KModifier.OVERRIDE)
-        .addParameter("decoder", decoderCN)
-        .returns(bigDecimalCN)
-        .beginControlFlow("return if (decoder is %T)", jsonDecoderCN)
+        .addParameter("decoder", decoderClassName)
+        .returns(bigDecimalClassName)
+        .beginControlFlow("return if (decoder is %T)", jsonDecoderClassName)
         .addStatement(
           "%T.parseString(decoder.decodeJsonElement().%M.content)",
-          bigDecimalCN,
+          bigDecimalClassName,
           com.squareup.kotlinpoet.MemberName("kotlinx.serialization.json", "jsonPrimitive"),
         )
         .nextControlFlow("else")
-        .addStatement("%T.parseString(decoder.decodeString())", bigDecimalCN)
+        .addStatement("%T.parseString(decoder.decodeString())", bigDecimalClassName)
         .endControlFlow()
         .build()
 
@@ -100,16 +102,16 @@ object BigDecimalSerializerFileSpecGenerator {
               "preserves the original precision (trailing zeros included); on other encoders " +
               "it falls back to a plain decimal string."
           )
-          .addSuperinterface(kSerializerCN.parameterizedBy(bigDecimalCN))
+          .addSuperinterface(kSerializerClassName.parameterizedBy(bigDecimalClassName))
           .addProperty(
-            PropertySpec.builder("descriptor", serialDescriptorCN)
+            PropertySpec.builder("descriptor", serialDescriptorClassName)
               .addModifiers(KModifier.OVERRIDE)
               .initializer(
                 CodeBlock.of(
                   "%T(%S, %T.%L)",
-                  primitiveDescriptorCN,
+                  primitiveDescriptorClassName,
                   "FhirBigDecimal",
-                  primitiveKindCN,
+                  primitiveKindClassName,
                   "STRING",
                 )
               )

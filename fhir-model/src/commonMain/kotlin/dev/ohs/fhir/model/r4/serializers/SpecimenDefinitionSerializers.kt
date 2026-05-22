@@ -396,14 +396,14 @@ internal object SpecimenDefinitionTypeTestedContainerSerializer :
     (value.capacity)?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.capacitySer, it)
     }
-    when (val __d = value.minimumVolume) {
+    when (val choice = value.minimumVolume) {
       null -> {}
       is SpecimenDefinition.TypeTested.Container.MinimumVolume.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.capacitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.capacitySer, choice.value)
       }
       is SpecimenDefinition.TypeTested.Container.MinimumVolume.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.descriptionSer, it)
         }
       }
@@ -528,18 +528,18 @@ internal object SpecimenDefinitionTypeTestedContainerAdditiveSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.additive) {
+    when (val choice = value.additive) {
       null -> {}
       is SpecimenDefinition.TypeTested.Container.Additive.Additive.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           3,
           Hoisted.additiveCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is SpecimenDefinition.TypeTested.Container.Additive.Additive.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.additiveReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.additiveReferenceSer, choice.value)
       }
     }
   }

@@ -408,8 +408,8 @@ internal object ClinicalImpressionSerializer : KSerializer<ClinicalImpression> {
       problem = problem ?: listOf(),
       changePattern = changePattern,
       protocol =
-        (kotlin.collections.List(maxOf(protocol?.size ?: 0, _protocol?.size ?: 0)) { __i ->
-          Uri.of(protocol?.getOrNull(__i)?.let { it }, _protocol?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(protocol?.size ?: 0, _protocol?.size ?: 0)) { index ->
+          Uri.of(protocol?.getOrNull(index)?.let { it }, _protocol?.getOrNull(index))!!
         }),
       summary = R5String.of(summary, _summary),
       finding = finding ?: listOf(),
@@ -519,13 +519,13 @@ internal object ClinicalImpressionSerializer : KSerializer<ClinicalImpression> {
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, Hoisted.subjectSer, it)
     }
-    when (val __d = value.effective) {
+    when (val choice = value.effective) {
       null -> {}
       is ClinicalImpression.Effective.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             19 + descriptorOffset,
@@ -539,7 +539,7 @@ internal object ClinicalImpressionSerializer : KSerializer<ClinicalImpression> {
           descriptor,
           20 + descriptorOffset,
           Hoisted.effectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

@@ -486,17 +486,17 @@ internal object IngredientSubstanceStrengthSerializer : KSerializer<Ingredient.S
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.presentation) {
+    when (val choice = value.presentation) {
       null -> {}
       is Ingredient.Substance.Strength.Presentation.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.presentationRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.presentationRatioSer, choice.value)
       }
       is Ingredient.Substance.Strength.Presentation.RatioRange -> {
         encoder.encodeSerializableElement(
           descriptor,
           4,
           Hoisted.presentationRatioRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Ingredient.Substance.Strength.Presentation.CodeableConcept -> {
@@ -504,28 +504,33 @@ internal object IngredientSubstanceStrengthSerializer : KSerializer<Ingredient.S
           descriptor,
           5,
           Hoisted.presentationCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is Ingredient.Substance.Strength.Presentation.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.presentationQuantitySer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          6,
+          Hoisted.presentationQuantitySer,
+          choice.value,
+        )
       }
     }
     ((value.textPresentation?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
     (value.textPresentation?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.textPresentationSer, it)
     }
-    when (val __d = value.concentration) {
+    when (val choice = value.concentration) {
       null -> {}
       is Ingredient.Substance.Strength.Concentration.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.presentationRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.presentationRatioSer, choice.value)
       }
       is Ingredient.Substance.Strength.Concentration.RatioRange -> {
         encoder.encodeSerializableElement(
           descriptor,
           10,
           Hoisted.presentationRatioRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Ingredient.Substance.Strength.Concentration.CodeableConcept -> {
@@ -533,7 +538,7 @@ internal object IngredientSubstanceStrengthSerializer : KSerializer<Ingredient.S
           descriptor,
           11,
           Hoisted.presentationCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is Ingredient.Substance.Strength.Concentration.Quantity -> {
@@ -541,7 +546,7 @@ internal object IngredientSubstanceStrengthSerializer : KSerializer<Ingredient.S
           descriptor,
           12,
           Hoisted.presentationQuantitySer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -728,16 +733,21 @@ internal object IngredientSubstanceStrengthReferenceStrengthSerializer :
     (value.substance)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.substanceSer, it)
     }
-    when (val __d = value.strength) {
+    when (val choice = value.strength) {
       null -> {}
       is Ingredient.Substance.Strength.ReferenceStrength.Strength.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.strengthRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.strengthRatioSer, choice.value)
       }
       is Ingredient.Substance.Strength.ReferenceStrength.Strength.RatioRange -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.strengthRatioRangeSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.strengthRatioRangeSer,
+          choice.value,
+        )
       }
       is Ingredient.Substance.Strength.ReferenceStrength.Strength.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.strengthQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.strengthQuantitySer, choice.value)
       }
     }
     ((value.measurementPoint?.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }

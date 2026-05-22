@@ -151,20 +151,20 @@ internal object SupplyRequestParameterSerializer : KSerializer<SupplyRequest.Par
         value.modifierExtension,
       )
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is SupplyRequest.Parameter.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, choice.value)
       }
       is SupplyRequest.Parameter.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueQuantitySer, choice.value)
       }
       is SupplyRequest.Parameter.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueRangeSer, choice.value)
       }
       is SupplyRequest.Parameter.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueBooleanSer, it)
         }
       }
@@ -548,13 +548,13 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
         Hoisted.parameterSer,
         value.parameter,
       )
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is SupplyRequest.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             22 + descriptorOffset,
@@ -568,7 +568,7 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
           descriptor,
           23 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is SupplyRequest.Occurrence.Timing -> {
@@ -576,7 +576,7 @@ internal object SupplyRequestSerializer : KSerializer<SupplyRequest> {
           descriptor,
           24 + descriptorOffset,
           Hoisted.occurrenceTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

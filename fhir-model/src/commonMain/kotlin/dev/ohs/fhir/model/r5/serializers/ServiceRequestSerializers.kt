@@ -286,34 +286,34 @@ internal object ServiceRequestOrderDetailParameterSerializer :
         value.modifierExtension,
       )
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ServiceRequest.OrderDetail.Parameter.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
       is ServiceRequest.OrderDetail.Parameter.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueRatioSer, choice.value)
       }
       is ServiceRequest.OrderDetail.Parameter.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueRangeSer, choice.value)
       }
       is ServiceRequest.OrderDetail.Parameter.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.valueBooleanSer, it)
         }
       }
       is ServiceRequest.OrderDetail.Parameter.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.codeSer, choice.value)
       }
       is ServiceRequest.OrderDetail.Parameter.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueBooleanSer, it)
         }
       }
       is ServiceRequest.OrderDetail.Parameter.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valuePeriodSer, choice.value)
       }
     }
   }
@@ -428,16 +428,21 @@ internal object ServiceRequestPatientInstructionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.instruction) {
+    when (val choice = value.instruction) {
       null -> {}
       is ServiceRequest.PatientInstruction.Instruction.Markdown -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.instructionMarkdownSer, it)
         }
       }
       is ServiceRequest.PatientInstruction.Instruction.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.instructionReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          5,
+          Hoisted.instructionReferenceSer,
+          choice.value,
+        )
       }
     }
   }
@@ -883,16 +888,19 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),
@@ -1115,14 +1123,14 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
         Hoisted.orderDetailSer,
         value.orderDetail,
       )
-    when (val __d = value.quantity) {
+    when (val choice = value.quantity) {
       null -> {}
       is ServiceRequest.Quantity.Quantity -> {
         encoder.encodeSerializableElement(
           descriptor,
           29 + descriptorOffset,
           Hoisted.quantityQuantitySer,
-          __d.value,
+          choice.value,
         )
       }
       is ServiceRequest.Quantity.Ratio -> {
@@ -1130,7 +1138,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           30 + descriptorOffset,
           Hoisted.quantityRatioSer,
-          __d.value,
+          choice.value,
         )
       }
       is ServiceRequest.Quantity.Range -> {
@@ -1138,7 +1146,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           31 + descriptorOffset,
           Hoisted.quantityRangeSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -1165,13 +1173,13 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
         it,
       )
     }
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is ServiceRequest.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 35 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             36 + descriptorOffset,
@@ -1185,7 +1193,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           37 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is ServiceRequest.Occurrence.Timing -> {
@@ -1193,17 +1201,17 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           38 + descriptorOffset,
           Hoisted.occurrenceTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
-    when (val __d = value.asNeeded) {
+    when (val choice = value.asNeeded) {
       null -> {}
       is ServiceRequest.AsNeeded.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 39 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             40 + descriptorOffset,
@@ -1217,7 +1225,7 @@ internal object ServiceRequestSerializer : KSerializer<ServiceRequest> {
           descriptor,
           41 + descriptorOffset,
           Hoisted.categorySerInner,
-          __d.value,
+          choice.value,
         )
       }
     }

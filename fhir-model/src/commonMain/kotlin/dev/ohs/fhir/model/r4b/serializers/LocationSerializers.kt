@@ -287,10 +287,10 @@ internal object LocationHoursOfOperationSerializer : KSerializer<Location.HoursO
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       daysOfWeek =
-        (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            Location.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(__i)!!),
-            _daysOfWeek?.getOrNull(__i),
+            Location.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(index)!!),
+            _daysOfWeek?.getOrNull(index),
           )
         }),
       allDay = R4bBoolean.of(allDay, _allDay),
@@ -600,8 +600,8 @@ internal object LocationSerializer : KSerializer<Location> {
       operationalStatus = operationalStatus,
       name = R4bString.of(name, _name),
       alias =
-        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { __i ->
-          R4bString.of(alias?.getOrNull(__i)?.let { it }, _alias?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
+          R4bString.of(alias?.getOrNull(index)?.let { it }, _alias?.getOrNull(index))!!
         }),
       description = R4bString.of(description, _description),
       mode = mode?.let { Enumeration.of(Location.LocationMode.fromCode(it), _mode) },

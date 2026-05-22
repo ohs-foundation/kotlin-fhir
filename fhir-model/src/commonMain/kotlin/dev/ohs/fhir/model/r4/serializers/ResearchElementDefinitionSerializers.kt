@@ -444,31 +444,36 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.definition) {
+    when (val choice = value.definition) {
       null -> {}
       is ResearchElementDefinition.Characteristic.Definition.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           3,
           Hoisted.definitionCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is ResearchElementDefinition.Characteristic.Definition.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.definitionCanonicalSer, it)
         }
       }
       is ResearchElementDefinition.Characteristic.Definition.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.definitionExpressionSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          6,
+          Hoisted.definitionExpressionSer,
+          choice.value,
+        )
       }
       is ResearchElementDefinition.Characteristic.Definition.DataRequirement -> {
         encoder.encodeSerializableElement(
           descriptor,
           7,
           Hoisted.definitionDataRequirementSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -487,11 +492,11 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
     (value.studyEffectiveDescription?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 13, Hoisted.definitionCanonicalSer, it)
     }
-    when (val __d = value.studyEffective) {
+    when (val choice = value.studyEffective) {
       null -> {}
       is ResearchElementDefinition.Characteristic.StudyEffective.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.definitionCanonicalSer, it)
         }
       }
@@ -500,7 +505,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
           descriptor,
           16,
           Hoisted.studyEffectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is ResearchElementDefinition.Characteristic.StudyEffective.Duration -> {
@@ -508,7 +513,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
           descriptor,
           17,
           Hoisted.studyEffectiveDurationSer,
-          __d.value,
+          choice.value,
         )
       }
       is ResearchElementDefinition.Characteristic.StudyEffective.Timing -> {
@@ -516,7 +521,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
           descriptor,
           18,
           Hoisted.studyEffectiveTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -535,11 +540,11 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
     (value.participantEffectiveDescription?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 23, Hoisted.definitionCanonicalSer, it)
     }
-    when (val __d = value.participantEffective) {
+    when (val choice = value.participantEffective) {
       null -> {}
       is ResearchElementDefinition.Characteristic.ParticipantEffective.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 24, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 24, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 25, Hoisted.definitionCanonicalSer, it)
         }
       }
@@ -548,7 +553,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
           descriptor,
           26,
           Hoisted.studyEffectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is ResearchElementDefinition.Characteristic.ParticipantEffective.Duration -> {
@@ -556,7 +561,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
           descriptor,
           27,
           Hoisted.studyEffectiveDurationSer,
-          __d.value,
+          choice.value,
         )
       }
       is ResearchElementDefinition.Characteristic.ParticipantEffective.Timing -> {
@@ -564,7 +569,7 @@ internal object ResearchElementDefinitionCharacteristicSerializer :
           descriptor,
           28,
           Hoisted.studyEffectiveTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -1031,8 +1036,8 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
       contact = contact ?: listOf(),
       description = Markdown.of(description, _description),
       comment =
-        (kotlin.collections.List(maxOf(comment?.size ?: 0, _comment?.size ?: 0)) { __i ->
-          R4String.of(comment?.getOrNull(__i)?.let { it }, _comment?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(comment?.size ?: 0, _comment?.size ?: 0)) { index ->
+          R4String.of(comment?.getOrNull(index)?.let { it }, _comment?.getOrNull(index))!!
         }),
       useContext = useContext ?: listOf(),
       jurisdiction = jurisdiction ?: listOf(),
@@ -1049,8 +1054,8 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
       endorser = endorser ?: listOf(),
       relatedArtifact = relatedArtifact ?: listOf(),
       library =
-        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { __i ->
-          Canonical.of(library?.getOrNull(__i)?.let { it }, _library?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(library?.size ?: 0, _library?.size ?: 0)) { index ->
+          Canonical.of(library?.getOrNull(index)?.let { it }, _library?.getOrNull(index))!!
         }),
       type = Enumeration.of(ResearchElementDefinition.ResearchElementType.fromCode(type!!), _type),
       variableType =
@@ -1210,14 +1215,14 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
         it,
       )
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is ResearchElementDefinition.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           27 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is ResearchElementDefinition.Subject.Reference -> {
@@ -1225,7 +1230,7 @@ internal object ResearchElementDefinitionSerializer : KSerializer<ResearchElemen
           descriptor,
           28 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

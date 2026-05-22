@@ -170,16 +170,16 @@ internal object BiologicallyDerivedProductCollectionSerializer :
     (value.source)?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.collectorSer, it)
     }
-    when (val __d = value.collected) {
+    when (val choice = value.collected) {
       null -> {}
       is BiologicallyDerivedProduct.Collection.Collected.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.collectedDateTimeSer, it)
         }
       }
       is BiologicallyDerivedProduct.Collection.Collected.Period -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.collectedPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.collectedPeriodSer, choice.value)
       }
     }
   }
@@ -336,43 +336,43 @@ internal object BiologicallyDerivedProductPropertySerializer :
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is BiologicallyDerivedProduct.Property.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueBooleanSer, it)
         }
       }
       is BiologicallyDerivedProduct.Property.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueBooleanSer, it)
         }
       }
       is BiologicallyDerivedProduct.Property.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, choice.value)
       }
       is BiologicallyDerivedProduct.Property.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valuePeriodSer, choice.value)
       }
       is BiologicallyDerivedProduct.Property.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.valueQuantitySer, choice.value)
       }
       is BiologicallyDerivedProduct.Property.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueRangeSer, choice.value)
       }
       is BiologicallyDerivedProduct.Property.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRatioSer, choice.value)
       }
       is BiologicallyDerivedProduct.Property.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueBooleanSer, it)
         }
       }
       is BiologicallyDerivedProduct.Property.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueAttachmentSer, choice.value)
       }
     }
   }

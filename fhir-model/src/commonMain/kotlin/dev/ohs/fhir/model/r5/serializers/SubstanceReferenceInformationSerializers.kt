@@ -404,17 +404,17 @@ internal object SubstanceReferenceInformationTargetSerializer :
     (value.organismType)?.let {
       encoder.encodeSerializableElement(descriptor, 7, Hoisted.typeSer, it)
     }
-    when (val __d = value.amount) {
+    when (val choice = value.amount) {
       null -> {}
       is SubstanceReferenceInformation.Target.Amount.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.amountQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.amountQuantitySer, choice.value)
       }
       is SubstanceReferenceInformation.Target.Amount.Range -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.amountRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.amountRangeSer, choice.value)
       }
       is SubstanceReferenceInformation.Target.Amount.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.amountStringSer, it)
         }
       }

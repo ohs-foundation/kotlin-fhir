@@ -69,12 +69,12 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
         if (element.typeIsEnumeratedCode(codegenContext.valueSetMap)) {
           val enumClass = element.getEnumClass(modelClassName, codegenContext.valueSetMap)
           add(
-            "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { __i ->\n",
+            "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { index ->\n",
             propertyName,
             sidecarName,
           )
           add(
-            "  %T.of(%T.fromCode(%N?.getOrNull(__i)!!), %N?.getOrNull(__i))\n",
+            "  %T.of(%T.fromCode(%N?.getOrNull(index)!!), %N?.getOrNull(index))\n",
             ClassName(modelClassName.packageName, "Enumeration"),
             enumClass,
             propertyName,
@@ -83,17 +83,17 @@ class ModelConstructionHelpers(val codegenContext: CodegenContext) {
           add("})")
         } else {
           add(
-            "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { __i ->\n",
+            "(kotlin.collections.List(maxOf(%N?.size ?: 0, %N?.size ?: 0)) { index ->\n",
             propertyName,
             sidecarName,
           )
           add(
-            "  %T.of(%N?.getOrNull(__i)?.let·{ ",
+            "  %T.of(%N?.getOrNull(index)?.let·{ ",
             ClassName(modelClassName.packageName, element.type.single().code.capitalized()),
             propertyName,
           )
           fhirPathType.addCodeToDecodeWireVarToModel(this, modelClassName.packageName, "it")
-          add(" }, %N?.getOrNull(__i))!!\n", sidecarName)
+          add(" }, %N?.getOrNull(index))!!\n", sidecarName)
           add("})")
         }
       } else {

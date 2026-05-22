@@ -233,18 +233,18 @@ internal object AdverseEventSuspectEntitySerializer : KSerializer<AdverseEvent.S
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.instance) {
+    when (val choice = value.instance) {
       null -> {}
       is AdverseEvent.SuspectEntity.Instance.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           3,
           Hoisted.instanceCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is AdverseEvent.SuspectEntity.Instance.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.instanceReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.instanceReferenceSer, choice.value)
       }
     }
     (value.causality)?.let {
@@ -456,13 +456,18 @@ internal object AdverseEventContributingFactorSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.item) {
+    when (val choice = value.item) {
       null -> {}
       is AdverseEvent.ContributingFactor.Item.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
       is AdverseEvent.ContributingFactor.Item.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.itemCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          4,
+          Hoisted.itemCodeableConceptSer,
+          choice.value,
+        )
       }
     }
   }
@@ -554,13 +559,18 @@ internal object AdverseEventPreventiveActionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.item) {
+    when (val choice = value.item) {
       null -> {}
       is AdverseEvent.PreventiveAction.Item.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
       is AdverseEvent.PreventiveAction.Item.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.itemCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          4,
+          Hoisted.itemCodeableConceptSer,
+          choice.value,
+        )
       }
     }
   }
@@ -652,13 +662,18 @@ internal object AdverseEventMitigatingActionSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.item) {
+    when (val choice = value.item) {
       null -> {}
       is AdverseEvent.MitigatingAction.Item.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
       is AdverseEvent.MitigatingAction.Item.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.itemCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          4,
+          Hoisted.itemCodeableConceptSer,
+          choice.value,
+        )
       }
     }
   }
@@ -749,13 +764,18 @@ internal object AdverseEventSupportingInfoSerializer : KSerializer<AdverseEvent.
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.item) {
+    when (val choice = value.item) {
       null -> {}
       is AdverseEvent.SupportingInfo.Item.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
       is AdverseEvent.SupportingInfo.Item.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.itemCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          4,
+          Hoisted.itemCodeableConceptSer,
+          choice.value,
+        )
       }
     }
   }
@@ -1237,13 +1257,13 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, Hoisted.subjectSer, it)
     }
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is AdverseEvent.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             20 + descriptorOffset,
@@ -1257,7 +1277,7 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
           descriptor,
           21 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is AdverseEvent.Occurrence.Timing -> {
@@ -1265,7 +1285,7 @@ internal object AdverseEventSerializer : KSerializer<AdverseEvent> {
           descriptor,
           22 + descriptorOffset,
           Hoisted.occurrenceTimingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

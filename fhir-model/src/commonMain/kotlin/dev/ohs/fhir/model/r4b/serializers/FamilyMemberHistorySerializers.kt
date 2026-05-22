@@ -189,20 +189,20 @@ internal object FamilyMemberHistoryConditionSerializer :
     (value.contributedToDeath?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 6, Hoisted.contributedToDeathSer, it)
     }
-    when (val __d = value.onset) {
+    when (val choice = value.onset) {
       null -> {}
       is FamilyMemberHistory.Condition.Onset.Age -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.onsetAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.onsetAgeSer, choice.value)
       }
       is FamilyMemberHistory.Condition.Onset.Range -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.onsetRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.onsetRangeSer, choice.value)
       }
       is FamilyMemberHistory.Condition.Onset.Period -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.onsetPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.onsetPeriodSer, choice.value)
       }
       is FamilyMemberHistory.Condition.Onset.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.contributedToDeathSer, it)
         }
       }
@@ -572,16 +572,19 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       status = Enumeration.of(FamilyMemberHistory.FamilyHistoryStatus.fromCode(status!!), _status),
       dataAbsentReason = dataAbsentReason,
@@ -768,21 +771,21 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         it,
       )
     }
-    when (val __d = value.born) {
+    when (val choice = value.born) {
       null -> {}
       is FamilyMemberHistory.Born.Period -> {
         encoder.encodeSerializableElement(
           descriptor,
           25 + descriptorOffset,
           Hoisted.bornPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is FamilyMemberHistory.Born.Date -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 26 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             27 + descriptorOffset,
@@ -792,10 +795,10 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         }
       }
       is FamilyMemberHistory.Born.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             29 + descriptorOffset,
@@ -805,14 +808,14 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         }
       }
     }
-    when (val __d = value.age) {
+    when (val choice = value.age) {
       null -> {}
       is FamilyMemberHistory.Age.Age -> {
         encoder.encodeSerializableElement(
           descriptor,
           30 + descriptorOffset,
           Hoisted.ageAgeSer,
-          __d.value,
+          choice.value,
         )
       }
       is FamilyMemberHistory.Age.Range -> {
@@ -820,14 +823,14 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           descriptor,
           31 + descriptorOffset,
           Hoisted.ageRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is FamilyMemberHistory.Age.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 32 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             33 + descriptorOffset,
@@ -848,13 +851,13 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         it,
       )
     }
-    when (val __d = value.deceased) {
+    when (val choice = value.deceased) {
       null -> {}
       is FamilyMemberHistory.Deceased.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 36 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             37 + descriptorOffset,
@@ -868,7 +871,7 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           descriptor,
           38 + descriptorOffset,
           Hoisted.ageAgeSer,
-          __d.value,
+          choice.value,
         )
       }
       is FamilyMemberHistory.Deceased.Range -> {
@@ -876,14 +879,14 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
           descriptor,
           39 + descriptorOffset,
           Hoisted.ageRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is FamilyMemberHistory.Deceased.Date -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 40 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             41 + descriptorOffset,
@@ -893,10 +896,10 @@ internal object FamilyMemberHistorySerializer : KSerializer<FamilyMemberHistory>
         }
       }
       is FamilyMemberHistory.Deceased.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 42 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             43 + descriptorOffset,

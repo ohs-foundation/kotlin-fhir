@@ -161,14 +161,14 @@ internal object RegulatedAuthorizationCaseSerializer : KSerializer<RegulatedAuth
     }
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it) }
     (value.status)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it) }
-    when (val __d = value.date) {
+    when (val choice = value.date) {
       null -> {}
       is RegulatedAuthorization.Case.Date.Period -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.datePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.datePeriodSer, choice.value)
       }
       is RegulatedAuthorization.Case.Date.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.dateDateTimeSer, it)
         }
       }

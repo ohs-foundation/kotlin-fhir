@@ -149,19 +149,19 @@ internal object CommunicationRequestPayloadSerializer : KSerializer<Communicatio
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.content) {
+    when (val choice = value.content) {
       null -> {}
       is CommunicationRequest.Payload.Content.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentStringSer, it)
         }
       }
       is CommunicationRequest.Payload.Content.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.contentAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.contentAttachmentSer, choice.value)
       }
       is CommunicationRequest.Payload.Content.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.contentReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.contentReferenceSer, choice.value)
       }
     }
   }
@@ -645,13 +645,13 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
         Hoisted.payloadSer,
         value.payload,
       )
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is CommunicationRequest.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 27 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             28 + descriptorOffset,
@@ -665,7 +665,7 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
           descriptor,
           29 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

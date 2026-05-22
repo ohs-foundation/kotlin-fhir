@@ -523,13 +523,13 @@ internal object DiagnosticReportSerializer : KSerializer<DiagnosticReport> {
         it,
       )
     }
-    when (val __d = value.effective) {
+    when (val choice = value.effective) {
       null -> {}
       is DiagnosticReport.Effective.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             19 + descriptorOffset,
@@ -543,7 +543,7 @@ internal object DiagnosticReportSerializer : KSerializer<DiagnosticReport> {
           descriptor,
           20 + descriptorOffset,
           Hoisted.effectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

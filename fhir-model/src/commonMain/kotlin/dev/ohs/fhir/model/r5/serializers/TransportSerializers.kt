@@ -875,226 +875,236 @@ internal object TransportInputSerializer : KSerializer<Transport.Input> {
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Transport.Input.Value.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 19, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 20, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 20, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 21, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 22, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 22, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 23, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Integer64 -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 24, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 24, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 25, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Markdown -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 26, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 26, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 27, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Oid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 28, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 28, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 29, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 30, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 30, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 31, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 32, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 32, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 33, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 34, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 35, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 36, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 36, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 37, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 38, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 38, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 39, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 40, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 40, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 41, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Uuid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 42, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 42, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 43, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Input.Value.Address -> {
-        encoder.encodeSerializableElement(descriptor, 44, Hoisted.valueAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 44, Hoisted.valueAddressSer, choice.value)
       }
       is Transport.Input.Value.Age -> {
-        encoder.encodeSerializableElement(descriptor, 45, Hoisted.valueAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 45, Hoisted.valueAgeSer, choice.value)
       }
       is Transport.Input.Value.Annotation -> {
-        encoder.encodeSerializableElement(descriptor, 46, Hoisted.valueAnnotationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 46, Hoisted.valueAnnotationSer, choice.value)
       }
       is Transport.Input.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 47, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 47, Hoisted.valueAttachmentSer, choice.value)
       }
       is Transport.Input.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 48, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 48, Hoisted.typeSer, choice.value)
       }
       is Transport.Input.Value.CodeableReference -> {
         encoder.encodeSerializableElement(
           descriptor,
           49,
           Hoisted.valueCodeableReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Input.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 50, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 50, Hoisted.valueCodingSer, choice.value)
       }
       is Transport.Input.Value.ContactPoint -> {
-        encoder.encodeSerializableElement(descriptor, 51, Hoisted.valueContactPointSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          51,
+          Hoisted.valueContactPointSer,
+          choice.value,
+        )
       }
       is Transport.Input.Value.Count -> {
-        encoder.encodeSerializableElement(descriptor, 52, Hoisted.valueCountSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 52, Hoisted.valueCountSer, choice.value)
       }
       is Transport.Input.Value.Distance -> {
-        encoder.encodeSerializableElement(descriptor, 53, Hoisted.valueDistanceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 53, Hoisted.valueDistanceSer, choice.value)
       }
       is Transport.Input.Value.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 54, Hoisted.valueDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 54, Hoisted.valueDurationSer, choice.value)
       }
       is Transport.Input.Value.HumanName -> {
-        encoder.encodeSerializableElement(descriptor, 55, Hoisted.valueHumanNameSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 55, Hoisted.valueHumanNameSer, choice.value)
       }
       is Transport.Input.Value.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 56, Hoisted.valueIdentifierSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 56, Hoisted.valueIdentifierSer, choice.value)
       }
       is Transport.Input.Value.Money -> {
-        encoder.encodeSerializableElement(descriptor, 57, Hoisted.valueMoneySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 57, Hoisted.valueMoneySer, choice.value)
       }
       is Transport.Input.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 58, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 58, Hoisted.valuePeriodSer, choice.value)
       }
       is Transport.Input.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 59, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 59, Hoisted.valueQuantitySer, choice.value)
       }
       is Transport.Input.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 60, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 60, Hoisted.valueRangeSer, choice.value)
       }
       is Transport.Input.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 61, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 61, Hoisted.valueRatioSer, choice.value)
       }
       is Transport.Input.Value.RatioRange -> {
-        encoder.encodeSerializableElement(descriptor, 62, Hoisted.valueRatioRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 62, Hoisted.valueRatioRangeSer, choice.value)
       }
       is Transport.Input.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 63, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 63, Hoisted.valueReferenceSer, choice.value)
       }
       is Transport.Input.Value.SampledData -> {
-        encoder.encodeSerializableElement(descriptor, 64, Hoisted.valueSampledDataSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 64, Hoisted.valueSampledDataSer, choice.value)
       }
       is Transport.Input.Value.Signature -> {
-        encoder.encodeSerializableElement(descriptor, 65, Hoisted.valueSignatureSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 65, Hoisted.valueSignatureSer, choice.value)
       }
       is Transport.Input.Value.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 66, Hoisted.valueTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 66, Hoisted.valueTimingSer, choice.value)
       }
       is Transport.Input.Value.ContactDetail -> {
-        encoder.encodeSerializableElement(descriptor, 67, Hoisted.valueContactDetailSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          67,
+          Hoisted.valueContactDetailSer,
+          choice.value,
+        )
       }
       is Transport.Input.Value.DataRequirement -> {
         encoder.encodeSerializableElement(
           descriptor,
           68,
           Hoisted.valueDataRequirementSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Input.Value.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 69, Hoisted.valueExpressionSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 69, Hoisted.valueExpressionSer, choice.value)
       }
       is Transport.Input.Value.ParameterDefinition -> {
         encoder.encodeSerializableElement(
           descriptor,
           70,
           Hoisted.valueParameterDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Input.Value.RelatedArtifact -> {
@@ -1102,7 +1112,7 @@ internal object TransportInputSerializer : KSerializer<Transport.Input> {
           descriptor,
           71,
           Hoisted.valueRelatedArtifactSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Input.Value.TriggerDefinition -> {
@@ -1110,28 +1120,38 @@ internal object TransportInputSerializer : KSerializer<Transport.Input> {
           descriptor,
           72,
           Hoisted.valueTriggerDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Input.Value.UsageContext -> {
-        encoder.encodeSerializableElement(descriptor, 73, Hoisted.valueUsageContextSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          73,
+          Hoisted.valueUsageContextSer,
+          choice.value,
+        )
       }
       is Transport.Input.Value.Availability -> {
-        encoder.encodeSerializableElement(descriptor, 74, Hoisted.valueAvailabilitySer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          74,
+          Hoisted.valueAvailabilitySer,
+          choice.value,
+        )
       }
       is Transport.Input.Value.ExtendedContactDetail -> {
         encoder.encodeSerializableElement(
           descriptor,
           75,
           Hoisted.valueExtendedContactDetailSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Input.Value.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 76, Hoisted.valueDosageSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 76, Hoisted.valueDosageSer, choice.value)
       }
       is Transport.Input.Value.Meta -> {
-        encoder.encodeSerializableElement(descriptor, 77, Hoisted.valueMetaSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 77, Hoisted.valueMetaSer, choice.value)
       }
     }
   }
@@ -1883,226 +1903,236 @@ internal object TransportOutputSerializer : KSerializer<Transport.Output> {
         value.modifierExtension,
       )
     (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Transport.Output.Value.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 19, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 20, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 20, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 21, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 22, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 22, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 23, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Integer64 -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 24, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 24, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 25, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Markdown -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 26, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 26, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 27, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Oid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 28, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 28, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 29, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 30, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 30, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 31, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 32, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 32, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 33, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 34, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 35, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 36, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 36, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 37, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 38, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 38, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 39, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 40, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 40, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 41, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Uuid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 42, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 42, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 43, Hoisted.valueBase64BinarySer, it)
         }
       }
       is Transport.Output.Value.Address -> {
-        encoder.encodeSerializableElement(descriptor, 44, Hoisted.valueAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 44, Hoisted.valueAddressSer, choice.value)
       }
       is Transport.Output.Value.Age -> {
-        encoder.encodeSerializableElement(descriptor, 45, Hoisted.valueAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 45, Hoisted.valueAgeSer, choice.value)
       }
       is Transport.Output.Value.Annotation -> {
-        encoder.encodeSerializableElement(descriptor, 46, Hoisted.valueAnnotationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 46, Hoisted.valueAnnotationSer, choice.value)
       }
       is Transport.Output.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 47, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 47, Hoisted.valueAttachmentSer, choice.value)
       }
       is Transport.Output.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 48, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 48, Hoisted.typeSer, choice.value)
       }
       is Transport.Output.Value.CodeableReference -> {
         encoder.encodeSerializableElement(
           descriptor,
           49,
           Hoisted.valueCodeableReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Output.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 50, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 50, Hoisted.valueCodingSer, choice.value)
       }
       is Transport.Output.Value.ContactPoint -> {
-        encoder.encodeSerializableElement(descriptor, 51, Hoisted.valueContactPointSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          51,
+          Hoisted.valueContactPointSer,
+          choice.value,
+        )
       }
       is Transport.Output.Value.Count -> {
-        encoder.encodeSerializableElement(descriptor, 52, Hoisted.valueCountSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 52, Hoisted.valueCountSer, choice.value)
       }
       is Transport.Output.Value.Distance -> {
-        encoder.encodeSerializableElement(descriptor, 53, Hoisted.valueDistanceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 53, Hoisted.valueDistanceSer, choice.value)
       }
       is Transport.Output.Value.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 54, Hoisted.valueDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 54, Hoisted.valueDurationSer, choice.value)
       }
       is Transport.Output.Value.HumanName -> {
-        encoder.encodeSerializableElement(descriptor, 55, Hoisted.valueHumanNameSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 55, Hoisted.valueHumanNameSer, choice.value)
       }
       is Transport.Output.Value.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 56, Hoisted.valueIdentifierSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 56, Hoisted.valueIdentifierSer, choice.value)
       }
       is Transport.Output.Value.Money -> {
-        encoder.encodeSerializableElement(descriptor, 57, Hoisted.valueMoneySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 57, Hoisted.valueMoneySer, choice.value)
       }
       is Transport.Output.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 58, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 58, Hoisted.valuePeriodSer, choice.value)
       }
       is Transport.Output.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 59, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 59, Hoisted.valueQuantitySer, choice.value)
       }
       is Transport.Output.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 60, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 60, Hoisted.valueRangeSer, choice.value)
       }
       is Transport.Output.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 61, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 61, Hoisted.valueRatioSer, choice.value)
       }
       is Transport.Output.Value.RatioRange -> {
-        encoder.encodeSerializableElement(descriptor, 62, Hoisted.valueRatioRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 62, Hoisted.valueRatioRangeSer, choice.value)
       }
       is Transport.Output.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 63, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 63, Hoisted.valueReferenceSer, choice.value)
       }
       is Transport.Output.Value.SampledData -> {
-        encoder.encodeSerializableElement(descriptor, 64, Hoisted.valueSampledDataSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 64, Hoisted.valueSampledDataSer, choice.value)
       }
       is Transport.Output.Value.Signature -> {
-        encoder.encodeSerializableElement(descriptor, 65, Hoisted.valueSignatureSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 65, Hoisted.valueSignatureSer, choice.value)
       }
       is Transport.Output.Value.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 66, Hoisted.valueTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 66, Hoisted.valueTimingSer, choice.value)
       }
       is Transport.Output.Value.ContactDetail -> {
-        encoder.encodeSerializableElement(descriptor, 67, Hoisted.valueContactDetailSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          67,
+          Hoisted.valueContactDetailSer,
+          choice.value,
+        )
       }
       is Transport.Output.Value.DataRequirement -> {
         encoder.encodeSerializableElement(
           descriptor,
           68,
           Hoisted.valueDataRequirementSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Output.Value.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 69, Hoisted.valueExpressionSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 69, Hoisted.valueExpressionSer, choice.value)
       }
       is Transport.Output.Value.ParameterDefinition -> {
         encoder.encodeSerializableElement(
           descriptor,
           70,
           Hoisted.valueParameterDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Output.Value.RelatedArtifact -> {
@@ -2110,7 +2140,7 @@ internal object TransportOutputSerializer : KSerializer<Transport.Output> {
           descriptor,
           71,
           Hoisted.valueRelatedArtifactSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Output.Value.TriggerDefinition -> {
@@ -2118,28 +2148,38 @@ internal object TransportOutputSerializer : KSerializer<Transport.Output> {
           descriptor,
           72,
           Hoisted.valueTriggerDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Output.Value.UsageContext -> {
-        encoder.encodeSerializableElement(descriptor, 73, Hoisted.valueUsageContextSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          73,
+          Hoisted.valueUsageContextSer,
+          choice.value,
+        )
       }
       is Transport.Output.Value.Availability -> {
-        encoder.encodeSerializableElement(descriptor, 74, Hoisted.valueAvailabilitySer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          74,
+          Hoisted.valueAvailabilitySer,
+          choice.value,
+        )
       }
       is Transport.Output.Value.ExtendedContactDetail -> {
         encoder.encodeSerializableElement(
           descriptor,
           75,
           Hoisted.valueExtendedContactDetailSer,
-          __d.value,
+          choice.value,
         )
       }
       is Transport.Output.Value.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 76, Hoisted.valueDosageSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 76, Hoisted.valueDosageSer, choice.value)
       }
       is Transport.Output.Value.Meta -> {
-        encoder.encodeSerializableElement(descriptor, 77, Hoisted.valueMetaSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 77, Hoisted.valueMetaSer, choice.value)
       }
     }
   }

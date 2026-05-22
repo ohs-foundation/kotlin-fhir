@@ -604,8 +604,8 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
       name = R4String.of(name, _name),
       title = R4String.of(title, _title),
       replaces =
-        (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { __i ->
-          Canonical.of(replaces?.getOrNull(__i)?.let { it }, _replaces?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { index ->
+          Canonical.of(replaces?.getOrNull(index)?.let { it }, _replaces?.getOrNull(index))!!
         }),
       status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
       experimental = R4Boolean.of(experimental, _experimental),
@@ -619,8 +619,8 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
       copyright = Markdown.of(copyright, _copyright),
       base = Canonical.of(base, _base),
       parent =
-        (kotlin.collections.List(maxOf(parent?.size ?: 0, _parent?.size ?: 0)) { __i ->
-          Canonical.of(parent?.getOrNull(__i)?.let { it }, _parent?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(parent?.size ?: 0, _parent?.size ?: 0)) { index ->
+          Canonical.of(parent?.getOrNull(index)?.let { it }, _parent?.getOrNull(index))!!
         }),
       event = MessageDefinition.Event.from(eventCoding, Uri.of(eventUri, _eventUri))!!,
       category =
@@ -637,8 +637,8 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
         },
       allowedResponse = allowedResponse ?: listOf(),
       graph =
-        (kotlin.collections.List(maxOf(graph?.size ?: 0, _graph?.size ?: 0)) { __i ->
-          Canonical.of(graph?.getOrNull(__i)?.let { it }, _graph?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(graph?.size ?: 0, _graph?.size ?: 0)) { index ->
+          Canonical.of(graph?.getOrNull(index)?.let { it }, _graph?.getOrNull(index))!!
         }),
     )
   }
@@ -869,21 +869,21 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
     (value.parent.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 41 + descriptorOffset, Hoisted.replacesSer2, it)
     }
-    when (val __d = value.event) {
+    when (val choice = value.event) {
       null -> {}
       is MessageDefinition.Event.Coding -> {
         encoder.encodeSerializableElement(
           descriptor,
           42 + descriptorOffset,
           Hoisted.eventCodingSer,
-          __d.value,
+          choice.value,
         )
       }
       is MessageDefinition.Event.Uri -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 43 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             44 + descriptorOffset,

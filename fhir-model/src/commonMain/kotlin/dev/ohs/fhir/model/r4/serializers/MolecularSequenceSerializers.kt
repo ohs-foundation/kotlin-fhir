@@ -797,32 +797,32 @@ internal object MolecularSequenceQualityRocSerializer : KSerializer<MolecularSeq
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       score =
-        (kotlin.collections.List(maxOf(score?.size ?: 0, _score?.size ?: 0)) { __i ->
-          Integer.of(score?.getOrNull(__i)?.let { it }, _score?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(score?.size ?: 0, _score?.size ?: 0)) { index ->
+          Integer.of(score?.getOrNull(index)?.let { it }, _score?.getOrNull(index))!!
         }),
       numTP =
-        (kotlin.collections.List(maxOf(numTP?.size ?: 0, _numTP?.size ?: 0)) { __i ->
-          Integer.of(numTP?.getOrNull(__i)?.let { it }, _numTP?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(numTP?.size ?: 0, _numTP?.size ?: 0)) { index ->
+          Integer.of(numTP?.getOrNull(index)?.let { it }, _numTP?.getOrNull(index))!!
         }),
       numFP =
-        (kotlin.collections.List(maxOf(numFP?.size ?: 0, _numFP?.size ?: 0)) { __i ->
-          Integer.of(numFP?.getOrNull(__i)?.let { it }, _numFP?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(numFP?.size ?: 0, _numFP?.size ?: 0)) { index ->
+          Integer.of(numFP?.getOrNull(index)?.let { it }, _numFP?.getOrNull(index))!!
         }),
       numFN =
-        (kotlin.collections.List(maxOf(numFN?.size ?: 0, _numFN?.size ?: 0)) { __i ->
-          Integer.of(numFN?.getOrNull(__i)?.let { it }, _numFN?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(numFN?.size ?: 0, _numFN?.size ?: 0)) { index ->
+          Integer.of(numFN?.getOrNull(index)?.let { it }, _numFN?.getOrNull(index))!!
         }),
       precision =
-        (kotlin.collections.List(maxOf(precision?.size ?: 0, _precision?.size ?: 0)) { __i ->
-          Decimal.of(precision?.getOrNull(__i)?.let { it }, _precision?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(precision?.size ?: 0, _precision?.size ?: 0)) { index ->
+          Decimal.of(precision?.getOrNull(index)?.let { it }, _precision?.getOrNull(index))!!
         }),
       sensitivity =
-        (kotlin.collections.List(maxOf(sensitivity?.size ?: 0, _sensitivity?.size ?: 0)) { __i ->
-          Decimal.of(sensitivity?.getOrNull(__i)?.let { it }, _sensitivity?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(sensitivity?.size ?: 0, _sensitivity?.size ?: 0)) { index ->
+          Decimal.of(sensitivity?.getOrNull(index)?.let { it }, _sensitivity?.getOrNull(index))!!
         }),
       fMeasure =
-        (kotlin.collections.List(maxOf(fMeasure?.size ?: 0, _fMeasure?.size ?: 0)) { __i ->
-          Decimal.of(fMeasure?.getOrNull(__i)?.let { it }, _fMeasure?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(fMeasure?.size ?: 0, _fMeasure?.size ?: 0)) { index ->
+          Decimal.of(fMeasure?.getOrNull(index)?.let { it }, _fMeasure?.getOrNull(index))!!
         }),
     )
   }

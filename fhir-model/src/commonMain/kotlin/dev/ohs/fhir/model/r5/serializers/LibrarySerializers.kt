@@ -584,13 +584,13 @@ internal object LibrarySerializer : KSerializer<Library> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is Library.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -604,7 +604,7 @@ internal object LibrarySerializer : KSerializer<Library> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -666,14 +666,14 @@ internal object LibrarySerializer : KSerializer<Library> {
     (value.type)?.let {
       encoder.encodeSerializableElement(descriptor, 28 + descriptorOffset, Hoisted.typeSer, it)
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is Library.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           29 + descriptorOffset,
           Hoisted.typeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Library.Subject.Reference -> {
@@ -681,7 +681,7 @@ internal object LibrarySerializer : KSerializer<Library> {
           descriptor,
           30 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

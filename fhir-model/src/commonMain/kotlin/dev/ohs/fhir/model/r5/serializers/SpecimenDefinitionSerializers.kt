@@ -443,14 +443,14 @@ internal object SpecimenDefinitionTypeTestedContainerSerializer :
     (value.capacity)?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.capacitySer, it)
     }
-    when (val __d = value.minimumVolume) {
+    when (val choice = value.minimumVolume) {
       null -> {}
       is SpecimenDefinition.TypeTested.Container.MinimumVolume.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.capacitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.capacitySer, choice.value)
       }
       is SpecimenDefinition.TypeTested.Container.MinimumVolume.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.descriptionSer, it)
         }
       }
@@ -575,18 +575,18 @@ internal object SpecimenDefinitionTypeTestedContainerAdditiveSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.additive) {
+    when (val choice = value.additive) {
       null -> {}
       is SpecimenDefinition.TypeTested.Container.Additive.Additive.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           3,
           Hoisted.additiveCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is SpecimenDefinition.TypeTested.Container.Additive.Additive.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.additiveReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.additiveReferenceSer, choice.value)
       }
     }
   }
@@ -1138,16 +1138,16 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
       derivedFromCanonical =
         (kotlin.collections.List(
           maxOf(derivedFromCanonical?.size ?: 0, _derivedFromCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            derivedFromCanonical?.getOrNull(__i)?.let { it },
-            _derivedFromCanonical?.getOrNull(__i),
+            derivedFromCanonical?.getOrNull(index)?.let { it },
+            _derivedFromCanonical?.getOrNull(index),
           )!!
         }),
       derivedFromUri =
-        (kotlin.collections.List(maxOf(derivedFromUri?.size ?: 0, _derivedFromUri?.size ?: 0)) { __i
-          ->
-          Uri.of(derivedFromUri?.getOrNull(__i)?.let { it }, _derivedFromUri?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(derivedFromUri?.size ?: 0, _derivedFromUri?.size ?: 0)) {
+          index ->
+          Uri.of(derivedFromUri?.getOrNull(index)?.let { it }, _derivedFromUri?.getOrNull(index))!!
         }),
       status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
       experimental = R5Boolean.of(experimental, _experimental),
@@ -1256,13 +1256,13 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is SpecimenDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1276,7 +1276,7 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -1356,14 +1356,14 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
         it,
       )
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is SpecimenDefinition.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           30 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is SpecimenDefinition.Subject.Reference -> {
@@ -1371,7 +1371,7 @@ internal object SpecimenDefinitionSerializer : KSerializer<SpecimenDefinition> {
           descriptor,
           31 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

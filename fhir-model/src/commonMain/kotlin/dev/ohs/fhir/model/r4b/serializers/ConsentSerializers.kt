@@ -984,14 +984,14 @@ internal object ConsentSerializer : KSerializer<Consent> {
         Hoisted.performerSer,
         value.organization,
       )
-    when (val __d = value.source) {
+    when (val choice = value.source) {
       null -> {}
       is Consent.Source.Attachment -> {
         encoder.encodeSerializableElement(
           descriptor,
           20 + descriptorOffset,
           Hoisted.sourceAttachmentSer,
-          __d.value,
+          choice.value,
         )
       }
       is Consent.Source.Reference -> {
@@ -999,7 +999,7 @@ internal object ConsentSerializer : KSerializer<Consent> {
           descriptor,
           21 + descriptorOffset,
           Hoisted.patientSer,
-          __d.value,
+          choice.value,
         )
       }
     }

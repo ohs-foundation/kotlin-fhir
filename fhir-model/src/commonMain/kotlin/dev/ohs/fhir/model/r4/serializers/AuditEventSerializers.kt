@@ -183,8 +183,8 @@ internal object AuditEventAgentSerializer : KSerializer<AuditEvent.Agent> {
       requestor = R4Boolean.of(requestor, _requestor)!!,
       location = location,
       policy =
-        (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { __i ->
-          Uri.of(policy?.getOrNull(__i)?.let { it }, _policy?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(policy?.size ?: 0, _policy?.size ?: 0)) { index ->
+          Uri.of(policy?.getOrNull(index)?.let { it }, _policy?.getOrNull(index))!!
         }),
       media = media,
       network = network,
@@ -717,17 +717,17 @@ internal object AuditEventEntityDetailSerializer : KSerializer<AuditEvent.Entity
     (value.type.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is AuditEvent.Entity.Detail.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, it)
         }
       }
       is AuditEvent.Entity.Detail.Value.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, it)
         }
       }

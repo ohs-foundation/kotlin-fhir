@@ -200,49 +200,49 @@ internal object GoalTargetSerializer : KSerializer<Goal.Target> {
     (value.measure)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.measureSer, it)
     }
-    when (val __d = value.detail) {
+    when (val choice = value.detail) {
       null -> {}
       is Goal.Target.Detail.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.detailQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.detailQuantitySer, choice.value)
       }
       is Goal.Target.Detail.Range -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.detailRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.detailRangeSer, choice.value)
       }
       is Goal.Target.Detail.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.measureSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.measureSer, choice.value)
       }
       is Goal.Target.Detail.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.detailStringSer, it)
         }
       }
       is Goal.Target.Detail.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.detailStringSer, it)
         }
       }
       is Goal.Target.Detail.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.detailStringSer, it)
         }
       }
       is Goal.Target.Detail.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 13, Hoisted.detailRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 13, Hoisted.detailRatioSer, choice.value)
       }
     }
-    when (val __d = value.due) {
+    when (val choice = value.due) {
       null -> {}
       is Goal.Target.Due.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.detailStringSer, it)
         }
       }
       is Goal.Target.Due.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 16, Hoisted.dueDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 16, Hoisted.dueDurationSer, choice.value)
       }
     }
   }
@@ -628,13 +628,13 @@ internal object GoalSerializer : KSerializer<Goal> {
     (value.subject)?.let {
       encoder.encodeSerializableElement(descriptor, 17 + descriptorOffset, Hoisted.subjectSer, it)
     }
-    when (val __d = value.start) {
+    when (val choice = value.start) {
       null -> {}
       is Goal.Start.Date -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             19 + descriptorOffset,
@@ -648,7 +648,7 @@ internal object GoalSerializer : KSerializer<Goal> {
           descriptor,
           20 + descriptorOffset,
           Hoisted.achievementStatusSer,
-          __d.value,
+          choice.value,
         )
       }
     }

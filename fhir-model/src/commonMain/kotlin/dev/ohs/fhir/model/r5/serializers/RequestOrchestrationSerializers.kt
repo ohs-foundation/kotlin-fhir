@@ -501,28 +501,28 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
         Hoisted.relatedActionSer,
         value.relatedAction,
       )
-    when (val __d = value.timing) {
+    when (val choice = value.timing) {
       null -> {}
       is RequestOrchestration.Action.Timing.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 22, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 22, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 23, Hoisted.linkIdSer, it)
         }
       }
       is RequestOrchestration.Action.Timing.Age -> {
-        encoder.encodeSerializableElement(descriptor, 24, Hoisted.timingAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 24, Hoisted.timingAgeSer, choice.value)
       }
       is RequestOrchestration.Action.Timing.Period -> {
-        encoder.encodeSerializableElement(descriptor, 25, Hoisted.timingPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 25, Hoisted.timingPeriodSer, choice.value)
       }
       is RequestOrchestration.Action.Timing.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 26, Hoisted.timingDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 26, Hoisted.timingDurationSer, choice.value)
       }
       is RequestOrchestration.Action.Timing.Range -> {
-        encoder.encodeSerializableElement(descriptor, 27, Hoisted.timingRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 27, Hoisted.timingRangeSer, choice.value)
       }
       is RequestOrchestration.Action.Timing.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 28, Hoisted.timingTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 28, Hoisted.timingTimingSer, choice.value)
       }
     }
     (value.location)?.let {
@@ -566,17 +566,17 @@ internal object RequestOrchestrationActionSerializer : KSerializer<RequestOrches
     (value.resource)?.let {
       encoder.encodeSerializableElement(descriptor, 42, Hoisted.goalSerInner, it)
     }
-    when (val __d = value.definition) {
+    when (val choice = value.definition) {
       null -> {}
       is RequestOrchestration.Action.Definition.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 43, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 43, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 44, Hoisted.linkIdSer, it)
         }
       }
       is RequestOrchestration.Action.Definition.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 45, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 45, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 46, Hoisted.linkIdSer, it)
         }
       }
@@ -1114,13 +1114,13 @@ internal object RequestOrchestrationActionRelatedActionSerializer :
     (value.endRelationship?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 8, Hoisted.targetIdSer, it)
     }
-    when (val __d = value.offset) {
+    when (val choice = value.offset) {
       null -> {}
       is RequestOrchestration.Action.RelatedAction.Offset.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.offsetDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.offsetDurationSer, choice.value)
       }
       is RequestOrchestration.Action.RelatedAction.Offset.Range -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.offsetRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.offsetRangeSer, choice.value)
       }
     }
   }
@@ -1268,16 +1268,16 @@ internal object RequestOrchestrationActionParticipantSerializer :
     }
     (value.role)?.let { encoder.encodeSerializableElement(descriptor, 8, Hoisted.roleSer, it) }
     (value.function)?.let { encoder.encodeSerializableElement(descriptor, 9, Hoisted.roleSer, it) }
-    when (val __d = value.actor) {
+    when (val choice = value.actor) {
       null -> {}
       is RequestOrchestration.Action.Participant.Actor.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.typeSer, it)
         }
       }
       is RequestOrchestration.Action.Participant.Actor.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 12, Hoisted.typeReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.typeReferenceSer, choice.value)
       }
     }
   }
@@ -1654,16 +1654,19 @@ internal object RequestOrchestrationSerializer : KSerializer<RequestOrchestratio
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       replaces = replaces ?: listOf(),

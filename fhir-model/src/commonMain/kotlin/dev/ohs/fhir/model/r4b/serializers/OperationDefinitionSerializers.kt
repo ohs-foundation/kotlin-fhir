@@ -219,9 +219,12 @@ internal object OperationDefinitionParameterSerializer :
       documentation = R4bString.of(documentation, _documentation),
       type = type?.let { Enumeration.of(FHIRAllTypes.fromCode(it), _type) },
       targetProfile =
-        (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { index
           ->
-          Canonical.of(targetProfile?.getOrNull(__i)?.let { it }, _targetProfile?.getOrNull(__i))!!
+          Canonical.of(
+            targetProfile?.getOrNull(index)?.let { it },
+            _targetProfile?.getOrNull(index),
+          )!!
         }),
       searchType = searchType?.let { Enumeration.of(SearchParamType.fromCode(it), _searchType) },
       binding = binding,
@@ -607,9 +610,12 @@ internal object OperationDefinitionOverloadSerializer : KSerializer<OperationDef
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       parameterName =
-        (kotlin.collections.List(maxOf(parameterName?.size ?: 0, _parameterName?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(parameterName?.size ?: 0, _parameterName?.size ?: 0)) { index
           ->
-          R4bString.of(parameterName?.getOrNull(__i)?.let { it }, _parameterName?.getOrNull(__i))!!
+          R4bString.of(
+            parameterName?.getOrNull(index)?.let { it },
+            _parameterName?.getOrNull(index),
+          )!!
         }),
       comment = R4bString.of(comment, _comment),
     )
@@ -990,10 +996,10 @@ internal object OperationDefinitionSerializer : KSerializer<OperationDefinition>
       comment = Markdown.of(comment, _comment),
       base = Canonical.of(base, _base),
       resource =
-        (kotlin.collections.List(maxOf(resource?.size ?: 0, _resource?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(resource?.size ?: 0, _resource?.size ?: 0)) { index ->
           Enumeration.of(
-            ResourceType.fromCode(resource?.getOrNull(__i)!!),
-            _resource?.getOrNull(__i),
+            ResourceType.fromCode(resource?.getOrNull(index)!!),
+            _resource?.getOrNull(index),
           )
         }),
       system = R4bBoolean.of(system, _system)!!,

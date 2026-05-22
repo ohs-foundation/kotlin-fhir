@@ -128,13 +128,18 @@ internal object MedicinalProductInteractionInteractantSerializer :
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.item) {
+    when (val choice = value.item) {
       null -> {}
       is MedicinalProductInteraction.Interactant.Item.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemReferenceSer, choice.value)
       }
       is MedicinalProductInteraction.Interactant.Item.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.itemCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          4,
+          Hoisted.itemCodeableConceptSer,
+          choice.value,
+        )
       }
     }
   }

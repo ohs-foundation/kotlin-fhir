@@ -558,13 +558,13 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is EventDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -578,7 +578,7 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -637,14 +637,14 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
         it,
       )
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is EventDefinition.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           28 + descriptorOffset,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is EventDefinition.Subject.Reference -> {
@@ -652,7 +652,7 @@ internal object EventDefinitionSerializer : KSerializer<EventDefinition> {
           descriptor,
           29 + descriptorOffset,
           Hoisted.subjectReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
     }

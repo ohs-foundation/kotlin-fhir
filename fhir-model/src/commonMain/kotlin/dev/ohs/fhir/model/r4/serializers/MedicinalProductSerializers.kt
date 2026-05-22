@@ -680,13 +680,18 @@ internal object MedicinalProductSpecialDesignationSerializer :
     (value.intendedUse)?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.typeSer, it)
     }
-    when (val __d = value.indication) {
+    when (val choice = value.indication) {
       null -> {}
       is MedicinalProduct.SpecialDesignation.Indication.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, choice.value)
       }
       is MedicinalProduct.SpecialDesignation.Indication.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.indicationReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          7,
+          Hoisted.indicationReferenceSer,
+          choice.value,
+        )
       }
     }
     (value.status)?.let { encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, it) }
@@ -1047,10 +1052,10 @@ internal object MedicinalProductSerializer : KSerializer<MedicinalProduct> {
       additionalMonitoringIndicator = additionalMonitoringIndicator,
       specialMeasures =
         (kotlin.collections.List(maxOf(specialMeasures?.size ?: 0, _specialMeasures?.size ?: 0)) {
-          __i ->
+          index ->
           R4String.of(
-            specialMeasures?.getOrNull(__i)?.let { it },
-            _specialMeasures?.getOrNull(__i),
+            specialMeasures?.getOrNull(index)?.let { it },
+            _specialMeasures?.getOrNull(index),
           )!!
         }),
       paediatricUseIndicator = paediatricUseIndicator,

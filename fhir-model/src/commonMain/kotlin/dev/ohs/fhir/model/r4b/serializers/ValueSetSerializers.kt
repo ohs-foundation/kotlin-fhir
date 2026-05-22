@@ -292,8 +292,8 @@ internal object ValueSetComposeIncludeSerializer : KSerializer<ValueSet.Compose.
       concept = concept ?: listOf(),
       filter = filter ?: listOf(),
       valueSet =
-        (kotlin.collections.List(maxOf(valueSet?.size ?: 0, _valueSet?.size ?: 0)) { __i ->
-          Canonical.of(valueSet?.getOrNull(__i)?.let { it }, _valueSet?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(valueSet?.size ?: 0, _valueSet?.size ?: 0)) { index ->
+          Canonical.of(valueSet?.getOrNull(index)?.let { it }, _valueSet?.getOrNull(index))!!
         }),
     )
   }
@@ -996,49 +996,49 @@ internal object ValueSetExpansionParameterSerializer : KSerializer<ValueSet.Expa
     (value.name.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.nameSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ValueSet.Expansion.Parameter.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 11, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 15, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.nameSer, it)
         }
       }
       is ValueSet.Expansion.Parameter.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.nameSer, it)
         }
       }

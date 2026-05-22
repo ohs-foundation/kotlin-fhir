@@ -207,18 +207,18 @@ internal object RiskAssessmentPredictionSerializer : KSerializer<RiskAssessment.
     (value.outcome)?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.outcomeSer, it)
     }
-    when (val __d = value.probability) {
+    when (val choice = value.probability) {
       null -> {}
       is RiskAssessment.Prediction.Probability.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 4, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.probabilityDecimalSer, it)
         }
       }
       is RiskAssessment.Prediction.Probability.Range -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.probabilityRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.probabilityRangeSer, choice.value)
       }
     }
     (value.qualitativeRisk)?.let {
@@ -230,13 +230,13 @@ internal object RiskAssessmentPredictionSerializer : KSerializer<RiskAssessment.
     (value.relativeRisk?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 9, Hoisted.probabilityDecimalSer, it)
     }
-    when (val __d = value.`when`) {
+    when (val choice = value.`when`) {
       null -> {}
       is RiskAssessment.Prediction.When.Period -> {
-        encoder.encodeSerializableElement(descriptor, 10, Hoisted.whenPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 10, Hoisted.whenPeriodSer, choice.value)
       }
       is RiskAssessment.Prediction.When.Range -> {
-        encoder.encodeSerializableElement(descriptor, 11, Hoisted.probabilityRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 11, Hoisted.probabilityRangeSer, choice.value)
       }
     }
     ((value.rationale?.value))?.let { encoder.encodeStringElement(descriptor, 12, it) }
@@ -575,13 +575,13 @@ internal object RiskAssessmentSerializer : KSerializer<RiskAssessment> {
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, Hoisted.basedOnSer, it)
     }
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is RiskAssessment.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             20 + descriptorOffset,
@@ -595,7 +595,7 @@ internal object RiskAssessmentSerializer : KSerializer<RiskAssessment> {
           descriptor,
           21 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

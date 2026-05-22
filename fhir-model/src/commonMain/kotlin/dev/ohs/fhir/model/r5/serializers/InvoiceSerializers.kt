@@ -278,29 +278,34 @@ internal object InvoiceLineItemSerializer : KSerializer<Invoice.LineItem> {
     (value.sequence?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.sequenceSer, it)
     }
-    when (val __d = value.serviced) {
+    when (val choice = value.serviced) {
       null -> {}
       is Invoice.LineItem.Serviced.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.sequenceSer, it)
         }
       }
       is Invoice.LineItem.Serviced.Period -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.servicedPeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.servicedPeriodSer, choice.value)
       }
     }
-    when (val __d = value.chargeItem) {
+    when (val choice = value.chargeItem) {
       null -> {}
       is Invoice.LineItem.ChargeItem.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.chargeItemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          8,
+          Hoisted.chargeItemReferenceSer,
+          choice.value,
+        )
       }
       is Invoice.LineItem.ChargeItem.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           9,
           Hoisted.chargeItemCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -698,13 +703,13 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
         it,
       )
     }
-    when (val __d = value.period) {
+    when (val choice = value.period) {
       null -> {}
       is Invoice.Period.Date -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             23 + descriptorOffset,
@@ -718,7 +723,7 @@ internal object InvoiceSerializer : KSerializer<Invoice> {
           descriptor,
           24 + descriptorOffset,
           Hoisted.periodPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

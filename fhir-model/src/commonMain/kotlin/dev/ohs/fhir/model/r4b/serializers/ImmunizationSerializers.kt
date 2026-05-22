@@ -513,32 +513,32 @@ internal object ImmunizationProtocolAppliedSerializer : KSerializer<Immunization
         Hoisted.targetDiseaseSer,
         value.targetDisease,
       )
-    when (val __d = value.doseNumber) {
+    when (val choice = value.doseNumber) {
       null -> {}
       is Immunization.ProtocolApplied.DoseNumber.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 7, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 8, Hoisted.seriesSer, it)
         }
       }
       is Immunization.ProtocolApplied.DoseNumber.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 10, Hoisted.seriesSer, it)
         }
       }
     }
-    when (val __d = value.seriesDoses) {
+    when (val choice = value.seriesDoses) {
       null -> {}
       is Immunization.ProtocolApplied.SeriesDoses.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 11, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 12, Hoisted.seriesSer, it)
         }
       }
       is Immunization.ProtocolApplied.SeriesDoses.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 14, Hoisted.seriesSer, it)
         }
       }
@@ -1000,13 +1000,13 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 16 + descriptorOffset, Hoisted.patientSer, it)
     }
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is Immunization.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 17 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             18 + descriptorOffset,
@@ -1016,10 +1016,10 @@ internal object ImmunizationSerializer : KSerializer<Immunization> {
         }
       }
       is Immunization.Occurrence.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             20 + descriptorOffset,

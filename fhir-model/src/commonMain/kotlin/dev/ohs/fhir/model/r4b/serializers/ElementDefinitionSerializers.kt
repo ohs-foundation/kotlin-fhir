@@ -482,19 +482,22 @@ internal object ElementDefinitionTypeSerializer : KSerializer<ElementDefinition.
       extension = extension ?: listOf(),
       code = Uri.of(code, _code)!!,
       profile =
-        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { __i ->
-          Canonical.of(profile?.getOrNull(__i)?.let { it }, _profile?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
+          Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!
         }),
       targetProfile =
-        (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { __i
+        (kotlin.collections.List(maxOf(targetProfile?.size ?: 0, _targetProfile?.size ?: 0)) { index
           ->
-          Canonical.of(targetProfile?.getOrNull(__i)?.let { it }, _targetProfile?.getOrNull(__i))!!
+          Canonical.of(
+            targetProfile?.getOrNull(index)?.let { it },
+            _targetProfile?.getOrNull(index),
+          )!!
         }),
       aggregation =
-        (kotlin.collections.List(maxOf(aggregation?.size ?: 0, _aggregation?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(aggregation?.size ?: 0, _aggregation?.size ?: 0)) { index ->
           Enumeration.of(
-            ElementDefinition.AggregationMode.fromCode(aggregation?.getOrNull(__i)!!),
-            _aggregation?.getOrNull(__i),
+            ElementDefinition.AggregationMode.fromCode(aggregation?.getOrNull(index)!!),
+            _aggregation?.getOrNull(index),
           )
         }),
       versioning =
@@ -1083,144 +1086,144 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
     (value.label.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 3, Hoisted.labelSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ElementDefinition.Example.Value.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 4, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 5, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 14, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 16, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 18, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 19, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 20, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 20, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 21, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 22, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 22, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 23, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Markdown -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 24, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 24, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 25, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Oid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 26, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 26, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 27, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 28, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 28, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 29, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 30, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 30, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 31, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 32, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 33, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 34, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 34, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 35, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 36, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 36, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 37, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 38, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 38, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 39, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Uuid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 40, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 40, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 41, Hoisted.labelSer, it)
         }
       }
       is ElementDefinition.Example.Value.Address -> {
-        encoder.encodeSerializableElement(descriptor, 42, Hoisted.valueAddressSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 42, Hoisted.valueAddressSer, choice.value)
       }
       is ElementDefinition.Example.Value.Age -> {
-        encoder.encodeSerializableElement(descriptor, 43, Hoisted.valueAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 43, Hoisted.valueAgeSer, choice.value)
       }
       is ElementDefinition.Example.Value.Annotation -> {
-        encoder.encodeSerializableElement(descriptor, 44, Hoisted.valueAnnotationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 44, Hoisted.valueAnnotationSer, choice.value)
       }
       is ElementDefinition.Example.Value.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 45, Hoisted.valueAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 45, Hoisted.valueAttachmentSer, choice.value)
       }
       is ElementDefinition.Example.Value.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           46,
           Hoisted.valueCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Example.Value.CodeableReference -> {
@@ -1228,83 +1231,93 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
           descriptor,
           47,
           Hoisted.valueCodeableReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Example.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 48, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 48, Hoisted.valueCodingSer, choice.value)
       }
       is ElementDefinition.Example.Value.ContactPoint -> {
-        encoder.encodeSerializableElement(descriptor, 49, Hoisted.valueContactPointSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          49,
+          Hoisted.valueContactPointSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Example.Value.Count -> {
-        encoder.encodeSerializableElement(descriptor, 50, Hoisted.valueCountSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 50, Hoisted.valueCountSer, choice.value)
       }
       is ElementDefinition.Example.Value.Distance -> {
-        encoder.encodeSerializableElement(descriptor, 51, Hoisted.valueDistanceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 51, Hoisted.valueDistanceSer, choice.value)
       }
       is ElementDefinition.Example.Value.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 52, Hoisted.valueDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 52, Hoisted.valueDurationSer, choice.value)
       }
       is ElementDefinition.Example.Value.HumanName -> {
-        encoder.encodeSerializableElement(descriptor, 53, Hoisted.valueHumanNameSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 53, Hoisted.valueHumanNameSer, choice.value)
       }
       is ElementDefinition.Example.Value.Identifier -> {
-        encoder.encodeSerializableElement(descriptor, 54, Hoisted.valueIdentifierSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 54, Hoisted.valueIdentifierSer, choice.value)
       }
       is ElementDefinition.Example.Value.Money -> {
-        encoder.encodeSerializableElement(descriptor, 55, Hoisted.valueMoneySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 55, Hoisted.valueMoneySer, choice.value)
       }
       is ElementDefinition.Example.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 56, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 56, Hoisted.valuePeriodSer, choice.value)
       }
       is ElementDefinition.Example.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 57, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 57, Hoisted.valueQuantitySer, choice.value)
       }
       is ElementDefinition.Example.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 58, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 58, Hoisted.valueRangeSer, choice.value)
       }
       is ElementDefinition.Example.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 59, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 59, Hoisted.valueRatioSer, choice.value)
       }
       is ElementDefinition.Example.Value.RatioRange -> {
-        encoder.encodeSerializableElement(descriptor, 60, Hoisted.valueRatioRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 60, Hoisted.valueRatioRangeSer, choice.value)
       }
       is ElementDefinition.Example.Value.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 61, Hoisted.valueReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 61, Hoisted.valueReferenceSer, choice.value)
       }
       is ElementDefinition.Example.Value.SampledData -> {
-        encoder.encodeSerializableElement(descriptor, 62, Hoisted.valueSampledDataSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 62, Hoisted.valueSampledDataSer, choice.value)
       }
       is ElementDefinition.Example.Value.Signature -> {
-        encoder.encodeSerializableElement(descriptor, 63, Hoisted.valueSignatureSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 63, Hoisted.valueSignatureSer, choice.value)
       }
       is ElementDefinition.Example.Value.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 64, Hoisted.valueTimingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 64, Hoisted.valueTimingSer, choice.value)
       }
       is ElementDefinition.Example.Value.ContactDetail -> {
-        encoder.encodeSerializableElement(descriptor, 65, Hoisted.valueContactDetailSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          65,
+          Hoisted.valueContactDetailSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Example.Value.Contributor -> {
-        encoder.encodeSerializableElement(descriptor, 66, Hoisted.valueContributorSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 66, Hoisted.valueContributorSer, choice.value)
       }
       is ElementDefinition.Example.Value.DataRequirement -> {
         encoder.encodeSerializableElement(
           descriptor,
           67,
           Hoisted.valueDataRequirementSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Example.Value.Expression -> {
-        encoder.encodeSerializableElement(descriptor, 68, Hoisted.valueExpressionSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 68, Hoisted.valueExpressionSer, choice.value)
       }
       is ElementDefinition.Example.Value.ParameterDefinition -> {
         encoder.encodeSerializableElement(
           descriptor,
           69,
           Hoisted.valueParameterDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Example.Value.RelatedArtifact -> {
@@ -1312,7 +1325,7 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
           descriptor,
           70,
           Hoisted.valueRelatedArtifactSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Example.Value.TriggerDefinition -> {
@@ -1320,14 +1333,19 @@ internal object ElementDefinitionExampleSerializer : KSerializer<ElementDefiniti
           descriptor,
           71,
           Hoisted.valueTriggerDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Example.Value.UsageContext -> {
-        encoder.encodeSerializableElement(descriptor, 72, Hoisted.valueUsageContextSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          72,
+          Hoisted.valueUsageContextSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Example.Value.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 73, Hoisted.valueDosageSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 73, Hoisted.valueDosageSer, choice.value)
       }
     }
   }
@@ -3684,11 +3702,11 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
       modifierExtension = modifierExtension ?: listOf(),
       path = R4bString.of(path, _path)!!,
       representation =
-        (kotlin.collections.List(maxOf(representation?.size ?: 0, _representation?.size ?: 0)) { __i
-          ->
+        (kotlin.collections.List(maxOf(representation?.size ?: 0, _representation?.size ?: 0)) {
+          index ->
           Enumeration.of(
-            ElementDefinition.PropertyRepresentation.fromCode(representation?.getOrNull(__i)!!),
-            _representation?.getOrNull(__i),
+            ElementDefinition.PropertyRepresentation.fromCode(representation?.getOrNull(index)!!),
+            _representation?.getOrNull(index),
           )
         }),
       sliceName = R4bString.of(sliceName, _sliceName),
@@ -3701,8 +3719,8 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
       comment = Markdown.of(comment, _comment),
       requirements = Markdown.of(requirements, _requirements),
       alias =
-        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { __i ->
-          R4bString.of(alias?.getOrNull(__i)?.let { it }, _alias?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
+          R4bString.of(alias?.getOrNull(index)?.let { it }, _alias?.getOrNull(index))!!
         }),
       min = UnsignedInt.of(min, _min),
       max = R4bString.of(max, _max),
@@ -3900,8 +3918,8 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
         ),
       maxLength = Integer.of(maxLength, _maxLength),
       condition =
-        (kotlin.collections.List(maxOf(condition?.size ?: 0, _condition?.size ?: 0)) { __i ->
-          Id.of(condition?.getOrNull(__i)?.let { it }, _condition?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(condition?.size ?: 0, _condition?.size ?: 0)) { index ->
+          Id.of(condition?.getOrNull(index)?.let { it }, _condition?.getOrNull(index))!!
         }),
       constraint = constraint ?: listOf(),
       mustSupport = R4bBoolean.of(mustSupport, _mustSupport),
@@ -3988,138 +4006,143 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     }
     if (value.type.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 32, Hoisted.typeSer, value.type)
-    when (val __d = value.defaultValue) {
+    when (val choice = value.defaultValue) {
       null -> {}
       is ElementDefinition.DefaultValue.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 33, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 33, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 34, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 35, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 35, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 36, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 37, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 37, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 38, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 39, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 39, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 40, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 41, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 41, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 42, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 43, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 43, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 44, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 45, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 46, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 47, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 47, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 48, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 49, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 49, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 50, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 51, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 51, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 52, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Markdown -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 53, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 53, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 54, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Oid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 55, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 55, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 56, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 57, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 57, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 58, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 59, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 59, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 60, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 61, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 62, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 63, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 63, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 64, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 65, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 65, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 66, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 67, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 67, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 68, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Uuid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 69, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 69, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 70, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.DefaultValue.Address -> {
-        encoder.encodeSerializableElement(descriptor, 71, Hoisted.defaultValueAddressSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          71,
+          Hoisted.defaultValueAddressSer,
+          choice.value,
+        )
       }
       is ElementDefinition.DefaultValue.Age -> {
-        encoder.encodeSerializableElement(descriptor, 72, Hoisted.defaultValueAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 72, Hoisted.defaultValueAgeSer, choice.value)
       }
       is ElementDefinition.DefaultValue.Annotation -> {
         encoder.encodeSerializableElement(
           descriptor,
           73,
           Hoisted.defaultValueAnnotationSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Attachment -> {
@@ -4127,7 +4150,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           74,
           Hoisted.defaultValueAttachmentSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.CodeableConcept -> {
@@ -4135,7 +4158,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           75,
           Hoisted.defaultValueCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.CodeableReference -> {
@@ -4143,29 +4166,34 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           76,
           Hoisted.defaultValueCodeableReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 77, Hoisted.codeSerInner, __d.value)
+        encoder.encodeSerializableElement(descriptor, 77, Hoisted.codeSerInner, choice.value)
       }
       is ElementDefinition.DefaultValue.ContactPoint -> {
         encoder.encodeSerializableElement(
           descriptor,
           78,
           Hoisted.defaultValueContactPointSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Count -> {
-        encoder.encodeSerializableElement(descriptor, 79, Hoisted.defaultValueCountSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          79,
+          Hoisted.defaultValueCountSer,
+          choice.value,
+        )
       }
       is ElementDefinition.DefaultValue.Distance -> {
         encoder.encodeSerializableElement(
           descriptor,
           80,
           Hoisted.defaultValueDistanceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Duration -> {
@@ -4173,7 +4201,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           81,
           Hoisted.defaultValueDurationSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.HumanName -> {
@@ -4181,7 +4209,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           82,
           Hoisted.defaultValueHumanNameSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Identifier -> {
@@ -4189,35 +4217,55 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           83,
           Hoisted.defaultValueIdentifierSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Money -> {
-        encoder.encodeSerializableElement(descriptor, 84, Hoisted.defaultValueMoneySer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          84,
+          Hoisted.defaultValueMoneySer,
+          choice.value,
+        )
       }
       is ElementDefinition.DefaultValue.Period -> {
-        encoder.encodeSerializableElement(descriptor, 85, Hoisted.defaultValuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          85,
+          Hoisted.defaultValuePeriodSer,
+          choice.value,
+        )
       }
       is ElementDefinition.DefaultValue.Quantity -> {
         encoder.encodeSerializableElement(
           descriptor,
           86,
           Hoisted.defaultValueQuantitySer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Range -> {
-        encoder.encodeSerializableElement(descriptor, 87, Hoisted.defaultValueRangeSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          87,
+          Hoisted.defaultValueRangeSer,
+          choice.value,
+        )
       }
       is ElementDefinition.DefaultValue.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 88, Hoisted.defaultValueRatioSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          88,
+          Hoisted.defaultValueRatioSer,
+          choice.value,
+        )
       }
       is ElementDefinition.DefaultValue.RatioRange -> {
         encoder.encodeSerializableElement(
           descriptor,
           89,
           Hoisted.defaultValueRatioRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Reference -> {
@@ -4225,7 +4273,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           90,
           Hoisted.defaultValueReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.SampledData -> {
@@ -4233,7 +4281,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           91,
           Hoisted.defaultValueSampledDataSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Signature -> {
@@ -4241,18 +4289,23 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           92,
           Hoisted.defaultValueSignatureSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 93, Hoisted.defaultValueTimingSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          93,
+          Hoisted.defaultValueTimingSer,
+          choice.value,
+        )
       }
       is ElementDefinition.DefaultValue.ContactDetail -> {
         encoder.encodeSerializableElement(
           descriptor,
           94,
           Hoisted.defaultValueContactDetailSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Contributor -> {
@@ -4260,7 +4313,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           95,
           Hoisted.defaultValueContributorSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.DataRequirement -> {
@@ -4268,7 +4321,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           96,
           Hoisted.defaultValueDataRequirementSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Expression -> {
@@ -4276,7 +4329,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           97,
           Hoisted.defaultValueExpressionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.ParameterDefinition -> {
@@ -4284,7 +4337,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           98,
           Hoisted.defaultValueParameterDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.RelatedArtifact -> {
@@ -4292,7 +4345,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           99,
           Hoisted.defaultValueRelatedArtifactSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.TriggerDefinition -> {
@@ -4300,7 +4353,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           100,
           Hoisted.defaultValueTriggerDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.UsageContext -> {
@@ -4308,11 +4361,16 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           101,
           Hoisted.defaultValueUsageContextSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.DefaultValue.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 102, Hoisted.defaultValueDosageSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          102,
+          Hoisted.defaultValueDosageSer,
+          choice.value,
+        )
       }
     }
     ((value.meaningWhenMissing?.value))?.let { encoder.encodeStringElement(descriptor, 103, it) }
@@ -4323,123 +4381,123 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
     (value.orderMeaning?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 106, Hoisted.pathSer, it)
     }
-    when (val __d = value.fixed) {
+    when (val choice = value.fixed) {
       null -> {}
       is ElementDefinition.Fixed.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 107, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 107, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 108, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 109, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 109, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 110, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 111, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 111, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 112, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 113, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 113, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 114, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 115, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 115, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 116, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 117, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 117, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 118, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 119, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 120, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 121, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 121, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 122, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 123, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 123, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 124, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 125, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 125, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 126, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Markdown -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 127, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 127, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 128, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Oid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 129, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 129, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 130, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 131, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 131, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 132, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 133, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 133, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 134, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 135, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 136, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 137, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 137, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 138, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 139, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 139, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 140, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 141, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 141, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 142, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Fixed.Uuid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 143, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 143, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 144, Hoisted.pathSer, it)
         }
       }
@@ -4448,18 +4506,18 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           145,
           Hoisted.defaultValueAddressSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Age -> {
-        encoder.encodeSerializableElement(descriptor, 146, Hoisted.defaultValueAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 146, Hoisted.defaultValueAgeSer, choice.value)
       }
       is ElementDefinition.Fixed.Annotation -> {
         encoder.encodeSerializableElement(
           descriptor,
           147,
           Hoisted.defaultValueAnnotationSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Attachment -> {
@@ -4467,7 +4525,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           148,
           Hoisted.defaultValueAttachmentSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.CodeableConcept -> {
@@ -4475,7 +4533,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           149,
           Hoisted.defaultValueCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.CodeableReference -> {
@@ -4483,29 +4541,34 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           150,
           Hoisted.defaultValueCodeableReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 151, Hoisted.codeSerInner, __d.value)
+        encoder.encodeSerializableElement(descriptor, 151, Hoisted.codeSerInner, choice.value)
       }
       is ElementDefinition.Fixed.ContactPoint -> {
         encoder.encodeSerializableElement(
           descriptor,
           152,
           Hoisted.defaultValueContactPointSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Count -> {
-        encoder.encodeSerializableElement(descriptor, 153, Hoisted.defaultValueCountSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          153,
+          Hoisted.defaultValueCountSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Fixed.Distance -> {
         encoder.encodeSerializableElement(
           descriptor,
           154,
           Hoisted.defaultValueDistanceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Duration -> {
@@ -4513,7 +4576,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           155,
           Hoisted.defaultValueDurationSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.HumanName -> {
@@ -4521,7 +4584,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           156,
           Hoisted.defaultValueHumanNameSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Identifier -> {
@@ -4529,35 +4592,55 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           157,
           Hoisted.defaultValueIdentifierSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Money -> {
-        encoder.encodeSerializableElement(descriptor, 158, Hoisted.defaultValueMoneySer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          158,
+          Hoisted.defaultValueMoneySer,
+          choice.value,
+        )
       }
       is ElementDefinition.Fixed.Period -> {
-        encoder.encodeSerializableElement(descriptor, 159, Hoisted.defaultValuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          159,
+          Hoisted.defaultValuePeriodSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Fixed.Quantity -> {
         encoder.encodeSerializableElement(
           descriptor,
           160,
           Hoisted.defaultValueQuantitySer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Range -> {
-        encoder.encodeSerializableElement(descriptor, 161, Hoisted.defaultValueRangeSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          161,
+          Hoisted.defaultValueRangeSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Fixed.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 162, Hoisted.defaultValueRatioSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          162,
+          Hoisted.defaultValueRatioSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Fixed.RatioRange -> {
         encoder.encodeSerializableElement(
           descriptor,
           163,
           Hoisted.defaultValueRatioRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Reference -> {
@@ -4565,7 +4648,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           164,
           Hoisted.defaultValueReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.SampledData -> {
@@ -4573,7 +4656,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           165,
           Hoisted.defaultValueSampledDataSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Signature -> {
@@ -4581,18 +4664,23 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           166,
           Hoisted.defaultValueSignatureSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 167, Hoisted.defaultValueTimingSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          167,
+          Hoisted.defaultValueTimingSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Fixed.ContactDetail -> {
         encoder.encodeSerializableElement(
           descriptor,
           168,
           Hoisted.defaultValueContactDetailSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Contributor -> {
@@ -4600,7 +4688,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           169,
           Hoisted.defaultValueContributorSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.DataRequirement -> {
@@ -4608,7 +4696,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           170,
           Hoisted.defaultValueDataRequirementSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Expression -> {
@@ -4616,7 +4704,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           171,
           Hoisted.defaultValueExpressionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.ParameterDefinition -> {
@@ -4624,7 +4712,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           172,
           Hoisted.defaultValueParameterDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.RelatedArtifact -> {
@@ -4632,7 +4720,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           173,
           Hoisted.defaultValueRelatedArtifactSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.TriggerDefinition -> {
@@ -4640,7 +4728,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           174,
           Hoisted.defaultValueTriggerDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.UsageContext -> {
@@ -4648,130 +4736,135 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           175,
           Hoisted.defaultValueUsageContextSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Fixed.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 176, Hoisted.defaultValueDosageSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          176,
+          Hoisted.defaultValueDosageSer,
+          choice.value,
+        )
       }
     }
-    when (val __d = value.pattern) {
+    when (val choice = value.pattern) {
       null -> {}
       is ElementDefinition.Pattern.Base64Binary -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 177, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 177, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 178, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 179, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 179, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 180, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Canonical -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 181, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 181, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 182, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 183, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 183, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 184, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 185, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 185, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 186, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 187, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 187, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 188, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 189, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 190, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Id -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 191, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 191, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 192, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 193, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 193, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 194, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 195, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 195, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 196, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Markdown -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 197, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 197, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 198, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Oid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 199, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 199, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 200, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 201, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 201, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 202, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 203, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 203, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 204, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 205, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 206, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 207, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 207, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 208, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Uri -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 209, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 209, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 210, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Url -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 211, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 211, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 212, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.Pattern.Uuid -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 213, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 213, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 214, Hoisted.pathSer, it)
         }
       }
@@ -4780,18 +4873,18 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           215,
           Hoisted.defaultValueAddressSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Age -> {
-        encoder.encodeSerializableElement(descriptor, 216, Hoisted.defaultValueAgeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 216, Hoisted.defaultValueAgeSer, choice.value)
       }
       is ElementDefinition.Pattern.Annotation -> {
         encoder.encodeSerializableElement(
           descriptor,
           217,
           Hoisted.defaultValueAnnotationSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Attachment -> {
@@ -4799,7 +4892,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           218,
           Hoisted.defaultValueAttachmentSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.CodeableConcept -> {
@@ -4807,7 +4900,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           219,
           Hoisted.defaultValueCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.CodeableReference -> {
@@ -4815,29 +4908,34 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           220,
           Hoisted.defaultValueCodeableReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 221, Hoisted.codeSerInner, __d.value)
+        encoder.encodeSerializableElement(descriptor, 221, Hoisted.codeSerInner, choice.value)
       }
       is ElementDefinition.Pattern.ContactPoint -> {
         encoder.encodeSerializableElement(
           descriptor,
           222,
           Hoisted.defaultValueContactPointSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Count -> {
-        encoder.encodeSerializableElement(descriptor, 223, Hoisted.defaultValueCountSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          223,
+          Hoisted.defaultValueCountSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Pattern.Distance -> {
         encoder.encodeSerializableElement(
           descriptor,
           224,
           Hoisted.defaultValueDistanceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Duration -> {
@@ -4845,7 +4943,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           225,
           Hoisted.defaultValueDurationSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.HumanName -> {
@@ -4853,7 +4951,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           226,
           Hoisted.defaultValueHumanNameSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Identifier -> {
@@ -4861,35 +4959,55 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           227,
           Hoisted.defaultValueIdentifierSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Money -> {
-        encoder.encodeSerializableElement(descriptor, 228, Hoisted.defaultValueMoneySer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          228,
+          Hoisted.defaultValueMoneySer,
+          choice.value,
+        )
       }
       is ElementDefinition.Pattern.Period -> {
-        encoder.encodeSerializableElement(descriptor, 229, Hoisted.defaultValuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          229,
+          Hoisted.defaultValuePeriodSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Pattern.Quantity -> {
         encoder.encodeSerializableElement(
           descriptor,
           230,
           Hoisted.defaultValueQuantitySer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Range -> {
-        encoder.encodeSerializableElement(descriptor, 231, Hoisted.defaultValueRangeSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          231,
+          Hoisted.defaultValueRangeSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Pattern.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 232, Hoisted.defaultValueRatioSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          232,
+          Hoisted.defaultValueRatioSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Pattern.RatioRange -> {
         encoder.encodeSerializableElement(
           descriptor,
           233,
           Hoisted.defaultValueRatioRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Reference -> {
@@ -4897,7 +5015,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           234,
           Hoisted.defaultValueReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.SampledData -> {
@@ -4905,7 +5023,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           235,
           Hoisted.defaultValueSampledDataSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Signature -> {
@@ -4913,18 +5031,23 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           236,
           Hoisted.defaultValueSignatureSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Timing -> {
-        encoder.encodeSerializableElement(descriptor, 237, Hoisted.defaultValueTimingSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          237,
+          Hoisted.defaultValueTimingSer,
+          choice.value,
+        )
       }
       is ElementDefinition.Pattern.ContactDetail -> {
         encoder.encodeSerializableElement(
           descriptor,
           238,
           Hoisted.defaultValueContactDetailSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Contributor -> {
@@ -4932,7 +5055,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           239,
           Hoisted.defaultValueContributorSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.DataRequirement -> {
@@ -4940,7 +5063,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           240,
           Hoisted.defaultValueDataRequirementSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Expression -> {
@@ -4948,7 +5071,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           241,
           Hoisted.defaultValueExpressionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.ParameterDefinition -> {
@@ -4956,7 +5079,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           242,
           Hoisted.defaultValueParameterDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.RelatedArtifact -> {
@@ -4964,7 +5087,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           243,
           Hoisted.defaultValueRelatedArtifactSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.TriggerDefinition -> {
@@ -4972,7 +5095,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           244,
           Hoisted.defaultValueTriggerDefinitionSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.UsageContext -> {
@@ -4980,66 +5103,71 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           245,
           Hoisted.defaultValueUsageContextSer,
-          __d.value,
+          choice.value,
         )
       }
       is ElementDefinition.Pattern.Dosage -> {
-        encoder.encodeSerializableElement(descriptor, 246, Hoisted.defaultValueDosageSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          246,
+          Hoisted.defaultValueDosageSer,
+          choice.value,
+        )
       }
     }
     if (value.example.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 247, Hoisted.exampleSer, value.example)
-    when (val __d = value.minValue) {
+    when (val choice = value.minValue) {
       null -> {}
       is ElementDefinition.MinValue.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 248, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 248, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 249, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MinValue.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 250, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 250, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 251, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MinValue.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 252, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 252, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 253, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MinValue.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 254, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 255, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MinValue.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 256, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 257, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MinValue.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 258, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 258, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 259, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MinValue.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 260, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 260, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 261, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MinValue.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 262, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 262, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 263, Hoisted.pathSer, it)
         }
       }
@@ -5048,61 +5176,61 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           264,
           Hoisted.defaultValueQuantitySer,
-          __d.value,
+          choice.value,
         )
       }
     }
-    when (val __d = value.maxValue) {
+    when (val choice = value.maxValue) {
       null -> {}
       is ElementDefinition.MaxValue.Date -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 265, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 265, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 266, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MaxValue.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 267, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 267, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 268, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MaxValue.Instant -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 269, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 269, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 270, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MaxValue.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 271, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 272, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MaxValue.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 273, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 274, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MaxValue.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 275, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 275, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 276, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MaxValue.PositiveInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 277, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 277, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 278, Hoisted.pathSer, it)
         }
       }
       is ElementDefinition.MaxValue.UnsignedInt -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 279, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 279, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 280, Hoisted.pathSer, it)
         }
       }
@@ -5111,7 +5239,7 @@ internal object ElementDefinitionSerializer : KSerializer<ElementDefinition> {
           descriptor,
           281,
           Hoisted.defaultValueQuantitySer,
-          __d.value,
+          choice.value,
         )
       }
     }

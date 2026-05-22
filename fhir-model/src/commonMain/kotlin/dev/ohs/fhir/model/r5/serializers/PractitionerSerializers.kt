@@ -573,13 +573,13 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
         it,
       )
     }
-    when (val __d = value.deceased) {
+    when (val choice = value.deceased) {
       null -> {}
       is Practitioner.Deceased.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 19 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             20 + descriptorOffset,
@@ -589,10 +589,10 @@ internal object PractitionerSerializer : KSerializer<Practitioner> {
         }
       }
       is Practitioner.Deceased.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 21 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             22 + descriptorOffset,

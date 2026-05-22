@@ -358,13 +358,13 @@ internal object GuidanceResponseSerializer : KSerializer<GuidanceResponse> {
         Hoisted.identifierSer,
         value.identifier,
       )
-    when (val __d = value.module) {
+    when (val choice = value.module) {
       null -> {}
       is GuidanceResponse.Module.Uri -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 12 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             13 + descriptorOffset,
@@ -374,10 +374,10 @@ internal object GuidanceResponseSerializer : KSerializer<GuidanceResponse> {
         }
       }
       is GuidanceResponse.Module.Canonical -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 14 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             15 + descriptorOffset,
@@ -391,7 +391,7 @@ internal object GuidanceResponseSerializer : KSerializer<GuidanceResponse> {
           descriptor,
           16 + descriptorOffset,
           Hoisted.moduleCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
     }

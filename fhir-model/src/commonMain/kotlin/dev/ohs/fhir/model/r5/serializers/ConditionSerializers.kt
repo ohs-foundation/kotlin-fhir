@@ -663,13 +663,13 @@ internal object ConditionSerializer : KSerializer<Condition> {
     (value.encounter)?.let {
       encoder.encodeSerializableElement(descriptor, 18 + descriptorOffset, Hoisted.subjectSer, it)
     }
-    when (val __d = value.onset) {
+    when (val choice = value.onset) {
       null -> {}
       is Condition.Onset.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 19 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             20 + descriptorOffset,
@@ -683,7 +683,7 @@ internal object ConditionSerializer : KSerializer<Condition> {
           descriptor,
           21 + descriptorOffset,
           Hoisted.onsetAgeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Condition.Onset.Period -> {
@@ -691,7 +691,7 @@ internal object ConditionSerializer : KSerializer<Condition> {
           descriptor,
           22 + descriptorOffset,
           Hoisted.onsetPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is Condition.Onset.Range -> {
@@ -699,14 +699,14 @@ internal object ConditionSerializer : KSerializer<Condition> {
           descriptor,
           23 + descriptorOffset,
           Hoisted.onsetRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Condition.Onset.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             25 + descriptorOffset,
@@ -716,13 +716,13 @@ internal object ConditionSerializer : KSerializer<Condition> {
         }
       }
     }
-    when (val __d = value.abatement) {
+    when (val choice = value.abatement) {
       null -> {}
       is Condition.Abatement.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 26 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             27 + descriptorOffset,
@@ -736,7 +736,7 @@ internal object ConditionSerializer : KSerializer<Condition> {
           descriptor,
           28 + descriptorOffset,
           Hoisted.onsetAgeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Condition.Abatement.Period -> {
@@ -744,7 +744,7 @@ internal object ConditionSerializer : KSerializer<Condition> {
           descriptor,
           29 + descriptorOffset,
           Hoisted.onsetPeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is Condition.Abatement.Range -> {
@@ -752,14 +752,14 @@ internal object ConditionSerializer : KSerializer<Condition> {
           descriptor,
           30 + descriptorOffset,
           Hoisted.onsetRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Condition.Abatement.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 31 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             32 + descriptorOffset,

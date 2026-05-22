@@ -144,13 +144,18 @@ internal object MedicationIngredientSerializer : KSerializer<Medication.Ingredie
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.item) {
+    when (val choice = value.item) {
       null -> {}
       is Medication.Ingredient.Item.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.itemCodeableConceptSer, __d.value)
+        encoder.encodeSerializableElement(
+          descriptor,
+          3,
+          Hoisted.itemCodeableConceptSer,
+          choice.value,
+        )
       }
       is Medication.Ingredient.Item.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.itemReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.itemReferenceSer, choice.value)
       }
     }
     ((value.isActive?.value))?.let { encoder.encodeBooleanElement(descriptor, 5, it) }

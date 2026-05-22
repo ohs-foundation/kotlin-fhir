@@ -126,8 +126,8 @@ internal object MetaSerializer : KSerializer<Meta> {
       lastUpdated = Instant.of(FhirDateTime.fromString(lastUpdated), _lastUpdated),
       source = Uri.of(source, _source),
       profile =
-        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { __i ->
-          Canonical.of(profile?.getOrNull(__i)?.let { it }, _profile?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
+          Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!
         }),
       security = security ?: listOf(),
       tag = tag ?: listOf(),

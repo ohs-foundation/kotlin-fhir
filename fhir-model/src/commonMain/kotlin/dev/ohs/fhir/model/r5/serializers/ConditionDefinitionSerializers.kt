@@ -328,13 +328,13 @@ internal object ConditionDefinitionPreconditionSerializer :
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
     }
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ConditionDefinition.Precondition.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.codeSer, choice.value)
       }
       is ConditionDefinition.Precondition.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueQuantitySer, choice.value)
       }
     }
   }
@@ -932,8 +932,8 @@ internal object ConditionDefinitionSerializer : KSerializer<ConditionDefinition>
       hasBodySite = R5Boolean.of(hasBodySite, _hasBodySite),
       hasStage = R5Boolean.of(hasStage, _hasStage),
       definition =
-        (kotlin.collections.List(maxOf(definition?.size ?: 0, _definition?.size ?: 0)) { __i ->
-          Uri.of(definition?.getOrNull(__i)?.let { it }, _definition?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(definition?.size ?: 0, _definition?.size ?: 0)) { index ->
+          Uri.of(definition?.getOrNull(index)?.let { it }, _definition?.getOrNull(index))!!
         }),
       observation = observation ?: listOf(),
       medication = medication ?: listOf(),
@@ -1027,13 +1027,13 @@ internal object ConditionDefinitionSerializer : KSerializer<ConditionDefinition>
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is ConditionDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1047,7 +1047,7 @@ internal object ConditionDefinitionSerializer : KSerializer<ConditionDefinition>
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }

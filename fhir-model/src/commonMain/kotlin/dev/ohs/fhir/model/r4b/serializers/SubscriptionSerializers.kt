@@ -135,8 +135,8 @@ internal object SubscriptionChannelSerializer : KSerializer<Subscription.Channel
       endpoint = Url.of(endpoint, _endpoint),
       payload = Code.of(payload, _payload),
       `header` =
-        (kotlin.collections.List(maxOf(`header`?.size ?: 0, _header?.size ?: 0)) { __i ->
-          R4bString.of(`header`?.getOrNull(__i)?.let { it }, _header?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(`header`?.size ?: 0, _header?.size ?: 0)) { index ->
+          R4bString.of(`header`?.getOrNull(index)?.let { it }, _header?.getOrNull(index))!!
         }),
     )
   }

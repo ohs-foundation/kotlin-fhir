@@ -151,20 +151,20 @@ internal object CommunicationRequestPayloadSerializer : KSerializer<Communicatio
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.content) {
+    when (val choice = value.content) {
       null -> {}
       is CommunicationRequest.Payload.Content.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 3, Hoisted.contentAttachmentSer, choice.value)
       }
       is CommunicationRequest.Payload.Content.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentReferenceSer, choice.value)
       }
       is CommunicationRequest.Payload.Content.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           5,
           Hoisted.contentCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -663,13 +663,13 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
         Hoisted.payloadSer,
         value.payload,
       )
-    when (val __d = value.occurrence) {
+    when (val choice = value.occurrence) {
       null -> {}
       is CommunicationRequest.Occurrence.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 29 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             30 + descriptorOffset,
@@ -683,7 +683,7 @@ internal object CommunicationRequestSerializer : KSerializer<CommunicationReques
           descriptor,
           31 + descriptorOffset,
           Hoisted.occurrencePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

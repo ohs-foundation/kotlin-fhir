@@ -634,8 +634,8 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
       name = R5String.of(name, _name),
       title = R5String.of(title, _title),
       replaces =
-        (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { __i ->
-          Canonical.of(replaces?.getOrNull(__i)?.let { it }, _replaces?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(replaces?.size ?: 0, _replaces?.size ?: 0)) { index ->
+          Canonical.of(replaces?.getOrNull(index)?.let { it }, _replaces?.getOrNull(index))!!
         }),
       status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
       experimental = R5Boolean.of(experimental, _experimental),
@@ -650,8 +650,8 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
       copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
       base = Canonical.of(base, _base),
       parent =
-        (kotlin.collections.List(maxOf(parent?.size ?: 0, _parent?.size ?: 0)) { __i ->
-          Canonical.of(parent?.getOrNull(__i)?.let { it }, _parent?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(parent?.size ?: 0, _parent?.size ?: 0)) { index ->
+          Canonical.of(parent?.getOrNull(index)?.let { it }, _parent?.getOrNull(index))!!
         }),
       event = MessageDefinition.Event.from(eventCoding, Uri.of(eventUri, _eventUri))!!,
       category =
@@ -754,13 +754,13 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is MessageDefinition.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -774,7 +774,7 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -932,21 +932,21 @@ internal object MessageDefinitionSerializer : KSerializer<MessageDefinition> {
     (value.parent.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 46 + descriptorOffset, Hoisted.replacesSer2, it)
     }
-    when (val __d = value.event) {
+    when (val choice = value.event) {
       null -> {}
       is MessageDefinition.Event.Coding -> {
         encoder.encodeSerializableElement(
           descriptor,
           47 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
       is MessageDefinition.Event.Uri -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 48 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             49 + descriptorOffset,

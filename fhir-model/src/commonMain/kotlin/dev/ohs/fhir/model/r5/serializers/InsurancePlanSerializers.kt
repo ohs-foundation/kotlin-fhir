@@ -1154,8 +1154,8 @@ internal object InsurancePlanSerializer : KSerializer<InsurancePlan> {
       type = type ?: listOf(),
       name = R5String.of(name, _name),
       alias =
-        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { __i ->
-          R5String.of(alias?.getOrNull(__i)?.let { it }, _alias?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(alias?.size ?: 0, _alias?.size ?: 0)) { index ->
+          R5String.of(alias?.getOrNull(index)?.let { it }, _alias?.getOrNull(index))!!
         }),
       period = period,
       ownedBy = ownedBy,

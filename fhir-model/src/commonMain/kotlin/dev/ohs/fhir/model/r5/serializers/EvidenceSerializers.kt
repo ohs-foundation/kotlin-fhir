@@ -1667,13 +1667,13 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is Evidence.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1687,7 +1687,7 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -1713,21 +1713,21 @@ internal object EvidenceSerializer : KSerializer<Evidence> {
         it,
       )
     }
-    when (val __d = value.citeAs) {
+    when (val choice = value.citeAs) {
       null -> {}
       is Evidence.CiteAs.Reference -> {
         encoder.encodeSerializableElement(
           descriptor,
           22 + descriptorOffset,
           Hoisted.citeAsReferenceSer,
-          __d.value,
+          choice.value,
         )
       }
       is Evidence.CiteAs.Markdown -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 23 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             24 + descriptorOffset,

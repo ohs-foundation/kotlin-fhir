@@ -164,10 +164,10 @@ internal object PractitionerRoleAvailableTimeSerializer :
       extension = extension ?: listOf(),
       modifierExtension = modifierExtension ?: listOf(),
       daysOfWeek =
-        (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { __i ->
+        (kotlin.collections.List(maxOf(daysOfWeek?.size ?: 0, _daysOfWeek?.size ?: 0)) { index ->
           Enumeration.of(
-            PractitionerRole.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(__i)!!),
-            _daysOfWeek?.getOrNull(__i),
+            PractitionerRole.DaysOfWeek.fromCode(daysOfWeek?.getOrNull(index)!!),
+            _daysOfWeek?.getOrNull(index),
           )
         }),
       allDay = R4bBoolean.of(allDay, _allDay),

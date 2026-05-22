@@ -260,10 +260,10 @@ internal object ConsentVerificationSerializer : KSerializer<Consent.Verification
       verificationDate =
         (kotlin.collections.List(
           maxOf(verificationDate?.size ?: 0, _verificationDate?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           DateTime.of(
-            verificationDate?.getOrNull(__i)?.let { FhirDateTime.fromString(it) },
-            _verificationDate?.getOrNull(__i),
+            verificationDate?.getOrNull(index)?.let { FhirDateTime.fromString(it) },
+            _verificationDate?.getOrNull(index),
           )!!
         }),
     )

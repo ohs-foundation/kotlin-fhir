@@ -129,14 +129,14 @@ internal object AnnotationSerializer : KSerializer<Annotation> {
     (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
     if (value.extension.isNotEmpty())
       encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
-    when (val __d = value.author) {
+    when (val choice = value.author) {
       null -> {}
       is Annotation.Author.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 2, Hoisted.authorReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 2, Hoisted.authorReferenceSer, choice.value)
       }
       is Annotation.Author.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.authorStringSer, it)
         }
       }

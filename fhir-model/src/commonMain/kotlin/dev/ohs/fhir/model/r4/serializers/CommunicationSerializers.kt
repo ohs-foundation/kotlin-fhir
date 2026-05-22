@@ -148,19 +148,19 @@ internal object CommunicationPayloadSerializer : KSerializer<Communication.Paylo
         Hoisted.extensionSer,
         value.modifierExtension,
       )
-    when (val __d = value.content) {
+    when (val choice = value.content) {
       null -> {}
       is Communication.Payload.Content.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 4, Hoisted.contentStringSer, it)
         }
       }
       is Communication.Payload.Content.Attachment -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.contentAttachmentSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.contentAttachmentSer, choice.value)
       }
       is Communication.Payload.Content.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 6, Hoisted.contentReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.contentReferenceSer, choice.value)
       }
     }
   }
@@ -479,16 +479,19 @@ internal object CommunicationSerializer : KSerializer<Communication> {
       instantiatesCanonical =
         (kotlin.collections.List(
           maxOf(instantiatesCanonical?.size ?: 0, _instantiatesCanonical?.size ?: 0)
-        ) { __i ->
+        ) { index ->
           Canonical.of(
-            instantiatesCanonical?.getOrNull(__i)?.let { it },
-            _instantiatesCanonical?.getOrNull(__i),
+            instantiatesCanonical?.getOrNull(index)?.let { it },
+            _instantiatesCanonical?.getOrNull(index),
           )!!
         }),
       instantiatesUri =
         (kotlin.collections.List(maxOf(instantiatesUri?.size ?: 0, _instantiatesUri?.size ?: 0)) {
-          __i ->
-          Uri.of(instantiatesUri?.getOrNull(__i)?.let { it }, _instantiatesUri?.getOrNull(__i))!!
+          index ->
+          Uri.of(
+            instantiatesUri?.getOrNull(index)?.let { it },
+            _instantiatesUri?.getOrNull(index),
+          )!!
         }),
       basedOn = basedOn ?: listOf(),
       partOf = partOf ?: listOf(),

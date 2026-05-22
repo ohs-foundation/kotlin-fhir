@@ -376,57 +376,57 @@ internal object ObservationComponentSerializer : KSerializer<Observation.Compone
         value.modifierExtension,
       )
     (value.code)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.codeSer, it) }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Observation.Component.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
       }
       is Observation.Component.Value.CodeableConcept -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.codeSer, choice.value)
       }
       is Observation.Component.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.Range -> {
-        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueRangeSer, choice.value)
       }
       is Observation.Component.Value.Ratio -> {
-        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueRatioSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 13, Hoisted.valueRatioSer, choice.value)
       }
       is Observation.Component.Value.SampledData -> {
-        encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueSampledDataSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 14, Hoisted.valueSampledDataSer, choice.value)
       }
       is Observation.Component.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 15, LocalTimeSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 16, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 17, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 18, Hoisted.valueStringSer, it)
         }
       }
       is Observation.Component.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 19, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 19, Hoisted.valuePeriodSer, choice.value)
       }
     }
     (value.dataAbsentReason)?.let {
@@ -1013,13 +1013,13 @@ internal object ObservationSerializer : KSerializer<Observation> {
         it,
       )
     }
-    when (val __d = value.effective) {
+    when (val choice = value.effective) {
       null -> {}
       is Observation.Effective.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             21 + descriptorOffset,
@@ -1033,7 +1033,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
           descriptor,
           22 + descriptorOffset,
           Hoisted.effectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
       is Observation.Effective.Timing -> {
@@ -1041,14 +1041,14 @@ internal object ObservationSerializer : KSerializer<Observation> {
           descriptor,
           23 + descriptorOffset,
           Hoisted.effectiveTimingSer,
-          __d.value,
+          choice.value,
         )
       }
       is Observation.Effective.Instant -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             25 + descriptorOffset,
@@ -1076,14 +1076,14 @@ internal object ObservationSerializer : KSerializer<Observation> {
         Hoisted.basedOnSer,
         value.performer,
       )
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is Observation.Value.Quantity -> {
         encoder.encodeSerializableElement(
           descriptor,
           29 + descriptorOffset,
           Hoisted.valueQuantitySer,
-          __d.value,
+          choice.value,
         )
       }
       is Observation.Value.CodeableConcept -> {
@@ -1091,14 +1091,14 @@ internal object ObservationSerializer : KSerializer<Observation> {
           descriptor,
           30 + descriptorOffset,
           Hoisted.categorySerInner,
-          __d.value,
+          choice.value,
         )
       }
       is Observation.Value.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 31 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             32 + descriptorOffset,
@@ -1108,10 +1108,10 @@ internal object ObservationSerializer : KSerializer<Observation> {
         }
       }
       is Observation.Value.Boolean -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeBooleanElement(descriptor, 33 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             34 + descriptorOffset,
@@ -1121,8 +1121,10 @@ internal object ObservationSerializer : KSerializer<Observation> {
         }
       }
       is Observation.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 35 + descriptorOffset, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let {
+          encoder.encodeIntElement(descriptor, 35 + descriptorOffset, it)
+        }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             36 + descriptorOffset,
@@ -1136,7 +1138,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
           descriptor,
           37 + descriptorOffset,
           Hoisted.valueRangeSer,
-          __d.value,
+          choice.value,
         )
       }
       is Observation.Value.Ratio -> {
@@ -1144,7 +1146,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
           descriptor,
           38 + descriptorOffset,
           Hoisted.valueRatioSer,
-          __d.value,
+          choice.value,
         )
       }
       is Observation.Value.SampledData -> {
@@ -1152,11 +1154,11 @@ internal object ObservationSerializer : KSerializer<Observation> {
           descriptor,
           39 + descriptorOffset,
           Hoisted.valueSampledDataSer,
-          __d.value,
+          choice.value,
         )
       }
       is Observation.Value.Time -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(
             descriptor,
             40 + descriptorOffset,
@@ -1164,7 +1166,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
             it,
           )
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             41 + descriptorOffset,
@@ -1174,10 +1176,10 @@ internal object ObservationSerializer : KSerializer<Observation> {
         }
       }
       is Observation.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let {
+        ((choice.value.value?.toString()))?.let {
           encoder.encodeStringElement(descriptor, 42 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             43 + descriptorOffset,
@@ -1191,7 +1193,7 @@ internal object ObservationSerializer : KSerializer<Observation> {
           descriptor,
           44 + descriptorOffset,
           Hoisted.effectivePeriodSer,
-          __d.value,
+          choice.value,
         )
       }
     }

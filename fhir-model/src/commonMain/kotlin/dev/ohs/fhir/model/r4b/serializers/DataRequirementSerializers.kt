@@ -253,19 +253,19 @@ internal object DataRequirementDateFilterSerializer : KSerializer<DataRequiremen
     (value.searchParam?.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.pathSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is DataRequirement.DateFilter.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.pathSer, it)
         }
       }
       is DataRequirement.DateFilter.Value.Period -> {
-        encoder.encodeSerializableElement(descriptor, 8, Hoisted.valuePeriodSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 8, Hoisted.valuePeriodSer, choice.value)
       }
       is DataRequirement.DateFilter.Value.Duration -> {
-        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueDurationSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 9, Hoisted.valueDurationSer, choice.value)
       }
     }
   }
@@ -499,13 +499,13 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
       extension = extension ?: listOf(),
       type = Enumeration.of(FHIRAllTypes.fromCode(type!!), _type),
       profile =
-        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { __i ->
-          Canonical.of(profile?.getOrNull(__i)?.let { it }, _profile?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(profile?.size ?: 0, _profile?.size ?: 0)) { index ->
+          Canonical.of(profile?.getOrNull(index)?.let { it }, _profile?.getOrNull(index))!!
         }),
       subject = DataRequirement.Subject.from(subjectCodeableConcept, subjectReference),
       mustSupport =
-        (kotlin.collections.List(maxOf(mustSupport?.size ?: 0, _mustSupport?.size ?: 0)) { __i ->
-          R4bString.of(mustSupport?.getOrNull(__i)?.let { it }, _mustSupport?.getOrNull(__i))!!
+        (kotlin.collections.List(maxOf(mustSupport?.size ?: 0, _mustSupport?.size ?: 0)) { index ->
+          R4bString.of(mustSupport?.getOrNull(index)?.let { it }, _mustSupport?.getOrNull(index))!!
         }),
       codeFilter = codeFilter ?: listOf(),
       dateFilter = dateFilter ?: listOf(),
@@ -528,18 +528,18 @@ internal object DataRequirementSerializer : KSerializer<DataRequirement> {
     (value.profile.map { it.toElement() }.takeUnless { it.all { it == null } })?.let {
       encoder.encodeSerializableElement(descriptor, 5, Hoisted.profileSer2, it)
     }
-    when (val __d = value.subject) {
+    when (val choice = value.subject) {
       null -> {}
       is DataRequirement.Subject.CodeableConcept -> {
         encoder.encodeSerializableElement(
           descriptor,
           6,
           Hoisted.subjectCodeableConceptSer,
-          __d.value,
+          choice.value,
         )
       }
       is DataRequirement.Subject.Reference -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.subjectReferenceSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.subjectReferenceSer, choice.value)
       }
     }
     (value.mustSupport.map { it.value }.takeUnless { it.all { it == null } })?.let {

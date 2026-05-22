@@ -914,46 +914,46 @@ internal object ConceptMapGroupElementTargetPropertySerializer :
     (value.code.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.codeSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ConceptMap.Group.Element.Target.Property.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueCodingSer, choice.value)
       }
       is ConceptMap.Group.Element.Target.Property.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 6, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 7, Hoisted.codeSer, it)
         }
       }
       is ConceptMap.Group.Element.Target.Property.Value.Integer -> {
-        ((__d.value.value))?.let { encoder.encodeIntElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeIntElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.codeSer, it)
         }
       }
       is ConceptMap.Group.Element.Target.Property.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.codeSer, it)
         }
       }
       is ConceptMap.Group.Element.Target.Property.Value.DateTime -> {
-        ((__d.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value?.toString()))?.let { encoder.encodeStringElement(descriptor, 12, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 13, Hoisted.codeSer, it)
         }
       }
       is ConceptMap.Group.Element.Target.Property.Value.Decimal -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeSerializableElement(descriptor, 14, BigDecimalSerializer, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 15, Hoisted.codeSer, it)
         }
       }
       is ConceptMap.Group.Element.Target.Property.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 16, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 16, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 17, Hoisted.codeSer, it)
         }
       }
@@ -1100,31 +1100,31 @@ internal object ConceptMapGroupElementTargetDependsOnSerializer :
     (value.attribute.toElement())?.let {
       encoder.encodeSerializableElement(descriptor, 4, Hoisted.attributeSer, it)
     }
-    when (val __d = value.`value`) {
+    when (val choice = value.`value`) {
       null -> {}
       is ConceptMap.Group.Element.Target.DependsOn.Value.Code -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 6, Hoisted.attributeSer, it)
         }
       }
       is ConceptMap.Group.Element.Target.DependsOn.Value.Coding -> {
-        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueCodingSer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 7, Hoisted.valueCodingSer, choice.value)
       }
       is ConceptMap.Group.Element.Target.DependsOn.Value.String -> {
-        ((__d.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 8, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 9, Hoisted.attributeSer, it)
         }
       }
       is ConceptMap.Group.Element.Target.DependsOn.Value.Boolean -> {
-        ((__d.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
-        (__d.value.toElement())?.let {
+        ((choice.value.value))?.let { encoder.encodeBooleanElement(descriptor, 10, it) }
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(descriptor, 11, Hoisted.attributeSer, it)
         }
       }
       is ConceptMap.Group.Element.Target.DependsOn.Value.Quantity -> {
-        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueQuantitySer, __d.value)
+        encoder.encodeSerializableElement(descriptor, 12, Hoisted.valueQuantitySer, choice.value)
       }
     }
     ((value.valueSet?.value))?.let { encoder.encodeStringElement(descriptor, 13, it) }
@@ -1816,13 +1816,13 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         it,
       )
     }
-    when (val __d = value.versionAlgorithm) {
+    when (val choice = value.versionAlgorithm) {
       null -> {}
       is ConceptMap.VersionAlgorithm.String -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             16 + descriptorOffset,
@@ -1836,7 +1836,7 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
           descriptor,
           17 + descriptorOffset,
           Hoisted.versionAlgorithmCodingSer,
-          __d.value,
+          choice.value,
         )
       }
     }
@@ -2057,13 +2057,13 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         Hoisted.additionalAttributeSer,
         value.additionalAttribute,
       )
-    when (val __d = value.sourceScope) {
+    when (val choice = value.sourceScope) {
       null -> {}
       is ConceptMap.SourceScope.Uri -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 54 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             55 + descriptorOffset,
@@ -2073,10 +2073,10 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         }
       }
       is ConceptMap.SourceScope.Canonical -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 56 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             57 + descriptorOffset,
@@ -2086,13 +2086,13 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         }
       }
     }
-    when (val __d = value.targetScope) {
+    when (val choice = value.targetScope) {
       null -> {}
       is ConceptMap.TargetScope.Uri -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 58 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             59 + descriptorOffset,
@@ -2102,10 +2102,10 @@ internal object ConceptMapSerializer : KSerializer<ConceptMap> {
         }
       }
       is ConceptMap.TargetScope.Canonical -> {
-        ((__d.value.value))?.let {
+        ((choice.value.value))?.let {
           encoder.encodeStringElement(descriptor, 60 + descriptorOffset, it)
         }
-        (__d.value.toElement())?.let {
+        (choice.value.toElement())?.let {
           encoder.encodeSerializableElement(
             descriptor,
             61 + descriptorOffset,

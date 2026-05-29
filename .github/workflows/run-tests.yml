@@ -37,7 +37,7 @@ jobs:
             name: JS
             os: ubuntu-latest
             android: false
-          - target: testDebugUnitTest
+          - target: testAndroidHostTest
             name: Android
             os: ubuntu-latest
             android: true
@@ -68,7 +68,7 @@ jobs:
         if: matrix.android
         run: |
           yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
-          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" > /dev/null
+          ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" > /dev/null
 
       - name: Add swap space
         if: runner.os == 'Linux'
@@ -107,4 +107,3 @@ jobs:
           -Dorg.gradle.jvmargs="-Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
           -Dorg.gradle.workers.max=1
           -Dkotlin.daemon.enabled=false
-          -Pfhir.android.enabled=${{ matrix.android }}

@@ -5,19 +5,15 @@ val mavenGroupId: String by project
 val mavenVersion: String by project
 
 plugins {
-    alias(libs.plugins.android.library) apply false
+    // kotlin.multiplatform must be applied before the Android KMP library plugin and KSP.
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotest)
-    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.maven.publish)
     `maven-publish`
 }
-
-// Can be disabled via command line (-Pfhir.android.enabled=false) or in ~/.gradle/gradle.properties
-// to avoid requiring Android SDK for non-Android builds (e.g. to speed up builds in GitHub CI).
-val androidEnabled = providers.gradleProperty("fhir.android.enabled").orNull?.toBoolean() ?: true
-if (androidEnabled) pluginManager.apply(libs.plugins.android.library.get().pluginId)
 
 kotlin {
     jvmToolchain(21)
@@ -46,11 +42,17 @@ kotlin {
         browser()
         binaries.library()
     }
-    if (androidEnabled) {
-        androidTarget {
-            compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_1_8)
-            }
+    android {
+        namespace = "dev.ohs.fhir"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+
+        withHostTestBuilder {}.configure {}
+
+        compilerOptions {
+            // Test dependencies (kotest) ship JVM 11 bytecode with inline functions,
+            // which cannot be inlined into JVM 1.8 output. Build for JVM 11.
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
     iosSimulatorArm64()
@@ -87,12 +89,10 @@ kotlin {
                 implementation(libs.kotlinx.serialization.protobuf)
             }
         }
-        if (androidEnabled) {
-            val androidMain by getting
-            val androidUnitTest by getting {
-                dependencies {
-                    implementation(libs.kotest.runner.junit5)
-                }
+        val androidMain by getting
+        val androidHostTest by getting {
+            dependencies {
+                implementation(libs.kotest.runner.junit5)
             }
         }
         val jvmMain by getting
@@ -108,28 +108,9 @@ kotlin {
     }
 }
 
-if (androidEnabled) {
-    configure<com.android.build.gradle.LibraryExtension> {
-        namespace = "dev.ohs.fhir"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        defaultConfig {
-            minSdk = libs.versions.android.minSdk.get().toInt()
-            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        }
-        testOptions {
-            unitTests.all {
-                val test = it as @Suppress("UNRESOLVED_REFERENCE") org.gradle.api.tasks.testing.Test
-                // Allow tests to access third_party
-                test.systemProperty("projectRootDir", project.rootDir.absolutePath)
-                test.maxHeapSize = "4g"
-                test.useJUnitPlatform()
-            }
-        }
-    }
-}
-
-tasks.named<Test>("jvmTest") {
-    // Allow tests to access third_party
+// Configure all JVM-based test tasks (jvmTest and the Android host test) so they
+// can access third_party fixtures and run Kotest specs via the JUnit Platform.
+tasks.withType<Test>().configureEach {
     systemProperty("projectRootDir", project.rootDir.absolutePath)
     maxHeapSize = "4g"
     useJUnitPlatform()

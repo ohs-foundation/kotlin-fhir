@@ -185,9 +185,9 @@ value sets that are not bound to elements are excluded from code generation.
 
 #### Shared vs. Local Enums
 
-- If the `StructureDefinition` defines an element with a [**common binding**](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html), a **shared enum** is generated and placed in the `dev.ohs.fhir.model.<r4|r4b|r5>.terminologies` package.  
+- If the `StructureDefinition` defines an element with a [**common binding**](https://build.fhir.org/ig/HL7/fhir-extensions/StructureDefinition-elementdefinition-isCommonBinding.html), a **shared enum** is generated and placed in the `dev.ohs.fhir.model.<r4|r4b|r5>.terminologies` package.
   **Example:** `AdministrativeGender`
-- If the element uses a **non-common binding**, a **local enum** is created inside the associated parent class.  
+- If the element uses a **non-common binding**, a **local enum** is created inside the associated parent class.
   **Example:** `NameUse` inside the `HumanName` class
 
 #### Enum Naming and Content
@@ -364,7 +364,7 @@ graph LR
       direction TB
       Desc["**descriptor**
       0 → resourceType
-      ... 
+      ...
       16 → gender / 17 → _gender
       20 → deceasedBoolean / 21 → _deceasedBoolean
       22 → deceasedDateTime / 23 → _deceasedDateTime
@@ -873,15 +873,15 @@ Android since they require loading HL7 example packages from the local filesyste
 | Platform              | Gradle task             | CI runner       | Example-based tests | Unit tests |
 |:----------------------|:------------------------|:----------------|:-------------------:|:----------:|
 | **JVM**               | `jvmTest`               | `ubuntu-latest` |          ✅          |     ✅      |
-| **Android**           | `testDebugUnitTest`     | `ubuntu-latest` |          ✅          |     ✅      |
+| **Android**           | `testAndroidHostTest`   | `ubuntu-latest` |          ✅          |     ✅      |
 | **Wasm JS (Browser)** | `wasmJsBrowserTest`     | `ubuntu-latest` |          —          |     ✅      |
 | **Wasm WASI (Node)**  | `wasmWasiNodeTest`      | `ubuntu-latest` |          —          |     ✅      |
 | **JS (Browser)**      | `jsBrowserTest`         | `ubuntu-latest` |          —          |     ✅      |
 | **iOS (Simulator)**   | `iosSimulatorArm64Test` | `macos-latest`  |          —          |     ✅      |
 
 > [!NOTE]
-> Only the debug Android build variant is tested because debug and release produce identical Kotlin
-> library output.
+> Android tests run as host (JVM) unit tests via the Android Kotlin Multiplatform library plugin's
+> `androidHostTest` compilation — there is no separate debug/release unit-test variant.
 
 To run tests locally, use any Gradle task from the table above (e.g. `./gradlew jvmTest`), or
 `./gradlew check` to run all targets.

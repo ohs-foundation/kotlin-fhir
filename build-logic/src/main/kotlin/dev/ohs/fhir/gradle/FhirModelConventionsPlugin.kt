@@ -16,7 +16,7 @@
 
 package dev.ohs.fhir.gradle
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -39,16 +39,11 @@ class FhirModelConventionsPlugin : Plugin<Project> {
   @OptIn(ExperimentalWasmDsl::class)
   override fun apply(project: Project) =
     with(project) {
-      // Can be disabled via command line (-Pfhir.android.enabled=false) or in
-      // ~/.gradle/gradle.properties to avoid requiring Android SDK for non-Android builds (e.g. to
-      // speed up builds in GitHub CI).
-      val androidEnabled =
-        providers.gradleProperty("fhir.android.enabled").orNull?.toBoolean() ?: true
-
-      // Apply plugins
-      if (androidEnabled) pluginManager.apply("com.android.library")
-      pluginManager.apply("com.google.devtools.ksp")
+      // Apply plugins. kotlin.multiplatform must be applied before the Android KMP library
+      // plugin and KSP.
       pluginManager.apply("org.jetbrains.kotlin.multiplatform")
+      pluginManager.apply("com.android.kotlin.multiplatform.library")
+      pluginManager.apply("com.google.devtools.ksp")
       pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
       pluginManager.apply("com.vanniktech.maven.publish")
       pluginManager.apply("maven-publish")
@@ -94,8 +89,16 @@ class FhirModelConventionsPlugin : Plugin<Project> {
           browser()
           binaries.library()
         }
-        if (androidEnabled) {
-          androidTarget { compilerOptions { jvmTarget.set(JvmTarget.JVM_1_8) } }
+        // Configure the Android KMP target ("android"). A plugin class has no generated DSL
+        // accessor, so use the documented targets.withType(...) approach.
+        targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach {
+          android ->
+          android.namespace = "dev.ohs.fhir.model.$fhirVersionSuffix"
+          android.compileSdk = compileSdk
+          android.minSdk = minSdk
+          // jvmTarget conventions to the Java toolchain (21); pin it so the published bytecode
+          // level doesn't silently track the toolchain.
+          android.compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
         }
         iosSimulatorArm64()
         iosArm64()
@@ -108,15 +111,6 @@ class FhirModelConventionsPlugin : Plugin<Project> {
           api(libs.findLibrary("bignum").get())
           api(libs.findLibrary("kotlinx-datetime").get())
           implementation(libs.findLibrary("kotlinx-serialization-json").get())
-        }
-      }
-
-      // ── Android ───────────────────────────────────────────────────────────
-      if (androidEnabled) {
-        extensions.configure<LibraryExtension> {
-          namespace = "dev.ohs.fhir.model.$fhirVersionSuffix"
-          this.compileSdk = compileSdk
-          defaultConfig { this.minSdk = minSdk }
         }
       }
 
@@ -156,11 +150,14 @@ class FhirModelConventionsPlugin : Plugin<Project> {
         }
       }
 
-      // Avoid implicit task dependency failures when spotless/codegen and compilation run together
+      // Avoid implicit task dependency failures when spotless/codegen and compilation run together.
+      // Matches every compile task (e.g. compileKotlinJvm and the Android KMP plugin's
+      // compileAndroidMain / compileAndroidHostTest) plus sources jars, since all consume the
+      // generated sources produced by the codegen task.
       tasks.configureEach { task ->
         val name = task.name
         if (
-          (name.contains("compile", ignoreCase = true) && name.contains("Kotlin")) ||
+          name.startsWith("compile", ignoreCase = true) ||
             name.contains("sourcesJar", ignoreCase = true)
         ) {
           task.dependsOn("codegen")

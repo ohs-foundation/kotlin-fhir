@@ -61,4 +61,3 @@ jobs:
           -Dorg.gradle.jvmargs="-Xmx6g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
           -Dorg.gradle.workers.max=1
           -Dkotlin.daemon.enabled=false
-          -Pfhir.android.enabled=false

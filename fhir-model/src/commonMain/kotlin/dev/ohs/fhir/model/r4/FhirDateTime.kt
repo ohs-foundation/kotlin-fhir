@@ -14,39 +14,14 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r4
 
-import kotlin.Int
 import kotlin.String
-import kotlin.Suppress
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.UtcOffset
-import kotlinx.datetime.format
 
-public sealed interface FhirDateTime {
-  override fun toString(): String
-
-  public data class Year(public val `value`: Int) : FhirDateTime {
-    override fun toString(): String = value.toString()
-  }
-
-  public data class YearMonth(public val `value`: kotlinx.datetime.YearMonth) : FhirDateTime {
-    override fun toString(): String = value.toString()
-  }
-
-  public data class Date(public val date: LocalDate) : FhirDateTime {
-    override fun toString(): String = date.toString()
-  }
-
-  public data class DateTime(public val dateTime: LocalDateTime, public val utcOffset: UtcOffset) :
-    FhirDateTime {
-    override fun toString(): String =
-      dateTime.format(LocalDateTime.Formats.ISO) + utcOffset.toString()
-  }
-
+public sealed interface FhirDateTime : FhirTemporal {
   public companion object {
     public fun fromString(string: String?): FhirDateTime? {
       if (string == null) return null
@@ -75,4 +50,12 @@ public sealed interface FhirDateTime {
       error("Invalid string value: $string")
     }
   }
+
+  public typealias Year = FhirTemporal.Year
+
+  public typealias YearMonth = FhirTemporal.YearMonth
+
+  public typealias Date = FhirTemporal.Date
+
+  public typealias DateTime = FhirTemporal.DateTime
 }

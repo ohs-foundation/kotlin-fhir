@@ -23,6 +23,7 @@ import dev.ohs.fhir.codegen.primitives.FhirDateFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeSerializerFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirTemporalFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.LocalTimeSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.schema.StructureDefinition
 import dev.ohs.fhir.codegen.schema.capitalized
@@ -162,6 +163,7 @@ abstract class FhirCodegenTask : DefaultTask() {
       .writeTo(outputDir)
     FhirJsonFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
+    FhirTemporalFileSpecGenerator.generate(packageName).writeTo(outputDir)
     FhirDateTimeFileSpecGenerator.generate(packageName).writeTo(outputDir)
     FhirDateFileSpecGenerator.generate(packageName).writeTo(outputDir)
 

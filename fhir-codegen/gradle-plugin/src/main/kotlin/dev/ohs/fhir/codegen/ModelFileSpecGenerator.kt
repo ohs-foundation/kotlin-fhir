@@ -199,9 +199,6 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
             },
           )
 
-          // Search parameters are now generated as separate per-resource sealed classes
-          // (e.g., PatientSearchParam) by ResourceSearchParamFileSpecGenerator.
-
           if (structureDefinition.kind == StructureDefinition.Kind.PRIMITIVE_TYPE) {
             addToElementFunction(
               modelClassName.packageName,

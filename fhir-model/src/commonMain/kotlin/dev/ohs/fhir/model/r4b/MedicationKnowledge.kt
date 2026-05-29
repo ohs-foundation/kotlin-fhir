@@ -38,6 +38,7 @@ import dev.ohs.fhir.model.r4b.serializers.MedicationKnowledgeSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -580,11 +581,13 @@ public data class MedicationKnowledge(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Item
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Item
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Item
 
       public companion object {
         internal fun from(
@@ -1144,11 +1147,13 @@ public data class MedicationKnowledge(
 
         public fun asQuantity(): Quantity? = this as? Quantity
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
         ) : Characteristic
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) :
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) :
           Characteristic
 
         public companion object {
@@ -1229,11 +1234,13 @@ public data class MedicationKnowledge(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Indication
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
         Indication
 
       public companion object {
@@ -1632,15 +1639,19 @@ public data class MedicationKnowledge(
 
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Value
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4b.Base64Binary) :
+      @JvmInline
+      public value class Base64Binary(public val `value`: dev.ohs.fhir.model.r4b.Base64Binary) :
         Value
 
       public companion object {

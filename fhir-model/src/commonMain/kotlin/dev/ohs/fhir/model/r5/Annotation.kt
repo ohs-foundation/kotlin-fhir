@@ -23,6 +23,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /**
@@ -75,9 +76,10 @@ public data class Annotation(
 
     public fun asString(): String? = this as? String
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Author
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Author
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Author
+    @JvmInline public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Author
 
     public companion object {
       internal fun from(

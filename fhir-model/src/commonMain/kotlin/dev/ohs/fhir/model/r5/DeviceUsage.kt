@@ -24,6 +24,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -351,11 +352,16 @@ public data class DeviceUsage(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : DeviceUsage.Timing
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) :
+      DeviceUsage.Timing
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : DeviceUsage.Timing
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) :
+      DeviceUsage.Timing
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
       DeviceUsage.Timing
 
     public companion object {

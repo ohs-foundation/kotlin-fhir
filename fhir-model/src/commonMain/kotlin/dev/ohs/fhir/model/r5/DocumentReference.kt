@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.terminologies.DocumentReferenceStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -713,11 +714,13 @@ public data class DocumentReference(
 
         public fun asCanonical(): Canonical? = this as? Canonical
 
-        public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
+        @JvmInline
+        public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-        public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Value
+        @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Value
 
-        public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Value
+        @JvmInline
+        public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Value
 
         public companion object {
           internal fun from(

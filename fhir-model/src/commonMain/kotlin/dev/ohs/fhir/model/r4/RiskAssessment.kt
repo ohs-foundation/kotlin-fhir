@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4.serializers.RiskAssessmentSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -297,9 +298,11 @@ public data class RiskAssessment(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Probability
+      @JvmInline
+      public value class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Probability
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Probability
+      @JvmInline
+      public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Probability
 
       public companion object {
         internal fun from(
@@ -318,9 +321,9 @@ public data class RiskAssessment(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : When
+      @JvmInline public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : When
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : When
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : When
 
       public companion object {
         internal fun from(
@@ -433,9 +436,11 @@ public data class RiskAssessment(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Occurrence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Occurrence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Occurrence
 
     public companion object {
       internal fun from(

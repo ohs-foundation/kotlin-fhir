@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r5.serializers.ArtifactAssessmentSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -408,9 +409,11 @@ public data class ArtifactAssessment(
 
     public fun asMarkdown(): Markdown? = this as? Markdown
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : CiteAs
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : CiteAs
 
-    public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : CiteAs
+    @JvmInline
+    public value class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : CiteAs
 
     public companion object {
       internal fun from(
@@ -431,11 +434,13 @@ public data class ArtifactAssessment(
 
     public fun asUri(): Uri? = this as? Uri
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Artifact
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Artifact
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Artifact
+    @JvmInline
+    public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Artifact
 
-    public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Artifact
+    @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Artifact
 
     public companion object {
       internal fun from(

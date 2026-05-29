@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r5.serializers.CareTeamSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -304,9 +305,11 @@ public data class CareTeam(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Coverage
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Coverage
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Coverage
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Coverage
 
       public companion object {
         internal fun from(

@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4.serializers.DeviceDefinitionUdiDeviceIdentifierSeri
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -967,9 +968,12 @@ public data class DeviceDefinition(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Manufacturer
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Manufacturer
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Manufacturer
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
+      Manufacturer
 
     public companion object {
       internal fun from(

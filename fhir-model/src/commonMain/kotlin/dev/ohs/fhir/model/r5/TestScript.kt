@@ -41,6 +41,7 @@ import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -2813,9 +2814,11 @@ public data class TestScript(
 
             public fun asCanonical(): Canonical? = this as? Canonical
 
-            public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Link
+            @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Link
 
-            public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Link
+            @JvmInline
+            public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) :
+              Link
 
             public companion object {
               internal fun from(
@@ -3819,9 +3822,11 @@ public data class TestScript(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
+    @JvmInline
+    public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(

@@ -28,6 +28,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -517,11 +518,13 @@ public data class AuditEvent(
 
       public fun asString(): String? = this as? String
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Network
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Network
 
-      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Network
+      @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Network
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Network
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Network
 
       public companion object {
         internal fun from(
@@ -968,29 +971,39 @@ public data class AuditEvent(
 
         public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+        @JvmInline
+        public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-        public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
+        @JvmInline
+        public value class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+        @JvmInline
+        public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
+        @JvmInline
+        public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-        public data class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
+        @JvmInline public value class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
 
-        public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
+        @JvmInline
+        public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-        public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
+        @JvmInline
+        public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
 
-        public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
+        @JvmInline
+        public value class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
           Value
 
         public companion object {
@@ -1195,9 +1208,11 @@ public data class AuditEvent(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurred
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurred
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurred
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurred
 
     public companion object {
       internal fun from(

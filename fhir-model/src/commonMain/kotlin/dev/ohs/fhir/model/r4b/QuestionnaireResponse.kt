@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4b.serializers.QuestionnaireResponseSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -417,29 +418,39 @@ public data class QuestionnaireResponse(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
+        @JvmInline
+        public value class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-        public data class Decimal(public val `value`: dev.ohs.fhir.model.r4b.Decimal) : Value
+        @JvmInline
+        public value class Decimal(public val `value`: dev.ohs.fhir.model.r4b.Decimal) : Value
 
-        public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
+        @JvmInline
+        public value class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
 
-        public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Value
+        @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Value
 
-        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
+        @JvmInline
+        public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
 
-        public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
+        @JvmInline public value class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
 
-        public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Value
+        @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Value
 
-        public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Value
+        @JvmInline
+        public value class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) :
+          Value
 
-        public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : Value
+        @JvmInline
+        public value class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : Value
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Value
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Value
 
         public companion object {
           internal fun from(

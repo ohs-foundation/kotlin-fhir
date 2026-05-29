@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1192,9 +1193,10 @@ public data class ConceptMap(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Source
+    @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Source
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Source
+    @JvmInline
+    public value class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Source
 
     public companion object {
       internal fun from(
@@ -1213,9 +1215,10 @@ public data class ConceptMap(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Target
+    @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Target
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Target
+    @JvmInline
+    public value class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Target
 
     public companion object {
       internal fun from(

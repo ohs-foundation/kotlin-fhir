@@ -25,6 +25,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -527,15 +528,16 @@ public data class Condition(
 
     public fun asString(): String? = this as? String
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Onset
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Onset
 
-    public data class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Onset
+    @JvmInline public value class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Onset
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Onset
+    @JvmInline public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Onset
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Onset
+    @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Onset
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Onset
+    @JvmInline public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Onset
 
     public companion object {
       internal fun from(
@@ -566,15 +568,19 @@ public data class Condition(
 
     public fun asString(): String? = this as? String
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Abatement
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Abatement
 
-    public data class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Abatement
+    @JvmInline public value class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Abatement
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Abatement
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Abatement
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Abatement
+    @JvmInline
+    public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Abatement
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Abatement
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Abatement
 
     public companion object {
       internal fun from(

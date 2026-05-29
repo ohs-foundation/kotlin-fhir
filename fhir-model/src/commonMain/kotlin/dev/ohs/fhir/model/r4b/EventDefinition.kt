@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -377,10 +378,12 @@ public data class EventDefinition(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Subject
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
 
     public companion object {
       internal fun from(

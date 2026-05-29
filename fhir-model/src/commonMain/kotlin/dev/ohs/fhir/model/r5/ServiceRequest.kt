@@ -26,6 +26,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -550,21 +551,28 @@ public data class ServiceRequest(
 
         public fun asPeriod(): Period? = this as? Period
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
+        @JvmInline
+        public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+        @JvmInline
+        public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+        @JvmInline
+        public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-        public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
+        @JvmInline
+        public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
 
         public companion object {
           internal fun from(
@@ -770,9 +778,11 @@ public data class ServiceRequest(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Instruction
+      @JvmInline
+      public value class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Instruction
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
         Instruction
 
       public companion object {
@@ -848,13 +858,16 @@ public data class ServiceRequest(
 
     public fun asRange(): Range? = this as? Range
 
-    public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
+    @JvmInline
+    public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
       ServiceRequest.Quantity
 
-    public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) :
+    @JvmInline
+    public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) :
       ServiceRequest.Quantity
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) :
+    @JvmInline
+    public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) :
       ServiceRequest.Quantity
 
     public companion object {
@@ -878,11 +891,14 @@ public data class ServiceRequest(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
 
     public companion object {
       internal fun from(
@@ -903,9 +919,11 @@ public data class ServiceRequest(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : AsNeeded
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : AsNeeded
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
       AsNeeded
 
     public companion object {

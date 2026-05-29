@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4.serializers.CoverageSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -590,9 +591,10 @@ public data class Coverage(
 
       public fun asMoney(): Money? = this as? Money
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
 
-      public data class Money(public val `value`: dev.ohs.fhir.model.r4.Money) : Value
+      @JvmInline public value class Money(public val `value`: dev.ohs.fhir.model.r4.Money) : Value
 
       public companion object {
         internal fun from(

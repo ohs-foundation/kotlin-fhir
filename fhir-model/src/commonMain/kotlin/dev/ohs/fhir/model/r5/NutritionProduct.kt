@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.serializers.NutritionProductSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -507,19 +508,26 @@ public data class NutritionProduct(
 
       public fun asBoolean(): Boolean? = this as? Boolean
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Value
+
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+
+      @JvmInline
+      public value class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
         Value
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
-
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
-        Value
-
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
-
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
       public companion object {
         internal fun from(

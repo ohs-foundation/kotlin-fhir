@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.serializers.SubstanceReferenceInformationTargetSeri
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -480,11 +481,13 @@ public data class SubstanceReferenceInformation(
 
       public fun asString(): String? = this as? String
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Amount
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Amount
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Amount
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Amount
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Amount
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Amount
 
       public companion object {
         internal fun from(

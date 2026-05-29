@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.terminologies.NoteType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -383,12 +384,15 @@ public data class PaymentReconciliation(
 
       public fun asPositiveInt(): PositiveInt? = this as? PositiveInt
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : TargetItem
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : TargetItem
 
-      public data class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) :
+      @JvmInline
+      public value class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) :
         TargetItem
 
-      public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r5.PositiveInt) :
+      @JvmInline
+      public value class PositiveInt(public val `value`: dev.ohs.fhir.model.r5.PositiveInt) :
         TargetItem
 
       public companion object {

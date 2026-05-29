@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -528,16 +529,23 @@ public data class ResearchElementDefinition(
 
       public fun asDataRequirement(): DataRequirement? = this as? DataRequirement
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
+      ) : Definition
+
+      @JvmInline
+      public value class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) :
         Definition
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Definition
-
-      public data class Expression(public val `value`: dev.ohs.fhir.model.r4.Expression) :
+      @JvmInline
+      public value class Expression(public val `value`: dev.ohs.fhir.model.r4.Expression) :
         Definition
 
-      public data class DataRequirement(public val `value`: dev.ohs.fhir.model.r4.DataRequirement) :
-        Definition
+      @JvmInline
+      public value class DataRequirement(
+        public val `value`: dev.ohs.fhir.model.r4.DataRequirement
+      ) : Definition
 
       public companion object {
         internal fun from(
@@ -564,15 +572,19 @@ public data class ResearchElementDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
         StudyEffective
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : StudyEffective
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : StudyEffective
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
         StudyEffective
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : StudyEffective
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : StudyEffective
 
       public companion object {
         internal fun from(
@@ -599,16 +611,20 @@ public data class ResearchElementDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
         ParticipantEffective
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) :
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) :
         ParticipantEffective
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
         ParticipantEffective
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) :
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) :
         ParticipantEffective
 
       public companion object {
@@ -737,10 +753,12 @@ public data class ResearchElementDefinition(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       Subject
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Subject
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Subject
 
     public companion object {
       internal fun from(

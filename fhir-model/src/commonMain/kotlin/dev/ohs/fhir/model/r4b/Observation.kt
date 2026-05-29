@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4b.serializers.ObservationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -728,29 +729,38 @@ public data class Observation(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Value
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-      public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
+      @JvmInline
+      public value class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Value
+      @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Value
 
-      public data class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) : Value
+      @JvmInline
+      public value class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) :
+        Value
 
-      public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
+      @JvmInline public value class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Value
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Value
 
       public companion object {
         internal fun from(
@@ -906,13 +916,17 @@ public data class Observation(
 
     public fun asInstant(): Instant? = this as? Instant
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Effective
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Effective
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Effective
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Effective
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Effective
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Effective
 
-    public data class Instant(public val `value`: dev.ohs.fhir.model.r4b.Instant) : Effective
+    @JvmInline
+    public value class Instant(public val `value`: dev.ohs.fhir.model.r4b.Instant) : Effective
 
     public companion object {
       internal fun from(
@@ -953,28 +967,34 @@ public data class Observation(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
+    @JvmInline
+    public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Value
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
+    @JvmInline public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-    public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
+    @JvmInline
+    public value class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Value
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
+    @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
-    public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Value
+    @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Value
 
-    public data class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) : Value
+    @JvmInline
+    public value class SampledData(public val `value`: dev.ohs.fhir.model.r4b.SampledData) : Value
 
-    public data class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
+    @JvmInline public value class Time(public val `value`: dev.ohs.fhir.model.r4b.Time) : Value
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Value
+    @JvmInline public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Value
 
     public companion object {
       internal fun from(

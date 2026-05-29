@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4b.serializers.BiologicallyDerivedProductStorageSeria
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -266,9 +267,11 @@ public data class BiologicallyDerivedProduct(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Collected
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Collected
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Collected
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Collected
 
       public companion object {
         internal fun from(
@@ -418,9 +421,11 @@ public data class BiologicallyDerivedProduct(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Time
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Time
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Time
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Time
 
       public companion object {
         internal fun from(
@@ -565,9 +570,11 @@ public data class BiologicallyDerivedProduct(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Time
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Time
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Time
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Time
 
       public companion object {
         internal fun from(

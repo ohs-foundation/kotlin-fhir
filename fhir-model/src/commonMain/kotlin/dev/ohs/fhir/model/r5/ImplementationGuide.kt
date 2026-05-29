@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1221,11 +1222,13 @@ public data class ImplementationGuide(
 
         public fun asMarkdown(): Markdown? = this as? Markdown
 
-        public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Source
+        @JvmInline public value class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Source
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Source
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Source
 
-        public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Source
+        @JvmInline
+        public value class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Source
 
         public companion object {
           internal fun from(
@@ -2109,9 +2112,11 @@ public data class ImplementationGuide(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
+    @JvmInline
+    public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(

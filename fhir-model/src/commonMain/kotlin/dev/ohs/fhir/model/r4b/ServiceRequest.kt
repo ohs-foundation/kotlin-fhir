@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4b.serializers.ServiceRequestSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -423,13 +424,16 @@ public data class ServiceRequest(
 
     public fun asRange(): Range? = this as? Range
 
-    public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) :
+    @JvmInline
+    public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) :
       ServiceRequest.Quantity
 
-    public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) :
+    @JvmInline
+    public value class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) :
       ServiceRequest.Quantity
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) :
+    @JvmInline
+    public value class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) :
       ServiceRequest.Quantity
 
     public companion object {
@@ -453,11 +457,14 @@ public data class ServiceRequest(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Occurrence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Occurrence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Occurrence
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Occurrence
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Occurrence
 
     public companion object {
       internal fun from(
@@ -478,9 +485,11 @@ public data class ServiceRequest(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : AsNeeded
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : AsNeeded
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       AsNeeded
 
     public companion object {

@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.serializers.TransportSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -632,129 +633,172 @@ public data class Transport(
 
       public fun asMeta(): Meta? = this as? Meta
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
+      @JvmInline
+      public value class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
         Value
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Value
+      @JvmInline
+      public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Value
 
-      public data class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
+      @JvmInline public value class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
 
-      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
+      @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-      public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
+      @JvmInline
+      public value class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
 
-      public data class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
+      @JvmInline public value class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
 
-      public data class Instant(public val `value`: dev.ohs.fhir.model.r5.Instant) : Value
+      @JvmInline
+      public value class Instant(public val `value`: dev.ohs.fhir.model.r5.Instant) : Value
 
-      public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
+      @JvmInline
+      public value class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-      public data class Integer64(public val `value`: dev.ohs.fhir.model.r5.Integer64) : Value
+      @JvmInline
+      public value class Integer64(public val `value`: dev.ohs.fhir.model.r5.Integer64) : Value
 
-      public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Value
+      @JvmInline
+      public value class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Value
 
-      public data class Oid(public val `value`: dev.ohs.fhir.model.r5.Oid) : Value
+      @JvmInline public value class Oid(public val `value`: dev.ohs.fhir.model.r5.Oid) : Value
 
-      public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r5.PositiveInt) : Value
+      @JvmInline
+      public value class PositiveInt(public val `value`: dev.ohs.fhir.model.r5.PositiveInt) : Value
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-      public data class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
+      @JvmInline public value class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
 
-      public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) : Value
+      @JvmInline
+      public value class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) : Value
 
-      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Value
+      @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Value
 
-      public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Value
+      @JvmInline public value class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Value
 
-      public data class Uuid(public val `value`: dev.ohs.fhir.model.r5.Uuid) : Value
+      @JvmInline public value class Uuid(public val `value`: dev.ohs.fhir.model.r5.Uuid) : Value
 
-      public data class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Value
+      @JvmInline
+      public value class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Value
 
-      public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Value
+      @JvmInline public value class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Value
 
-      public data class Annotation(public val `value`: dev.ohs.fhir.model.r5.Annotation) : Value
+      @JvmInline
+      public value class Annotation(public val `value`: dev.ohs.fhir.model.r5.Annotation) : Value
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Value
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Value
 
-      public data class CodeableReference(
+      @JvmInline
+      public value class CodeableReference(
         public val `value`: dev.ohs.fhir.model.r5.CodeableReference
       ) : Value
 
-      public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
+      @JvmInline
+      public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
+      @JvmInline
+      public value class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
         Value
 
-      public data class Count(public val `value`: dev.ohs.fhir.model.r5.Count) : Value
+      @JvmInline public value class Count(public val `value`: dev.ohs.fhir.model.r5.Count) : Value
 
-      public data class Distance(public val `value`: dev.ohs.fhir.model.r5.Distance) : Value
+      @JvmInline
+      public value class Distance(public val `value`: dev.ohs.fhir.model.r5.Distance) : Value
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Value
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Value
 
-      public data class HumanName(public val `value`: dev.ohs.fhir.model.r5.HumanName) : Value
+      @JvmInline
+      public value class HumanName(public val `value`: dev.ohs.fhir.model.r5.HumanName) : Value
 
-      public data class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) : Value
+      @JvmInline
+      public value class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) : Value
 
-      public data class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Value
+      @JvmInline public value class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Value
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
+      @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-      public data class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) : Value
+      @JvmInline
+      public value class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) : Value
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
-      public data class SampledData(public val `value`: dev.ohs.fhir.model.r5.SampledData) : Value
+      @JvmInline
+      public value class SampledData(public val `value`: dev.ohs.fhir.model.r5.SampledData) : Value
 
-      public data class Signature(public val `value`: dev.ohs.fhir.model.r5.Signature) : Value
+      @JvmInline
+      public value class Signature(public val `value`: dev.ohs.fhir.model.r5.Signature) : Value
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Value
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Value
 
-      public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r5.ContactDetail) :
+      @JvmInline
+      public value class ContactDetail(public val `value`: dev.ohs.fhir.model.r5.ContactDetail) :
         Value
 
-      public data class DataRequirement(public val `value`: dev.ohs.fhir.model.r5.DataRequirement) :
-        Value
+      @JvmInline
+      public value class DataRequirement(
+        public val `value`: dev.ohs.fhir.model.r5.DataRequirement
+      ) : Value
 
-      public data class Expression(public val `value`: dev.ohs.fhir.model.r5.Expression) : Value
+      @JvmInline
+      public value class Expression(public val `value`: dev.ohs.fhir.model.r5.Expression) : Value
 
-      public data class ParameterDefinition(
+      @JvmInline
+      public value class ParameterDefinition(
         public val `value`: dev.ohs.fhir.model.r5.ParameterDefinition
       ) : Value
 
-      public data class RelatedArtifact(public val `value`: dev.ohs.fhir.model.r5.RelatedArtifact) :
-        Value
+      @JvmInline
+      public value class RelatedArtifact(
+        public val `value`: dev.ohs.fhir.model.r5.RelatedArtifact
+      ) : Value
 
-      public data class TriggerDefinition(
+      @JvmInline
+      public value class TriggerDefinition(
         public val `value`: dev.ohs.fhir.model.r5.TriggerDefinition
       ) : Value
 
-      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) :
+      @JvmInline
+      public value class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) :
         Value
 
-      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) :
+      @JvmInline
+      public value class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) :
         Value
 
-      public data class ExtendedContactDetail(
+      @JvmInline
+      public value class ExtendedContactDetail(
         public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail
       ) : Value
 
-      public data class Dosage(public val `value`: dev.ohs.fhir.model.r5.Dosage) : Value
+      @JvmInline
+      public value class Dosage(public val `value`: dev.ohs.fhir.model.r5.Dosage) : Value
 
-      public data class Meta(public val `value`: dev.ohs.fhir.model.r5.Meta) : Value
+      @JvmInline public value class Meta(public val `value`: dev.ohs.fhir.model.r5.Meta) : Value
 
       public companion object {
         internal fun from(
@@ -1099,129 +1143,172 @@ public data class Transport(
 
       public fun asMeta(): Meta? = this as? Meta
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
+      @JvmInline
+      public value class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
         Value
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Value
+      @JvmInline
+      public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Value
 
-      public data class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
+      @JvmInline public value class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
 
-      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
+      @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-      public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
+      @JvmInline
+      public value class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
 
-      public data class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
+      @JvmInline public value class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
 
-      public data class Instant(public val `value`: dev.ohs.fhir.model.r5.Instant) : Value
+      @JvmInline
+      public value class Instant(public val `value`: dev.ohs.fhir.model.r5.Instant) : Value
 
-      public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
+      @JvmInline
+      public value class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-      public data class Integer64(public val `value`: dev.ohs.fhir.model.r5.Integer64) : Value
+      @JvmInline
+      public value class Integer64(public val `value`: dev.ohs.fhir.model.r5.Integer64) : Value
 
-      public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Value
+      @JvmInline
+      public value class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Value
 
-      public data class Oid(public val `value`: dev.ohs.fhir.model.r5.Oid) : Value
+      @JvmInline public value class Oid(public val `value`: dev.ohs.fhir.model.r5.Oid) : Value
 
-      public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r5.PositiveInt) : Value
+      @JvmInline
+      public value class PositiveInt(public val `value`: dev.ohs.fhir.model.r5.PositiveInt) : Value
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-      public data class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
+      @JvmInline public value class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
 
-      public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) : Value
+      @JvmInline
+      public value class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) : Value
 
-      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Value
+      @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Value
 
-      public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Value
+      @JvmInline public value class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Value
 
-      public data class Uuid(public val `value`: dev.ohs.fhir.model.r5.Uuid) : Value
+      @JvmInline public value class Uuid(public val `value`: dev.ohs.fhir.model.r5.Uuid) : Value
 
-      public data class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Value
+      @JvmInline
+      public value class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Value
 
-      public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Value
+      @JvmInline public value class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Value
 
-      public data class Annotation(public val `value`: dev.ohs.fhir.model.r5.Annotation) : Value
+      @JvmInline
+      public value class Annotation(public val `value`: dev.ohs.fhir.model.r5.Annotation) : Value
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Value
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Value
 
-      public data class CodeableReference(
+      @JvmInline
+      public value class CodeableReference(
         public val `value`: dev.ohs.fhir.model.r5.CodeableReference
       ) : Value
 
-      public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
+      @JvmInline
+      public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-      public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
+      @JvmInline
+      public value class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
         Value
 
-      public data class Count(public val `value`: dev.ohs.fhir.model.r5.Count) : Value
+      @JvmInline public value class Count(public val `value`: dev.ohs.fhir.model.r5.Count) : Value
 
-      public data class Distance(public val `value`: dev.ohs.fhir.model.r5.Distance) : Value
+      @JvmInline
+      public value class Distance(public val `value`: dev.ohs.fhir.model.r5.Distance) : Value
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Value
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Value
 
-      public data class HumanName(public val `value`: dev.ohs.fhir.model.r5.HumanName) : Value
+      @JvmInline
+      public value class HumanName(public val `value`: dev.ohs.fhir.model.r5.HumanName) : Value
 
-      public data class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) : Value
+      @JvmInline
+      public value class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) : Value
 
-      public data class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Value
+      @JvmInline public value class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Value
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
+      @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-      public data class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) : Value
+      @JvmInline
+      public value class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) : Value
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
-      public data class SampledData(public val `value`: dev.ohs.fhir.model.r5.SampledData) : Value
+      @JvmInline
+      public value class SampledData(public val `value`: dev.ohs.fhir.model.r5.SampledData) : Value
 
-      public data class Signature(public val `value`: dev.ohs.fhir.model.r5.Signature) : Value
+      @JvmInline
+      public value class Signature(public val `value`: dev.ohs.fhir.model.r5.Signature) : Value
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Value
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Value
 
-      public data class ContactDetail(public val `value`: dev.ohs.fhir.model.r5.ContactDetail) :
+      @JvmInline
+      public value class ContactDetail(public val `value`: dev.ohs.fhir.model.r5.ContactDetail) :
         Value
 
-      public data class DataRequirement(public val `value`: dev.ohs.fhir.model.r5.DataRequirement) :
-        Value
+      @JvmInline
+      public value class DataRequirement(
+        public val `value`: dev.ohs.fhir.model.r5.DataRequirement
+      ) : Value
 
-      public data class Expression(public val `value`: dev.ohs.fhir.model.r5.Expression) : Value
+      @JvmInline
+      public value class Expression(public val `value`: dev.ohs.fhir.model.r5.Expression) : Value
 
-      public data class ParameterDefinition(
+      @JvmInline
+      public value class ParameterDefinition(
         public val `value`: dev.ohs.fhir.model.r5.ParameterDefinition
       ) : Value
 
-      public data class RelatedArtifact(public val `value`: dev.ohs.fhir.model.r5.RelatedArtifact) :
-        Value
+      @JvmInline
+      public value class RelatedArtifact(
+        public val `value`: dev.ohs.fhir.model.r5.RelatedArtifact
+      ) : Value
 
-      public data class TriggerDefinition(
+      @JvmInline
+      public value class TriggerDefinition(
         public val `value`: dev.ohs.fhir.model.r5.TriggerDefinition
       ) : Value
 
-      public data class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) :
+      @JvmInline
+      public value class UsageContext(public val `value`: dev.ohs.fhir.model.r5.UsageContext) :
         Value
 
-      public data class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) :
+      @JvmInline
+      public value class Availability(public val `value`: dev.ohs.fhir.model.r5.Availability) :
         Value
 
-      public data class ExtendedContactDetail(
+      @JvmInline
+      public value class ExtendedContactDetail(
         public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail
       ) : Value
 
-      public data class Dosage(public val `value`: dev.ohs.fhir.model.r5.Dosage) : Value
+      @JvmInline
+      public value class Dosage(public val `value`: dev.ohs.fhir.model.r5.Dosage) : Value
 
-      public data class Meta(public val `value`: dev.ohs.fhir.model.r5.Meta) : Value
+      @JvmInline public value class Meta(public val `value`: dev.ohs.fhir.model.r5.Meta) : Value
 
       public companion object {
         internal fun from(

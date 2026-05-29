@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.serializers.MessageHeaderSourceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -302,9 +303,10 @@ public data class MessageHeader(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Endpoint
+      @JvmInline public value class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Endpoint
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Endpoint
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Endpoint
 
       public companion object {
         internal fun from(
@@ -476,9 +478,10 @@ public data class MessageHeader(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Endpoint
+      @JvmInline public value class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Endpoint
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Endpoint
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Endpoint
 
       public companion object {
         internal fun from(
@@ -721,9 +724,10 @@ public data class MessageHeader(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Event
+    @JvmInline public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Event
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Event
+    @JvmInline
+    public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Event
 
     public companion object {
       internal fun from(

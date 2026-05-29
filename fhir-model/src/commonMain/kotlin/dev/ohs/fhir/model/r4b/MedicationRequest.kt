@@ -26,6 +26,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -795,9 +796,11 @@ public data class MedicationRequest(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Allowed
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Allowed
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Allowed
 
@@ -884,9 +887,11 @@ public data class MedicationRequest(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Reported
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Reported
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Reported
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Reported
 
     public companion object {
       internal fun from(
@@ -905,10 +910,12 @@ public data class MedicationRequest(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Medication
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Medication
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Medication
 
     public companion object {
       internal fun from(

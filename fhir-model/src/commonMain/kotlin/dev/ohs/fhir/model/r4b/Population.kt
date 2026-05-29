@@ -23,6 +23,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /**
@@ -95,9 +96,10 @@ public data class Population(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Age
+    @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Age
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Age
 
     public companion object {

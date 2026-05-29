@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r4b.serializers.ClaimSupportingInfoSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -846,9 +847,10 @@ public data class Claim(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Timing
+      @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Timing
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Timing
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Timing
 
       public companion object {
         internal fun from(
@@ -873,15 +875,20 @@ public data class Claim(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Value
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Value
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Value
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Value
 
       public companion object {
         internal fun from(
@@ -1081,11 +1088,14 @@ public data class Claim(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Diagnosis
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Diagnosis
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
+        Diagnosis
 
       public companion object {
         internal fun from(
@@ -1264,11 +1274,14 @@ public data class Claim(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Procedure
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Procedure
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
+        Procedure
 
       public companion object {
         internal fun from(
@@ -1655,9 +1668,11 @@ public data class Claim(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Address(public val `value`: dev.ohs.fhir.model.r4b.Address) : Location
+      @JvmInline
+      public value class Address(public val `value`: dev.ohs.fhir.model.r4b.Address) : Location
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Location
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Location
 
       public companion object {
         internal fun from(
@@ -2428,9 +2443,11 @@ public data class Claim(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Serviced
+      @JvmInline
+      public value class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Serviced
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Serviced
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Serviced
 
       public companion object {
         internal fun from(
@@ -2451,13 +2468,16 @@ public data class Claim(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Location
 
-      public data class Address(public val `value`: dev.ohs.fhir.model.r4b.Address) : Location
+      @JvmInline
+      public value class Address(public val `value`: dev.ohs.fhir.model.r4b.Address) : Location
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Location
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Location
 
       public companion object {
         internal fun from(

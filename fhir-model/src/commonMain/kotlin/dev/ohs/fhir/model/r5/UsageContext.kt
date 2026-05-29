@@ -23,6 +23,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /**
@@ -76,14 +77,17 @@ public data class UsageContext(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
       Value
 
-    public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+    @JvmInline
+    public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+    @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
     public companion object {
       internal fun from(

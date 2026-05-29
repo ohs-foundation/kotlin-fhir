@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r5.serializers.InvoiceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -456,9 +457,10 @@ public data class Invoice(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Serviced
+      @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Serviced
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Serviced
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Serviced
 
       public companion object {
         internal fun from(
@@ -477,10 +479,14 @@ public data class Invoice(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : ChargeItem
-
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
         ChargeItem
+
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : ChargeItem
 
       public companion object {
         internal fun from(
@@ -575,9 +581,11 @@ public data class Invoice(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Invoice.Period
+    @JvmInline
+    public value class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Invoice.Period
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Invoice.Period
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Invoice.Period
 
     public companion object {
       internal fun from(

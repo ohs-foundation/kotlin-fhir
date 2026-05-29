@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4.serializers.MedicationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -288,10 +289,13 @@ public data class Medication(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
-        Item
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
+      ) : Item
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Item
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Item
 
       public companion object {
         internal fun from(

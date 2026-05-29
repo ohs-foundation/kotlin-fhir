@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4b.serializers.InvoiceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -615,10 +616,12 @@ public data class Invoice(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
         ChargeItem
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : ChargeItem
 

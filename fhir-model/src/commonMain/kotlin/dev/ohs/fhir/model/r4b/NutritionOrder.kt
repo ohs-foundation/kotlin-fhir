@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r4b.serializers.NutritionOrderSupplementSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1070,9 +1071,11 @@ public data class NutritionOrder(
 
         public fun asRatio(): Ratio? = this as? Ratio
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Rate
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Rate
 
-        public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Rate
+        @JvmInline
+        public value class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Rate
 
         public companion object {
           internal fun from(

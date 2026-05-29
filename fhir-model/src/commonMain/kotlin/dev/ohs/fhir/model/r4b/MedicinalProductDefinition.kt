@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r4b.serializers.MedicinalProductDefinitionSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1122,17 +1123,21 @@ public data class MedicinalProductDefinition(
 
       public fun asAttachment(): Attachment? = this as? Attachment
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-      public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Value
+      @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Value
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Value
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Value
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Value
 
       public companion object {
         internal fun from(

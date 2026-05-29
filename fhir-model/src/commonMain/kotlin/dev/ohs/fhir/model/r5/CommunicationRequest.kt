@@ -24,6 +24,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -370,12 +371,16 @@ public data class CommunicationRequest(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Content
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Content
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Content
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Content
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Content
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Content
 
       public companion object {
         internal fun from(
@@ -463,9 +468,11 @@ public data class CommunicationRequest(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
     public companion object {
       internal fun from(

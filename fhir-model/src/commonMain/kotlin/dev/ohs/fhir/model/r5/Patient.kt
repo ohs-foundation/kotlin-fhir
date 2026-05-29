@@ -27,6 +27,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -749,9 +750,11 @@ public data class Patient(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Deceased
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Deceased
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Deceased
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Deceased
 
     public companion object {
       internal fun from(
@@ -770,9 +773,11 @@ public data class Patient(
 
     public fun asInteger(): Integer? = this as? Integer
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : MultipleBirth
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : MultipleBirth
 
-    public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : MultipleBirth
+    @JvmInline
+    public value class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : MultipleBirth
 
     public companion object {
       internal fun from(

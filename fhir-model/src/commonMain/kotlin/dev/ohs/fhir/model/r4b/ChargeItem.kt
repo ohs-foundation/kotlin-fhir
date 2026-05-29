@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4b.serializers.ChargeItemSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -439,11 +440,14 @@ public data class ChargeItem(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Occurrence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Occurrence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Occurrence
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Occurrence
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Occurrence
 
     public companion object {
       internal fun from(
@@ -464,9 +468,11 @@ public data class ChargeItem(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Product
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Product
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Product
 
     public companion object {

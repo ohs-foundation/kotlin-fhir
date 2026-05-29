@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4b.serializers.GoalTargetSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -345,21 +346,28 @@ public data class Goal(
 
       public fun asRatio(): Ratio? = this as? Ratio
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Detail
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Detail
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Detail
+      @JvmInline
+      public value class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Detail
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Detail
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Detail
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Detail
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Detail
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r4b.Boolean) : Detail
 
-      public data class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Detail
+      @JvmInline
+      public value class Integer(public val `value`: dev.ohs.fhir.model.r4b.Integer) : Detail
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Detail
+      @JvmInline
+      public value class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Detail
 
       public companion object {
         internal fun from(
@@ -388,9 +396,10 @@ public data class Goal(
 
       public fun asDuration(): Duration? = this as? Duration
 
-      public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Due
+      @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Due
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Due
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Due
 
       public companion object {
         internal fun from(
@@ -484,9 +493,10 @@ public data class Goal(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Start
+    @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r4b.Date) : Start
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Start
 
     public companion object {

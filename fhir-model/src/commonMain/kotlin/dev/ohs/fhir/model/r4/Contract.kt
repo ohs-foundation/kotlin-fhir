@@ -37,6 +37,7 @@ import dev.ohs.fhir.model.r4.serializers.ContractTermSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1107,30 +1108,41 @@ public data class Contract(
 
           public fun asReference(): Reference? = this as? Reference
 
-          public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
+          @JvmInline
+          public value class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
 
-          public data class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Value
+          @JvmInline
+          public value class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Value
 
-          public data class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Value
+          @JvmInline
+          public value class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Value
 
-          public data class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Value
+          @JvmInline
+          public value class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Value
 
-          public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Value
+          @JvmInline
+          public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Value
 
-          public data class Time(public val `value`: dev.ohs.fhir.model.r4.Time) : Value
+          @JvmInline
+          public value class Time(public val `value`: dev.ohs.fhir.model.r4.Time) : Value
 
-          public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
+          @JvmInline
+          public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-          public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Value
+          @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Value
 
-          public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) :
+          @JvmInline
+          public value class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) :
             Value
 
-          public data class Coding(public val `value`: dev.ohs.fhir.model.r4.Coding) : Value
+          @JvmInline
+          public value class Coding(public val `value`: dev.ohs.fhir.model.r4.Coding) : Value
 
-          public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
+          @JvmInline
+          public value class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
 
-          public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Value
+          @JvmInline
+          public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Value
 
           public companion object {
             internal fun from(
@@ -1703,11 +1715,14 @@ public data class Contract(
 
           public fun asReference(): Reference? = this as? Reference
 
-          public data class CodeableConcept(
+          @JvmInline
+          public value class CodeableConcept(
             public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
           ) : Entity
 
-          public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Entity
+          @JvmInline
+          public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
+            Entity
 
           public companion object {
             internal fun from(
@@ -2234,11 +2249,15 @@ public data class Contract(
 
         public fun asTiming(): Timing? = this as? Timing
 
-        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Occurrence
+        @JvmInline
+        public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
+          Occurrence
 
-        public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Occurrence
+        @JvmInline
+        public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Occurrence
 
-        public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Occurrence
+        @JvmInline
+        public value class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Occurrence
 
         public companion object {
           internal fun from(
@@ -2423,10 +2442,13 @@ public data class Contract(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
-        Topic
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
+      ) : Topic
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Topic
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Topic
 
       public companion object {
         internal fun from(
@@ -2744,9 +2766,11 @@ public data class Contract(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
 
       public companion object {
         internal fun from(
@@ -2874,9 +2898,11 @@ public data class Contract(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
 
       public companion object {
         internal fun from(
@@ -3001,9 +3027,11 @@ public data class Contract(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
 
       public companion object {
         internal fun from(
@@ -3076,10 +3104,12 @@ public data class Contract(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       Topic
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Topic
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Topic
 
     public companion object {
       internal fun from(
@@ -3098,10 +3128,12 @@ public data class Contract(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) :
+    @JvmInline
+    public value class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) :
       LegallyBinding
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
       LegallyBinding
 
     public companion object {

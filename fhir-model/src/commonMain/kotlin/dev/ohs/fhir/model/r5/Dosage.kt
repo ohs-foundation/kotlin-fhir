@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r5.serializers.DosageSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /** Dosage Type: Indicates how the medication is/was taken or should be taken by the patient. */
@@ -246,9 +247,10 @@ public data class Dosage(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Dose
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Dose
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Dose
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Dose
 
       public companion object {
         internal fun from(
@@ -269,11 +271,12 @@ public data class Dosage(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Rate
+      @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Rate
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Rate
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Rate
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Rate
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Rate
 
       public companion object {
         internal fun from(

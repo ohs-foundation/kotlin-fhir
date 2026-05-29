@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4b.serializers.SpecimenSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -315,9 +316,11 @@ public data class Specimen(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Collected
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Collected
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Collected
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Collected
 
       public companion object {
         internal fun from(
@@ -336,11 +339,13 @@ public data class Specimen(
 
       public fun asDuration(): Duration? = this as? Duration
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : FastingStatus
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
         FastingStatus
 
       public companion object {
@@ -521,9 +526,11 @@ public data class Specimen(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Time
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Time
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Time
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Time
 
       public companion object {
         internal fun from(
@@ -691,11 +698,13 @@ public data class Specimen(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Additive
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Additive
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Additive
 
       public companion object {
         internal fun from(

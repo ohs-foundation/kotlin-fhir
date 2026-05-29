@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.serializers.CoverageEligibilityResponseSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -304,9 +305,10 @@ public data class CoverageEligibilityResponse(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : When
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : When
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : When
+      @JvmInline public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : When
 
       public companion object {
         internal fun from(
@@ -656,12 +658,15 @@ public data class CoverageEligibilityResponse(
 
           public fun asMoney(): Money? = this as? Money
 
-          public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) :
+          @JvmInline
+          public value class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) :
             Allowed
 
-          public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Allowed
+          @JvmInline
+          public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Allowed
 
-          public data class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Allowed
+          @JvmInline
+          public value class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Allowed
 
           public companion object {
             internal fun from(
@@ -684,12 +689,15 @@ public data class CoverageEligibilityResponse(
 
           public fun asMoney(): Money? = this as? Money
 
-          public data class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) :
+          @JvmInline
+          public value class UnsignedInt(public val `value`: dev.ohs.fhir.model.r5.UnsignedInt) :
             Used
 
-          public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Used
+          @JvmInline
+          public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Used
 
-          public data class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Used
+          @JvmInline
+          public value class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Used
 
           public companion object {
             internal fun from(
@@ -1132,9 +1140,10 @@ public data class CoverageEligibilityResponse(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Serviced
+    @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Serviced
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Serviced
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Serviced
 
     public companion object {
       internal fun from(

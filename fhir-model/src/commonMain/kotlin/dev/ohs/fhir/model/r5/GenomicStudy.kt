@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.serializers.GenomicStudySerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -376,10 +377,12 @@ public data class GenomicStudy(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) :
+        @JvmInline
+        public value class Identifier(public val `value`: dev.ohs.fhir.model.r5.Identifier) :
           GeneratedBy
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
           GeneratedBy
 
         public companion object {

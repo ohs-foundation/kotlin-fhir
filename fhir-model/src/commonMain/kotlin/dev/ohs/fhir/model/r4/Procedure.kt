@@ -25,6 +25,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -618,15 +619,19 @@ public data class Procedure(
 
     public fun asRange(): Range? = this as? Range
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Performed
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Performed
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Performed
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Performed
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Performed
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Performed
 
-    public data class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Performed
+    @JvmInline public value class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Performed
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Performed
+    @JvmInline
+    public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Performed
 
     public companion object {
       internal fun from(

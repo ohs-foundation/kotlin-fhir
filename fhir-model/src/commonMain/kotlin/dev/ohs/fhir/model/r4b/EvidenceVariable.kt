@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -571,17 +572,21 @@ public data class EvidenceVariable(
 
       public fun asExpression(): Expression? = this as? Expression
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
         Definition
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
+      @JvmInline
+      public value class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
         Definition
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Definition
 
-      public data class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) :
+      @JvmInline
+      public value class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) :
         Definition
 
       public companion object {
@@ -751,13 +756,15 @@ public data class EvidenceVariable(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Value
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Value
 
       public companion object {
         internal fun from(

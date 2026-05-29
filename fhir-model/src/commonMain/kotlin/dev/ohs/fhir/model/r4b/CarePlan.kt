@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4b.serializers.CarePlanSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -598,11 +599,14 @@ public data class CarePlan(
 
         public fun asString(): String? = this as? String
 
-        public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Scheduled
+        @JvmInline
+        public value class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Scheduled
 
-        public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Scheduled
+        @JvmInline
+        public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Scheduled
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Scheduled
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Scheduled
 
         public companion object {
           internal fun from(
@@ -623,11 +627,14 @@ public data class CarePlan(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
         ) : Product
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Product
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
+          Product
 
         public companion object {
           internal fun from(

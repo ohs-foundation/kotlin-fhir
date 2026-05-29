@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -594,11 +595,13 @@ public data class SpecimenDefinition(
 
           public fun asReference(): Reference? = this as? Reference
 
-          public data class CodeableConcept(
+          @JvmInline
+          public value class CodeableConcept(
             public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
           ) : Additive
 
-          public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
+          @JvmInline
+          public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
             Additive
 
           public companion object {
@@ -675,10 +678,12 @@ public data class SpecimenDefinition(
 
         public fun asString(): String? = this as? String
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
           MinimumVolume
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : MinimumVolume
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : MinimumVolume
 
         public companion object {
           internal fun from(
@@ -1027,9 +1032,11 @@ public data class SpecimenDefinition(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
+    @JvmInline
+    public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
@@ -1048,10 +1055,12 @@ public data class SpecimenDefinition(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
       Subject
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Subject
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Subject
 
     public companion object {
       internal fun from(

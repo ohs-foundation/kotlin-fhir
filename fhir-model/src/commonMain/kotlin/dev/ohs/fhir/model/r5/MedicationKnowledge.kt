@@ -40,6 +40,7 @@ import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineSeri
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -585,10 +586,12 @@ public data class MedicationKnowledge(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Cost
+      @JvmInline public value class Money(public val `value`: dev.ohs.fhir.model.r5.Money) : Cost
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Cost
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Cost
 
       public companion object {
         internal fun from(
@@ -1111,13 +1114,16 @@ public data class MedicationKnowledge(
 
           public fun asRange(): Range? = this as? Range
 
-          public data class CodeableConcept(
+          @JvmInline
+          public value class CodeableConcept(
             public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
           ) : Value
 
-          public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+          @JvmInline
+          public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-          public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+          @JvmInline
+          public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
           public companion object {
             internal fun from(
@@ -1400,9 +1406,10 @@ public data class MedicationKnowledge(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Source
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Source
 
-      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Source
+      @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Source
 
       public companion object {
         internal fun from(
@@ -1741,11 +1748,14 @@ public data class MedicationKnowledge(
 
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+        @JvmInline
+        public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
@@ -2396,13 +2406,16 @@ public data class MedicationKnowledge(
 
         public fun asQuantity(): Quantity? = this as? Quantity
 
-        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Strength
+        @JvmInline
+        public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Strength
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Strength
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Strength
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Strength
 
         public companion object {
           internal fun from(
@@ -2560,18 +2573,23 @@ public data class MedicationKnowledge(
 
         public fun asAttachment(): Attachment? = this as? Attachment
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
+        @JvmInline
+        public value class Base64Binary(public val `value`: dev.ohs.fhir.model.r5.Base64Binary) :
           Value
 
-        public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
+        @JvmInline
+        public value class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
         public companion object {
           internal fun from(

@@ -30,6 +30,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -623,10 +624,13 @@ public data class AdverseEvent(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Instance
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Instance
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Instance
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Instance
 
       public companion object {
         internal fun from(
@@ -764,10 +768,13 @@ public data class AdverseEvent(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Item
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Item
 
       public companion object {
         internal fun from(
@@ -895,10 +902,13 @@ public data class AdverseEvent(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Item
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Item
 
       public companion object {
         internal fun from(
@@ -1029,10 +1039,13 @@ public data class AdverseEvent(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Item
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Item
 
       public companion object {
         internal fun from(
@@ -1168,10 +1181,13 @@ public data class AdverseEvent(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Item
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Item
 
       public companion object {
         internal fun from(
@@ -1255,11 +1271,14 @@ public data class AdverseEvent(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
 
     public companion object {
       internal fun from(

@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.serializers.InventoryItemSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -766,32 +767,43 @@ public data class InventoryItem(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-      public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
+      @JvmInline
+      public value class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-      public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
+      @JvmInline
+      public value class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Value
+      @JvmInline public value class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Value
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
+      @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Value
 
-      public data class Annotation(public val `value`: dev.ohs.fhir.model.r5.Annotation) : Value
+      @JvmInline
+      public value class Annotation(public val `value`: dev.ohs.fhir.model.r5.Annotation) : Value
 
-      public data class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Value
+      @JvmInline
+      public value class Address(public val `value`: dev.ohs.fhir.model.r5.Address) : Value
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Value
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Value
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Value
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Value
 
       public companion object {
         internal fun from(

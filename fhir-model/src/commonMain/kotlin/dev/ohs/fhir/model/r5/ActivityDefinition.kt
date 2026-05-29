@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.terminologies.RequestResourceTypes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -895,9 +896,11 @@ public data class ActivityDefinition(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
+    @JvmInline
+    public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
@@ -918,12 +921,15 @@ public data class ActivityDefinition(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
       Subject
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Subject
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Subject
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Subject
+    @JvmInline
+    public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Subject
 
     public companion object {
       internal fun from(
@@ -948,16 +954,20 @@ public data class ActivityDefinition(
 
     public fun asDuration(): Duration? = this as? Duration
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) :
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) :
       ActivityDefinition.Timing
 
-    public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) :
+    @JvmInline
+    public value class Age(public val `value`: dev.ohs.fhir.model.r5.Age) :
       ActivityDefinition.Timing
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) :
+    @JvmInline
+    public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) :
       ActivityDefinition.Timing
 
-    public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
+    @JvmInline
+    public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
       ActivityDefinition.Timing
 
     public companion object {
@@ -981,9 +991,11 @@ public data class ActivityDefinition(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : AsNeeded
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : AsNeeded
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
       AsNeeded
 
     public companion object {
@@ -1003,9 +1015,11 @@ public data class ActivityDefinition(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Product
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Product
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
       Product
 
     public companion object {

@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r5.serializers.VirtualServiceDetailSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /** VirtualServiceDetail Type: Virtual Service Contact Details. */
@@ -109,14 +110,17 @@ public data class VirtualServiceDetail(
 
     public fun asExtendedContactDetail(): ExtendedContactDetail? = this as? ExtendedContactDetail
 
-    public data class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Address
+    @JvmInline public value class Url(public val `value`: dev.ohs.fhir.model.r5.Url) : Address
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Address
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Address
 
-    public data class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
+    @JvmInline
+    public value class ContactPoint(public val `value`: dev.ohs.fhir.model.r5.ContactPoint) :
       Address
 
-    public data class ExtendedContactDetail(
+    @JvmInline
+    public value class ExtendedContactDetail(
       public val `value`: dev.ohs.fhir.model.r5.ExtendedContactDetail
     ) : Address
 

@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4b.serializers.DetectedIssueSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -490,9 +491,11 @@ public data class DetectedIssue(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Identified
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Identified
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Identified
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Identified
 
     public companion object {
       internal fun from(

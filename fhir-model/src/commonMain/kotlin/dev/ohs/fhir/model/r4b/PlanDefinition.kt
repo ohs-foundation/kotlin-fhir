@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -583,11 +584,14 @@ public data class PlanDefinition(
 
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Detail
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r4b.Quantity) : Detail
 
-        public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Detail
+        @JvmInline
+        public value class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Detail
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
         ) : Detail
 
@@ -1185,9 +1189,11 @@ public data class PlanDefinition(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Offset
+        @JvmInline
+        public value class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Offset
 
-        public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Offset
+        @JvmInline
+        public value class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Offset
 
         public companion object {
           internal fun from(
@@ -1542,13 +1548,16 @@ public data class PlanDefinition(
 
       public fun asCanonical(): Canonical? = this as? Canonical
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Subject
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Subject
+      @JvmInline
+      public value class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Subject
 
       public companion object {
         internal fun from(
@@ -1577,19 +1586,25 @@ public data class PlanDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
         Action.Timing
 
-      public data class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : Action.Timing
+      @JvmInline
+      public value class Age(public val `value`: dev.ohs.fhir.model.r4b.Age) : Action.Timing
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Action.Timing
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Action.Timing
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
         Action.Timing
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Action.Timing
+      @JvmInline
+      public value class Range(public val `value`: dev.ohs.fhir.model.r4b.Range) : Action.Timing
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Action.Timing
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : Action.Timing
 
       public companion object {
         internal fun from(
@@ -1616,10 +1631,12 @@ public data class PlanDefinition(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
+      @JvmInline
+      public value class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
         Definition
 
-      public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Definition
+      @JvmInline
+      public value class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Definition
 
       public companion object {
         internal fun from(
@@ -1878,12 +1895,15 @@ public data class PlanDefinition(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Subject
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Subject
+    @JvmInline
+    public value class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) : Subject
 
     public companion object {
       internal fun from(

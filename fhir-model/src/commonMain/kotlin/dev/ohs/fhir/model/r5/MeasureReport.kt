@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.serializers.MeasureReportSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -755,17 +756,22 @@ public data class MeasureReport(
 
             public fun asReference(): Reference? = this as? Reference
 
-            public data class CodeableConcept(
+            @JvmInline
+            public value class CodeableConcept(
               public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
             ) : Value
 
-            public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+            @JvmInline
+            public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-            public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+            @JvmInline
+            public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-            public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+            @JvmInline
+            public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-            public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
+            @JvmInline
+            public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
               Value
 
             public companion object {
@@ -1053,17 +1059,22 @@ public data class MeasureReport(
 
           public fun asReference(): Reference? = this as? Reference
 
-          public data class CodeableConcept(
+          @JvmInline
+          public value class CodeableConcept(
             public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
           ) : Value
 
-          public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+          @JvmInline
+          public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-          public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+          @JvmInline
+          public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-          public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+          @JvmInline
+          public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-          public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
+          @JvmInline
+          public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
           public companion object {
             internal fun from(
@@ -1096,21 +1107,28 @@ public data class MeasureReport(
 
           public fun asDuration(): Duration? = this as? Duration
 
-          public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
+          @JvmInline
+          public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
             MeasureScore
 
-          public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
+          @JvmInline
+          public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
             MeasureScore
 
-          public data class CodeableConcept(
+          @JvmInline
+          public value class CodeableConcept(
             public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
           ) : MeasureScore
 
-          public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : MeasureScore
+          @JvmInline
+          public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) :
+            MeasureScore
 
-          public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : MeasureScore
+          @JvmInline
+          public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : MeasureScore
 
-          public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
+          @JvmInline
+          public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
             MeasureScore
 
           public companion object {
@@ -1291,18 +1309,28 @@ public data class MeasureReport(
 
       public fun asDuration(): Duration? = this as? Duration
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : MeasureScore
-
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : MeasureScore
-
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
         MeasureScore
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : MeasureScore
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
+        MeasureScore
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : MeasureScore
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : MeasureScore
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : MeasureScore
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : MeasureScore
+
+      @JvmInline
+      public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : MeasureScore
+
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
+        MeasureScore
 
       public companion object {
         internal fun from(

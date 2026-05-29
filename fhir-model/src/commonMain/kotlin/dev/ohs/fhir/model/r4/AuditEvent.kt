@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r4.serializers.AuditEventSourceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -905,9 +906,11 @@ public data class AuditEvent(
 
         public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-        public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) :
+        @JvmInline
+        public value class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) :
           Value
 
         public companion object {

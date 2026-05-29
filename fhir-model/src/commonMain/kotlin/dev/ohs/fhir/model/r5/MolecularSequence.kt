@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r5.serializers.MolecularSequenceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -366,13 +367,17 @@ public data class MolecularSequence(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Sequence
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Sequence
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Sequence
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Sequence
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
+          Sequence
 
         public companion object {
           internal fun from(

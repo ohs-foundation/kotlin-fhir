@@ -26,6 +26,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -795,10 +796,13 @@ public data class MedicationRequest(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Allowed
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Allowed
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
-        Allowed
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
+      ) : Allowed
 
       public companion object {
         internal fun from(
@@ -883,9 +887,11 @@ public data class MedicationRequest(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Reported
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Reported
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Reported
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Reported
 
     public companion object {
       internal fun from(
@@ -904,10 +910,12 @@ public data class MedicationRequest(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       Medication
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Medication
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Medication
 
     public companion object {
       internal fun from(

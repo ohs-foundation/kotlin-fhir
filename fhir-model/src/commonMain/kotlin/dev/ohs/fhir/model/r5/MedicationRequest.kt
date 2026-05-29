@@ -26,6 +26,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -868,10 +869,13 @@ public data class MedicationRequest(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Allowed
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Allowed
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Allowed
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Allowed
 
       public companion object {
         internal fun from(

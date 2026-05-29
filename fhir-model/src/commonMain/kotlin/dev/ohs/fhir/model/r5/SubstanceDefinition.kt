@@ -33,6 +33,7 @@ import dev.ohs.fhir.model.r5.serializers.SubstanceDefinitionStructureSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -327,9 +328,11 @@ public data class SubstanceDefinition(
 
       public fun asString(): String? = this as? String
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Amount
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Amount
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Amount
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Amount
 
       public companion object {
         internal fun from(
@@ -635,16 +638,21 @@ public data class SubstanceDefinition(
 
       public fun asAttachment(): Attachment? = this as? Attachment
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Value
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
+      @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
       public companion object {
         internal fun from(
@@ -1694,11 +1702,14 @@ public data class SubstanceDefinition(
 
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) :
         SubstanceDefinition
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        SubstanceDefinition
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : SubstanceDefinition
 
       public companion object {
         internal fun from(
@@ -1719,11 +1730,13 @@ public data class SubstanceDefinition(
 
       public fun asString(): String? = this as? String
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Amount
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Amount
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Amount
+      @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Amount
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Amount
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Amount
 
       public companion object {
         internal fun from(

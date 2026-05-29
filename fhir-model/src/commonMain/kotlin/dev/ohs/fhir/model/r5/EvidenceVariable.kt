@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -621,19 +622,24 @@ public data class EvidenceVariable(
 
         public fun asId(): Id? = this as? Id
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+        @JvmInline
+        public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+        @JvmInline
+        public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
-        public data class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
+        @JvmInline public value class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
 
         public companion object {
           internal fun from(
@@ -919,15 +925,18 @@ public data class EvidenceVariable(
 
         public fun asId(): Id? = this as? Id
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Event
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Event
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Event
 
-        public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Event
+        @JvmInline
+        public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Event
 
-        public data class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Event
+        @JvmInline public value class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Event
 
         public companion object {
           internal fun from(
@@ -1022,9 +1031,11 @@ public data class EvidenceVariable(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Instances
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Instances
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Instances
+      @JvmInline
+      public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Instances
 
       public companion object {
         internal fun from(
@@ -1043,9 +1054,11 @@ public data class EvidenceVariable(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Duration
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Duration
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Duration
+      @JvmInline
+      public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Duration
 
       public companion object {
         internal fun from(
@@ -1240,12 +1253,15 @@ public data class EvidenceVariable(
 
       public fun asRange(): Range? = this as? Range
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Value
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
       public companion object {
         internal fun from(
@@ -1324,9 +1340,11 @@ public data class EvidenceVariable(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
+    @JvmInline
+    public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(

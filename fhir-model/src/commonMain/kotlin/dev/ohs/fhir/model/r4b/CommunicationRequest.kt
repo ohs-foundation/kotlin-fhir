@@ -24,6 +24,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -348,11 +349,15 @@ public data class CommunicationRequest(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Content
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : Content
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Content
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) :
+        Content
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Content
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Content
 
       public companion object {
         internal fun from(
@@ -430,9 +435,11 @@ public data class CommunicationRequest(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Occurrence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Occurrence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Occurrence
 
     public companion object {
       internal fun from(

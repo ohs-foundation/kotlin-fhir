@@ -38,6 +38,7 @@ import dev.ohs.fhir.model.r4.serializers.MedicationKnowledgeSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -580,10 +581,13 @@ public data class MedicationKnowledge(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
-        Item
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
+      ) : Item
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Item
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Item
 
       public companion object {
         internal fun from(
@@ -1143,11 +1147,13 @@ public data class MedicationKnowledge(
 
         public fun asQuantity(): Quantity? = this as? Quantity
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
         ) : Characteristic
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) :
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) :
           Characteristic
 
         public companion object {
@@ -1228,10 +1234,14 @@ public data class MedicationKnowledge(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
-        Indication
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
+      ) : Indication
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Indication
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
+        Indication
 
       public companion object {
         internal fun from(
@@ -1629,14 +1639,19 @@ public data class MedicationKnowledge(
 
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
-        Value
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
+      ) : Value
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
 
-      public data class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) :
+      @JvmInline
+      public value class Base64Binary(public val `value`: dev.ohs.fhir.model.r4.Base64Binary) :
         Value
 
       public companion object {

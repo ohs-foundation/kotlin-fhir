@@ -509,7 +509,12 @@ private fun TypeSpec.Builder.addSealedInterfaces(
             val expansionName = choiceTypeExpansionName(type)
             addType(
               TypeSpec.classBuilder(expansionName)
-                .addModifiers(KModifier.DATA)
+                // Choice type expansions wrap a single value, so they are emitted as `@JvmInline`
+                // value classes to avoid an allocation per choice. They cannot be `data` classes;
+                // the value class generates its own equals/hashCode/toString from the wrapped
+                // value.
+                .addModifiers(KModifier.VALUE)
+                .addAnnotation(ClassName("kotlin.jvm", "JvmInline"))
                 .primaryConstructor(
                   FunSpec.constructorBuilder()
                     .addParameter("value", propertyMapper.mapTypeToClassName(type))

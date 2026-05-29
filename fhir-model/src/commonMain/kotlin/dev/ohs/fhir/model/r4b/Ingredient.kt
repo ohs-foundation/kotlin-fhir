@@ -27,6 +27,7 @@ import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -546,9 +547,11 @@ public data class Ingredient(
 
           public fun asRatioRange(): RatioRange? = this as? RatioRange
 
-          public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Strength
+          @JvmInline
+          public value class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Strength
 
-          public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
+          @JvmInline
+          public value class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
             Strength
 
           public companion object {
@@ -634,9 +637,11 @@ public data class Ingredient(
 
         public fun asRatioRange(): RatioRange? = this as? RatioRange
 
-        public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Presentation
+        @JvmInline
+        public value class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Presentation
 
-        public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
+        @JvmInline
+        public value class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
           Presentation
 
         public companion object {
@@ -656,9 +661,11 @@ public data class Ingredient(
 
         public fun asRatioRange(): RatioRange? = this as? RatioRange
 
-        public data class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Concentration
+        @JvmInline
+        public value class Ratio(public val `value`: dev.ohs.fhir.model.r4b.Ratio) : Concentration
 
-        public data class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
+        @JvmInline
+        public value class RatioRange(public val `value`: dev.ohs.fhir.model.r4b.RatioRange) :
           Concentration
 
         public companion object {

@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r5.serializers.MedicationAdministrationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -520,9 +521,10 @@ public data class MedicationAdministration(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Rate
+      @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Rate
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Rate
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Rate
 
       public companion object {
         internal fun from(
@@ -665,11 +667,14 @@ public data class MedicationAdministration(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurence
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurence
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurence
 
     public companion object {
       internal fun from(

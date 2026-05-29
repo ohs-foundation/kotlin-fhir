@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4.serializers.CompositionSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -468,9 +469,11 @@ public data class Composition(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class Identifier(public val `value`: dev.ohs.fhir.model.r4.Identifier) : Target
+      @JvmInline
+      public value class Identifier(public val `value`: dev.ohs.fhir.model.r4.Identifier) : Target
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Target
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Target
 
       public companion object {
         internal fun from(

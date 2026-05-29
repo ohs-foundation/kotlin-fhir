@@ -24,6 +24,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /**
@@ -249,11 +250,13 @@ public data class Timing(
 
       public fun asPeriod(): Period? = this as? Period
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Bounds
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Bounds
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Bounds
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Bounds
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Bounds
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Bounds
 
       public companion object {
         internal fun from(

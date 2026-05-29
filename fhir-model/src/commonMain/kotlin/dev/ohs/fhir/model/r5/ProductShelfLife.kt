@@ -23,6 +23,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /**
@@ -106,9 +107,10 @@ public data class ProductShelfLife(
 
     public fun asString(): String? = this as? String
 
-    public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Period
+    @JvmInline
+    public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Period
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Period
+    @JvmInline public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Period
 
     public companion object {
       internal fun from(

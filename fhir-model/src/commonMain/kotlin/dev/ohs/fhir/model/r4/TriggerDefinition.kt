@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4.serializers.TriggerDefinitionSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /**
@@ -108,16 +109,20 @@ public data class TriggerDefinition(
 
     public fun asDateTime(): DateTime? = this as? DateTime
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) :
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) :
       TriggerDefinition.Timing
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) :
       TriggerDefinition.Timing
 
-    public data class Date(public val `value`: dev.ohs.fhir.model.r4.Date) :
+    @JvmInline
+    public value class Date(public val `value`: dev.ohs.fhir.model.r4.Date) :
       TriggerDefinition.Timing
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
       TriggerDefinition.Timing
 
     public companion object {

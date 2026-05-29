@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r5.serializers.ImmunizationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -840,9 +841,11 @@ public data class Immunization(
 
     public fun asString(): String? = this as? String
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Occurrence
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Occurrence
 
     public companion object {
       internal fun from(

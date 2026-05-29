@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1138,19 +1139,26 @@ public data class ConceptMap(
 
             public fun asCode(): Code? = this as? Code
 
-            public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
+            @JvmInline
+            public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-            public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+            @JvmInline
+            public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-            public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
+            @JvmInline
+            public value class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-            public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+            @JvmInline
+            public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-            public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
+            @JvmInline
+            public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
-            public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
+            @JvmInline
+            public value class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
 
-            public data class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
+            @JvmInline
+            public value class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
 
             public companion object {
               internal fun from(
@@ -1314,15 +1322,20 @@ public data class ConceptMap(
 
             public fun asQuantity(): Quantity? = this as? Quantity
 
-            public data class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
+            @JvmInline
+            public value class Code(public val `value`: dev.ohs.fhir.model.r5.Code) : Value
 
-            public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
+            @JvmInline
+            public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : Value
 
-            public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+            @JvmInline
+            public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-            public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+            @JvmInline
+            public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-            public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+            @JvmInline
+            public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
             public companion object {
               internal fun from(
@@ -1906,9 +1919,11 @@ public data class ConceptMap(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
+    @JvmInline
+    public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(
@@ -1927,9 +1942,10 @@ public data class ConceptMap(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : SourceScope
+    @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : SourceScope
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : SourceScope
+    @JvmInline
+    public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : SourceScope
 
     public companion object {
       internal fun from(
@@ -1948,9 +1964,10 @@ public data class ConceptMap(
 
     public fun asCanonical(): Canonical? = this as? Canonical
 
-    public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : TargetScope
+    @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : TargetScope
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : TargetScope
+    @JvmInline
+    public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : TargetScope
 
     public companion object {
       internal fun from(

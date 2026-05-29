@@ -28,6 +28,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1014,9 +1015,11 @@ public data class Consent(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Source
+    @JvmInline
+    public value class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Source
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Source
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Source
 
     public companion object {
       internal fun from(

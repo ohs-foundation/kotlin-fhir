@@ -30,6 +30,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -588,9 +589,11 @@ public data class ClinicalUseDefinition(
 
       public fun asString(): String? = this as? String
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Duration
+      @JvmInline
+      public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Duration
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Duration
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Duration
 
       public companion object {
         internal fun from(
@@ -835,9 +838,11 @@ public data class ClinicalUseDefinition(
 
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Item
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Item
 

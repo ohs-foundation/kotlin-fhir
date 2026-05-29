@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4.serializers.MedicationAdministrationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -496,9 +497,10 @@ public data class MedicationAdministration(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r4.Ratio) : Rate
+      @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r4.Ratio) : Rate
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Rate
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Rate
 
       public companion object {
         internal fun from(
@@ -637,10 +639,12 @@ public data class MedicationAdministration(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       Medication
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Medication
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Medication
 
     public companion object {
       internal fun from(
@@ -659,9 +663,11 @@ public data class MedicationAdministration(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Effective
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Effective
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Effective
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Effective
 
     public companion object {
       internal fun from(

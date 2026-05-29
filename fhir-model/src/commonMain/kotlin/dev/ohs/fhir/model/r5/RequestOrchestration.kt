@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.serializers.RequestOrchestrationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -934,9 +935,11 @@ public data class RequestOrchestration(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Offset
+        @JvmInline
+        public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) : Offset
 
-        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Offset
+        @JvmInline
+        public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Offset
 
         public companion object {
           internal fun from(
@@ -1098,9 +1101,11 @@ public data class RequestOrchestration(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Actor
+        @JvmInline
+        public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Actor
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Actor
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Actor
 
         public companion object {
           internal fun from(
@@ -1365,19 +1370,25 @@ public data class RequestOrchestration(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) :
         Action.Timing
 
-      public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Action.Timing
+      @JvmInline
+      public value class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Action.Timing
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Action.Timing
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Action.Timing
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r5.Duration) :
         Action.Timing
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Action.Timing
+      @JvmInline
+      public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Action.Timing
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Action.Timing
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Action.Timing
 
       public companion object {
         internal fun from(
@@ -1404,9 +1415,11 @@ public data class RequestOrchestration(
 
       public fun asUri(): Uri? = this as? Uri
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Definition
+      @JvmInline
+      public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) :
+        Definition
 
-      public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Definition
+      @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Definition
 
       public companion object {
         internal fun from(

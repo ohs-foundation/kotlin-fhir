@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1416,19 +1417,24 @@ public data class ValueSet(
 
         public fun asDateTime(): DateTime? = this as? DateTime
 
-        public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
+        @JvmInline
+        public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Value
 
-        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
+        @JvmInline
+        public value class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
 
-        public data class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Value
+        @JvmInline
+        public value class Integer(public val `value`: dev.ohs.fhir.model.r4.Integer) : Value
 
-        public data class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Value
+        @JvmInline
+        public value class Decimal(public val `value`: dev.ohs.fhir.model.r4.Decimal) : Value
 
-        public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Value
+        @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Value
 
-        public data class Code(public val `value`: dev.ohs.fhir.model.r4.Code) : Value
+        @JvmInline public value class Code(public val `value`: dev.ohs.fhir.model.r4.Code) : Value
 
-        public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Value
+        @JvmInline
+        public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Value
 
         public companion object {
           internal fun from(

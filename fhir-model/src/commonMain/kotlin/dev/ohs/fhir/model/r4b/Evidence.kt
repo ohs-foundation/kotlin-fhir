@@ -30,6 +30,7 @@ import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1421,9 +1422,11 @@ public data class Evidence(
 
     public fun asMarkdown(): Markdown? = this as? Markdown
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : CiteAs
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : CiteAs
 
-    public data class Markdown(public val `value`: dev.ohs.fhir.model.r4b.Markdown) : CiteAs
+    @JvmInline
+    public value class Markdown(public val `value`: dev.ohs.fhir.model.r4b.Markdown) : CiteAs
 
     public companion object {
       internal fun from(

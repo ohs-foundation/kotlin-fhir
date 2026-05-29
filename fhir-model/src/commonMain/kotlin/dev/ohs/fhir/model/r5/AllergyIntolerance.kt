@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r5.serializers.AllergyIntoleranceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -722,15 +723,16 @@ public data class AllergyIntolerance(
 
     public fun asString(): String? = this as? String
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Onset
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Onset
 
-    public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Onset
+    @JvmInline public value class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Onset
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Onset
+    @JvmInline public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Onset
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Onset
+    @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Onset
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Onset
+    @JvmInline public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Onset
 
     public companion object {
       internal fun from(

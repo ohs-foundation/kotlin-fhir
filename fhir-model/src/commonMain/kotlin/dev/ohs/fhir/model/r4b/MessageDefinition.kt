@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4b.terminologies.ResourceType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -641,9 +642,9 @@ public data class MessageDefinition(
 
     public fun asUri(): Uri? = this as? Uri
 
-    public data class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : Event
+    @JvmInline public value class Coding(public val `value`: dev.ohs.fhir.model.r4b.Coding) : Event
 
-    public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Event
+    @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Event
 
     public companion object {
       internal fun from(

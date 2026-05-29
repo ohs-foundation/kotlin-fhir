@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4.serializers.DosageSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /**
@@ -234,9 +235,10 @@ public data class Dosage(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Dose
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Dose
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Dose
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Dose
 
       public companion object {
         internal fun from(
@@ -257,11 +259,12 @@ public data class Dosage(
 
       public fun asQuantity(): Quantity? = this as? Quantity
 
-      public data class Ratio(public val `value`: dev.ohs.fhir.model.r4.Ratio) : Rate
+      @JvmInline public value class Ratio(public val `value`: dev.ohs.fhir.model.r4.Ratio) : Rate
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Rate
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Rate
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Rate
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Rate
 
       public companion object {
         internal fun from(
@@ -353,9 +356,11 @@ public data class Dosage(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : AsNeeded
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : AsNeeded
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       AsNeeded
 
     public companion object {

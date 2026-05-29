@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -528,17 +529,21 @@ public data class ResearchElementDefinition(
 
       public fun asDataRequirement(): DataRequirement? = this as? DataRequirement
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Definition
 
-      public data class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
+      @JvmInline
+      public value class Canonical(public val `value`: dev.ohs.fhir.model.r4b.Canonical) :
         Definition
 
-      public data class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) :
+      @JvmInline
+      public value class Expression(public val `value`: dev.ohs.fhir.model.r4b.Expression) :
         Definition
 
-      public data class DataRequirement(
+      @JvmInline
+      public value class DataRequirement(
         public val `value`: dev.ohs.fhir.model.r4b.DataRequirement
       ) : Definition
 
@@ -567,15 +572,19 @@ public data class ResearchElementDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
         StudyEffective
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : StudyEffective
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : StudyEffective
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
         StudyEffective
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : StudyEffective
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) : StudyEffective
 
       public companion object {
         internal fun from(
@@ -602,16 +611,20 @@ public data class ResearchElementDefinition(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) :
         ParticipantEffective
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) :
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) :
         ParticipantEffective
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) :
         ParticipantEffective
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) :
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r4b.Timing) :
         ParticipantEffective
 
       public companion object {
@@ -740,10 +753,12 @@ public data class ResearchElementDefinition(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Subject
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
 
     public companion object {
       internal fun from(

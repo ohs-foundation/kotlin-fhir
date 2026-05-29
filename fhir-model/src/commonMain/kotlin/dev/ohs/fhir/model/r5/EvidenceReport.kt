@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -440,17 +441,22 @@ public data class EvidenceReport(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Value
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Value
 
-        public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+        @JvmInline
+        public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-        public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
+        @JvmInline
+        public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Value
 
         public companion object {
           internal fun from(
@@ -1169,9 +1175,11 @@ public data class EvidenceReport(
 
     public fun asMarkdown(): Markdown? = this as? Markdown
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : CiteAs
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : CiteAs
 
-    public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : CiteAs
+    @JvmInline
+    public value class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : CiteAs
 
     public companion object {
       internal fun from(

@@ -29,6 +29,7 @@ import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1141,20 +1142,27 @@ public data class MedicinalProductDefinition(
 
       public fun asAttachment(): Attachment? = this as? Attachment
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r5.CodeableConcept) :
-        Value
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
+      ) : Value
 
-      public data class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Value
+      @JvmInline
+      public value class Markdown(public val `value`: dev.ohs.fhir.model.r5.Markdown) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Value
 
-      public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
+      @JvmInline
+      public value class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-      public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
+      @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r5.Attachment) : Value
 
       public companion object {
         internal fun from(

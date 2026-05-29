@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4.serializers.FamilyMemberHistorySerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -351,13 +352,15 @@ public data class FamilyMemberHistory(
 
       public fun asString(): String? = this as? String
 
-      public data class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Onset
+      @JvmInline public value class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Onset
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Onset
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Onset
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Onset
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Onset
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Onset
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Onset
 
       public companion object {
         internal fun from(
@@ -465,11 +468,11 @@ public data class FamilyMemberHistory(
 
     public fun asString(): String? = this as? String
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Born
+    @JvmInline public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Born
 
-    public data class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Born
+    @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Born
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Born
+    @JvmInline public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Born
 
     public companion object {
       internal fun from(
@@ -492,12 +495,15 @@ public data class FamilyMemberHistory(
 
     public fun asString(): String? = this as? String
 
-    public data class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : FamilyMemberHistory.Age
+    @JvmInline
+    public value class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : FamilyMemberHistory.Age
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) :
+    @JvmInline
+    public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) :
       FamilyMemberHistory.Age
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) :
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r4.String) :
       FamilyMemberHistory.Age
 
     public companion object {
@@ -525,15 +531,17 @@ public data class FamilyMemberHistory(
 
     public fun asString(): String? = this as? String
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Deceased
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Deceased
 
-    public data class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Deceased
+    @JvmInline public value class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Deceased
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Deceased
+    @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Deceased
 
-    public data class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Deceased
+    @JvmInline public value class Date(public val `value`: dev.ohs.fhir.model.r4.Date) : Deceased
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Deceased
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Deceased
 
     public companion object {
       internal fun from(

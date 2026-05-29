@@ -23,6 +23,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -234,11 +235,13 @@ public data class GuidanceResponse(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Module
+    @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r4.Uri) : Module
 
-    public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Module
+    @JvmInline
+    public value class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Module
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       Module
 
     public companion object {

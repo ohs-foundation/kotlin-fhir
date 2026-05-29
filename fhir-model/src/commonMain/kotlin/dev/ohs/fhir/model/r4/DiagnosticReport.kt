@@ -23,6 +23,7 @@ import dev.ohs.fhir.model.r4.serializers.DiagnosticReportSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -421,9 +422,11 @@ public data class DiagnosticReport(
 
     public fun asPeriod(): Period? = this as? Period
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Effective
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Effective
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Effective
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Effective
 
     public companion object {
       internal fun from(

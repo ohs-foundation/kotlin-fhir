@@ -46,6 +46,7 @@ import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -785,13 +786,16 @@ public data class Citation(
 
       public fun asAttachment(): Attachment? = this as? Attachment
 
-      public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Target
+      @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Target
 
-      public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) : Target
+      @JvmInline
+      public value class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) : Target
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Target
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Target
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Target
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) : Target
 
       public companion object {
         internal fun from(
@@ -1658,14 +1662,17 @@ public data class Citation(
 
         public fun asAttachment(): Attachment? = this as? Attachment
 
-        public data class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Target
+        @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r4b.Uri) : Target
 
-        public data class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) :
+        @JvmInline
+        public value class Identifier(public val `value`: dev.ohs.fhir.model.r4b.Identifier) :
           Target
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Target
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Target
 
-        public data class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) :
+        @JvmInline
+        public value class Attachment(public val `value`: dev.ohs.fhir.model.r4b.Attachment) :
           Target
 
         public companion object {

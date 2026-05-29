@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -1252,21 +1253,28 @@ public data class StructureMap(
 
             public fun asDateTime(): DateTime? = this as? DateTime
 
-            public data class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
+            @JvmInline public value class Id(public val `value`: dev.ohs.fhir.model.r5.Id) : Value
 
-            public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
+            @JvmInline
+            public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Value
 
-            public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
+            @JvmInline
+            public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Value
 
-            public data class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
+            @JvmInline
+            public value class Integer(public val `value`: dev.ohs.fhir.model.r5.Integer) : Value
 
-            public data class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
+            @JvmInline
+            public value class Decimal(public val `value`: dev.ohs.fhir.model.r5.Decimal) : Value
 
-            public data class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
+            @JvmInline
+            public value class Date(public val `value`: dev.ohs.fhir.model.r5.Date) : Value
 
-            public data class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
+            @JvmInline
+            public value class Time(public val `value`: dev.ohs.fhir.model.r5.Time) : Value
 
-            public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
+            @JvmInline
+            public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Value
 
             public companion object {
               internal fun from(
@@ -1702,9 +1710,11 @@ public data class StructureMap(
 
     public fun asCoding(): Coding? = this as? Coding
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : VersionAlgorithm
 
-    public data class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
+    @JvmInline
+    public value class Coding(public val `value`: dev.ohs.fhir.model.r5.Coding) : VersionAlgorithm
 
     public companion object {
       internal fun from(

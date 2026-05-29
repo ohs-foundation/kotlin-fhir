@@ -24,6 +24,7 @@ import dev.ohs.fhir.model.r4b.serializers.SubstanceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -374,11 +375,14 @@ public data class Substance(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class CodeableConcept(
+      @JvmInline
+      public value class CodeableConcept(
         public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept
       ) : Substance
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Substance
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) :
+        Substance
 
       public companion object {
         internal fun from(

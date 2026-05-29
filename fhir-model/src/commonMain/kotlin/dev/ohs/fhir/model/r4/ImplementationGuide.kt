@@ -36,6 +36,7 @@ import dev.ohs.fhir.model.r4.terminologies.ResourceType
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -931,9 +932,11 @@ public data class ImplementationGuide(
 
         public fun asCanonical(): Canonical? = this as? Canonical
 
-        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Example
+        @JvmInline
+        public value class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Example
 
-        public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Example
+        @JvmInline
+        public value class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Example
 
         public companion object {
           internal fun from(
@@ -1140,9 +1143,10 @@ public data class ImplementationGuide(
 
         public fun asReference(): Reference? = this as? Reference
 
-        public data class Url(public val `value`: dev.ohs.fhir.model.r4.Url) : Name
+        @JvmInline public value class Url(public val `value`: dev.ohs.fhir.model.r4.Url) : Name
 
-        public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Name
+        @JvmInline
+        public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Name
 
         public companion object {
           internal fun from(
@@ -1708,9 +1712,11 @@ public data class ImplementationGuide(
 
         public fun asCanonical(): Canonical? = this as? Canonical
 
-        public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Example
+        @JvmInline
+        public value class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Example
 
-        public data class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Example
+        @JvmInline
+        public value class Canonical(public val `value`: dev.ohs.fhir.model.r4.Canonical) : Example
 
         public companion object {
           internal fun from(

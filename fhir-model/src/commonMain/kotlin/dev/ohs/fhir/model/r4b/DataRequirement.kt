@@ -26,6 +26,7 @@ import dev.ohs.fhir.model.r4b.terminologies.FHIRAllTypes
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.Serializable
 
 /**
@@ -331,11 +332,14 @@ public data class DataRequirement(
 
       public fun asDuration(): Duration? = this as? Duration
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4b.DateTime) : Value
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Value
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4b.Period) : Value
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Value
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r4b.Duration) : Value
 
       public companion object {
         internal fun from(
@@ -498,10 +502,12 @@ public data class DataRequirement(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4b.CodeableConcept) :
       Subject
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4b.Reference) : Subject
 
     public companion object {
       internal fun from(

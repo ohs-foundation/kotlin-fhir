@@ -28,6 +28,7 @@ import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -568,12 +569,16 @@ public data class Ingredient(
 
           public fun asQuantity(): Quantity? = this as? Quantity
 
-          public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Strength
+          @JvmInline
+          public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Strength
 
-          public data class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) :
+          @JvmInline
+          public value class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) :
             Strength
 
-          public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) : Strength
+          @JvmInline
+          public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
+            Strength
 
           public companion object {
             internal fun from(
@@ -663,16 +668,20 @@ public data class Ingredient(
 
         public fun asQuantity(): Quantity? = this as? Quantity
 
-        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Presentation
+        @JvmInline
+        public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Presentation
 
-        public data class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) :
+        @JvmInline
+        public value class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) :
           Presentation
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Presentation
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
           Presentation
 
         public companion object {
@@ -700,16 +709,20 @@ public data class Ingredient(
 
         public fun asQuantity(): Quantity? = this as? Quantity
 
-        public data class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Concentration
+        @JvmInline
+        public value class Ratio(public val `value`: dev.ohs.fhir.model.r5.Ratio) : Concentration
 
-        public data class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) :
+        @JvmInline
+        public value class RatioRange(public val `value`: dev.ohs.fhir.model.r5.RatioRange) :
           Concentration
 
-        public data class CodeableConcept(
+        @JvmInline
+        public value class CodeableConcept(
           public val `value`: dev.ohs.fhir.model.r5.CodeableConcept
         ) : Concentration
 
-        public data class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
+        @JvmInline
+        public value class Quantity(public val `value`: dev.ohs.fhir.model.r5.Quantity) :
           Concentration
 
         public companion object {

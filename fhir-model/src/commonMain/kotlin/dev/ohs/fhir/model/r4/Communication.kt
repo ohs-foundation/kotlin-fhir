@@ -24,6 +24,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -351,11 +352,14 @@ public data class Communication(
 
       public fun asReference(): Reference? = this as? Reference
 
-      public data class String(public val `value`: dev.ohs.fhir.model.r4.String) : Content
+      @JvmInline
+      public value class String(public val `value`: dev.ohs.fhir.model.r4.String) : Content
 
-      public data class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
+      @JvmInline
+      public value class Attachment(public val `value`: dev.ohs.fhir.model.r4.Attachment) : Content
 
-      public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
+      @JvmInline
+      public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Content
 
       public companion object {
         internal fun from(

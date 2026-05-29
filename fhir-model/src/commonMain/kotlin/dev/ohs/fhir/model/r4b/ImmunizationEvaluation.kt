@@ -22,6 +22,7 @@ import dev.ohs.fhir.model.r4b.serializers.ImmunizationEvaluationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -205,10 +206,12 @@ public data class ImmunizationEvaluation(
 
     public fun asString(): String? = this as? String
 
-    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
+    @JvmInline
+    public value class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
       DoseNumber
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : DoseNumber
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : DoseNumber
 
     public companion object {
       internal fun from(
@@ -227,10 +230,12 @@ public data class ImmunizationEvaluation(
 
     public fun asString(): String? = this as? String
 
-    public data class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
+    @JvmInline
+    public value class PositiveInt(public val `value`: dev.ohs.fhir.model.r4b.PositiveInt) :
       SeriesDoses
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r4b.String) : SeriesDoses
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r4b.String) : SeriesDoses
 
     public companion object {
       internal fun from(

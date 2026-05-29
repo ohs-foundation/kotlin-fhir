@@ -32,6 +32,7 @@ import dev.ohs.fhir.model.r5.serializers.TestReportTestSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -698,9 +699,11 @@ public data class TestReport(
 
             public fun asCanonical(): Canonical? = this as? Canonical
 
-            public data class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Link
+            @JvmInline public value class Uri(public val `value`: dev.ohs.fhir.model.r5.Uri) : Link
 
-            public data class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) : Link
+            @JvmInline
+            public value class Canonical(public val `value`: dev.ohs.fhir.model.r5.Canonical) :
+              Link
 
             public companion object {
               internal fun from(

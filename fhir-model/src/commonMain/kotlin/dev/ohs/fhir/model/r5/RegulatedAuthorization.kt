@@ -24,6 +24,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -301,9 +302,10 @@ public data class RegulatedAuthorization(
 
       public fun asDateTime(): DateTime? = this as? DateTime
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Date
+      @JvmInline public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Date
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Date
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Date
 
       public companion object {
         internal fun from(

@@ -25,6 +25,7 @@ import dev.ohs.fhir.model.r4.serializers.RequestGroupSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -563,9 +564,11 @@ public data class RequestGroup(
 
         public fun asRange(): Range? = this as? Range
 
-        public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) : Offset
+        @JvmInline
+        public value class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) : Offset
 
-        public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Offset
+        @JvmInline
+        public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Offset
 
         public companion object {
           internal fun from(
@@ -656,19 +659,25 @@ public data class RequestGroup(
 
       public fun asTiming(): Timing? = this as? Timing
 
-      public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
+      @JvmInline
+      public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) :
         Action.Timing
 
-      public data class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Action.Timing
+      @JvmInline
+      public value class Age(public val `value`: dev.ohs.fhir.model.r4.Age) : Action.Timing
 
-      public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Action.Timing
+      @JvmInline
+      public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Action.Timing
 
-      public data class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
+      @JvmInline
+      public value class Duration(public val `value`: dev.ohs.fhir.model.r4.Duration) :
         Action.Timing
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Action.Timing
+      @JvmInline
+      public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Action.Timing
 
-      public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Action.Timing
+      @JvmInline
+      public value class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Action.Timing
 
       public companion object {
         internal fun from(

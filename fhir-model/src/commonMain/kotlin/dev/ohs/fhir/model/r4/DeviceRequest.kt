@@ -24,6 +24,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -328,14 +329,18 @@ public data class DeviceRequest(
 
       public fun asBoolean(): Boolean? = this as? Boolean
 
-      public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
-        Value
+      @JvmInline
+      public value class CodeableConcept(
+        public val `value`: dev.ohs.fhir.model.r4.CodeableConcept
+      ) : Value
 
-      public data class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
+      @JvmInline
+      public value class Quantity(public val `value`: dev.ohs.fhir.model.r4.Quantity) : Value
 
-      public data class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Value
+      @JvmInline public value class Range(public val `value`: dev.ohs.fhir.model.r4.Range) : Value
 
-      public data class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
+      @JvmInline
+      public value class Boolean(public val `value`: dev.ohs.fhir.model.r4.Boolean) : Value
 
       public companion object {
         internal fun from(
@@ -420,9 +425,11 @@ public data class DeviceRequest(
 
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Code
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r4.Reference) : Code
 
-    public data class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
+    @JvmInline
+    public value class CodeableConcept(public val `value`: dev.ohs.fhir.model.r4.CodeableConcept) :
       Code
 
     public companion object {
@@ -444,11 +451,14 @@ public data class DeviceRequest(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r4.DateTime) : Occurrence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Occurrence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r4.Period) : Occurrence
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Occurrence
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r4.Timing) : Occurrence
 
     public companion object {
       internal fun from(

@@ -25,6 +25,7 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlin.jvm.JvmInline
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -653,17 +654,22 @@ public data class Procedure(
 
     public fun asTiming(): Timing? = this as? Timing
 
-    public data class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
+    @JvmInline
+    public value class DateTime(public val `value`: dev.ohs.fhir.model.r5.DateTime) : Occurrence
 
-    public data class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
+    @JvmInline
+    public value class Period(public val `value`: dev.ohs.fhir.model.r5.Period) : Occurrence
 
-    public data class String(public val `value`: dev.ohs.fhir.model.r5.String) : Occurrence
+    @JvmInline
+    public value class String(public val `value`: dev.ohs.fhir.model.r5.String) : Occurrence
 
-    public data class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Occurrence
+    @JvmInline public value class Age(public val `value`: dev.ohs.fhir.model.r5.Age) : Occurrence
 
-    public data class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Occurrence
+    @JvmInline
+    public value class Range(public val `value`: dev.ohs.fhir.model.r5.Range) : Occurrence
 
-    public data class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
+    @JvmInline
+    public value class Timing(public val `value`: dev.ohs.fhir.model.r5.Timing) : Occurrence
 
     public companion object {
       internal fun from(
@@ -690,9 +696,11 @@ public data class Procedure(
 
     public fun asReference(): Reference? = this as? Reference
 
-    public data class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Reported
+    @JvmInline
+    public value class Boolean(public val `value`: dev.ohs.fhir.model.r5.Boolean) : Reported
 
-    public data class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Reported
+    @JvmInline
+    public value class Reference(public val `value`: dev.ohs.fhir.model.r5.Reference) : Reported
 
     public companion object {
       internal fun from(

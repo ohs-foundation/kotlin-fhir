@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisDeviceSerializer
@@ -24,7 +22,6 @@ import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisOutputSerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisPerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisSerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudySerializer
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlin.jvm.JvmInline

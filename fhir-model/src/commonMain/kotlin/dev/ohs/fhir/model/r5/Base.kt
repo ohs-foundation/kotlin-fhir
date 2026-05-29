@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r5
-
-import kotlin.Suppress
 
 /** Base Type: Base definition for all types defined in FHIR type system. */
 public sealed class Base

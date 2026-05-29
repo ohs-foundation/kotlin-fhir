@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.DataRequirementCodeFilterSerializer
@@ -23,7 +21,6 @@ import dev.ohs.fhir.model.r4.serializers.DataRequirementDateFilterSerializer
 import dev.ohs.fhir.model.r4.serializers.DataRequirementSerializer
 import dev.ohs.fhir.model.r4.serializers.DataRequirementSortSerializer
 import dev.ohs.fhir.model.r4.terminologies.FHIRAllTypes
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlin.jvm.JvmInline

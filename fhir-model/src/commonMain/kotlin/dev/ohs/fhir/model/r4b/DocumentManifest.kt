@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.DocumentManifestRelatedSerializer
 import dev.ohs.fhir.model.r4b.serializers.DocumentManifestSerializer
 import dev.ohs.fhir.model.r4b.terminologies.DocumentReferenceStatus
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlinx.serialization.SerialName

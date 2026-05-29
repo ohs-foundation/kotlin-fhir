@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier")
-
 package dev.ohs.fhir.model.r4b.serializers
 
 import kotlin.Boolean

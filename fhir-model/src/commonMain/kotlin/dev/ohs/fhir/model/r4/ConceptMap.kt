@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.ConceptMapGroupElementSerializer
@@ -26,7 +24,6 @@ import dev.ohs.fhir.model.r4.serializers.ConceptMapGroupUnmappedSerializer
 import dev.ohs.fhir.model.r4.serializers.ConceptMapSerializer
 import dev.ohs.fhir.model.r4.terminologies.ConceptMapEquivalence
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlin.jvm.JvmInline

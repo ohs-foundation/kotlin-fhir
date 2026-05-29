@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.MedicationBatchSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationIngredientSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationSerializer
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlin.jvm.JvmInline

@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.MolecularSequenceQualityRocSerializer
@@ -27,7 +25,6 @@ import dev.ohs.fhir.model.r4b.serializers.MolecularSequenceStructureVariantInner
 import dev.ohs.fhir.model.r4b.serializers.MolecularSequenceStructureVariantOuterSerializer
 import dev.ohs.fhir.model.r4b.serializers.MolecularSequenceStructureVariantSerializer
 import dev.ohs.fhir.model.r4b.serializers.MolecularSequenceVariantSerializer
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlinx.serialization.SerialName

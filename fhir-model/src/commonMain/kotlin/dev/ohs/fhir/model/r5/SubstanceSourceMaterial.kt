@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.SubstanceSourceMaterialFractionDescriptionSerializer
@@ -25,7 +23,6 @@ import dev.ohs.fhir.model.r5.serializers.SubstanceSourceMaterialOrganismOrganism
 import dev.ohs.fhir.model.r5.serializers.SubstanceSourceMaterialOrganismSerializer
 import dev.ohs.fhir.model.r5.serializers.SubstanceSourceMaterialPartDescriptionSerializer
 import dev.ohs.fhir.model.r5.serializers.SubstanceSourceMaterialSerializer
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlinx.serialization.SerialName

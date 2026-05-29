@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.CompositionAttesterSerializer
 import dev.ohs.fhir.model.r5.serializers.CompositionEventSerializer
 import dev.ohs.fhir.model.r5.serializers.CompositionSectionSerializer
 import dev.ohs.fhir.model.r5.serializers.CompositionSerializer
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlinx.serialization.SerialName

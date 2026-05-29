@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.ChargeItemDefinitionApplicabilitySerializer
@@ -23,7 +21,6 @@ import dev.ohs.fhir.model.r4b.serializers.ChargeItemDefinitionPropertyGroupPrice
 import dev.ohs.fhir.model.r4b.serializers.ChargeItemDefinitionPropertyGroupSerializer
 import dev.ohs.fhir.model.r4b.serializers.ChargeItemDefinitionSerializer
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlinx.serialization.SerialName

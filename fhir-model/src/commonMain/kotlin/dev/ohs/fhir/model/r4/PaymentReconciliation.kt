@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.PaymentReconciliationDetailSerializer
@@ -23,7 +21,6 @@ import dev.ohs.fhir.model.r4.serializers.PaymentReconciliationProcessNoteSeriali
 import dev.ohs.fhir.model.r4.serializers.PaymentReconciliationSerializer
 import dev.ohs.fhir.model.r4.terminologies.ClaimProcessingCodes
 import dev.ohs.fhir.model.r4.terminologies.NoteType
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlinx.serialization.SerialName

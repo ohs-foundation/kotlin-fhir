@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.BinarySerializer
 import kotlin.String
-import kotlin.Suppress
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

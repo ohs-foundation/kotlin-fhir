@@ -231,7 +231,7 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
           }
         }
         .build()
-    return FileSpec.builder(modelClassName).addSuppressAnnotation().addType(typeSpec).build()
+    return FileSpec.builder(modelClassName).addType(typeSpec).build()
   }
 
   private fun TypeSpec.Builder.addEqualsAndHashCodeFunctions(

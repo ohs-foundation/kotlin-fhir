@@ -323,7 +323,6 @@ fun ClassName.toPolymorphicSerializerClassName(): ClassName =
 
 private fun ClassName.toSerializerFileSpecBuilder(): FileSpec.Builder =
   FileSpec.builder("${packageName}.serializers", simpleName.plus("Serializers"))
-    .addSuppressAnnotation()
     .addAnnotation(
       AnnotationSpec.builder(ClassName("kotlin", "OptIn"))
         .addMember("%T::class", ClassName("kotlinx.serialization", "ExperimentalSerializationApi"))

@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.TestScriptDestinationSerializer
@@ -38,7 +36,6 @@ import dev.ohs.fhir.model.r5.serializers.TestScriptTestActionSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptTestSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptVariableSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlin.jvm.JvmInline

@@ -32,8 +32,6 @@ object LazySerialDescriptorFileSpecGenerator {
     target.parentFile.mkdirs()
     target.writeText(
       """
-@file:Suppress("RedundantVisibilityModifier")
-
 package $serializersPackageName
 
 import kotlin.Boolean

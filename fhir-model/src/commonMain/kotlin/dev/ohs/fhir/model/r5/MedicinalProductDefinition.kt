@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionCharacteristicSerializer
@@ -26,7 +24,6 @@ import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionNameSerialize
 import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionNameUsageSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionOperationSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicinalProductDefinitionSerializer
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlin.jvm.JvmInline

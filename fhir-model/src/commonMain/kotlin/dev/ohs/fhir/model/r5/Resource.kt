@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r5
 
 import kotlin.String
-import kotlin.Suppress
 import kotlinx.serialization.Serializable
 
 /** This is the base resource type for everything. */

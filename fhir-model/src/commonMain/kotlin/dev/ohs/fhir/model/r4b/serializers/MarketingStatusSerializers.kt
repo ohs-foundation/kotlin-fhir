@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
 @file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r4b.serializers
@@ -28,7 +27,6 @@ import dev.ohs.fhir.model.r4b.MarketingStatus
 import dev.ohs.fhir.model.r4b.Period
 import kotlin.OptIn
 import kotlin.String
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer

@@ -64,6 +64,8 @@ val codegen = tasks.register<Sync>("codegen") {
 }
 
 kotlin {
+    explicitApi()
+
     jvmToolchain(21)
 
     jvm()

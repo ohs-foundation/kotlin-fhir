@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-@file:Suppress("RedundantVisibilityModifier", "PropertyName")
-
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ImagingSelectionInstanceImageRegion2DSerializer
@@ -23,7 +21,6 @@ import dev.ohs.fhir.model.r5.serializers.ImagingSelectionInstanceImageRegion3DSe
 import dev.ohs.fhir.model.r5.serializers.ImagingSelectionInstanceSerializer
 import dev.ohs.fhir.model.r5.serializers.ImagingSelectionPerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.ImagingSelectionSerializer
-import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlinx.serialization.SerialName

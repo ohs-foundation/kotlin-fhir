@@ -8,10 +8,11 @@ val mavenArtifactId: String by project
 val androidNamespace: String by project
 
 plugins {
-    alias(libs.plugins.android.library)
+    // kotlin.multiplatform must be applied before the Android KMP library plugin and KSP,
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotest)
-    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.maven.publish)
     id("fhir-codegen")
@@ -89,9 +90,17 @@ kotlin {
         browser()
         binaries.library()
     }
-    androidTarget {
+    android {
+        namespace = androidNamespace
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+
+        withHostTestBuilder {}.configure {}
+
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_1_8)
+            // Test dependencies (kotest) ship JVM 11 bytecode with inline functions,
+            // which cannot be inlined into JVM 1.8 output. Build for JVM 11.
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
     iosX64 {
@@ -134,8 +143,7 @@ kotlin {
             }
         }
         val androidMain by getting
-        val androidUnitTest by getting {
-            dependsOn(commonTest)
+        val androidHostTest by getting {
             dependencies {
                 implementation(libs.kotest.runner.junit5)
             }
@@ -151,31 +159,15 @@ kotlin {
     }
 }
 
-android {
-    namespace = androidNamespace
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    testOptions {
-        unitTests.all { test ->
-            // Allow tests to access third_party
-            test.systemProperty("projectRootDir", project.rootDir.absolutePath)
-            test.maxHeapSize = "4g"
-            test.useJUnitPlatform()
-        }
-    }
-}
-
-tasks.named<Test>("jvmTest") {
-    // Allow tests to access third_party
+// Configure all JVM-based test tasks (jvmTest and the Android host test) so they
+// can access third_party fixtures and run Kotest specs via the JUnit Platform.
+tasks.withType<Test>().configureEach {
     systemProperty("projectRootDir", project.rootDir.absolutePath)
     maxHeapSize = "4g"
     useJUnitPlatform()
 }
 
-version = "1.0.0-beta03"
+version = "1.0.0-beta06"
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()

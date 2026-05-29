@@ -44,7 +44,15 @@ internal sealed interface SearchParamPattern {
   data class WhereResolve(val resolved: ResolvedExpression, val targetType: String) :
     SearchParamPattern
 
-  /** A `path.where(field='value')` expression with an optional post-`where` access path. */
+  /**
+   * A `path.where(field='value')` expression with an optional post-`where` access path.
+   *
+   * @property resolved The path before `where(...)` (e.g. `Patient.telecom`).
+   * @property field The field tested by the predicate (e.g. `system`).
+   * @property value The string literal the field is matched against (e.g. `email`).
+   * @property postPath The path applied after the filter, if any (e.g. `.value`); null when the
+   *   `where(...)` is the whole expression.
+   */
   data class WhereFilter(
     val resolved: ResolvedExpression,
     val field: String,

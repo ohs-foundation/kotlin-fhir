@@ -20,18 +20,19 @@ import kotlinx.serialization.Serializable
 
 /**
  * Minimal representation of a FHIR SearchParameter resource definition, used during code generation
- * to produce typed search parameter constants on resource companion objects.
+ * to produce typed search parameters in the per-resource `{Resource}SearchParam` containers.
+ *
+ * @property code The parameter name used in search URLs (e.g., "name", "birthdate").
+ * @property base The resource type(s) this search parameter applies to (e.g., ["Patient"]).
+ * @property type The search parameter type (e.g., "string", "token", "date", "reference").
+ * @property expression The FHIRPath expression that extracts values for this search parameter.
+ * @property target The target resource types for reference search parameters.
  */
 @Serializable
 data class SearchParameterDefinition(
-  /** The parameter name used in search URLs (e.g., "name", "birthdate"). */
   val code: String,
-  /** The resource type(s) this search parameter applies to (e.g., ["Patient"]). */
   val base: List<String> = emptyList(),
-  /** The search parameter type (e.g., "string", "token", "date", "reference"). */
   val type: String,
-  /** The FHIRPath expression that extracts values for this search parameter. */
   val expression: String? = null,
-  /** The target resource types for reference search parameters. */
   val target: List<String> = emptyList(),
 )

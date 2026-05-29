@@ -23,12 +23,14 @@ import dev.ohs.fhir.codegen.schema.isBackboneElement
 /**
  * A resolved segment of a FHIRPath expression, representing a single property access step.
  *
- * @param propertyName The Kotlin property name (e.g., "birthDate", "address", "city").
- * @param isList True if the element has max cardinality "*".
- * @param isNullable True if the element has min cardinality 0 and is not a list.
- * @param leafTypeCode The FHIR type code of this segment's type (e.g., "date", "Address").
- * @param isChoiceType True if the element has multiple types (e.g., `deceased[x]`).
- * @param isBackboneElement True if the element is a BackboneElement.
+ * @property propertyName The Kotlin property name (e.g., "birthDate", "address", "city").
+ * @property isList True if the element has max cardinality "*".
+ * @property isNullable True if the element has min cardinality 0 and is not a list.
+ * @property leafTypeCode The FHIR type code of this segment's type (e.g., "date", "Address").
+ * @property isChoiceType True if the element has multiple types (e.g., `deceased[x]`).
+ * @property isBackboneElement True if the element is a BackboneElement.
+ * @property choiceTypeCodes For a choice-type leaf, the type codes of each expansion; null
+ *   otherwise.
  */
 internal data class ResolvedSegment(
   val propertyName: String,
@@ -43,8 +45,8 @@ internal data class ResolvedSegment(
 /**
  * A fully resolved FHIRPath expression, containing the sequence of property access steps.
  *
- * @param segments The resolved segments in order.
- * @param resourceName The resource type this expression applies to (e.g., "Patient").
+ * @property segments The resolved segments in order.
+ * @property resourceName The resource type this expression applies to (e.g., "Patient").
  */
 internal data class ResolvedExpression(
   val segments: List<ResolvedSegment>,
@@ -58,7 +60,7 @@ internal data class ResolvedExpression(
  * Only handles simple dotted paths like `Patient.birthDate` or `Patient.address.city`. Returns
  * `null` for complex expressions involving type casts, where() filters, exists(), extensions, etc.
  *
- * @param elementsByType A map from StructureDefinition name (e.g., "Patient", "Address") to its
+ * @property elementsByType A map from StructureDefinition name (e.g., "Patient", "Address") to its
  *   snapshot elements.
  */
 internal class FhirPathExpressionResolver(private val elementsByType: Map<String, List<Element>>) {

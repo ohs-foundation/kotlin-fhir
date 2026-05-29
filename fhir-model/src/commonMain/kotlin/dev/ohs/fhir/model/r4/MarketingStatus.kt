@@ -103,7 +103,7 @@ public data class MarketingStatus(
    */
   public val restoreDate: DateTime? = null,
 ) : BackboneElement() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(country.toBuilder(), status.toBuilder(), dateRange.toBuilder()).apply {
         id = this@with.id

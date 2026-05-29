@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.ChargeItemOccurrenceSerializer
 import dev.ohs.fhir.model.r5.serializers.ChargeItemPerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.ChargeItemSerializer
 import kotlin.String
@@ -437,7 +436,6 @@ public data class ChargeItem(
     }
   }
 
-  @Serializable(with = ChargeItemOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 

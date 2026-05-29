@@ -17,12 +17,13 @@
 package dev.ohs.fhir.codegen
 
 import com.squareup.kotlinpoet.ClassName
-import dev.ohs.fhir.codegen.primitives.DoubleSerializerFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.BigDecimalSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.EnumerationFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirDateSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeFileSpecGenerator
+import dev.ohs.fhir.codegen.primitives.FhirDateTimeSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.LocalTimeSerializerFileSpecGenerator
-import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
 import dev.ohs.fhir.codegen.schema.StructureDefinition
 import dev.ohs.fhir.codegen.schema.capitalized
 import dev.ohs.fhir.codegen.schema.urlPart
@@ -121,19 +122,6 @@ abstract class FhirCodegenTask : DefaultTask() {
         }
         .toList()
 
-    // Load search parameter definitions and group by resource type
-    val searchParamsByResource =
-      corePackageFiles.files
-        .asSequence()
-        .flatMap { file ->
-          file.walkTopDown().filter {
-            it.isFile && it.name.matches("SearchParameter-.*\\.json".toRegex())
-          }
-        }
-        .map { json.decodeFromString<SearchParameterDefinition>(it.readText(Charsets.UTF_8)) }
-        .flatMap { searchParam -> searchParam.base.map { resource -> resource to searchParam } }
-        .groupBy({ it.first }, { it.second })
-
     val baseClasses =
       structureDefinitions.mapNotNullTo(hashSetOf()) {
         it.baseDefinition?.substringAfterLast('/')?.capitalized()
@@ -141,7 +129,21 @@ abstract class FhirCodegenTask : DefaultTask() {
 
     val packageName = this.packageName.get()
 
-    val fhirCodegen = FhirCodegen(packageName, valueSetMap, baseClasses, searchParamsByResource)
+    val typeGraph = TypeGraphAnalyzer(structureDefinitions)
+    // Map FHIR primitive type codes (e.g. "boolean", "xhtml") to whether the wrapper class's
+    // `.value` field is non-null in the generated model. Derived from the primitive's own
+    // StructureDefinition: an element `<Type>.value` with `min > 0` means the wrapper always
+    // carries a scalar value (atm only `xhtml`).
+    val primitiveValueIsNonNull: Map<String, Boolean> =
+      structureDefinitions
+        .filter { it.kind == StructureDefinition.Kind.PRIMITIVE_TYPE }
+        .mapNotNull { sd ->
+          val valueElement = sd.snapshot?.element?.firstOrNull { it.path == "${sd.name}.value" }
+          valueElement?.let { sd.name to (it.min > 0) }
+        }
+        .toMap()
+    val fhirCodegen =
+      FhirCodegen(packageName, valueSetMap, baseClasses, typeGraph, primitiveValueIsNonNull)
 
     structureDefinitions
       .flatMap { fhirCodegen.generateFileSpecs(it) }
@@ -156,7 +158,9 @@ abstract class FhirCodegenTask : DefaultTask() {
         }
         .toList()
 
-    FhirJsonFileSpecGenerator.generate(packageName, subclasses).writeTo(outputDir)
+    FhirResourcePolymorphicSerializerFileSpecGenerator.generate(packageName, subclasses)
+      .writeTo(outputDir)
+    FhirJsonFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
     FhirDateTimeFileSpecGenerator.generate(packageName).writeTo(outputDir)
     FhirDateFileSpecGenerator.generate(packageName).writeTo(outputDir)
@@ -166,26 +170,11 @@ abstract class FhirCodegenTask : DefaultTask() {
 
     // Generate custom serializers
     val serializersPackageName = "$packageName.serializers"
-    DoubleSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
     LocalTimeSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
+    BigDecimalSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
+    FhirDateSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
+    FhirDateTimeSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
 
-    FhirJsonTransformerFileSpecGenerator.generate(packageName).writeTo(outputDir)
-
-    SearchParamFileSpecGenerator.generate(packageName).writeTo(outputDir)
-
-    // Build element lookup map for resolving FHIRPath expressions to Kotlin property access
-    val elementsByType =
-      structureDefinitions.associate { sd -> sd.name to (sd.snapshot?.element ?: emptyList()) }
-
-    // Generate per-resource search parameter sealed classes
-    searchParamsByResource.forEach { (resourceName, params) ->
-      ResourceSearchParamFileSpecGenerator.generate(
-          packageName,
-          resourceName,
-          params,
-          elementsByType,
-        )
-        .writeTo(outputDir)
-    }
+    LazySerialDescriptorFileSpecGenerator.writeTo(outputDir, serializersPackageName)
   }
 }

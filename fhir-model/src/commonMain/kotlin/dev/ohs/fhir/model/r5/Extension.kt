@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ExtensionSerializer
-import dev.ohs.fhir.model.r5.serializers.ExtensionValueSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -61,7 +60,7 @@ public data class Extension(
    */
   public val `value`: Value? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(url).apply {
         id = this@with.id
@@ -70,7 +69,6 @@ public data class Extension(
       }
     }
 
-  @Serializable(with = ExtensionValueSerializer::class)
   public sealed interface Value {
     public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 

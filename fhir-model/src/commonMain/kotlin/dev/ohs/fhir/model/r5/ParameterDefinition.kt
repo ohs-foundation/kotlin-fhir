@@ -71,7 +71,7 @@ public data class ParameterDefinition(
    */
   public val profile: Canonical? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(use, type).apply {
         id = this@with.id

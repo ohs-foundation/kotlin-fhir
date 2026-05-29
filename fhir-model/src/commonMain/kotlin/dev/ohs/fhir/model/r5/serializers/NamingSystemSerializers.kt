@@ -15,91 +15,1015 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
-import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.Boolean as R5Boolean
+import dev.ohs.fhir.model.r5.Code
+import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Coding
+import dev.ohs.fhir.model.r5.ContactDetail
+import dev.ohs.fhir.model.r5.Date
+import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Element
+import dev.ohs.fhir.model.r5.Enumeration
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.FhirDate
+import dev.ohs.fhir.model.r5.FhirDateTime
+import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.Markdown
+import dev.ohs.fhir.model.r5.Meta
 import dev.ohs.fhir.model.r5.NamingSystem
-import dev.ohs.fhir.model.r5.surrogates.NamingSystemSurrogate
-import dev.ohs.fhir.model.r5.surrogates.NamingSystemUniqueIdSurrogate
-import dev.ohs.fhir.model.r5.surrogates.NamingSystemVersionAlgorithmSurrogate
-import kotlin.String
+import dev.ohs.fhir.model.r5.Narrative
+import dev.ohs.fhir.model.r5.Period
+import dev.ohs.fhir.model.r5.RelatedArtifact
+import dev.ohs.fhir.model.r5.Resource
+import dev.ohs.fhir.model.r5.String as R5String
+import dev.ohs.fhir.model.r5.Uri
+import dev.ohs.fhir.model.r5.UsageContext
+import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
+import kotlin.Boolean as KotlinBoolean
+import kotlin.Int
+import kotlin.OptIn
+import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.ClassSerialDescriptorBuilder
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonEncoder
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.UniqueId> {
-  internal val surrogateSerializer: KSerializer<NamingSystemUniqueIdSurrogate> by lazy {
-    NamingSystemUniqueIdSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("UniqueId", surrogateSerializer.descriptor)
-  }
+internal object NamingSystemUniqueIdSerializer : KSerializer<NamingSystem.UniqueId> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("UniqueId") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("type", KotlinString.serializer().descriptor, isOptional = true)
+      element("_type", Element.serializer().descriptor, isOptional = true)
+      element("value", KotlinString.serializer().descriptor, isOptional = true)
+      element("_value", Element.serializer().descriptor, isOptional = true)
+      element("preferred", KotlinBoolean.serializer().descriptor, isOptional = true)
+      element("_preferred", Element.serializer().descriptor, isOptional = true)
+      element("comment", KotlinString.serializer().descriptor, isOptional = true)
+      element("_comment", Element.serializer().descriptor, isOptional = true)
+      element("period", Period.serializer().descriptor, isOptional = true)
+      element("authoritative", KotlinBoolean.serializer().descriptor, isOptional = true)
+      element("_authoritative", Element.serializer().descriptor, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): NamingSystem.UniqueId =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: NamingSystem.UniqueId) {
-    surrogateSerializer.serialize(encoder, NamingSystemUniqueIdSurrogate.fromModel(value))
-  }
-}
-
-public object NamingSystemVersionAlgorithmSerializer : KSerializer<NamingSystem.VersionAlgorithm> {
-  internal val surrogateSerializer: KSerializer<NamingSystemVersionAlgorithmSurrogate> by lazy {
-    NamingSystemVersionAlgorithmSurrogate.serializer()
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
   }
 
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("VersionAlgorithm", surrogateSerializer.descriptor)
+  private fun deserializeInternal(decoder: CompositeDecoder): NamingSystem.UniqueId {
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var type: KotlinString? = null
+    var _type: Element? = null
+    var `value`: KotlinString? = null
+    var _value: Element? = null
+    var preferred: KotlinBoolean? = null
+    var _preferred: Element? = null
+    var comment: KotlinString? = null
+    var _comment: Element? = null
+    var period: Period? = null
+    var authoritative: KotlinBoolean? = null
+    var _authoritative: Element? = null
+    while (true) {
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeStringElement(descriptor, i)
+        4 -> _type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        5 -> `value` = decoder.decodeStringElement(descriptor, i)
+        6 ->
+          _value = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        7 -> preferred = decoder.decodeBooleanElement(descriptor, i)
+        8 ->
+          _preferred =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        9 -> comment = decoder.decodeStringElement(descriptor, i)
+        10 ->
+          _comment = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        11 ->
+          period = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodSer, null)
+        12 -> authoritative = decoder.decodeBooleanElement(descriptor, i)
+        13 ->
+          _authoritative =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding UniqueId: " + i)
+      }
+    }
+    return NamingSystem.UniqueId(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      type = Enumeration.of(NamingSystem.NamingSystemIdentifierType.fromCode(type!!), _type),
+      `value` = R5String.of(`value`, _value)!!,
+      preferred = R5Boolean.of(preferred, _preferred),
+      comment = R5String.of(comment, _comment),
+      period = period,
+      authoritative = R5Boolean.of(authoritative, _authoritative),
+    )
   }
 
-  override fun deserialize(decoder: Decoder): NamingSystem.VersionAlgorithm =
-    surrogateSerializer.deserialize(decoder).toModel()
-
-  override fun serialize(encoder: Encoder, `value`: NamingSystem.VersionAlgorithm) {
-    surrogateSerializer.serialize(encoder, NamingSystemVersionAlgorithmSurrogate.fromModel(value))
-  }
-}
-
-public object NamingSystemSerializer : KSerializer<NamingSystem> {
-  internal val surrogateSerializer: KSerializer<NamingSystemSurrogate> by lazy {
-    NamingSystemSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("versionAlgorithm")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("NamingSystem", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): NamingSystem {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: NamingSystem.UniqueId) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
+    ((value.type.value?.getCode()))?.let { encoder.encodeStringElement(descriptor, 3, it) }
+    (value.type.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 4, Hoisted.typeSer, it)
+    }
+    ((value.`value`.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+    (value.`value`.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 6, Hoisted.typeSer, it)
+    }
+    ((value.preferred?.value))?.let { encoder.encodeBooleanElement(descriptor, 7, it) }
+    (value.preferred?.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 8, Hoisted.typeSer, it)
+    }
+    ((value.comment?.value))?.let { encoder.encodeStringElement(descriptor, 9, it) }
+    (value.comment?.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 10, Hoisted.typeSer, it)
+    }
+    (value.period)?.let { encoder.encodeSerializableElement(descriptor, 11, Hoisted.periodSer, it) }
+    ((value.authoritative?.value))?.let { encoder.encodeBooleanElement(descriptor, 12, it) }
+    (value.authoritative?.toElement())?.let {
+      encoder.encodeSerializableElement(descriptor, 13, Hoisted.typeSer, it)
+    }
   }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val typeSer: KSerializer<Element> = Element.serializer()
+
+    public val periodSer: KSerializer<Period> = Period.serializer()
+  }
+}
+
+internal object NamingSystemSerializer : KSerializer<NamingSystem> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("NamingSystem") {
+      element("resourceType", KotlinString.serializer().descriptor, isOptional = false)
+      buildDescriptor(this)
+    }
+
+  internal fun buildDescriptor(b: ClassSerialDescriptorBuilder) {
+    b.element("id", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("meta", Meta.serializer().descriptor, isOptional = true)
+    b.element("implicitRules", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_implicitRules", Element.serializer().descriptor, isOptional = true)
+    b.element("language", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_language", Element.serializer().descriptor, isOptional = true)
+    b.element("text", Narrative.serializer().descriptor, isOptional = true)
+    b.element(
+      "contained",
+      listSerialDescriptor(lazyDescriptor { Resource.serializer().descriptor }),
+      isOptional = true,
+    )
+    b.element(
+      "extension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "modifierExtension",
+      listSerialDescriptor(Extension.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("url", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_url", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "identifier",
+      listSerialDescriptor(Identifier.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("version", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_version", Element.serializer().descriptor, isOptional = true)
+    b.element("versionAlgorithmString", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_versionAlgorithmString", Element.serializer().descriptor, isOptional = true)
+    b.element("versionAlgorithmCoding", Coding.serializer().descriptor, isOptional = true)
+    b.element("name", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_name", Element.serializer().descriptor, isOptional = true)
+    b.element("title", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_title", Element.serializer().descriptor, isOptional = true)
+    b.element("status", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_status", Element.serializer().descriptor, isOptional = true)
+    b.element("kind", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_kind", Element.serializer().descriptor, isOptional = true)
+    b.element("experimental", KotlinBoolean.serializer().descriptor, isOptional = true)
+    b.element("_experimental", Element.serializer().descriptor, isOptional = true)
+    b.element("date", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_date", Element.serializer().descriptor, isOptional = true)
+    b.element("publisher", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_publisher", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "contact",
+      listSerialDescriptor(ContactDetail.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("responsible", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_responsible", Element.serializer().descriptor, isOptional = true)
+    b.element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+    b.element("description", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_description", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "useContext",
+      listSerialDescriptor(UsageContext.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "jurisdiction",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("purpose", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_purpose", Element.serializer().descriptor, isOptional = true)
+    b.element("copyright", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_copyright", Element.serializer().descriptor, isOptional = true)
+    b.element("copyrightLabel", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_copyrightLabel", Element.serializer().descriptor, isOptional = true)
+    b.element("approvalDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_approvalDate", Element.serializer().descriptor, isOptional = true)
+    b.element("lastReviewDate", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_lastReviewDate", Element.serializer().descriptor, isOptional = true)
+    b.element("effectivePeriod", Period.serializer().descriptor, isOptional = true)
+    b.element(
+      "topic",
+      listSerialDescriptor(CodeableConcept.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "author",
+      listSerialDescriptor(ContactDetail.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "editor",
+      listSerialDescriptor(ContactDetail.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "reviewer",
+      listSerialDescriptor(ContactDetail.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "endorser",
+      listSerialDescriptor(ContactDetail.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element(
+      "relatedArtifact",
+      listSerialDescriptor(RelatedArtifact.serializer().descriptor),
+      isOptional = true,
+    )
+    b.element("usage", KotlinString.serializer().descriptor, isOptional = true)
+    b.element("_usage", Element.serializer().descriptor, isOptional = true)
+    b.element(
+      "uniqueId",
+      listSerialDescriptor(lazyDescriptor { NamingSystem.UniqueId.serializer().descriptor }),
+      isOptional = true,
+    )
+  }
+
+  override fun deserialize(decoder: Decoder): NamingSystem =
+    decoder.decodeStructure(descriptor) { deserializeInternal(this, descriptor, 1) }
 
   override fun serialize(encoder: Encoder, `value`: NamingSystem) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = NamingSystemSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) {
+      encodeStringElement(descriptor, 0, "NamingSystem")
+      serializeInternal(this, descriptor, 1, value)
+    }
   }
+
+  internal fun deserializeInternal(
+    decoder: CompositeDecoder,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
+  ): NamingSystem {
+    var id: KotlinString? = null
+    var meta: Meta? = null
+    var implicitRules: KotlinString? = null
+    var _implicitRules: Element? = null
+    var language: KotlinString? = null
+    var _language: Element? = null
+    var text: Narrative? = null
+    var contained: List<Resource>? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var url: KotlinString? = null
+    var _url: Element? = null
+    var identifier: List<Identifier>? = null
+    var version: KotlinString? = null
+    var _version: Element? = null
+    var versionAlgorithmString: KotlinString? = null
+    var _versionAlgorithmString: Element? = null
+    var versionAlgorithmCoding: Coding? = null
+    var name: KotlinString? = null
+    var _name: Element? = null
+    var title: KotlinString? = null
+    var _title: Element? = null
+    var status: KotlinString? = null
+    var _status: Element? = null
+    var kind: KotlinString? = null
+    var _kind: Element? = null
+    var experimental: KotlinBoolean? = null
+    var _experimental: Element? = null
+    var date: KotlinString? = null
+    var _date: Element? = null
+    var publisher: KotlinString? = null
+    var _publisher: Element? = null
+    var contact: List<ContactDetail>? = null
+    var responsible: KotlinString? = null
+    var _responsible: Element? = null
+    var type: CodeableConcept? = null
+    var description: KotlinString? = null
+    var _description: Element? = null
+    var useContext: List<UsageContext>? = null
+    var jurisdiction: List<CodeableConcept>? = null
+    var purpose: KotlinString? = null
+    var _purpose: Element? = null
+    var copyright: KotlinString? = null
+    var _copyright: Element? = null
+    var copyrightLabel: KotlinString? = null
+    var _copyrightLabel: Element? = null
+    var approvalDate: KotlinString? = null
+    var _approvalDate: Element? = null
+    var lastReviewDate: KotlinString? = null
+    var _lastReviewDate: Element? = null
+    var effectivePeriod: Period? = null
+    var topic: List<CodeableConcept>? = null
+    var author: List<ContactDetail>? = null
+    var editor: List<ContactDetail>? = null
+    var reviewer: List<ContactDetail>? = null
+    var endorser: List<ContactDetail>? = null
+    var relatedArtifact: List<RelatedArtifact>? = null
+    var usage: KotlinString? = null
+    var _usage: Element? = null
+    var uniqueId: List<NamingSystem.UniqueId>? = null
+    while (true) {
+      val i = decoder.decodeElementIndex(descriptor)
+      if (i == CompositeDecoder.DECODE_DONE) break
+      when (i - descriptorOffset) {
+        -1 -> decoder.decodeStringElement(descriptor, i)
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 -> meta = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.metaSer, null)
+        2 -> implicitRules = decoder.decodeStringElement(descriptor, i)
+        3 ->
+          _implicitRules =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        4 -> language = decoder.decodeStringElement(descriptor, i)
+        5 ->
+          _language =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        6 -> text = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.textSer, null)
+        7 ->
+          contained =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.containedSer, null)
+        8 ->
+          extension =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        9 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        10 -> url = decoder.decodeStringElement(descriptor, i)
+        11 ->
+          _url =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        12 ->
+          identifier =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.identifierSer, null)
+        13 -> version = decoder.decodeStringElement(descriptor, i)
+        14 ->
+          _version =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        15 -> versionAlgorithmString = decoder.decodeStringElement(descriptor, i)
+        16 ->
+          _versionAlgorithmString =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        17 ->
+          versionAlgorithmCoding =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.versionAlgorithmCodingSer,
+              null,
+            )
+        18 -> name = decoder.decodeStringElement(descriptor, i)
+        19 ->
+          _name =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        20 -> title = decoder.decodeStringElement(descriptor, i)
+        21 ->
+          _title =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        22 -> status = decoder.decodeStringElement(descriptor, i)
+        23 ->
+          _status =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        24 -> kind = decoder.decodeStringElement(descriptor, i)
+        25 ->
+          _kind =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        26 -> experimental = decoder.decodeBooleanElement(descriptor, i)
+        27 ->
+          _experimental =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        28 -> date = decoder.decodeStringElement(descriptor, i)
+        29 ->
+          _date =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        30 -> publisher = decoder.decodeStringElement(descriptor, i)
+        31 ->
+          _publisher =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        32 ->
+          contact =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+        33 -> responsible = decoder.decodeStringElement(descriptor, i)
+        34 ->
+          _responsible =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        35 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        36 -> description = decoder.decodeStringElement(descriptor, i)
+        37 ->
+          _description =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        38 ->
+          useContext =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.useContextSer, null)
+        39 ->
+          jurisdiction =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.jurisdictionSer, null)
+        40 -> purpose = decoder.decodeStringElement(descriptor, i)
+        41 ->
+          _purpose =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        42 -> copyright = decoder.decodeStringElement(descriptor, i)
+        43 ->
+          _copyright =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        44 -> copyrightLabel = decoder.decodeStringElement(descriptor, i)
+        45 ->
+          _copyrightLabel =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        46 -> approvalDate = decoder.decodeStringElement(descriptor, i)
+        47 ->
+          _approvalDate =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        48 -> lastReviewDate = decoder.decodeStringElement(descriptor, i)
+        49 ->
+          _lastReviewDate =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        50 ->
+          effectivePeriod =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.effectivePeriodSer,
+              null,
+            )
+        51 ->
+          topic =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.jurisdictionSer, null)
+        52 ->
+          author =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+        53 ->
+          editor =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+        54 ->
+          reviewer =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+        55 ->
+          endorser =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.contactSer, null)
+        56 ->
+          relatedArtifact =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.relatedArtifactSer,
+              null,
+            )
+        57 -> usage = decoder.decodeStringElement(descriptor, i)
+        58 ->
+          _usage =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.implicitRulesSer, null)
+        59 ->
+          uniqueId =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.uniqueIdSer, null)
+        else -> throw SerializationException("Unexpected index decoding NamingSystem: " + i)
+      }
+    }
+    return NamingSystem(
+      id = id,
+      meta = meta,
+      implicitRules = Uri.of(implicitRules, _implicitRules),
+      language = Code.of(language, _language),
+      text = text,
+      contained = contained ?: listOf(),
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      url = Uri.of(url, _url),
+      identifier = identifier ?: listOf(),
+      version = R5String.of(version, _version),
+      versionAlgorithm =
+        NamingSystem.VersionAlgorithm.from(
+          R5String.of(versionAlgorithmString, _versionAlgorithmString),
+          versionAlgorithmCoding,
+        ),
+      name = R5String.of(name, _name)!!,
+      title = R5String.of(title, _title),
+      status = Enumeration.of(PublicationStatus.fromCode(status!!), _status),
+      kind = Enumeration.of(NamingSystem.NamingSystemType.fromCode(kind!!), _kind),
+      experimental = R5Boolean.of(experimental, _experimental),
+      date = DateTime.of(FhirDateTime.fromString(date), _date)!!,
+      publisher = R5String.of(publisher, _publisher),
+      contact = contact ?: listOf(),
+      responsible = R5String.of(responsible, _responsible),
+      type = type,
+      description = Markdown.of(description, _description),
+      useContext = useContext ?: listOf(),
+      jurisdiction = jurisdiction ?: listOf(),
+      purpose = Markdown.of(purpose, _purpose),
+      copyright = Markdown.of(copyright, _copyright),
+      copyrightLabel = R5String.of(copyrightLabel, _copyrightLabel),
+      approvalDate = Date.of(FhirDate.fromString(approvalDate), _approvalDate),
+      lastReviewDate = Date.of(FhirDate.fromString(lastReviewDate), _lastReviewDate),
+      effectivePeriod = effectivePeriod,
+      topic = topic ?: listOf(),
+      author = author ?: listOf(),
+      editor = editor ?: listOf(),
+      reviewer = reviewer ?: listOf(),
+      endorser = endorser ?: listOf(),
+      relatedArtifact = relatedArtifact ?: listOf(),
+      usage = R5String.of(usage, _usage),
+      uniqueId = uniqueId ?: listOf(),
+    )
+  }
+
+  internal fun serializeInternal(
+    encoder: CompositeEncoder,
+    descriptor: SerialDescriptor,
+    descriptorOffset: Int,
+    `value`: NamingSystem,
+  ) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0 + descriptorOffset, it) }
+    (value.meta)?.let {
+      encoder.encodeSerializableElement(descriptor, 1 + descriptorOffset, Hoisted.metaSer, it)
+    }
+    ((value.implicitRules?.value))?.let {
+      encoder.encodeStringElement(descriptor, 2 + descriptorOffset, it)
+    }
+    (value.implicitRules?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        3 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.language?.value))?.let {
+      encoder.encodeStringElement(descriptor, 4 + descriptorOffset, it)
+    }
+    (value.language?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        5 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    (value.text)?.let {
+      encoder.encodeSerializableElement(descriptor, 6 + descriptorOffset, Hoisted.textSer, it)
+    }
+    if (value.contained.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        7 + descriptorOffset,
+        Hoisted.containedSer,
+        value.contained,
+      )
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        8 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.extension,
+      )
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        9 + descriptorOffset,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    ((value.url?.value))?.let { encoder.encodeStringElement(descriptor, 10 + descriptorOffset, it) }
+    (value.url?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        11 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    if (value.identifier.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        12 + descriptorOffset,
+        Hoisted.identifierSer,
+        value.identifier,
+      )
+    ((value.version?.value))?.let {
+      encoder.encodeStringElement(descriptor, 13 + descriptorOffset, it)
+    }
+    (value.version?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        14 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    when (val choice = value.versionAlgorithm) {
+      null -> {}
+      is NamingSystem.VersionAlgorithm.String -> {
+        ((choice.value.value))?.let {
+          encoder.encodeStringElement(descriptor, 15 + descriptorOffset, it)
+        }
+        (choice.value.toElement())?.let {
+          encoder.encodeSerializableElement(
+            descriptor,
+            16 + descriptorOffset,
+            Hoisted.implicitRulesSer,
+            it,
+          )
+        }
+      }
+      is NamingSystem.VersionAlgorithm.Coding -> {
+        encoder.encodeSerializableElement(
+          descriptor,
+          17 + descriptorOffset,
+          Hoisted.versionAlgorithmCodingSer,
+          choice.value,
+        )
+      }
+    }
+    ((value.name.value))?.let { encoder.encodeStringElement(descriptor, 18 + descriptorOffset, it) }
+    (value.name.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        19 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.title?.value))?.let {
+      encoder.encodeStringElement(descriptor, 20 + descriptorOffset, it)
+    }
+    (value.title?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        21 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.status.value?.getCode()))?.let {
+      encoder.encodeStringElement(descriptor, 22 + descriptorOffset, it)
+    }
+    (value.status.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        23 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.kind.value?.getCode()))?.let {
+      encoder.encodeStringElement(descriptor, 24 + descriptorOffset, it)
+    }
+    (value.kind.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        25 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.experimental?.value))?.let {
+      encoder.encodeBooleanElement(descriptor, 26 + descriptorOffset, it)
+    }
+    (value.experimental?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        27 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.date.value?.toString()))?.let {
+      encoder.encodeStringElement(descriptor, 28 + descriptorOffset, it)
+    }
+    (value.date.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        29 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.publisher?.value))?.let {
+      encoder.encodeStringElement(descriptor, 30 + descriptorOffset, it)
+    }
+    (value.publisher?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        31 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    if (value.contact.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        32 + descriptorOffset,
+        Hoisted.contactSer,
+        value.contact,
+      )
+    ((value.responsible?.value))?.let {
+      encoder.encodeStringElement(descriptor, 33 + descriptorOffset, it)
+    }
+    (value.responsible?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        34 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    (value.type)?.let {
+      encoder.encodeSerializableElement(descriptor, 35 + descriptorOffset, Hoisted.typeSer, it)
+    }
+    ((value.description?.value))?.let {
+      encoder.encodeStringElement(descriptor, 36 + descriptorOffset, it)
+    }
+    (value.description?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        37 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    if (value.useContext.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        38 + descriptorOffset,
+        Hoisted.useContextSer,
+        value.useContext,
+      )
+    if (value.jurisdiction.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        39 + descriptorOffset,
+        Hoisted.jurisdictionSer,
+        value.jurisdiction,
+      )
+    ((value.purpose?.value))?.let {
+      encoder.encodeStringElement(descriptor, 40 + descriptorOffset, it)
+    }
+    (value.purpose?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        41 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.copyright?.value))?.let {
+      encoder.encodeStringElement(descriptor, 42 + descriptorOffset, it)
+    }
+    (value.copyright?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        43 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.copyrightLabel?.value))?.let {
+      encoder.encodeStringElement(descriptor, 44 + descriptorOffset, it)
+    }
+    (value.copyrightLabel?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        45 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.approvalDate?.value?.toString()))?.let {
+      encoder.encodeStringElement(descriptor, 46 + descriptorOffset, it)
+    }
+    (value.approvalDate?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        47 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    ((value.lastReviewDate?.value?.toString()))?.let {
+      encoder.encodeStringElement(descriptor, 48 + descriptorOffset, it)
+    }
+    (value.lastReviewDate?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        49 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    (value.effectivePeriod)?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        50 + descriptorOffset,
+        Hoisted.effectivePeriodSer,
+        it,
+      )
+    }
+    if (value.topic.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        51 + descriptorOffset,
+        Hoisted.jurisdictionSer,
+        value.topic,
+      )
+    if (value.author.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        52 + descriptorOffset,
+        Hoisted.contactSer,
+        value.author,
+      )
+    if (value.editor.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        53 + descriptorOffset,
+        Hoisted.contactSer,
+        value.editor,
+      )
+    if (value.reviewer.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        54 + descriptorOffset,
+        Hoisted.contactSer,
+        value.reviewer,
+      )
+    if (value.endorser.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        55 + descriptorOffset,
+        Hoisted.contactSer,
+        value.endorser,
+      )
+    if (value.relatedArtifact.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        56 + descriptorOffset,
+        Hoisted.relatedArtifactSer,
+        value.relatedArtifact,
+      )
+    ((value.usage?.value))?.let {
+      encoder.encodeStringElement(descriptor, 57 + descriptorOffset, it)
+    }
+    (value.usage?.toElement())?.let {
+      encoder.encodeSerializableElement(
+        descriptor,
+        58 + descriptorOffset,
+        Hoisted.implicitRulesSer,
+        it,
+      )
+    }
+    if (value.uniqueId.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        59 + descriptorOffset,
+        Hoisted.uniqueIdSer,
+        value.uniqueId,
+      )
+  }
+
+  private object Hoisted {
+    public val metaSer: KSerializer<Meta> = Meta.serializer()
+
+    public val implicitRulesSer: KSerializer<Element> = Element.serializer()
+
+    public val textSer: KSerializer<Narrative> = Narrative.serializer()
+
+    public val containedSerInner: KSerializer<Resource> = Resource.serializer()
+
+    public val containedSer: KSerializer<List<Resource>> = ListSerializer(Hoisted.containedSerInner)
+
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val identifierSerInner: KSerializer<Identifier> = Identifier.serializer()
+
+    public val identifierSer: KSerializer<List<Identifier>> =
+      ListSerializer(Hoisted.identifierSerInner)
+
+    public val versionAlgorithmCodingSer: KSerializer<Coding> = Coding.serializer()
+
+    public val contactSerInner: KSerializer<ContactDetail> = ContactDetail.serializer()
+
+    public val contactSer: KSerializer<List<ContactDetail>> =
+      ListSerializer(Hoisted.contactSerInner)
+
+    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val useContextSerInner: KSerializer<UsageContext> = UsageContext.serializer()
+
+    public val useContextSer: KSerializer<List<UsageContext>> =
+      ListSerializer(Hoisted.useContextSerInner)
+
+    public val jurisdictionSer: KSerializer<List<CodeableConcept>> = ListSerializer(Hoisted.typeSer)
+
+    public val effectivePeriodSer: KSerializer<Period> = Period.serializer()
+
+    public val relatedArtifactSerInner: KSerializer<RelatedArtifact> = RelatedArtifact.serializer()
+
+    public val relatedArtifactSer: KSerializer<List<RelatedArtifact>> =
+      ListSerializer(Hoisted.relatedArtifactSerInner)
+
+    public val uniqueIdSerInner: KSerializer<NamingSystem.UniqueId> =
+      NamingSystem.UniqueId.serializer()
+
+    public val uniqueIdSer: KSerializer<List<NamingSystem.UniqueId>> =
+      ListSerializer(Hoisted.uniqueIdSerInner)
+  }
+}
+
+internal object NamingSystemPolymorphicSerializer : KSerializer<NamingSystem> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("NamingSystem") { NamingSystemSerializer.buildDescriptor(this) }
+
+  override fun serialize(encoder: Encoder, `value`: NamingSystem) {
+    encoder.encodeStructure(descriptor) {
+      NamingSystemSerializer.serializeInternal(this, descriptor, 0, value)
+    }
+  }
+
+  override fun deserialize(decoder: Decoder): NamingSystem =
+    decoder.decodeStructure(descriptor) {
+      NamingSystemSerializer.deserializeInternal(this, descriptor, 0)
+    }
 }

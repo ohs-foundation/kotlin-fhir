@@ -18,10 +18,7 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.SupplyRequestItemSerializer
-import dev.ohs.fhir.model.r4b.serializers.SupplyRequestOccurrenceSerializer
 import dev.ohs.fhir.model.r4b.serializers.SupplyRequestParameterSerializer
-import dev.ohs.fhir.model.r4b.serializers.SupplyRequestParameterValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.SupplyRequestSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -266,7 +263,6 @@ public data class SupplyRequest(
         }
       }
 
-    @Serializable(with = SupplyRequestParameterValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -364,7 +360,6 @@ public data class SupplyRequest(
     }
   }
 
-  @Serializable(with = SupplyRequestItemSerializer::class)
   public sealed interface Item {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -387,7 +382,6 @@ public data class SupplyRequest(
     }
   }
 
-  @Serializable(with = SupplyRequestOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 

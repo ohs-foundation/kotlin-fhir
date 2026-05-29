@@ -19,16 +19,12 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionCodeSerializer
-import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionMoietyAmountSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionMoietySerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionMolecularWeightSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionNameOfficialSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionNameSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionPropertySerializer
-import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionPropertyValueSerializer
-import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionRelationshipAmountSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionRelationshipSerializer
-import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionRelationshipSubstanceDefinitionSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionSourceMaterialSerializer
 import dev.ohs.fhir.model.r4b.serializers.SubstanceDefinitionStructureRepresentationSerializer
@@ -305,7 +301,6 @@ public data class SubstanceDefinition(
         }
       }
 
-    @Serializable(with = SubstanceDefinitionMoietyAmountSerializer::class)
     public sealed interface Amount {
       public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -468,7 +463,6 @@ public data class SubstanceDefinition(
         }
       }
 
-    @Serializable(with = SubstanceDefinitionPropertyValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1531,7 +1525,6 @@ public data class SubstanceDefinition(
         }
       }
 
-    @Serializable(with = SubstanceDefinitionRelationshipSubstanceDefinitionSerializer::class)
     public sealed interface SubstanceDefinition {
       public fun asReference(): Reference? = this as? Reference
 
@@ -1556,7 +1549,6 @@ public data class SubstanceDefinition(
       }
     }
 
-    @Serializable(with = SubstanceDefinitionRelationshipAmountSerializer::class)
     public sealed interface Amount {
       public fun asQuantity(): Quantity? = this as? Quantity
 

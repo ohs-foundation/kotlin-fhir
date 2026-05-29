@@ -87,7 +87,7 @@ public data class RelatedArtifact(
    */
   public val resource: Canonical? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(type).apply {
         id = this@with.id

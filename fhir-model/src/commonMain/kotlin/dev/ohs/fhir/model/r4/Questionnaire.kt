@@ -19,11 +19,8 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemAnswerOptionSerializer
-import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemAnswerOptionValueSerializer
-import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemEnableWhenAnswerSerializer
 import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemEnableWhenSerializer
 import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemInitialSerializer
-import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemInitialValueSerializer
 import dev.ohs.fhir.model.r4.serializers.QuestionnaireItemSerializer
 import dev.ohs.fhir.model.r4.serializers.QuestionnaireSerializer
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
@@ -643,7 +640,6 @@ public data class Questionnaire(
           }
         }
 
-      @Serializable(with = QuestionnaireItemEnableWhenAnswerSerializer::class)
       public sealed interface Answer {
         public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -847,7 +843,6 @@ public data class Questionnaire(
           }
         }
 
-      @Serializable(with = QuestionnaireItemAnswerOptionValueSerializer::class)
       public sealed interface Value {
         public fun asInteger(): Integer? = this as? Integer
 
@@ -1019,7 +1014,6 @@ public data class Questionnaire(
           }
         }
 
-      @Serializable(with = QuestionnaireItemInitialValueSerializer::class)
       public sealed interface Value {
         public fun asBoolean(): Boolean? = this as? Boolean
 

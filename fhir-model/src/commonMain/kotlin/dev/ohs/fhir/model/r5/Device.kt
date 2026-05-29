@@ -21,7 +21,6 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.DeviceConformsToSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceNameSerializer
 import dev.ohs.fhir.model.r5.serializers.DevicePropertySerializer
-import dev.ohs.fhir.model.r5.serializers.DevicePropertyValueSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceUdiCarrierSerializer
 import dev.ohs.fhir.model.r5.serializers.DeviceVersionSerializer
@@ -1046,7 +1045,6 @@ public data class Device(
         }
       }
 
-    @Serializable(with = DevicePropertyValueSerializer::class)
     public sealed interface Value {
       public fun asQuantity(): Quantity? = this as? Quantity
 

@@ -19,6 +19,10 @@ package dev.ohs.fhir.model.test
 import io.kotest.assertions.json.shouldEqualJson
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.Enabled
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 /** A map from the test case name to the reason why the test case is skipped in R4. */
 private val skippedR4TestCaseNameToReasonMap =
@@ -35,8 +39,6 @@ private val skippedR4TestCaseNameToReasonMap =
     "ImplementationGuide-fhir.json" to "Invalid resources",
     "Questionnaire-qs1.json" to "Invalid resources",
     "ig-r4.json" to "Invalid resources",
-    "Observation-body-height.json" to
-      "Floating point issue https://github.com/google/kotlin-fhir/issues/60",
   )
 
 /** A map from the test case name to the reason why the test case is skipped in R4B. */
@@ -48,8 +50,6 @@ private val skippedR4BTestCaseNameToReasonMap =
     "CodeSystem-catalogType.json" to "Invalid resources",
     "ValueSet-catalogType.json" to "Invalid resources",
     "ActivityDefinition-administer-zika-virus-exposure-assessment.json" to "Invalid resources",
-    "Observation-body-height.json" to
-      "Floating point issue https://github.com/google/kotlin-fhir/issues/60",
   )
 
 /** A map from the test case name to the reason why the test case is skipped in R5. */
@@ -62,9 +62,44 @@ private val skippedR5CaseNameToReasonMap =
     "Observation-decimal.json" to "Scientific notation",
     "ChargeItemDefinition-ebm.json" to
       "Unknown code 'text/CQL' for enum ExpressionLanguage; codes are case-sensitive",
-    "Observation-body-height.json" to
-      "Floating point issue https://github.com/google/kotlin-fhir/issues/60",
   )
+
+private val plainJson = Json { prettyPrint = true }
+
+/**
+ * Round-trips through the *concrete-type* serializer rather than the polymorphic [Resource] path.
+ *
+ * The polymorphic decode picks the runtime class (e.g. `Patient`); we then re-encode using that
+ * class's standalone serializer (e.g. `PatientSerializer`, descriptor with `resourceType` at slot
+ * 0) instead of `ResourcePolymorphicSerializer`. This validates that the standalone descriptor
+ *    produces wire output identical to the polymorphic path for every example.
+ */
+@OptIn(InternalSerializationApi::class)
+@Suppress("UNCHECKED_CAST")
+private fun directRoundTrip(json: String): String {
+  val klass = plainJson.decodeFromString<dev.ohs.fhir.model.r4.Resource>(json)::class
+  val serializer = klass.serializer() as KSerializer<dev.ohs.fhir.model.r4.Resource>
+  val decoded = plainJson.decodeFromString(serializer, json)
+  return plainJson.encodeToString(serializer, decoded)
+}
+
+@OptIn(InternalSerializationApi::class)
+@Suppress("UNCHECKED_CAST")
+private fun directRoundTripR4B(json: String): String {
+  val klass = plainJson.decodeFromString<dev.ohs.fhir.model.r4b.Resource>(json)::class
+  val serializer = klass.serializer() as KSerializer<dev.ohs.fhir.model.r4b.Resource>
+  val decoded = plainJson.decodeFromString(serializer, json)
+  return plainJson.encodeToString(serializer, decoded)
+}
+
+@OptIn(InternalSerializationApi::class)
+@Suppress("UNCHECKED_CAST")
+private fun directRoundTripR5(json: String): String {
+  val klass = plainJson.decodeFromString<dev.ohs.fhir.model.r5.Resource>(json)::class
+  val serializer = klass.serializer() as KSerializer<dev.ohs.fhir.model.r5.Resource>
+  val decoded = plainJson.decodeFromString(serializer, json)
+  return plainJson.encodeToString(serializer, decoded)
+}
 
 /**
  * This test verifies the generated code can be used to deserialize published FHIR examples and
@@ -85,6 +120,27 @@ class SerializationRoundTripTest :
         },
         SerializationRoundTripTestSuite("R5", ::loadR5Examples, skippedR5CaseNameToReasonMap) {
           jsonR5.encodeToString(jsonR5.decodeFromString(it))
+        },
+        SerializationRoundTripTestSuite(
+          "R4 (direct concrete-type serializer)",
+          ::loadR4Examples,
+          skippedR4TestCaseNameToReasonMap,
+        ) {
+          directRoundTrip(it)
+        },
+        SerializationRoundTripTestSuite(
+          "R4B (direct concrete-type serializer)",
+          ::loadR4BExamples,
+          skippedR4BTestCaseNameToReasonMap,
+        ) {
+          directRoundTripR4B(it)
+        },
+        SerializationRoundTripTestSuite(
+          "R5 (direct concrete-type serializer)",
+          ::loadR5Examples,
+          skippedR5CaseNameToReasonMap,
+        ) {
+          directRoundTripR5(it)
         },
       )
       .forEach { testSuite ->

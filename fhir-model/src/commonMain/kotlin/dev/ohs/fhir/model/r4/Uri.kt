@@ -18,6 +18,7 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.UriSerializer
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
@@ -25,10 +26,12 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /**
  * Base StructureDefinition for uri Type: String of characters used to identify a name or a resource
  */
+@Serializable(with = UriSerializer::class)
 public open class Uri(
   /** unique id for the element within a resource (for internal references) */
   open override val id: String? = null,
@@ -60,7 +63,7 @@ public open class Uri(
   override fun hashCode(): Int {
     // Using 31 improves hash distribution and reduces collisions in hash-based collections
     var result = id?.hashCode() ?: 0
-    result = 31 * result + (extension?.hashCode() ?: 0)
+    result = 31 * result + (extension.hashCode())
     result = 31 * result + (value?.hashCode() ?: 0)
     return result
   }

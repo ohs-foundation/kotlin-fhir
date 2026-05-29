@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.DocumentReferenceAttesterSerializer
 import dev.ohs.fhir.model.r5.serializers.DocumentReferenceContentProfileSerializer
-import dev.ohs.fhir.model.r5.serializers.DocumentReferenceContentProfileValueSerializer
 import dev.ohs.fhir.model.r5.serializers.DocumentReferenceContentSerializer
 import dev.ohs.fhir.model.r5.serializers.DocumentReferenceRelatesToSerializer
 import dev.ohs.fhir.model.r5.serializers.DocumentReferenceSerializer
@@ -707,7 +706,6 @@ public data class DocumentReference(
           }
         }
 
-      @Serializable(with = DocumentReferenceContentProfileValueSerializer::class)
       public sealed interface Value {
         public fun asCoding(): Coding? = this as? Coding
 

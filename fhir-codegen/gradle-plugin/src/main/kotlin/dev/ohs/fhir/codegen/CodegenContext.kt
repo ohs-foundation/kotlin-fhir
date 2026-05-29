@@ -19,7 +19,6 @@ package dev.ohs.fhir.codegen
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
-import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
 import dev.ohs.fhir.codegen.schema.StructureDefinition
 import dev.ohs.fhir.codegen.schema.capitalized
 import dev.ohs.fhir.codegen.schema.valueset.ValueSet
@@ -29,7 +28,8 @@ data class CodegenContext(
   val packageName: String,
   val valueSetMap: Map<String, ValueSet>,
   val baseClassNameSet: HashSet<String>,
-  val searchParamsByResource: Map<String, List<SearchParameterDefinition>> = emptyMap(),
+  val typeGraph: TypeGraphAnalyzer,
+  val primitiveValueIsNonNull: Map<String, Boolean>,
 ) {
   fun getModelClassName(structureDefinition: StructureDefinition) =
     ClassName(packageName, structureDefinition.name.capitalized())

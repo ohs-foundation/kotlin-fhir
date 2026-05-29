@@ -23,7 +23,6 @@ import dev.ohs.fhir.model.r5.serializers.StructureDefinitionDifferentialSerializ
 import dev.ohs.fhir.model.r5.serializers.StructureDefinitionMappingSerializer
 import dev.ohs.fhir.model.r5.serializers.StructureDefinitionSerializer
 import dev.ohs.fhir.model.r5.serializers.StructureDefinitionSnapshotSerializer
-import dev.ohs.fhir.model.r5.serializers.StructureDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.FHIRVersion
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -969,7 +968,6 @@ public data class StructureDefinition(
     }
   }
 
-  @Serializable(with = StructureDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

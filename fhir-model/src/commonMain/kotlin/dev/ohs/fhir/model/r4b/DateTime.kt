@@ -18,10 +18,13 @@
 
 package dev.ohs.fhir.model.r4b
 
+import dev.ohs.fhir.model.r4b.serializers.DateTimeSerializer
+import dev.ohs.fhir.model.r4b.serializers.FhirDateTimeSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /**
  * Base StructureDefinition for dateTime Type: A date, date-time or partial date (e.g. just year or
@@ -29,6 +32,7 @@ import kotlin.collections.MutableList
  * a union of the schema types gYear, gYearMonth, date and dateTime. Seconds must be provided due to
  * schema type constraints but may be zero-filled and may be ignored. Dates SHALL be valid dates.
  */
+@Serializable(with = DateTimeSerializer::class)
 public data class DateTime(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,
@@ -46,9 +50,9 @@ public data class DateTime(
    */
   override val extension: List<Extension> = listOf(),
   /** The actual value */
-  public val `value`: FhirDateTime? = null,
+  @Serializable(with = FhirDateTimeSerializer::class) public val `value`: FhirDateTime? = null,
 ) : Element(id, extension) {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

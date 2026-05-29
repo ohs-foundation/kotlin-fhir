@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.VirtualServiceDetailAddressSerializer
 import dev.ohs.fhir.model.r5.serializers.VirtualServiceDetailSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -88,7 +87,7 @@ public data class VirtualServiceDetail(
    */
   public val sessionKey: String? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id
@@ -101,7 +100,6 @@ public data class VirtualServiceDetail(
       }
     }
 
-  @Serializable(with = VirtualServiceDetailAddressSerializer::class)
   public sealed interface Address {
     public fun asUrl(): Url? = this as? Url
 

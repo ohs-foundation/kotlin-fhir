@@ -18,8 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.CommunicationRequestOccurrenceSerializer
-import dev.ohs.fhir.model.r5.serializers.CommunicationRequestPayloadContentSerializer
 import dev.ohs.fhir.model.r5.serializers.CommunicationRequestPayloadSerializer
 import dev.ohs.fhir.model.r5.serializers.CommunicationRequestSerializer
 import kotlin.String
@@ -365,7 +363,6 @@ public data class CommunicationRequest(
         }
       }
 
-    @Serializable(with = CommunicationRequestPayloadContentSerializer::class)
     public sealed interface Content {
       public fun asAttachment(): Attachment? = this as? Attachment
 
@@ -461,7 +458,6 @@ public data class CommunicationRequest(
     }
   }
 
-  @Serializable(with = CommunicationRequestOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 

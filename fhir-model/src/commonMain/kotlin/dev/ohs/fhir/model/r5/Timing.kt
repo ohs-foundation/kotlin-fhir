@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.TimingRepeatBoundsSerializer
 import dev.ohs.fhir.model.r5.serializers.TimingRepeatSerializer
 import dev.ohs.fhir.model.r5.serializers.TimingSerializer
 import kotlin.String
@@ -91,7 +90,7 @@ public data class Timing(
    */
   public val code: CodeableConcept? = null,
 ) : BackboneType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id
@@ -243,7 +242,6 @@ public data class Timing(
         }
       }
 
-    @Serializable(with = TimingRepeatBoundsSerializer::class)
     public sealed interface Bounds {
       public fun asDuration(): Duration? = this as? Duration
 

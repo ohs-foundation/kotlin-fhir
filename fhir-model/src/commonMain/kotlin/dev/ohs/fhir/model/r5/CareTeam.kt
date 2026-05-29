@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.CareTeamParticipantCoverageSerializer
 import dev.ohs.fhir.model.r5.serializers.CareTeamParticipantSerializer
 import dev.ohs.fhir.model.r5.serializers.CareTeamSerializer
 import kotlin.Suppress
@@ -300,7 +299,6 @@ public data class CareTeam(
         }
       }
 
-    @Serializable(with = CareTeamParticipantCoverageSerializer::class)
     public sealed interface Coverage {
       public fun asPeriod(): Period? = this as? Period
 

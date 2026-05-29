@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.NamingSystemSerializer
 import dev.ohs.fhir.model.r5.serializers.NamingSystemUniqueIdSerializer
-import dev.ohs.fhir.model.r5.serializers.NamingSystemVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -665,7 +664,6 @@ public data class NamingSystem(
     }
   }
 
-  @Serializable(with = NamingSystemVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

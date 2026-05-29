@@ -19,8 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCategorySerializer
-import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCategoryValueSerializer
-import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCharacteristicDefinitionSerializer
 import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCharacteristicSerializer
 import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableCharacteristicTimeFromStartSerializer
 import dev.ohs.fhir.model.r4b.serializers.EvidenceVariableSerializer
@@ -564,7 +562,6 @@ public data class EvidenceVariable(
       }
     }
 
-    @Serializable(with = EvidenceVariableCharacteristicDefinitionSerializer::class)
     public sealed interface Definition {
       public fun asReference(): Reference? = this as? Reference
 
@@ -747,7 +744,6 @@ public data class EvidenceVariable(
         }
       }
 
-    @Serializable(with = EvidenceVariableCategoryValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

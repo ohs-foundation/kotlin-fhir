@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.MedicinalProductInteractionInteractantItemSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductInteractionInteractantSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicinalProductInteractionSerializer
 import kotlin.Suppress
@@ -223,7 +222,6 @@ public data class MedicinalProductInteraction(
         }
       }
 
-    @Serializable(with = MedicinalProductInteractionInteractantItemSerializer::class)
     public sealed interface Item {
       public fun asReference(): Reference? = this as? Reference
 

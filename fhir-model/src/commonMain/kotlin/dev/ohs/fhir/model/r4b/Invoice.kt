@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.InvoiceLineItemChargeItemSerializer
 import dev.ohs.fhir.model.r4b.serializers.InvoiceLineItemPriceComponentSerializer
 import dev.ohs.fhir.model.r4b.serializers.InvoiceLineItemSerializer
 import dev.ohs.fhir.model.r4b.serializers.InvoiceParticipantSerializer
@@ -611,7 +610,6 @@ public data class Invoice(
       }
     }
 
-    @Serializable(with = InvoiceLineItemChargeItemSerializer::class)
     public sealed interface ChargeItem {
       public fun asReference(): Reference? = this as? Reference
 

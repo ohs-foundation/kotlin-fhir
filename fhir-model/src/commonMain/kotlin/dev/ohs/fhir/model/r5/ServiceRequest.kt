@@ -18,14 +18,9 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.ServiceRequestAsNeededSerializer
-import dev.ohs.fhir.model.r5.serializers.ServiceRequestOccurrenceSerializer
 import dev.ohs.fhir.model.r5.serializers.ServiceRequestOrderDetailParameterSerializer
-import dev.ohs.fhir.model.r5.serializers.ServiceRequestOrderDetailParameterValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ServiceRequestOrderDetailSerializer
-import dev.ohs.fhir.model.r5.serializers.ServiceRequestPatientInstructionInstructionSerializer
 import dev.ohs.fhir.model.r5.serializers.ServiceRequestPatientInstructionSerializer
-import dev.ohs.fhir.model.r5.serializers.ServiceRequestQuantitySerializer
 import dev.ohs.fhir.model.r5.serializers.ServiceRequestSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -540,7 +535,6 @@ public data class ServiceRequest(
           }
         }
 
-      @Serializable(with = ServiceRequestOrderDetailParameterValueSerializer::class)
       public sealed interface Value {
         public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -771,7 +765,6 @@ public data class ServiceRequest(
         }
       }
 
-    @Serializable(with = ServiceRequestPatientInstructionInstructionSerializer::class)
     public sealed interface Instruction {
       public fun asMarkdown(): Markdown? = this as? Markdown
 
@@ -848,7 +841,6 @@ public data class ServiceRequest(
     }
   }
 
-  @Serializable(with = ServiceRequestQuantitySerializer::class)
   public sealed interface Quantity {
     public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -879,7 +871,6 @@ public data class ServiceRequest(
     }
   }
 
-  @Serializable(with = ServiceRequestOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -907,7 +898,6 @@ public data class ServiceRequest(
     }
   }
 
-  @Serializable(with = ServiceRequestAsNeededSerializer::class)
   public sealed interface AsNeeded {
     public fun asBoolean(): Boolean? = this as? Boolean
 

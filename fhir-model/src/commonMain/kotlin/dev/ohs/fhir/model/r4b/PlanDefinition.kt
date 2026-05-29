@@ -19,19 +19,13 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionConditionSerializer
-import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionDefinitionSerializer
 import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionDynamicValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionParticipantSerializer
-import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionRelatedActionOffsetSerializer
 import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionRelatedActionSerializer
 import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionSerializer
-import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionSubjectSerializer
-import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionActionTimingSerializer
 import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionGoalSerializer
-import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionGoalTargetDetailSerializer
 import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionGoalTargetSerializer
 import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionSerializer
-import dev.ohs.fhir.model.r4b.serializers.PlanDefinitionSubjectSerializer
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -582,7 +576,6 @@ public data class PlanDefinition(
           }
         }
 
-      @Serializable(with = PlanDefinitionGoalTargetDetailSerializer::class)
       public sealed interface Detail {
         public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -1187,7 +1180,6 @@ public data class PlanDefinition(
           }
         }
 
-      @Serializable(with = PlanDefinitionActionRelatedActionOffsetSerializer::class)
       public sealed interface Offset {
         public fun asDuration(): Duration? = this as? Duration
 
@@ -1543,7 +1535,6 @@ public data class PlanDefinition(
       }
     }
 
-    @Serializable(with = PlanDefinitionActionSubjectSerializer::class)
     public sealed interface Subject {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1573,7 +1564,6 @@ public data class PlanDefinition(
       }
     }
 
-    @Serializable(with = PlanDefinitionActionTimingSerializer::class)
     public sealed interface Timing {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -1621,7 +1611,6 @@ public data class PlanDefinition(
       }
     }
 
-    @Serializable(with = PlanDefinitionActionDefinitionSerializer::class)
     public sealed interface Definition {
       public fun asCanonical(): Canonical? = this as? Canonical
 
@@ -1882,7 +1871,6 @@ public data class PlanDefinition(
     }
   }
 
-  @Serializable(with = PlanDefinitionSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

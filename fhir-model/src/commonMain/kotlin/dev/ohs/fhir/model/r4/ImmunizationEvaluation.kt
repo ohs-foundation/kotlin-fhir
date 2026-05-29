@@ -18,9 +18,7 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.ImmunizationEvaluationDoseNumberSerializer
 import dev.ohs.fhir.model.r4.serializers.ImmunizationEvaluationSerializer
-import dev.ohs.fhir.model.r4.serializers.ImmunizationEvaluationSeriesDosesSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -202,7 +200,6 @@ public data class ImmunizationEvaluation(
         }
     }
 
-  @Serializable(with = ImmunizationEvaluationDoseNumberSerializer::class)
   public sealed interface DoseNumber {
     public fun asPositiveInt(): PositiveInt? = this as? PositiveInt
 
@@ -225,7 +222,6 @@ public data class ImmunizationEvaluation(
     }
   }
 
-  @Serializable(with = ImmunizationEvaluationSeriesDosesSerializer::class)
   public sealed interface SeriesDoses {
     public fun asPositiveInt(): PositiveInt? = this as? PositiveInt
 

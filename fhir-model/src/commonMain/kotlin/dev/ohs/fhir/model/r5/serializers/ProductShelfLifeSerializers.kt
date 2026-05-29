@@ -15,73 +15,167 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
-import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Duration
+import dev.ohs.fhir.model.r5.Element
+import dev.ohs.fhir.model.r5.Extension
 import dev.ohs.fhir.model.r5.ProductShelfLife
-import dev.ohs.fhir.model.r5.surrogates.ProductShelfLifePeriodSurrogate
-import dev.ohs.fhir.model.r5.surrogates.ProductShelfLifeSurrogate
-import kotlin.String
+import dev.ohs.fhir.model.r5.String as R5String
+import kotlin.OptIn
+import kotlin.String as KotlinString
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonEncoder
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object ProductShelfLifePeriodSerializer : KSerializer<ProductShelfLife.Period> {
-  internal val surrogateSerializer: KSerializer<ProductShelfLifePeriodSurrogate> by lazy {
-    ProductShelfLifePeriodSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Period", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): ProductShelfLife.Period =
-    surrogateSerializer.deserialize(decoder).toModel()
-
-  override fun serialize(encoder: Encoder, `value`: ProductShelfLife.Period) {
-    surrogateSerializer.serialize(encoder, ProductShelfLifePeriodSurrogate.fromModel(value))
-  }
-}
-
-public object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
-  internal val surrogateSerializer: KSerializer<ProductShelfLifeSurrogate> by lazy {
-    ProductShelfLifeSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("period")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("ProductShelfLife", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): ProductShelfLife {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object ProductShelfLifeSerializer : KSerializer<ProductShelfLife> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("ProductShelfLife") {
+      element("id", KotlinString.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element(
+        "modifierExtension",
+        listSerialDescriptor(Extension.serializer().descriptor),
+        isOptional = true,
+      )
+      element("type", CodeableConcept.serializer().descriptor, isOptional = true)
+      element("periodDuration", Duration.serializer().descriptor, isOptional = true)
+      element("periodString", KotlinString.serializer().descriptor, isOptional = true)
+      element("_periodString", Element.serializer().descriptor, isOptional = true)
+      element(
+        "specialPrecautionsForStorage",
+        listSerialDescriptor(CodeableConcept.serializer().descriptor),
+        isOptional = true,
+      )
+    }
+
+  override fun deserialize(decoder: Decoder): ProductShelfLife =
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: ProductShelfLife) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = ProductShelfLifeSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+  }
+
+  private fun deserializeInternal(decoder: CompositeDecoder): ProductShelfLife {
+    var id: KotlinString? = null
+    var extension: List<Extension>? = null
+    var modifierExtension: List<Extension>? = null
+    var type: CodeableConcept? = null
+    var periodDuration: Duration? = null
+    var periodString: KotlinString? = null
+    var _periodString: Element? = null
+    var specialPrecautionsForStorage: List<CodeableConcept>? = null
+    while (true) {
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 ->
+          modifierExtension =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        3 -> type = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.typeSer, null)
+        4 ->
+          periodDuration =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.periodDurationSer,
+              null,
+            )
+        5 -> periodString = decoder.decodeStringElement(descriptor, i)
+        6 ->
+          _periodString =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.periodStringSer, null)
+        7 ->
+          specialPrecautionsForStorage =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.specialPrecautionsForStorageSer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding ProductShelfLife: " + i)
+      }
+    }
+    return ProductShelfLife(
+      id = id,
+      extension = extension ?: listOf(),
+      modifierExtension = modifierExtension ?: listOf(),
+      type = type,
+      period =
+        ProductShelfLife.Period.from(periodDuration, R5String.of(periodString, _periodString)),
+      specialPrecautionsForStorage = specialPrecautionsForStorage ?: listOf(),
+    )
+  }
+
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: ProductShelfLife) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    if (value.modifierExtension.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        2,
+        Hoisted.extensionSer,
+        value.modifierExtension,
+      )
+    (value.type)?.let { encoder.encodeSerializableElement(descriptor, 3, Hoisted.typeSer, it) }
+    when (val choice = value.period) {
+      null -> {}
+      is ProductShelfLife.Period.Duration -> {
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.periodDurationSer, choice.value)
+      }
+      is ProductShelfLife.Period.String -> {
+        ((choice.value.value))?.let { encoder.encodeStringElement(descriptor, 5, it) }
+        (choice.value.toElement())?.let {
+          encoder.encodeSerializableElement(descriptor, 6, Hoisted.periodStringSer, it)
+        }
+      }
+    }
+    if (value.specialPrecautionsForStorage.isNotEmpty())
+      encoder.encodeSerializableElement(
+        descriptor,
+        7,
+        Hoisted.specialPrecautionsForStorageSer,
+        value.specialPrecautionsForStorage,
+      )
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val typeSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val periodDurationSer: KSerializer<Duration> = Duration.serializer()
+
+    public val periodStringSer: KSerializer<Element> = Element.serializer()
+
+    public val specialPrecautionsForStorageSer: KSerializer<List<CodeableConcept>> =
+      ListSerializer(Hoisted.typeSer)
   }
 }

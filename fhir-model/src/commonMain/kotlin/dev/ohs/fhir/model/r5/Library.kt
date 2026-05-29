@@ -19,8 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.LibrarySerializer
-import dev.ohs.fhir.model.r5.serializers.LibrarySubjectSerializer
-import dev.ohs.fhir.model.r5.serializers.LibraryVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -460,7 +458,6 @@ public data class Library(
       }
     }
 
-  @Serializable(with = LibraryVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 
@@ -482,7 +479,6 @@ public data class Library(
     }
   }
 
-  @Serializable(with = LibrarySubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

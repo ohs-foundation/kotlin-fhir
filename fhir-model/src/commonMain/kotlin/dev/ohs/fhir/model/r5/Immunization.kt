@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.ImmunizationOccurrenceSerializer
 import dev.ohs.fhir.model.r5.serializers.ImmunizationPerformerSerializer
 import dev.ohs.fhir.model.r5.serializers.ImmunizationProgramEligibilitySerializer
 import dev.ohs.fhir.model.r5.serializers.ImmunizationProtocolAppliedSerializer
@@ -836,7 +835,6 @@ public data class Immunization(
     }
   }
 
-  @Serializable(with = ImmunizationOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 

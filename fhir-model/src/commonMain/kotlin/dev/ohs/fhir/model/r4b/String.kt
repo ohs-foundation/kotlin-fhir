@@ -18,14 +18,17 @@
 
 package dev.ohs.fhir.model.r4b
 
+import dev.ohs.fhir.model.r4b.serializers.StringSerializer
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** Base StructureDefinition for string Type: A sequence of Unicode characters */
+@Serializable(with = StringSerializer::class)
 public open class String(
   /** unique id for the element within a resource (for internal references) */
   open override val id: kotlin.String? = null,
@@ -57,7 +60,7 @@ public open class String(
   override fun hashCode(): Int {
     // Using 31 improves hash distribution and reduces collisions in hash-based collections
     var result = id?.hashCode() ?: 0
-    result = 31 * result + (extension?.hashCode() ?: 0)
+    result = 31 * result + (extension.hashCode())
     result = 31 * result + (value?.hashCode() ?: 0)
     return result
   }

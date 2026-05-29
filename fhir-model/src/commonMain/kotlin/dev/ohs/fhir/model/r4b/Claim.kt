@@ -18,25 +18,18 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.ClaimAccidentLocationSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimAccidentSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimCareTeamSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClaimDiagnosisDiagnosisSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimDiagnosisSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimInsuranceSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimItemDetailSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimItemDetailSubDetailSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClaimItemLocationSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimItemSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClaimItemServicedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimPayeeSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClaimProcedureProcedureSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimProcedureSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimRelatedSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimSerializer
 import dev.ohs.fhir.model.r4b.serializers.ClaimSupportingInfoSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClaimSupportingInfoTimingSerializer
-import dev.ohs.fhir.model.r4b.serializers.ClaimSupportingInfoValueSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -848,7 +841,6 @@ public data class Claim(
         }
       }
 
-    @Serializable(with = ClaimSupportingInfoTimingSerializer::class)
     public sealed interface Timing {
       public fun asDate(): Date? = this as? Date
 
@@ -870,7 +862,6 @@ public data class Claim(
       }
     }
 
-    @Serializable(with = ClaimSupportingInfoValueSerializer::class)
     public sealed interface Value {
       public fun asBoolean(): Boolean? = this as? Boolean
 
@@ -1085,7 +1076,6 @@ public data class Claim(
         }
       }
 
-    @Serializable(with = ClaimDiagnosisDiagnosisSerializer::class)
     public sealed interface Diagnosis {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1269,7 +1259,6 @@ public data class Claim(
         }
       }
 
-    @Serializable(with = ClaimProcedureProcedureSerializer::class)
     public sealed interface Procedure {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1661,7 +1650,6 @@ public data class Claim(
         }
       }
 
-    @Serializable(with = ClaimAccidentLocationSerializer::class)
     public sealed interface Location {
       public fun asAddress(): Address? = this as? Address
 
@@ -2435,7 +2423,6 @@ public data class Claim(
       }
     }
 
-    @Serializable(with = ClaimItemServicedSerializer::class)
     public sealed interface Serviced {
       public fun asDate(): Date? = this as? Date
 
@@ -2457,7 +2444,6 @@ public data class Claim(
       }
     }
 
-    @Serializable(with = ClaimItemLocationSerializer::class)
     public sealed interface Location {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

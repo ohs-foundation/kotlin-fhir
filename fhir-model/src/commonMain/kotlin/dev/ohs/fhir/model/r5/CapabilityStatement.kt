@@ -32,7 +32,6 @@ import dev.ohs.fhir.model.r5.serializers.CapabilityStatementRestSecuritySerializ
 import dev.ohs.fhir.model.r5.serializers.CapabilityStatementRestSerializer
 import dev.ohs.fhir.model.r5.serializers.CapabilityStatementSerializer
 import dev.ohs.fhir.model.r5.serializers.CapabilityStatementSoftwareSerializer
-import dev.ohs.fhir.model.r5.serializers.CapabilityStatementVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.FHIRVersion
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
@@ -2734,7 +2733,6 @@ public data class CapabilityStatement(
     }
   }
 
-  @Serializable(with = CapabilityStatementVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptDesignationSerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptPropertySerializer
-import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptPropertyValueSerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemConceptSerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemFilterSerializer
 import dev.ohs.fhir.model.r4.serializers.CodeSystemPropertySerializer
@@ -964,7 +963,6 @@ public data class CodeSystem(
           }
         }
 
-      @Serializable(with = CodeSystemConceptPropertyValueSerializer::class)
       public sealed interface Value {
         public fun asCode(): Code? = this as? Code
 

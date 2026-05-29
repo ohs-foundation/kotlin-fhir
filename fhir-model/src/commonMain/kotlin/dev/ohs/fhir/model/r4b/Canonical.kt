@@ -18,15 +18,18 @@
 
 package dev.ohs.fhir.model.r4b
 
+import dev.ohs.fhir.model.r4b.serializers.CanonicalSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /**
  * Base StructureDefinition for canonical type: A URI that is a reference to a canonical URL on a
  * FHIR resource
  */
+@Serializable(with = CanonicalSerializer::class)
 public data class Canonical(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,
@@ -46,7 +49,7 @@ public data class Canonical(
   /** Primitive value for canonical */
   override val `value`: String? = null,
 ) : Uri(id, extension, `value`) {
-  open override fun toBuilder(): Builder =
+  override fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.CompartmentDefinitionResourceSerializer
 import dev.ohs.fhir.model.r5.serializers.CompartmentDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.CompartmentDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
 import kotlin.Suppress
@@ -472,7 +471,6 @@ public data class CompartmentDefinition(
     }
   }
 
-  @Serializable(with = CompartmentDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

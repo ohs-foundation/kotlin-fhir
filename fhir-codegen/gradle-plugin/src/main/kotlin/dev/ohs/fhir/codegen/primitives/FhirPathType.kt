@@ -27,40 +27,33 @@ import kotlinx.datetime.LocalTime
  * - **URI:** The unique identifier for the FHIRPath type (e.g.,
  *   "http://hl7.org/fhirpath/System.Boolean").
  * - **FHIR Type Codes:** A list of FHIR primitive type codes associated with this type (e.g.
- *   "integer", "positiveInt", "unsignedInt" are all associated with the FHIRPath Integer type, and
- *   should be handled in the generated data class and surrogate class accordingly).
- * - **Kotlin Type in Data Class:** The Kotlin class used for representing the value in the data
- *   class (e.g. FHIRPath DateTime is represented in the data class as FHIRDateTime, an interface
- *   generated to handle the DateTime type in FHIR specifically).
- * - **Kotlin Type in Surrogate Class:** The Kotlin class used for representing the value in the
- *   surrogate classes (e.g., FHIRPath DateTime is mapped to a Kotlin String in the surrogate
- *   class).
+ *   "integer", "positiveInt", "unsignedInt" all map to the FHIRPath Integer type).
+ * - **Kotlin Type in Data Class:** The Kotlin class used to represent the value in the data class
+ *   (e.g. FHIRPath DateTime is represented as FHIRDateTime, an interface generated to handle FHIR's
+ *   DateTime semantics).
+ * - **Kotlin Type on the Wire ([wireType]):** The Kotlin class used to decode/encode the value on
+ *   the JSON wire (e.g. FHIRPath DateTime is a `String` on the wire).
  *
  * N.B. The Kotlin type in data class is retrieved by calling [getTypeInModelClass] with the package
  * name.
  */
-enum class FhirPathType(
-  val uri: String,
-  val fhirTypeCodes: List<String>,
-  val typeInSurrogateClass: ClassName,
-) {
+enum class FhirPathType(val uri: String, val fhirTypeCodes: List<String>, val wireType: ClassName) {
   BOOLEAN(
     uri = "http://hl7.org/fhirpath/System.Boolean",
     fhirTypeCodes = listOf("boolean"),
-    typeInSurrogateClass = Boolean::class.asClassName(),
+    wireType = Boolean::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = Boolean::class.asClassName()
 
-    override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
+    override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
-    override fun addCodeToConvertTypeInSurrogateToTypeInModel(
+    override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
       varName: String,
@@ -68,27 +61,26 @@ enum class FhirPathType(
       codeBlock.add("%L", varName)
     }
 
-    override fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder) {
+    override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value")
     }
   },
   INTEGER(
     uri = "http://hl7.org/fhirpath/System.Integer",
     fhirTypeCodes = listOf("integer", "positiveInt", "unsignedInt"),
-    typeInSurrogateClass = Int::class.asClassName(),
+    wireType = Int::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = Int::class.asClassName()
 
-    override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
+    override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
-    override fun addCodeToConvertTypeInSurrogateToTypeInModel(
+    override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
       varName: String,
@@ -96,27 +88,26 @@ enum class FhirPathType(
       codeBlock.add("%L", varName)
     }
 
-    override fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder) {
+    override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value")
     }
   },
   LONG(
     uri = "http://hl7.org/fhirpath/System.Long",
     fhirTypeCodes = listOf("integer64"),
-    typeInSurrogateClass = String::class.asClassName(),
+    wireType = String::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = Long::class.asClassName()
 
-    override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
+    override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N?.toLong()", surrogateClassName, propertyName)
+      codeBlock.add("%N?.toLong()", propertyName)
     }
 
-    override fun addCodeToConvertTypeInSurrogateToTypeInModel(
+    override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
       varName: String,
@@ -124,28 +115,27 @@ enum class FhirPathType(
       codeBlock.add("%N?.toLong()", varName)
     }
 
-    override fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder) {
+    override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value?.toString()")
     }
   },
   DECIMAL(
     uri = "http://hl7.org/fhirpath/System.Decimal",
     fhirTypeCodes = listOf("decimal"),
-    typeInSurrogateClass = Double::class.asClassName(),
+    wireType = ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal"),
   ) {
     override fun getTypeInModelClass(packageName: String) =
       ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal")
 
-    override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
+    override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
-    override fun addCodeToConvertTypeInSurrogateToTypeInModel(
+    override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
       varName: String,
@@ -153,8 +143,8 @@ enum class FhirPathType(
       codeBlock.add("%L", varName)
     }
 
-    override fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder) {
-      codeBlock.add(".value?.toString()?.toDouble()")
+    override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
+      codeBlock.add(".value")
     }
   },
   STRING(
@@ -173,20 +163,19 @@ enum class FhirPathType(
         "uuid",
         "xhtml",
       ),
-    typeInSurrogateClass = String::class.asClassName(),
+    wireType = String::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = String::class.asClassName()
 
-    override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
+    override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
-    override fun addCodeToConvertTypeInSurrogateToTypeInModel(
+    override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
       varName: String,
@@ -194,32 +183,26 @@ enum class FhirPathType(
       codeBlock.add("%L", varName)
     }
 
-    override fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder) {
+    override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value")
     }
   },
   DATE(
     uri = "http://hl7.org/fhirpath/System.Date",
     fhirTypeCodes = listOf("date"),
-    typeInSurrogateClass = String::class.asClassName(),
+    wireType = String::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = ClassName(packageName, "FhirDate")
 
-    override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
+    override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add(
-        "%T.fromString(this@%T.%N)",
-        getTypeInModelClass(packageName),
-        surrogateClassName,
-        propertyName,
-      )
+      codeBlock.add("%T.fromString(%N)", getTypeInModelClass(packageName), propertyName)
     }
 
-    override fun addCodeToConvertTypeInSurrogateToTypeInModel(
+    override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
       varName: String,
@@ -227,27 +210,26 @@ enum class FhirPathType(
       codeBlock.add("%T.fromString(%L)", getTypeInModelClass(packageName), varName)
     }
 
-    override fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder) {
+    override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value?.toString()")
     }
   },
   TIME(
     uri = "http://hl7.org/fhirpath/System.Time",
     fhirTypeCodes = listOf("time"),
-    typeInSurrogateClass = LocalTime::class.asClassName(),
+    wireType = LocalTime::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = LocalTime::class.asClassName()
 
-    override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
+    override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add("this@%T.%N", surrogateClassName, propertyName)
+      codeBlock.add("%N", propertyName)
     }
 
-    override fun addCodeToConvertTypeInSurrogateToTypeInModel(
+    override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
       varName: String,
@@ -255,32 +237,26 @@ enum class FhirPathType(
       codeBlock.add("%L", varName)
     }
 
-    override fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder) {
+    override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value")
     }
   },
   DATETIME(
     uri = "http://hl7.org/fhirpath/System.DateTime",
     fhirTypeCodes = listOf("dateTime", "instant"),
-    typeInSurrogateClass = String::class.asClassName(),
+    wireType = String::class.asClassName(),
   ) {
     override fun getTypeInModelClass(packageName: String) = ClassName(packageName, "FhirDateTime")
 
-    override fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
+    override fun addCodeToDecodeWirePropertyToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
-      surrogateClassName: ClassName,
       propertyName: String,
     ) {
-      codeBlock.add(
-        "%T.fromString(this@%T.%N)",
-        getTypeInModelClass(packageName),
-        surrogateClassName,
-        propertyName,
-      )
+      codeBlock.add("%T.fromString(%N)", getTypeInModelClass(packageName), propertyName)
     }
 
-    override fun addCodeToConvertTypeInSurrogateToTypeInModel(
+    override fun addCodeToDecodeWireVarToModel(
       codeBlock: CodeBlock.Builder,
       packageName: String,
       varName: String,
@@ -288,61 +264,44 @@ enum class FhirPathType(
       codeBlock.add("%T.fromString(%L)", getTypeInModelClass(packageName), varName)
     }
 
-    override fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder) {
+    override fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder) {
       codeBlock.add(".value?.toString()")
     }
   };
 
   /**
-   * Returns the corresponding type in the model class.
-   *
-   * Used to construct the properties for primitive FHIR types in the model class, e.g. [Boolean]
-   * for FHIR's Boolean type or the custom `FhirDateTime` class for FHIR's DateTime type.
-   *
-   * Also used by [addCodeToConvertPropertyInSurrogateToPropertyInModel] and
-   * [addCodeToConvertTypeInSurrogateToTypeInModel] to generate code to convert a property in the
-   * surrogate class to a property in the model class.
+   * Returns the corresponding type in the model class — e.g. [Boolean] for FHIR's `boolean` or the
+   * custom `FhirDateTime` for FHIR's `dateTime`.
    */
   abstract fun getTypeInModelClass(packageName: String): ClassName
 
   /**
-   * Adds code to the `codeBlock` to convert a property of this [FhirPathType] in the surrogate
-   * class to a property in the model class.
-   *
-   * For example, for boolean this generates `this@surrogateClass.elementName`; and for integer64,
-   * this generates `this@surrogateClass.elementName?.toLong()` since integer64 is represented in
-   * the surrogate class as a string and needs to be converted to a [Long] in the model class.
+   * Appends code to convert a decoded wire-shaped property of this [FhirPathType] to the model
+   * value type. For example, `boolean` emits `elementName`; `integer64` (string on the wire) emits
+   * `elementName?.toLong()`.
    */
-  abstract fun addCodeToConvertPropertyInSurrogateToPropertyInModel(
+  abstract fun addCodeToDecodeWirePropertyToModel(
     codeBlock: CodeBlock.Builder,
     packageName: String,
-    surrogateClassName: ClassName,
     propertyName: String,
   )
 
   /**
-   * Adds code to the `codeBlock` to convert a variable of this [FhirPathType] in the model class to
-   * a variable in the surrogate class.
-   *
-   * For example, for boolean variable `value` this simply generates `value`; and for integer64,
-   * this generates `value?.toLong()` since integer64 is represented in the surrogate class as a
-   * [String] and needs to be converted to a [Long] in the model class.
+   * Same as [addCodeToDecodeWirePropertyToModel] but takes a literal var name instead of a
+   * kotlinpoet name token — used inside generated lambdas where `%N` would re-quote.
    */
-  abstract fun addCodeToConvertTypeInSurrogateToTypeInModel(
+  abstract fun addCodeToDecodeWireVarToModel(
     codeBlock: CodeBlock.Builder,
     packageName: String,
     varName: String,
   )
 
   /**
-   * Adds code to the `codeBlock` to convert a variable of this [FhirPathType] in the surrogate
-   * class to a variable in the model class.
-   *
-   * For example, for a boolean variable this will generate the code `.value` for the underlying
-   * property in the surrogate class; and for integer64, this generates `.value?.toString()` to get
-   * the underlying [Long] in the model class and convert it to a [String] in the surrogate class.
+   * Appends code to convert a model value of this [FhirPathType] back to its wire form. For
+   * example, `boolean` emits `.value`; `integer64` (`Long` in the model, string on the wire) emits
+   * `.value?.toString()`.
    */
-  abstract fun addCodeToConvertTypeInModelToTypeInSurrogate(codeBlock: CodeBlock.Builder)
+  abstract fun addCodeToEncodeModelToWire(codeBlock: CodeBlock.Builder)
 
   companion object {
     /**
@@ -360,17 +319,15 @@ enum class FhirPathType(
     fun getFromUri(uri: String) = entries.find { it.uri == uri }
 
     /**
-     * Whether any [FhirPathType] contains the given [fhirTypeCode]. This function is used to
-     * determine whether a type code is a supported FHIR primitive type. This is used to generate
-     * code in the surrogate class since FHIR primitive types are mapped to fields in the surrogate
-     * class corresponding to two JSON properties.
+     * Whether any [FhirPathType] contains the given [fhirTypeCode] — i.e. the code names a
+     * supported FHIR primitive that gets a flat `value` + `_value` pair on the wire.
      */
     fun containsFhirTypeCode(fhirTypeCode: String) =
       entries.any { it.fhirTypeCodes.contains(fhirTypeCode) }
 
     /**
-     * Returns the [FhirPathType] corresponding to the given FHIR type code. This function is used
-     * to determine the type of a primitive field in the surrogate class.
+     * Returns the [FhirPathType] for a given FHIR primitive type code, used to pick the wire
+     * representation when emitting decode/encode code.
      */
     fun getFromFhirTypeCode(fhirTypeCode: String) =
       entries.find { it.fhirTypeCodes.contains(fhirTypeCode) }

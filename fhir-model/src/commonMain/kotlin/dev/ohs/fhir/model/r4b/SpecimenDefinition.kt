@@ -19,9 +19,7 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.SpecimenDefinitionSerializer
-import dev.ohs.fhir.model.r4b.serializers.SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSerializer
 import dev.ohs.fhir.model.r4b.serializers.SpecimenDefinitionTypeTestedContainerAdditiveSerializer
-import dev.ohs.fhir.model.r4b.serializers.SpecimenDefinitionTypeTestedContainerMinimumVolumeSerializer
 import dev.ohs.fhir.model.r4b.serializers.SpecimenDefinitionTypeTestedContainerSerializer
 import dev.ohs.fhir.model.r4b.serializers.SpecimenDefinitionTypeTestedHandlingSerializer
 import dev.ohs.fhir.model.r4b.serializers.SpecimenDefinitionTypeTestedSerializer
@@ -378,7 +376,6 @@ public data class SpecimenDefinition(
             }
           }
 
-        @Serializable(with = SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSerializer::class)
         public sealed interface Additive {
           public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -460,7 +457,6 @@ public data class SpecimenDefinition(
         }
       }
 
-      @Serializable(with = SpecimenDefinitionTypeTestedContainerMinimumVolumeSerializer::class)
       public sealed interface MinimumVolume {
         public fun asQuantity(): Quantity? = this as? Quantity
 

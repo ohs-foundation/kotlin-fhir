@@ -61,7 +61,7 @@ public data class RatioRange(
   /** The value of the denominator. */
   public val denominator: Quantity? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.TestReportParticipantSerializer
 import dev.ohs.fhir.model.r5.serializers.TestReportSerializer
-import dev.ohs.fhir.model.r5.serializers.TestReportSetupActionAssertRequirementLinkSerializer
 import dev.ohs.fhir.model.r5.serializers.TestReportSetupActionAssertRequirementSerializer
 import dev.ohs.fhir.model.r5.serializers.TestReportSetupActionAssertSerializer
 import dev.ohs.fhir.model.r5.serializers.TestReportSetupActionOperationSerializer
@@ -694,7 +693,6 @@ public data class TestReport(
               }
             }
 
-          @Serializable(with = TestReportSetupActionAssertRequirementLinkSerializer::class)
           public sealed interface Link {
             public fun asUri(): Uri? = this as? Uri
 

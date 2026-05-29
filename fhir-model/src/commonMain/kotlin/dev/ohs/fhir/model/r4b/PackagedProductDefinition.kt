@@ -21,9 +21,7 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionLegalStatusOfSupplySerializer
 import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackageContainedItemSerializer
 import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackagePropertySerializer
-import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackagePropertyValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackageSerializer
-import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackageShelfLifeStoragePeriodSerializer
 import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionPackageShelfLifeStorageSerializer
 import dev.ohs.fhir.model.r4b.serializers.PackagedProductDefinitionSerializer
 import kotlin.Suppress
@@ -525,7 +523,6 @@ public data class PackagedProductDefinition(
           }
         }
 
-      @Serializable(with = PackagedProductDefinitionPackageShelfLifeStoragePeriodSerializer::class)
       public sealed interface Period {
         public fun asDuration(): Duration? = this as? Duration
 
@@ -679,7 +676,6 @@ public data class PackagedProductDefinition(
           }
         }
 
-      @Serializable(with = PackagedProductDefinitionPackagePropertyValueSerializer::class)
       public sealed interface Value {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

@@ -21,10 +21,7 @@ package dev.ohs.fhir.model.r4b
 import dev.ohs.fhir.model.r4b.serializers.IngredientManufacturerSerializer
 import dev.ohs.fhir.model.r4b.serializers.IngredientSerializer
 import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceSerializer
-import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthConcentrationSerializer
-import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthPresentationSerializer
 import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthReferenceStrengthSerializer
-import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthReferenceStrengthStrengthSerializer
 import dev.ohs.fhir.model.r4b.serializers.IngredientSubstanceStrengthSerializer
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -544,7 +541,6 @@ public data class Ingredient(
             }
           }
 
-        @Serializable(with = IngredientSubstanceStrengthReferenceStrengthStrengthSerializer::class)
         public sealed interface Strength {
           public fun asRatio(): Ratio? = this as? Ratio
 
@@ -633,7 +629,6 @@ public data class Ingredient(
         }
       }
 
-      @Serializable(with = IngredientSubstanceStrengthPresentationSerializer::class)
       public sealed interface Presentation {
         public fun asRatio(): Ratio? = this as? Ratio
 
@@ -656,7 +651,6 @@ public data class Ingredient(
         }
       }
 
-      @Serializable(with = IngredientSubstanceStrengthConcentrationSerializer::class)
       public sealed interface Concentration {
         public fun asRatio(): Ratio? = this as? Ratio
 

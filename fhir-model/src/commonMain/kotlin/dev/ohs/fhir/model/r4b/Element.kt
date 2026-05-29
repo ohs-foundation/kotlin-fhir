@@ -18,6 +18,7 @@
 
 package dev.ohs.fhir.model.r4b
 
+import dev.ohs.fhir.model.r4b.serializers.ElementSerializer
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
@@ -27,7 +28,7 @@ import kotlin.collections.List
 import kotlinx.serialization.Serializable
 
 /** Base StructureDefinition for Element Type: Base definition for all elements in a resource. */
-@Serializable
+@Serializable(with = ElementSerializer::class)
 public open class Element(
   /**
    * Unique id for the element within a resource (for internal references). This may be any string
@@ -59,7 +60,7 @@ public open class Element(
   override fun hashCode(): Int {
     // Using 31 improves hash distribution and reduces collisions in hash-based collections
     var result = id?.hashCode() ?: 0
-    result = 31 * result + (extension?.hashCode() ?: 0)
+    result = 31 * result + (extension.hashCode())
     return result
   }
 }

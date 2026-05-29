@@ -18,9 +18,7 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.ConditionAbatementSerializer
 import dev.ohs.fhir.model.r4.serializers.ConditionEvidenceSerializer
-import dev.ohs.fhir.model.r4.serializers.ConditionOnsetSerializer
 import dev.ohs.fhir.model.r4.serializers.ConditionSerializer
 import dev.ohs.fhir.model.r4.serializers.ConditionStageSerializer
 import kotlin.String
@@ -518,7 +516,6 @@ public data class Condition(
     }
   }
 
-  @Serializable(with = ConditionOnsetSerializer::class)
   public sealed interface Onset {
     public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -558,7 +555,6 @@ public data class Condition(
     }
   }
 
-  @Serializable(with = ConditionAbatementSerializer::class)
   public sealed interface Abatement {
     public fun asDateTime(): DateTime? = this as? DateTime
 

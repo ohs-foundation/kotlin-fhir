@@ -18,20 +18,15 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeCostCostSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeCostSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalDrugCharacteristicSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalDrugCharacteristicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalIngredientSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalIngredientStrengthSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeDefinitionalSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelineDosageSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineDosingGuidelineSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeIndicationGuidelineSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeMedicineClassificationSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeMedicineClassificationSourceSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeMonitoringProgramSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeMonographSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgePackagingSerializer
@@ -41,7 +36,6 @@ import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeRegulatorySubstituti
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeRelatedMedicationKnowledgeSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineEnvironmentalSettingSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineEnvironmentalSettingValueSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationKnowledgeStorageGuidelineSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -586,7 +580,6 @@ public data class MedicationKnowledge(
         }
       }
 
-    @Serializable(with = MedicationKnowledgeCostCostSerializer::class)
     public sealed interface Cost {
       public fun asMoney(): Money? = this as? Money
 
@@ -1111,10 +1104,6 @@ public data class MedicationKnowledge(
             }
           }
 
-        @Serializable(
-          with =
-            MedicationKnowledgeIndicationGuidelineDosingGuidelinePatientCharacteristicValueSerializer::class
-        )
         public sealed interface Value {
           public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1406,7 +1395,6 @@ public data class MedicationKnowledge(
         }
       }
 
-    @Serializable(with = MedicationKnowledgeMedicineClassificationSourceSerializer::class)
     public sealed interface Source {
       public fun asString(): String? = this as? String
 
@@ -1746,9 +1734,6 @@ public data class MedicationKnowledge(
           }
         }
 
-      @Serializable(
-        with = MedicationKnowledgeStorageGuidelineEnvironmentalSettingValueSerializer::class
-      )
       public sealed interface Value {
         public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -2404,7 +2389,6 @@ public data class MedicationKnowledge(
           }
         }
 
-      @Serializable(with = MedicationKnowledgeDefinitionalIngredientStrengthSerializer::class)
       public sealed interface Strength {
         public fun asRatio(): Ratio? = this as? Ratio
 
@@ -2565,7 +2549,6 @@ public data class MedicationKnowledge(
           }
         }
 
-      @Serializable(with = MedicationKnowledgeDefinitionalDrugCharacteristicValueSerializer::class)
       public sealed interface Value {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

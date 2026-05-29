@@ -22,7 +22,6 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
@@ -77,6 +76,7 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
               addEqualsAndHashCodeFunctions(
                 structureDefinition.name,
                 structureDefinition.rootElements,
+                modelClassName,
               )
             } else {
               addModifiers(KModifier.SEALED)
@@ -94,6 +94,7 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
             addEqualsAndHashCodeFunctions(
               structureDefinition.name,
               structureDefinition.rootElements,
+              modelClassName,
             )
           } else {
             addModifiers(KModifier.DATA)
@@ -107,11 +108,40 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
                 .build()
             )
           } else if (structureDefinition.kind == StructureDefinition.Kind.RESOURCE) {
-            // All resources (Resource class and its subclasses) are serializable
-            addAnnotation(Serializable::class)
+            // The abstract `Resource` root dispatches via `ResourcePolymorphicSerializer`: an
+            // `AbstractPolymorphicSerializer<Resource>` that maps `resourceType` to a per-subclass
+            // `XPolymorphicSerializer` (descriptor without `resourceType`, so kotlinx-json can
+            // inject the class discriminator without colliding with a same-named field).
+            if (structureDefinitionName == "Resource") {
+              addAnnotation(
+                AnnotationSpec.builder(Serializable::class)
+                  .addMember(
+                    "with = %T::class",
+                    ClassName(modelClassName.packageName, "ResourcePolymorphicSerializer"),
+                  )
+                  .build()
+              )
+            } else {
+              // All other resources (DomainResource, concrete subclasses) are serializable
+              addAnnotation(Serializable::class)
+            }
           } else if (structureDefinitionName == "Element") {
-            // Element is serializable for fields prefixed with '_'
-            addAnnotation(Serializable::class)
+            // Element gets a hand-rolled custom serializer
+            addAnnotation(
+              AnnotationSpec.builder(Serializable::class)
+                .addMember("with = %T::class", modelClassName.toSerializerClassName())
+                .build()
+            )
+          } else if (structureDefinition.kind == StructureDefinition.Kind.PRIMITIVE_TYPE) {
+            // FHIR primitive wrapper classes get a hand-rolled custom serializer. A custom
+            // serializer (vs compiler-synthesized) sidesteps the duplicate-serial-name error that
+            // would otherwise occur from inherited + overridden `@Serializable` properties
+            // across Element → Primitive (and Primitive → refined primitives like Code/Canonical).
+            addAnnotation(
+              AnnotationSpec.builder(Serializable::class)
+                .addMember("with = %T::class", modelClassName.toSerializerClassName())
+                .build()
+            )
           }
 
           // Serial name annotations for resources
@@ -154,7 +184,12 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
 
           addSealedInterfaces(modelClassName, structureDefinition.rootElements)
 
-          addModelBuilderSupport(structureDefinition, modelClassName, codegenContext.valueSetMap)
+          addModelBuilderSupport(
+            structureDefinition,
+            modelClassName,
+            codegenContext.valueSetMap,
+            isBaseClass = isBaseClass,
+          )
 
           addEnumClassTypeSpec(
             valueSetMap = codegenContext.valueSetMap,
@@ -205,8 +240,16 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
   private fun TypeSpec.Builder.addEqualsAndHashCodeFunctions(
     name: String,
     elements: List<Element>,
+    modelClassName: ClassName,
   ) {
     if (elements.isEmpty()) return
+    val propertyMapper =
+      PropertyMapper(
+        PropertyMapper.MappingContext.MODEL,
+        modelClassName,
+        codegenContext.valueSetMap,
+      )
+    val properties = elements.map { propertyMapper.mapToProperty(it) }
     val equalsFunSpec =
       FunSpec.builder("equals")
         .addModifiers(KModifier.OVERRIDE)
@@ -220,14 +263,19 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
             .trimIndent()
         )
         .addCode(
-          elements.joinToString(separator = "\n", prefix = "\n", postfix = "\n") {
-            "if( ${it.getElementName()} != other.${it.getElementName()}) return false"
+          properties.joinToString(separator = "\n", prefix = "\n", postfix = "\n") {
+            "if (${it.name} != other.${it.name}) return false"
           }
         )
         .addCode("return true")
         .build()
-
     this.addFunction(equalsFunSpec)
+
+    // Lift the property's static nullability straight off the [PropertyMapper] output instead of
+    // re-deriving it from element constraints — keeps a single source of truth.
+    fun hashCodeExpr(property: PropertyInfo): String =
+      if (property.typeName.isNullable) "${property.name}?.hashCode() ?: 0"
+      else "${property.name}.hashCode()"
 
     val hashCodeFunSpec =
       FunSpec.builder("hashCode")
@@ -236,14 +284,10 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
         .addCode(
           "// Using 31 improves hash distribution and reduces collisions in hash-based collections\n"
         )
-        .addCode("var result = ${elements.first().getElementName()}?.hashCode() ?: 0")
+        .addCode("var result = ${hashCodeExpr(properties.first())}")
         .addCode(
-          elements.subList(1, elements.size).joinToString(
-            separator = "\n",
-            prefix = "\n",
-            postfix = "\n",
-          ) {
-            "result = 31 * result + (${it.getElementName()}?.hashCode() ?: 0)"
+          properties.drop(1).joinToString(separator = "\n", prefix = "\n", postfix = "\n") {
+            "result = 31 * result + (${hashCodeExpr(it)})"
           }
         )
         .addCode("return result")
@@ -333,6 +377,27 @@ class ModelFileSpecGenerator(val codegenContext: CodegenContext) {
   }
 }
 
+/**
+ * Returns the class name of the custom `@Serializable(with = X::class)` serializer the compiler
+ * plugin should use for a property of the given [typeName], or null if the default synthesized
+ * serializer is fine. The serializer lives in the model's `<packageName>.serializers` sub-package.
+ */
+private fun customValueSerializerFor(typeName: TypeName, modelPackageName: String): ClassName? {
+  val raw = typeName as? ClassName ?: return null
+  val serializersPackage = "$modelPackageName.serializers"
+  return when {
+    raw.packageName == "com.ionspin.kotlin.bignum.decimal" && raw.simpleName == "BigDecimal" ->
+      ClassName(serializersPackage, "BigDecimalSerializer")
+    raw.packageName == modelPackageName && raw.simpleName == "FhirDate" ->
+      ClassName(serializersPackage, "FhirDateSerializer")
+    raw.packageName == modelPackageName && raw.simpleName == "FhirDateTime" ->
+      ClassName(serializersPackage, "FhirDateTimeSerializer")
+    raw.packageName == "kotlinx.datetime" && raw.simpleName == "LocalTime" ->
+      ClassName(serializersPackage, "LocalTimeSerializer")
+    else -> null
+  }
+}
+
 private fun TypeSpec.Builder.buildProperties(
   modelClassName: ClassName,
   elements: List<Element>,
@@ -367,6 +432,18 @@ private fun TypeSpec.Builder.buildProperties(
               }
             } else if (isBaseClass) {
               addModifiers(KModifier.OPEN)
+            }
+
+            // Attach an explicit `@Serializable(with = X::class)` for value types the compiler
+            // plugin can't find a serializer for on its own (BigDecimal, FhirDate, FhirDateTime,
+            // LocalTime). Typically applies only to primitive wrappers' `value` property.
+            customValueSerializerFor(propertyInfo.typeName, modelClassName.packageName)?.let {
+              customSerializer ->
+              addAnnotation(
+                AnnotationSpec.builder(Serializable::class)
+                  .addMember("with = %T::class", customSerializer)
+                  .build()
+              )
             }
 
             addKdoc("%L", element.definition.sanitizeKDoc())
@@ -425,20 +502,16 @@ private fun TypeSpec.Builder.addSealedInterfaces(
     PropertyMapper(PropertyMapper.MappingContext.MODEL, enclosingModelClassName, emptyMap())
 
   for (element in elements.filter { it.path.endsWith("[x]") }) {
-    val sealedInterfaceClassName =
-      enclosingModelClassName.nestedClass(element.getElementName().capitalized())
+    val fieldName = element.getElementName()
+    val sealedInterfaceClassName = enclosingModelClassName.nestedClass(fieldName.capitalized())
     addType(
       TypeSpec.interfaceBuilder(sealedInterfaceClassName)
         .addModifiers(KModifier.SEALED)
-        .addAnnotation(
-          AnnotationSpec.builder(Serializable::class)
-            .addMember("with = %T::class", sealedInterfaceClassName.toSerializerClassName())
-            .build()
-        )
         .apply {
           for (type in element.type!!) {
+            val expansionName = choiceTypeExpansionName(type)
             addType(
-              TypeSpec.classBuilder(type.code.capitalized())
+              TypeSpec.classBuilder(expansionName)
                 .addModifiers(KModifier.DATA)
                 .primaryConstructor(
                   FunSpec.constructorBuilder()
@@ -460,9 +533,9 @@ private fun TypeSpec.Builder.addSealedInterfaces(
                 .build()
             )
             .apply {
-              // Add an `asDataType` function for each choice type. This function is used
-              // to deconstruct the property of the sealed interface in the data class into
-              // separate properties in the surrogate class.
+              // Add an `asDataType` function per choice type expansion. Used by the parent
+              // serializer's encode path to extract the matched expansion's value into a flat
+              // wire-shape slot.
               for (type in element.type) {
                 addDataTypeFunction(type, sealedInterfaceClassName)
               }
@@ -505,27 +578,14 @@ private fun TypeSpec.Builder.addToElementFunction(
 }
 
 /**
- * Adds an `of` function in the companion object to return a FHIR primitive date type object from a
- * Kotlin primitive value and a FHIR `Element`.
+ * Adds an `of(value, element)` factory on a FHIR primitive's companion that merges the two wire
+ * fields — the primitive value and its `_field` Element sidecar (id + extensions) — into a single
+ * model object, or returns null when both are absent.
  *
- * The generated function is useful for merging the two fields in the surrogate class representing
- * the two JSON properties into a single field in the data class.
+ * For `birthDate`, the wire has `birthDate` (`LocalDate`) and `_birthDate` (`Element`); the model
+ * has a single `birthDate: Date` (the FHIR primitive carrying both).
  *
- * For example, the `birthDate` and `_birthDate` JSON properties in a patient object are
- * deserialized into two fields in the `PatientSurrogate` class:
- * - `birthDate`: `LocalDate` storing the primitive value
- * - `_birthDate`: `Element` storing the id and extensions of the FHIR data type
- *
- * N.B. The `LocalDate` type here is `kotlinx.datetime.LocalDate`.
- *
- * They are then merged into a single field in the `Patient` class:
- * - `birthDate`: `Date`
- *
- * N.B. The `Date` type here is a FHIR primitive type that contains both the primitive Kotlin value
- * and the `Element` with id and extensions.
- *
- * For this example, this function will add the following code to the FHIR primitive data type
- * `Date`:
+ * Generated example for `Date`:
  * ```
  * public companion object {
  *   public fun of(`value`: FhirDate?, element: Element?): Date? =
@@ -537,30 +597,20 @@ private fun TypeSpec.Builder.addToElementFunction(
  * }
  * ```
  *
- * The generated function is also useful for merging choice of types as separate fields in the
- * surrogate class into a single object in the data model class. For example:
+ * The generated function is also useful for merging choice of types as separate decoded local
+ * variables into a single object in the data model class. For example:
  * ```
  * Extension.Value?.from(
- *   Base64Binary.of(
- *     this@ExtensionSurrogate.valueBase64Binary,
- *     this@ExtensionSurrogate._valueBase64Binary,
- *   ),
- *   R4bBoolean.of(
- *     this@ExtensionSurrogate.valueBoolean,
- *     this@ExtensionSurrogate._valueBoolean,
- *   ),
- *   Canonical.of(
- *     this@ExtensionSurrogate.valueCanonical,
- *     this@ExtensionSurrogate._valueCanonical,
- *   ),
+ *   Base64Binary.of(valueBase64Binary, _valueBase64Binary),
+ *   R4bBoolean.of(valueBoolean, _valueBoolean),
+ *   Canonical.of(valueCanonical, _valueCanonical),
  *   ...
  * )
  * ```
  *
- * The nullability here is critical since we must generate `null` for types that do not have a value
- * in the surrogate class. As a result, only one of the data types will be non-null, and the
- * serialization code will be able to correctly serialize the in-memory value to the correct data
- * type.
+ * The nullability here is critical since we generate `null` for choice type expansions whose wire
+ * pair is absent. As a result, only one of the data types will be non-null, and the serialization
+ * code will be able to correctly serialize the in-memory value to the correct data type.
  */
 private fun TypeSpec.Builder.addOfFunction(
   className: ClassName,
@@ -584,11 +634,8 @@ private fun TypeSpec.Builder.addOfFunction(
  * Adds an `of` function in the companion object in the `Xhtml` class to return a FHIR primitive
  * date type object from a Kotlin primitive string value and a FHIR `Element`.
  *
- * The generated function is useful for merging the two fields in the surrogate class representing
- * the two JSON properties into a single field in the data class.
- *
- * The generated function is a special case of the `of` function for primitive types since the
- * `Xhtml` class cannot have extensions.
+ * Same role as [addOfFunction] — merges the wire value and `_field` Element sidecar into a single
+ * model object — but specialized for `Xhtml`, which cannot carry extensions.
  */
 private fun TypeSpec.Builder.addOfFunctionForXhtml(
   className: ClassName,
@@ -609,21 +656,19 @@ private fun TypeSpec.Builder.addOfFunctionForXhtml(
  * Adds an `of` function in the companion object in the `Decimal` class to return a FHIR primitive
  * data type object from a Kotlin primitive string value and a FHIR `Element`.
  *
- * The generated function is useful for merging the two fields in the surrogate class representing
- * the two JSON properties into a single field in the data class.
- *
- * The generated function is a special case of the `of` function for primitive types since the
- * `Decimal` class has type `BigDecimal` in the model but `Double` in the surrogate class.
+ * Same role as [addOfFunction] — merges the wire value and `_field` Element sidecar into a single
+ * model object — but specialized for `Decimal`, which is `BigDecimal` in the model and `Double` on
+ * the wire.
  */
 private fun TypeSpec.Builder.addOfFunctionForDecimal(className: ClassName): TypeSpec.Builder {
+  val bigDecimal = ClassName("com.ionspin.kotlin.bignum.decimal", "BigDecimal")
   addFunction(
     FunSpec.builder("of")
-      .addParameter("value", Double::class.asTypeName().copy(nullable = true))
+      .addParameter("value", bigDecimal.copy(nullable = true))
       .addParameter("element", ClassName(className.packageName, "Element").copy(nullable = true))
       .addCode(
-        "return if (value != null || element?.id != null || element?.extension?.isEmpty() == false) { %T(element?.id, element?.extension ?: mutableListOf(), value?.%M()) } else { null }",
+        "return if (value != null || element?.id != null || element?.extension?.isEmpty() == false) { %T(element?.id, element?.extension ?: mutableListOf(), value) } else { null }",
         className,
-        MemberName("com.ionspin.kotlin.bignum.decimal", "toBigDecimal"),
       )
       .returns(className.copy(nullable = true))
       .build()
@@ -632,15 +677,13 @@ private fun TypeSpec.Builder.addOfFunctionForDecimal(className: ClassName): Type
 }
 
 /**
- * Adds a `from` function to return a sealed interface object from a list of parameters
- * corresponding to JSON properties of each data type in the surrogate class.
+ * Adds a `from` function to a choice-type sealed interface companion. It takes one nullable
+ * parameter per choice type expansion (the model value already merged via each expansion's
+ * `of(...)`) and returns the matched expansion — used during deserialization in the parent resource
+ * serializer to materialize the sealed value from its flat wire representation.
  *
- * This function is used in the surrogate class during deserialization to construct the data element
- * in the model class.
- *
- * N.B. The return type is kept nullable for the ease of code generation. The caller of the `from`
- * function in the surrogate class should check the return value is not null when necessary (e.g.
- * when the element is required).
+ * N.B. The return type is nullable for ease of code generation; the caller should null-check it
+ * when the element is required.
  *
  * For example, the following function is generated `Patient.deceased` element.
  *
@@ -678,7 +721,7 @@ private fun TypeSpec.Builder.addFromFunction(
               .add(
                 "if(%N != null) return %T(%N) \n",
                 "${type.code.replaceFirstChar { it.lowercase() }}Value",
-                sealedInterfaceClassName.nestedClass(type.code.capitalized()),
+                sealedInterfaceClassName.nestedClass(choiceTypeExpansionName(type)),
                 "${type.code.replaceFirstChar { it.lowercase() }}Value",
               )
               .build()
@@ -693,11 +736,25 @@ private fun TypeSpec.Builder.addFromFunction(
 private fun TypeSpec.Builder.addDataTypeFunction(type: Type, sealedInterfaceClassName: ClassName) =
   addFunction(
     FunSpec.builder("as${type.code.capitalized()}")
-      .returns(sealedInterfaceClassName.nestedClass(type.code.capitalized()).copy(nullable = true))
+      .returns(
+        sealedInterfaceClassName.nestedClass(choiceTypeExpansionName(type)).copy(nullable = true)
+      )
       .addCode(
         CodeBlock.builder()
-          .add("return this as? %T", sealedInterfaceClassName.nestedClass(type.code.capitalized()))
+          .add(
+            "return this as? %T",
+            sealedInterfaceClassName.nestedClass(choiceTypeExpansionName(type)),
+          )
           .build()
       )
       .build()
   )
+
+/**
+ * Returns the nested-class name used for a sealed choice type expansion — e.g.
+ * `Patient.Deceased.Boolean` for the `boolean` expansion. The subclass is NOT `@Serializable`; the
+ * enclosing sealed interface's hand-rolled custom serializer handles all encode/decode, so there is
+ * no synthesized `$serializer` that could trip over the lexical name clash (`value: Boolean`
+ * resolving to the subclass).
+ */
+internal fun choiceTypeExpansionName(type: Type): String = type.code.capitalized()

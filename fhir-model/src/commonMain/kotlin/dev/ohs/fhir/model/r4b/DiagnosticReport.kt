@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.DiagnosticReportEffectiveSerializer
 import dev.ohs.fhir.model.r4b.serializers.DiagnosticReportMediaSerializer
 import dev.ohs.fhir.model.r4b.serializers.DiagnosticReportSerializer
 import kotlin.Suppress
@@ -417,7 +416,6 @@ public data class DiagnosticReport(
     }
   }
 
-  @Serializable(with = DiagnosticReportEffectiveSerializer::class)
   public sealed interface Effective {
     public fun asDateTime(): DateTime? = this as? DateTime
 

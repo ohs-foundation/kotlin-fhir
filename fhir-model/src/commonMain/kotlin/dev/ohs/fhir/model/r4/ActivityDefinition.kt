@@ -20,10 +20,7 @@ package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.ActivityDefinitionDynamicValueSerializer
 import dev.ohs.fhir.model.r4.serializers.ActivityDefinitionParticipantSerializer
-import dev.ohs.fhir.model.r4.serializers.ActivityDefinitionProductSerializer
 import dev.ohs.fhir.model.r4.serializers.ActivityDefinitionSerializer
-import dev.ohs.fhir.model.r4.serializers.ActivityDefinitionSubjectSerializer
-import dev.ohs.fhir.model.r4.serializers.ActivityDefinitionTimingSerializer
 import dev.ohs.fhir.model.r4.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -762,7 +759,6 @@ public data class ActivityDefinition(
     }
   }
 
-  @Serializable(with = ActivityDefinitionSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -785,7 +781,6 @@ public data class ActivityDefinition(
     }
   }
 
-  @Serializable(with = ActivityDefinitionTimingSerializer::class)
   public sealed interface Timing {
     public fun asTiming(): Timing? = this as? Timing
 
@@ -837,7 +832,6 @@ public data class ActivityDefinition(
     }
   }
 
-  @Serializable(with = ActivityDefinitionProductSerializer::class)
   public sealed interface Product {
     public fun asReference(): Reference? = this as? Reference
 

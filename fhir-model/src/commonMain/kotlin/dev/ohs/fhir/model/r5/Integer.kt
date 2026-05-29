@@ -18,6 +18,7 @@
 
 package dev.ohs.fhir.model.r5
 
+import dev.ohs.fhir.model.r5.serializers.IntegerSerializer
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
@@ -25,8 +26,10 @@ import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** integer Type: A whole number */
+@Serializable(with = IntegerSerializer::class)
 public open class Integer(
   /** unique id for the element within a resource (for internal references) */
   open override val id: String? = null,
@@ -58,7 +61,7 @@ public open class Integer(
   override fun hashCode(): Int {
     // Using 31 improves hash distribution and reduces collisions in hash-based collections
     var result = id?.hashCode() ?: 0
-    result = 31 * result + (extension?.hashCode() ?: 0)
+    result = 31 * result + (extension.hashCode())
     result = 31 * result + (value?.hashCode() ?: 0)
     return result
   }

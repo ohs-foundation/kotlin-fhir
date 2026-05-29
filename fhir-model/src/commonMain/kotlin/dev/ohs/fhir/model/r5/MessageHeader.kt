@@ -18,12 +18,9 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.MessageHeaderDestinationEndpointSerializer
 import dev.ohs.fhir.model.r5.serializers.MessageHeaderDestinationSerializer
-import dev.ohs.fhir.model.r5.serializers.MessageHeaderEventSerializer
 import dev.ohs.fhir.model.r5.serializers.MessageHeaderResponseSerializer
 import dev.ohs.fhir.model.r5.serializers.MessageHeaderSerializer
-import dev.ohs.fhir.model.r5.serializers.MessageHeaderSourceEndpointSerializer
 import dev.ohs.fhir.model.r5.serializers.MessageHeaderSourceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -300,7 +297,6 @@ public data class MessageHeader(
         }
       }
 
-    @Serializable(with = MessageHeaderDestinationEndpointSerializer::class)
     public sealed interface Endpoint {
       public fun asUrl(): Url? = this as? Url
 
@@ -475,7 +471,6 @@ public data class MessageHeader(
         }
       }
 
-    @Serializable(with = MessageHeaderSourceEndpointSerializer::class)
     public sealed interface Endpoint {
       public fun asUrl(): Url? = this as? Url
 
@@ -721,7 +716,6 @@ public data class MessageHeader(
     }
   }
 
-  @Serializable(with = MessageHeaderEventSerializer::class)
   public sealed interface Event {
     public fun asCoding(): Coding? = this as? Coding
 

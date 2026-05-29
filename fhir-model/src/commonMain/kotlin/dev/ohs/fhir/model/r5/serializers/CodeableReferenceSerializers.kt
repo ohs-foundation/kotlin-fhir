@@ -15,30 +15,106 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
+import dev.ohs.fhir.model.r5.CodeableConcept
 import dev.ohs.fhir.model.r5.CodeableReference
-import dev.ohs.fhir.model.r5.surrogates.CodeableReferenceSurrogate
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.Reference
+import kotlin.OptIn
+import kotlin.String
 import kotlin.Suppress
+import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object CodeableReferenceSerializer : KSerializer<CodeableReference> {
-  internal val surrogateSerializer: KSerializer<CodeableReferenceSurrogate> by lazy {
-    CodeableReferenceSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("CodeableReference", surrogateSerializer.descriptor)
-  }
+internal object CodeableReferenceSerializer : KSerializer<CodeableReference> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("CodeableReference") {
+      element("id", String.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
+        isOptional = true,
+      )
+      element(
+        "concept",
+        lazyDescriptor { CodeableConcept.serializer().descriptor },
+        isOptional = true,
+      )
+      element("reference", lazyDescriptor { Reference.serializer().descriptor }, isOptional = true)
+    }
 
   override fun deserialize(decoder: Decoder): CodeableReference =
-    surrogateSerializer.deserialize(decoder).toModel()
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: CodeableReference) {
-    surrogateSerializer.serialize(encoder, CodeableReferenceSurrogate.fromModel(value))
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+  }
+
+  private fun deserializeInternal(decoder: CompositeDecoder): CodeableReference {
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var concept: CodeableConcept? = null
+    var reference: Reference? = null
+    while (true) {
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 ->
+          concept =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.conceptSer, null)
+        3 ->
+          reference =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.referenceSer, null)
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding CodeableReference: " + i)
+      }
+    }
+    return CodeableReference(
+      id = id,
+      extension = extension ?: listOf(),
+      concept = concept,
+      reference = reference,
+    )
+  }
+
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: CodeableReference) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    (value.concept)?.let {
+      encoder.encodeSerializableElement(descriptor, 2, Hoisted.conceptSer, it)
+    }
+    (value.reference)?.let {
+      encoder.encodeSerializableElement(descriptor, 3, Hoisted.referenceSer, it)
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val conceptSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val referenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }

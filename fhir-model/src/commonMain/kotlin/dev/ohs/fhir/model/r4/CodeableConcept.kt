@@ -65,7 +65,7 @@ public data class CodeableConcept(
    */
   public val text: String? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

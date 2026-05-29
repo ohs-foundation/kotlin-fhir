@@ -93,7 +93,7 @@ public data class HumanName(
   /** Indicates the period of time when this name was valid for the named person. */
   public val period: Period? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

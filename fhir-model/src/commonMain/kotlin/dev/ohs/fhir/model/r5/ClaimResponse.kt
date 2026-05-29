@@ -21,12 +21,9 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemBodySiteSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemDetailSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemDetailSubDetailSerializer
-import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemLocationSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemSerializer
-import dev.ohs.fhir.model.r5.serializers.ClaimResponseAddItemServicedSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseErrorSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseEventSerializer
-import dev.ohs.fhir.model.r5.serializers.ClaimResponseEventWhenSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseInsuranceSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseItemAdjudicationSerializer
 import dev.ohs.fhir.model.r5.serializers.ClaimResponseItemDetailSerializer
@@ -428,7 +425,6 @@ public data class ClaimResponse(
         }
       }
 
-    @Serializable(with = ClaimResponseEventWhenSerializer::class)
     public sealed interface When {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -2143,7 +2139,6 @@ public data class ClaimResponse(
       }
     }
 
-    @Serializable(with = ClaimResponseAddItemServicedSerializer::class)
     public sealed interface Serviced {
       public fun asDate(): Date? = this as? Date
 
@@ -2165,7 +2160,6 @@ public data class ClaimResponse(
       }
     }
 
-    @Serializable(with = ClaimResponseAddItemLocationSerializer::class)
     public sealed interface Location {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

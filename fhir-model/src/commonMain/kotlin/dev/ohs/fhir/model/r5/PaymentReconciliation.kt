@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.PaymentReconciliationAllocationSerializer
-import dev.ohs.fhir.model.r5.serializers.PaymentReconciliationAllocationTargetItemSerializer
 import dev.ohs.fhir.model.r5.serializers.PaymentReconciliationProcessNoteSerializer
 import dev.ohs.fhir.model.r5.serializers.PaymentReconciliationSerializer
 import dev.ohs.fhir.model.r5.terminologies.NoteType
@@ -377,7 +376,6 @@ public data class PaymentReconciliation(
         }
       }
 
-    @Serializable(with = PaymentReconciliationAllocationTargetItemSerializer::class)
     public sealed interface TargetItem {
       public fun asString(): String? = this as? String
 

@@ -18,12 +18,15 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.BooleanSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** Base StructureDefinition for boolean Type: Value of "true" or "false" */
+@Serializable(with = BooleanSerializer::class)
 public data class Boolean(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,
@@ -43,7 +46,7 @@ public data class Boolean(
   /** The actual value */
   public val `value`: kotlin.Boolean? = null,
 ) : Element(id, extension) {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

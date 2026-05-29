@@ -18,14 +18,17 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.CodeSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /**
  * Base StructureDefinition for code type: A string which has at least one character and no leading
  * or trailing whitespace and where there is no whitespace other than single spaces in the contents
  */
+@Serializable(with = CodeSerializer::class)
 public data class Code(
   /** unique id for the element within a resource (for internal references) */
   override val id: kotlin.String? = null,
@@ -45,7 +48,7 @@ public data class Code(
   /** Primitive value for code */
   override val `value`: kotlin.String? = null,
 ) : String(id, extension, `value`) {
-  open override fun toBuilder(): Builder =
+  override fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

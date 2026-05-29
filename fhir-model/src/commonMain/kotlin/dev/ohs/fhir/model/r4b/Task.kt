@@ -19,9 +19,7 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.TaskInputSerializer
-import dev.ohs.fhir.model.r4b.serializers.TaskInputValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.TaskOutputSerializer
-import dev.ohs.fhir.model.r4b.serializers.TaskOutputValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.TaskRestrictionSerializer
 import dev.ohs.fhir.model.r4b.serializers.TaskSerializer
 import kotlin.Suppress
@@ -517,7 +515,6 @@ public data class Task(
         }
       }
 
-    @Serializable(with = TaskInputValueSerializer::class)
     public sealed interface Value {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
@@ -958,7 +955,6 @@ public data class Task(
         }
       }
 
-    @Serializable(with = TaskOutputValueSerializer::class)
     public sealed interface Value {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 

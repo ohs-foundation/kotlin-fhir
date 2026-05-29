@@ -18,10 +18,8 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductCollectionCollectedSerializer
 import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductCollectionSerializer
 import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductPropertySerializer
-import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductPropertyValueSerializer
 import dev.ohs.fhir.model.r5.serializers.BiologicallyDerivedProductSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -296,7 +294,6 @@ public data class BiologicallyDerivedProduct(
         }
       }
 
-    @Serializable(with = BiologicallyDerivedProductCollectionCollectedSerializer::class)
     public sealed interface Collected {
       public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -448,7 +445,6 @@ public data class BiologicallyDerivedProduct(
         }
       }
 
-    @Serializable(with = BiologicallyDerivedProductPropertyValueSerializer::class)
     public sealed interface Value {
       public fun asBoolean(): Boolean? = this as? Boolean
 

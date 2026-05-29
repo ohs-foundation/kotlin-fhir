@@ -15,73 +15,161 @@
  */
 
 @file:Suppress("RedundantVisibilityModifier", "PropertyName")
+@file:OptIn(ExperimentalSerializationApi::class)
 
 package dev.ohs.fhir.model.r5.serializers
 
-import dev.ohs.fhir.model.r5.FhirJsonTransformer
+import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.Coding
+import dev.ohs.fhir.model.r5.Extension
+import dev.ohs.fhir.model.r5.Quantity
+import dev.ohs.fhir.model.r5.Range
+import dev.ohs.fhir.model.r5.Reference
 import dev.ohs.fhir.model.r5.UsageContext
-import dev.ohs.fhir.model.r5.surrogates.UsageContextSurrogate
-import dev.ohs.fhir.model.r5.surrogates.UsageContextValueSurrogate
+import kotlin.OptIn
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.listSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonEncoder
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.encoding.decodeStructure
+import kotlinx.serialization.encoding.encodeStructure
 
-public object UsageContextValueSerializer : KSerializer<UsageContext.Value> {
-  internal val surrogateSerializer: KSerializer<UsageContextValueSurrogate> by lazy {
-    UsageContextValueSurrogate.serializer()
-  }
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("Value", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): UsageContext.Value =
-    surrogateSerializer.deserialize(decoder).toModel()
-
-  override fun serialize(encoder: Encoder, `value`: UsageContext.Value) {
-    surrogateSerializer.serialize(encoder, UsageContextValueSurrogate.fromModel(value))
-  }
-}
-
-public object UsageContextSerializer : KSerializer<UsageContext> {
-  internal val surrogateSerializer: KSerializer<UsageContextSurrogate> by lazy {
-    UsageContextSurrogate.serializer()
-  }
-
-  private val multiChoiceProperties: List<String> = listOf("value")
-
-  override val descriptor: SerialDescriptor by lazy {
-    SerialDescriptor("UsageContext", surrogateSerializer.descriptor)
-  }
-
-  override fun deserialize(decoder: Decoder): UsageContext {
-    val jsonDecoder =
-      decoder as? JsonDecoder ?: error("This serializer only supports JSON decoding")
-    val oldJsonObject =
-      JsonObject(
-        jsonDecoder.decodeJsonElement().jsonObject.toMutableMap().apply { remove("resourceType") }
+internal object UsageContextSerializer : KSerializer<UsageContext> {
+  override val descriptor: SerialDescriptor =
+    buildClassSerialDescriptor("UsageContext") {
+      element("id", String.serializer().descriptor, isOptional = true)
+      element(
+        "extension",
+        listSerialDescriptor(lazyDescriptor { Extension.serializer().descriptor }),
+        isOptional = true,
       )
-    val unflattenedJsonObject = FhirJsonTransformer.unflatten(oldJsonObject, multiChoiceProperties)
-    val surrogate =
-      jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-    return surrogate.toModel()
-  }
+      element("code", lazyDescriptor { Coding.serializer().descriptor }, isOptional = true)
+      element(
+        "valueCodeableConcept",
+        lazyDescriptor { CodeableConcept.serializer().descriptor },
+        isOptional = true,
+      )
+      element(
+        "valueQuantity",
+        lazyDescriptor { Quantity.serializer().descriptor },
+        isOptional = true,
+      )
+      element("valueRange", lazyDescriptor { Range.serializer().descriptor }, isOptional = true)
+      element(
+        "valueReference",
+        lazyDescriptor { Reference.serializer().descriptor },
+        isOptional = true,
+      )
+    }
+
+  override fun deserialize(decoder: Decoder): UsageContext =
+    decoder.decodeStructure(descriptor) { deserializeInternal(this) }
 
   override fun serialize(encoder: Encoder, `value`: UsageContext) {
-    val jsonEncoder =
-      encoder as? JsonEncoder ?: error("This serializer only supports JSON encoding")
-    val surrogate = UsageContextSurrogate.fromModel(value)
-    val oldJsonObject =
-      jsonEncoder.json.encodeToJsonElement(surrogateSerializer, surrogate).jsonObject
-    val flattenedJsonObject = FhirJsonTransformer.flatten(oldJsonObject, multiChoiceProperties)
-    jsonEncoder.encodeJsonElement(flattenedJsonObject)
+    encoder.encodeStructure(descriptor) { serializeInternal(this, value) }
+  }
+
+  private fun deserializeInternal(decoder: CompositeDecoder): UsageContext {
+    var id: String? = null
+    var extension: List<Extension>? = null
+    var code: Coding? = null
+    var valueCodeableConcept: CodeableConcept? = null
+    var valueQuantity: Quantity? = null
+    var valueRange: Range? = null
+    var valueReference: Reference? = null
+    while (true) {
+      when (val i = decoder.decodeElementIndex(descriptor)) {
+        0 -> id = decoder.decodeStringElement(descriptor, i)
+        1 ->
+          extension =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.extensionSer, null)
+        2 -> code = decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.codeSer, null)
+        3 ->
+          valueCodeableConcept =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.valueCodeableConceptSer,
+              null,
+            )
+        4 ->
+          valueQuantity =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueQuantitySer, null)
+        5 ->
+          valueRange =
+            decoder.decodeNullableSerializableElement(descriptor, i, Hoisted.valueRangeSer, null)
+        6 ->
+          valueReference =
+            decoder.decodeNullableSerializableElement(
+              descriptor,
+              i,
+              Hoisted.valueReferenceSer,
+              null,
+            )
+        CompositeDecoder.DECODE_DONE -> break
+        else -> throw SerializationException("Unexpected index decoding UsageContext: " + i)
+      }
+    }
+    return UsageContext(
+      id = id,
+      extension = extension ?: listOf(),
+      code = code!!,
+      `value` =
+        UsageContext.Value.from(valueCodeableConcept, valueQuantity, valueRange, valueReference)!!,
+    )
+  }
+
+  private fun serializeInternal(encoder: CompositeEncoder, `value`: UsageContext) {
+    (value.id)?.let { encoder.encodeStringElement(descriptor, 0, it) }
+    if (value.extension.isNotEmpty())
+      encoder.encodeSerializableElement(descriptor, 1, Hoisted.extensionSer, value.extension)
+    encoder.encodeSerializableElement(descriptor, 2, Hoisted.codeSer, value.code)
+    when (val choice = value.`value`) {
+      is UsageContext.Value.CodeableConcept -> {
+        encoder.encodeSerializableElement(
+          descriptor,
+          3,
+          Hoisted.valueCodeableConceptSer,
+          choice.value,
+        )
+      }
+      is UsageContext.Value.Quantity -> {
+        encoder.encodeSerializableElement(descriptor, 4, Hoisted.valueQuantitySer, choice.value)
+      }
+      is UsageContext.Value.Range -> {
+        encoder.encodeSerializableElement(descriptor, 5, Hoisted.valueRangeSer, choice.value)
+      }
+      is UsageContext.Value.Reference -> {
+        encoder.encodeSerializableElement(descriptor, 6, Hoisted.valueReferenceSer, choice.value)
+      }
+    }
+  }
+
+  private object Hoisted {
+    public val extensionSerInner: KSerializer<Extension> = Extension.serializer()
+
+    public val extensionSer: KSerializer<List<Extension>> =
+      ListSerializer(Hoisted.extensionSerInner)
+
+    public val codeSer: KSerializer<Coding> = Coding.serializer()
+
+    public val valueCodeableConceptSer: KSerializer<CodeableConcept> = CodeableConcept.serializer()
+
+    public val valueQuantitySer: KSerializer<Quantity> = Quantity.serializer()
+
+    public val valueRangeSer: KSerializer<Range> = Range.serializer()
+
+    public val valueReferenceSer: KSerializer<Reference> = Reference.serializer()
   }
 }

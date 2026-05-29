@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.RegulatedAuthorizationCaseDateSerializer
 import dev.ohs.fhir.model.r5.serializers.RegulatedAuthorizationCaseSerializer
 import dev.ohs.fhir.model.r5.serializers.RegulatedAuthorizationSerializer
 import kotlin.String
@@ -297,7 +296,6 @@ public data class RegulatedAuthorization(
         }
       }
 
-    @Serializable(with = RegulatedAuthorizationCaseDateSerializer::class)
     public sealed interface Date {
       public fun asPeriod(): Period? = this as? Period
 

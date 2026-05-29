@@ -96,7 +96,7 @@ public data class Attachment(
   /** The date that the attachment was first created. */
   public val creation: DateTime? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

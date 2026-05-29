@@ -21,10 +21,7 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.IngredientManufacturerSerializer
 import dev.ohs.fhir.model.r5.serializers.IngredientSerializer
 import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceSerializer
-import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthConcentrationSerializer
-import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthPresentationSerializer
 import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthReferenceStrengthSerializer
-import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthReferenceStrengthStrengthSerializer
 import dev.ohs.fhir.model.r5.serializers.IngredientSubstanceStrengthSerializer
 import dev.ohs.fhir.model.r5.terminologies.IngredientManufacturerRole
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
@@ -564,7 +561,6 @@ public data class Ingredient(
             }
           }
 
-        @Serializable(with = IngredientSubstanceStrengthReferenceStrengthStrengthSerializer::class)
         public sealed interface Strength {
           public fun asRatio(): Ratio? = this as? Ratio
 
@@ -658,7 +654,6 @@ public data class Ingredient(
         }
       }
 
-      @Serializable(with = IngredientSubstanceStrengthPresentationSerializer::class)
       public sealed interface Presentation {
         public fun asRatio(): Ratio? = this as? Ratio
 
@@ -696,7 +691,6 @@ public data class Ingredient(
         }
       }
 
-      @Serializable(with = IngredientSubstanceStrengthConcentrationSerializer::class)
       public sealed interface Concentration {
         public fun asRatio(): Ratio? = this as? Ratio
 

@@ -18,12 +18,15 @@
 
 package dev.ohs.fhir.model.r5
 
+import dev.ohs.fhir.model.r5.serializers.Base64BinarySerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /** base64Binary Type: A stream of bytes */
+@Serializable(with = Base64BinarySerializer::class)
 public data class Base64Binary(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,
@@ -43,7 +46,7 @@ public data class Base64Binary(
   /** The actual value */
   public val `value`: String? = null,
 ) : PrimitiveType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

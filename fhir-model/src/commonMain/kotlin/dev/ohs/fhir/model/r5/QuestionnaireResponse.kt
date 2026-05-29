@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireResponseItemAnswerSerializer
-import dev.ohs.fhir.model.r5.serializers.QuestionnaireResponseItemAnswerValueSerializer
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireResponseItemSerializer
 import dev.ohs.fhir.model.r5.serializers.QuestionnaireResponseSerializer
 import kotlin.Suppress
@@ -439,7 +438,6 @@ public data class QuestionnaireResponse(
           }
         }
 
-      @Serializable(with = QuestionnaireResponseItemAnswerValueSerializer::class)
       public sealed interface Value {
         public fun asBoolean(): Boolean? = this as? Boolean
 

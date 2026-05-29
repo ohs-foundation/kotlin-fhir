@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionAllowedResponseSerializer
-import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionEventSerializer
 import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionFocusSerializer
 import dev.ohs.fhir.model.r4b.serializers.MessageDefinitionSerializer
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
@@ -637,7 +636,6 @@ public data class MessageDefinition(
     }
   }
 
-  @Serializable(with = MessageDefinitionEventSerializer::class)
   public sealed interface Event {
     public fun asCoding(): Coding? = this as? Coding
 

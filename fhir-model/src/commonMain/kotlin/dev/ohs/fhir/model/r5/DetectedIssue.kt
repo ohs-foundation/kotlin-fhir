@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.DetectedIssueEvidenceSerializer
-import dev.ohs.fhir.model.r5.serializers.DetectedIssueIdentifiedSerializer
 import dev.ohs.fhir.model.r5.serializers.DetectedIssueMitigationSerializer
 import dev.ohs.fhir.model.r5.serializers.DetectedIssueSerializer
 import kotlin.String
@@ -522,7 +521,6 @@ public data class DetectedIssue(
     }
   }
 
-  @Serializable(with = DetectedIssueIdentifiedSerializer::class)
   public sealed interface Identified {
     public fun asDateTime(): DateTime? = this as? DateTime
 

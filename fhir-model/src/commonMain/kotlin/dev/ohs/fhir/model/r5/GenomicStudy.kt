@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisDeviceSerializer
-import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisInputGeneratedBySerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisInputSerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisOutputSerializer
 import dev.ohs.fhir.model.r5.serializers.GenomicStudyAnalysisPerformerSerializer
@@ -372,7 +371,6 @@ public data class GenomicStudy(
           }
         }
 
-      @Serializable(with = GenomicStudyAnalysisInputGeneratedBySerializer::class)
       public sealed interface GeneratedBy {
         public fun asIdentifier(): Identifier? = this as? Identifier
 

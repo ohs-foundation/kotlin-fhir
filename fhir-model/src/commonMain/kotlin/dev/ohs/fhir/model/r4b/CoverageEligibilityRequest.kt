@@ -19,11 +19,9 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityRequestInsuranceSerializer
-import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityRequestItemDiagnosisDiagnosisSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityRequestItemDiagnosisSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityRequestItemSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityRequestSerializer
-import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityRequestServicedSerializer
 import dev.ohs.fhir.model.r4b.serializers.CoverageEligibilityRequestSupportingInfoSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -685,7 +683,6 @@ public data class CoverageEligibilityRequest(
           }
         }
 
-      @Serializable(with = CoverageEligibilityRequestItemDiagnosisDiagnosisSerializer::class)
       public sealed interface Diagnosis {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -879,7 +876,6 @@ public data class CoverageEligibilityRequest(
     }
   }
 
-  @Serializable(with = CoverageEligibilityRequestServicedSerializer::class)
   public sealed interface Serviced {
     public fun asDate(): Date? = this as? Date
 

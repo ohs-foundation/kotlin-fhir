@@ -18,9 +18,7 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.SupplyDeliveryOccurrenceSerializer
 import dev.ohs.fhir.model.r5.serializers.SupplyDeliverySerializer
-import dev.ohs.fhir.model.r5.serializers.SupplyDeliverySuppliedItemItemSerializer
 import dev.ohs.fhir.model.r5.serializers.SupplyDeliverySuppliedItemSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -263,7 +261,6 @@ public data class SupplyDelivery(
         }
       }
 
-    @Serializable(with = SupplyDeliverySuppliedItemItemSerializer::class)
     public sealed interface Item {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -348,7 +345,6 @@ public data class SupplyDelivery(
     }
   }
 
-  @Serializable(with = SupplyDeliveryOccurrenceSerializer::class)
   public sealed interface Occurrence {
     public fun asDateTime(): DateTime? = this as? DateTime
 

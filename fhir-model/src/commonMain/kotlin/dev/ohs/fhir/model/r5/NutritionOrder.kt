@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.NutritionOrderEnteralFormulaAdditiveSerializer
-import dev.ohs.fhir.model.r5.serializers.NutritionOrderEnteralFormulaAdministrationRateSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionOrderEnteralFormulaAdministrationScheduleSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionOrderEnteralFormulaAdministrationSerializer
 import dev.ohs.fhir.model.r5.serializers.NutritionOrderEnteralFormulaSerializer
@@ -1636,7 +1635,6 @@ public data class NutritionOrder(
         }
       }
 
-      @Serializable(with = NutritionOrderEnteralFormulaAdministrationRateSerializer::class)
       public sealed interface Rate {
         public fun asQuantity(): Quantity? = this as? Quantity
 

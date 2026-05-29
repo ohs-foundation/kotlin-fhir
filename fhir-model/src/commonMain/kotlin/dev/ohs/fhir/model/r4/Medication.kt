@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.MedicationBatchSerializer
-import dev.ohs.fhir.model.r4.serializers.MedicationIngredientItemSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicationIngredientSerializer
 import dev.ohs.fhir.model.r4.serializers.MedicationSerializer
 import kotlin.Suppress
@@ -284,7 +283,6 @@ public data class Medication(
         }
       }
 
-    @Serializable(with = MedicationIngredientItemSerializer::class)
     public sealed interface Item {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

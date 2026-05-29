@@ -26,7 +26,6 @@ import dev.ohs.fhir.model.r5.serializers.TestScriptMetadataSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptOriginSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptScopeSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptSerializer
-import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionAssertRequirementLinkSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionAssertRequirementSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionAssertSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptSetupActionOperationRequestHeaderSerializer
@@ -38,7 +37,6 @@ import dev.ohs.fhir.model.r5.serializers.TestScriptTeardownSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptTestActionSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptTestSerializer
 import dev.ohs.fhir.model.r5.serializers.TestScriptVariableSerializer
-import dev.ohs.fhir.model.r5.serializers.TestScriptVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -2810,7 +2808,6 @@ public data class TestScript(
               }
             }
 
-          @Serializable(with = TestScriptSetupActionAssertRequirementLinkSerializer::class)
           public sealed interface Link {
             public fun asUri(): Uri? = this as? Uri
 
@@ -3817,7 +3814,6 @@ public data class TestScript(
     }
   }
 
-  @Serializable(with = TestScriptVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

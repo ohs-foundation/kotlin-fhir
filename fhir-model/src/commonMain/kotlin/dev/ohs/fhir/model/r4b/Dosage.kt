@@ -18,9 +18,6 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.DosageAsNeededSerializer
-import dev.ohs.fhir.model.r4b.serializers.DosageDoseAndRateDoseSerializer
-import dev.ohs.fhir.model.r4b.serializers.DosageDoseAndRateRateSerializer
 import dev.ohs.fhir.model.r4b.serializers.DosageDoseAndRateSerializer
 import dev.ohs.fhir.model.r4b.serializers.DosageSerializer
 import kotlin.Suppress
@@ -140,7 +137,7 @@ public data class Dosage(
   /** Upper limit on medication per lifetime of the patient. */
   public val maxDosePerLifetime: Quantity? = null,
 ) : BackboneElement() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id
@@ -232,7 +229,6 @@ public data class Dosage(
         }
       }
 
-    @Serializable(with = DosageDoseAndRateDoseSerializer::class)
     public sealed interface Dose {
       public fun asRange(): Range? = this as? Range
 
@@ -254,7 +250,6 @@ public data class Dosage(
       }
     }
 
-    @Serializable(with = DosageDoseAndRateRateSerializer::class)
     public sealed interface Rate {
       public fun asRatio(): Ratio? = this as? Ratio
 
@@ -353,7 +348,6 @@ public data class Dosage(
     }
   }
 
-  @Serializable(with = DosageAsNeededSerializer::class)
   public sealed interface AsNeeded {
     public fun asBoolean(): Boolean? = this as? Boolean
 

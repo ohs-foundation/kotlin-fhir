@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.ClinicalImpressionEffectiveSerializer
 import dev.ohs.fhir.model.r4.serializers.ClinicalImpressionFindingSerializer
 import dev.ohs.fhir.model.r4.serializers.ClinicalImpressionInvestigationSerializer
 import dev.ohs.fhir.model.r4.serializers.ClinicalImpressionSerializer
@@ -549,7 +548,6 @@ public data class ClinicalImpression(
     }
   }
 
-  @Serializable(with = ClinicalImpressionEffectiveSerializer::class)
   public sealed interface Effective {
     public fun asDateTime(): DateTime? = this as? DateTime
 

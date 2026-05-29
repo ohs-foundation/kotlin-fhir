@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.MedicationStatementAdherenceSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicationStatementEffectiveSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationStatementSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -419,7 +418,6 @@ public data class MedicationStatement(
     }
   }
 
-  @Serializable(with = MedicationStatementEffectiveSerializer::class)
   public sealed interface Effective {
     public fun asDateTime(): DateTime? = this as? DateTime
 

@@ -18,8 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.CarePlanActivityDetailProductSerializer
-import dev.ohs.fhir.model.r4.serializers.CarePlanActivityDetailScheduledSerializer
 import dev.ohs.fhir.model.r4.serializers.CarePlanActivityDetailSerializer
 import dev.ohs.fhir.model.r4.serializers.CarePlanActivitySerializer
 import dev.ohs.fhir.model.r4.serializers.CarePlanSerializer
@@ -593,7 +591,6 @@ public data class CarePlan(
           }
         }
 
-      @Serializable(with = CarePlanActivityDetailScheduledSerializer::class)
       public sealed interface Scheduled {
         public fun asTiming(): Timing? = this as? Timing
 
@@ -621,7 +618,6 @@ public data class CarePlan(
         }
       }
 
-      @Serializable(with = CarePlanActivityDetailProductSerializer::class)
       public sealed interface Product {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

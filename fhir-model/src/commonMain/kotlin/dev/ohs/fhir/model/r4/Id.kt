@@ -18,15 +18,18 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.IdSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
+import kotlinx.serialization.Serializable
 
 /**
  * Base StructureDefinition for id type: Any combination of letters, numerals, "-" and ".", with a
  * length limit of 64 characters. (This might be an integer, an unprefixed OID, UUID or any other
  * identifier pattern that meets these constraints.) Ids are case-insensitive.
  */
+@Serializable(with = IdSerializer::class)
 public data class Id(
   /** unique id for the element within a resource (for internal references) */
   override val id: kotlin.String? = null,
@@ -46,7 +49,7 @@ public data class Id(
   /** Primitive value for id */
   override val `value`: kotlin.String? = null,
 ) : String(id, extension, `value`) {
-  open override fun toBuilder(): Builder =
+  override fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

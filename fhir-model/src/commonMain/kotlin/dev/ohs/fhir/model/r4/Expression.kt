@@ -71,7 +71,7 @@ public data class Expression(
    */
   public val reference: Uri? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(language).apply {
         id = this@with.id

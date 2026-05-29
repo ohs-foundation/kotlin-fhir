@@ -19,17 +19,11 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCategorySerializer
-import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCategoryValueSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitionByCombinationSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitionByTypeAndValueSerializer
-import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicDefinitionByTypeAndValueValueSerializer
-import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicDurationSerializer
-import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicInstancesSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicSerializer
-import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicTimeFromEventEventSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableCharacteristicTimeFromEventSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableSerializer
-import dev.ohs.fhir.model.r5.serializers.EvidenceVariableVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -614,9 +608,6 @@ public data class EvidenceVariable(
           }
         }
 
-      @Serializable(
-        with = EvidenceVariableCharacteristicDefinitionByTypeAndValueValueSerializer::class
-      )
       public sealed interface Value {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -919,7 +910,6 @@ public data class EvidenceVariable(
           }
         }
 
-      @Serializable(with = EvidenceVariableCharacteristicTimeFromEventEventSerializer::class)
       public sealed interface Event {
         public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1027,7 +1017,6 @@ public data class EvidenceVariable(
       }
     }
 
-    @Serializable(with = EvidenceVariableCharacteristicInstancesSerializer::class)
     public sealed interface Instances {
       public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -1049,7 +1038,6 @@ public data class EvidenceVariable(
       }
     }
 
-    @Serializable(with = EvidenceVariableCharacteristicDurationSerializer::class)
     public sealed interface Duration {
       public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -1245,7 +1233,6 @@ public data class EvidenceVariable(
         }
       }
 
-    @Serializable(with = EvidenceVariableCategoryValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1332,7 +1319,6 @@ public data class EvidenceVariable(
     }
   }
 
-  @Serializable(with = EvidenceVariableVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

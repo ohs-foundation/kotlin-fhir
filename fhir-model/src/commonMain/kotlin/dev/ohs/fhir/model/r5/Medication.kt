@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.MedicationBatchSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationIngredientSerializer
-import dev.ohs.fhir.model.r5.serializers.MedicationIngredientStrengthSerializer
 import dev.ohs.fhir.model.r5.serializers.MedicationSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -293,7 +292,6 @@ public data class Medication(
         }
       }
 
-    @Serializable(with = MedicationIngredientStrengthSerializer::class)
     public sealed interface Strength {
       public fun asRatio(): Ratio? = this as? Ratio
 

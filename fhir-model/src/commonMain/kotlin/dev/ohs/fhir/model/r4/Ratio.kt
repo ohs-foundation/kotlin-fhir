@@ -54,7 +54,7 @@ public data class Ratio(
   /** The value of the denominator. */
   public val denominator: Quantity? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

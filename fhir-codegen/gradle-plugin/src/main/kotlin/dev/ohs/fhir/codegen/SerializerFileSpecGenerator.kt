@@ -16,12 +16,12 @@
 
 package dev.ohs.fhir.codegen
 
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
@@ -30,313 +30,303 @@ import dev.ohs.fhir.codegen.schema.Element
 import dev.ohs.fhir.codegen.schema.StructureDefinition
 import dev.ohs.fhir.codegen.schema.backboneElements
 import dev.ohs.fhir.codegen.schema.capitalized
-import dev.ohs.fhir.codegen.schema.getElementName
 import dev.ohs.fhir.codegen.schema.rootElements
+import dev.ohs.fhir.codegen.serializer.SerializerDecodeEmitter
+import dev.ohs.fhir.codegen.serializer.SerializerDescriptorEmitter
+import dev.ohs.fhir.codegen.serializer.SerializerEncodeEmitter
+import dev.ohs.fhir.codegen.serializer.SerializerHoister
+import dev.ohs.fhir.codegen.serializer.WireField
+import dev.ohs.fhir.codegen.serializer.buildClassSerialDescriptorMemberName
+import dev.ohs.fhir.codegen.serializer.buildJsonWireFields
+import dev.ohs.fhir.codegen.serializer.decodeStructureMemberName
+import dev.ohs.fhir.codegen.serializer.decoderClassName
+import dev.ohs.fhir.codegen.serializer.encodeStructureMemberName
+import dev.ohs.fhir.codegen.serializer.encoderClassName
+import dev.ohs.fhir.codegen.serializer.serialDescriptorClassName
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.JsonEncoder
 
-// Package names
-private const val KOTLINX_SERIALIZATION_DESCRIPTORS = "kotlinx.serialization.descriptors"
-private const val KOTLINX_SERIALIZATION_ENCODING = "kotlinx.serialization.encoding"
-
-// Class names used in the code generation
-private val serialDescriptorClassName =
-  ClassName(KOTLINX_SERIALIZATION_DESCRIPTORS, "SerialDescriptor")
-private val primitiveSerialDescriptorClassName =
-  ClassName(KOTLINX_SERIALIZATION_DESCRIPTORS, "PrimitiveSerialDescriptor")
-private val encoderClassName = ClassName(KOTLINX_SERIALIZATION_ENCODING, "Encoder")
-private val decoderClassName = ClassName(KOTLINX_SERIALIZATION_ENCODING, "Decoder")
-
-/**
- * Generates a [FileSpec] for a custom serializer object that delegates
- * serialization/deserialization to a surrogate class. The [FileSpec] will include the custom
- * serializer for the model class as well as custom serializers for sealed interfaces and backbone
- * elements defined as nested structures in the model class. See
- * [surrogate](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serializers.md#composite-serializer-via-surrogate).
- */
+/** Generates a streaming `KSerializer<X>` per FHIR type over the flat wire shape. */
 class SerializerFileSpecGenerator(val codegenContext: CodegenContext) {
+
+  private val descriptorEmitter = SerializerDescriptorEmitter(codegenContext)
+  private val encodeEmitter = SerializerEncodeEmitter(codegenContext)
+  private val decodeEmitter = SerializerDecodeEmitter(codegenContext)
 
   fun generate(structureDefinition: StructureDefinition): FileSpec {
     val modelClassName = codegenContext.getModelClassName(structureDefinition)
-    return modelClassName
-      .toSerializerFileSpecBuilder()
-      .apply {
-        addBackboneElementSerializers(structureDefinition, modelClassName)
-
-        addSealedInterfaceSerializers(structureDefinition, modelClassName)
-
-        // Add type spec for the model class serializer e.g. PatientSerializer
-        addType(
-          createSerializerObjectTypeSpec(
-            modelClassName,
-            structureDefinition.kind to structureDefinition.name,
-            structureDefinition.rootElements,
-          )
-        )
-      }
-      .build()
-  }
-
-  /**
-   * Adds [TypeSpec] for backbone element serializer classes
-   *
-   * Examples: PatientContactSerializer, PatientCommunicationSerializer and PatientLinkSerializer
-   */
-  private fun FileSpec.Builder.addBackboneElementSerializers(
-    structureDefinition: StructureDefinition,
-    modelClassName: ClassName,
-  ): FileSpec.Builder = apply {
+    val builder = modelClassName.toSerializerFileSpecBuilder()
+    // Backbone-element serializers.
     structureDefinition.backboneElements.forEach { (backboneElement, elements) ->
       val simpleNames = backboneElement.path.split('.').map { it.capitalized() }
-      val backboneElementClassName = ClassName(modelClassName.packageName, simpleNames)
-      addType(
-        this@SerializerFileSpecGenerator.createSerializerObjectTypeSpec(
-          className = backboneElementClassName,
-          elements = elements,
+      val backboneClassName = ClassName(modelClassName.packageName, simpleNames)
+      createModelSerializerTypeSpecs(backboneClassName, elements, isResource = false).forEach {
+        builder.addType(it)
+      }
+    }
+    // Choice-type sealed interfaces (e.g. Patient.Deceased) get no per-class serializer:
+    // the parent resource serializer fully inlines the per-expansion keys on encode/decode, so a
+    // standalone KSerializer<Patient.Deceased> is never invoked.
+    // Root model serializer.
+    createModelSerializerTypeSpecs(
+        modelClassName,
+        structureDefinition.rootElements,
+        isResource = structureDefinition.kind == StructureDefinition.Kind.RESOURCE,
+        resourceTypeName = structureDefinition.name,
+      )
+      .forEach { builder.addType(it) }
+    return builder.build()
+  }
+
+  /**
+   * Emits one serializer object per model type (`XSerializer`). Streaming encode/decode over the
+   * flat FHIR wire shape — one descriptor slot per JSON key on the wire, including per-expansion
+   * expansions for `[x]` choice types (e.g. `deceasedBoolean` / `_deceasedBoolean` /
+   * `deceasedDateTime` / `_deceasedDateTime`). Choice types are handled inline against the parent's
+   * composite encoder: `emitChoiceTypeExpansionEncoding` writes the matched expansion's keys on
+   * encode; decode reads them into per-expansion locals and synthesizes the sealed value via the
+   * companion `from(…)` factory during `emitModelConstruction`.
+   *
+   * Resource types additionally get a thin `XPolymorphicSerializer` (`resourceType` omitted from
+   * its descriptor) for use as a subclass entry in `ResourcePolymorphicSerializer`.
+   */
+  private fun createModelSerializerTypeSpecs(
+    className: ClassName,
+    elements: List<Element>,
+    isResource: Boolean,
+    resourceTypeName: String? = null,
+  ): List<TypeSpec> {
+    val wireFields = codegenContext.buildJsonWireFields(className, elements)
+    return buildList {
+      add(
+        createStreamingSerializerTypeSpec(
+          className,
+          className.toSerializerClassName(),
+          elements,
+          wireFields,
+          includeResourceType = isResource,
+          resourceTypeName = resourceTypeName,
         )
       )
+      if (isResource) {
+        add(createPolymorphicSerializerTypeSpec(className))
+      }
     }
   }
 
   /**
-   * Adds [TypeSpec] for sealed interfaces serializer classes
-   *
-   * Examples: PatientDeceasedSerializer and PatientMultipleBirthSerializer
+   * Thin `XPolymorphicSerializer` whose descriptor omits `resourceType`. Forwards `serialize` /
+   * `deserialize` to `XSerializer`'s shared helpers; on the polymorphic path kotlinx-json's
+   * `discriminatorHolder` consumes the `resourceType` key before
+   * `XSerializer.deserializeInternal`'s slot-0 case ever fires.
    */
-  private fun FileSpec.Builder.addSealedInterfaceSerializers(
-    structureDefinition: StructureDefinition,
-    modelClassName: ClassName,
-  ) = apply {
-    addTypes(
-      structureDefinition.snapshot
-        ?.element
-        ?.filter { it.path.endsWith("[x]") }
-        ?.map { element ->
-          val simpleNames = element.path.replace("[x]", "").split('.').map { it.capitalized() }
-          val sealedInterfaceClassName = ClassName(modelClassName.packageName, simpleNames)
-          createSerializerObjectTypeSpec(sealedInterfaceClassName)
-        } ?: emptyList()
-    )
-  }
-
-  private fun createSerializerObjectTypeSpec(
-    className: ClassName,
-    structureDefinitionKindNamePair: Pair<StructureDefinition.Kind, String>? = null,
-    elements: List<Element>? = null,
-  ): TypeSpec {
-    val multiChoiceElements = elements?.filter { it.path.endsWith("[x]") }
-    val hasMultiChoiceProperties = !multiChoiceElements.isNullOrEmpty()
-    return TypeSpec.objectBuilder(className.toSerializerClassName())
-      .addSuperinterface(KSerializer::class.asClassName().parameterizedBy(className))
-      .addSurrogateSerializerProperty(className)
-      .apply {
-        if (hasMultiChoiceProperties) {
-          addMultiChoicePropertiesProperty(
-            multiChoiceElements.map { it.getElementName() },
-            structureDefinitionKindNamePair,
-          )
-        }
-      }
-      .addDescriptorProperty(className)
-      .addDeserializeFunction(className, hasMultiChoiceProperties)
-      .addSerializeFunction(className, hasMultiChoiceProperties)
-      .build()
-  }
-}
-
-/**
- * Adds the `multiChoiceProperties` property to the [TypeSpec.Builder]. This will be used to track
- * FHIR model properties that can be provided in multiple forms, e.g. Patient.deceased that can
- * exist either as as Boolean or DateTime
- */
-private fun TypeSpec.Builder.addMultiChoicePropertiesProperty(
-  paths: List<String>,
-  structureDefinitionKindAndName: Pair<StructureDefinition.Kind, String>?,
-): TypeSpec.Builder {
-  return apply {
-    if (paths.isNotEmpty()) {
-      addProperty(
-        PropertySpec.builder("multiChoiceProperties", List::class.parameterizedBy(String::class))
-          .addModifiers(KModifier.PRIVATE)
-          .mutable(false)
-          .initializer("listOf(${paths.joinToString(",") { """"$it"""" }})")
-          .build()
-      )
-    }
-  }
-}
-
-/** Adds the `surrogateSerializer` property to the [TypeSpec.Builder]. */
-private fun TypeSpec.Builder.addSurrogateSerializerProperty(
-  className: ClassName
-): TypeSpec.Builder =
-  addProperty(
-    PropertySpec.builder(
-        "surrogateSerializer",
-        KSerializer::class.asClassName().parameterizedBy(className.toSurrogateClassName()),
-      )
+  private fun createPolymorphicSerializerTypeSpec(className: ClassName): TypeSpec {
+    val xSerClassName = className.toSerializerClassName()
+    val descriptorProp =
+      PropertySpec.builder("descriptor", serialDescriptorClassName)
+        .addModifiers(KModifier.OVERRIDE)
+        .initializer(
+          "%M(%S) { %T.buildDescriptor(this) }",
+          buildClassSerialDescriptorMemberName,
+          className.simpleName,
+          xSerClassName,
+        )
+        .build()
+    // Pass `descriptor` (XPolymorphicSerializer's own — wire fields at slots 0..N-1) and offset 0.
+    // The shared body in `XSerializer.serializeInternal` / `deserializeInternal` reads its slot
+    // indices as
+    // `<wireIdx> + descriptorOffset`, so encode/decode use the same descriptor that
+    // `encodeStructure` /
+    // `decodeStructure` opened — required for tag-based formats (ProtoBuf) that resolve fields by
+    // descriptor slot index, not by name.
+    val serializeFn =
+      FunSpec.builder("serialize")
+        .addModifiers(KModifier.OVERRIDE)
+        .addParameter("encoder", encoderClassName)
+        .addParameter("value", className)
+        .addCode(
+          "encoder.%M(descriptor) {\n  %T.serializeInternal(this, descriptor, 0, value)\n}\n",
+          encodeStructureMemberName,
+          xSerClassName,
+        )
+        .build()
+    val deserializeFn =
+      FunSpec.builder("deserialize")
+        .addModifiers(KModifier.OVERRIDE)
+        .addParameter("decoder", decoderClassName)
+        .returns(className)
+        .addCode(
+          "return decoder.%M(descriptor) {\n  %T.deserializeInternal(this, descriptor, 0)\n}\n",
+          decodeStructureMemberName,
+          xSerClassName,
+        )
+        .build()
+    return TypeSpec.objectBuilder(className.toPolymorphicSerializerClassName())
       .addModifiers(KModifier.INTERNAL)
-      .initializeWithLazy("%T.serializer()", className.toSurrogateClassName())
+      .addSuperinterface(KSerializer::class.asClassName().parameterizedBy(className))
+      .addProperty(descriptorProp)
+      .addFunction(serializeFn)
+      .addFunction(deserializeFn)
       .build()
-  )
+  }
 
-/** Adds the `descriptor` property to the [TypeSpec.Builder]. */
-private fun TypeSpec.Builder.addDescriptorProperty(className: ClassName): TypeSpec.Builder =
-  addProperty(
-    PropertySpec.builder("descriptor", serialDescriptorClassName)
-      .addModifiers(KModifier.OVERRIDE)
-      .apply {
-        if (className.simpleName == "Extension") {
-          // A cyclic dependency caused by the `Extension` class prevents the kotlinx
-          // serialization compiler plugin from generating serializers correctly. The
-          // `descriptor` of `ExtensionSerializer` would use the descriptor of
-          // `ExtensionSurrogate`'s serializer. But the `ExtensionSurrogate`'s serializer
-          // is automatically generated, using the serializers of its data members, some of
-          // which in turn can only be generated using `ExtensionSerializer`.
-          // To resolve this, a placeholder [PrimitiveSerialDescriptor] of type [String]
-          // is used for the `ExtensionSerializer`. This workaround is safe because
-          // serialization and deserialization are delegated entirely to the surrogate
-          // serializer, rendering the `ExtensionSerializer`'s descriptor effectively unused.
-          initializeWithLazy(
-            "%T(%S, %T(%S, %T.STRING))",
-            serialDescriptorClassName,
-            className.packageName,
-            primitiveSerialDescriptorClassName,
-            "Extension",
-            ClassName(KOTLINX_SERIALIZATION_DESCRIPTORS, "PrimitiveKind"),
-          )
-        } else {
-          initializeWithLazy(
-            "%T(%S, surrogateSerializer.descriptor)",
-            serialDescriptorClassName,
-            className.simpleName,
-          )
-        }
-      }
-      .build()
-  )
+  /** The streaming serializer object — does the actual `encodeStructure`/`decodeStructure` work. */
+  private fun createStreamingSerializerTypeSpec(
+    className: ClassName,
+    serializerClassName: ClassName,
+    elements: List<Element>,
+    wireFields: List<WireField>,
+    includeResourceType: Boolean,
+    resourceTypeName: String?,
+  ): TypeSpec {
+    val hoister = SerializerHoister()
+    val builder =
+      TypeSpec.objectBuilder(serializerClassName)
+        .addModifiers(KModifier.INTERNAL)
+        .addSuperinterface(KSerializer::class.asClassName().parameterizedBy(className))
+        .addProperty(
+          descriptorEmitter.buildDescriptorProperty(className, wireFields, includeResourceType)
+        )
+    if (includeResourceType) {
+      builder.addFunction(descriptorEmitter.buildBuildDescriptorFun(className, wireFields))
+    }
+    val functions =
+      buildSerializerFunctions(
+        className,
+        elements,
+        wireFields,
+        includeResourceType,
+        resourceTypeName,
+        hoister,
+      )
+    hoister.eagerPropertyDefinitions().forEach { builder.addProperty(it) }
+    functions.forEach { builder.addFunction(it) }
+    hoister.deferredObjectTypeSpec()?.let { builder.addType(it) }
+    return builder.build()
+  }
 
-/**
- * Adds the `deserialize` function to the [TypeSpec.Builder]. This function delegates
- * deserialization to `surrogateSerializer`.
- */
-private fun TypeSpec.Builder.addDeserializeFunction(
-  className: ClassName,
-  hasMultiChoiceProperties: Boolean,
-): TypeSpec.Builder {
-  return addFunction(
-    FunSpec.builder("deserialize")
-      .addModifiers(KModifier.OVERRIDE)
-      .addParameter("decoder", decoderClassName)
-      .returns(className)
-      .apply {
-        if (hasMultiChoiceProperties) {
-          // Unflatten the multi-choice JsonObjects; recreate nested JsonObject
-          addCode(
-            """
-              val jsonDecoder = 
-                decoder as? %T ?: error("This serializer only supports JSON decoding")
-              val oldJsonObject =
-                %T(jsonDecoder.decodeJsonElement().%M.toMutableMap().apply {
-                  remove("resourceType")
-                })
-              val unflattenedJsonObject = %T.unflatten(oldJsonObject, multiChoiceProperties)
-              val surrogate = 
-                jsonDecoder.json.decodeFromJsonElement(surrogateSerializer, unflattenedJsonObject)
-              return surrogate.toModel()
-            """
-              .trimIndent(),
-            JsonDecoder::class,
-            ClassName("kotlinx.serialization.json", "JsonObject"),
-            MemberName("kotlinx.serialization.json", "jsonObject"),
-            ClassName(className.packageName, "FhirJsonTransformer"),
-          )
-        } else {
-          addStatement("return surrogateSerializer.deserialize(decoder).toModel()")
-        }
+  /**
+   * Builds the four serializer functions: the public `serialize` / `deserialize` overrides plus the
+   * private `serializeInternal` / `deserializeInternal` bodies they delegate to. For resource types
+   * the internal bodies are `internal` (not `private`) so `XPolymorphicSerializer` can reuse them
+   * with a different descriptor + offset.
+   */
+  private fun buildSerializerFunctions(
+    className: ClassName,
+    elements: List<Element>,
+    wireFields: List<WireField>,
+    includeResourceType: Boolean,
+    resourceTypeName: String?,
+    hoister: SerializerHoister,
+  ): List<FunSpec> {
+    // For resources we share `serializeInternal`/`deserializeInternal` between `XSerializer`
+    // (descriptor:
+    // resourceType@0, wireFields@1..N) and `XPolymorphicSerializer` (descriptor:
+    // wireFields@0..N-1).
+    // The body takes the descriptor + a wire-field offset (`descriptorOffset`) at runtime; encode
+    // emits
+    // `<wireIdx> + descriptorOffset` for the descriptor index, decode rebases the dispatch via
+    // `when (i - descriptorOffset)` so case labels stay constant. Non-resource types keep the
+    // simple
+    // unparameterized form.
+    val parameterized = includeResourceType
+    // Case labels in the decode `when` — always wire-field index (0-based). For non-resources
+    // this also equals the absolute descriptor slot since there's no `resourceType` prefix.
+    val nameToCaseLabel =
+      wireFields.withIndex().associate { (index, wireField) -> wireField.name to index }
+    // Encode-side index expression: literal `<wireIdx>` for non-resources, `<wireIdx> +
+    // descriptorOffset`
+    // for resources. Substituted into emit calls via `%L`.
+    val nameToIdx: Map<String, CodeBlock> =
+      nameToCaseLabel.mapValues { (_, i) ->
+        if (parameterized) CodeBlock.of("%L + descriptorOffset", i) else CodeBlock.of("%L", i)
       }
-      .build()
-  )
+    val functions = mutableListOf<FunSpec>()
+    // `deserialize(decoder)` streams via `decodeStructure { deserializeInternal(this) }`. The same
+    // body
+    // services both `StreamingJsonDecoder` and `JsonTreeDecoder` because every read inside the
+    // `deserializeInternal` loop goes through the `CompositeDecoder` interface
+    // (`decodeElementIndex`,
+    // `decodeXxxElement`, `decodeSerializableElement`) — kotlinx picks the decoder, we walk it.
+    val deserializeBody =
+      if (parameterized) {
+        // Pass `descriptor` (XSerializer's, with resourceType@0) and offset 1 so the body's
+        // wire-field cases land at slots 1..N.
+        CodeBlock.of(
+          "return decoder.%M(descriptor) {\n  deserializeInternal(this, descriptor, 1)\n}\n",
+          decodeStructureMemberName,
+        )
+      } else {
+        CodeBlock.of(
+          "return decoder.%M(descriptor) {\n  deserializeInternal(this)\n}\n",
+          decodeStructureMemberName,
+        )
+      }
+    functions +=
+      FunSpec.builder("deserialize")
+        .addModifiers(KModifier.OVERRIDE)
+        .addParameter("decoder", decoderClassName)
+        .returns(className)
+        .addCode(deserializeBody)
+        .build()
+    val serializeBody =
+      if (parameterized && resourceTypeName != null) {
+        // Outer wrapper writes `resourceType` at slot 0; the body — same one
+        // `XPolymorphicSerializer` reuses with offset 0 — handles every other field.
+        CodeBlock.of(
+          "encoder.%M(descriptor) {\n  encodeStringElement(descriptor, 0, %S)\n" +
+            "  serializeInternal(this, descriptor, 1, value)\n}\n",
+          encodeStructureMemberName,
+          resourceTypeName,
+        )
+      } else {
+        CodeBlock.of(
+          "encoder.%M(descriptor) {\n  serializeInternal(this, value)\n}\n",
+          encodeStructureMemberName,
+        )
+      }
+    functions +=
+      FunSpec.builder("serialize")
+        .addModifiers(KModifier.OVERRIDE)
+        .addParameter("encoder", encoderClassName)
+        .addParameter("value", className)
+        .addCode(serializeBody)
+        .build()
+    functions +=
+      decodeEmitter.buildDeserializeInternal(
+        className,
+        elements,
+        wireFields,
+        parameterized,
+        nameToCaseLabel,
+        hoister,
+      )
+    functions +=
+      encodeEmitter.buildSerializeInternal(className, elements, parameterized, nameToIdx, hoister)
+    return functions
+  }
 }
 
-/**
- * Adds the `serialize` function to the [TypeSpec.Builder]. This function delegates serialization to
- * `surrogateSerializer`.
- */
-private fun TypeSpec.Builder.addSerializeFunction(
-  className: ClassName,
-  hasMultiChoiceProperties: Boolean,
-): TypeSpec.Builder {
-  return addFunction(
-    FunSpec.builder("serialize")
-      .addModifiers(KModifier.OVERRIDE)
-      .addParameter("encoder", encoderClassName)
-      .addParameter("value", className)
-      .apply {
-        if (hasMultiChoiceProperties) {
-          // Flatten the multi-choice JsonObjects; unwrap nested Json items
-          addCode(
-            """
-              val jsonEncoder = 
-                encoder as? %T ?: error("This serializer only supports JSON encoding")
-              val surrogate = %T.fromModel(value)
-              val oldJsonObject = 
-                jsonEncoder.json.encodeToJsonElement(
-                  surrogateSerializer,
-                  surrogate
-                ).jsonObject
-              val flattenedJsonObject = %T.flatten(oldJsonObject, multiChoiceProperties)
-              jsonEncoder.encodeJsonElement(flattenedJsonObject)
-            """
-              .trimIndent(),
-            JsonEncoder::class,
-            className.toSurrogateClassName(),
-            ClassName(className.packageName, "FhirJsonTransformer"),
-          )
-        } else {
-          addStatement(
-            "surrogateSerializer.serialize(encoder, %T.fromModel(value))",
-            className.toSurrogateClassName(),
-          )
-        }
-      }
-      .build()
-  )
-}
-
-/** Initializes the property with a lazy delegate. */
-private fun PropertySpec.Builder.initializeWithLazy(statement: String, vararg args: Any) =
-  this.delegate(
-    CodeBlock.builder()
-      .beginControlFlow("lazy")
-      .addStatement(statement, *args)
-      .endControlFlow()
-      .build()
-  )
-
-/**
- * Returns the [ClassName] that represents the serializer for this [ClassName]. The generated
- * serializer resides in the same package and its name is derived by concatenating the names of any
- * nested classes, ending with "Serializer".
- *
- * For example:
- * - `dev.ohs.fhir.r4.Patient` will return `dev.ohs.fhir.r4.PatientSerializer`, and
- * - `dev.ohs.fhir.r4.Patient.Contact` will return `dev.ohs.fhir.r4.PatientContactSerializer`.
- */
+/** Returns the [ClassName] for the generated serializer object. */
 fun ClassName.toSerializerClassName(): ClassName =
   ClassName("${packageName}.serializers", simpleNames.joinToString("").plus("Serializer"))
 
 /**
- * Returns the [FileSpec.Builder] that represents the serializer file for this [ClassName]. The
- * serializer file will contain the serializer for the given [ClassName] and all serializers for its
- * nested classes. The serializer file will be under the `serializers` package with a name suffixed
- * with "Serializers".
- *
- * For example:
- * - `dev.ohs.fhir.r4.Patient` will return [FileSpec] for `PatientSerializers.kt` in package
- *   `dev.ohs.fhir.r4.serializers`.
+ * Returns the [ClassName] for the polymorphic-variant serializer object (resource types only).
+ * Descriptor omits `resourceType`; used as a subclass entry in `ResourcePolymorphicSerializer`,
+ * where kotlinx-json injects the discriminator itself.
  */
+fun ClassName.toPolymorphicSerializerClassName(): ClassName =
+  ClassName(
+    "${packageName}.serializers",
+    simpleNames.joinToString("").plus("PolymorphicSerializer"),
+  )
+
 private fun ClassName.toSerializerFileSpecBuilder(): FileSpec.Builder =
   FileSpec.builder("${packageName}.serializers", simpleName.plus("Serializers"))
     .addSuppressAnnotation()
+    .addAnnotation(
+      AnnotationSpec.builder(ClassName("kotlin", "OptIn"))
+        .addMember("%T::class", ClassName("kotlinx.serialization", "ExperimentalSerializationApi"))
+        .useSiteTarget(AnnotationSpec.UseSiteTarget.FILE)
+        .build()
+    )

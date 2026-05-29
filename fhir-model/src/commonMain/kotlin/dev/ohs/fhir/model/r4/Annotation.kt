@@ -18,7 +18,6 @@
 
 package dev.ohs.fhir.model.r4
 
-import dev.ohs.fhir.model.r4.serializers.AnnotationAuthorSerializer
 import dev.ohs.fhir.model.r4.serializers.AnnotationSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -61,7 +60,7 @@ public data class Annotation(
   /** The text of the annotation in markdown format. */
   public val text: Markdown,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(text.toBuilder()).apply {
         id = this@with.id
@@ -71,7 +70,6 @@ public data class Annotation(
       }
     }
 
-  @Serializable(with = AnnotationAuthorSerializer::class)
   public sealed interface Author {
     public fun asReference(): Reference? = this as? Reference
 

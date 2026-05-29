@@ -18,16 +18,12 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupMeasureScoreSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupPopulationSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumComponentSerializer
-import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumComponentValueSerializer
-import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumMeasureScoreSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumPopulationSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumSerializer
-import dev.ohs.fhir.model.r5.serializers.MeasureReportGroupStratifierStratumValueSerializer
 import dev.ohs.fhir.model.r5.serializers.MeasureReportSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -748,7 +744,6 @@ public data class MeasureReport(
               }
             }
 
-          @Serializable(with = MeasureReportGroupStratifierStratumComponentValueSerializer::class)
           public sealed interface Value {
             public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1047,7 +1042,6 @@ public data class MeasureReport(
           }
         }
 
-        @Serializable(with = MeasureReportGroupStratifierStratumValueSerializer::class)
         public sealed interface Value {
           public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -1089,7 +1083,6 @@ public data class MeasureReport(
           }
         }
 
-        @Serializable(with = MeasureReportGroupStratifierStratumMeasureScoreSerializer::class)
         public sealed interface MeasureScore {
           public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -1285,7 +1278,6 @@ public data class MeasureReport(
       }
     }
 
-    @Serializable(with = MeasureReportGroupMeasureScoreSerializer::class)
     public sealed interface MeasureScore {
       public fun asQuantity(): Quantity? = this as? Quantity
 

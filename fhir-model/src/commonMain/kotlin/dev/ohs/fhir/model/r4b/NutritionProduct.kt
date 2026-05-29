@@ -22,7 +22,6 @@ import dev.ohs.fhir.model.r4b.serializers.NutritionProductIngredientSerializer
 import dev.ohs.fhir.model.r4b.serializers.NutritionProductInstanceSerializer
 import dev.ohs.fhir.model.r4b.serializers.NutritionProductNutrientSerializer
 import dev.ohs.fhir.model.r4b.serializers.NutritionProductProductCharacteristicSerializer
-import dev.ohs.fhir.model.r4b.serializers.NutritionProductProductCharacteristicValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.NutritionProductSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -491,7 +490,6 @@ public data class NutritionProduct(
         }
       }
 
-    @Serializable(with = NutritionProductProductCharacteristicValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

@@ -16,6 +16,7 @@
 
 package dev.ohs.fhir.codegen
 
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
@@ -29,28 +30,34 @@ import com.squareup.kotlinpoet.asTypeName
 import dev.ohs.fhir.codegen.schema.capitalized
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonBuilder
-import kotlinx.serialization.modules.SerializersModule
 
 /**
  * Generates a [FileSpec] for the JSON serialization API.
  *
  * The generated file includes a `Fhir<VERSION>Json` class. It configures kotlinx.serialization's
- * [Json] object by registering polymorphic types for FHIR resource hierarchies and setting
- * appropriate class discriminators (e.g., "resourceType").
+ * [Json] object.
  *
  * It exposes the following serialization API:
  * - `encodeToString`
  * - `decodeFromString`
  */
 object FhirJsonFileSpecGenerator {
-  fun generate(packageName: String, subclasses: List<ClassName>): FileSpec {
+  fun generate(packageName: String): FileSpec {
     val baseClass = ClassName(packageName, "Resource")
     val fhirVersion = packageName.substringAfterLast('.').capitalized()
     val className = ClassName(packageName, "Fhir${fhirVersion}Json")
-    val serializersModuleName = "serializersModule${fhirVersion}"
     return FileSpec.builder(className)
       .addType(
         TypeSpec.classBuilder(className)
+          .addAnnotation(
+            AnnotationSpec.builder(Deprecated::class)
+              .addMember(
+                "%S",
+                "No longer required. Create a kotlinx.serialization Json instance directly and " +
+                  "use it to serialize FHIR resources.",
+              )
+              .build()
+          )
           .primaryConstructor(
             FunSpec.constructorBuilder()
               .addParameter(
@@ -74,8 +81,6 @@ object FhirJsonFileSpecGenerator {
                   .addStatement("%T {", Json::class)
                   .indent()
                   .addStatement("prettyPrint = true")
-                  .addStatement("classDiscriminator = \"resourceType\"")
-                  .addStatement("serializersModule = $serializersModuleName")
                   .addStatement("init()")
                   .unindent()
                   .addStatement("}")
@@ -95,29 +100,6 @@ object FhirJsonFileSpecGenerator {
               .addParameter("string", String::class)
               .returns(baseClass)
               .addStatement("return json.decodeFromString<${baseClass.simpleName}>(string)")
-              .build()
-          )
-          .build()
-      )
-      .addProperty(
-        PropertySpec.builder(serializersModuleName, SerializersModule::class)
-          .addModifiers(KModifier.PRIVATE)
-          .initializer(
-            CodeBlock.builder()
-              .addStatement("%T {", SerializersModule::class)
-              .indent()
-              .apply {
-                subclasses.sorted().forEach {
-                  addStatement(
-                    "polymorphic(%T::class, %T::class, %T.serializer())",
-                    baseClass,
-                    it,
-                    it,
-                  )
-                }
-              }
-              .unindent()
-              .addStatement("}")
               .build()
           )
           .build()

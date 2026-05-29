@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4
 
 import dev.ohs.fhir.model.r4.serializers.UsageContextSerializer
-import dev.ohs.fhir.model.r4.serializers.UsageContextValueSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
@@ -60,7 +59,7 @@ public data class UsageContext(
    */
   public val `value`: Value,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(code.toBuilder(), `value`).apply {
         id = this@with.id
@@ -68,7 +67,6 @@ public data class UsageContext(
       }
     }
 
-  @Serializable(with = UsageContextValueSerializer::class)
   public sealed interface Value {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

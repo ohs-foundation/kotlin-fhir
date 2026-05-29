@@ -19,14 +19,10 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionSubjectSerializer
-import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerAdditiveSerializer
-import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerMinimumVolumeSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedContainerSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedHandlingSerializer
 import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionTypeTestedSerializer
-import dev.ohs.fhir.model.r5.serializers.SpecimenDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -593,7 +589,6 @@ public data class SpecimenDefinition(
             }
           }
 
-        @Serializable(with = SpecimenDefinitionTypeTestedContainerAdditiveAdditiveSerializer::class)
         public sealed interface Additive {
           public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -675,7 +670,6 @@ public data class SpecimenDefinition(
         }
       }
 
-      @Serializable(with = SpecimenDefinitionTypeTestedContainerMinimumVolumeSerializer::class)
       public sealed interface MinimumVolume {
         public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -1028,7 +1022,6 @@ public data class SpecimenDefinition(
     }
   }
 
-  @Serializable(with = SpecimenDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 
@@ -1050,7 +1043,6 @@ public data class SpecimenDefinition(
     }
   }
 
-  @Serializable(with = SpecimenDefinitionSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

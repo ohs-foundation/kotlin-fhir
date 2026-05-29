@@ -22,14 +22,8 @@ import dev.ohs.fhir.model.r5.serializers.ElementDefinitionBaseSerializer
 import dev.ohs.fhir.model.r5.serializers.ElementDefinitionBindingAdditionalSerializer
 import dev.ohs.fhir.model.r5.serializers.ElementDefinitionBindingSerializer
 import dev.ohs.fhir.model.r5.serializers.ElementDefinitionConstraintSerializer
-import dev.ohs.fhir.model.r5.serializers.ElementDefinitionDefaultValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ElementDefinitionExampleSerializer
-import dev.ohs.fhir.model.r5.serializers.ElementDefinitionExampleValueSerializer
-import dev.ohs.fhir.model.r5.serializers.ElementDefinitionFixedSerializer
 import dev.ohs.fhir.model.r5.serializers.ElementDefinitionMappingSerializer
-import dev.ohs.fhir.model.r5.serializers.ElementDefinitionMaxValueSerializer
-import dev.ohs.fhir.model.r5.serializers.ElementDefinitionMinValueSerializer
-import dev.ohs.fhir.model.r5.serializers.ElementDefinitionPatternSerializer
 import dev.ohs.fhir.model.r5.serializers.ElementDefinitionSerializer
 import dev.ohs.fhir.model.r5.serializers.ElementDefinitionSlicingDiscriminatorSerializer
 import dev.ohs.fhir.model.r5.serializers.ElementDefinitionSlicingSerializer
@@ -459,7 +453,7 @@ public data class ElementDefinition(
    */
   public val mapping: List<Mapping> = listOf(),
 ) : BackboneType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(path.toBuilder()).apply {
         id = this@with.id
@@ -1071,7 +1065,6 @@ public data class ElementDefinition(
         }
       }
 
-    @Serializable(with = ElementDefinitionExampleValueSerializer::class)
     public sealed interface Value {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
@@ -1997,7 +1990,6 @@ public data class ElementDefinition(
     }
   }
 
-  @Serializable(with = ElementDefinitionDefaultValueSerializer::class)
   public sealed interface DefaultValue {
     public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
@@ -2356,7 +2348,6 @@ public data class ElementDefinition(
     }
   }
 
-  @Serializable(with = ElementDefinitionFixedSerializer::class)
   public sealed interface Fixed {
     public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
@@ -2703,7 +2694,6 @@ public data class ElementDefinition(
     }
   }
 
-  @Serializable(with = ElementDefinitionPatternSerializer::class)
   public sealed interface Pattern {
     public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 
@@ -3054,7 +3044,6 @@ public data class ElementDefinition(
     }
   }
 
-  @Serializable(with = ElementDefinitionMinValueSerializer::class)
   public sealed interface MinValue {
     public fun asDate(): Date? = this as? Date
 
@@ -3124,7 +3113,6 @@ public data class ElementDefinition(
     }
   }
 
-  @Serializable(with = ElementDefinitionMaxValueSerializer::class)
   public sealed interface MaxValue {
     public fun asDate(): Date? = this as? Date
 

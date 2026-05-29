@@ -21,7 +21,6 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.ObservationDefinitionComponentSerializer
 import dev.ohs.fhir.model.r5.serializers.ObservationDefinitionQualifiedValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ObservationDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.ObservationDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.AdministrativeGender
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -861,7 +860,6 @@ public data class ObservationDefinition(
     }
   }
 
-  @Serializable(with = ObservationDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

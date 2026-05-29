@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.ResearchDefinitionSerializer
-import dev.ohs.fhir.model.r4b.serializers.ResearchDefinitionSubjectSerializer
 import dev.ohs.fhir.model.r4b.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -420,7 +419,6 @@ public data class ResearchDefinition(
       }
     }
 
-  @Serializable(with = ResearchDefinitionSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

@@ -107,7 +107,7 @@ public data class Address(
   /** Time period when address was/is in use. */
   public val period: Period? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

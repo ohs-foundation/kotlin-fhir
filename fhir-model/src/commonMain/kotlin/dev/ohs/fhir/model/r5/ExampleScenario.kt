@@ -21,14 +21,12 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioActorSerializer
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioInstanceContainedInstanceSerializer
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioInstanceSerializer
-import dev.ohs.fhir.model.r5.serializers.ExampleScenarioInstanceStructureProfileSerializer
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioInstanceVersionSerializer
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioProcessSerializer
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioProcessStepAlternativeSerializer
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioProcessStepOperationSerializer
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioProcessStepSerializer
 import dev.ohs.fhir.model.r5.serializers.ExampleScenarioSerializer
-import dev.ohs.fhir.model.r5.serializers.ExampleScenarioVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -839,7 +837,6 @@ public data class ExampleScenario(
       }
     }
 
-    @Serializable(with = ExampleScenarioInstanceStructureProfileSerializer::class)
     public sealed interface StructureProfile {
       public fun asCanonical(): Canonical? = this as? Canonical
 
@@ -1652,7 +1649,6 @@ public data class ExampleScenario(
     }
   }
 
-  @Serializable(with = ExampleScenarioVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

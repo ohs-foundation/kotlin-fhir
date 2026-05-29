@@ -19,25 +19,17 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionConditionSerializer
-import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionDefinitionSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionDynamicValueSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionInputSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionOutputSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionParticipantSerializer
-import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionRelatedActionOffsetSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionRelatedActionSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionSerializer
-import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionSubjectSerializer
-import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActionTimingSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActorOptionSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionActorSerializer
-import dev.ohs.fhir.model.r5.serializers.PlanDefinitionAsNeededSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionGoalSerializer
-import dev.ohs.fhir.model.r5.serializers.PlanDefinitionGoalTargetDetailSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionGoalTargetSerializer
 import dev.ohs.fhir.model.r5.serializers.PlanDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.PlanDefinitionSubjectSerializer
-import dev.ohs.fhir.model.r5.serializers.PlanDefinitionVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -670,7 +662,6 @@ public data class PlanDefinition(
           }
         }
 
-      @Serializable(with = PlanDefinitionGoalTargetDetailSerializer::class)
       public sealed interface Detail {
         public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -1885,7 +1876,6 @@ public data class PlanDefinition(
           }
         }
 
-      @Serializable(with = PlanDefinitionActionRelatedActionOffsetSerializer::class)
       public sealed interface Offset {
         public fun asDuration(): Duration? = this as? Duration
 
@@ -2288,7 +2278,6 @@ public data class PlanDefinition(
       }
     }
 
-    @Serializable(with = PlanDefinitionActionSubjectSerializer::class)
     public sealed interface Subject {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -2317,7 +2306,6 @@ public data class PlanDefinition(
       }
     }
 
-    @Serializable(with = PlanDefinitionActionTimingSerializer::class)
     public sealed interface Timing {
       public fun asAge(): Age? = this as? Age
 
@@ -2352,7 +2340,6 @@ public data class PlanDefinition(
       }
     }
 
-    @Serializable(with = PlanDefinitionActionDefinitionSerializer::class)
     public sealed interface Definition {
       public fun asCanonical(): Canonical? = this as? Canonical
 
@@ -2650,7 +2637,6 @@ public data class PlanDefinition(
     }
   }
 
-  @Serializable(with = PlanDefinitionVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 
@@ -2672,7 +2658,6 @@ public data class PlanDefinition(
     }
   }
 
-  @Serializable(with = PlanDefinitionSubjectSerializer::class)
   public sealed interface Subject {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -2701,7 +2686,6 @@ public data class PlanDefinition(
     }
   }
 
-  @Serializable(with = PlanDefinitionAsNeededSerializer::class)
   public sealed interface AsNeeded {
     public fun asBoolean(): Boolean? = this as? Boolean
 

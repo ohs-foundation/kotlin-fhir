@@ -32,7 +32,6 @@ import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormPe
 import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormPublishedInSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactPublicationFormSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactRelatesToSerializer
-import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactRelatesToTargetSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactStatusDateSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactTitleSerializer
@@ -40,7 +39,6 @@ import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactVersionSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationCitedArtifactWebLocationSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationClassificationSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationRelatesToSerializer
-import dev.ohs.fhir.model.r4b.serializers.CitationRelatesToTargetSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationStatusDateSerializer
 import dev.ohs.fhir.model.r4b.serializers.CitationSummarySerializer
@@ -778,7 +776,6 @@ public data class Citation(
         }
       }
 
-    @Serializable(with = CitationRelatesToTargetSerializer::class)
     public sealed interface Target {
       public fun asUri(): Uri? = this as? Uri
 
@@ -1652,7 +1649,6 @@ public data class Citation(
           }
         }
 
-      @Serializable(with = CitationCitedArtifactRelatesToTargetSerializer::class)
       public sealed interface Target {
         public fun asUri(): Uri? = this as? Uri
 

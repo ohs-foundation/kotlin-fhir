@@ -19,13 +19,9 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ObservationComponentSerializer
-import dev.ohs.fhir.model.r5.serializers.ObservationComponentValueSerializer
-import dev.ohs.fhir.model.r5.serializers.ObservationEffectiveSerializer
-import dev.ohs.fhir.model.r5.serializers.ObservationInstantiatesSerializer
 import dev.ohs.fhir.model.r5.serializers.ObservationReferenceRangeSerializer
 import dev.ohs.fhir.model.r5.serializers.ObservationSerializer
 import dev.ohs.fhir.model.r5.serializers.ObservationTriggeredBySerializer
-import dev.ohs.fhir.model.r5.serializers.ObservationValueSerializer
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
@@ -888,7 +884,6 @@ public data class Observation(
         }
       }
 
-    @Serializable(with = ObservationComponentValueSerializer::class)
     public sealed interface Value {
       public fun asQuantity(): Quantity? = this as? Quantity
 
@@ -1105,7 +1100,6 @@ public data class Observation(
     }
   }
 
-  @Serializable(with = ObservationInstantiatesSerializer::class)
   public sealed interface Instantiates {
     public fun asCanonical(): Canonical? = this as? Canonical
 
@@ -1127,7 +1121,6 @@ public data class Observation(
     }
   }
 
-  @Serializable(with = ObservationEffectiveSerializer::class)
   public sealed interface Effective {
     public fun asDateTime(): DateTime? = this as? DateTime
 
@@ -1161,7 +1154,6 @@ public data class Observation(
     }
   }
 
-  @Serializable(with = ObservationValueSerializer::class)
   public sealed interface Value {
     public fun asQuantity(): Quantity? = this as? Quantity
 

@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ProvenanceAgentSerializer
 import dev.ohs.fhir.model.r5.serializers.ProvenanceEntitySerializer
-import dev.ohs.fhir.model.r5.serializers.ProvenanceOccurredSerializer
 import dev.ohs.fhir.model.r5.serializers.ProvenanceSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -554,7 +553,6 @@ public data class Provenance(
     }
   }
 
-  @Serializable(with = ProvenanceOccurredSerializer::class)
   public sealed interface Occurred {
     public fun asPeriod(): Period? = this as? Period
 

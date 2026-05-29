@@ -20,7 +20,6 @@ package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.ImplementationGuideDefinitionGroupingSerializer
 import dev.ohs.fhir.model.r5.serializers.ImplementationGuideDefinitionPageSerializer
-import dev.ohs.fhir.model.r5.serializers.ImplementationGuideDefinitionPageSourceSerializer
 import dev.ohs.fhir.model.r5.serializers.ImplementationGuideDefinitionParameterSerializer
 import dev.ohs.fhir.model.r5.serializers.ImplementationGuideDefinitionResourceSerializer
 import dev.ohs.fhir.model.r5.serializers.ImplementationGuideDefinitionSerializer
@@ -31,7 +30,6 @@ import dev.ohs.fhir.model.r5.serializers.ImplementationGuideManifestPageSerializ
 import dev.ohs.fhir.model.r5.serializers.ImplementationGuideManifestResourceSerializer
 import dev.ohs.fhir.model.r5.serializers.ImplementationGuideManifestSerializer
 import dev.ohs.fhir.model.r5.serializers.ImplementationGuideSerializer
-import dev.ohs.fhir.model.r5.serializers.ImplementationGuideVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.FHIRVersion
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import dev.ohs.fhir.model.r5.terminologies.ResourceType
@@ -1216,7 +1214,6 @@ public data class ImplementationGuide(
           }
         }
 
-      @Serializable(with = ImplementationGuideDefinitionPageSourceSerializer::class)
       public sealed interface Source {
         public fun asUrl(): Url? = this as? Url
 
@@ -2107,7 +2104,6 @@ public data class ImplementationGuide(
     }
   }
 
-  @Serializable(with = ImplementationGuideVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

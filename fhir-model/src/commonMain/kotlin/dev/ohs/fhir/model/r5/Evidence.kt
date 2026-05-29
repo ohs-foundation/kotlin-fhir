@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r5
 
 import dev.ohs.fhir.model.r5.serializers.EvidenceCertaintySerializer
-import dev.ohs.fhir.model.r5.serializers.EvidenceCiteAsSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticAttributeEstimateSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticModelCharacteristicSerializer
@@ -27,7 +26,6 @@ import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticModelCharacteristicVar
 import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticSampleSizeSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceStatisticSerializer
 import dev.ohs.fhir.model.r5.serializers.EvidenceVariableDefinitionSerializer
-import dev.ohs.fhir.model.r5.serializers.EvidenceVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1495,7 +1493,6 @@ public data class Evidence(
     }
   }
 
-  @Serializable(with = EvidenceVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 
@@ -1517,7 +1514,6 @@ public data class Evidence(
     }
   }
 
-  @Serializable(with = EvidenceCiteAsSerializer::class)
   public sealed interface CiteAs {
     public fun asReference(): Reference? = this as? Reference
 

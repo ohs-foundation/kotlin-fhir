@@ -18,10 +18,8 @@
 
 package dev.ohs.fhir.model.r4b
 
-import dev.ohs.fhir.model.r4b.serializers.MedicationDispenseMedicationSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationDispensePerformerSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationDispenseSerializer
-import dev.ohs.fhir.model.r4b.serializers.MedicationDispenseStatusReasonSerializer
 import dev.ohs.fhir.model.r4b.serializers.MedicationDispenseSubstitutionSerializer
 import kotlin.String
 import kotlin.Suppress
@@ -557,7 +555,6 @@ public data class MedicationDispense(
     }
   }
 
-  @Serializable(with = MedicationDispenseStatusReasonSerializer::class)
   public sealed interface StatusReason {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 
@@ -581,7 +578,6 @@ public data class MedicationDispense(
     }
   }
 
-  @Serializable(with = MedicationDispenseMedicationSerializer::class)
   public sealed interface Medication {
     public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

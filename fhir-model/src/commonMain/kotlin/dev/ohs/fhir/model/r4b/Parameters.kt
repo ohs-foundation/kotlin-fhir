@@ -19,7 +19,6 @@
 package dev.ohs.fhir.model.r4b
 
 import dev.ohs.fhir.model.r4b.serializers.ParametersParameterSerializer
-import dev.ohs.fhir.model.r4b.serializers.ParametersParameterValueSerializer
 import dev.ohs.fhir.model.r4b.serializers.ParametersSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -159,7 +158,6 @@ public data class Parameters(
         }
       }
 
-    @Serializable(with = ParametersParameterValueSerializer::class)
     public sealed interface Value {
       public fun asBase64Binary(): Base64Binary? = this as? Base64Binary
 

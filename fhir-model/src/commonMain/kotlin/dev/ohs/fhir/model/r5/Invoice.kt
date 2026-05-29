@@ -18,11 +18,8 @@
 
 package dev.ohs.fhir.model.r5
 
-import dev.ohs.fhir.model.r5.serializers.InvoiceLineItemChargeItemSerializer
 import dev.ohs.fhir.model.r5.serializers.InvoiceLineItemSerializer
-import dev.ohs.fhir.model.r5.serializers.InvoiceLineItemServicedSerializer
 import dev.ohs.fhir.model.r5.serializers.InvoiceParticipantSerializer
-import dev.ohs.fhir.model.r5.serializers.InvoicePeriodSerializer
 import dev.ohs.fhir.model.r5.serializers.InvoiceSerializer
 import kotlin.Suppress
 import kotlin.collections.List
@@ -454,7 +451,6 @@ public data class Invoice(
         }
       }
 
-    @Serializable(with = InvoiceLineItemServicedSerializer::class)
     public sealed interface Serviced {
       public fun asDate(): Date? = this as? Date
 
@@ -476,7 +472,6 @@ public data class Invoice(
       }
     }
 
-    @Serializable(with = InvoiceLineItemChargeItemSerializer::class)
     public sealed interface ChargeItem {
       public fun asReference(): Reference? = this as? Reference
 
@@ -575,7 +570,6 @@ public data class Invoice(
     }
   }
 
-  @Serializable(with = InvoicePeriodSerializer::class)
   public sealed interface Period {
     public fun asDate(): Date? = this as? Date
 

@@ -21,7 +21,6 @@ package dev.ohs.fhir.model.r5
 import dev.ohs.fhir.model.r5.serializers.ManufacturedItemDefinitionComponentConstituentSerializer
 import dev.ohs.fhir.model.r5.serializers.ManufacturedItemDefinitionComponentSerializer
 import dev.ohs.fhir.model.r5.serializers.ManufacturedItemDefinitionPropertySerializer
-import dev.ohs.fhir.model.r5.serializers.ManufacturedItemDefinitionPropertyValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ManufacturedItemDefinitionSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
@@ -246,7 +245,6 @@ public data class ManufacturedItemDefinition(
         }
       }
 
-    @Serializable(with = ManufacturedItemDefinitionPropertyValueSerializer::class)
     public sealed interface Value {
       public fun asCodeableConcept(): CodeableConcept? = this as? CodeableConcept
 

@@ -105,7 +105,7 @@ public data class Signature(
    */
   public val `data`: Base64Binary? = null,
 ) : Element() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder(type.map { it.toBuilder() }.toMutableList(), `when`.toBuilder(), who.toBuilder())
         .apply {

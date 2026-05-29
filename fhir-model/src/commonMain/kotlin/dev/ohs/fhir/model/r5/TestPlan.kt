@@ -24,11 +24,8 @@ import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseAssertionSerializer
 import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseDependencySerializer
 import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseSerializer
 import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestDataSerializer
-import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestDataSourceSerializer
 import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestRunScriptSerializer
-import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestRunScriptSourceSerializer
 import dev.ohs.fhir.model.r5.serializers.TestPlanTestCaseTestRunSerializer
-import dev.ohs.fhir.model.r5.serializers.TestPlanVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -796,7 +793,6 @@ public data class TestPlan(
             }
           }
 
-        @Serializable(with = TestPlanTestCaseTestRunScriptSourceSerializer::class)
         public sealed interface Source {
           public fun asString(): String? = this as? String
 
@@ -998,7 +994,6 @@ public data class TestPlan(
           }
         }
 
-      @Serializable(with = TestPlanTestCaseTestDataSourceSerializer::class)
       public sealed interface Source {
         public fun asString(): String? = this as? String
 
@@ -1296,7 +1291,6 @@ public data class TestPlan(
     }
   }
 
-  @Serializable(with = TestPlanVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

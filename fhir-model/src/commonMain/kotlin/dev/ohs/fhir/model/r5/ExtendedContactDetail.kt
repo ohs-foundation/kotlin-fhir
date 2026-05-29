@@ -83,7 +83,7 @@ public data class ExtendedContactDetail(
    */
   public val period: Period? = null,
 ) : DataType() {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

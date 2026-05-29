@@ -25,16 +25,12 @@ import dev.ohs.fhir.model.r5.serializers.ValueSetComposeIncludeSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetComposeSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionContainsPropertySerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionContainsPropertySubPropertySerializer
-import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionContainsPropertySubPropertyValueSerializer
-import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionContainsPropertyValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionContainsSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionParameterSerializer
-import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionParameterValueSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionPropertySerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetExpansionSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetScopeSerializer
 import dev.ohs.fhir.model.r5.serializers.ValueSetSerializer
-import dev.ohs.fhir.model.r5.serializers.ValueSetVersionAlgorithmSerializer
 import dev.ohs.fhir.model.r5.terminologies.PublicationStatus
 import kotlin.Suppress
 import kotlin.collections.List
@@ -1601,7 +1597,6 @@ public data class ValueSet(
           }
         }
 
-      @Serializable(with = ValueSetExpansionParameterValueSerializer::class)
       public sealed interface Value {
         public fun asString(): String? = this as? String
 
@@ -2076,7 +2071,6 @@ public data class ValueSet(
               }
             }
 
-          @Serializable(with = ValueSetExpansionContainsPropertySubPropertyValueSerializer::class)
           public sealed interface Value {
             public fun asCode(): Code? = this as? Code
 
@@ -2186,7 +2180,6 @@ public data class ValueSet(
           }
         }
 
-        @Serializable(with = ValueSetExpansionContainsPropertyValueSerializer::class)
         public sealed interface Value {
           public fun asCode(): Code? = this as? Code
 
@@ -2677,7 +2670,6 @@ public data class ValueSet(
     }
   }
 
-  @Serializable(with = ValueSetVersionAlgorithmSerializer::class)
   public sealed interface VersionAlgorithm {
     public fun asString(): String? = this as? String
 

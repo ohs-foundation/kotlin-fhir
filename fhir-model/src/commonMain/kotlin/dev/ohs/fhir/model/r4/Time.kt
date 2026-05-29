@@ -18,13 +18,17 @@
 
 package dev.ohs.fhir.model.r4
 
+import dev.ohs.fhir.model.r4.serializers.LocalTimeSerializer
+import dev.ohs.fhir.model.r4.serializers.TimeSerializer
 import kotlin.String
 import kotlin.Suppress
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlinx.datetime.LocalTime
+import kotlinx.serialization.Serializable
 
 /** Base StructureDefinition for time Type: A time during the day, with no date specified */
+@Serializable(with = TimeSerializer::class)
 public data class Time(
   /** unique id for the element within a resource (for internal references) */
   override val id: String? = null,
@@ -42,9 +46,9 @@ public data class Time(
    */
   override val extension: List<Extension> = listOf(),
   /** The actual value */
-  public val `value`: LocalTime? = null,
+  @Serializable(with = LocalTimeSerializer::class) public val `value`: LocalTime? = null,
 ) : Element(id, extension) {
-  public open fun toBuilder(): Builder =
+  public fun toBuilder(): Builder =
     with(this) {
       Builder().apply {
         id = this@with.id

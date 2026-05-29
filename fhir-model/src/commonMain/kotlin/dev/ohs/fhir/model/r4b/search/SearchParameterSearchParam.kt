@@ -66,7 +66,9 @@ public object SearchParameterSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(SearchParameter.useContext.value as CodeableConcept)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
@@ -76,7 +78,7 @@ public object SearchParameterSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(SearchParameter.useContext.value as Quantity)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 

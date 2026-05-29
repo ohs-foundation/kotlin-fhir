@@ -106,7 +106,7 @@ public object MediaSearchParam {
           PractitionerRole::class,
           RelatedPerson::class,
         ),
-      extractor = { resource -> listOfNotNull(resource.operator) },
+      extractor = { resource -> listOfNotNull(resource.`operator`) },
     )
 
   public val Patient: SearchParam<Media, Reference> =

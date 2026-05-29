@@ -40,7 +40,9 @@ public object ExampleScenarioSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(ExampleScenario.useContext.value as CodeableConcept)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
@@ -50,7 +52,7 @@ public object ExampleScenarioSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(ExampleScenario.useContext.value as Quantity)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 

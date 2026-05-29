@@ -143,7 +143,7 @@ public object MedicationDispenseSearchParam {
           dev.ohs.fhir.model.r5.Location::class,
           dev.ohs.fhir.model.r5.Patient::class,
         ),
-      extractor = { resource -> resource.receiver },
+      extractor = { resource -> resource.`receiver` },
     )
 
   public val Recorded: SearchParam<MedicationDispense, DateTime> =

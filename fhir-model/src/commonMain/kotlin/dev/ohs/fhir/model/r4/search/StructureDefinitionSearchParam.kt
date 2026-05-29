@@ -43,7 +43,7 @@ public object StructureDefinitionSearchParam {
       name = "abstract",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.abstract",
-      extractor = { resource -> listOf(resource.abstract) },
+      extractor = { resource -> listOf(resource.`abstract`) },
     )
 
   public val Base: SearchParam<StructureDefinition, Canonical> =
@@ -71,7 +71,9 @@ public object StructureDefinitionSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(StructureDefinition.useContext.value as CodeableConcept)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
@@ -81,7 +83,7 @@ public object StructureDefinitionSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(StructureDefinition.useContext.value as Quantity)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 

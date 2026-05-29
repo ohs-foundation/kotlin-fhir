@@ -408,7 +408,7 @@ public object ConsentSearchParam {
           VerificationResult::class,
           VisionPrescription::class,
         ),
-      extractor = { resource -> resource.provision.flatMap { it.data }.map { it.reference } },
+      extractor = { resource -> resource.provision.flatMap { it.`data` }.map { it.reference } },
     )
 
   public val Date: SearchParam<Consent, Date> =

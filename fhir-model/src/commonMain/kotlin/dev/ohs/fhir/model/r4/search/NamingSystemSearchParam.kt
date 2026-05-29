@@ -49,7 +49,9 @@ public object NamingSystemSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(NamingSystem.useContext.value as CodeableConcept)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
@@ -59,7 +61,7 @@ public object NamingSystemSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(NamingSystem.useContext.value as Quantity)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -188,7 +190,7 @@ public object NamingSystemSearchParam {
       name = "value",
       type = SearchParamType.fromCode("string"),
       expression = "NamingSystem.uniqueId.value",
-      extractor = { resource -> resource.uniqueId.map { it.value } },
+      extractor = { resource -> resource.uniqueId.map { it.`value` } },
     )
 
   /** All search parameters for the NamingSystem resource type. */

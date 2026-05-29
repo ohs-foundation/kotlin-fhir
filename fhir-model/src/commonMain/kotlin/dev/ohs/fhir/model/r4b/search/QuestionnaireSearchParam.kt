@@ -50,7 +50,9 @@ public object QuestionnaireSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(Questionnaire.useContext.value as CodeableConcept)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
@@ -60,7 +62,7 @@ public object QuestionnaireSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(Questionnaire.useContext.value as Quantity)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 

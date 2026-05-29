@@ -376,7 +376,7 @@ public object MessageHeaderSearchParam {
       type = SearchParamType.fromCode("reference"),
       expression = "MessageHeader.destination.receiver",
       target = listOf(Practitioner::class, Organization::class, PractitionerRole::class),
-      extractor = { resource -> resource.destination.mapNotNull { it.receiver } },
+      extractor = { resource -> resource.destination.mapNotNull { it.`receiver` } },
     )
 
   public val ResponseId: SearchParam<MessageHeader, Id> =

@@ -251,7 +251,7 @@ public object EncounterSearchParam {
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
       expression = "Encounter.reason.value.concept",
-      extractor = { resource -> resource.reason.flatMap { it.value }.mapNotNull { it.concept } },
+      extractor = { resource -> resource.reason.flatMap { it.`value` }.mapNotNull { it.concept } },
     )
 
   public val ReasonReference: SearchParam<Encounter, Reference> =
@@ -267,7 +267,7 @@ public object EncounterSearchParam {
           ImmunizationRecommendation::class,
           Condition::class,
         ),
-      extractor = { resource -> resource.reason.flatMap { it.value }.mapNotNull { it.reference } },
+      extractor = { resource -> resource.reason.flatMap { it.`value` }.mapNotNull { it.reference } },
     )
 
   public val ServiceProvider: SearchParam<Encounter, Reference> =

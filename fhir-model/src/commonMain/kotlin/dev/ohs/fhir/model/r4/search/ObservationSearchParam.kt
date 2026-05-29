@@ -284,7 +284,7 @@ public object ObservationSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(Observation.value as CodeableConcept)",
       extractor = { resource ->
-        listOfNotNull((resource.value as? Observation.Value.CodeableConcept)?.value)
+        listOfNotNull((resource.`value` as? Observation.Value.CodeableConcept)?.value)
       },
     )
 
@@ -294,7 +294,7 @@ public object ObservationSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(Observation.value as Quantity)",
       extractor = { resource ->
-        listOfNotNull((resource.value as? Observation.Value.Quantity)?.value)
+        listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value)
       },
     )
 
@@ -337,7 +337,7 @@ public object ObservationSearchParam {
       expression = "(Observation.component.value as CodeableConcept)",
       extractor = { resource ->
         resource.component.mapNotNull {
-          (it.value as? Observation.Component.Value.CodeableConcept)?.value
+          (it.`value` as? Observation.Component.Value.CodeableConcept)?.value
         }
       },
     )
@@ -348,7 +348,9 @@ public object ObservationSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(Observation.component.value as Quantity)",
       extractor = { resource ->
-        resource.component.mapNotNull { (it.value as? Observation.Component.Value.Quantity)?.value }
+        resource.component.mapNotNull {
+          (it.`value` as? Observation.Component.Value.Quantity)?.value
+        }
       },
     )
 
@@ -705,7 +707,7 @@ public object ObservationSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(Observation.value as CodeableConcept)",
       extractor = { resource ->
-        listOfNotNull((resource.value as? Observation.Value.CodeableConcept)?.value)
+        listOfNotNull((resource.`value` as? Observation.Value.CodeableConcept)?.value)
       },
     )
 
@@ -715,7 +717,7 @@ public object ObservationSearchParam {
       type = SearchParamType.fromCode("date"),
       expression = "(Observation.value as dateTime)",
       extractor = { resource ->
-        listOfNotNull((resource.value as? Observation.Value.DateTime)?.value)
+        listOfNotNull((resource.`value` as? Observation.Value.DateTime)?.value)
       },
     )
 
@@ -725,7 +727,7 @@ public object ObservationSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(Observation.value as Quantity)",
       extractor = { resource ->
-        listOfNotNull((resource.value as? Observation.Value.Quantity)?.value)
+        listOfNotNull((resource.`value` as? Observation.Value.Quantity)?.value)
       },
     )
 
@@ -735,7 +737,7 @@ public object ObservationSearchParam {
       type = SearchParamType.fromCode("string"),
       expression = "(Observation.value as string)",
       extractor = { resource ->
-        listOfNotNull((resource.value as? Observation.Value.String)?.value)
+        listOfNotNull((resource.`value` as? Observation.Value.String)?.value)
       },
     )
 

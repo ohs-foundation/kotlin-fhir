@@ -42,7 +42,7 @@ public object StructureDefinitionSearchParam {
       name = "abstract",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.abstract",
-      extractor = { resource -> listOf(resource.abstract) },
+      extractor = { resource -> listOf(resource.`abstract`) },
     )
 
   public val Base: SearchParam<StructureDefinition, Canonical> =

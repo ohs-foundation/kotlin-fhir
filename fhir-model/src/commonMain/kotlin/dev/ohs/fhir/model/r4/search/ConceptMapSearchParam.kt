@@ -43,7 +43,9 @@ public object ConceptMapSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(ConceptMap.useContext.value as CodeableConcept)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
@@ -53,7 +55,7 @@ public object ConceptMapSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(ConceptMap.useContext.value as Quantity)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 
@@ -99,7 +101,7 @@ public object ConceptMapSearchParam {
           .flatMap { it.element }
           .flatMap { it.target }
           .flatMap { it.dependsOn }
-          .map { it.property }
+          .map { it.`property` }
       },
     )
 

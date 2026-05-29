@@ -54,7 +54,7 @@ public object SupplyDeliverySearchParam {
       type = SearchParamType.fromCode("reference"),
       expression = "SupplyDelivery.receiver",
       target = listOf(Practitioner::class, PractitionerRole::class),
-      extractor = { resource -> resource.receiver },
+      extractor = { resource -> resource.`receiver` },
     )
 
   public val Status: SearchParam<SupplyDelivery, Any> =

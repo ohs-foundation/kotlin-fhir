@@ -71,7 +71,7 @@ public object DeviceSearchParam {
       name = "device-name",
       type = SearchParamType.fromCode("string"),
       expression = "Device.name.value",
-      extractor = { resource -> resource.name.map { it.value } },
+      extractor = { resource -> resource.name.map { it.`value` } },
     )
 
   public val ExpirationDate: SearchParam<Device, DateTime> =
@@ -218,7 +218,7 @@ public object DeviceSearchParam {
       name = "version",
       type = SearchParamType.fromCode("string"),
       expression = "Device.version.value",
-      extractor = { resource -> resource.version.map { it.value } },
+      extractor = { resource -> resource.version.map { it.`value` } },
     )
 
   /** All search parameters for the Device resource type. */

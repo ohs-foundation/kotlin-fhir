@@ -38,7 +38,7 @@ public object MedicinalProductDefinitionSearchParam {
       name = "characteristic",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.characteristic.value",
-      extractor = { resource -> resource.characteristic.mapNotNull { it.value } },
+      extractor = { resource -> resource.characteristic.mapNotNull { it.`value` } },
     )
 
   public val CharacteristicType: SearchParam<MedicinalProductDefinition, CodeableConcept> =

@@ -187,7 +187,9 @@ public object ImplementationGuideSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(ImplementationGuide.useContext.value as CodeableConcept)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
@@ -197,7 +199,7 @@ public object ImplementationGuideSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(ImplementationGuide.useContext.value as Quantity)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 

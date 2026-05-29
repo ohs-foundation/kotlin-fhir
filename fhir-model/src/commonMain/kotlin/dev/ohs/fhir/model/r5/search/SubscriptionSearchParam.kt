@@ -61,7 +61,7 @@ public object SubscriptionSearchParam {
       name = "filter-value",
       type = SearchParamType.fromCode("string"),
       expression = "Subscription.filterBy.value",
-      extractor = { resource -> resource.filterBy.map { it.value } },
+      extractor = { resource -> resource.filterBy.map { it.`value` } },
     )
 
   public val Identifier: SearchParam<Subscription, Identifier> =

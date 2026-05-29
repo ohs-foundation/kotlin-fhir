@@ -54,7 +54,7 @@ public object DeviceAssociationSearchParam {
       expression = "DeviceAssociation.operation.operator",
       target =
         listOf(RelatedPerson::class, Practitioner::class, dev.ohs.fhir.model.r5.Patient::class),
-      extractor = { resource -> resource.operation.flatMap { it.operator } },
+      extractor = { resource -> resource.operation.flatMap { it.`operator` } },
     )
 
   public val Patient: SearchParam<DeviceAssociation, Reference> =

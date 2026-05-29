@@ -43,7 +43,7 @@ public object GroupSearchParam {
       name = "actual",
       type = SearchParamType.fromCode("token"),
       expression = "Group.actual",
-      extractor = { resource -> listOf(resource.actual) },
+      extractor = { resource -> listOf(resource.`actual`) },
     )
 
   public val Characteristic: SearchParam<Group, CodeableConcept> =
@@ -135,7 +135,7 @@ public object GroupSearchParam {
       expression = "(Group.characteristic.value as CodeableConcept)",
       extractor = { resource ->
         resource.characteristic.mapNotNull {
-          (it.value as? Group.Characteristic.Value.CodeableConcept)?.value
+          (it.`value` as? Group.Characteristic.Value.CodeableConcept)?.value
         }
       },
     )

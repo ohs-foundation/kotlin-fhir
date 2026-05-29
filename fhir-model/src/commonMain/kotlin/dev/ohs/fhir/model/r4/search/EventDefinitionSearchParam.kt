@@ -347,7 +347,9 @@ public object EventDefinitionSearchParam {
       type = SearchParamType.fromCode("token"),
       expression = "(EventDefinition.useContext.value as CodeableConcept)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.CodeableConcept)?.value }
+        resource.useContext.mapNotNull {
+          (it.`value` as? UsageContext.Value.CodeableConcept)?.value
+        }
       },
     )
 
@@ -357,7 +359,7 @@ public object EventDefinitionSearchParam {
       type = SearchParamType.fromCode("quantity"),
       expression = "(EventDefinition.useContext.value as Quantity)",
       extractor = { resource ->
-        resource.useContext.mapNotNull { (it.value as? UsageContext.Value.Quantity)?.value }
+        resource.useContext.mapNotNull { (it.`value` as? UsageContext.Value.Quantity)?.value }
       },
     )
 

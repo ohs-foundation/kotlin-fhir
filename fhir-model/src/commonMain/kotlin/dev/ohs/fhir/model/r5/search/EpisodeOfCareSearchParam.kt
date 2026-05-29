@@ -118,7 +118,7 @@ public object EpisodeOfCareSearchParam {
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.reason.value.concept",
-      extractor = { resource -> resource.reason.flatMap { it.value }.mapNotNull { it.concept } },
+      extractor = { resource -> resource.reason.flatMap { it.`value` }.mapNotNull { it.concept } },
     )
 
   public val ReasonReference: SearchParam<EpisodeOfCare, Reference> =
@@ -128,7 +128,7 @@ public object EpisodeOfCareSearchParam {
       expression = "EpisodeOfCare.reason.value.reference",
       target =
         listOf(HealthcareService::class, Procedure::class, Observation::class, Condition::class),
-      extractor = { resource -> resource.reason.flatMap { it.value }.mapNotNull { it.reference } },
+      extractor = { resource -> resource.reason.flatMap { it.`value` }.mapNotNull { it.reference } },
     )
 
   public val Status: SearchParam<EpisodeOfCare, Any> =

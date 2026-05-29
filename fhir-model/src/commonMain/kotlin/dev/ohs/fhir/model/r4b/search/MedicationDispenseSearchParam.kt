@@ -134,7 +134,7 @@ public object MedicationDispenseSearchParam {
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationDispense.receiver",
       target = listOf(Practitioner::class, dev.ohs.fhir.model.r4b.Patient::class),
-      extractor = { resource -> resource.receiver },
+      extractor = { resource -> resource.`receiver` },
     )
 
   public val Responsibleparty: SearchParam<MedicationDispense, Reference> =

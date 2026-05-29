@@ -721,7 +721,7 @@ public object NamingSystemSearchParam {
       name = "value",
       type = SearchParamType.fromCode("string"),
       expression = "NamingSystem.uniqueId.value",
-      extractor = { resource -> resource.uniqueId.map { it.value } },
+      extractor = { resource -> resource.uniqueId.map { it.`value` } },
     )
 
   public val Version: SearchParam<NamingSystem, String> =

@@ -54,7 +54,7 @@ public object CoverageSearchParam {
       name = "class-value",
       type = SearchParamType.fromCode("string"),
       expression = "Coverage.class.value",
-      extractor = { resource -> resource.`class`.map { it.value } },
+      extractor = { resource -> resource.`class`.map { it.`value` } },
     )
 
   public val Dependent: SearchParam<Coverage, String> =

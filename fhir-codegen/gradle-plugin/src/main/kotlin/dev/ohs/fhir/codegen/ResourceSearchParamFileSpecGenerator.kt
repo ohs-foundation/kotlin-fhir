@@ -148,12 +148,9 @@ object ResourceSearchParamFileSpecGenerator {
       searchParamInterfaceClassName.parameterizedBy(resourceClassName, valueTypeName)
     val concreteType = simpleSearchParamClassName.parameterizedBy(resourceClassName, valueTypeName)
 
-    // The emitter produces a `return <expr>` statement (its historical extract()-body form); the
-    // extractor lambda needs the bare expression. Unsupported params emit `emptyList()`, which does
-    // not reference `resource`, so use a parameterless lambda to avoid an unused-parameter warning.
-    val extractionExpr = extractionCode.removePrefix("return ")
-    val extractorLambda =
-      if ("resource" in extractionExpr) "{ resource -> $extractionExpr }" else "{ $extractionExpr }"
+    // Unsupported params extract `emptyList()`, which doesn't reference `resource`, so use a
+    // parameterless lambda there to avoid an unused-parameter warning.
+    val usesResource = extractionCode.toString().contains("resource")
 
     val initializer =
       CodeBlock.builder()
@@ -177,7 +174,10 @@ object ResourceSearchParamFileSpecGenerator {
             add("),\n")
           }
         }
-        .add("extractor = %L,\n", extractorLambda)
+        .apply {
+          if (usesResource) add("extractor = { resource -> %L },\n", extractionCode)
+          else add("extractor = { %L },\n", extractionCode)
+        }
         .unindent()
         .add(")")
         .build()
@@ -188,7 +188,7 @@ object ResourceSearchParamFileSpecGenerator {
       .build()
   }
 
-  private data class ExtractionResult(val typeParam: TypeName, val code: String)
+  private data class ExtractionResult(val typeParam: TypeName, val code: CodeBlock)
 
   private fun render(
     pattern: SearchParamPattern,
@@ -216,10 +216,7 @@ object ResourceSearchParamFileSpecGenerator {
           SearchParamTypeResolver.elementSubclass(pattern.resolved, pattern.targetType, packageName)
         ExtractionResult(
           SearchParamTypeResolver.forElementCastTarget(pattern.targetType, packageName),
-          SearchParamCodeEmitter.forElementCast(
-            pattern.resolved,
-            sealedSubclass.simpleNames.joinToString("."),
-          ),
+          SearchParamCodeEmitter.forElementCast(pattern.resolved, sealedSubclass),
         )
       }
       is SearchParamPattern.WhereFilter -> {
@@ -239,7 +236,7 @@ object ResourceSearchParamFileSpecGenerator {
         )
       }
       SearchParamPattern.Unsupported ->
-        ExtractionResult(ClassName("kotlin", "Any"), "return emptyList()")
+        ExtractionResult(ClassName("kotlin", "Any"), CodeBlock.of("emptyList()"))
     }
 }
 

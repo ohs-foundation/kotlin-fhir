@@ -451,7 +451,7 @@ public object ConceptMapSearchParam {
       name = "mapping-property",
       type = SearchParamType.fromCode("uri"),
       expression = "ConceptMap.property.uri",
-      extractor = { resource -> resource.property.mapNotNull { it.uri } },
+      extractor = { resource -> resource.`property`.mapNotNull { it.uri } },
     )
 
   public val Name: SearchParam<ConceptMap, String> =

@@ -16,209 +16,155 @@
 
 package dev.ohs.fhir.codegen.searchparam
 
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
 import dev.ohs.fhir.codegen.ResolvedExpression
 import dev.ohs.fhir.codegen.ResolvedSegment
 
 /**
- * Emits the Kotlin source string for a search parameter's `extract()` body.
+ * Builds the body of a generated `extract(resource): List<T>` for a resolved FHIRPath.
  *
- * One method per [SearchParamPattern] code shape. The accumulator state machine that walks resolved
- * segments and produces `listOf` / `listOfNotNull` / `map` / `mapNotNull` / `flatMap` chains is
- * private to this file.
+ * It walks the path one segment at a time, tracking whether the value so far is a single value
+ * ([PathExpr.Single]) or a list ([PathExpr.Listed]), and finally coerces it to a `List<T>` with
+ * [asList]. Identifiers, types, and strings are emitted via KotlinPoet's `%N` / `%T` / `%S`, so
+ * keyword escaping (e.g. a FHIR `class` field) is handled automatically.
+ *
+ * Each method returns a bare expression; the caller wraps it in the extractor lambda.
  */
 internal object SearchParamCodeEmitter {
 
-  /** Body for a simple dotted path or a `where(resolve() is …)` (the filter is dropped). */
-  fun forSegments(resolved: ResolvedExpression): String {
-    val segments = resolved.segments
-    if (segments.isEmpty()) return "return emptyList()"
+  /** A simple dotted path (`Patient.address.city`), or a `where(resolve() is …)` base. */
+  fun forSegments(resolved: ResolvedExpression): CodeBlock = walkToList(resolved.segments)
 
-    var state: AccumulatorState = AccumulatorState.ScalarNonNull("resource")
-    for ((index, segment) in segments.withIndex()) {
-      val prop = segment.propertyName.escapeIfKeyword()
-      if (index == segments.lastIndex) return terminateExtraction(state, segment, prop)
-      state = advanceState(state, segment, prop)
+  /** An element cast `(X.path as Type)` / `X.path.as(Type)` → `(… as? <subclass>)?.value`. */
+  fun forElementCast(resolved: ResolvedExpression, sealedSubclass: ClassName): CodeBlock {
+    val segments = resolved.segments
+    if (segments.isEmpty()) return EMPTY_LIST
+    val leaf = segments.last().propertyName
+    return when (val parent = walk(segments.dropLast(1))) {
+      is PathExpr.Single ->
+        if (parent.nullable)
+          CodeBlock.of("listOfNotNull((%L?.%N as? %T)?.value)", parent.code, leaf, sealedSubclass)
+        else CodeBlock.of("listOfNotNull((%L.%N as? %T)?.value)", parent.code, leaf, sealedSubclass)
+      is PathExpr.Listed ->
+        CodeBlock.of(
+          "%L.mapNotNull { (it.%N as? %T)?.value }",
+          parent.memberBase,
+          leaf,
+          sealedSubclass,
+        )
     }
-    return "return emptyList()"
   }
 
-  /** Body for an element cast like `(Resource.path as Type)` or `Resource.path.as(Type)`. */
-  fun forElementCast(resolved: ResolvedExpression, sealedSubclassExpr: String): String {
-    val segments = resolved.segments
-    if (segments.isEmpty()) return "return emptyList()"
-
-    var state: AccumulatorState = AccumulatorState.ScalarNonNull("resource")
-    for ((index, segment) in segments.withIndex()) {
-      val prop = segment.propertyName.escapeIfKeyword()
-      if (index == segments.lastIndex) {
-        return when (state) {
-          is AccumulatorState.ScalarNonNull ->
-            "return listOfNotNull((${state.expr}.$prop as? $sealedSubclassExpr)?.value)"
-          is AccumulatorState.NullableScalar ->
-            "return listOfNotNull((${state.expr}?.$prop as? $sealedSubclassExpr)?.value)"
-          is AccumulatorState.ListAcc ->
-            "return ${state.expr}.mapNotNull { (it.$prop as? $sealedSubclassExpr)?.value }"
-        }
-      }
-      state = advanceState(state, segment, prop)
-    }
-    return "return emptyList()"
-  }
-
-  /**
-   * Body for `path.where(field='value')` with optional post-`where` access path. The filter
-   * predicate is built from [field] and [value] and emitted as `it.<field>?.value?.toString() ==
-   * "<value>"`.
-   */
+  /** A `path.where(field='value')` filter with an optional post-`where` access path. */
   fun forWhereFilter(
     resolved: ResolvedExpression,
     field: String,
     value: String,
     postPath: ResolvedExpression?,
-  ): String {
-    val baseCode = buildAccessChainToList(resolved)
-    val filterCode = "it.${field.escapeIfKeyword()}?.value?.toString() == \"$value\""
-    val filtered = "$baseCode.filter { $filterCode }"
-
-    if (postPath == null) return "return $filtered"
-
-    val postSegments = postPath.segments
-    if (postSegments.isEmpty()) return "return $filtered"
-
-    var result = filtered
-    for (segment in postSegments) {
-      val prop = segment.propertyName.escapeIfKeyword()
-      result =
-        when {
-          segment.isList -> "$result.flatMap { it.$prop }"
-          segment.isNullable -> "$result.mapNotNull { it.$prop }"
-          else -> "$result.map { it.$prop }"
-        }
-    }
-    return "return $result"
+  ): CodeBlock {
+    val filtered =
+      CodeBlock.of(
+        "%L.filter { it.%N?.value?.toString() == %S }",
+        filterBase(resolved.segments),
+        field,
+        value,
+      )
+    var state: PathExpr = PathExpr.Listed(filtered)
+    postPath?.segments?.forEach { state = step(state, it) }
+    return asList(state)
   }
 
   /**
-   * Body for `path.where(resolve() is Type)`. Approximates the runtime `resolve()` check by
-   * substring-matching `Reference.reference` against `Type/`, which matches relative (`Type/id`)
-   * and absolute (`http://…/Type/id`) URL forms. Misses URN-form (`urn:uuid:…`) and contained
-   * (`#id`) references, and references that populate only `Reference.type`.
+   * A `path.where(resolve() is Type)` filter. Approximates the runtime `resolve()` by
+   * substring-matching `Reference.reference` against `Type/`, which covers relative (`Type/id`) and
+   * absolute (`http://…/Type/id`) URL forms. Misses URN-form (`urn:uuid:…`) and contained (`#id`)
+   * references, and references that populate only `Reference.type`.
    */
-  fun forWhereResolve(resolved: ResolvedExpression, targetType: String): String {
-    val baseCode = buildAccessChainToList(resolved)
-    return "return $baseCode.filter { it.reference?.value?.toString()?.contains(\"$targetType/\") == true }"
+  fun forWhereResolve(resolved: ResolvedExpression, targetType: String): CodeBlock =
+    CodeBlock.of(
+      "%L.filter { it.reference?.value?.toString()?.contains(%S) == true }",
+      filterBase(resolved.segments),
+      "$targetType/",
+    )
+
+  // -- state machine ----------------------------------------------------------------------------
+
+  private val EMPTY_LIST = CodeBlock.of("emptyList()")
+
+  private sealed interface PathExpr {
+    val code: CodeBlock
+
+    /** A single value; [nullable] tracks whether the chain so far can be null. */
+    data class Single(override val code: CodeBlock, val nullable: Boolean) : PathExpr
+
+    /**
+     * A `List<T>` value. [parenthesize] is true when [code] is a low-precedence expression (`… ?:
+     * emptyList()`) that must be wrapped in parens before a `.member` access is appended.
+     */
+    data class Listed(override val code: CodeBlock, val parenthesize: Boolean = false) : PathExpr {
+      /** [code] in a form safe to append `.member` to. */
+      val memberBase: CodeBlock
+        get() = if (parenthesize) CodeBlock.of("(%L)", code) else code
+    }
   }
-}
 
-private sealed interface AccumulatorState {
-  data class ScalarNonNull(val expr: String) : AccumulatorState
+  /** A `List<T>` for use as a *terminal* expression (no `.member` appended) — see [asList]. */
+  private fun walkToList(segments: List<ResolvedSegment>): CodeBlock =
+    if (segments.isEmpty()) EMPTY_LIST else asList(walk(segments))
 
-  data class NullableScalar(val expr: String) : AccumulatorState
+  /**
+   * A `List<T>` that a `.filter { … }` (or other `.member`) will be appended to, so it must be safe
+   * at member-access precedence. Differs from [walkToList] only for the `… ?: emptyList()` shape,
+   * which [asList] leaves bare but here must be parenthesized.
+   */
+  private fun filterBase(segments: List<ResolvedSegment>): CodeBlock =
+    if (segments.isEmpty()) EMPTY_LIST
+    else
+      when (val state = walk(segments)) {
+        is PathExpr.Single -> asList(state) // listOf(..) / listOfNotNull(..) — safe to append to
+        is PathExpr.Listed -> state.memberBase
+      }
 
-  data class ListAcc(val expr: String) : AccumulatorState
-}
+  /** Folds [step] over [segments] starting from the non-null `resource` root. */
+  private fun walk(segments: List<ResolvedSegment>): PathExpr {
+    var state: PathExpr = PathExpr.Single(CodeBlock.of("resource"), nullable = false)
+    for (segment in segments) state = step(state, segment)
+    return state
+  }
 
-private fun advanceState(
-  state: AccumulatorState,
-  segment: ResolvedSegment,
-  prop: String,
-): AccumulatorState =
-  when (state) {
-    is AccumulatorState.ScalarNonNull -> {
-      val accessor = "${state.expr}.$prop"
-      when {
-        segment.isList -> AccumulatorState.ListAcc(accessor)
-        segment.isNullable -> AccumulatorState.NullableScalar(accessor)
-        else -> AccumulatorState.ScalarNonNull(accessor)
+  /** Appends one property access to [state], returning the new shape. */
+  private fun step(state: PathExpr, segment: ResolvedSegment): PathExpr {
+    val prop = segment.propertyName
+    return when (state) {
+      is PathExpr.Single -> {
+        val access =
+          if (state.nullable) CodeBlock.of("%L?.%N", state.code, prop)
+          else CodeBlock.of("%L.%N", state.code, prop)
+        when {
+          segment.isList && state.nullable ->
+            PathExpr.Listed(CodeBlock.of("%L ?: emptyList()", access), parenthesize = true)
+          segment.isList -> PathExpr.Listed(access)
+          else -> PathExpr.Single(access, nullable = state.nullable || segment.isNullable)
+        }
+      }
+      is PathExpr.Listed -> {
+        val base = state.memberBase
+        when {
+          segment.isList -> PathExpr.Listed(CodeBlock.of("%L.flatMap { it.%N }", base, prop))
+          segment.isNullable -> PathExpr.Listed(CodeBlock.of("%L.mapNotNull { it.%N }", base, prop))
+          else -> PathExpr.Listed(CodeBlock.of("%L.map { it.%N }", base, prop))
+        }
       }
     }
-    is AccumulatorState.NullableScalar ->
-      when {
-        segment.isList -> AccumulatorState.ListAcc("(${state.expr}?.$prop ?: emptyList())")
-        else -> AccumulatorState.NullableScalar("${state.expr}?.$prop")
-      }
-    is AccumulatorState.ListAcc ->
-      when {
-        segment.isList -> AccumulatorState.ListAcc("${state.expr}.flatMap { it.$prop }")
-        segment.isNullable -> AccumulatorState.ListAcc("${state.expr}.mapNotNull { it.$prop }")
-        else -> AccumulatorState.ListAcc("${state.expr}.map { it.$prop }")
-      }
   }
 
-private fun terminateExtraction(
-  state: AccumulatorState,
-  segment: ResolvedSegment,
-  prop: String,
-): String =
-  when (state) {
-    is AccumulatorState.ScalarNonNull -> {
-      val accessor = "${state.expr}.$prop"
-      when {
-        segment.isList -> "return $accessor"
-        segment.isNullable -> "return listOfNotNull($accessor)"
-        else -> "return listOf($accessor)"
-      }
+  /** Coerces a walked [state] into a `List<T>` expression. */
+  private fun asList(state: PathExpr): CodeBlock =
+    when (state) {
+      is PathExpr.Single ->
+        if (state.nullable) CodeBlock.of("listOfNotNull(%L)", state.code)
+        else CodeBlock.of("listOf(%L)", state.code)
+      is PathExpr.Listed -> state.code
     }
-    is AccumulatorState.NullableScalar ->
-      when {
-        segment.isList -> "return ${state.expr}?.$prop ?: emptyList()"
-        else -> "return listOfNotNull(${state.expr}?.$prop)"
-      }
-    is AccumulatorState.ListAcc ->
-      when {
-        segment.isList -> "return ${state.expr}.flatMap { it.$prop }"
-        segment.isNullable -> "return ${state.expr}.mapNotNull { it.$prop }"
-        else -> "return ${state.expr}.map { it.$prop }"
-      }
-  }
-
-private fun buildAccessChainToList(resolved: ResolvedExpression): String {
-  val segments = resolved.segments
-  if (segments.isEmpty()) return "emptyList()"
-
-  var state: AccumulatorState = AccumulatorState.ScalarNonNull("resource")
-  for (segment in segments) {
-    val prop = segment.propertyName.escapeIfKeyword()
-    state = advanceState(state, segment, prop)
-  }
-  return when (state) {
-    is AccumulatorState.ListAcc -> state.expr
-    is AccumulatorState.ScalarNonNull -> "listOf(${state.expr})"
-    is AccumulatorState.NullableScalar -> "listOfNotNull(${state.expr})"
-  }
 }
-
-/** Kotlin hard keywords that must be backtick-escaped when used as identifiers. */
-private val KOTLIN_HARD_KEYWORDS =
-  setOf(
-    "as",
-    "break",
-    "class",
-    "continue",
-    "do",
-    "else",
-    "false",
-    "for",
-    "fun",
-    "if",
-    "in",
-    "interface",
-    "is",
-    "null",
-    "object",
-    "package",
-    "return",
-    "super",
-    "this",
-    "throw",
-    "true",
-    "try",
-    "typealias",
-    "typeof",
-    "val",
-    "var",
-    "when",
-    "while",
-  )
-
-private fun String.escapeIfKeyword(): String = if (this in KOTLIN_HARD_KEYWORDS) "`$this`" else this

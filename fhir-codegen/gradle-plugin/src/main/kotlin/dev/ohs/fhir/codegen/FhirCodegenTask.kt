@@ -24,6 +24,7 @@ import dev.ohs.fhir.codegen.primitives.FhirDateSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.FhirDateTimeSerializerFileSpecGenerator
 import dev.ohs.fhir.codegen.primitives.LocalTimeSerializerFileSpecGenerator
+import dev.ohs.fhir.codegen.schema.SearchParameterDefinition
 import dev.ohs.fhir.codegen.schema.StructureDefinition
 import dev.ohs.fhir.codegen.schema.capitalized
 import dev.ohs.fhir.codegen.schema.urlPart
@@ -176,5 +177,35 @@ abstract class FhirCodegenTask : DefaultTask() {
     FhirDateTimeSerializerFileSpecGenerator.generate(serializersPackageName).writeTo(outputDir)
 
     LazySerialDescriptorFileSpecGenerator.writeTo(outputDir, serializersPackageName)
+
+    // Search parameters: a shared `SearchParam` interface plus a per-resource container of typed
+    // search parameters, generated from the `SearchParameter-*.json` definitions.
+    val searchParamsByResource =
+      corePackageFiles.files
+        .asSequence()
+        .flatMap { file ->
+          file.walkTopDown().filter {
+            it.isFile && it.name.matches("SearchParameter-.*\\.json".toRegex())
+          }
+        }
+        .map { json.decodeFromString<SearchParameterDefinition>(it.readText(Charsets.UTF_8)) }
+        .flatMap { searchParam -> searchParam.base.map { resource -> resource to searchParam } }
+        .groupBy({ it.first }, { it.second })
+
+    SearchParamFileSpecGenerator.generate(packageName).writeTo(outputDir)
+
+    // Element lookup used to resolve FHIRPath expressions to Kotlin property access.
+    val elementsByType =
+      structureDefinitions.associate { sd -> sd.name to (sd.snapshot?.element ?: emptyList()) }
+
+    searchParamsByResource.forEach { (resourceName, params) ->
+      ResourceSearchParamFileSpecGenerator.generate(
+          packageName,
+          resourceName,
+          params,
+          elementsByType,
+        )
+        .writeTo(outputDir)
+    }
   }
 }

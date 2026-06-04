@@ -33,7 +33,7 @@ import kotlin.collections.List
 /** Search parameters for the [TestReport] resource type. */
 public object TestReportSearchParams {
   public val identifier: SearchParam<TestReport, Identifier> =
-    SimpleSearchParam<TestReport, Identifier>(
+    SearchParam<TestReport, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "TestReport.identifier",
@@ -41,7 +41,7 @@ public object TestReportSearchParams {
     )
 
   public val issued: SearchParam<TestReport, DateTime> =
-    SimpleSearchParam<TestReport, DateTime>(
+    SearchParam<TestReport, DateTime>(
       name = "issued",
       type = SearchParamType.fromCode("date"),
       expression = "TestReport.issued",
@@ -49,7 +49,7 @@ public object TestReportSearchParams {
     )
 
   public val participant: SearchParam<TestReport, Uri> =
-    SimpleSearchParam<TestReport, Uri>(
+    SearchParam<TestReport, Uri>(
       name = "participant",
       type = SearchParamType.fromCode("uri"),
       expression = "TestReport.participant.uri",
@@ -57,7 +57,7 @@ public object TestReportSearchParams {
     )
 
   public val result: SearchParam<TestReport, Any> =
-    SimpleSearchParam<TestReport, Any>(
+    SearchParam<TestReport, Any>(
       name = "result",
       type = SearchParamType.fromCode("token"),
       expression = "TestReport.result",
@@ -65,7 +65,7 @@ public object TestReportSearchParams {
     )
 
   public val status: SearchParam<TestReport, Any> =
-    SimpleSearchParam<TestReport, Any>(
+    SearchParam<TestReport, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "TestReport.status",
@@ -73,7 +73,7 @@ public object TestReportSearchParams {
     )
 
   public val tester: SearchParam<TestReport, String> =
-    SimpleSearchParam<TestReport, String>(
+    SearchParam<TestReport, String>(
       name = "tester",
       type = SearchParamType.fromCode("string"),
       expression = "TestReport.tester",
@@ -81,7 +81,7 @@ public object TestReportSearchParams {
     )
 
   public val testscript: SearchParam<TestReport, Canonical> =
-    SimpleSearchParam<TestReport, Canonical>(
+    SearchParam<TestReport, Canonical>(
       name = "testscript",
       type = SearchParamType.fromCode("reference"),
       expression = "TestReport.testScript",

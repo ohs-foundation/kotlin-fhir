@@ -177,7 +177,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [ResearchElementDefinition] resource type. */
 public object ResearchElementDefinitionSearchParams {
   public val composedOf: SearchParam<ResearchElementDefinition, Canonical> =
-    SimpleSearchParam<ResearchElementDefinition, Canonical>(
+    SearchParam<ResearchElementDefinition, Canonical>(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchElementDefinition.relatedArtifact.where(type='composed-of').resource",
@@ -332,7 +332,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val context: SearchParam<ResearchElementDefinition, CodeableConcept> =
-    SimpleSearchParam<ResearchElementDefinition, CodeableConcept>(
+    SearchParam<ResearchElementDefinition, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(ResearchElementDefinition.useContext.value as CodeableConcept)",
@@ -344,7 +344,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val contextQuantity: SearchParam<ResearchElementDefinition, Quantity> =
-    SimpleSearchParam<ResearchElementDefinition, Quantity>(
+    SearchParam<ResearchElementDefinition, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(ResearchElementDefinition.useContext.value as Quantity)",
@@ -354,7 +354,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val contextType: SearchParam<ResearchElementDefinition, Coding> =
-    SimpleSearchParam<ResearchElementDefinition, Coding>(
+    SearchParam<ResearchElementDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchElementDefinition.useContext.code",
@@ -362,7 +362,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<ResearchElementDefinition, UsageContext> =
-    SimpleSearchParam<ResearchElementDefinition, UsageContext>(
+    SearchParam<ResearchElementDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "ResearchElementDefinition.useContext",
@@ -370,7 +370,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val contextTypeValue: SearchParam<ResearchElementDefinition, UsageContext> =
-    SimpleSearchParam<ResearchElementDefinition, UsageContext>(
+    SearchParam<ResearchElementDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "ResearchElementDefinition.useContext",
@@ -378,7 +378,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val date: SearchParam<ResearchElementDefinition, DateTime> =
-    SimpleSearchParam<ResearchElementDefinition, DateTime>(
+    SearchParam<ResearchElementDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ResearchElementDefinition.date",
@@ -386,7 +386,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val dependsOn: SearchParam<ResearchElementDefinition, Canonical> =
-    SimpleSearchParam<ResearchElementDefinition, Canonical>(
+    SearchParam<ResearchElementDefinition, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchElementDefinition.relatedArtifact.where(type='depends-on').resource",
@@ -541,7 +541,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val derivedFrom: SearchParam<ResearchElementDefinition, Canonical> =
-    SimpleSearchParam<ResearchElementDefinition, Canonical>(
+    SearchParam<ResearchElementDefinition, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchElementDefinition.relatedArtifact.where(type='derived-from').resource",
@@ -696,7 +696,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val description: SearchParam<ResearchElementDefinition, Markdown> =
-    SimpleSearchParam<ResearchElementDefinition, Markdown>(
+    SearchParam<ResearchElementDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "ResearchElementDefinition.description",
@@ -704,7 +704,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val effective: SearchParam<ResearchElementDefinition, Period> =
-    SimpleSearchParam<ResearchElementDefinition, Period>(
+    SearchParam<ResearchElementDefinition, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "ResearchElementDefinition.effectivePeriod",
@@ -712,7 +712,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<ResearchElementDefinition, Identifier> =
-    SimpleSearchParam<ResearchElementDefinition, Identifier>(
+    SearchParam<ResearchElementDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchElementDefinition.identifier",
@@ -720,7 +720,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val jurisdiction: SearchParam<ResearchElementDefinition, CodeableConcept> =
-    SimpleSearchParam<ResearchElementDefinition, CodeableConcept>(
+    SearchParam<ResearchElementDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchElementDefinition.jurisdiction",
@@ -728,7 +728,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val name: SearchParam<ResearchElementDefinition, String> =
-    SimpleSearchParam<ResearchElementDefinition, String>(
+    SearchParam<ResearchElementDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "ResearchElementDefinition.name",
@@ -736,7 +736,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val predecessor: SearchParam<ResearchElementDefinition, Canonical> =
-    SimpleSearchParam<ResearchElementDefinition, Canonical>(
+    SearchParam<ResearchElementDefinition, Canonical>(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchElementDefinition.relatedArtifact.where(type='predecessor').resource",
@@ -891,7 +891,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val publisher: SearchParam<ResearchElementDefinition, String> =
-    SimpleSearchParam<ResearchElementDefinition, String>(
+    SearchParam<ResearchElementDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "ResearchElementDefinition.publisher",
@@ -899,7 +899,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val status: SearchParam<ResearchElementDefinition, Any> =
-    SimpleSearchParam<ResearchElementDefinition, Any>(
+    SearchParam<ResearchElementDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchElementDefinition.status",
@@ -907,7 +907,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val successor: SearchParam<ResearchElementDefinition, Canonical> =
-    SimpleSearchParam<ResearchElementDefinition, Canonical>(
+    SearchParam<ResearchElementDefinition, Canonical>(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchElementDefinition.relatedArtifact.where(type='successor').resource",
@@ -1062,7 +1062,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val title: SearchParam<ResearchElementDefinition, String> =
-    SimpleSearchParam<ResearchElementDefinition, String>(
+    SearchParam<ResearchElementDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "ResearchElementDefinition.title",
@@ -1070,7 +1070,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val topic: SearchParam<ResearchElementDefinition, CodeableConcept> =
-    SimpleSearchParam<ResearchElementDefinition, CodeableConcept>(
+    SearchParam<ResearchElementDefinition, CodeableConcept>(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchElementDefinition.topic",
@@ -1078,7 +1078,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val url: SearchParam<ResearchElementDefinition, Uri> =
-    SimpleSearchParam<ResearchElementDefinition, Uri>(
+    SearchParam<ResearchElementDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "ResearchElementDefinition.url",
@@ -1086,7 +1086,7 @@ public object ResearchElementDefinitionSearchParams {
     )
 
   public val version: SearchParam<ResearchElementDefinition, String> =
-    SimpleSearchParam<ResearchElementDefinition, String>(
+    SearchParam<ResearchElementDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchElementDefinition.version",

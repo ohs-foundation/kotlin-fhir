@@ -28,7 +28,7 @@ import kotlin.collections.List
 /** Search parameters for the [FormularyItem] resource type. */
 public object FormularyItemSearchParams {
   public val code: SearchParam<FormularyItem, CodeableConcept> =
-    SimpleSearchParam<FormularyItem, CodeableConcept>(
+    SearchParam<FormularyItem, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "FormularyItem.code",
@@ -36,7 +36,7 @@ public object FormularyItemSearchParams {
     )
 
   public val identifier: SearchParam<FormularyItem, Identifier> =
-    SimpleSearchParam<FormularyItem, Identifier>(
+    SearchParam<FormularyItem, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "FormularyItem.identifier",

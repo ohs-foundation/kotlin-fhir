@@ -36,7 +36,7 @@ import kotlin.collections.List
 /** Search parameters for the [Questionnaire] resource type. */
 public object QuestionnaireSearchParams {
   public val comboCode: SearchParam<Questionnaire, Coding> =
-    SimpleSearchParam<Questionnaire, Coding>(
+    SearchParam<Questionnaire, Coding>(
       name = "combo-code",
       type = SearchParamType.fromCode("token"),
       expression = "Questionnaire.code",
@@ -44,7 +44,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val context: SearchParam<Questionnaire, Any> =
-    SimpleSearchParam<Questionnaire, Any>(
+    SearchParam<Questionnaire, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(Questionnaire.useContext.value.ofType(CodeableConcept))",
@@ -52,7 +52,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val contextQuantity: SearchParam<Questionnaire, Any> =
-    SimpleSearchParam<Questionnaire, Any>(
+    SearchParam<Questionnaire, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(Questionnaire.useContext.value.ofType(Quantity))",
@@ -60,7 +60,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val contextType: SearchParam<Questionnaire, Coding> =
-    SimpleSearchParam<Questionnaire, Coding>(
+    SearchParam<Questionnaire, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "Questionnaire.useContext.code",
@@ -68,7 +68,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<Questionnaire, UsageContext> =
-    SimpleSearchParam<Questionnaire, UsageContext>(
+    SearchParam<Questionnaire, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Questionnaire.useContext",
@@ -76,7 +76,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val contextTypeValue: SearchParam<Questionnaire, UsageContext> =
-    SimpleSearchParam<Questionnaire, UsageContext>(
+    SearchParam<Questionnaire, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "Questionnaire.useContext",
@@ -84,7 +84,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val date: SearchParam<Questionnaire, DateTime> =
-    SimpleSearchParam<Questionnaire, DateTime>(
+    SearchParam<Questionnaire, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Questionnaire.date",
@@ -92,7 +92,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val definition: SearchParam<Questionnaire, Uri> =
-    SimpleSearchParam<Questionnaire, Uri>(
+    SearchParam<Questionnaire, Uri>(
       name = "definition",
       type = SearchParamType.fromCode("uri"),
       expression = "Questionnaire.item.definition",
@@ -100,7 +100,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val description: SearchParam<Questionnaire, Markdown> =
-    SimpleSearchParam<Questionnaire, Markdown>(
+    SearchParam<Questionnaire, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "Questionnaire.description",
@@ -108,7 +108,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val effective: SearchParam<Questionnaire, Period> =
-    SimpleSearchParam<Questionnaire, Period>(
+    SearchParam<Questionnaire, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "Questionnaire.effectivePeriod",
@@ -116,7 +116,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val identifier: SearchParam<Questionnaire, Identifier> =
-    SimpleSearchParam<Questionnaire, Identifier>(
+    SearchParam<Questionnaire, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Questionnaire.identifier",
@@ -124,7 +124,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val itemCode: SearchParam<Questionnaire, Coding> =
-    SimpleSearchParam<Questionnaire, Coding>(
+    SearchParam<Questionnaire, Coding>(
       name = "item-code",
       type = SearchParamType.fromCode("token"),
       expression = "Questionnaire.item.code",
@@ -132,7 +132,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val jurisdiction: SearchParam<Questionnaire, CodeableConcept> =
-    SimpleSearchParam<Questionnaire, CodeableConcept>(
+    SearchParam<Questionnaire, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "Questionnaire.jurisdiction",
@@ -140,7 +140,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val name: SearchParam<Questionnaire, String> =
-    SimpleSearchParam<Questionnaire, String>(
+    SearchParam<Questionnaire, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Questionnaire.name",
@@ -148,7 +148,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val publisher: SearchParam<Questionnaire, String> =
-    SimpleSearchParam<Questionnaire, String>(
+    SearchParam<Questionnaire, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "Questionnaire.publisher",
@@ -156,7 +156,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val questionnaireCode: SearchParam<Questionnaire, Coding> =
-    SimpleSearchParam<Questionnaire, Coding>(
+    SearchParam<Questionnaire, Coding>(
       name = "questionnaire-code",
       type = SearchParamType.fromCode("token"),
       expression = "Questionnaire.code",
@@ -164,7 +164,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val status: SearchParam<Questionnaire, Any> =
-    SimpleSearchParam<Questionnaire, Any>(
+    SearchParam<Questionnaire, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Questionnaire.status",
@@ -172,7 +172,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val subjectType: SearchParam<Questionnaire, Any> =
-    SimpleSearchParam<Questionnaire, Any>(
+    SearchParam<Questionnaire, Any>(
       name = "subject-type",
       type = SearchParamType.fromCode("token"),
       expression = "Questionnaire.subjectType",
@@ -180,7 +180,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val title: SearchParam<Questionnaire, String> =
-    SimpleSearchParam<Questionnaire, String>(
+    SearchParam<Questionnaire, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "Questionnaire.title",
@@ -188,7 +188,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val url: SearchParam<Questionnaire, Uri> =
-    SimpleSearchParam<Questionnaire, Uri>(
+    SearchParam<Questionnaire, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "Questionnaire.url",
@@ -196,7 +196,7 @@ public object QuestionnaireSearchParams {
     )
 
   public val version: SearchParam<Questionnaire, String> =
-    SimpleSearchParam<Questionnaire, String>(
+    SearchParam<Questionnaire, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "Questionnaire.version",

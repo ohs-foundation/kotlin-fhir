@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [InsurancePlan] resource type. */
 public object InsurancePlanSearchParams {
   public val address: SearchParam<InsurancePlan, Address> =
-    SimpleSearchParam<InsurancePlan, Address>(
+    SearchParam<InsurancePlan, Address>(
       name = "address",
       type = SearchParamType.fromCode("string"),
       expression = "InsurancePlan.contact.address",
@@ -42,7 +42,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val addressCity: SearchParam<InsurancePlan, String> =
-    SimpleSearchParam<InsurancePlan, String>(
+    SearchParam<InsurancePlan, String>(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
       expression = "InsurancePlan.contact.address.city",
@@ -50,7 +50,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val addressCountry: SearchParam<InsurancePlan, String> =
-    SimpleSearchParam<InsurancePlan, String>(
+    SearchParam<InsurancePlan, String>(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
       expression = "InsurancePlan.contact.address.country",
@@ -60,7 +60,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val addressPostalcode: SearchParam<InsurancePlan, String> =
-    SimpleSearchParam<InsurancePlan, String>(
+    SearchParam<InsurancePlan, String>(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
       expression = "InsurancePlan.contact.address.postalCode",
@@ -70,7 +70,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val addressState: SearchParam<InsurancePlan, String> =
-    SimpleSearchParam<InsurancePlan, String>(
+    SearchParam<InsurancePlan, String>(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
       expression = "InsurancePlan.contact.address.state",
@@ -78,7 +78,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val addressUse: SearchParam<InsurancePlan, Any> =
-    SimpleSearchParam<InsurancePlan, Any>(
+    SearchParam<InsurancePlan, Any>(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
       expression = "InsurancePlan.contact.address.use",
@@ -86,7 +86,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val administeredBy: SearchParam<InsurancePlan, Reference> =
-    SimpleSearchParam<InsurancePlan, Reference>(
+    SearchParam<InsurancePlan, Reference>(
       name = "administered-by",
       type = SearchParamType.fromCode("reference"),
       expression = "InsurancePlan.administeredBy",
@@ -95,7 +95,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val endpoint: SearchParam<InsurancePlan, Reference> =
-    SimpleSearchParam<InsurancePlan, Reference>(
+    SearchParam<InsurancePlan, Reference>(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "InsurancePlan.endpoint",
@@ -104,7 +104,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val identifier: SearchParam<InsurancePlan, Identifier> =
-    SimpleSearchParam<InsurancePlan, Identifier>(
+    SearchParam<InsurancePlan, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "InsurancePlan.identifier",
@@ -112,7 +112,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val name: SearchParam<InsurancePlan, String> =
-    SimpleSearchParam<InsurancePlan, String>(
+    SearchParam<InsurancePlan, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "InsurancePlan.name",
@@ -120,7 +120,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val ownedBy: SearchParam<InsurancePlan, Reference> =
-    SimpleSearchParam<InsurancePlan, Reference>(
+    SearchParam<InsurancePlan, Reference>(
       name = "owned-by",
       type = SearchParamType.fromCode("reference"),
       expression = "InsurancePlan.ownedBy",
@@ -129,7 +129,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val phonetic: SearchParam<InsurancePlan, String> =
-    SimpleSearchParam<InsurancePlan, String>(
+    SearchParam<InsurancePlan, String>(
       name = "phonetic",
       type = SearchParamType.fromCode("string"),
       expression = "InsurancePlan.name",
@@ -137,7 +137,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val status: SearchParam<InsurancePlan, Any> =
-    SimpleSearchParam<InsurancePlan, Any>(
+    SearchParam<InsurancePlan, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "InsurancePlan.status",
@@ -145,7 +145,7 @@ public object InsurancePlanSearchParams {
     )
 
   public val type: SearchParam<InsurancePlan, CodeableConcept> =
-    SimpleSearchParam<InsurancePlan, CodeableConcept>(
+    SearchParam<InsurancePlan, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "InsurancePlan.type",

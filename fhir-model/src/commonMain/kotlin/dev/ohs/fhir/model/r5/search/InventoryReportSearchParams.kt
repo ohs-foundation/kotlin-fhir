@@ -35,7 +35,7 @@ import kotlin.collections.List
 /** Search parameters for the [InventoryReport] resource type. */
 public object InventoryReportSearchParams {
   public val identifier: SearchParam<InventoryReport, Identifier> =
-    SimpleSearchParam<InventoryReport, Identifier>(
+    SearchParam<InventoryReport, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "InventoryReport.identifier",
@@ -43,7 +43,7 @@ public object InventoryReportSearchParams {
     )
 
   public val item: SearchParam<InventoryReport, CodeableConcept> =
-    SimpleSearchParam<InventoryReport, CodeableConcept>(
+    SearchParam<InventoryReport, CodeableConcept>(
       name = "item",
       type = SearchParamType.fromCode("token"),
       expression = "InventoryReport.inventoryListing.item.item.concept",
@@ -53,7 +53,7 @@ public object InventoryReportSearchParams {
     )
 
   public val itemReference: SearchParam<InventoryReport, Reference> =
-    SimpleSearchParam<InventoryReport, Reference>(
+    SearchParam<InventoryReport, Reference>(
       name = "item-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "InventoryReport.inventoryListing.item.item.reference",
@@ -71,7 +71,7 @@ public object InventoryReportSearchParams {
     )
 
   public val status: SearchParam<InventoryReport, Any> =
-    SimpleSearchParam<InventoryReport, Any>(
+    SearchParam<InventoryReport, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "InventoryReport.status",

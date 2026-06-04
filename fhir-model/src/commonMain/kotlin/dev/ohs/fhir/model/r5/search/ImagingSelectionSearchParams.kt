@@ -50,7 +50,7 @@ import kotlin.collections.List
 /** Search parameters for the [ImagingSelection] resource type. */
 public object ImagingSelectionSearchParams {
   public val basedOn: SearchParam<ImagingSelection, Reference> =
-    SimpleSearchParam<ImagingSelection, Reference>(
+    SearchParam<ImagingSelection, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.basedOn",
@@ -66,7 +66,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val bodySite: SearchParam<ImagingSelection, CodeableConcept> =
-    SimpleSearchParam<ImagingSelection, CodeableConcept>(
+    SearchParam<ImagingSelection, CodeableConcept>(
       name = "body-site",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.bodySite.concept",
@@ -74,7 +74,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val bodyStructure: SearchParam<ImagingSelection, Reference> =
-    SimpleSearchParam<ImagingSelection, Reference>(
+    SearchParam<ImagingSelection, Reference>(
       name = "body-structure",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.bodySite.reference",
@@ -83,7 +83,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val code: SearchParam<ImagingSelection, Any> =
-    SimpleSearchParam<ImagingSelection, Any>(
+    SearchParam<ImagingSelection, Any>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.status",
@@ -91,7 +91,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val derivedFrom: SearchParam<ImagingSelection, Reference> =
-    SimpleSearchParam<ImagingSelection, Reference>(
+    SearchParam<ImagingSelection, Reference>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.derivedFrom",
@@ -100,7 +100,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val identifier: SearchParam<ImagingSelection, Identifier> =
-    SimpleSearchParam<ImagingSelection, Identifier>(
+    SearchParam<ImagingSelection, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.identifier",
@@ -108,7 +108,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val issued: SearchParam<ImagingSelection, Instant> =
-    SimpleSearchParam<ImagingSelection, Instant>(
+    SearchParam<ImagingSelection, Instant>(
       name = "issued",
       type = SearchParamType.fromCode("date"),
       expression = "ImagingSelection.issued",
@@ -116,7 +116,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val patient: SearchParam<ImagingSelection, Reference> =
-    SimpleSearchParam<ImagingSelection, Reference>(
+    SearchParam<ImagingSelection, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.subject.where(resolve() is Patient)",
@@ -129,7 +129,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val status: SearchParam<ImagingSelection, Any> =
-    SimpleSearchParam<ImagingSelection, Any>(
+    SearchParam<ImagingSelection, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.status",
@@ -137,7 +137,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val studyUid: SearchParam<ImagingSelection, Id> =
-    SimpleSearchParam<ImagingSelection, Id>(
+    SearchParam<ImagingSelection, Id>(
       name = "study-uid",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.studyUid",
@@ -145,7 +145,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val subject: SearchParam<ImagingSelection, Reference> =
-    SimpleSearchParam<ImagingSelection, Reference>(
+    SearchParam<ImagingSelection, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.subject",

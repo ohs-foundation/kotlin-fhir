@@ -194,7 +194,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [CodeSystem] resource type. */
 public object CodeSystemSearchParams {
   public val code: SearchParam<CodeSystem, Any> =
-    SimpleSearchParam<CodeSystem, Any>(
+    SearchParam<CodeSystem, Any>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "CodeSystem.concept.code",
@@ -202,7 +202,7 @@ public object CodeSystemSearchParams {
     )
 
   public val contentMode: SearchParam<CodeSystem, Any> =
-    SimpleSearchParam<CodeSystem, Any>(
+    SearchParam<CodeSystem, Any>(
       name = "content-mode",
       type = SearchParamType.fromCode("token"),
       expression = "CodeSystem.content",
@@ -210,7 +210,7 @@ public object CodeSystemSearchParams {
     )
 
   public val context: SearchParam<CodeSystem, Any> =
-    SimpleSearchParam<CodeSystem, Any>(
+    SearchParam<CodeSystem, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(CodeSystem.useContext.value.ofType(CodeableConcept))",
@@ -218,7 +218,7 @@ public object CodeSystemSearchParams {
     )
 
   public val contextQuantity: SearchParam<CodeSystem, Any> =
-    SimpleSearchParam<CodeSystem, Any>(
+    SearchParam<CodeSystem, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(CodeSystem.useContext.value.ofType(Quantity))",
@@ -226,7 +226,7 @@ public object CodeSystemSearchParams {
     )
 
   public val contextType: SearchParam<CodeSystem, Coding> =
-    SimpleSearchParam<CodeSystem, Coding>(
+    SearchParam<CodeSystem, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "CodeSystem.useContext.code",
@@ -234,7 +234,7 @@ public object CodeSystemSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<CodeSystem, UsageContext> =
-    SimpleSearchParam<CodeSystem, UsageContext>(
+    SearchParam<CodeSystem, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "CodeSystem.useContext",
@@ -242,7 +242,7 @@ public object CodeSystemSearchParams {
     )
 
   public val contextTypeValue: SearchParam<CodeSystem, UsageContext> =
-    SimpleSearchParam<CodeSystem, UsageContext>(
+    SearchParam<CodeSystem, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "CodeSystem.useContext",
@@ -250,7 +250,7 @@ public object CodeSystemSearchParams {
     )
 
   public val date: SearchParam<CodeSystem, DateTime> =
-    SimpleSearchParam<CodeSystem, DateTime>(
+    SearchParam<CodeSystem, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "CodeSystem.date",
@@ -258,7 +258,7 @@ public object CodeSystemSearchParams {
     )
 
   public val derivedFrom: SearchParam<CodeSystem, Canonical> =
-    SimpleSearchParam<CodeSystem, Canonical>(
+    SearchParam<CodeSystem, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "CodeSystem.relatedArtifact.where(type='derived-from').resource",
@@ -431,7 +431,7 @@ public object CodeSystemSearchParams {
     )
 
   public val description: SearchParam<CodeSystem, Markdown> =
-    SimpleSearchParam<CodeSystem, Markdown>(
+    SearchParam<CodeSystem, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "CodeSystem.description",
@@ -439,7 +439,7 @@ public object CodeSystemSearchParams {
     )
 
   public val effective: SearchParam<CodeSystem, Period> =
-    SimpleSearchParam<CodeSystem, Period>(
+    SearchParam<CodeSystem, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "CodeSystem.effectivePeriod",
@@ -447,7 +447,7 @@ public object CodeSystemSearchParams {
     )
 
   public val identifier: SearchParam<CodeSystem, Identifier> =
-    SimpleSearchParam<CodeSystem, Identifier>(
+    SearchParam<CodeSystem, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "CodeSystem.identifier",
@@ -455,7 +455,7 @@ public object CodeSystemSearchParams {
     )
 
   public val jurisdiction: SearchParam<CodeSystem, CodeableConcept> =
-    SimpleSearchParam<CodeSystem, CodeableConcept>(
+    SearchParam<CodeSystem, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "CodeSystem.jurisdiction",
@@ -463,7 +463,7 @@ public object CodeSystemSearchParams {
     )
 
   public val language: SearchParam<CodeSystem, Any> =
-    SimpleSearchParam<CodeSystem, Any>(
+    SearchParam<CodeSystem, Any>(
       name = "language",
       type = SearchParamType.fromCode("token"),
       expression = "CodeSystem.concept.designation.language",
@@ -473,7 +473,7 @@ public object CodeSystemSearchParams {
     )
 
   public val name: SearchParam<CodeSystem, String> =
-    SimpleSearchParam<CodeSystem, String>(
+    SearchParam<CodeSystem, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "CodeSystem.name",
@@ -481,7 +481,7 @@ public object CodeSystemSearchParams {
     )
 
   public val predecessor: SearchParam<CodeSystem, Canonical> =
-    SimpleSearchParam<CodeSystem, Canonical>(
+    SearchParam<CodeSystem, Canonical>(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "CodeSystem.relatedArtifact.where(type='predecessor').resource",
@@ -654,7 +654,7 @@ public object CodeSystemSearchParams {
     )
 
   public val publisher: SearchParam<CodeSystem, String> =
-    SimpleSearchParam<CodeSystem, String>(
+    SearchParam<CodeSystem, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "CodeSystem.publisher",
@@ -662,7 +662,7 @@ public object CodeSystemSearchParams {
     )
 
   public val status: SearchParam<CodeSystem, Any> =
-    SimpleSearchParam<CodeSystem, Any>(
+    SearchParam<CodeSystem, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "CodeSystem.status",
@@ -670,7 +670,7 @@ public object CodeSystemSearchParams {
     )
 
   public val supplements: SearchParam<CodeSystem, Canonical> =
-    SimpleSearchParam<CodeSystem, Canonical>(
+    SearchParam<CodeSystem, Canonical>(
       name = "supplements",
       type = SearchParamType.fromCode("reference"),
       expression = "CodeSystem.supplements",
@@ -679,7 +679,7 @@ public object CodeSystemSearchParams {
     )
 
   public val system: SearchParam<CodeSystem, Uri> =
-    SimpleSearchParam<CodeSystem, Uri>(
+    SearchParam<CodeSystem, Uri>(
       name = "system",
       type = SearchParamType.fromCode("uri"),
       expression = "CodeSystem.url",
@@ -687,7 +687,7 @@ public object CodeSystemSearchParams {
     )
 
   public val title: SearchParam<CodeSystem, String> =
-    SimpleSearchParam<CodeSystem, String>(
+    SearchParam<CodeSystem, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "CodeSystem.title",
@@ -695,7 +695,7 @@ public object CodeSystemSearchParams {
     )
 
   public val topic: SearchParam<CodeSystem, CodeableConcept> =
-    SimpleSearchParam<CodeSystem, CodeableConcept>(
+    SearchParam<CodeSystem, CodeableConcept>(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "CodeSystem.topic",
@@ -703,7 +703,7 @@ public object CodeSystemSearchParams {
     )
 
   public val url: SearchParam<CodeSystem, Uri> =
-    SimpleSearchParam<CodeSystem, Uri>(
+    SearchParam<CodeSystem, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "CodeSystem.url",
@@ -711,7 +711,7 @@ public object CodeSystemSearchParams {
     )
 
   public val version: SearchParam<CodeSystem, String> =
-    SimpleSearchParam<CodeSystem, String>(
+    SearchParam<CodeSystem, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "CodeSystem.version",

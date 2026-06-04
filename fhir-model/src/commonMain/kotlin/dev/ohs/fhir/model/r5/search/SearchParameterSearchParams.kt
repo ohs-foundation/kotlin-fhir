@@ -36,7 +36,7 @@ import kotlin.collections.List
 /** Search parameters for the [SearchParameter] resource type. */
 public object SearchParameterSearchParams {
   public val base: SearchParam<SearchParameter, Any> =
-    SimpleSearchParam<SearchParameter, Any>(
+    SearchParam<SearchParameter, Any>(
       name = "base",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.base",
@@ -44,7 +44,7 @@ public object SearchParameterSearchParams {
     )
 
   public val code: SearchParam<SearchParameter, Any> =
-    SimpleSearchParam<SearchParameter, Any>(
+    SearchParam<SearchParameter, Any>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.code",
@@ -52,7 +52,7 @@ public object SearchParameterSearchParams {
     )
 
   public val component: SearchParam<SearchParameter, Canonical> =
-    SimpleSearchParam<SearchParameter, Canonical>(
+    SearchParam<SearchParameter, Canonical>(
       name = "component",
       type = SearchParamType.fromCode("reference"),
       expression = "SearchParameter.component.definition",
@@ -61,7 +61,7 @@ public object SearchParameterSearchParams {
     )
 
   public val context: SearchParam<SearchParameter, Any> =
-    SimpleSearchParam<SearchParameter, Any>(
+    SearchParam<SearchParameter, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(SearchParameter.useContext.value.ofType(CodeableConcept))",
@@ -69,7 +69,7 @@ public object SearchParameterSearchParams {
     )
 
   public val contextQuantity: SearchParam<SearchParameter, Any> =
-    SimpleSearchParam<SearchParameter, Any>(
+    SearchParam<SearchParameter, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(SearchParameter.useContext.value.ofType(Quantity))",
@@ -77,7 +77,7 @@ public object SearchParameterSearchParams {
     )
 
   public val contextType: SearchParam<SearchParameter, Coding> =
-    SimpleSearchParam<SearchParameter, Coding>(
+    SearchParam<SearchParameter, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.useContext.code",
@@ -85,7 +85,7 @@ public object SearchParameterSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<SearchParameter, UsageContext> =
-    SimpleSearchParam<SearchParameter, UsageContext>(
+    SearchParam<SearchParameter, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "SearchParameter.useContext",
@@ -93,7 +93,7 @@ public object SearchParameterSearchParams {
     )
 
   public val contextTypeValue: SearchParam<SearchParameter, UsageContext> =
-    SimpleSearchParam<SearchParameter, UsageContext>(
+    SearchParam<SearchParameter, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "SearchParameter.useContext",
@@ -101,7 +101,7 @@ public object SearchParameterSearchParams {
     )
 
   public val date: SearchParam<SearchParameter, DateTime> =
-    SimpleSearchParam<SearchParameter, DateTime>(
+    SearchParam<SearchParameter, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "SearchParameter.date",
@@ -109,7 +109,7 @@ public object SearchParameterSearchParams {
     )
 
   public val derivedFrom: SearchParam<SearchParameter, Canonical> =
-    SimpleSearchParam<SearchParameter, Canonical>(
+    SearchParam<SearchParameter, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "SearchParameter.derivedFrom",
@@ -118,7 +118,7 @@ public object SearchParameterSearchParams {
     )
 
   public val description: SearchParam<SearchParameter, Markdown> =
-    SimpleSearchParam<SearchParameter, Markdown>(
+    SearchParam<SearchParameter, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "SearchParameter.description",
@@ -126,7 +126,7 @@ public object SearchParameterSearchParams {
     )
 
   public val identifier: SearchParam<SearchParameter, Identifier> =
-    SimpleSearchParam<SearchParameter, Identifier>(
+    SearchParam<SearchParameter, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.identifier",
@@ -134,7 +134,7 @@ public object SearchParameterSearchParams {
     )
 
   public val jurisdiction: SearchParam<SearchParameter, CodeableConcept> =
-    SimpleSearchParam<SearchParameter, CodeableConcept>(
+    SearchParam<SearchParameter, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.jurisdiction",
@@ -142,7 +142,7 @@ public object SearchParameterSearchParams {
     )
 
   public val name: SearchParam<SearchParameter, String> =
-    SimpleSearchParam<SearchParameter, String>(
+    SearchParam<SearchParameter, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "SearchParameter.name",
@@ -150,7 +150,7 @@ public object SearchParameterSearchParams {
     )
 
   public val publisher: SearchParam<SearchParameter, String> =
-    SimpleSearchParam<SearchParameter, String>(
+    SearchParam<SearchParameter, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "SearchParameter.publisher",
@@ -158,7 +158,7 @@ public object SearchParameterSearchParams {
     )
 
   public val status: SearchParam<SearchParameter, Any> =
-    SimpleSearchParam<SearchParameter, Any>(
+    SearchParam<SearchParameter, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.status",
@@ -166,7 +166,7 @@ public object SearchParameterSearchParams {
     )
 
   public val target: SearchParam<SearchParameter, Any> =
-    SimpleSearchParam<SearchParameter, Any>(
+    SearchParam<SearchParameter, Any>(
       name = "target",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.target",
@@ -174,7 +174,7 @@ public object SearchParameterSearchParams {
     )
 
   public val type: SearchParam<SearchParameter, Any> =
-    SimpleSearchParam<SearchParameter, Any>(
+    SearchParam<SearchParameter, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.type",
@@ -182,7 +182,7 @@ public object SearchParameterSearchParams {
     )
 
   public val url: SearchParam<SearchParameter, Uri> =
-    SimpleSearchParam<SearchParameter, Uri>(
+    SearchParam<SearchParameter, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "SearchParameter.url",
@@ -190,7 +190,7 @@ public object SearchParameterSearchParams {
     )
 
   public val version: SearchParam<SearchParameter, String> =
-    SimpleSearchParam<SearchParameter, String>(
+    SearchParam<SearchParameter, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.version",

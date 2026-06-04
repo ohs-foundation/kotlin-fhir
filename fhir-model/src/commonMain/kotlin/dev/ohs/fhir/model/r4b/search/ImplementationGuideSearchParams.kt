@@ -177,7 +177,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [ImplementationGuide] resource type. */
 public object ImplementationGuideSearchParams {
   public val context: SearchParam<ImplementationGuide, CodeableConcept> =
-    SimpleSearchParam<ImplementationGuide, CodeableConcept>(
+    SearchParam<ImplementationGuide, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(ImplementationGuide.useContext.value as CodeableConcept)",
@@ -189,7 +189,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val contextQuantity: SearchParam<ImplementationGuide, Quantity> =
-    SimpleSearchParam<ImplementationGuide, Quantity>(
+    SearchParam<ImplementationGuide, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(ImplementationGuide.useContext.value as Quantity)",
@@ -199,7 +199,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val contextType: SearchParam<ImplementationGuide, Coding> =
-    SimpleSearchParam<ImplementationGuide, Coding>(
+    SearchParam<ImplementationGuide, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "ImplementationGuide.useContext.code",
@@ -207,7 +207,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<ImplementationGuide, UsageContext> =
-    SimpleSearchParam<ImplementationGuide, UsageContext>(
+    SearchParam<ImplementationGuide, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "ImplementationGuide.useContext",
@@ -215,7 +215,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val contextTypeValue: SearchParam<ImplementationGuide, UsageContext> =
-    SimpleSearchParam<ImplementationGuide, UsageContext>(
+    SearchParam<ImplementationGuide, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "ImplementationGuide.useContext",
@@ -223,7 +223,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val date: SearchParam<ImplementationGuide, DateTime> =
-    SimpleSearchParam<ImplementationGuide, DateTime>(
+    SearchParam<ImplementationGuide, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ImplementationGuide.date",
@@ -231,7 +231,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val dependsOn: SearchParam<ImplementationGuide, Canonical> =
-    SimpleSearchParam<ImplementationGuide, Canonical>(
+    SearchParam<ImplementationGuide, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
       expression = "ImplementationGuide.dependsOn.uri",
@@ -240,7 +240,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val description: SearchParam<ImplementationGuide, Markdown> =
-    SimpleSearchParam<ImplementationGuide, Markdown>(
+    SearchParam<ImplementationGuide, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "ImplementationGuide.description",
@@ -248,7 +248,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val experimental: SearchParam<ImplementationGuide, Boolean> =
-    SimpleSearchParam<ImplementationGuide, Boolean>(
+    SearchParam<ImplementationGuide, Boolean>(
       name = "experimental",
       type = SearchParamType.fromCode("token"),
       expression = "ImplementationGuide.experimental",
@@ -256,7 +256,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val global: SearchParam<ImplementationGuide, Canonical> =
-    SimpleSearchParam<ImplementationGuide, Canonical>(
+    SearchParam<ImplementationGuide, Canonical>(
       name = "global",
       type = SearchParamType.fromCode("reference"),
       expression = "ImplementationGuide.global.profile",
@@ -265,7 +265,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val jurisdiction: SearchParam<ImplementationGuide, CodeableConcept> =
-    SimpleSearchParam<ImplementationGuide, CodeableConcept>(
+    SearchParam<ImplementationGuide, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "ImplementationGuide.jurisdiction",
@@ -273,7 +273,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val name: SearchParam<ImplementationGuide, String> =
-    SimpleSearchParam<ImplementationGuide, String>(
+    SearchParam<ImplementationGuide, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "ImplementationGuide.name",
@@ -281,7 +281,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val publisher: SearchParam<ImplementationGuide, String> =
-    SimpleSearchParam<ImplementationGuide, String>(
+    SearchParam<ImplementationGuide, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "ImplementationGuide.publisher",
@@ -289,7 +289,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val resource: SearchParam<ImplementationGuide, Reference> =
-    SimpleSearchParam<ImplementationGuide, Reference>(
+    SearchParam<ImplementationGuide, Reference>(
       name = "resource",
       type = SearchParamType.fromCode("reference"),
       expression = "ImplementationGuide.definition.resource.reference",
@@ -442,7 +442,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val status: SearchParam<ImplementationGuide, Any> =
-    SimpleSearchParam<ImplementationGuide, Any>(
+    SearchParam<ImplementationGuide, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ImplementationGuide.status",
@@ -450,7 +450,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val title: SearchParam<ImplementationGuide, String> =
-    SimpleSearchParam<ImplementationGuide, String>(
+    SearchParam<ImplementationGuide, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "ImplementationGuide.title",
@@ -458,7 +458,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val url: SearchParam<ImplementationGuide, Uri> =
-    SimpleSearchParam<ImplementationGuide, Uri>(
+    SearchParam<ImplementationGuide, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "ImplementationGuide.url",
@@ -466,7 +466,7 @@ public object ImplementationGuideSearchParams {
     )
 
   public val version: SearchParam<ImplementationGuide, String> =
-    SimpleSearchParam<ImplementationGuide, String>(
+    SearchParam<ImplementationGuide, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "ImplementationGuide.version",

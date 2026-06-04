@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [MedicationKnowledge] resource type. */
 public object MedicationKnowledgeSearchParams {
   public val classification: SearchParam<MedicationKnowledge, CodeableConcept> =
-    SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
+    SearchParam<MedicationKnowledge, CodeableConcept>(
       name = "classification",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationKnowledge.medicineClassification.classification",
@@ -42,7 +42,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val classificationType: SearchParam<MedicationKnowledge, CodeableConcept> =
-    SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
+    SearchParam<MedicationKnowledge, CodeableConcept>(
       name = "classification-type",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationKnowledge.medicineClassification.type",
@@ -50,7 +50,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val code: SearchParam<MedicationKnowledge, CodeableConcept> =
-    SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
+    SearchParam<MedicationKnowledge, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationKnowledge.code",
@@ -58,7 +58,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val doseform: SearchParam<MedicationKnowledge, CodeableConcept> =
-    SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
+    SearchParam<MedicationKnowledge, CodeableConcept>(
       name = "doseform",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationKnowledge.doseForm",
@@ -66,7 +66,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val ingredient: SearchParam<MedicationKnowledge, Reference> =
-    SimpleSearchParam<MedicationKnowledge, Reference>(
+    SearchParam<MedicationKnowledge, Reference>(
       name = "ingredient",
       type = SearchParamType.fromCode("reference"),
       expression = "(MedicationKnowledge.ingredient.item as Reference)",
@@ -79,7 +79,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val ingredientCode: SearchParam<MedicationKnowledge, CodeableConcept> =
-    SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
+    SearchParam<MedicationKnowledge, CodeableConcept>(
       name = "ingredient-code",
       type = SearchParamType.fromCode("token"),
       expression = "(MedicationKnowledge.ingredient.item as CodeableConcept)",
@@ -91,7 +91,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val manufacturer: SearchParam<MedicationKnowledge, Reference> =
-    SimpleSearchParam<MedicationKnowledge, Reference>(
+    SearchParam<MedicationKnowledge, Reference>(
       name = "manufacturer",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationKnowledge.manufacturer",
@@ -100,7 +100,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val monitoringProgramName: SearchParam<MedicationKnowledge, String> =
-    SimpleSearchParam<MedicationKnowledge, String>(
+    SearchParam<MedicationKnowledge, String>(
       name = "monitoring-program-name",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationKnowledge.monitoringProgram.name",
@@ -108,7 +108,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val monitoringProgramType: SearchParam<MedicationKnowledge, CodeableConcept> =
-    SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
+    SearchParam<MedicationKnowledge, CodeableConcept>(
       name = "monitoring-program-type",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationKnowledge.monitoringProgram.type",
@@ -116,7 +116,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val monograph: SearchParam<MedicationKnowledge, Reference> =
-    SimpleSearchParam<MedicationKnowledge, Reference>(
+    SearchParam<MedicationKnowledge, Reference>(
       name = "monograph",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationKnowledge.monograph.source",
@@ -125,7 +125,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val monographType: SearchParam<MedicationKnowledge, CodeableConcept> =
-    SimpleSearchParam<MedicationKnowledge, CodeableConcept>(
+    SearchParam<MedicationKnowledge, CodeableConcept>(
       name = "monograph-type",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationKnowledge.monograph.type",
@@ -133,7 +133,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val sourceCost: SearchParam<MedicationKnowledge, String> =
-    SimpleSearchParam<MedicationKnowledge, String>(
+    SearchParam<MedicationKnowledge, String>(
       name = "source-cost",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationKnowledge.cost.source",
@@ -141,7 +141,7 @@ public object MedicationKnowledgeSearchParams {
     )
 
   public val status: SearchParam<MedicationKnowledge, Any> =
-    SimpleSearchParam<MedicationKnowledge, Any>(
+    SearchParam<MedicationKnowledge, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationKnowledge.status",

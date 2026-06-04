@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [BiologicallyDerivedProductDispense] resource type. */
 public object BiologicallyDerivedProductDispenseSearchParams {
   public val identifier: SearchParam<BiologicallyDerivedProductDispense, Identifier> =
-    SimpleSearchParam<BiologicallyDerivedProductDispense, Identifier>(
+    SearchParam<BiologicallyDerivedProductDispense, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "BiologicallyDerivedProductDispense.identifier",
@@ -40,7 +40,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
     )
 
   public val patient: SearchParam<BiologicallyDerivedProductDispense, Reference> =
-    SimpleSearchParam<BiologicallyDerivedProductDispense, Reference>(
+    SearchParam<BiologicallyDerivedProductDispense, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "BiologicallyDerivedProductDispense.patient",
@@ -49,7 +49,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
     )
 
   public val performer: SearchParam<BiologicallyDerivedProductDispense, Reference> =
-    SimpleSearchParam<BiologicallyDerivedProductDispense, Reference>(
+    SearchParam<BiologicallyDerivedProductDispense, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "BiologicallyDerivedProductDispense.performer.actor",
@@ -58,7 +58,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
     )
 
   public val product: SearchParam<BiologicallyDerivedProductDispense, Reference> =
-    SimpleSearchParam<BiologicallyDerivedProductDispense, Reference>(
+    SearchParam<BiologicallyDerivedProductDispense, Reference>(
       name = "product",
       type = SearchParamType.fromCode("reference"),
       expression = "BiologicallyDerivedProductDispense.product",
@@ -67,7 +67,7 @@ public object BiologicallyDerivedProductDispenseSearchParams {
     )
 
   public val status: SearchParam<BiologicallyDerivedProductDispense, Any> =
-    SimpleSearchParam<BiologicallyDerivedProductDispense, Any>(
+    SearchParam<BiologicallyDerivedProductDispense, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "BiologicallyDerivedProductDispense.status",

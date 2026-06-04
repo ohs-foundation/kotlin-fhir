@@ -173,7 +173,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [DetectedIssue] resource type. */
 public object DetectedIssueSearchParams {
   public val author: SearchParam<DetectedIssue, Reference> =
-    SimpleSearchParam<DetectedIssue, Reference>(
+    SearchParam<DetectedIssue, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "DetectedIssue.author",
@@ -182,7 +182,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val code: SearchParam<DetectedIssue, CodeableConcept> =
-    SimpleSearchParam<DetectedIssue, CodeableConcept>(
+    SearchParam<DetectedIssue, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "DetectedIssue.code",
@@ -190,7 +190,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val identified: SearchParam<DetectedIssue, DetectedIssue.Identified> =
-    SimpleSearchParam<DetectedIssue, DetectedIssue.Identified>(
+    SearchParam<DetectedIssue, DetectedIssue.Identified>(
       name = "identified",
       type = SearchParamType.fromCode("date"),
       expression = "DetectedIssue.identified",
@@ -198,7 +198,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val identifier: SearchParam<DetectedIssue, Identifier> =
-    SimpleSearchParam<DetectedIssue, Identifier>(
+    SearchParam<DetectedIssue, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DetectedIssue.identifier",
@@ -206,7 +206,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val implicated: SearchParam<DetectedIssue, Reference> =
-    SimpleSearchParam<DetectedIssue, Reference>(
+    SearchParam<DetectedIssue, Reference>(
       name = "implicated",
       type = SearchParamType.fromCode("reference"),
       expression = "DetectedIssue.implicated",
@@ -362,7 +362,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val patient: SearchParam<DetectedIssue, Reference> =
-    SimpleSearchParam<DetectedIssue, Reference>(
+    SearchParam<DetectedIssue, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DetectedIssue.patient",

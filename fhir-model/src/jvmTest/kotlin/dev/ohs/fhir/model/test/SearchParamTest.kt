@@ -116,7 +116,7 @@ class SearchParamTest :
             @Suppress("UNCHECKED_CAST")
             val allSearchParams = allProperty.get(containerInstance) as List<Any>
 
-            // Every entry is a SimpleSearchParam, so key by the `name` property rather than the
+            // Every entry is a SearchParam, so key by the `name` property rather than the
             // class name.
             val searchParamsByName =
               allSearchParams.associateBy { sp ->

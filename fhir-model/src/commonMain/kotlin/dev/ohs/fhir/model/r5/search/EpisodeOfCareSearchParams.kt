@@ -39,7 +39,7 @@ import kotlin.collections.List
 /** Search parameters for the [EpisodeOfCare] resource type. */
 public object EpisodeOfCareSearchParams {
   public val careManager: SearchParam<EpisodeOfCare, Reference> =
-    SimpleSearchParam<EpisodeOfCare, Reference>(
+    SearchParam<EpisodeOfCare, Reference>(
       name = "care-manager",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.careManager.where(resolve() is Practitioner)",
@@ -52,7 +52,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val date: SearchParam<EpisodeOfCare, Period> =
-    SimpleSearchParam<EpisodeOfCare, Period>(
+    SearchParam<EpisodeOfCare, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "EpisodeOfCare.period",
@@ -60,7 +60,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val diagnosisCode: SearchParam<EpisodeOfCare, CodeableConcept> =
-    SimpleSearchParam<EpisodeOfCare, CodeableConcept>(
+    SearchParam<EpisodeOfCare, CodeableConcept>(
       name = "diagnosis-code",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.diagnosis.condition.concept",
@@ -70,7 +70,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val diagnosisReference: SearchParam<EpisodeOfCare, Reference> =
-    SimpleSearchParam<EpisodeOfCare, Reference>(
+    SearchParam<EpisodeOfCare, Reference>(
       name = "diagnosis-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.diagnosis.condition.reference",
@@ -81,7 +81,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val identifier: SearchParam<EpisodeOfCare, Identifier> =
-    SimpleSearchParam<EpisodeOfCare, Identifier>(
+    SearchParam<EpisodeOfCare, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.identifier",
@@ -89,7 +89,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val incomingReferral: SearchParam<EpisodeOfCare, Reference> =
-    SimpleSearchParam<EpisodeOfCare, Reference>(
+    SearchParam<EpisodeOfCare, Reference>(
       name = "incoming-referral",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.referralRequest",
@@ -98,7 +98,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val organization: SearchParam<EpisodeOfCare, Reference> =
-    SimpleSearchParam<EpisodeOfCare, Reference>(
+    SearchParam<EpisodeOfCare, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.managingOrganization",
@@ -107,7 +107,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val patient: SearchParam<EpisodeOfCare, Reference> =
-    SimpleSearchParam<EpisodeOfCare, Reference>(
+    SearchParam<EpisodeOfCare, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.patient",
@@ -116,7 +116,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val reasonCode: SearchParam<EpisodeOfCare, CodeableConcept> =
-    SimpleSearchParam<EpisodeOfCare, CodeableConcept>(
+    SearchParam<EpisodeOfCare, CodeableConcept>(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.reason.value.concept",
@@ -124,7 +124,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val reasonReference: SearchParam<EpisodeOfCare, Reference> =
-    SimpleSearchParam<EpisodeOfCare, Reference>(
+    SearchParam<EpisodeOfCare, Reference>(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.reason.value.reference",
@@ -134,7 +134,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val status: SearchParam<EpisodeOfCare, Any> =
-    SimpleSearchParam<EpisodeOfCare, Any>(
+    SearchParam<EpisodeOfCare, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.status",
@@ -142,7 +142,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val type: SearchParam<EpisodeOfCare, CodeableConcept> =
-    SimpleSearchParam<EpisodeOfCare, CodeableConcept>(
+    SearchParam<EpisodeOfCare, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.type",

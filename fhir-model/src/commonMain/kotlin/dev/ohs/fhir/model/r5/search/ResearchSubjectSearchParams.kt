@@ -39,7 +39,7 @@ import kotlin.collections.List
 /** Search parameters for the [ResearchSubject] resource type. */
 public object ResearchSubjectSearchParams {
   public val date: SearchParam<ResearchSubject, Period> =
-    SimpleSearchParam<ResearchSubject, Period>(
+    SearchParam<ResearchSubject, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ResearchSubject.period",
@@ -47,7 +47,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val identifier: SearchParam<ResearchSubject, Identifier> =
-    SimpleSearchParam<ResearchSubject, Identifier>(
+    SearchParam<ResearchSubject, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchSubject.identifier",
@@ -55,7 +55,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val patient: SearchParam<ResearchSubject, Reference> =
-    SimpleSearchParam<ResearchSubject, Reference>(
+    SearchParam<ResearchSubject, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchSubject.subject.where(resolve() is Patient)",
@@ -68,7 +68,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val status: SearchParam<ResearchSubject, Any> =
-    SimpleSearchParam<ResearchSubject, Any>(
+    SearchParam<ResearchSubject, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchSubject.status",
@@ -76,7 +76,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val study: SearchParam<ResearchSubject, Reference> =
-    SimpleSearchParam<ResearchSubject, Reference>(
+    SearchParam<ResearchSubject, Reference>(
       name = "study",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchSubject.study",
@@ -85,7 +85,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val subject: SearchParam<ResearchSubject, Reference> =
-    SimpleSearchParam<ResearchSubject, Reference>(
+    SearchParam<ResearchSubject, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchSubject.subject",
@@ -103,7 +103,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val subject_state: SearchParam<ResearchSubject, CodeableConcept> =
-    SimpleSearchParam<ResearchSubject, CodeableConcept>(
+    SearchParam<ResearchSubject, CodeableConcept>(
       name = "subject_state",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchSubject.progress.subjectState",

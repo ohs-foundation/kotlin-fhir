@@ -182,7 +182,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Library] resource type. */
 public object LibrarySearchParams {
   public val composedOf: SearchParam<Library, Canonical> =
-    SimpleSearchParam<Library, Canonical>(
+    SearchParam<Library, Canonical>(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
       expression = "Library.relatedArtifact.where(type='composed-of').resource",
@@ -342,7 +342,7 @@ public object LibrarySearchParams {
     )
 
   public val contentType: SearchParam<Library, Any> =
-    SimpleSearchParam<Library, Any>(
+    SearchParam<Library, Any>(
       name = "content-type",
       type = SearchParamType.fromCode("token"),
       expression = "Library.content.contentType",
@@ -350,7 +350,7 @@ public object LibrarySearchParams {
     )
 
   public val context: SearchParam<Library, CodeableConcept> =
-    SimpleSearchParam<Library, CodeableConcept>(
+    SearchParam<Library, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(Library.useContext.value as CodeableConcept)",
@@ -362,7 +362,7 @@ public object LibrarySearchParams {
     )
 
   public val contextQuantity: SearchParam<Library, Quantity> =
-    SimpleSearchParam<Library, Quantity>(
+    SearchParam<Library, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(Library.useContext.value as Quantity)",
@@ -372,7 +372,7 @@ public object LibrarySearchParams {
     )
 
   public val contextType: SearchParam<Library, Coding> =
-    SimpleSearchParam<Library, Coding>(
+    SearchParam<Library, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "Library.useContext.code",
@@ -380,7 +380,7 @@ public object LibrarySearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<Library, UsageContext> =
-    SimpleSearchParam<Library, UsageContext>(
+    SearchParam<Library, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Library.useContext",
@@ -388,7 +388,7 @@ public object LibrarySearchParams {
     )
 
   public val contextTypeValue: SearchParam<Library, UsageContext> =
-    SimpleSearchParam<Library, UsageContext>(
+    SearchParam<Library, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "Library.useContext",
@@ -396,7 +396,7 @@ public object LibrarySearchParams {
     )
 
   public val date: SearchParam<Library, DateTime> =
-    SimpleSearchParam<Library, DateTime>(
+    SearchParam<Library, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Library.date",
@@ -404,7 +404,7 @@ public object LibrarySearchParams {
     )
 
   public val dependsOn: SearchParam<Library, Canonical> =
-    SimpleSearchParam<Library, Canonical>(
+    SearchParam<Library, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
       expression = "Library.relatedArtifact.where(type='depends-on').resource",
@@ -564,7 +564,7 @@ public object LibrarySearchParams {
     )
 
   public val derivedFrom: SearchParam<Library, Canonical> =
-    SimpleSearchParam<Library, Canonical>(
+    SearchParam<Library, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "Library.relatedArtifact.where(type='derived-from').resource",
@@ -724,7 +724,7 @@ public object LibrarySearchParams {
     )
 
   public val description: SearchParam<Library, Markdown> =
-    SimpleSearchParam<Library, Markdown>(
+    SearchParam<Library, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "Library.description",
@@ -732,7 +732,7 @@ public object LibrarySearchParams {
     )
 
   public val effective: SearchParam<Library, Period> =
-    SimpleSearchParam<Library, Period>(
+    SearchParam<Library, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "Library.effectivePeriod",
@@ -740,7 +740,7 @@ public object LibrarySearchParams {
     )
 
   public val identifier: SearchParam<Library, Identifier> =
-    SimpleSearchParam<Library, Identifier>(
+    SearchParam<Library, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Library.identifier",
@@ -748,7 +748,7 @@ public object LibrarySearchParams {
     )
 
   public val jurisdiction: SearchParam<Library, CodeableConcept> =
-    SimpleSearchParam<Library, CodeableConcept>(
+    SearchParam<Library, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "Library.jurisdiction",
@@ -756,7 +756,7 @@ public object LibrarySearchParams {
     )
 
   public val name: SearchParam<Library, String> =
-    SimpleSearchParam<Library, String>(
+    SearchParam<Library, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Library.name",
@@ -764,7 +764,7 @@ public object LibrarySearchParams {
     )
 
   public val predecessor: SearchParam<Library, Canonical> =
-    SimpleSearchParam<Library, Canonical>(
+    SearchParam<Library, Canonical>(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "Library.relatedArtifact.where(type='predecessor').resource",
@@ -924,7 +924,7 @@ public object LibrarySearchParams {
     )
 
   public val publisher: SearchParam<Library, String> =
-    SimpleSearchParam<Library, String>(
+    SearchParam<Library, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "Library.publisher",
@@ -932,7 +932,7 @@ public object LibrarySearchParams {
     )
 
   public val status: SearchParam<Library, Any> =
-    SimpleSearchParam<Library, Any>(
+    SearchParam<Library, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Library.status",
@@ -940,7 +940,7 @@ public object LibrarySearchParams {
     )
 
   public val successor: SearchParam<Library, Canonical> =
-    SimpleSearchParam<Library, Canonical>(
+    SearchParam<Library, Canonical>(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
       expression = "Library.relatedArtifact.where(type='successor').resource",
@@ -1100,7 +1100,7 @@ public object LibrarySearchParams {
     )
 
   public val title: SearchParam<Library, String> =
-    SimpleSearchParam<Library, String>(
+    SearchParam<Library, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "Library.title",
@@ -1108,7 +1108,7 @@ public object LibrarySearchParams {
     )
 
   public val topic: SearchParam<Library, CodeableConcept> =
-    SimpleSearchParam<Library, CodeableConcept>(
+    SearchParam<Library, CodeableConcept>(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "Library.topic",
@@ -1116,7 +1116,7 @@ public object LibrarySearchParams {
     )
 
   public val type: SearchParam<Library, CodeableConcept> =
-    SimpleSearchParam<Library, CodeableConcept>(
+    SearchParam<Library, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Library.type",
@@ -1124,7 +1124,7 @@ public object LibrarySearchParams {
     )
 
   public val url: SearchParam<Library, Uri> =
-    SimpleSearchParam<Library, Uri>(
+    SearchParam<Library, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "Library.url",
@@ -1132,7 +1132,7 @@ public object LibrarySearchParams {
     )
 
   public val version: SearchParam<Library, String> =
-    SimpleSearchParam<Library, String>(
+    SearchParam<Library, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "Library.version",

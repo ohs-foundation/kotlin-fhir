@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [AppointmentResponse] resource type. */
 public object AppointmentResponseSearchParams {
   public val actor: SearchParam<AppointmentResponse, Reference> =
-    SimpleSearchParam<AppointmentResponse, Reference>(
+    SearchParam<AppointmentResponse, Reference>(
       name = "actor",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.actor",
@@ -55,7 +55,7 @@ public object AppointmentResponseSearchParams {
     )
 
   public val appointment: SearchParam<AppointmentResponse, Reference> =
-    SimpleSearchParam<AppointmentResponse, Reference>(
+    SearchParam<AppointmentResponse, Reference>(
       name = "appointment",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.appointment",
@@ -64,7 +64,7 @@ public object AppointmentResponseSearchParams {
     )
 
   public val identifier: SearchParam<AppointmentResponse, Identifier> =
-    SimpleSearchParam<AppointmentResponse, Identifier>(
+    SearchParam<AppointmentResponse, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "AppointmentResponse.identifier",
@@ -72,7 +72,7 @@ public object AppointmentResponseSearchParams {
     )
 
   public val location: SearchParam<AppointmentResponse, Reference> =
-    SimpleSearchParam<AppointmentResponse, Reference>(
+    SearchParam<AppointmentResponse, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.actor.where(resolve() is Location)",
@@ -85,7 +85,7 @@ public object AppointmentResponseSearchParams {
     )
 
   public val partStatus: SearchParam<AppointmentResponse, Any> =
-    SimpleSearchParam<AppointmentResponse, Any>(
+    SearchParam<AppointmentResponse, Any>(
       name = "part-status",
       type = SearchParamType.fromCode("token"),
       expression = "AppointmentResponse.participantStatus",
@@ -93,7 +93,7 @@ public object AppointmentResponseSearchParams {
     )
 
   public val patient: SearchParam<AppointmentResponse, Reference> =
-    SimpleSearchParam<AppointmentResponse, Reference>(
+    SearchParam<AppointmentResponse, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.actor.where(resolve() is Patient)",
@@ -106,7 +106,7 @@ public object AppointmentResponseSearchParams {
     )
 
   public val practitioner: SearchParam<AppointmentResponse, Reference> =
-    SimpleSearchParam<AppointmentResponse, Reference>(
+    SearchParam<AppointmentResponse, Reference>(
       name = "practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "AppointmentResponse.actor.where(resolve() is Practitioner)",

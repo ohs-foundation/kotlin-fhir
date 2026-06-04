@@ -31,7 +31,7 @@ import kotlin.collections.List
 /** Search parameters for the [BodyStructure] resource type. */
 public object BodyStructureSearchParams {
   public val excluded_structure: SearchParam<BodyStructure, Any> =
-    SimpleSearchParam<BodyStructure, Any>(
+    SearchParam<BodyStructure, Any>(
       name = "excluded_structure",
       type = SearchParamType.fromCode("token"),
       expression = "BodyStructure.excludedStructure.structure",
@@ -39,7 +39,7 @@ public object BodyStructureSearchParams {
     )
 
   public val identifier: SearchParam<BodyStructure, Identifier> =
-    SimpleSearchParam<BodyStructure, Identifier>(
+    SearchParam<BodyStructure, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "BodyStructure.identifier",
@@ -47,7 +47,7 @@ public object BodyStructureSearchParams {
     )
 
   public val included_structure: SearchParam<BodyStructure, CodeableConcept> =
-    SimpleSearchParam<BodyStructure, CodeableConcept>(
+    SearchParam<BodyStructure, CodeableConcept>(
       name = "included_structure",
       type = SearchParamType.fromCode("token"),
       expression = "BodyStructure.includedStructure.structure",
@@ -55,7 +55,7 @@ public object BodyStructureSearchParams {
     )
 
   public val morphology: SearchParam<BodyStructure, CodeableConcept> =
-    SimpleSearchParam<BodyStructure, CodeableConcept>(
+    SearchParam<BodyStructure, CodeableConcept>(
       name = "morphology",
       type = SearchParamType.fromCode("token"),
       expression = "BodyStructure.morphology",
@@ -63,7 +63,7 @@ public object BodyStructureSearchParams {
     )
 
   public val patient: SearchParam<BodyStructure, Reference> =
-    SimpleSearchParam<BodyStructure, Reference>(
+    SearchParam<BodyStructure, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "BodyStructure.patient",

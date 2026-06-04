@@ -35,7 +35,7 @@ import kotlin.collections.List
 /** Search parameters for the [CoverageEligibilityRequest] resource type. */
 public object CoverageEligibilityRequestSearchParams {
   public val created: SearchParam<CoverageEligibilityRequest, DateTime> =
-    SimpleSearchParam<CoverageEligibilityRequest, DateTime>(
+    SearchParam<CoverageEligibilityRequest, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "CoverageEligibilityRequest.created",
@@ -43,7 +43,7 @@ public object CoverageEligibilityRequestSearchParams {
     )
 
   public val enterer: SearchParam<CoverageEligibilityRequest, Reference> =
-    SimpleSearchParam<CoverageEligibilityRequest, Reference>(
+    SearchParam<CoverageEligibilityRequest, Reference>(
       name = "enterer",
       type = SearchParamType.fromCode("reference"),
       expression = "CoverageEligibilityRequest.enterer",
@@ -52,7 +52,7 @@ public object CoverageEligibilityRequestSearchParams {
     )
 
   public val facility: SearchParam<CoverageEligibilityRequest, Reference> =
-    SimpleSearchParam<CoverageEligibilityRequest, Reference>(
+    SearchParam<CoverageEligibilityRequest, Reference>(
       name = "facility",
       type = SearchParamType.fromCode("reference"),
       expression = "CoverageEligibilityRequest.facility",
@@ -61,7 +61,7 @@ public object CoverageEligibilityRequestSearchParams {
     )
 
   public val identifier: SearchParam<CoverageEligibilityRequest, Identifier> =
-    SimpleSearchParam<CoverageEligibilityRequest, Identifier>(
+    SearchParam<CoverageEligibilityRequest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "CoverageEligibilityRequest.identifier",
@@ -69,7 +69,7 @@ public object CoverageEligibilityRequestSearchParams {
     )
 
   public val patient: SearchParam<CoverageEligibilityRequest, Reference> =
-    SimpleSearchParam<CoverageEligibilityRequest, Reference>(
+    SearchParam<CoverageEligibilityRequest, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "CoverageEligibilityRequest.patient",
@@ -78,7 +78,7 @@ public object CoverageEligibilityRequestSearchParams {
     )
 
   public val provider: SearchParam<CoverageEligibilityRequest, Reference> =
-    SimpleSearchParam<CoverageEligibilityRequest, Reference>(
+    SearchParam<CoverageEligibilityRequest, Reference>(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
       expression = "CoverageEligibilityRequest.provider",
@@ -87,7 +87,7 @@ public object CoverageEligibilityRequestSearchParams {
     )
 
   public val status: SearchParam<CoverageEligibilityRequest, Any> =
-    SimpleSearchParam<CoverageEligibilityRequest, Any>(
+    SearchParam<CoverageEligibilityRequest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "CoverageEligibilityRequest.status",

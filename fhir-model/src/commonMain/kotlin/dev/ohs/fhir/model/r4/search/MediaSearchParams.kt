@@ -44,7 +44,7 @@ import kotlin.collections.List
 /** Search parameters for the [Media] resource type. */
 public object MediaSearchParams {
   public val basedOn: SearchParam<Media, Reference> =
-    SimpleSearchParam<Media, Reference>(
+    SearchParam<Media, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.basedOn",
@@ -53,7 +53,7 @@ public object MediaSearchParams {
     )
 
   public val created: SearchParam<Media, Media.Created> =
-    SimpleSearchParam<Media, Media.Created>(
+    SearchParam<Media, Media.Created>(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "Media.created",
@@ -61,7 +61,7 @@ public object MediaSearchParams {
     )
 
   public val device: SearchParam<Media, Reference> =
-    SimpleSearchParam<Media, Reference>(
+    SearchParam<Media, Reference>(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.device",
@@ -70,7 +70,7 @@ public object MediaSearchParams {
     )
 
   public val encounter: SearchParam<Media, Reference> =
-    SimpleSearchParam<Media, Reference>(
+    SearchParam<Media, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.encounter",
@@ -79,7 +79,7 @@ public object MediaSearchParams {
     )
 
   public val identifier: SearchParam<Media, Identifier> =
-    SimpleSearchParam<Media, Identifier>(
+    SearchParam<Media, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Media.identifier",
@@ -87,7 +87,7 @@ public object MediaSearchParams {
     )
 
   public val modality: SearchParam<Media, CodeableConcept> =
-    SimpleSearchParam<Media, CodeableConcept>(
+    SearchParam<Media, CodeableConcept>(
       name = "modality",
       type = SearchParamType.fromCode("token"),
       expression = "Media.modality",
@@ -95,7 +95,7 @@ public object MediaSearchParams {
     )
 
   public val `operator`: SearchParam<Media, Reference> =
-    SimpleSearchParam<Media, Reference>(
+    SearchParam<Media, Reference>(
       name = "operator",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.operator",
@@ -113,7 +113,7 @@ public object MediaSearchParams {
     )
 
   public val patient: SearchParam<Media, Reference> =
-    SimpleSearchParam<Media, Reference>(
+    SearchParam<Media, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.subject.where(resolve() is Patient)",
@@ -126,7 +126,7 @@ public object MediaSearchParams {
     )
 
   public val site: SearchParam<Media, CodeableConcept> =
-    SimpleSearchParam<Media, CodeableConcept>(
+    SearchParam<Media, CodeableConcept>(
       name = "site",
       type = SearchParamType.fromCode("token"),
       expression = "Media.bodySite",
@@ -134,7 +134,7 @@ public object MediaSearchParams {
     )
 
   public val status: SearchParam<Media, Any> =
-    SimpleSearchParam<Media, Any>(
+    SearchParam<Media, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Media.status",
@@ -142,7 +142,7 @@ public object MediaSearchParams {
     )
 
   public val subject: SearchParam<Media, Reference> =
-    SimpleSearchParam<Media, Reference>(
+    SearchParam<Media, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.subject",
@@ -160,7 +160,7 @@ public object MediaSearchParams {
     )
 
   public val type: SearchParam<Media, CodeableConcept> =
-    SimpleSearchParam<Media, CodeableConcept>(
+    SearchParam<Media, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Media.type",
@@ -168,7 +168,7 @@ public object MediaSearchParams {
     )
 
   public val view: SearchParam<Media, CodeableConcept> =
-    SimpleSearchParam<Media, CodeableConcept>(
+    SearchParam<Media, CodeableConcept>(
       name = "view",
       type = SearchParamType.fromCode("token"),
       expression = "Media.view",

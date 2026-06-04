@@ -182,7 +182,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [ActivityDefinition] resource type. */
 public object ActivityDefinitionSearchParams {
   public val composedOf: SearchParam<ActivityDefinition, Canonical> =
-    SimpleSearchParam<ActivityDefinition, Canonical>(
+    SearchParam<ActivityDefinition, Canonical>(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
       expression = "ActivityDefinition.relatedArtifact.where(type='composed-of').resource",
@@ -342,7 +342,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val context: SearchParam<ActivityDefinition, CodeableConcept> =
-    SimpleSearchParam<ActivityDefinition, CodeableConcept>(
+    SearchParam<ActivityDefinition, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(ActivityDefinition.useContext.value as CodeableConcept)",
@@ -354,7 +354,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val contextQuantity: SearchParam<ActivityDefinition, Quantity> =
-    SimpleSearchParam<ActivityDefinition, Quantity>(
+    SearchParam<ActivityDefinition, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(ActivityDefinition.useContext.value as Quantity)",
@@ -364,7 +364,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val contextType: SearchParam<ActivityDefinition, Coding> =
-    SimpleSearchParam<ActivityDefinition, Coding>(
+    SearchParam<ActivityDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "ActivityDefinition.useContext.code",
@@ -372,7 +372,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<ActivityDefinition, UsageContext> =
-    SimpleSearchParam<ActivityDefinition, UsageContext>(
+    SearchParam<ActivityDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "ActivityDefinition.useContext",
@@ -380,7 +380,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val contextTypeValue: SearchParam<ActivityDefinition, UsageContext> =
-    SimpleSearchParam<ActivityDefinition, UsageContext>(
+    SearchParam<ActivityDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "ActivityDefinition.useContext",
@@ -388,7 +388,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val date: SearchParam<ActivityDefinition, DateTime> =
-    SimpleSearchParam<ActivityDefinition, DateTime>(
+    SearchParam<ActivityDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ActivityDefinition.date",
@@ -396,7 +396,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val dependsOn: SearchParam<ActivityDefinition, Canonical> =
-    SimpleSearchParam<ActivityDefinition, Canonical>(
+    SearchParam<ActivityDefinition, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
       expression = "ActivityDefinition.relatedArtifact.where(type='depends-on').resource",
@@ -556,7 +556,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val derivedFrom: SearchParam<ActivityDefinition, Canonical> =
-    SimpleSearchParam<ActivityDefinition, Canonical>(
+    SearchParam<ActivityDefinition, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "ActivityDefinition.relatedArtifact.where(type='derived-from').resource",
@@ -716,7 +716,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val description: SearchParam<ActivityDefinition, Markdown> =
-    SimpleSearchParam<ActivityDefinition, Markdown>(
+    SearchParam<ActivityDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "ActivityDefinition.description",
@@ -724,7 +724,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val effective: SearchParam<ActivityDefinition, Period> =
-    SimpleSearchParam<ActivityDefinition, Period>(
+    SearchParam<ActivityDefinition, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "ActivityDefinition.effectivePeriod",
@@ -732,7 +732,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<ActivityDefinition, Identifier> =
-    SimpleSearchParam<ActivityDefinition, Identifier>(
+    SearchParam<ActivityDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ActivityDefinition.identifier",
@@ -740,7 +740,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val jurisdiction: SearchParam<ActivityDefinition, CodeableConcept> =
-    SimpleSearchParam<ActivityDefinition, CodeableConcept>(
+    SearchParam<ActivityDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "ActivityDefinition.jurisdiction",
@@ -748,7 +748,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val name: SearchParam<ActivityDefinition, String> =
-    SimpleSearchParam<ActivityDefinition, String>(
+    SearchParam<ActivityDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "ActivityDefinition.name",
@@ -756,7 +756,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val predecessor: SearchParam<ActivityDefinition, Canonical> =
-    SimpleSearchParam<ActivityDefinition, Canonical>(
+    SearchParam<ActivityDefinition, Canonical>(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "ActivityDefinition.relatedArtifact.where(type='predecessor').resource",
@@ -916,7 +916,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val publisher: SearchParam<ActivityDefinition, String> =
-    SimpleSearchParam<ActivityDefinition, String>(
+    SearchParam<ActivityDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "ActivityDefinition.publisher",
@@ -924,7 +924,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val status: SearchParam<ActivityDefinition, Any> =
-    SimpleSearchParam<ActivityDefinition, Any>(
+    SearchParam<ActivityDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ActivityDefinition.status",
@@ -932,7 +932,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val successor: SearchParam<ActivityDefinition, Canonical> =
-    SimpleSearchParam<ActivityDefinition, Canonical>(
+    SearchParam<ActivityDefinition, Canonical>(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
       expression = "ActivityDefinition.relatedArtifact.where(type='successor').resource",
@@ -1092,7 +1092,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val title: SearchParam<ActivityDefinition, String> =
-    SimpleSearchParam<ActivityDefinition, String>(
+    SearchParam<ActivityDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "ActivityDefinition.title",
@@ -1100,7 +1100,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val topic: SearchParam<ActivityDefinition, CodeableConcept> =
-    SimpleSearchParam<ActivityDefinition, CodeableConcept>(
+    SearchParam<ActivityDefinition, CodeableConcept>(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "ActivityDefinition.topic",
@@ -1108,7 +1108,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val url: SearchParam<ActivityDefinition, Uri> =
-    SimpleSearchParam<ActivityDefinition, Uri>(
+    SearchParam<ActivityDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "ActivityDefinition.url",
@@ -1116,7 +1116,7 @@ public object ActivityDefinitionSearchParams {
     )
 
   public val version: SearchParam<ActivityDefinition, String> =
-    SimpleSearchParam<ActivityDefinition, String>(
+    SearchParam<ActivityDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "ActivityDefinition.version",

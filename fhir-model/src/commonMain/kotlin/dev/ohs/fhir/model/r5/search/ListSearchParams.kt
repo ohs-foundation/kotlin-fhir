@@ -190,7 +190,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [R5List] resource type. */
 public object ListSearchParams {
   public val code: SearchParam<R5List, CodeableConcept> =
-    SimpleSearchParam<R5List, CodeableConcept>(
+    SearchParam<R5List, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "List.code",
@@ -198,7 +198,7 @@ public object ListSearchParams {
     )
 
   public val date: SearchParam<R5List, DateTime> =
-    SimpleSearchParam<R5List, DateTime>(
+    SearchParam<R5List, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "List.date",
@@ -206,7 +206,7 @@ public object ListSearchParams {
     )
 
   public val emptyReason: SearchParam<R5List, CodeableConcept> =
-    SimpleSearchParam<R5List, CodeableConcept>(
+    SearchParam<R5List, CodeableConcept>(
       name = "empty-reason",
       type = SearchParamType.fromCode("token"),
       expression = "List.emptyReason",
@@ -214,7 +214,7 @@ public object ListSearchParams {
     )
 
   public val encounter: SearchParam<R5List, Reference> =
-    SimpleSearchParam<R5List, Reference>(
+    SearchParam<R5List, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "List.encounter",
@@ -223,7 +223,7 @@ public object ListSearchParams {
     )
 
   public val identifier: SearchParam<R5List, Identifier> =
-    SimpleSearchParam<R5List, Identifier>(
+    SearchParam<R5List, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "List.identifier",
@@ -231,7 +231,7 @@ public object ListSearchParams {
     )
 
   public val item: SearchParam<R5List, Reference> =
-    SimpleSearchParam<R5List, Reference>(
+    SearchParam<R5List, Reference>(
       name = "item",
       type = SearchParamType.fromCode("reference"),
       expression = "List.entry.item",
@@ -400,7 +400,7 @@ public object ListSearchParams {
     )
 
   public val notes: SearchParam<R5List, Markdown> =
-    SimpleSearchParam<R5List, Markdown>(
+    SearchParam<R5List, Markdown>(
       name = "notes",
       type = SearchParamType.fromCode("string"),
       expression = "List.note.text",
@@ -408,7 +408,7 @@ public object ListSearchParams {
     )
 
   public val patient: SearchParam<R5List, Reference> =
-    SimpleSearchParam<R5List, Reference>(
+    SearchParam<R5List, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "List.subject.where(resolve() is Patient)",
@@ -419,7 +419,7 @@ public object ListSearchParams {
     )
 
   public val source: SearchParam<R5List, Reference> =
-    SimpleSearchParam<R5List, Reference>(
+    SearchParam<R5List, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
       expression = "List.source",
@@ -437,7 +437,7 @@ public object ListSearchParams {
     )
 
   public val status: SearchParam<R5List, Any> =
-    SimpleSearchParam<R5List, Any>(
+    SearchParam<R5List, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "List.status",
@@ -445,7 +445,7 @@ public object ListSearchParams {
     )
 
   public val subject: SearchParam<R5List, Reference> =
-    SimpleSearchParam<R5List, Reference>(
+    SearchParam<R5List, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "List.subject",
@@ -614,7 +614,7 @@ public object ListSearchParams {
     )
 
   public val title: SearchParam<R5List, String> =
-    SimpleSearchParam<R5List, String>(
+    SearchParam<R5List, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "List.title",

@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [PractitionerRole] resource type. */
 public object PractitionerRoleSearchParams {
   public val active: SearchParam<PractitionerRole, Boolean> =
-    SimpleSearchParam<PractitionerRole, Boolean>(
+    SearchParam<PractitionerRole, Boolean>(
       name = "active",
       type = SearchParamType.fromCode("token"),
       expression = "PractitionerRole.active",
@@ -45,7 +45,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val date: SearchParam<PractitionerRole, Period> =
-    SimpleSearchParam<PractitionerRole, Period>(
+    SearchParam<PractitionerRole, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "PractitionerRole.period",
@@ -53,7 +53,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val email: SearchParam<PractitionerRole, ContactPoint> =
-    SimpleSearchParam<PractitionerRole, ContactPoint>(
+    SearchParam<PractitionerRole, ContactPoint>(
       name = "email",
       type = SearchParamType.fromCode("token"),
       expression = "PractitionerRole.telecom.where(system='email')",
@@ -63,7 +63,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val endpoint: SearchParam<PractitionerRole, Reference> =
-    SimpleSearchParam<PractitionerRole, Reference>(
+    SearchParam<PractitionerRole, Reference>(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "PractitionerRole.endpoint",
@@ -72,7 +72,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val identifier: SearchParam<PractitionerRole, Identifier> =
-    SimpleSearchParam<PractitionerRole, Identifier>(
+    SearchParam<PractitionerRole, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "PractitionerRole.identifier",
@@ -80,7 +80,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val location: SearchParam<PractitionerRole, Reference> =
-    SimpleSearchParam<PractitionerRole, Reference>(
+    SearchParam<PractitionerRole, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "PractitionerRole.location",
@@ -89,7 +89,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val organization: SearchParam<PractitionerRole, Reference> =
-    SimpleSearchParam<PractitionerRole, Reference>(
+    SearchParam<PractitionerRole, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "PractitionerRole.organization",
@@ -98,7 +98,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val phone: SearchParam<PractitionerRole, ContactPoint> =
-    SimpleSearchParam<PractitionerRole, ContactPoint>(
+    SearchParam<PractitionerRole, ContactPoint>(
       name = "phone",
       type = SearchParamType.fromCode("token"),
       expression = "PractitionerRole.telecom.where(system='phone')",
@@ -108,7 +108,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val practitioner: SearchParam<PractitionerRole, Reference> =
-    SimpleSearchParam<PractitionerRole, Reference>(
+    SearchParam<PractitionerRole, Reference>(
       name = "practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "PractitionerRole.practitioner",
@@ -117,7 +117,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val role: SearchParam<PractitionerRole, CodeableConcept> =
-    SimpleSearchParam<PractitionerRole, CodeableConcept>(
+    SearchParam<PractitionerRole, CodeableConcept>(
       name = "role",
       type = SearchParamType.fromCode("token"),
       expression = "PractitionerRole.code",
@@ -125,7 +125,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val service: SearchParam<PractitionerRole, Reference> =
-    SimpleSearchParam<PractitionerRole, Reference>(
+    SearchParam<PractitionerRole, Reference>(
       name = "service",
       type = SearchParamType.fromCode("reference"),
       expression = "PractitionerRole.healthcareService",
@@ -134,7 +134,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val specialty: SearchParam<PractitionerRole, CodeableConcept> =
-    SimpleSearchParam<PractitionerRole, CodeableConcept>(
+    SearchParam<PractitionerRole, CodeableConcept>(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
       expression = "PractitionerRole.specialty",
@@ -142,7 +142,7 @@ public object PractitionerRoleSearchParams {
     )
 
   public val telecom: SearchParam<PractitionerRole, ContactPoint> =
-    SimpleSearchParam<PractitionerRole, ContactPoint>(
+    SearchParam<PractitionerRole, ContactPoint>(
       name = "telecom",
       type = SearchParamType.fromCode("token"),
       expression = "PractitionerRole.telecom",

@@ -36,7 +36,7 @@ import kotlin.collections.List
 /** Search parameters for the [NutritionOrder] resource type. */
 public object NutritionOrderSearchParams {
   public val additive: SearchParam<NutritionOrder, CodeableConcept> =
-    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+    SearchParam<NutritionOrder, CodeableConcept>(
       name = "additive",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.enteralFormula.additive.type.concept",
@@ -48,7 +48,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val datetime: SearchParam<NutritionOrder, DateTime> =
-    SimpleSearchParam<NutritionOrder, DateTime>(
+    SearchParam<NutritionOrder, DateTime>(
       name = "datetime",
       type = SearchParamType.fromCode("date"),
       expression = "NutritionOrder.dateTime",
@@ -56,7 +56,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val encounter: SearchParam<NutritionOrder, Reference> =
-    SimpleSearchParam<NutritionOrder, Reference>(
+    SearchParam<NutritionOrder, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.encounter",
@@ -65,7 +65,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val formula: SearchParam<NutritionOrder, CodeableConcept> =
-    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+    SearchParam<NutritionOrder, CodeableConcept>(
       name = "formula",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.enteralFormula.baseFormulaType.concept",
@@ -73,7 +73,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val groupIdentifier: SearchParam<NutritionOrder, Identifier> =
-    SimpleSearchParam<NutritionOrder, Identifier>(
+    SearchParam<NutritionOrder, Identifier>(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.groupIdentifier",
@@ -81,7 +81,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val identifier: SearchParam<NutritionOrder, Identifier> =
-    SimpleSearchParam<NutritionOrder, Identifier>(
+    SearchParam<NutritionOrder, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.identifier",
@@ -89,7 +89,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val oraldiet: SearchParam<NutritionOrder, CodeableConcept> =
-    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+    SearchParam<NutritionOrder, CodeableConcept>(
       name = "oraldiet",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.oralDiet.type",
@@ -97,7 +97,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val patient: SearchParam<NutritionOrder, Reference> =
-    SimpleSearchParam<NutritionOrder, Reference>(
+    SearchParam<NutritionOrder, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.subject.where(resolve() is Patient)",
@@ -110,7 +110,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val provider: SearchParam<NutritionOrder, Reference> =
-    SimpleSearchParam<NutritionOrder, Reference>(
+    SearchParam<NutritionOrder, Reference>(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.orderer",
@@ -119,7 +119,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val status: SearchParam<NutritionOrder, Any> =
-    SimpleSearchParam<NutritionOrder, Any>(
+    SearchParam<NutritionOrder, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.status",
@@ -127,7 +127,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val subject: SearchParam<NutritionOrder, Reference> =
-    SimpleSearchParam<NutritionOrder, Reference>(
+    SearchParam<NutritionOrder, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.subject",
@@ -136,7 +136,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val supplement: SearchParam<NutritionOrder, CodeableConcept> =
-    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+    SearchParam<NutritionOrder, CodeableConcept>(
       name = "supplement",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.supplement.type.concept",

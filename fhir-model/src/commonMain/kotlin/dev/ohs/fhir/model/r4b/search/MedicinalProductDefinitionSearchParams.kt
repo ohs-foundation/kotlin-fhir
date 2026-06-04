@@ -34,7 +34,7 @@ import kotlin.collections.List
 public object MedicinalProductDefinitionSearchParams {
   public val characteristic:
     SearchParam<MedicinalProductDefinition, MedicinalProductDefinition.Characteristic.Value> =
-    SimpleSearchParam<MedicinalProductDefinition, MedicinalProductDefinition.Characteristic.Value>(
+    SearchParam<MedicinalProductDefinition, MedicinalProductDefinition.Characteristic.Value>(
       name = "characteristic",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.characteristic.value",
@@ -42,7 +42,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val characteristicType: SearchParam<MedicinalProductDefinition, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
+    SearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "characteristic-type",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.characteristic.type",
@@ -50,7 +50,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val contact: SearchParam<MedicinalProductDefinition, Reference> =
-    SimpleSearchParam<MedicinalProductDefinition, Reference>(
+    SearchParam<MedicinalProductDefinition, Reference>(
       name = "contact",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicinalProductDefinition.contact.contact",
@@ -59,7 +59,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val domain: SearchParam<MedicinalProductDefinition, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
+    SearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "domain",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.domain",
@@ -67,7 +67,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<MedicinalProductDefinition, Identifier> =
-    SimpleSearchParam<MedicinalProductDefinition, Identifier>(
+    SearchParam<MedicinalProductDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.identifier",
@@ -75,7 +75,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val ingredient: SearchParam<MedicinalProductDefinition, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
+    SearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "ingredient",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.ingredient",
@@ -83,7 +83,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val masterFile: SearchParam<MedicinalProductDefinition, Reference> =
-    SimpleSearchParam<MedicinalProductDefinition, Reference>(
+    SearchParam<MedicinalProductDefinition, Reference>(
       name = "master-file",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicinalProductDefinition.masterFile",
@@ -92,7 +92,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val name: SearchParam<MedicinalProductDefinition, String> =
-    SimpleSearchParam<MedicinalProductDefinition, String>(
+    SearchParam<MedicinalProductDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "MedicinalProductDefinition.name.productName",
@@ -100,7 +100,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val nameLanguage: SearchParam<MedicinalProductDefinition, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
+    SearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "name-language",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.name.countryLanguage.language",
@@ -108,7 +108,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val productClassification: SearchParam<MedicinalProductDefinition, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
+    SearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "product-classification",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.classification",
@@ -116,7 +116,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val status: SearchParam<MedicinalProductDefinition, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
+    SearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.status",
@@ -124,7 +124,7 @@ public object MedicinalProductDefinitionSearchParams {
     )
 
   public val type: SearchParam<MedicinalProductDefinition, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductDefinition, CodeableConcept>(
+    SearchParam<MedicinalProductDefinition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductDefinition.type",

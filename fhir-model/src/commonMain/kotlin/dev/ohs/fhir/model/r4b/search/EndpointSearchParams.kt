@@ -33,7 +33,7 @@ import kotlin.collections.List
 /** Search parameters for the [Endpoint] resource type. */
 public object EndpointSearchParams {
   public val connectionType: SearchParam<Endpoint, Coding> =
-    SimpleSearchParam<Endpoint, Coding>(
+    SearchParam<Endpoint, Coding>(
       name = "connection-type",
       type = SearchParamType.fromCode("token"),
       expression = "Endpoint.connectionType",
@@ -41,7 +41,7 @@ public object EndpointSearchParams {
     )
 
   public val identifier: SearchParam<Endpoint, Identifier> =
-    SimpleSearchParam<Endpoint, Identifier>(
+    SearchParam<Endpoint, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Endpoint.identifier",
@@ -49,7 +49,7 @@ public object EndpointSearchParams {
     )
 
   public val name: SearchParam<Endpoint, String> =
-    SimpleSearchParam<Endpoint, String>(
+    SearchParam<Endpoint, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Endpoint.name",
@@ -57,7 +57,7 @@ public object EndpointSearchParams {
     )
 
   public val organization: SearchParam<Endpoint, Reference> =
-    SimpleSearchParam<Endpoint, Reference>(
+    SearchParam<Endpoint, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "Endpoint.managingOrganization",
@@ -66,7 +66,7 @@ public object EndpointSearchParams {
     )
 
   public val payloadType: SearchParam<Endpoint, CodeableConcept> =
-    SimpleSearchParam<Endpoint, CodeableConcept>(
+    SearchParam<Endpoint, CodeableConcept>(
       name = "payload-type",
       type = SearchParamType.fromCode("token"),
       expression = "Endpoint.payloadType",
@@ -74,7 +74,7 @@ public object EndpointSearchParams {
     )
 
   public val status: SearchParam<Endpoint, Any> =
-    SimpleSearchParam<Endpoint, Any>(
+    SearchParam<Endpoint, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Endpoint.status",

@@ -22,34 +22,21 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.reflect.KClass
 
-/** Base type for typed FHIR search parameters. */
-public sealed interface SearchParam<in R : Resource, out T> {
-  /** The name of the search parameter as used in search URLs. */
-  public val name: String
-
-  /** The search parameter type (e.g., date, token, reference). */
-  public val type: SearchParamType
-
-  /** The FHIRPath expression that extracts values for this search parameter. */
-  public val expression: String
-
-  /** The target resource types for reference search parameters. */
-  public val target: List<KClass<out Resource>>
-
-  /** Extracts the values for this search parameter from the given [resource]. */
-  public fun extract(resource: R): List<T>
-}
-
 /**
- * The single [SearchParam] implementation: metadata plus an [extractor] lambda that does the value
- * extraction.
+ * A typed FHIR search parameter: its metadata plus an `extractor` that pulls typed values out of a
+ * resource.
  */
-public class SimpleSearchParam<R : Resource, T>(
-  public override val name: String,
-  public override val type: SearchParamType,
-  public override val expression: String,
-  public override val target: List<KClass<out Resource>> = emptyList(),
+public class SearchParam<R : Resource, T>(
+  /** The name of the search parameter as used in search URLs. */
+  public val name: String,
+  /** The search parameter type (e.g., date, token, reference). */
+  public val type: SearchParamType,
+  /** The FHIRPath expression that extracts values for this search parameter. */
+  public val expression: String,
+  /** The target resource types for reference search parameters. */
+  public val target: List<KClass<out Resource>> = emptyList(),
   private val extractor: (R) -> List<T>,
-) : SearchParam<R, T> {
-  public override fun extract(resource: R): List<T> = extractor(resource)
+) {
+  /** Extracts the values for this search parameter from the given [resource]. */
+  public fun extract(resource: R): List<T> = extractor(resource)
 }

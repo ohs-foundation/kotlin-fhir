@@ -28,7 +28,7 @@ import kotlin.collections.List
 /** Search parameters for the [MedicinalProductPharmaceutical] resource type. */
 public object MedicinalProductPharmaceuticalSearchParams {
   public val identifier: SearchParam<MedicinalProductPharmaceutical, Identifier> =
-    SimpleSearchParam<MedicinalProductPharmaceutical, Identifier>(
+    SearchParam<MedicinalProductPharmaceutical, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductPharmaceutical.identifier",
@@ -36,7 +36,7 @@ public object MedicinalProductPharmaceuticalSearchParams {
     )
 
   public val route: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductPharmaceutical, CodeableConcept>(
+    SearchParam<MedicinalProductPharmaceutical, CodeableConcept>(
       name = "route",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductPharmaceutical.routeOfAdministration.code",
@@ -44,7 +44,7 @@ public object MedicinalProductPharmaceuticalSearchParams {
     )
 
   public val targetSpecies: SearchParam<MedicinalProductPharmaceutical, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductPharmaceutical, CodeableConcept>(
+    SearchParam<MedicinalProductPharmaceutical, CodeableConcept>(
       name = "target-species",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductPharmaceutical.routeOfAdministration.targetSpecies.code",

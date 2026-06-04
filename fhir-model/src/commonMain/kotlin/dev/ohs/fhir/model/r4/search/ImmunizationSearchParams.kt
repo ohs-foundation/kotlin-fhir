@@ -41,7 +41,7 @@ import kotlin.collections.List
 /** Search parameters for the [Immunization] resource type. */
 public object ImmunizationSearchParams {
   public val date: SearchParam<Immunization, Immunization.Occurrence> =
-    SimpleSearchParam<Immunization, Immunization.Occurrence>(
+    SearchParam<Immunization, Immunization.Occurrence>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Immunization.occurrence",
@@ -49,7 +49,7 @@ public object ImmunizationSearchParams {
     )
 
   public val identifier: SearchParam<Immunization, Identifier> =
-    SimpleSearchParam<Immunization, Identifier>(
+    SearchParam<Immunization, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Immunization.identifier",
@@ -57,7 +57,7 @@ public object ImmunizationSearchParams {
     )
 
   public val location: SearchParam<Immunization, Reference> =
-    SimpleSearchParam<Immunization, Reference>(
+    SearchParam<Immunization, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Immunization.location",
@@ -66,7 +66,7 @@ public object ImmunizationSearchParams {
     )
 
   public val lotNumber: SearchParam<Immunization, String> =
-    SimpleSearchParam<Immunization, String>(
+    SearchParam<Immunization, String>(
       name = "lot-number",
       type = SearchParamType.fromCode("string"),
       expression = "Immunization.lotNumber",
@@ -74,7 +74,7 @@ public object ImmunizationSearchParams {
     )
 
   public val manufacturer: SearchParam<Immunization, Reference> =
-    SimpleSearchParam<Immunization, Reference>(
+    SearchParam<Immunization, Reference>(
       name = "manufacturer",
       type = SearchParamType.fromCode("reference"),
       expression = "Immunization.manufacturer",
@@ -83,7 +83,7 @@ public object ImmunizationSearchParams {
     )
 
   public val patient: SearchParam<Immunization, Reference> =
-    SimpleSearchParam<Immunization, Reference>(
+    SearchParam<Immunization, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Immunization.patient",
@@ -92,7 +92,7 @@ public object ImmunizationSearchParams {
     )
 
   public val performer: SearchParam<Immunization, Reference> =
-    SimpleSearchParam<Immunization, Reference>(
+    SearchParam<Immunization, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "Immunization.performer.actor",
@@ -101,7 +101,7 @@ public object ImmunizationSearchParams {
     )
 
   public val reaction: SearchParam<Immunization, Reference> =
-    SimpleSearchParam<Immunization, Reference>(
+    SearchParam<Immunization, Reference>(
       name = "reaction",
       type = SearchParamType.fromCode("reference"),
       expression = "Immunization.reaction.detail",
@@ -110,7 +110,7 @@ public object ImmunizationSearchParams {
     )
 
   public val reactionDate: SearchParam<Immunization, DateTime> =
-    SimpleSearchParam<Immunization, DateTime>(
+    SearchParam<Immunization, DateTime>(
       name = "reaction-date",
       type = SearchParamType.fromCode("date"),
       expression = "Immunization.reaction.date",
@@ -118,7 +118,7 @@ public object ImmunizationSearchParams {
     )
 
   public val reasonCode: SearchParam<Immunization, CodeableConcept> =
-    SimpleSearchParam<Immunization, CodeableConcept>(
+    SearchParam<Immunization, CodeableConcept>(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
       expression = "Immunization.reasonCode",
@@ -126,7 +126,7 @@ public object ImmunizationSearchParams {
     )
 
   public val reasonReference: SearchParam<Immunization, Reference> =
-    SimpleSearchParam<Immunization, Reference>(
+    SearchParam<Immunization, Reference>(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "Immunization.reasonReference",
@@ -135,7 +135,7 @@ public object ImmunizationSearchParams {
     )
 
   public val series: SearchParam<Immunization, String> =
-    SimpleSearchParam<Immunization, String>(
+    SearchParam<Immunization, String>(
       name = "series",
       type = SearchParamType.fromCode("string"),
       expression = "Immunization.protocolApplied.series",
@@ -143,7 +143,7 @@ public object ImmunizationSearchParams {
     )
 
   public val status: SearchParam<Immunization, Any> =
-    SimpleSearchParam<Immunization, Any>(
+    SearchParam<Immunization, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Immunization.status",
@@ -151,7 +151,7 @@ public object ImmunizationSearchParams {
     )
 
   public val statusReason: SearchParam<Immunization, CodeableConcept> =
-    SimpleSearchParam<Immunization, CodeableConcept>(
+    SearchParam<Immunization, CodeableConcept>(
       name = "status-reason",
       type = SearchParamType.fromCode("token"),
       expression = "Immunization.statusReason",
@@ -159,7 +159,7 @@ public object ImmunizationSearchParams {
     )
 
   public val targetDisease: SearchParam<Immunization, CodeableConcept> =
-    SimpleSearchParam<Immunization, CodeableConcept>(
+    SearchParam<Immunization, CodeableConcept>(
       name = "target-disease",
       type = SearchParamType.fromCode("token"),
       expression = "Immunization.protocolApplied.targetDisease",
@@ -167,7 +167,7 @@ public object ImmunizationSearchParams {
     )
 
   public val vaccineCode: SearchParam<Immunization, CodeableConcept> =
-    SimpleSearchParam<Immunization, CodeableConcept>(
+    SearchParam<Immunization, CodeableConcept>(
       name = "vaccine-code",
       type = SearchParamType.fromCode("token"),
       expression = "Immunization.vaccineCode",

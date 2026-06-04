@@ -55,7 +55,7 @@ import kotlin.collections.List
 /** Search parameters for the [ChargeItem] resource type. */
 public object ChargeItemSearchParams {
   public val account: SearchParam<ChargeItem, Reference> =
-    SimpleSearchParam<ChargeItem, Reference>(
+    SearchParam<ChargeItem, Reference>(
       name = "account",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.account",
@@ -64,7 +64,7 @@ public object ChargeItemSearchParams {
     )
 
   public val code: SearchParam<ChargeItem, CodeableConcept> =
-    SimpleSearchParam<ChargeItem, CodeableConcept>(
+    SearchParam<ChargeItem, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "ChargeItem.code",
@@ -72,7 +72,7 @@ public object ChargeItemSearchParams {
     )
 
   public val encounter: SearchParam<ChargeItem, Reference> =
-    SimpleSearchParam<ChargeItem, Reference>(
+    SearchParam<ChargeItem, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.encounter",
@@ -81,7 +81,7 @@ public object ChargeItemSearchParams {
     )
 
   public val enteredDate: SearchParam<ChargeItem, DateTime> =
-    SimpleSearchParam<ChargeItem, DateTime>(
+    SearchParam<ChargeItem, DateTime>(
       name = "entered-date",
       type = SearchParamType.fromCode("date"),
       expression = "ChargeItem.enteredDate",
@@ -89,7 +89,7 @@ public object ChargeItemSearchParams {
     )
 
   public val enterer: SearchParam<ChargeItem, Reference> =
-    SimpleSearchParam<ChargeItem, Reference>(
+    SearchParam<ChargeItem, Reference>(
       name = "enterer",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.enterer",
@@ -106,7 +106,7 @@ public object ChargeItemSearchParams {
     )
 
   public val factorOverride: SearchParam<ChargeItem, Decimal> =
-    SimpleSearchParam<ChargeItem, Decimal>(
+    SearchParam<ChargeItem, Decimal>(
       name = "factor-override",
       type = SearchParamType.fromCode("number"),
       expression = "ChargeItem.totalPriceComponent.factor",
@@ -114,7 +114,7 @@ public object ChargeItemSearchParams {
     )
 
   public val identifier: SearchParam<ChargeItem, Identifier> =
-    SimpleSearchParam<ChargeItem, Identifier>(
+    SearchParam<ChargeItem, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ChargeItem.identifier",
@@ -122,7 +122,7 @@ public object ChargeItemSearchParams {
     )
 
   public val occurrence: SearchParam<ChargeItem, Any> =
-    SimpleSearchParam<ChargeItem, Any>(
+    SearchParam<ChargeItem, Any>(
       name = "occurrence",
       type = SearchParamType.fromCode("date"),
       expression = "ChargeItem.occurrence.ofType(dateTime)",
@@ -130,7 +130,7 @@ public object ChargeItemSearchParams {
     )
 
   public val patient: SearchParam<ChargeItem, Reference> =
-    SimpleSearchParam<ChargeItem, Reference>(
+    SearchParam<ChargeItem, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.subject.where(resolve() is Patient)",
@@ -143,7 +143,7 @@ public object ChargeItemSearchParams {
     )
 
   public val performerActor: SearchParam<ChargeItem, Reference> =
-    SimpleSearchParam<ChargeItem, Reference>(
+    SearchParam<ChargeItem, Reference>(
       name = "performer-actor",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.performer.actor",
@@ -162,7 +162,7 @@ public object ChargeItemSearchParams {
     )
 
   public val performerFunction: SearchParam<ChargeItem, CodeableConcept> =
-    SimpleSearchParam<ChargeItem, CodeableConcept>(
+    SearchParam<ChargeItem, CodeableConcept>(
       name = "performer-function",
       type = SearchParamType.fromCode("token"),
       expression = "ChargeItem.performer.function",
@@ -170,7 +170,7 @@ public object ChargeItemSearchParams {
     )
 
   public val performingOrganization: SearchParam<ChargeItem, Reference> =
-    SimpleSearchParam<ChargeItem, Reference>(
+    SearchParam<ChargeItem, Reference>(
       name = "performing-organization",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.performingOrganization",
@@ -179,7 +179,7 @@ public object ChargeItemSearchParams {
     )
 
   public val priceOverride: SearchParam<ChargeItem, Money> =
-    SimpleSearchParam<ChargeItem, Money>(
+    SearchParam<ChargeItem, Money>(
       name = "price-override",
       type = SearchParamType.fromCode("quantity"),
       expression = "ChargeItem.totalPriceComponent.amount",
@@ -187,7 +187,7 @@ public object ChargeItemSearchParams {
     )
 
   public val quantity: SearchParam<ChargeItem, Quantity> =
-    SimpleSearchParam<ChargeItem, Quantity>(
+    SearchParam<ChargeItem, Quantity>(
       name = "quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "ChargeItem.quantity",
@@ -195,7 +195,7 @@ public object ChargeItemSearchParams {
     )
 
   public val requestingOrganization: SearchParam<ChargeItem, Reference> =
-    SimpleSearchParam<ChargeItem, Reference>(
+    SearchParam<ChargeItem, Reference>(
       name = "requesting-organization",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.requestingOrganization",
@@ -204,7 +204,7 @@ public object ChargeItemSearchParams {
     )
 
   public val service: SearchParam<ChargeItem, Reference> =
-    SimpleSearchParam<ChargeItem, Reference>(
+    SearchParam<ChargeItem, Reference>(
       name = "service",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.service.reference",
@@ -225,7 +225,7 @@ public object ChargeItemSearchParams {
     )
 
   public val status: SearchParam<ChargeItem, Any> =
-    SimpleSearchParam<ChargeItem, Any>(
+    SearchParam<ChargeItem, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ChargeItem.status",
@@ -233,7 +233,7 @@ public object ChargeItemSearchParams {
     )
 
   public val subject: SearchParam<ChargeItem, Reference> =
-    SimpleSearchParam<ChargeItem, Reference>(
+    SearchParam<ChargeItem, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ChargeItem.subject",

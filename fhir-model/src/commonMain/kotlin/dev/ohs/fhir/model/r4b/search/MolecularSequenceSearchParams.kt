@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [MolecularSequence] resource type. */
 public object MolecularSequenceSearchParams {
   public val chromosome: SearchParam<MolecularSequence, CodeableConcept> =
-    SimpleSearchParam<MolecularSequence, CodeableConcept>(
+    SearchParam<MolecularSequence, CodeableConcept>(
       name = "chromosome",
       type = SearchParamType.fromCode("token"),
       expression = "MolecularSequence.referenceSeq.chromosome",
@@ -41,7 +41,7 @@ public object MolecularSequenceSearchParams {
 
   public val chromosomeVariantCoordinate:
     SearchParam<MolecularSequence, MolecularSequence.Variant> =
-    SimpleSearchParam<MolecularSequence, MolecularSequence.Variant>(
+    SearchParam<MolecularSequence, MolecularSequence.Variant>(
       name = "chromosome-variant-coordinate",
       type = SearchParamType.fromCode("composite"),
       expression = "MolecularSequence.variant",
@@ -50,7 +50,7 @@ public object MolecularSequenceSearchParams {
 
   public val chromosomeWindowCoordinate:
     SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> =
-    SimpleSearchParam<MolecularSequence, MolecularSequence.ReferenceSeq>(
+    SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq>(
       name = "chromosome-window-coordinate",
       type = SearchParamType.fromCode("composite"),
       expression = "MolecularSequence.referenceSeq",
@@ -58,7 +58,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val identifier: SearchParam<MolecularSequence, Identifier> =
-    SimpleSearchParam<MolecularSequence, Identifier>(
+    SearchParam<MolecularSequence, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MolecularSequence.identifier",
@@ -66,7 +66,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val patient: SearchParam<MolecularSequence, Reference> =
-    SimpleSearchParam<MolecularSequence, Reference>(
+    SearchParam<MolecularSequence, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "MolecularSequence.patient",
@@ -75,7 +75,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val referenceseqid: SearchParam<MolecularSequence, CodeableConcept> =
-    SimpleSearchParam<MolecularSequence, CodeableConcept>(
+    SearchParam<MolecularSequence, CodeableConcept>(
       name = "referenceseqid",
       type = SearchParamType.fromCode("token"),
       expression = "MolecularSequence.referenceSeq.referenceSeqId",
@@ -84,7 +84,7 @@ public object MolecularSequenceSearchParams {
 
   public val referenceseqidVariantCoordinate:
     SearchParam<MolecularSequence, MolecularSequence.Variant> =
-    SimpleSearchParam<MolecularSequence, MolecularSequence.Variant>(
+    SearchParam<MolecularSequence, MolecularSequence.Variant>(
       name = "referenceseqid-variant-coordinate",
       type = SearchParamType.fromCode("composite"),
       expression = "MolecularSequence.variant",
@@ -93,7 +93,7 @@ public object MolecularSequenceSearchParams {
 
   public val referenceseqidWindowCoordinate:
     SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq> =
-    SimpleSearchParam<MolecularSequence, MolecularSequence.ReferenceSeq>(
+    SearchParam<MolecularSequence, MolecularSequence.ReferenceSeq>(
       name = "referenceseqid-window-coordinate",
       type = SearchParamType.fromCode("composite"),
       expression = "MolecularSequence.referenceSeq",
@@ -101,7 +101,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val type: SearchParam<MolecularSequence, Any> =
-    SimpleSearchParam<MolecularSequence, Any>(
+    SearchParam<MolecularSequence, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "MolecularSequence.type",
@@ -109,7 +109,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val variantEnd: SearchParam<MolecularSequence, Integer> =
-    SimpleSearchParam<MolecularSequence, Integer>(
+    SearchParam<MolecularSequence, Integer>(
       name = "variant-end",
       type = SearchParamType.fromCode("number"),
       expression = "MolecularSequence.variant.end",
@@ -117,7 +117,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val variantStart: SearchParam<MolecularSequence, Integer> =
-    SimpleSearchParam<MolecularSequence, Integer>(
+    SearchParam<MolecularSequence, Integer>(
       name = "variant-start",
       type = SearchParamType.fromCode("number"),
       expression = "MolecularSequence.variant.start",
@@ -125,7 +125,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val windowEnd: SearchParam<MolecularSequence, Integer> =
-    SimpleSearchParam<MolecularSequence, Integer>(
+    SearchParam<MolecularSequence, Integer>(
       name = "window-end",
       type = SearchParamType.fromCode("number"),
       expression = "MolecularSequence.referenceSeq.windowEnd",
@@ -133,7 +133,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val windowStart: SearchParam<MolecularSequence, Integer> =
-    SimpleSearchParam<MolecularSequence, Integer>(
+    SearchParam<MolecularSequence, Integer>(
       name = "window-start",
       type = SearchParamType.fromCode("number"),
       expression = "MolecularSequence.referenceSeq.windowStart",

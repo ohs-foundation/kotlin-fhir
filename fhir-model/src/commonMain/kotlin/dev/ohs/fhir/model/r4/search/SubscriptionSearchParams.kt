@@ -30,7 +30,7 @@ import kotlin.collections.List
 /** Search parameters for the [Subscription] resource type. */
 public object SubscriptionSearchParams {
   public val contact: SearchParam<Subscription, ContactPoint> =
-    SimpleSearchParam<Subscription, ContactPoint>(
+    SearchParam<Subscription, ContactPoint>(
       name = "contact",
       type = SearchParamType.fromCode("token"),
       expression = "Subscription.contact",
@@ -38,7 +38,7 @@ public object SubscriptionSearchParams {
     )
 
   public val criteria: SearchParam<Subscription, String> =
-    SimpleSearchParam<Subscription, String>(
+    SearchParam<Subscription, String>(
       name = "criteria",
       type = SearchParamType.fromCode("string"),
       expression = "Subscription.criteria",
@@ -46,7 +46,7 @@ public object SubscriptionSearchParams {
     )
 
   public val payload: SearchParam<Subscription, Any> =
-    SimpleSearchParam<Subscription, Any>(
+    SearchParam<Subscription, Any>(
       name = "payload",
       type = SearchParamType.fromCode("token"),
       expression = "Subscription.channel.payload",
@@ -54,7 +54,7 @@ public object SubscriptionSearchParams {
     )
 
   public val status: SearchParam<Subscription, Any> =
-    SimpleSearchParam<Subscription, Any>(
+    SearchParam<Subscription, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Subscription.status",
@@ -62,7 +62,7 @@ public object SubscriptionSearchParams {
     )
 
   public val type: SearchParam<Subscription, Any> =
-    SimpleSearchParam<Subscription, Any>(
+    SearchParam<Subscription, Any>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Subscription.channel.type",
@@ -70,7 +70,7 @@ public object SubscriptionSearchParams {
     )
 
   public val url: SearchParam<Subscription, Url> =
-    SimpleSearchParam<Subscription, Url>(
+    SearchParam<Subscription, Url>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "Subscription.channel.endpoint",

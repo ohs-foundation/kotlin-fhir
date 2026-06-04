@@ -41,7 +41,7 @@ import kotlin.collections.List
 /** Search parameters for the [Patient] resource type. */
 public object PatientSearchParams {
   public val active: SearchParam<Patient, Boolean> =
-    SimpleSearchParam<Patient, Boolean>(
+    SearchParam<Patient, Boolean>(
       name = "active",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.active",
@@ -49,7 +49,7 @@ public object PatientSearchParams {
     )
 
   public val address: SearchParam<Patient, Address> =
-    SimpleSearchParam<Patient, Address>(
+    SearchParam<Patient, Address>(
       name = "address",
       type = SearchParamType.fromCode("string"),
       expression = "Patient.address",
@@ -57,7 +57,7 @@ public object PatientSearchParams {
     )
 
   public val addressCity: SearchParam<Patient, String> =
-    SimpleSearchParam<Patient, String>(
+    SearchParam<Patient, String>(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
       expression = "Patient.address.city",
@@ -65,7 +65,7 @@ public object PatientSearchParams {
     )
 
   public val addressCountry: SearchParam<Patient, String> =
-    SimpleSearchParam<Patient, String>(
+    SearchParam<Patient, String>(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
       expression = "Patient.address.country",
@@ -73,7 +73,7 @@ public object PatientSearchParams {
     )
 
   public val addressPostalcode: SearchParam<Patient, String> =
-    SimpleSearchParam<Patient, String>(
+    SearchParam<Patient, String>(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
       expression = "Patient.address.postalCode",
@@ -81,7 +81,7 @@ public object PatientSearchParams {
     )
 
   public val addressState: SearchParam<Patient, String> =
-    SimpleSearchParam<Patient, String>(
+    SearchParam<Patient, String>(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
       expression = "Patient.address.state",
@@ -89,7 +89,7 @@ public object PatientSearchParams {
     )
 
   public val addressUse: SearchParam<Patient, Any> =
-    SimpleSearchParam<Patient, Any>(
+    SearchParam<Patient, Any>(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.address.use",
@@ -97,7 +97,7 @@ public object PatientSearchParams {
     )
 
   public val birthdate: SearchParam<Patient, Date> =
-    SimpleSearchParam<Patient, Date>(
+    SearchParam<Patient, Date>(
       name = "birthdate",
       type = SearchParamType.fromCode("date"),
       expression = "Patient.birthDate",
@@ -105,7 +105,7 @@ public object PatientSearchParams {
     )
 
   public val deathDate: SearchParam<Patient, Any> =
-    SimpleSearchParam<Patient, Any>(
+    SearchParam<Patient, Any>(
       name = "death-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Patient.deceased.ofType(dateTime))",
@@ -113,7 +113,7 @@ public object PatientSearchParams {
     )
 
   public val deceased: SearchParam<Patient, Any> =
-    SimpleSearchParam<Patient, Any>(
+    SearchParam<Patient, Any>(
       name = "deceased",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.deceased.exists() and Patient.deceased != false",
@@ -121,7 +121,7 @@ public object PatientSearchParams {
     )
 
   public val email: SearchParam<Patient, ContactPoint> =
-    SimpleSearchParam<Patient, ContactPoint>(
+    SearchParam<Patient, ContactPoint>(
       name = "email",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.telecom.where(system='email')",
@@ -131,7 +131,7 @@ public object PatientSearchParams {
     )
 
   public val family: SearchParam<Patient, String> =
-    SimpleSearchParam<Patient, String>(
+    SearchParam<Patient, String>(
       name = "family",
       type = SearchParamType.fromCode("string"),
       expression = "Patient.name.family",
@@ -139,7 +139,7 @@ public object PatientSearchParams {
     )
 
   public val gender: SearchParam<Patient, Any> =
-    SimpleSearchParam<Patient, Any>(
+    SearchParam<Patient, Any>(
       name = "gender",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.gender",
@@ -147,7 +147,7 @@ public object PatientSearchParams {
     )
 
   public val generalPractitioner: SearchParam<Patient, Reference> =
-    SimpleSearchParam<Patient, Reference>(
+    SearchParam<Patient, Reference>(
       name = "general-practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "Patient.generalPractitioner",
@@ -156,7 +156,7 @@ public object PatientSearchParams {
     )
 
   public val given: SearchParam<Patient, String> =
-    SimpleSearchParam<Patient, String>(
+    SearchParam<Patient, String>(
       name = "given",
       type = SearchParamType.fromCode("string"),
       expression = "Patient.name.given",
@@ -164,7 +164,7 @@ public object PatientSearchParams {
     )
 
   public val identifier: SearchParam<Patient, Identifier> =
-    SimpleSearchParam<Patient, Identifier>(
+    SearchParam<Patient, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.identifier",
@@ -172,7 +172,7 @@ public object PatientSearchParams {
     )
 
   public val language: SearchParam<Patient, CodeableConcept> =
-    SimpleSearchParam<Patient, CodeableConcept>(
+    SearchParam<Patient, CodeableConcept>(
       name = "language",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.communication.language",
@@ -180,7 +180,7 @@ public object PatientSearchParams {
     )
 
   public val link: SearchParam<Patient, Reference> =
-    SimpleSearchParam<Patient, Reference>(
+    SearchParam<Patient, Reference>(
       name = "link",
       type = SearchParamType.fromCode("reference"),
       expression = "Patient.link.other",
@@ -189,7 +189,7 @@ public object PatientSearchParams {
     )
 
   public val name: SearchParam<Patient, HumanName> =
-    SimpleSearchParam<Patient, HumanName>(
+    SearchParam<Patient, HumanName>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Patient.name",
@@ -197,7 +197,7 @@ public object PatientSearchParams {
     )
 
   public val organization: SearchParam<Patient, Reference> =
-    SimpleSearchParam<Patient, Reference>(
+    SearchParam<Patient, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "Patient.managingOrganization",
@@ -206,7 +206,7 @@ public object PatientSearchParams {
     )
 
   public val partAgree: SearchParam<Patient, Any> =
-    SimpleSearchParam<Patient, Any>(
+    SearchParam<Patient, Any>(
       name = "part-agree",
       type = SearchParamType.fromCode("reference"),
       expression =
@@ -216,7 +216,7 @@ public object PatientSearchParams {
     )
 
   public val phone: SearchParam<Patient, ContactPoint> =
-    SimpleSearchParam<Patient, ContactPoint>(
+    SearchParam<Patient, ContactPoint>(
       name = "phone",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.telecom.where(system='phone')",
@@ -226,7 +226,7 @@ public object PatientSearchParams {
     )
 
   public val phonetic: SearchParam<Patient, HumanName> =
-    SimpleSearchParam<Patient, HumanName>(
+    SearchParam<Patient, HumanName>(
       name = "phonetic",
       type = SearchParamType.fromCode("string"),
       expression = "Patient.name",
@@ -234,7 +234,7 @@ public object PatientSearchParams {
     )
 
   public val telecom: SearchParam<Patient, ContactPoint> =
-    SimpleSearchParam<Patient, ContactPoint>(
+    SearchParam<Patient, ContactPoint>(
       name = "telecom",
       type = SearchParamType.fromCode("token"),
       expression = "Patient.telecom",

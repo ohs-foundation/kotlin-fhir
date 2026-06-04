@@ -27,7 +27,7 @@ import kotlin.collections.List
 /** Search parameters for the [SubstanceSpecification] resource type. */
 public object SubstanceSpecificationSearchParams {
   public val code: SearchParam<SubstanceSpecification, CodeableConcept> =
-    SimpleSearchParam<SubstanceSpecification, CodeableConcept>(
+    SearchParam<SubstanceSpecification, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "SubstanceSpecification.code.code",

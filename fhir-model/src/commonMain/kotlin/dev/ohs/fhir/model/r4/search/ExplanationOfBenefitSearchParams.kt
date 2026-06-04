@@ -41,7 +41,7 @@ import kotlin.collections.List
 /** Search parameters for the [ExplanationOfBenefit] resource type. */
 public object ExplanationOfBenefitSearchParams {
   public val careTeam: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "care-team",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.careTeam.provider",
@@ -50,7 +50,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val claim: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "claim",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.claim",
@@ -59,7 +59,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val coverage: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "coverage",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.insurance.coverage",
@@ -68,7 +68,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val created: SearchParam<ExplanationOfBenefit, DateTime> =
-    SimpleSearchParam<ExplanationOfBenefit, DateTime>(
+    SearchParam<ExplanationOfBenefit, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "ExplanationOfBenefit.created",
@@ -76,7 +76,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val detailUdi: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "detail-udi",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.item.detail.udi",
@@ -85,7 +85,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val disposition: SearchParam<ExplanationOfBenefit, String> =
-    SimpleSearchParam<ExplanationOfBenefit, String>(
+    SearchParam<ExplanationOfBenefit, String>(
       name = "disposition",
       type = SearchParamType.fromCode("string"),
       expression = "ExplanationOfBenefit.disposition",
@@ -93,7 +93,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val encounter: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.item.encounter",
@@ -102,7 +102,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val enterer: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "enterer",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.enterer",
@@ -111,7 +111,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val facility: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "facility",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.facility",
@@ -120,7 +120,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val identifier: SearchParam<ExplanationOfBenefit, Identifier> =
-    SimpleSearchParam<ExplanationOfBenefit, Identifier>(
+    SearchParam<ExplanationOfBenefit, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ExplanationOfBenefit.identifier",
@@ -128,7 +128,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val itemUdi: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "item-udi",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.item.udi",
@@ -137,7 +137,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val patient: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.patient",
@@ -146,7 +146,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val payee: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "payee",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.payee.party",
@@ -162,7 +162,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val procedureUdi: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "procedure-udi",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.procedure.udi",
@@ -171,7 +171,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val provider: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.provider",
@@ -180,7 +180,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val status: SearchParam<ExplanationOfBenefit, Any> =
-    SimpleSearchParam<ExplanationOfBenefit, Any>(
+    SearchParam<ExplanationOfBenefit, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ExplanationOfBenefit.status",
@@ -188,7 +188,7 @@ public object ExplanationOfBenefitSearchParams {
     )
 
   public val subdetailUdi: SearchParam<ExplanationOfBenefit, Reference> =
-    SimpleSearchParam<ExplanationOfBenefit, Reference>(
+    SearchParam<ExplanationOfBenefit, Reference>(
       name = "subdetail-udi",
       type = SearchParamType.fromCode("reference"),
       expression = "ExplanationOfBenefit.item.detail.subDetail.udi",

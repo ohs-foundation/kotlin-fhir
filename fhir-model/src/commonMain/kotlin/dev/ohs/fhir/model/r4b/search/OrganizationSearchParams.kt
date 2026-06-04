@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [Organization] resource type. */
 public object OrganizationSearchParams {
   public val active: SearchParam<Organization, Boolean> =
-    SimpleSearchParam<Organization, Boolean>(
+    SearchParam<Organization, Boolean>(
       name = "active",
       type = SearchParamType.fromCode("token"),
       expression = "Organization.active",
@@ -42,7 +42,7 @@ public object OrganizationSearchParams {
     )
 
   public val address: SearchParam<Organization, Address> =
-    SimpleSearchParam<Organization, Address>(
+    SearchParam<Organization, Address>(
       name = "address",
       type = SearchParamType.fromCode("string"),
       expression = "Organization.address",
@@ -50,7 +50,7 @@ public object OrganizationSearchParams {
     )
 
   public val addressCity: SearchParam<Organization, String> =
-    SimpleSearchParam<Organization, String>(
+    SearchParam<Organization, String>(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
       expression = "Organization.address.city",
@@ -58,7 +58,7 @@ public object OrganizationSearchParams {
     )
 
   public val addressCountry: SearchParam<Organization, String> =
-    SimpleSearchParam<Organization, String>(
+    SearchParam<Organization, String>(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
       expression = "Organization.address.country",
@@ -66,7 +66,7 @@ public object OrganizationSearchParams {
     )
 
   public val addressPostalcode: SearchParam<Organization, String> =
-    SimpleSearchParam<Organization, String>(
+    SearchParam<Organization, String>(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
       expression = "Organization.address.postalCode",
@@ -74,7 +74,7 @@ public object OrganizationSearchParams {
     )
 
   public val addressState: SearchParam<Organization, String> =
-    SimpleSearchParam<Organization, String>(
+    SearchParam<Organization, String>(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
       expression = "Organization.address.state",
@@ -82,7 +82,7 @@ public object OrganizationSearchParams {
     )
 
   public val addressUse: SearchParam<Organization, Any> =
-    SimpleSearchParam<Organization, Any>(
+    SearchParam<Organization, Any>(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
       expression = "Organization.address.use",
@@ -90,7 +90,7 @@ public object OrganizationSearchParams {
     )
 
   public val endpoint: SearchParam<Organization, Reference> =
-    SimpleSearchParam<Organization, Reference>(
+    SearchParam<Organization, Reference>(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "Organization.endpoint",
@@ -99,7 +99,7 @@ public object OrganizationSearchParams {
     )
 
   public val identifier: SearchParam<Organization, Identifier> =
-    SimpleSearchParam<Organization, Identifier>(
+    SearchParam<Organization, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Organization.identifier",
@@ -107,7 +107,7 @@ public object OrganizationSearchParams {
     )
 
   public val name: SearchParam<Organization, String> =
-    SimpleSearchParam<Organization, String>(
+    SearchParam<Organization, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Organization.name",
@@ -115,7 +115,7 @@ public object OrganizationSearchParams {
     )
 
   public val partof: SearchParam<Organization, Reference> =
-    SimpleSearchParam<Organization, Reference>(
+    SearchParam<Organization, Reference>(
       name = "partof",
       type = SearchParamType.fromCode("reference"),
       expression = "Organization.partOf",
@@ -124,7 +124,7 @@ public object OrganizationSearchParams {
     )
 
   public val phonetic: SearchParam<Organization, String> =
-    SimpleSearchParam<Organization, String>(
+    SearchParam<Organization, String>(
       name = "phonetic",
       type = SearchParamType.fromCode("string"),
       expression = "Organization.name",
@@ -132,7 +132,7 @@ public object OrganizationSearchParams {
     )
 
   public val type: SearchParam<Organization, CodeableConcept> =
-    SimpleSearchParam<Organization, CodeableConcept>(
+    SearchParam<Organization, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Organization.type",

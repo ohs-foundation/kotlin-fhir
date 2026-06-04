@@ -27,7 +27,7 @@ import kotlin.collections.List
 /** Search parameters for the [DomainResource] resource type. */
 public object DomainResourceSearchParams {
   public val _text: SearchParam<DomainResource, Any> =
-    SimpleSearchParam<DomainResource, Any>(
+    SearchParam<DomainResource, Any>(
       name = "_text",
       type = SearchParamType.fromCode("string"),
       expression = "",

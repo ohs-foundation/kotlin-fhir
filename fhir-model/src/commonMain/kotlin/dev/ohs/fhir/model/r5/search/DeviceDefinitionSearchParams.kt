@@ -31,7 +31,7 @@ import kotlin.collections.List
 /** Search parameters for the [DeviceDefinition] resource type. */
 public object DeviceDefinitionSearchParams {
   public val deviceName: SearchParam<DeviceDefinition, String> =
-    SimpleSearchParam<DeviceDefinition, String>(
+    SearchParam<DeviceDefinition, String>(
       name = "device-name",
       type = SearchParamType.fromCode("string"),
       expression = "DeviceDefinition.deviceName.name",
@@ -39,7 +39,7 @@ public object DeviceDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<DeviceDefinition, Identifier> =
-    SimpleSearchParam<DeviceDefinition, Identifier>(
+    SearchParam<DeviceDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceDefinition.identifier",
@@ -47,7 +47,7 @@ public object DeviceDefinitionSearchParams {
     )
 
   public val manufacturer: SearchParam<DeviceDefinition, Reference> =
-    SimpleSearchParam<DeviceDefinition, Reference>(
+    SearchParam<DeviceDefinition, Reference>(
       name = "manufacturer",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceDefinition.manufacturer",
@@ -56,7 +56,7 @@ public object DeviceDefinitionSearchParams {
     )
 
   public val organization: SearchParam<DeviceDefinition, Reference> =
-    SimpleSearchParam<DeviceDefinition, Reference>(
+    SearchParam<DeviceDefinition, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceDefinition.owner",
@@ -65,7 +65,7 @@ public object DeviceDefinitionSearchParams {
     )
 
   public val specification: SearchParam<DeviceDefinition, CodeableConcept> =
-    SimpleSearchParam<DeviceDefinition, CodeableConcept>(
+    SearchParam<DeviceDefinition, CodeableConcept>(
       name = "specification",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceDefinition.conformsTo.specification",
@@ -73,7 +73,7 @@ public object DeviceDefinitionSearchParams {
     )
 
   public val specificationVersion: SearchParam<DeviceDefinition, DeviceDefinition.ConformsTo> =
-    SimpleSearchParam<DeviceDefinition, DeviceDefinition.ConformsTo>(
+    SearchParam<DeviceDefinition, DeviceDefinition.ConformsTo>(
       name = "specification-version",
       type = SearchParamType.fromCode("composite"),
       expression = "DeviceDefinition.conformsTo",
@@ -81,7 +81,7 @@ public object DeviceDefinitionSearchParams {
     )
 
   public val type: SearchParam<DeviceDefinition, CodeableConcept> =
-    SimpleSearchParam<DeviceDefinition, CodeableConcept>(
+    SearchParam<DeviceDefinition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceDefinition.conformsTo.category",

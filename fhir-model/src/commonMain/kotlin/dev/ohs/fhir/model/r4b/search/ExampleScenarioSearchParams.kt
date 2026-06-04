@@ -35,7 +35,7 @@ import kotlin.collections.List
 /** Search parameters for the [ExampleScenario] resource type. */
 public object ExampleScenarioSearchParams {
   public val context: SearchParam<ExampleScenario, CodeableConcept> =
-    SimpleSearchParam<ExampleScenario, CodeableConcept>(
+    SearchParam<ExampleScenario, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(ExampleScenario.useContext.value as CodeableConcept)",
@@ -47,7 +47,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val contextQuantity: SearchParam<ExampleScenario, Quantity> =
-    SimpleSearchParam<ExampleScenario, Quantity>(
+    SearchParam<ExampleScenario, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(ExampleScenario.useContext.value as Quantity)",
@@ -57,7 +57,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val contextType: SearchParam<ExampleScenario, Coding> =
-    SimpleSearchParam<ExampleScenario, Coding>(
+    SearchParam<ExampleScenario, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "ExampleScenario.useContext.code",
@@ -65,7 +65,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<ExampleScenario, UsageContext> =
-    SimpleSearchParam<ExampleScenario, UsageContext>(
+    SearchParam<ExampleScenario, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "ExampleScenario.useContext",
@@ -73,7 +73,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val contextTypeValue: SearchParam<ExampleScenario, UsageContext> =
-    SimpleSearchParam<ExampleScenario, UsageContext>(
+    SearchParam<ExampleScenario, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "ExampleScenario.useContext",
@@ -81,7 +81,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val date: SearchParam<ExampleScenario, DateTime> =
-    SimpleSearchParam<ExampleScenario, DateTime>(
+    SearchParam<ExampleScenario, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ExampleScenario.date",
@@ -89,7 +89,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val identifier: SearchParam<ExampleScenario, Identifier> =
-    SimpleSearchParam<ExampleScenario, Identifier>(
+    SearchParam<ExampleScenario, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ExampleScenario.identifier",
@@ -97,7 +97,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val jurisdiction: SearchParam<ExampleScenario, CodeableConcept> =
-    SimpleSearchParam<ExampleScenario, CodeableConcept>(
+    SearchParam<ExampleScenario, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "ExampleScenario.jurisdiction",
@@ -105,7 +105,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val name: SearchParam<ExampleScenario, String> =
-    SimpleSearchParam<ExampleScenario, String>(
+    SearchParam<ExampleScenario, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "ExampleScenario.name",
@@ -113,7 +113,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val publisher: SearchParam<ExampleScenario, String> =
-    SimpleSearchParam<ExampleScenario, String>(
+    SearchParam<ExampleScenario, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "ExampleScenario.publisher",
@@ -121,7 +121,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val status: SearchParam<ExampleScenario, Any> =
-    SimpleSearchParam<ExampleScenario, Any>(
+    SearchParam<ExampleScenario, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ExampleScenario.status",
@@ -129,7 +129,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val url: SearchParam<ExampleScenario, Uri> =
-    SimpleSearchParam<ExampleScenario, Uri>(
+    SearchParam<ExampleScenario, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "ExampleScenario.url",
@@ -137,7 +137,7 @@ public object ExampleScenarioSearchParams {
     )
 
   public val version: SearchParam<ExampleScenario, String> =
-    SimpleSearchParam<ExampleScenario, String>(
+    SearchParam<ExampleScenario, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "ExampleScenario.version",

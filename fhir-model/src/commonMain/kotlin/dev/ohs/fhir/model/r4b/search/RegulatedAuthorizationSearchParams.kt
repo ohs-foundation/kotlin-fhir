@@ -42,7 +42,7 @@ import kotlin.collections.List
 /** Search parameters for the [RegulatedAuthorization] resource type. */
 public object RegulatedAuthorizationSearchParams {
   public val case: SearchParam<RegulatedAuthorization, Identifier> =
-    SimpleSearchParam<RegulatedAuthorization, Identifier>(
+    SearchParam<RegulatedAuthorization, Identifier>(
       name = "case",
       type = SearchParamType.fromCode("token"),
       expression = "RegulatedAuthorization.case.identifier",
@@ -50,7 +50,7 @@ public object RegulatedAuthorizationSearchParams {
     )
 
   public val caseType: SearchParam<RegulatedAuthorization, CodeableConcept> =
-    SimpleSearchParam<RegulatedAuthorization, CodeableConcept>(
+    SearchParam<RegulatedAuthorization, CodeableConcept>(
       name = "case-type",
       type = SearchParamType.fromCode("token"),
       expression = "RegulatedAuthorization.case.type",
@@ -58,7 +58,7 @@ public object RegulatedAuthorizationSearchParams {
     )
 
   public val holder: SearchParam<RegulatedAuthorization, Reference> =
-    SimpleSearchParam<RegulatedAuthorization, Reference>(
+    SearchParam<RegulatedAuthorization, Reference>(
       name = "holder",
       type = SearchParamType.fromCode("reference"),
       expression = "RegulatedAuthorization.holder",
@@ -67,7 +67,7 @@ public object RegulatedAuthorizationSearchParams {
     )
 
   public val identifier: SearchParam<RegulatedAuthorization, Identifier> =
-    SimpleSearchParam<RegulatedAuthorization, Identifier>(
+    SearchParam<RegulatedAuthorization, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "RegulatedAuthorization.identifier",
@@ -75,7 +75,7 @@ public object RegulatedAuthorizationSearchParams {
     )
 
   public val region: SearchParam<RegulatedAuthorization, CodeableConcept> =
-    SimpleSearchParam<RegulatedAuthorization, CodeableConcept>(
+    SearchParam<RegulatedAuthorization, CodeableConcept>(
       name = "region",
       type = SearchParamType.fromCode("token"),
       expression = "RegulatedAuthorization.region",
@@ -83,7 +83,7 @@ public object RegulatedAuthorizationSearchParams {
     )
 
   public val status: SearchParam<RegulatedAuthorization, CodeableConcept> =
-    SimpleSearchParam<RegulatedAuthorization, CodeableConcept>(
+    SearchParam<RegulatedAuthorization, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "RegulatedAuthorization.status",
@@ -91,7 +91,7 @@ public object RegulatedAuthorizationSearchParams {
     )
 
   public val subject: SearchParam<RegulatedAuthorization, Reference> =
-    SimpleSearchParam<RegulatedAuthorization, Reference>(
+    SearchParam<RegulatedAuthorization, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "RegulatedAuthorization.subject",

@@ -188,7 +188,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [ClinicalImpression] resource type. */
 public object ClinicalImpressionSearchParams {
   public val date: SearchParam<ClinicalImpression, DateTime> =
-    SimpleSearchParam<ClinicalImpression, DateTime>(
+    SearchParam<ClinicalImpression, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ClinicalImpression.date",
@@ -196,7 +196,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val encounter: SearchParam<ClinicalImpression, Reference> =
-    SimpleSearchParam<ClinicalImpression, Reference>(
+    SearchParam<ClinicalImpression, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.encounter",
@@ -205,7 +205,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val findingCode: SearchParam<ClinicalImpression, CodeableConcept> =
-    SimpleSearchParam<ClinicalImpression, CodeableConcept>(
+    SearchParam<ClinicalImpression, CodeableConcept>(
       name = "finding-code",
       type = SearchParamType.fromCode("token"),
       expression = "ClinicalImpression.finding.item.concept",
@@ -213,7 +213,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val findingRef: SearchParam<ClinicalImpression, Reference> =
-    SimpleSearchParam<ClinicalImpression, Reference>(
+    SearchParam<ClinicalImpression, Reference>(
       name = "finding-ref",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.finding.item.reference",
@@ -224,7 +224,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val identifier: SearchParam<ClinicalImpression, Identifier> =
-    SimpleSearchParam<ClinicalImpression, Identifier>(
+    SearchParam<ClinicalImpression, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ClinicalImpression.identifier",
@@ -232,7 +232,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val patient: SearchParam<ClinicalImpression, Reference> =
-    SimpleSearchParam<ClinicalImpression, Reference>(
+    SearchParam<ClinicalImpression, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.subject.where(resolve() is Patient)",
@@ -245,7 +245,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val performer: SearchParam<ClinicalImpression, Reference> =
-    SimpleSearchParam<ClinicalImpression, Reference>(
+    SearchParam<ClinicalImpression, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.performer",
@@ -254,7 +254,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val previous: SearchParam<ClinicalImpression, Reference> =
-    SimpleSearchParam<ClinicalImpression, Reference>(
+    SearchParam<ClinicalImpression, Reference>(
       name = "previous",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.previous",
@@ -263,7 +263,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val problem: SearchParam<ClinicalImpression, Reference> =
-    SimpleSearchParam<ClinicalImpression, Reference>(
+    SearchParam<ClinicalImpression, Reference>(
       name = "problem",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.problem",
@@ -272,7 +272,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val status: SearchParam<ClinicalImpression, Any> =
-    SimpleSearchParam<ClinicalImpression, Any>(
+    SearchParam<ClinicalImpression, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ClinicalImpression.status",
@@ -280,7 +280,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val subject: SearchParam<ClinicalImpression, Reference> =
-    SimpleSearchParam<ClinicalImpression, Reference>(
+    SearchParam<ClinicalImpression, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.subject",
@@ -289,7 +289,7 @@ public object ClinicalImpressionSearchParams {
     )
 
   public val supportingInfo: SearchParam<ClinicalImpression, Reference> =
-    SimpleSearchParam<ClinicalImpression, Reference>(
+    SearchParam<ClinicalImpression, Reference>(
       name = "supporting-info",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalImpression.supportingInfo",

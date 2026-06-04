@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [SubscriptionTopic] resource type. */
 public object SubscriptionTopicSearchParams {
   public val date: SearchParam<SubscriptionTopic, DateTime> =
-    SimpleSearchParam<SubscriptionTopic, DateTime>(
+    SearchParam<SubscriptionTopic, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "SubscriptionTopic.date",
@@ -42,7 +42,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val derivedOrSelf: SearchParam<SubscriptionTopic, Uri> =
-    SimpleSearchParam<SubscriptionTopic, Uri>(
+    SearchParam<SubscriptionTopic, Uri>(
       name = "derived-or-self",
       type = SearchParamType.fromCode("uri"),
       expression = "SubscriptionTopic.url",
@@ -50,7 +50,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val effective: SearchParam<SubscriptionTopic, Period> =
-    SimpleSearchParam<SubscriptionTopic, Period>(
+    SearchParam<SubscriptionTopic, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "SubscriptionTopic.effectivePeriod",
@@ -58,7 +58,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val event: SearchParam<SubscriptionTopic, CodeableConcept> =
-    SimpleSearchParam<SubscriptionTopic, CodeableConcept>(
+    SearchParam<SubscriptionTopic, CodeableConcept>(
       name = "event",
       type = SearchParamType.fromCode("token"),
       expression = "SubscriptionTopic.eventTrigger.event",
@@ -66,7 +66,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val identifier: SearchParam<SubscriptionTopic, Identifier> =
-    SimpleSearchParam<SubscriptionTopic, Identifier>(
+    SearchParam<SubscriptionTopic, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "SubscriptionTopic.identifier",
@@ -74,7 +74,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val resource: SearchParam<SubscriptionTopic, Uri> =
-    SimpleSearchParam<SubscriptionTopic, Uri>(
+    SearchParam<SubscriptionTopic, Uri>(
       name = "resource",
       type = SearchParamType.fromCode("uri"),
       expression = "SubscriptionTopic.resourceTrigger.resource",
@@ -82,7 +82,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val status: SearchParam<SubscriptionTopic, Any> =
-    SimpleSearchParam<SubscriptionTopic, Any>(
+    SearchParam<SubscriptionTopic, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "SubscriptionTopic.status",
@@ -90,7 +90,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val title: SearchParam<SubscriptionTopic, String> =
-    SimpleSearchParam<SubscriptionTopic, String>(
+    SearchParam<SubscriptionTopic, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "SubscriptionTopic.title",
@@ -98,7 +98,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val triggerDescription: SearchParam<SubscriptionTopic, Markdown> =
-    SimpleSearchParam<SubscriptionTopic, Markdown>(
+    SearchParam<SubscriptionTopic, Markdown>(
       name = "trigger-description",
       type = SearchParamType.fromCode("string"),
       expression = "SubscriptionTopic.resourceTrigger.description",
@@ -106,7 +106,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val url: SearchParam<SubscriptionTopic, Uri> =
-    SimpleSearchParam<SubscriptionTopic, Uri>(
+    SearchParam<SubscriptionTopic, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "SubscriptionTopic.url",
@@ -114,7 +114,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val version: SearchParam<SubscriptionTopic, String> =
-    SimpleSearchParam<SubscriptionTopic, String>(
+    SearchParam<SubscriptionTopic, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "SubscriptionTopic.version",

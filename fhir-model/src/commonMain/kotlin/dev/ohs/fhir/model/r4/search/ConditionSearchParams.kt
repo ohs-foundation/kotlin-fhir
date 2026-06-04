@@ -176,7 +176,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Condition] resource type. */
 public object ConditionSearchParams {
   public val abatementAge: SearchParam<Condition, Age> =
-    SimpleSearchParam<Condition, Age>(
+    SearchParam<Condition, Age>(
       name = "abatement-age",
       type = SearchParamType.fromCode("quantity"),
       expression = "Condition.abatement.as(Age)",
@@ -186,7 +186,7 @@ public object ConditionSearchParams {
     )
 
   public val abatementDate: SearchParam<Condition, DateTime> =
-    SimpleSearchParam<Condition, DateTime>(
+    SearchParam<Condition, DateTime>(
       name = "abatement-date",
       type = SearchParamType.fromCode("date"),
       expression = "Condition.abatement.as(dateTime)",
@@ -196,7 +196,7 @@ public object ConditionSearchParams {
     )
 
   public val abatementString: SearchParam<Condition, String> =
-    SimpleSearchParam<Condition, String>(
+    SearchParam<Condition, String>(
       name = "abatement-string",
       type = SearchParamType.fromCode("string"),
       expression = "Condition.abatement.as(string)",
@@ -206,7 +206,7 @@ public object ConditionSearchParams {
     )
 
   public val asserter: SearchParam<Condition, Reference> =
-    SimpleSearchParam<Condition, Reference>(
+    SearchParam<Condition, Reference>(
       name = "asserter",
       type = SearchParamType.fromCode("reference"),
       expression = "Condition.asserter",
@@ -216,7 +216,7 @@ public object ConditionSearchParams {
     )
 
   public val bodySite: SearchParam<Condition, CodeableConcept> =
-    SimpleSearchParam<Condition, CodeableConcept>(
+    SearchParam<Condition, CodeableConcept>(
       name = "body-site",
       type = SearchParamType.fromCode("token"),
       expression = "Condition.bodySite",
@@ -224,7 +224,7 @@ public object ConditionSearchParams {
     )
 
   public val category: SearchParam<Condition, CodeableConcept> =
-    SimpleSearchParam<Condition, CodeableConcept>(
+    SearchParam<Condition, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "Condition.category",
@@ -232,7 +232,7 @@ public object ConditionSearchParams {
     )
 
   public val clinicalStatus: SearchParam<Condition, CodeableConcept> =
-    SimpleSearchParam<Condition, CodeableConcept>(
+    SearchParam<Condition, CodeableConcept>(
       name = "clinical-status",
       type = SearchParamType.fromCode("token"),
       expression = "Condition.clinicalStatus",
@@ -240,7 +240,7 @@ public object ConditionSearchParams {
     )
 
   public val code: SearchParam<Condition, CodeableConcept> =
-    SimpleSearchParam<Condition, CodeableConcept>(
+    SearchParam<Condition, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "Condition.code",
@@ -248,7 +248,7 @@ public object ConditionSearchParams {
     )
 
   public val encounter: SearchParam<Condition, Reference> =
-    SimpleSearchParam<Condition, Reference>(
+    SearchParam<Condition, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Condition.encounter",
@@ -257,7 +257,7 @@ public object ConditionSearchParams {
     )
 
   public val evidence: SearchParam<Condition, CodeableConcept> =
-    SimpleSearchParam<Condition, CodeableConcept>(
+    SearchParam<Condition, CodeableConcept>(
       name = "evidence",
       type = SearchParamType.fromCode("token"),
       expression = "Condition.evidence.code",
@@ -265,7 +265,7 @@ public object ConditionSearchParams {
     )
 
   public val evidenceDetail: SearchParam<Condition, Reference> =
-    SimpleSearchParam<Condition, Reference>(
+    SearchParam<Condition, Reference>(
       name = "evidence-detail",
       type = SearchParamType.fromCode("reference"),
       expression = "Condition.evidence.detail",
@@ -421,7 +421,7 @@ public object ConditionSearchParams {
     )
 
   public val identifier: SearchParam<Condition, Identifier> =
-    SimpleSearchParam<Condition, Identifier>(
+    SearchParam<Condition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Condition.identifier",
@@ -429,7 +429,7 @@ public object ConditionSearchParams {
     )
 
   public val onsetAge: SearchParam<Condition, Age> =
-    SimpleSearchParam<Condition, Age>(
+    SearchParam<Condition, Age>(
       name = "onset-age",
       type = SearchParamType.fromCode("quantity"),
       expression = "Condition.onset.as(Age)",
@@ -437,7 +437,7 @@ public object ConditionSearchParams {
     )
 
   public val onsetDate: SearchParam<Condition, DateTime> =
-    SimpleSearchParam<Condition, DateTime>(
+    SearchParam<Condition, DateTime>(
       name = "onset-date",
       type = SearchParamType.fromCode("date"),
       expression = "Condition.onset.as(dateTime)",
@@ -447,7 +447,7 @@ public object ConditionSearchParams {
     )
 
   public val onsetInfo: SearchParam<Condition, String> =
-    SimpleSearchParam<Condition, String>(
+    SearchParam<Condition, String>(
       name = "onset-info",
       type = SearchParamType.fromCode("string"),
       expression = "Condition.onset.as(string)",
@@ -455,7 +455,7 @@ public object ConditionSearchParams {
     )
 
   public val patient: SearchParam<Condition, Reference> =
-    SimpleSearchParam<Condition, Reference>(
+    SearchParam<Condition, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Condition.subject.where(resolve() is Patient)",
@@ -468,7 +468,7 @@ public object ConditionSearchParams {
     )
 
   public val recordedDate: SearchParam<Condition, DateTime> =
-    SimpleSearchParam<Condition, DateTime>(
+    SearchParam<Condition, DateTime>(
       name = "recorded-date",
       type = SearchParamType.fromCode("date"),
       expression = "Condition.recordedDate",
@@ -476,7 +476,7 @@ public object ConditionSearchParams {
     )
 
   public val severity: SearchParam<Condition, CodeableConcept> =
-    SimpleSearchParam<Condition, CodeableConcept>(
+    SearchParam<Condition, CodeableConcept>(
       name = "severity",
       type = SearchParamType.fromCode("token"),
       expression = "Condition.severity",
@@ -484,7 +484,7 @@ public object ConditionSearchParams {
     )
 
   public val stage: SearchParam<Condition, CodeableConcept> =
-    SimpleSearchParam<Condition, CodeableConcept>(
+    SearchParam<Condition, CodeableConcept>(
       name = "stage",
       type = SearchParamType.fromCode("token"),
       expression = "Condition.stage.summary",
@@ -492,7 +492,7 @@ public object ConditionSearchParams {
     )
 
   public val subject: SearchParam<Condition, Reference> =
-    SimpleSearchParam<Condition, Reference>(
+    SearchParam<Condition, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Condition.subject",
@@ -501,7 +501,7 @@ public object ConditionSearchParams {
     )
 
   public val verificationStatus: SearchParam<Condition, CodeableConcept> =
-    SimpleSearchParam<Condition, CodeableConcept>(
+    SearchParam<Condition, CodeableConcept>(
       name = "verification-status",
       type = SearchParamType.fromCode("token"),
       expression = "Condition.verificationStatus",

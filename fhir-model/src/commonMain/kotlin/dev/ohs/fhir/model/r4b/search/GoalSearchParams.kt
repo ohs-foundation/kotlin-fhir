@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [Goal] resource type. */
 public object GoalSearchParams {
   public val achievementStatus: SearchParam<Goal, CodeableConcept> =
-    SimpleSearchParam<Goal, CodeableConcept>(
+    SearchParam<Goal, CodeableConcept>(
       name = "achievement-status",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.achievementStatus",
@@ -42,7 +42,7 @@ public object GoalSearchParams {
     )
 
   public val category: SearchParam<Goal, CodeableConcept> =
-    SimpleSearchParam<Goal, CodeableConcept>(
+    SearchParam<Goal, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.category",
@@ -50,7 +50,7 @@ public object GoalSearchParams {
     )
 
   public val identifier: SearchParam<Goal, Identifier> =
-    SimpleSearchParam<Goal, Identifier>(
+    SearchParam<Goal, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.identifier",
@@ -58,7 +58,7 @@ public object GoalSearchParams {
     )
 
   public val lifecycleStatus: SearchParam<Goal, Any> =
-    SimpleSearchParam<Goal, Any>(
+    SearchParam<Goal, Any>(
       name = "lifecycle-status",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.lifecycleStatus",
@@ -66,7 +66,7 @@ public object GoalSearchParams {
     )
 
   public val patient: SearchParam<Goal, Reference> =
-    SimpleSearchParam<Goal, Reference>(
+    SearchParam<Goal, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Goal.subject.where(resolve() is Patient)",
@@ -79,7 +79,7 @@ public object GoalSearchParams {
     )
 
   public val startDate: SearchParam<Goal, Date> =
-    SimpleSearchParam<Goal, Date>(
+    SearchParam<Goal, Date>(
       name = "start-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Goal.start as date)",
@@ -87,7 +87,7 @@ public object GoalSearchParams {
     )
 
   public val subject: SearchParam<Goal, Reference> =
-    SimpleSearchParam<Goal, Reference>(
+    SearchParam<Goal, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Goal.subject",
@@ -96,7 +96,7 @@ public object GoalSearchParams {
     )
 
   public val targetDate: SearchParam<Goal, Date> =
-    SimpleSearchParam<Goal, Date>(
+    SearchParam<Goal, Date>(
       name = "target-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Goal.target.due as date)",

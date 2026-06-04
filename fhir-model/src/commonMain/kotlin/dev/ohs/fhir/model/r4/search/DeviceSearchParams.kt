@@ -35,7 +35,7 @@ import kotlin.collections.List
 /** Search parameters for the [Device] resource type. */
 public object DeviceSearchParams {
   public val deviceName: SearchParam<Device, String> =
-    SimpleSearchParam<Device, String>(
+    SearchParam<Device, String>(
       name = "device-name",
       type = SearchParamType.fromCode("string"),
       expression = "Device.deviceName.name",
@@ -43,7 +43,7 @@ public object DeviceSearchParams {
     )
 
   public val din: SearchParam<Device, Any> =
-    SimpleSearchParam<Device, Any>(
+    SearchParam<Device, Any>(
       name = "din",
       type = SearchParamType.fromCode("token"),
       expression =
@@ -52,7 +52,7 @@ public object DeviceSearchParams {
     )
 
   public val identifier: SearchParam<Device, Identifier> =
-    SimpleSearchParam<Device, Identifier>(
+    SearchParam<Device, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Device.identifier",
@@ -60,7 +60,7 @@ public object DeviceSearchParams {
     )
 
   public val location: SearchParam<Device, Reference> =
-    SimpleSearchParam<Device, Reference>(
+    SearchParam<Device, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Device.location",
@@ -69,7 +69,7 @@ public object DeviceSearchParams {
     )
 
   public val manufacturer: SearchParam<Device, String> =
-    SimpleSearchParam<Device, String>(
+    SearchParam<Device, String>(
       name = "manufacturer",
       type = SearchParamType.fromCode("string"),
       expression = "Device.manufacturer",
@@ -77,7 +77,7 @@ public object DeviceSearchParams {
     )
 
   public val model: SearchParam<Device, String> =
-    SimpleSearchParam<Device, String>(
+    SearchParam<Device, String>(
       name = "model",
       type = SearchParamType.fromCode("string"),
       expression = "Device.modelNumber",
@@ -85,7 +85,7 @@ public object DeviceSearchParams {
     )
 
   public val organization: SearchParam<Device, Reference> =
-    SimpleSearchParam<Device, Reference>(
+    SearchParam<Device, Reference>(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "Device.owner",
@@ -94,7 +94,7 @@ public object DeviceSearchParams {
     )
 
   public val patient: SearchParam<Device, Reference> =
-    SimpleSearchParam<Device, Reference>(
+    SearchParam<Device, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Device.patient",
@@ -103,7 +103,7 @@ public object DeviceSearchParams {
     )
 
   public val status: SearchParam<Device, Any> =
-    SimpleSearchParam<Device, Any>(
+    SearchParam<Device, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Device.status",
@@ -111,7 +111,7 @@ public object DeviceSearchParams {
     )
 
   public val type: SearchParam<Device, CodeableConcept> =
-    SimpleSearchParam<Device, CodeableConcept>(
+    SearchParam<Device, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Device.type",
@@ -119,7 +119,7 @@ public object DeviceSearchParams {
     )
 
   public val udiCarrier: SearchParam<Device, String> =
-    SimpleSearchParam<Device, String>(
+    SearchParam<Device, String>(
       name = "udi-carrier",
       type = SearchParamType.fromCode("string"),
       expression = "Device.udiCarrier.carrierHRF",
@@ -127,7 +127,7 @@ public object DeviceSearchParams {
     )
 
   public val udiDi: SearchParam<Device, String> =
-    SimpleSearchParam<Device, String>(
+    SearchParam<Device, String>(
       name = "udi-di",
       type = SearchParamType.fromCode("string"),
       expression = "Device.udiCarrier.deviceIdentifier",
@@ -135,7 +135,7 @@ public object DeviceSearchParams {
     )
 
   public val url: SearchParam<Device, Uri> =
-    SimpleSearchParam<Device, Uri>(
+    SearchParam<Device, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "Device.url",

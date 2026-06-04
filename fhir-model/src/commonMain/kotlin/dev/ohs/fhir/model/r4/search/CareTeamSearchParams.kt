@@ -38,7 +38,7 @@ import kotlin.collections.List
 /** Search parameters for the [CareTeam] resource type. */
 public object CareTeamSearchParams {
   public val category: SearchParam<CareTeam, CodeableConcept> =
-    SimpleSearchParam<CareTeam, CodeableConcept>(
+    SearchParam<CareTeam, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "CareTeam.category",
@@ -46,7 +46,7 @@ public object CareTeamSearchParams {
     )
 
   public val date: SearchParam<CareTeam, Period> =
-    SimpleSearchParam<CareTeam, Period>(
+    SearchParam<CareTeam, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "CareTeam.period",
@@ -54,7 +54,7 @@ public object CareTeamSearchParams {
     )
 
   public val encounter: SearchParam<CareTeam, Reference> =
-    SimpleSearchParam<CareTeam, Reference>(
+    SearchParam<CareTeam, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "CareTeam.encounter",
@@ -63,7 +63,7 @@ public object CareTeamSearchParams {
     )
 
   public val identifier: SearchParam<CareTeam, Identifier> =
-    SimpleSearchParam<CareTeam, Identifier>(
+    SearchParam<CareTeam, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "CareTeam.identifier",
@@ -71,7 +71,7 @@ public object CareTeamSearchParams {
     )
 
   public val participant: SearchParam<CareTeam, Reference> =
-    SimpleSearchParam<CareTeam, Reference>(
+    SearchParam<CareTeam, Reference>(
       name = "participant",
       type = SearchParamType.fromCode("reference"),
       expression = "CareTeam.participant.member",
@@ -88,7 +88,7 @@ public object CareTeamSearchParams {
     )
 
   public val patient: SearchParam<CareTeam, Reference> =
-    SimpleSearchParam<CareTeam, Reference>(
+    SearchParam<CareTeam, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "CareTeam.subject.where(resolve() is Patient)",
@@ -101,7 +101,7 @@ public object CareTeamSearchParams {
     )
 
   public val status: SearchParam<CareTeam, Any> =
-    SimpleSearchParam<CareTeam, Any>(
+    SearchParam<CareTeam, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "CareTeam.status",
@@ -109,7 +109,7 @@ public object CareTeamSearchParams {
     )
 
   public val subject: SearchParam<CareTeam, Reference> =
-    SimpleSearchParam<CareTeam, Reference>(
+    SearchParam<CareTeam, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "CareTeam.subject",

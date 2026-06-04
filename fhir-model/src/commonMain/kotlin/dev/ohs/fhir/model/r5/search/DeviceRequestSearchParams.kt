@@ -190,7 +190,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [DeviceRequest] resource type. */
 public object DeviceRequestSearchParams {
   public val authoredOn: SearchParam<DeviceRequest, DateTime> =
-    SimpleSearchParam<DeviceRequest, DateTime>(
+    SearchParam<DeviceRequest, DateTime>(
       name = "authored-on",
       type = SearchParamType.fromCode("date"),
       expression = "DeviceRequest.authoredOn",
@@ -198,7 +198,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val basedOn: SearchParam<DeviceRequest, Reference> =
-    SimpleSearchParam<DeviceRequest, Reference>(
+    SearchParam<DeviceRequest, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.basedOn",
@@ -367,7 +367,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val code: SearchParam<DeviceRequest, CodeableConcept> =
-    SimpleSearchParam<DeviceRequest, CodeableConcept>(
+    SearchParam<DeviceRequest, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceRequest.code.concept",
@@ -375,7 +375,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val device: SearchParam<DeviceRequest, Reference> =
-    SimpleSearchParam<DeviceRequest, Reference>(
+    SearchParam<DeviceRequest, Reference>(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.code.reference",
@@ -384,7 +384,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val encounter: SearchParam<DeviceRequest, Reference> =
-    SimpleSearchParam<DeviceRequest, Reference>(
+    SearchParam<DeviceRequest, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.encounter",
@@ -393,7 +393,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val eventDate: SearchParam<DeviceRequest, Any> =
-    SimpleSearchParam<DeviceRequest, Any>(
+    SearchParam<DeviceRequest, Any>(
       name = "event-date",
       type = SearchParamType.fromCode("date"),
       expression = "(DeviceRequest.occurrence.ofType(dateTime))",
@@ -401,7 +401,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val groupIdentifier: SearchParam<DeviceRequest, Identifier> =
-    SimpleSearchParam<DeviceRequest, Identifier>(
+    SearchParam<DeviceRequest, Identifier>(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceRequest.groupIdentifier",
@@ -409,7 +409,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val identifier: SearchParam<DeviceRequest, Identifier> =
-    SimpleSearchParam<DeviceRequest, Identifier>(
+    SearchParam<DeviceRequest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceRequest.identifier",
@@ -417,7 +417,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val instantiatesCanonical: SearchParam<DeviceRequest, Canonical> =
-    SimpleSearchParam<DeviceRequest, Canonical>(
+    SearchParam<DeviceRequest, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.instantiatesCanonical",
@@ -426,7 +426,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val instantiatesUri: SearchParam<DeviceRequest, Uri> =
-    SimpleSearchParam<DeviceRequest, Uri>(
+    SearchParam<DeviceRequest, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "DeviceRequest.instantiatesUri",
@@ -434,7 +434,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val insurance: SearchParam<DeviceRequest, Reference> =
-    SimpleSearchParam<DeviceRequest, Reference>(
+    SearchParam<DeviceRequest, Reference>(
       name = "insurance",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.insurance",
@@ -443,7 +443,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val intent: SearchParam<DeviceRequest, Any> =
-    SimpleSearchParam<DeviceRequest, Any>(
+    SearchParam<DeviceRequest, Any>(
       name = "intent",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceRequest.intent",
@@ -451,7 +451,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val patient: SearchParam<DeviceRequest, Reference> =
-    SimpleSearchParam<DeviceRequest, Reference>(
+    SearchParam<DeviceRequest, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.subject.where(resolve() is Patient)",
@@ -464,7 +464,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val performer: SearchParam<DeviceRequest, Reference> =
-    SimpleSearchParam<DeviceRequest, Reference>(
+    SearchParam<DeviceRequest, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.performer.reference",
@@ -483,7 +483,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val performerCode: SearchParam<DeviceRequest, CodeableConcept> =
-    SimpleSearchParam<DeviceRequest, CodeableConcept>(
+    SearchParam<DeviceRequest, CodeableConcept>(
       name = "performer-code",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceRequest.performer.concept",
@@ -491,7 +491,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val priorRequest: SearchParam<DeviceRequest, Reference> =
-    SimpleSearchParam<DeviceRequest, Reference>(
+    SearchParam<DeviceRequest, Reference>(
       name = "prior-request",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.replaces",
@@ -500,7 +500,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val requester: SearchParam<DeviceRequest, Reference> =
-    SimpleSearchParam<DeviceRequest, Reference>(
+    SearchParam<DeviceRequest, Reference>(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.requester",
@@ -510,7 +510,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val status: SearchParam<DeviceRequest, Any> =
-    SimpleSearchParam<DeviceRequest, Any>(
+    SearchParam<DeviceRequest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceRequest.status",
@@ -518,7 +518,7 @@ public object DeviceRequestSearchParams {
     )
 
   public val subject: SearchParam<DeviceRequest, Reference> =
-    SimpleSearchParam<DeviceRequest, Reference>(
+    SearchParam<DeviceRequest, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceRequest.subject",

@@ -31,7 +31,7 @@ import kotlin.collections.List
 /** Search parameters for the [DeviceUsage] resource type. */
 public object DeviceUsageSearchParams {
   public val device: SearchParam<DeviceUsage, CodeableConcept> =
-    SimpleSearchParam<DeviceUsage, CodeableConcept>(
+    SearchParam<DeviceUsage, CodeableConcept>(
       name = "device",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceUsage.device.concept",
@@ -39,7 +39,7 @@ public object DeviceUsageSearchParams {
     )
 
   public val identifier: SearchParam<DeviceUsage, Identifier> =
-    SimpleSearchParam<DeviceUsage, Identifier>(
+    SearchParam<DeviceUsage, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceUsage.identifier",
@@ -47,7 +47,7 @@ public object DeviceUsageSearchParams {
     )
 
   public val patient: SearchParam<DeviceUsage, Reference> =
-    SimpleSearchParam<DeviceUsage, Reference>(
+    SearchParam<DeviceUsage, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceUsage.patient",
@@ -56,7 +56,7 @@ public object DeviceUsageSearchParams {
     )
 
   public val status: SearchParam<DeviceUsage, Any> =
-    SimpleSearchParam<DeviceUsage, Any>(
+    SearchParam<DeviceUsage, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceUsage.status",

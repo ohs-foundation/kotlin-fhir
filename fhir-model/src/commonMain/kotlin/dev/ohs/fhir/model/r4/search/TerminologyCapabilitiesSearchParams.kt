@@ -35,7 +35,7 @@ import kotlin.collections.List
 /** Search parameters for the [TerminologyCapabilities] resource type. */
 public object TerminologyCapabilitiesSearchParams {
   public val context: SearchParam<TerminologyCapabilities, CodeableConcept> =
-    SimpleSearchParam<TerminologyCapabilities, CodeableConcept>(
+    SearchParam<TerminologyCapabilities, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(TerminologyCapabilities.useContext.value as CodeableConcept)",
@@ -47,7 +47,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val contextQuantity: SearchParam<TerminologyCapabilities, Quantity> =
-    SimpleSearchParam<TerminologyCapabilities, Quantity>(
+    SearchParam<TerminologyCapabilities, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(TerminologyCapabilities.useContext.value as Quantity)",
@@ -57,7 +57,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val contextType: SearchParam<TerminologyCapabilities, Coding> =
-    SimpleSearchParam<TerminologyCapabilities, Coding>(
+    SearchParam<TerminologyCapabilities, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "TerminologyCapabilities.useContext.code",
@@ -65,7 +65,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<TerminologyCapabilities, UsageContext> =
-    SimpleSearchParam<TerminologyCapabilities, UsageContext>(
+    SearchParam<TerminologyCapabilities, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "TerminologyCapabilities.useContext",
@@ -73,7 +73,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val contextTypeValue: SearchParam<TerminologyCapabilities, UsageContext> =
-    SimpleSearchParam<TerminologyCapabilities, UsageContext>(
+    SearchParam<TerminologyCapabilities, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "TerminologyCapabilities.useContext",
@@ -81,7 +81,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val date: SearchParam<TerminologyCapabilities, DateTime> =
-    SimpleSearchParam<TerminologyCapabilities, DateTime>(
+    SearchParam<TerminologyCapabilities, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "TerminologyCapabilities.date",
@@ -89,7 +89,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val description: SearchParam<TerminologyCapabilities, Markdown> =
-    SimpleSearchParam<TerminologyCapabilities, Markdown>(
+    SearchParam<TerminologyCapabilities, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "TerminologyCapabilities.description",
@@ -97,7 +97,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val jurisdiction: SearchParam<TerminologyCapabilities, CodeableConcept> =
-    SimpleSearchParam<TerminologyCapabilities, CodeableConcept>(
+    SearchParam<TerminologyCapabilities, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "TerminologyCapabilities.jurisdiction",
@@ -105,7 +105,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val name: SearchParam<TerminologyCapabilities, String> =
-    SimpleSearchParam<TerminologyCapabilities, String>(
+    SearchParam<TerminologyCapabilities, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "TerminologyCapabilities.name",
@@ -113,7 +113,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val publisher: SearchParam<TerminologyCapabilities, String> =
-    SimpleSearchParam<TerminologyCapabilities, String>(
+    SearchParam<TerminologyCapabilities, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "TerminologyCapabilities.publisher",
@@ -121,7 +121,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val status: SearchParam<TerminologyCapabilities, Any> =
-    SimpleSearchParam<TerminologyCapabilities, Any>(
+    SearchParam<TerminologyCapabilities, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "TerminologyCapabilities.status",
@@ -129,7 +129,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val title: SearchParam<TerminologyCapabilities, String> =
-    SimpleSearchParam<TerminologyCapabilities, String>(
+    SearchParam<TerminologyCapabilities, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "TerminologyCapabilities.title",
@@ -137,7 +137,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val url: SearchParam<TerminologyCapabilities, Uri> =
-    SimpleSearchParam<TerminologyCapabilities, Uri>(
+    SearchParam<TerminologyCapabilities, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "TerminologyCapabilities.url",
@@ -145,7 +145,7 @@ public object TerminologyCapabilitiesSearchParams {
     )
 
   public val version: SearchParam<TerminologyCapabilities, String> =
-    SimpleSearchParam<TerminologyCapabilities, String>(
+    SearchParam<TerminologyCapabilities, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "TerminologyCapabilities.version",

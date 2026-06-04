@@ -41,7 +41,7 @@ import kotlin.collections.List
 /** Search parameters for the [Specimen] resource type. */
 public object SpecimenSearchParams {
   public val accession: SearchParam<Specimen, Identifier> =
-    SimpleSearchParam<Specimen, Identifier>(
+    SearchParam<Specimen, Identifier>(
       name = "accession",
       type = SearchParamType.fromCode("token"),
       expression = "Specimen.accessionIdentifier",
@@ -49,7 +49,7 @@ public object SpecimenSearchParams {
     )
 
   public val bodysite: SearchParam<Specimen, Reference> =
-    SimpleSearchParam<Specimen, Reference>(
+    SearchParam<Specimen, Reference>(
       name = "bodysite",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.collection.bodySite.reference",
@@ -58,7 +58,7 @@ public object SpecimenSearchParams {
     )
 
   public val collected: SearchParam<Specimen, Any> =
-    SimpleSearchParam<Specimen, Any>(
+    SearchParam<Specimen, Any>(
       name = "collected",
       type = SearchParamType.fromCode("date"),
       expression = "Specimen.collection.collected.ofType(dateTime)",
@@ -66,7 +66,7 @@ public object SpecimenSearchParams {
     )
 
   public val collector: SearchParam<Specimen, Reference> =
-    SimpleSearchParam<Specimen, Reference>(
+    SearchParam<Specimen, Reference>(
       name = "collector",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.collection.collector",
@@ -76,7 +76,7 @@ public object SpecimenSearchParams {
     )
 
   public val containerDevice: SearchParam<Specimen, Reference> =
-    SimpleSearchParam<Specimen, Reference>(
+    SearchParam<Specimen, Reference>(
       name = "container-device",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.container.device.where(resolve() is Device)",
@@ -89,7 +89,7 @@ public object SpecimenSearchParams {
     )
 
   public val identifier: SearchParam<Specimen, Identifier> =
-    SimpleSearchParam<Specimen, Identifier>(
+    SearchParam<Specimen, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Specimen.identifier",
@@ -97,7 +97,7 @@ public object SpecimenSearchParams {
     )
 
   public val parent: SearchParam<Specimen, Reference> =
-    SimpleSearchParam<Specimen, Reference>(
+    SearchParam<Specimen, Reference>(
       name = "parent",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.parent",
@@ -106,7 +106,7 @@ public object SpecimenSearchParams {
     )
 
   public val patient: SearchParam<Specimen, Reference> =
-    SimpleSearchParam<Specimen, Reference>(
+    SearchParam<Specimen, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.subject.where(resolve() is Patient)",
@@ -119,7 +119,7 @@ public object SpecimenSearchParams {
     )
 
   public val procedure: SearchParam<Specimen, Reference> =
-    SimpleSearchParam<Specimen, Reference>(
+    SearchParam<Specimen, Reference>(
       name = "procedure",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.collection.procedure",
@@ -128,7 +128,7 @@ public object SpecimenSearchParams {
     )
 
   public val status: SearchParam<Specimen, Any> =
-    SimpleSearchParam<Specimen, Any>(
+    SearchParam<Specimen, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Specimen.status",
@@ -136,7 +136,7 @@ public object SpecimenSearchParams {
     )
 
   public val subject: SearchParam<Specimen, Reference> =
-    SimpleSearchParam<Specimen, Reference>(
+    SearchParam<Specimen, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Specimen.subject",
@@ -153,7 +153,7 @@ public object SpecimenSearchParams {
     )
 
   public val type: SearchParam<Specimen, CodeableConcept> =
-    SimpleSearchParam<Specimen, CodeableConcept>(
+    SearchParam<Specimen, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Specimen.type",

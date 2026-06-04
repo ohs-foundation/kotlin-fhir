@@ -169,7 +169,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Basic] resource type. */
 public object BasicSearchParams {
   public val author: SearchParam<Basic, Reference> =
-    SimpleSearchParam<Basic, Reference>(
+    SearchParam<Basic, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "Basic.author",
@@ -185,7 +185,7 @@ public object BasicSearchParams {
     )
 
   public val code: SearchParam<Basic, CodeableConcept> =
-    SimpleSearchParam<Basic, CodeableConcept>(
+    SearchParam<Basic, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "Basic.code",
@@ -193,7 +193,7 @@ public object BasicSearchParams {
     )
 
   public val created: SearchParam<Basic, Date> =
-    SimpleSearchParam<Basic, Date>(
+    SearchParam<Basic, Date>(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "Basic.created",
@@ -201,7 +201,7 @@ public object BasicSearchParams {
     )
 
   public val identifier: SearchParam<Basic, Identifier> =
-    SimpleSearchParam<Basic, Identifier>(
+    SearchParam<Basic, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Basic.identifier",
@@ -209,7 +209,7 @@ public object BasicSearchParams {
     )
 
   public val patient: SearchParam<Basic, Reference> =
-    SimpleSearchParam<Basic, Reference>(
+    SearchParam<Basic, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Basic.subject.where(resolve() is Patient)",
@@ -222,7 +222,7 @@ public object BasicSearchParams {
     )
 
   public val subject: SearchParam<Basic, Reference> =
-    SimpleSearchParam<Basic, Reference>(
+    SearchParam<Basic, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Basic.subject",

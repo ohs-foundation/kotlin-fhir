@@ -35,7 +35,7 @@ import kotlin.collections.List
 /** Search parameters for the [GraphDefinition] resource type. */
 public object GraphDefinitionSearchParams {
   public val context: SearchParam<GraphDefinition, CodeableConcept> =
-    SimpleSearchParam<GraphDefinition, CodeableConcept>(
+    SearchParam<GraphDefinition, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(GraphDefinition.useContext.value as CodeableConcept)",
@@ -47,7 +47,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val contextQuantity: SearchParam<GraphDefinition, Quantity> =
-    SimpleSearchParam<GraphDefinition, Quantity>(
+    SearchParam<GraphDefinition, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(GraphDefinition.useContext.value as Quantity)",
@@ -57,7 +57,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val contextType: SearchParam<GraphDefinition, Coding> =
-    SimpleSearchParam<GraphDefinition, Coding>(
+    SearchParam<GraphDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "GraphDefinition.useContext.code",
@@ -65,7 +65,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<GraphDefinition, UsageContext> =
-    SimpleSearchParam<GraphDefinition, UsageContext>(
+    SearchParam<GraphDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "GraphDefinition.useContext",
@@ -73,7 +73,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val contextTypeValue: SearchParam<GraphDefinition, UsageContext> =
-    SimpleSearchParam<GraphDefinition, UsageContext>(
+    SearchParam<GraphDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "GraphDefinition.useContext",
@@ -81,7 +81,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val date: SearchParam<GraphDefinition, DateTime> =
-    SimpleSearchParam<GraphDefinition, DateTime>(
+    SearchParam<GraphDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "GraphDefinition.date",
@@ -89,7 +89,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val description: SearchParam<GraphDefinition, Markdown> =
-    SimpleSearchParam<GraphDefinition, Markdown>(
+    SearchParam<GraphDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "GraphDefinition.description",
@@ -97,7 +97,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val jurisdiction: SearchParam<GraphDefinition, CodeableConcept> =
-    SimpleSearchParam<GraphDefinition, CodeableConcept>(
+    SearchParam<GraphDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "GraphDefinition.jurisdiction",
@@ -105,7 +105,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val name: SearchParam<GraphDefinition, String> =
-    SimpleSearchParam<GraphDefinition, String>(
+    SearchParam<GraphDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "GraphDefinition.name",
@@ -113,7 +113,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val publisher: SearchParam<GraphDefinition, String> =
-    SimpleSearchParam<GraphDefinition, String>(
+    SearchParam<GraphDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "GraphDefinition.publisher",
@@ -121,7 +121,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val start: SearchParam<GraphDefinition, Any> =
-    SimpleSearchParam<GraphDefinition, Any>(
+    SearchParam<GraphDefinition, Any>(
       name = "start",
       type = SearchParamType.fromCode("token"),
       expression = "GraphDefinition.start",
@@ -129,7 +129,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val status: SearchParam<GraphDefinition, Any> =
-    SimpleSearchParam<GraphDefinition, Any>(
+    SearchParam<GraphDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "GraphDefinition.status",
@@ -137,7 +137,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val url: SearchParam<GraphDefinition, Uri> =
-    SimpleSearchParam<GraphDefinition, Uri>(
+    SearchParam<GraphDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "GraphDefinition.url",
@@ -145,7 +145,7 @@ public object GraphDefinitionSearchParams {
     )
 
   public val version: SearchParam<GraphDefinition, String> =
-    SimpleSearchParam<GraphDefinition, String>(
+    SearchParam<GraphDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "GraphDefinition.version",

@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [ObservationDefinition] resource type. */
 public object ObservationDefinitionSearchParams {
   public val category: SearchParam<ObservationDefinition, CodeableConcept> =
-    SimpleSearchParam<ObservationDefinition, CodeableConcept>(
+    SearchParam<ObservationDefinition, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "ObservationDefinition.category",
@@ -40,7 +40,7 @@ public object ObservationDefinitionSearchParams {
     )
 
   public val code: SearchParam<ObservationDefinition, CodeableConcept> =
-    SimpleSearchParam<ObservationDefinition, CodeableConcept>(
+    SearchParam<ObservationDefinition, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "ObservationDefinition.code",
@@ -48,7 +48,7 @@ public object ObservationDefinitionSearchParams {
     )
 
   public val experimental: SearchParam<ObservationDefinition, Boolean> =
-    SimpleSearchParam<ObservationDefinition, Boolean>(
+    SearchParam<ObservationDefinition, Boolean>(
       name = "experimental",
       type = SearchParamType.fromCode("token"),
       expression = "ObservationDefinition.experimental",
@@ -56,7 +56,7 @@ public object ObservationDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<ObservationDefinition, Identifier> =
-    SimpleSearchParam<ObservationDefinition, Identifier>(
+    SearchParam<ObservationDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ObservationDefinition.identifier",
@@ -64,7 +64,7 @@ public object ObservationDefinitionSearchParams {
     )
 
   public val method: SearchParam<ObservationDefinition, CodeableConcept> =
-    SimpleSearchParam<ObservationDefinition, CodeableConcept>(
+    SearchParam<ObservationDefinition, CodeableConcept>(
       name = "method",
       type = SearchParamType.fromCode("token"),
       expression = "ObservationDefinition.method",
@@ -72,7 +72,7 @@ public object ObservationDefinitionSearchParams {
     )
 
   public val status: SearchParam<ObservationDefinition, Any> =
-    SimpleSearchParam<ObservationDefinition, Any>(
+    SearchParam<ObservationDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ObservationDefinition.status",
@@ -80,7 +80,7 @@ public object ObservationDefinitionSearchParams {
     )
 
   public val title: SearchParam<ObservationDefinition, String> =
-    SimpleSearchParam<ObservationDefinition, String>(
+    SearchParam<ObservationDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "ObservationDefinition.title",
@@ -88,7 +88,7 @@ public object ObservationDefinitionSearchParams {
     )
 
   public val url: SearchParam<ObservationDefinition, Uri> =
-    SimpleSearchParam<ObservationDefinition, Uri>(
+    SearchParam<ObservationDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "ObservationDefinition.url",

@@ -31,7 +31,7 @@ import kotlin.collections.List
 /** Search parameters for the [DeviceMetric] resource type. */
 public object DeviceMetricSearchParams {
   public val category: SearchParam<DeviceMetric, Any> =
-    SimpleSearchParam<DeviceMetric, Any>(
+    SearchParam<DeviceMetric, Any>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceMetric.category",
@@ -39,7 +39,7 @@ public object DeviceMetricSearchParams {
     )
 
   public val identifier: SearchParam<DeviceMetric, Identifier> =
-    SimpleSearchParam<DeviceMetric, Identifier>(
+    SearchParam<DeviceMetric, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceMetric.identifier",
@@ -47,7 +47,7 @@ public object DeviceMetricSearchParams {
     )
 
   public val parent: SearchParam<DeviceMetric, Reference> =
-    SimpleSearchParam<DeviceMetric, Reference>(
+    SearchParam<DeviceMetric, Reference>(
       name = "parent",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceMetric.parent",
@@ -56,7 +56,7 @@ public object DeviceMetricSearchParams {
     )
 
   public val source: SearchParam<DeviceMetric, Reference> =
-    SimpleSearchParam<DeviceMetric, Reference>(
+    SearchParam<DeviceMetric, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceMetric.source",
@@ -65,7 +65,7 @@ public object DeviceMetricSearchParams {
     )
 
   public val type: SearchParam<DeviceMetric, CodeableConcept> =
-    SimpleSearchParam<DeviceMetric, CodeableConcept>(
+    SearchParam<DeviceMetric, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceMetric.type",

@@ -177,7 +177,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [DocumentManifest] resource type. */
 public object DocumentManifestSearchParams {
   public val author: SearchParam<DocumentManifest, Reference> =
-    SimpleSearchParam<DocumentManifest, Reference>(
+    SearchParam<DocumentManifest, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentManifest.author",
@@ -194,7 +194,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val created: SearchParam<DocumentManifest, DateTime> =
-    SimpleSearchParam<DocumentManifest, DateTime>(
+    SearchParam<DocumentManifest, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "DocumentManifest.created",
@@ -202,7 +202,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val description: SearchParam<DocumentManifest, String> =
-    SimpleSearchParam<DocumentManifest, String>(
+    SearchParam<DocumentManifest, String>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "DocumentManifest.description",
@@ -210,7 +210,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val identifier: SearchParam<DocumentManifest, Identifier> =
-    SimpleSearchParam<DocumentManifest, Identifier>(
+    SearchParam<DocumentManifest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentManifest.masterIdentifier",
@@ -218,7 +218,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val item: SearchParam<DocumentManifest, Reference> =
-    SimpleSearchParam<DocumentManifest, Reference>(
+    SearchParam<DocumentManifest, Reference>(
       name = "item",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentManifest.content",
@@ -374,7 +374,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val patient: SearchParam<DocumentManifest, Reference> =
-    SimpleSearchParam<DocumentManifest, Reference>(
+    SearchParam<DocumentManifest, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentManifest.subject.where(resolve() is Patient)",
@@ -387,7 +387,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val recipient: SearchParam<DocumentManifest, Reference> =
-    SimpleSearchParam<DocumentManifest, Reference>(
+    SearchParam<DocumentManifest, Reference>(
       name = "recipient",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentManifest.recipient",
@@ -403,7 +403,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val relatedId: SearchParam<DocumentManifest, Identifier> =
-    SimpleSearchParam<DocumentManifest, Identifier>(
+    SearchParam<DocumentManifest, Identifier>(
       name = "related-id",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentManifest.related.identifier",
@@ -411,7 +411,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val relatedRef: SearchParam<DocumentManifest, Reference> =
-    SimpleSearchParam<DocumentManifest, Reference>(
+    SearchParam<DocumentManifest, Reference>(
       name = "related-ref",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentManifest.related.ref",
@@ -567,7 +567,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val source: SearchParam<DocumentManifest, Uri> =
-    SimpleSearchParam<DocumentManifest, Uri>(
+    SearchParam<DocumentManifest, Uri>(
       name = "source",
       type = SearchParamType.fromCode("uri"),
       expression = "DocumentManifest.source",
@@ -575,7 +575,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val status: SearchParam<DocumentManifest, Any> =
-    SimpleSearchParam<DocumentManifest, Any>(
+    SearchParam<DocumentManifest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentManifest.status",
@@ -583,7 +583,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val subject: SearchParam<DocumentManifest, Reference> =
-    SimpleSearchParam<DocumentManifest, Reference>(
+    SearchParam<DocumentManifest, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentManifest.subject",
@@ -592,7 +592,7 @@ public object DocumentManifestSearchParams {
     )
 
   public val type: SearchParam<DocumentManifest, CodeableConcept> =
-    SimpleSearchParam<DocumentManifest, CodeableConcept>(
+    SearchParam<DocumentManifest, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentManifest.type",

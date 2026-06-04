@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [MedicinalProductAuthorization] resource type. */
 public object MedicinalProductAuthorizationSearchParams {
   public val country: SearchParam<MedicinalProductAuthorization, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductAuthorization, CodeableConcept>(
+    SearchParam<MedicinalProductAuthorization, CodeableConcept>(
       name = "country",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductAuthorization.country",
@@ -40,7 +40,7 @@ public object MedicinalProductAuthorizationSearchParams {
     )
 
   public val holder: SearchParam<MedicinalProductAuthorization, Reference> =
-    SimpleSearchParam<MedicinalProductAuthorization, Reference>(
+    SearchParam<MedicinalProductAuthorization, Reference>(
       name = "holder",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicinalProductAuthorization.holder",
@@ -49,7 +49,7 @@ public object MedicinalProductAuthorizationSearchParams {
     )
 
   public val identifier: SearchParam<MedicinalProductAuthorization, Identifier> =
-    SimpleSearchParam<MedicinalProductAuthorization, Identifier>(
+    SearchParam<MedicinalProductAuthorization, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductAuthorization.identifier",
@@ -57,7 +57,7 @@ public object MedicinalProductAuthorizationSearchParams {
     )
 
   public val status: SearchParam<MedicinalProductAuthorization, CodeableConcept> =
-    SimpleSearchParam<MedicinalProductAuthorization, CodeableConcept>(
+    SearchParam<MedicinalProductAuthorization, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProductAuthorization.status",
@@ -65,7 +65,7 @@ public object MedicinalProductAuthorizationSearchParams {
     )
 
   public val subject: SearchParam<MedicinalProductAuthorization, Reference> =
-    SimpleSearchParam<MedicinalProductAuthorization, Reference>(
+    SearchParam<MedicinalProductAuthorization, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicinalProductAuthorization.subject",

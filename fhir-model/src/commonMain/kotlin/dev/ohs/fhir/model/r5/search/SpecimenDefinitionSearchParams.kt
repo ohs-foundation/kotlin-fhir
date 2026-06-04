@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [SpecimenDefinition] resource type. */
 public object SpecimenDefinitionSearchParams {
   public val container: SearchParam<SpecimenDefinition, CodeableConcept> =
-    SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
+    SearchParam<SpecimenDefinition, CodeableConcept>(
       name = "container",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.typeTested.container.type",
@@ -42,7 +42,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val experimental: SearchParam<SpecimenDefinition, Boolean> =
-    SimpleSearchParam<SpecimenDefinition, Boolean>(
+    SearchParam<SpecimenDefinition, Boolean>(
       name = "experimental",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.experimental",
@@ -50,7 +50,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<SpecimenDefinition, Identifier> =
-    SimpleSearchParam<SpecimenDefinition, Identifier>(
+    SearchParam<SpecimenDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.identifier",
@@ -58,7 +58,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val isDerived: SearchParam<SpecimenDefinition, Boolean> =
-    SimpleSearchParam<SpecimenDefinition, Boolean>(
+    SearchParam<SpecimenDefinition, Boolean>(
       name = "is-derived",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.typeTested.isDerived",
@@ -66,7 +66,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val status: SearchParam<SpecimenDefinition, Any> =
-    SimpleSearchParam<SpecimenDefinition, Any>(
+    SearchParam<SpecimenDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.status",
@@ -74,7 +74,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val title: SearchParam<SpecimenDefinition, String> =
-    SimpleSearchParam<SpecimenDefinition, String>(
+    SearchParam<SpecimenDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "SpecimenDefinition.title",
@@ -82,7 +82,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val type: SearchParam<SpecimenDefinition, CodeableConcept> =
-    SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
+    SearchParam<SpecimenDefinition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.typeCollected",
@@ -90,7 +90,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val typeTested: SearchParam<SpecimenDefinition, CodeableConcept> =
-    SimpleSearchParam<SpecimenDefinition, CodeableConcept>(
+    SearchParam<SpecimenDefinition, CodeableConcept>(
       name = "type-tested",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.typeTested.type",
@@ -98,7 +98,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val url: SearchParam<SpecimenDefinition, Uri> =
-    SimpleSearchParam<SpecimenDefinition, Uri>(
+    SearchParam<SpecimenDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "SpecimenDefinition.url",

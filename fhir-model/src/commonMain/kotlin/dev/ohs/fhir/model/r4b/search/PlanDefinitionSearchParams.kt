@@ -177,7 +177,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [PlanDefinition] resource type. */
 public object PlanDefinitionSearchParams {
   public val composedOf: SearchParam<PlanDefinition, Canonical> =
-    SimpleSearchParam<PlanDefinition, Canonical>(
+    SearchParam<PlanDefinition, Canonical>(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
       expression = "PlanDefinition.relatedArtifact.where(type='composed-of').resource",
@@ -332,7 +332,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val context: SearchParam<PlanDefinition, CodeableConcept> =
-    SimpleSearchParam<PlanDefinition, CodeableConcept>(
+    SearchParam<PlanDefinition, CodeableConcept>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(PlanDefinition.useContext.value as CodeableConcept)",
@@ -344,7 +344,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val contextQuantity: SearchParam<PlanDefinition, Quantity> =
-    SimpleSearchParam<PlanDefinition, Quantity>(
+    SearchParam<PlanDefinition, Quantity>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(PlanDefinition.useContext.value as Quantity)",
@@ -354,7 +354,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val contextType: SearchParam<PlanDefinition, Coding> =
-    SimpleSearchParam<PlanDefinition, Coding>(
+    SearchParam<PlanDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "PlanDefinition.useContext.code",
@@ -362,7 +362,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<PlanDefinition, UsageContext> =
-    SimpleSearchParam<PlanDefinition, UsageContext>(
+    SearchParam<PlanDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "PlanDefinition.useContext",
@@ -370,7 +370,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val contextTypeValue: SearchParam<PlanDefinition, UsageContext> =
-    SimpleSearchParam<PlanDefinition, UsageContext>(
+    SearchParam<PlanDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "PlanDefinition.useContext",
@@ -378,7 +378,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val date: SearchParam<PlanDefinition, DateTime> =
-    SimpleSearchParam<PlanDefinition, DateTime>(
+    SearchParam<PlanDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "PlanDefinition.date",
@@ -386,7 +386,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val definition: SearchParam<PlanDefinition, PlanDefinition.Action.Definition> =
-    SimpleSearchParam<PlanDefinition, PlanDefinition.Action.Definition>(
+    SearchParam<PlanDefinition, PlanDefinition.Action.Definition>(
       name = "definition",
       type = SearchParamType.fromCode("reference"),
       expression = "PlanDefinition.action.definition",
@@ -395,7 +395,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val dependsOn: SearchParam<PlanDefinition, Canonical> =
-    SimpleSearchParam<PlanDefinition, Canonical>(
+    SearchParam<PlanDefinition, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
       expression = "PlanDefinition.relatedArtifact.where(type='depends-on').resource",
@@ -550,7 +550,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val derivedFrom: SearchParam<PlanDefinition, Canonical> =
-    SimpleSearchParam<PlanDefinition, Canonical>(
+    SearchParam<PlanDefinition, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "PlanDefinition.relatedArtifact.where(type='derived-from').resource",
@@ -705,7 +705,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val description: SearchParam<PlanDefinition, Markdown> =
-    SimpleSearchParam<PlanDefinition, Markdown>(
+    SearchParam<PlanDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "PlanDefinition.description",
@@ -713,7 +713,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val effective: SearchParam<PlanDefinition, Period> =
-    SimpleSearchParam<PlanDefinition, Period>(
+    SearchParam<PlanDefinition, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "PlanDefinition.effectivePeriod",
@@ -721,7 +721,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<PlanDefinition, Identifier> =
-    SimpleSearchParam<PlanDefinition, Identifier>(
+    SearchParam<PlanDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "PlanDefinition.identifier",
@@ -729,7 +729,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val jurisdiction: SearchParam<PlanDefinition, CodeableConcept> =
-    SimpleSearchParam<PlanDefinition, CodeableConcept>(
+    SearchParam<PlanDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "PlanDefinition.jurisdiction",
@@ -737,7 +737,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val name: SearchParam<PlanDefinition, String> =
-    SimpleSearchParam<PlanDefinition, String>(
+    SearchParam<PlanDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "PlanDefinition.name",
@@ -745,7 +745,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val predecessor: SearchParam<PlanDefinition, Canonical> =
-    SimpleSearchParam<PlanDefinition, Canonical>(
+    SearchParam<PlanDefinition, Canonical>(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "PlanDefinition.relatedArtifact.where(type='predecessor').resource",
@@ -900,7 +900,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val publisher: SearchParam<PlanDefinition, String> =
-    SimpleSearchParam<PlanDefinition, String>(
+    SearchParam<PlanDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "PlanDefinition.publisher",
@@ -908,7 +908,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val status: SearchParam<PlanDefinition, Any> =
-    SimpleSearchParam<PlanDefinition, Any>(
+    SearchParam<PlanDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "PlanDefinition.status",
@@ -916,7 +916,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val successor: SearchParam<PlanDefinition, Canonical> =
-    SimpleSearchParam<PlanDefinition, Canonical>(
+    SearchParam<PlanDefinition, Canonical>(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
       expression = "PlanDefinition.relatedArtifact.where(type='successor').resource",
@@ -1071,7 +1071,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val title: SearchParam<PlanDefinition, String> =
-    SimpleSearchParam<PlanDefinition, String>(
+    SearchParam<PlanDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "PlanDefinition.title",
@@ -1079,7 +1079,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val topic: SearchParam<PlanDefinition, CodeableConcept> =
-    SimpleSearchParam<PlanDefinition, CodeableConcept>(
+    SearchParam<PlanDefinition, CodeableConcept>(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "PlanDefinition.topic",
@@ -1087,7 +1087,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val type: SearchParam<PlanDefinition, CodeableConcept> =
-    SimpleSearchParam<PlanDefinition, CodeableConcept>(
+    SearchParam<PlanDefinition, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "PlanDefinition.type",
@@ -1095,7 +1095,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val url: SearchParam<PlanDefinition, Uri> =
-    SimpleSearchParam<PlanDefinition, Uri>(
+    SearchParam<PlanDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "PlanDefinition.url",
@@ -1103,7 +1103,7 @@ public object PlanDefinitionSearchParams {
     )
 
   public val version: SearchParam<PlanDefinition, String> =
-    SimpleSearchParam<PlanDefinition, String>(
+    SearchParam<PlanDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "PlanDefinition.version",

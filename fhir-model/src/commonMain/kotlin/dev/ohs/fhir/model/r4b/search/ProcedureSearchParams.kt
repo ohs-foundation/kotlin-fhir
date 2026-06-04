@@ -53,7 +53,7 @@ import kotlin.collections.List
 /** Search parameters for the [Procedure] resource type. */
 public object ProcedureSearchParams {
   public val basedOn: SearchParam<Procedure, Reference> =
-    SimpleSearchParam<Procedure, Reference>(
+    SearchParam<Procedure, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.basedOn",
@@ -62,7 +62,7 @@ public object ProcedureSearchParams {
     )
 
   public val category: SearchParam<Procedure, CodeableConcept> =
-    SimpleSearchParam<Procedure, CodeableConcept>(
+    SearchParam<Procedure, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "Procedure.category",
@@ -70,7 +70,7 @@ public object ProcedureSearchParams {
     )
 
   public val code: SearchParam<Procedure, CodeableConcept> =
-    SimpleSearchParam<Procedure, CodeableConcept>(
+    SearchParam<Procedure, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "Procedure.code",
@@ -78,7 +78,7 @@ public object ProcedureSearchParams {
     )
 
   public val date: SearchParam<Procedure, Procedure.Performed> =
-    SimpleSearchParam<Procedure, Procedure.Performed>(
+    SearchParam<Procedure, Procedure.Performed>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Procedure.performed",
@@ -86,7 +86,7 @@ public object ProcedureSearchParams {
     )
 
   public val encounter: SearchParam<Procedure, Reference> =
-    SimpleSearchParam<Procedure, Reference>(
+    SearchParam<Procedure, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.encounter",
@@ -95,7 +95,7 @@ public object ProcedureSearchParams {
     )
 
   public val identifier: SearchParam<Procedure, Identifier> =
-    SimpleSearchParam<Procedure, Identifier>(
+    SearchParam<Procedure, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Procedure.identifier",
@@ -103,7 +103,7 @@ public object ProcedureSearchParams {
     )
 
   public val instantiatesCanonical: SearchParam<Procedure, Canonical> =
-    SimpleSearchParam<Procedure, Canonical>(
+    SearchParam<Procedure, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.instantiatesCanonical",
@@ -119,7 +119,7 @@ public object ProcedureSearchParams {
     )
 
   public val instantiatesUri: SearchParam<Procedure, Uri> =
-    SimpleSearchParam<Procedure, Uri>(
+    SearchParam<Procedure, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "Procedure.instantiatesUri",
@@ -127,7 +127,7 @@ public object ProcedureSearchParams {
     )
 
   public val location: SearchParam<Procedure, Reference> =
-    SimpleSearchParam<Procedure, Reference>(
+    SearchParam<Procedure, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.location",
@@ -136,7 +136,7 @@ public object ProcedureSearchParams {
     )
 
   public val partOf: SearchParam<Procedure, Reference> =
-    SimpleSearchParam<Procedure, Reference>(
+    SearchParam<Procedure, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.partOf",
@@ -145,7 +145,7 @@ public object ProcedureSearchParams {
     )
 
   public val patient: SearchParam<Procedure, Reference> =
-    SimpleSearchParam<Procedure, Reference>(
+    SearchParam<Procedure, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.subject.where(resolve() is Patient)",
@@ -158,7 +158,7 @@ public object ProcedureSearchParams {
     )
 
   public val performer: SearchParam<Procedure, Reference> =
-    SimpleSearchParam<Procedure, Reference>(
+    SearchParam<Procedure, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.performer.actor",
@@ -175,7 +175,7 @@ public object ProcedureSearchParams {
     )
 
   public val reasonCode: SearchParam<Procedure, CodeableConcept> =
-    SimpleSearchParam<Procedure, CodeableConcept>(
+    SearchParam<Procedure, CodeableConcept>(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
       expression = "Procedure.reasonCode",
@@ -183,7 +183,7 @@ public object ProcedureSearchParams {
     )
 
   public val reasonReference: SearchParam<Procedure, Reference> =
-    SimpleSearchParam<Procedure, Reference>(
+    SearchParam<Procedure, Reference>(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.reasonReference",
@@ -199,7 +199,7 @@ public object ProcedureSearchParams {
     )
 
   public val status: SearchParam<Procedure, Any> =
-    SimpleSearchParam<Procedure, Any>(
+    SearchParam<Procedure, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Procedure.status",
@@ -207,7 +207,7 @@ public object ProcedureSearchParams {
     )
 
   public val subject: SearchParam<Procedure, Reference> =
-    SimpleSearchParam<Procedure, Reference>(
+    SearchParam<Procedure, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Procedure.subject",

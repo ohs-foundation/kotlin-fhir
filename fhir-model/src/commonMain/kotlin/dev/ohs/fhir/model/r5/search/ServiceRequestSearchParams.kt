@@ -50,7 +50,7 @@ import kotlin.collections.List
 /** Search parameters for the [ServiceRequest] resource type. */
 public object ServiceRequestSearchParams {
   public val authored: SearchParam<ServiceRequest, DateTime> =
-    SimpleSearchParam<ServiceRequest, DateTime>(
+    SearchParam<ServiceRequest, DateTime>(
       name = "authored",
       type = SearchParamType.fromCode("date"),
       expression = "ServiceRequest.authoredOn",
@@ -58,7 +58,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val basedOn: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.basedOn",
@@ -67,7 +67,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val bodySite: SearchParam<ServiceRequest, CodeableConcept> =
-    SimpleSearchParam<ServiceRequest, CodeableConcept>(
+    SearchParam<ServiceRequest, CodeableConcept>(
       name = "body-site",
       type = SearchParamType.fromCode("token"),
       expression = "ServiceRequest.bodySite",
@@ -75,7 +75,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val bodyStructure: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "body-structure",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.bodyStructure",
@@ -84,7 +84,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val category: SearchParam<ServiceRequest, CodeableConcept> =
-    SimpleSearchParam<ServiceRequest, CodeableConcept>(
+    SearchParam<ServiceRequest, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "ServiceRequest.category",
@@ -92,7 +92,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val codeConcept: SearchParam<ServiceRequest, CodeableConcept> =
-    SimpleSearchParam<ServiceRequest, CodeableConcept>(
+    SearchParam<ServiceRequest, CodeableConcept>(
       name = "code-concept",
       type = SearchParamType.fromCode("token"),
       expression = "ServiceRequest.code.concept",
@@ -100,7 +100,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val codeReference: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "code-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.code.reference",
@@ -109,7 +109,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val encounter: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.encounter",
@@ -118,7 +118,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val identifier: SearchParam<ServiceRequest, Identifier> =
-    SimpleSearchParam<ServiceRequest, Identifier>(
+    SearchParam<ServiceRequest, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ServiceRequest.identifier",
@@ -126,7 +126,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val instantiatesCanonical: SearchParam<ServiceRequest, Canonical> =
-    SimpleSearchParam<ServiceRequest, Canonical>(
+    SearchParam<ServiceRequest, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.instantiatesCanonical",
@@ -135,7 +135,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val instantiatesUri: SearchParam<ServiceRequest, Uri> =
-    SimpleSearchParam<ServiceRequest, Uri>(
+    SearchParam<ServiceRequest, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "ServiceRequest.instantiatesUri",
@@ -143,7 +143,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val intent: SearchParam<ServiceRequest, Any> =
-    SimpleSearchParam<ServiceRequest, Any>(
+    SearchParam<ServiceRequest, Any>(
       name = "intent",
       type = SearchParamType.fromCode("token"),
       expression = "ServiceRequest.intent",
@@ -151,7 +151,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val occurrence: SearchParam<ServiceRequest, Any> =
-    SimpleSearchParam<ServiceRequest, Any>(
+    SearchParam<ServiceRequest, Any>(
       name = "occurrence",
       type = SearchParamType.fromCode("date"),
       expression = "ServiceRequest.occurrence.ofType(dateTime)",
@@ -159,7 +159,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val patient: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.subject.where(resolve() is Patient)",
@@ -172,7 +172,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val performer: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.performer",
@@ -191,7 +191,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val performerType: SearchParam<ServiceRequest, CodeableConcept> =
-    SimpleSearchParam<ServiceRequest, CodeableConcept>(
+    SearchParam<ServiceRequest, CodeableConcept>(
       name = "performer-type",
       type = SearchParamType.fromCode("token"),
       expression = "ServiceRequest.performerType",
@@ -199,7 +199,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val priority: SearchParam<ServiceRequest, Any> =
-    SimpleSearchParam<ServiceRequest, Any>(
+    SearchParam<ServiceRequest, Any>(
       name = "priority",
       type = SearchParamType.fromCode("token"),
       expression = "ServiceRequest.priority",
@@ -207,7 +207,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val replaces: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "replaces",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.replaces",
@@ -216,7 +216,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val requester: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.requester",
@@ -233,7 +233,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val requisition: SearchParam<ServiceRequest, Identifier> =
-    SimpleSearchParam<ServiceRequest, Identifier>(
+    SearchParam<ServiceRequest, Identifier>(
       name = "requisition",
       type = SearchParamType.fromCode("token"),
       expression = "ServiceRequest.requisition",
@@ -241,7 +241,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val specimen: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "specimen",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.specimen",
@@ -250,7 +250,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val status: SearchParam<ServiceRequest, Any> =
-    SimpleSearchParam<ServiceRequest, Any>(
+    SearchParam<ServiceRequest, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ServiceRequest.status",
@@ -258,7 +258,7 @@ public object ServiceRequestSearchParams {
     )
 
   public val subject: SearchParam<ServiceRequest, Reference> =
-    SimpleSearchParam<ServiceRequest, Reference>(
+    SearchParam<ServiceRequest, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ServiceRequest.subject",

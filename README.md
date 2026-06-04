@@ -224,7 +224,7 @@ The following FHIR value sets are excluded from Kotlin enum generation.
 
 The codegen reads `SearchParameter-*.json` files from the FHIR core packages and generates per-resource containers of typed search parameters. This provides compile-time safe, discoverable access to FHIR search parameters.
 
-A `SearchParam<R, T>` sealed interface is generated in the `search` subpackage of each version package (e.g. `dev.ohs.fhir.model.r4.search`). It carries the metadata for a search parameter and the typed `extract` function:
+A `SearchParam<R, T>` class is generated in the `search` subpackage of each version package (e.g. `dev.ohs.fhir.model.r4.search`). It carries the metadata for a search parameter and the typed `extract` function:
 
 | Member       | Type                         | Description                                                                       |
 |:-------------|:-----------------------------|:----------------------------------------------------------------------------------|
@@ -234,30 +234,22 @@ A `SearchParam<R, T>` sealed interface is generated in the `search` subpackage o
 | `target`     | `List<KClass<out Resource>>` | Target resource types for reference search parameters.                            |
 | `extract`    | `(resource: R) -> List<T>`   | Pulls the values of type `T` out of a resource of type `R` for this search param. |
 
-The interface has a single implementation, `SimpleSearchParam<R, T>`, which stores the metadata plus an `extractor` lambda. For each resource type that has search parameters, a `{Resource}SearchParams` container `object` is generated, exposing one `val` per search parameter (each a `SimpleSearchParam`) plus an `all` list. Using `val`s backed by one shared class — rather than a class per parameter — keeps the generated output to a single file per resource. For example, `PatientSearchParams` looks like:
+The class stores the metadata plus an `extractor` lambda that does the value extraction. For each resource type with search parameters, a `{Resource}SearchParams` container `object` is generated, exposing one `val` per search parameter plus an `all` list. Using `val`s backed by one shared class, rather than a class per parameter, keeps the generated output to a single file per resource. For example, `PatientSearchParams` looks like:
 
 ```kotlin
-sealed interface SearchParam<in R : Resource, out T> {
-  val name: String
-  val type: SearchParamType
-  val expression: String
-  val target: List<KClass<out Resource>>
-  fun extract(resource: R): List<T>
-}
-
-class SimpleSearchParam<R : Resource, T>(
-  override val name: String,
-  override val type: SearchParamType,
-  override val expression: String,
-  override val target: List<KClass<out Resource>> = emptyList(),
+class SearchParam<R : Resource, T>(
+  val name: String,
+  val type: SearchParamType,
+  val expression: String,
+  val target: List<KClass<out Resource>> = emptyList(),
   private val extractor: (R) -> List<T>,
-) : SearchParam<R, T> {
-  override fun extract(resource: R): List<T> = extractor(resource)
+) {
+  fun extract(resource: R): List<T> = extractor(resource)
 }
 
 object PatientSearchParams {
   val birthdate: SearchParam<Patient, Date> =
-    SimpleSearchParam(
+    SearchParam(
       name = "birthdate",
       type = SearchParamType.fromCode("date"),
       expression = "Patient.birthDate",
@@ -265,7 +257,7 @@ object PatientSearchParams {
     )
 
   val generalPractitioner: SearchParam<Patient, Reference> =
-    SimpleSearchParam(
+    SearchParam(
       name = "general-practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "Patient.generalPractitioner",

@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [ClaimResponse] resource type. */
 public object ClaimResponseSearchParams {
   public val created: SearchParam<ClaimResponse, DateTime> =
-    SimpleSearchParam<ClaimResponse, DateTime>(
+    SearchParam<ClaimResponse, DateTime>(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "ClaimResponse.created",
@@ -45,7 +45,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val disposition: SearchParam<ClaimResponse, String> =
-    SimpleSearchParam<ClaimResponse, String>(
+    SearchParam<ClaimResponse, String>(
       name = "disposition",
       type = SearchParamType.fromCode("string"),
       expression = "ClaimResponse.disposition",
@@ -53,7 +53,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val identifier: SearchParam<ClaimResponse, Identifier> =
-    SimpleSearchParam<ClaimResponse, Identifier>(
+    SearchParam<ClaimResponse, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ClaimResponse.identifier",
@@ -61,7 +61,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val insurer: SearchParam<ClaimResponse, Reference> =
-    SimpleSearchParam<ClaimResponse, Reference>(
+    SearchParam<ClaimResponse, Reference>(
       name = "insurer",
       type = SearchParamType.fromCode("reference"),
       expression = "ClaimResponse.insurer",
@@ -70,7 +70,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val outcome: SearchParam<ClaimResponse, Any> =
-    SimpleSearchParam<ClaimResponse, Any>(
+    SearchParam<ClaimResponse, Any>(
       name = "outcome",
       type = SearchParamType.fromCode("token"),
       expression = "ClaimResponse.outcome",
@@ -78,7 +78,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val patient: SearchParam<ClaimResponse, Reference> =
-    SimpleSearchParam<ClaimResponse, Reference>(
+    SearchParam<ClaimResponse, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ClaimResponse.patient",
@@ -87,7 +87,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val paymentDate: SearchParam<ClaimResponse, Date> =
-    SimpleSearchParam<ClaimResponse, Date>(
+    SearchParam<ClaimResponse, Date>(
       name = "payment-date",
       type = SearchParamType.fromCode("date"),
       expression = "ClaimResponse.payment.date",
@@ -95,7 +95,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val request: SearchParam<ClaimResponse, Reference> =
-    SimpleSearchParam<ClaimResponse, Reference>(
+    SearchParam<ClaimResponse, Reference>(
       name = "request",
       type = SearchParamType.fromCode("reference"),
       expression = "ClaimResponse.request",
@@ -104,7 +104,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val requestor: SearchParam<ClaimResponse, Reference> =
-    SimpleSearchParam<ClaimResponse, Reference>(
+    SearchParam<ClaimResponse, Reference>(
       name = "requestor",
       type = SearchParamType.fromCode("reference"),
       expression = "ClaimResponse.requestor",
@@ -113,7 +113,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val status: SearchParam<ClaimResponse, Any> =
-    SimpleSearchParam<ClaimResponse, Any>(
+    SearchParam<ClaimResponse, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ClaimResponse.status",
@@ -121,7 +121,7 @@ public object ClaimResponseSearchParams {
     )
 
   public val use: SearchParam<ClaimResponse, Any> =
-    SimpleSearchParam<ClaimResponse, Any>(
+    SearchParam<ClaimResponse, Any>(
       name = "use",
       type = SearchParamType.fromCode("token"),
       expression = "ClaimResponse.use",

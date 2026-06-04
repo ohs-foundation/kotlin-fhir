@@ -31,19 +31,17 @@ import com.squareup.kotlinpoet.asClassName
 import kotlin.reflect.KClass
 
 /**
- * Generates a `SearchParam.kt` file with the sealed interface for search parameter metadata and
- * extraction, plus the single concrete [SimpleSearchParam] implementation.
+ * Generates a `SearchParam.kt` file with the typed search-parameter class.
  *
- * The `SearchParam<R, T>` interface carries the metadata about a FHIR search parameter (name, type,
- * expression, target) and the typed `extract` function that pulls values of type `T` out of a
- * resource of type `R`. `SimpleSearchParam<R, T>` is the only implementation: it stores the
- * metadata and an `extractor` lambda. Per-resource container objects (e.g., `PatientSearchParams`)
- * expose one `val` per search parameter, each holding a `SimpleSearchParam` instance.
+ * `SearchParam<R, T>` carries the metadata about a FHIR search parameter (name, type, expression,
+ * target) plus an `extractor` lambda. Its `extract(resource)` function delegates to the lambda to
+ * pull values of type `T` out of a resource of type `R`. Per-resource container objects (e.g.,
+ * `PatientSearchParams`) expose one `val` per search parameter, each holding a `SearchParam`
+ * instance.
  */
 object SearchParamFileSpecGenerator {
   fun generate(packageName: String): FileSpec {
     val resourceClassName = ClassName(packageName, "Resource")
-    val searchParamClassName = ClassName("$packageName.search", "SearchParam")
     val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
 
     val listOfTargetClasses =
@@ -53,66 +51,19 @@ object SearchParamFileSpecGenerator {
             .parameterizedBy(WildcardTypeName.producerOf(resourceClassName))
         )
 
-    // Variant type variables for the interface: `in R : Resource`, `out T`.
-    val variantR = TypeVariableName("R", resourceClassName, variance = KModifier.IN)
-    val variantT = TypeVariableName("T", variance = KModifier.OUT)
-    val listOfVariantT = List::class.asClassName().parameterizedBy(variantT)
+    val typeR = TypeVariableName("R", resourceClassName)
+    val typeT = TypeVariableName("T")
+    val listOfT = List::class.asClassName().parameterizedBy(typeT)
+    val extractorType = LambdaTypeName.get(null, typeR, returnType = listOfT)
 
-    val searchParamInterface =
-      TypeSpec.interfaceBuilder("SearchParam")
-        .addModifiers(KModifier.PUBLIC, KModifier.SEALED)
-        .addTypeVariable(variantR)
-        .addTypeVariable(variantT)
-        .addKdoc("Base type for typed FHIR search parameters.")
-        .addProperty(
-          PropertySpec.builder("name", String::class)
-            .addModifiers(KModifier.PUBLIC)
-            .addKdoc("The name of the search parameter as used in search URLs.")
-            .build()
-        )
-        .addProperty(
-          PropertySpec.builder("type", searchParamTypeClassName)
-            .addModifiers(KModifier.PUBLIC)
-            .addKdoc("The search parameter type (e.g., date, token, reference).")
-            .build()
-        )
-        .addProperty(
-          PropertySpec.builder("expression", String::class)
-            .addModifiers(KModifier.PUBLIC)
-            .addKdoc("The FHIRPath expression that extracts values for this search parameter.")
-            .build()
-        )
-        .addProperty(
-          PropertySpec.builder("target", listOfTargetClasses)
-            .addModifiers(KModifier.PUBLIC)
-            .addKdoc("The target resource types for reference search parameters.")
-            .build()
-        )
-        .addFunction(
-          FunSpec.builder("extract")
-            .addModifiers(KModifier.PUBLIC, KModifier.ABSTRACT)
-            .addParameter("resource", variantR)
-            .returns(listOfVariantT)
-            .addKdoc("Extracts the values for this search parameter from the given [resource].")
-            .build()
-        )
-        .build()
-
-    // Invariant type variables for the concrete implementation.
-    val implR = TypeVariableName("R", resourceClassName)
-    val implT = TypeVariableName("T")
-    val listOfImplT = List::class.asClassName().parameterizedBy(implT)
-    val extractorType = LambdaTypeName.get(null, implR, returnType = listOfImplT)
-
-    val simpleSearchParam =
-      TypeSpec.classBuilder("SimpleSearchParam")
+    val searchParamClass =
+      TypeSpec.classBuilder("SearchParam")
         .addModifiers(KModifier.PUBLIC)
-        .addTypeVariable(implR)
-        .addTypeVariable(implT)
-        .addSuperinterface(searchParamClassName.parameterizedBy(implR, implT))
+        .addTypeVariable(typeR)
+        .addTypeVariable(typeT)
         .addKdoc(
-          "The single [SearchParam] implementation: metadata plus an [extractor] lambda that does " +
-            "the value extraction."
+          "A typed FHIR search parameter: its metadata plus an `extractor` that pulls typed " +
+            "values out of a resource."
         )
         .primaryConstructor(
           FunSpec.constructorBuilder()
@@ -129,26 +80,30 @@ object SearchParamFileSpecGenerator {
         )
         .addProperty(
           PropertySpec.builder("name", String::class)
-            .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
+            .addModifiers(KModifier.PUBLIC)
             .initializer("name")
+            .addKdoc("The name of the search parameter as used in search URLs.")
             .build()
         )
         .addProperty(
           PropertySpec.builder("type", searchParamTypeClassName)
-            .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
+            .addModifiers(KModifier.PUBLIC)
             .initializer("type")
+            .addKdoc("The search parameter type (e.g., date, token, reference).")
             .build()
         )
         .addProperty(
           PropertySpec.builder("expression", String::class)
-            .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
+            .addModifiers(KModifier.PUBLIC)
             .initializer("expression")
+            .addKdoc("The FHIRPath expression that extracts values for this search parameter.")
             .build()
         )
         .addProperty(
           PropertySpec.builder("target", listOfTargetClasses)
-            .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
+            .addModifiers(KModifier.PUBLIC)
             .initializer("target")
+            .addKdoc("The target resource types for reference search parameters.")
             .build()
         )
         .addProperty(
@@ -159,17 +114,15 @@ object SearchParamFileSpecGenerator {
         )
         .addFunction(
           FunSpec.builder("extract")
-            .addModifiers(KModifier.OVERRIDE, KModifier.PUBLIC)
-            .addParameter("resource", implR)
-            .returns(listOfImplT)
+            .addModifiers(KModifier.PUBLIC)
+            .addParameter("resource", typeR)
+            .returns(listOfT)
             .addStatement("return extractor(resource)")
+            .addKdoc("Extracts the values for this search parameter from the given [resource].")
             .build()
         )
         .build()
 
-    return FileSpec.builder("$packageName.search", "SearchParam")
-      .addType(searchParamInterface)
-      .addType(simpleSearchParam)
-      .build()
+    return FileSpec.builder("$packageName.search", "SearchParam").addType(searchParamClass).build()
   }
 }

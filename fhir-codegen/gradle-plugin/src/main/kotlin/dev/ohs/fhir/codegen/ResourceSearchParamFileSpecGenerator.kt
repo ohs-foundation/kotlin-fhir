@@ -38,10 +38,10 @@ import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
  * Generates per-resource search parameter container objects.
  *
  * For each resource type (e.g. Patient), produces a `{Resource}SearchParams` plain `object`
- * exposing one `val` per search parameter. Each `val` is a [SearchParam]`<Resource, T>` backed by a
- * `SimpleSearchParam` instance: metadata plus an `extractor` lambda. The container also exposes an
- * `ALL` list of every search parameter for that resource. This keeps the generated output to one
- * file (and a handful of `val`s) per resource rather than a class file per search parameter.
+ * exposing one `val` per search parameter. Each `val` is a [SearchParam]`<Resource, T>`: metadata
+ * plus an `extractor` lambda. The container also exposes an `all` list of every search parameter
+ * for that resource. This keeps the generated output to one file (and a handful of `val`s) per
+ * resource rather than a class file per search parameter.
  *
  * This object orchestrates KotlinPoet type/file building. The actual work of interpreting the
  * search parameter's FHIRPath expression and generating the extraction expression is split across
@@ -69,8 +69,7 @@ object ResourceSearchParamFileSpecGenerator {
     elementsByType: Map<String, List<Element>>,
   ): FileSpec {
     val searchPackageName = "$packageName.search"
-    val searchParamInterfaceClassName = ClassName(searchPackageName, "SearchParam")
-    val simpleSearchParamClassName = ClassName(searchPackageName, "SimpleSearchParam")
+    val searchParamClassName = ClassName(searchPackageName, "SearchParam")
     val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
     val resourceClassName = ClassName(packageName, resourceName)
     val containerObjectName = "${resourceName}SearchParams"
@@ -90,8 +89,7 @@ object ResourceSearchParamFileSpecGenerator {
                 packageName,
                 resourceName,
                 resourceClassName,
-                searchParamInterfaceClassName,
-                simpleSearchParamClassName,
+                searchParamClassName,
                 searchParamTypeClassName,
                 resolver,
               )
@@ -100,9 +98,7 @@ object ResourceSearchParamFileSpecGenerator {
 
           val allListType =
             List::class.asClassName()
-              .parameterizedBy(
-                searchParamInterfaceClassName.parameterizedBy(resourceClassName, STAR)
-              )
+              .parameterizedBy(searchParamClassName.parameterizedBy(resourceClassName, STAR))
           val allInit =
             CodeBlock.builder()
               .apply {
@@ -137,8 +133,7 @@ object ResourceSearchParamFileSpecGenerator {
     packageName: String,
     resourceName: String,
     resourceClassName: ClassName,
-    searchParamInterfaceClassName: ClassName,
-    simpleSearchParamClassName: ClassName,
+    searchParamClassName: ClassName,
     searchParamTypeClassName: ClassName,
     resolver: FhirPathExpressionResolver,
   ): PropertySpec {
@@ -148,9 +143,8 @@ object ResourceSearchParamFileSpecGenerator {
     val pattern = parseSearchParamExpression(resourceExpression, resourceName, resolver)
     val (valueTypeName, extractionCode) = render(pattern, packageName, resourceName)
 
-    val declaredType =
-      searchParamInterfaceClassName.parameterizedBy(resourceClassName, valueTypeName)
-    val concreteType = simpleSearchParamClassName.parameterizedBy(resourceClassName, valueTypeName)
+    val parameterizedSearchParam =
+      searchParamClassName.parameterizedBy(resourceClassName, valueTypeName)
 
     // Unsupported params extract `emptyList()`, which doesn't reference `resource`, so use a
     // parameterless lambda there to avoid an unused-parameter warning.
@@ -158,7 +152,7 @@ object ResourceSearchParamFileSpecGenerator {
 
     val initializer =
       CodeBlock.builder()
-        .add("%T(\n", concreteType)
+        .add("%T(\n", parameterizedSearchParam)
         .indent()
         .add("name = %S,\n", searchParam.code)
         .add("type = %T.fromCode(%S),\n", searchParamTypeClassName, searchParam.type)
@@ -181,7 +175,7 @@ object ResourceSearchParamFileSpecGenerator {
         .add(")")
         .build()
 
-    return PropertySpec.builder(propertyName, declaredType)
+    return PropertySpec.builder(propertyName, parameterizedSearchParam)
       .addModifiers(KModifier.PUBLIC)
       .initializer(initializer)
       .build()

@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [VisionPrescription] resource type. */
 public object VisionPrescriptionSearchParams {
   public val datewritten: SearchParam<VisionPrescription, DateTime> =
-    SimpleSearchParam<VisionPrescription, DateTime>(
+    SearchParam<VisionPrescription, DateTime>(
       name = "datewritten",
       type = SearchParamType.fromCode("date"),
       expression = "VisionPrescription.dateWritten",
@@ -42,7 +42,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val encounter: SearchParam<VisionPrescription, Reference> =
-    SimpleSearchParam<VisionPrescription, Reference>(
+    SearchParam<VisionPrescription, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "VisionPrescription.encounter",
@@ -51,7 +51,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val identifier: SearchParam<VisionPrescription, Identifier> =
-    SimpleSearchParam<VisionPrescription, Identifier>(
+    SearchParam<VisionPrescription, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "VisionPrescription.identifier",
@@ -59,7 +59,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val patient: SearchParam<VisionPrescription, Reference> =
-    SimpleSearchParam<VisionPrescription, Reference>(
+    SearchParam<VisionPrescription, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "VisionPrescription.patient",
@@ -68,7 +68,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val prescriber: SearchParam<VisionPrescription, Reference> =
-    SimpleSearchParam<VisionPrescription, Reference>(
+    SearchParam<VisionPrescription, Reference>(
       name = "prescriber",
       type = SearchParamType.fromCode("reference"),
       expression = "VisionPrescription.prescriber",
@@ -77,7 +77,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val status: SearchParam<VisionPrescription, Any> =
-    SimpleSearchParam<VisionPrescription, Any>(
+    SearchParam<VisionPrescription, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "VisionPrescription.status",

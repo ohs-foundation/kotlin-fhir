@@ -40,7 +40,7 @@ import kotlin.collections.List
 /** Search parameters for the [FamilyMemberHistory] resource type. */
 public object FamilyMemberHistorySearchParams {
   public val code: SearchParam<FamilyMemberHistory, CodeableConcept> =
-    SimpleSearchParam<FamilyMemberHistory, CodeableConcept>(
+    SearchParam<FamilyMemberHistory, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "FamilyMemberHistory.condition.code",
@@ -48,7 +48,7 @@ public object FamilyMemberHistorySearchParams {
     )
 
   public val date: SearchParam<FamilyMemberHistory, DateTime> =
-    SimpleSearchParam<FamilyMemberHistory, DateTime>(
+    SearchParam<FamilyMemberHistory, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "FamilyMemberHistory.date",
@@ -56,7 +56,7 @@ public object FamilyMemberHistorySearchParams {
     )
 
   public val identifier: SearchParam<FamilyMemberHistory, Identifier> =
-    SimpleSearchParam<FamilyMemberHistory, Identifier>(
+    SearchParam<FamilyMemberHistory, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "FamilyMemberHistory.identifier",
@@ -64,7 +64,7 @@ public object FamilyMemberHistorySearchParams {
     )
 
   public val instantiatesCanonical: SearchParam<FamilyMemberHistory, Canonical> =
-    SimpleSearchParam<FamilyMemberHistory, Canonical>(
+    SearchParam<FamilyMemberHistory, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
       expression = "FamilyMemberHistory.instantiatesCanonical",
@@ -80,7 +80,7 @@ public object FamilyMemberHistorySearchParams {
     )
 
   public val instantiatesUri: SearchParam<FamilyMemberHistory, Uri> =
-    SimpleSearchParam<FamilyMemberHistory, Uri>(
+    SearchParam<FamilyMemberHistory, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "FamilyMemberHistory.instantiatesUri",
@@ -88,7 +88,7 @@ public object FamilyMemberHistorySearchParams {
     )
 
   public val patient: SearchParam<FamilyMemberHistory, Reference> =
-    SimpleSearchParam<FamilyMemberHistory, Reference>(
+    SearchParam<FamilyMemberHistory, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "FamilyMemberHistory.patient",
@@ -97,7 +97,7 @@ public object FamilyMemberHistorySearchParams {
     )
 
   public val relationship: SearchParam<FamilyMemberHistory, CodeableConcept> =
-    SimpleSearchParam<FamilyMemberHistory, CodeableConcept>(
+    SearchParam<FamilyMemberHistory, CodeableConcept>(
       name = "relationship",
       type = SearchParamType.fromCode("token"),
       expression = "FamilyMemberHistory.relationship",
@@ -105,7 +105,7 @@ public object FamilyMemberHistorySearchParams {
     )
 
   public val sex: SearchParam<FamilyMemberHistory, CodeableConcept> =
-    SimpleSearchParam<FamilyMemberHistory, CodeableConcept>(
+    SearchParam<FamilyMemberHistory, CodeableConcept>(
       name = "sex",
       type = SearchParamType.fromCode("token"),
       expression = "FamilyMemberHistory.sex",
@@ -113,7 +113,7 @@ public object FamilyMemberHistorySearchParams {
     )
 
   public val status: SearchParam<FamilyMemberHistory, Any> =
-    SimpleSearchParam<FamilyMemberHistory, Any>(
+    SearchParam<FamilyMemberHistory, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "FamilyMemberHistory.status",

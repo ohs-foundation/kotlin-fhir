@@ -33,7 +33,7 @@ import kotlin.collections.List
 /** Search parameters for the [DeviceAssociation] resource type. */
 public object DeviceAssociationSearchParams {
   public val device: SearchParam<DeviceAssociation, Reference> =
-    SimpleSearchParam<DeviceAssociation, Reference>(
+    SearchParam<DeviceAssociation, Reference>(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceAssociation.device",
@@ -42,7 +42,7 @@ public object DeviceAssociationSearchParams {
     )
 
   public val identifier: SearchParam<DeviceAssociation, Identifier> =
-    SimpleSearchParam<DeviceAssociation, Identifier>(
+    SearchParam<DeviceAssociation, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceAssociation.identifier",
@@ -50,7 +50,7 @@ public object DeviceAssociationSearchParams {
     )
 
   public val `operator`: SearchParam<DeviceAssociation, Reference> =
-    SimpleSearchParam<DeviceAssociation, Reference>(
+    SearchParam<DeviceAssociation, Reference>(
       name = "operator",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceAssociation.operation.operator",
@@ -59,7 +59,7 @@ public object DeviceAssociationSearchParams {
     )
 
   public val patient: SearchParam<DeviceAssociation, Reference> =
-    SimpleSearchParam<DeviceAssociation, Reference>(
+    SearchParam<DeviceAssociation, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceAssociation.subject.where(resolve() is Patient)",
@@ -72,7 +72,7 @@ public object DeviceAssociationSearchParams {
     )
 
   public val status: SearchParam<DeviceAssociation, CodeableConcept> =
-    SimpleSearchParam<DeviceAssociation, CodeableConcept>(
+    SearchParam<DeviceAssociation, CodeableConcept>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceAssociation.status",
@@ -80,7 +80,7 @@ public object DeviceAssociationSearchParams {
     )
 
   public val subject: SearchParam<DeviceAssociation, Reference> =
-    SimpleSearchParam<DeviceAssociation, Reference>(
+    SearchParam<DeviceAssociation, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceAssociation.subject.where(resolve() is Patient)",

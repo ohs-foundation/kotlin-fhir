@@ -171,7 +171,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [VerificationResult] resource type. */
 public object VerificationResultSearchParams {
   public val target: SearchParam<VerificationResult, Reference> =
-    SimpleSearchParam<VerificationResult, Reference>(
+    SearchParam<VerificationResult, Reference>(
       name = "target",
       type = SearchParamType.fromCode("reference"),
       expression = "VerificationResult.target",

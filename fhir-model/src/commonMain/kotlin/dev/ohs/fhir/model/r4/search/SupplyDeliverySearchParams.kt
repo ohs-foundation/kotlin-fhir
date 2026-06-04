@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [SupplyDelivery] resource type. */
 public object SupplyDeliverySearchParams {
   public val identifier: SearchParam<SupplyDelivery, Identifier> =
-    SimpleSearchParam<SupplyDelivery, Identifier>(
+    SearchParam<SupplyDelivery, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "SupplyDelivery.identifier",
@@ -42,7 +42,7 @@ public object SupplyDeliverySearchParams {
     )
 
   public val patient: SearchParam<SupplyDelivery, Reference> =
-    SimpleSearchParam<SupplyDelivery, Reference>(
+    SearchParam<SupplyDelivery, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "SupplyDelivery.patient",
@@ -51,7 +51,7 @@ public object SupplyDeliverySearchParams {
     )
 
   public val `receiver`: SearchParam<SupplyDelivery, Reference> =
-    SimpleSearchParam<SupplyDelivery, Reference>(
+    SearchParam<SupplyDelivery, Reference>(
       name = "receiver",
       type = SearchParamType.fromCode("reference"),
       expression = "SupplyDelivery.receiver",
@@ -60,7 +60,7 @@ public object SupplyDeliverySearchParams {
     )
 
   public val status: SearchParam<SupplyDelivery, Any> =
-    SimpleSearchParam<SupplyDelivery, Any>(
+    SearchParam<SupplyDelivery, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "SupplyDelivery.status",
@@ -68,7 +68,7 @@ public object SupplyDeliverySearchParams {
     )
 
   public val supplier: SearchParam<SupplyDelivery, Reference> =
-    SimpleSearchParam<SupplyDelivery, Reference>(
+    SearchParam<SupplyDelivery, Reference>(
       name = "supplier",
       type = SearchParamType.fromCode("reference"),
       expression = "SupplyDelivery.supplier",

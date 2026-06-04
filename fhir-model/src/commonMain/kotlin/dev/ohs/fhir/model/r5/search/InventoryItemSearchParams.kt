@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [InventoryItem] resource type. */
 public object InventoryItemSearchParams {
   public val code: SearchParam<InventoryItem, CodeableConcept> =
-    SimpleSearchParam<InventoryItem, CodeableConcept>(
+    SearchParam<InventoryItem, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "InventoryItem.code",
@@ -40,7 +40,7 @@ public object InventoryItemSearchParams {
     )
 
   public val identifier: SearchParam<InventoryItem, Identifier> =
-    SimpleSearchParam<InventoryItem, Identifier>(
+    SearchParam<InventoryItem, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "InventoryItem.identifier",
@@ -48,7 +48,7 @@ public object InventoryItemSearchParams {
     )
 
   public val status: SearchParam<InventoryItem, Any> =
-    SimpleSearchParam<InventoryItem, Any>(
+    SearchParam<InventoryItem, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "InventoryItem.status",
@@ -56,7 +56,7 @@ public object InventoryItemSearchParams {
     )
 
   public val subject: SearchParam<InventoryItem, Reference> =
-    SimpleSearchParam<InventoryItem, Reference>(
+    SearchParam<InventoryItem, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "InventoryItem.instance.subject",

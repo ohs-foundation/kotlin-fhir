@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [RelatedPerson] resource type. */
 public object RelatedPersonSearchParams {
   public val active: SearchParam<RelatedPerson, Boolean> =
-    SimpleSearchParam<RelatedPerson, Boolean>(
+    SearchParam<RelatedPerson, Boolean>(
       name = "active",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.active",
@@ -45,7 +45,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val address: SearchParam<RelatedPerson, Address> =
-    SimpleSearchParam<RelatedPerson, Address>(
+    SearchParam<RelatedPerson, Address>(
       name = "address",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address",
@@ -53,7 +53,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressCity: SearchParam<RelatedPerson, String> =
-    SimpleSearchParam<RelatedPerson, String>(
+    SearchParam<RelatedPerson, String>(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address.city",
@@ -61,7 +61,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressCountry: SearchParam<RelatedPerson, String> =
-    SimpleSearchParam<RelatedPerson, String>(
+    SearchParam<RelatedPerson, String>(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address.country",
@@ -69,7 +69,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressPostalcode: SearchParam<RelatedPerson, String> =
-    SimpleSearchParam<RelatedPerson, String>(
+    SearchParam<RelatedPerson, String>(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address.postalCode",
@@ -77,7 +77,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressState: SearchParam<RelatedPerson, String> =
-    SimpleSearchParam<RelatedPerson, String>(
+    SearchParam<RelatedPerson, String>(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address.state",
@@ -85,7 +85,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressUse: SearchParam<RelatedPerson, Any> =
-    SimpleSearchParam<RelatedPerson, Any>(
+    SearchParam<RelatedPerson, Any>(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.address.use",
@@ -93,7 +93,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val birthdate: SearchParam<RelatedPerson, Date> =
-    SimpleSearchParam<RelatedPerson, Date>(
+    SearchParam<RelatedPerson, Date>(
       name = "birthdate",
       type = SearchParamType.fromCode("date"),
       expression = "RelatedPerson.birthDate",
@@ -101,7 +101,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val email: SearchParam<RelatedPerson, ContactPoint> =
-    SimpleSearchParam<RelatedPerson, ContactPoint>(
+    SearchParam<RelatedPerson, ContactPoint>(
       name = "email",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.telecom.where(system='email')",
@@ -111,7 +111,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val family: SearchParam<RelatedPerson, String> =
-    SimpleSearchParam<RelatedPerson, String>(
+    SearchParam<RelatedPerson, String>(
       name = "family",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.name.family",
@@ -119,7 +119,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val gender: SearchParam<RelatedPerson, Any> =
-    SimpleSearchParam<RelatedPerson, Any>(
+    SearchParam<RelatedPerson, Any>(
       name = "gender",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.gender",
@@ -127,7 +127,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val given: SearchParam<RelatedPerson, String> =
-    SimpleSearchParam<RelatedPerson, String>(
+    SearchParam<RelatedPerson, String>(
       name = "given",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.name.given",
@@ -135,7 +135,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val identifier: SearchParam<RelatedPerson, Identifier> =
-    SimpleSearchParam<RelatedPerson, Identifier>(
+    SearchParam<RelatedPerson, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.identifier",
@@ -143,7 +143,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val name: SearchParam<RelatedPerson, HumanName> =
-    SimpleSearchParam<RelatedPerson, HumanName>(
+    SearchParam<RelatedPerson, HumanName>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.name",
@@ -151,7 +151,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val patient: SearchParam<RelatedPerson, Reference> =
-    SimpleSearchParam<RelatedPerson, Reference>(
+    SearchParam<RelatedPerson, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "RelatedPerson.patient",
@@ -160,7 +160,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val phone: SearchParam<RelatedPerson, ContactPoint> =
-    SimpleSearchParam<RelatedPerson, ContactPoint>(
+    SearchParam<RelatedPerson, ContactPoint>(
       name = "phone",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.telecom.where(system='phone')",
@@ -170,7 +170,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val phonetic: SearchParam<RelatedPerson, HumanName> =
-    SimpleSearchParam<RelatedPerson, HumanName>(
+    SearchParam<RelatedPerson, HumanName>(
       name = "phonetic",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.name",
@@ -178,7 +178,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val relationship: SearchParam<RelatedPerson, CodeableConcept> =
-    SimpleSearchParam<RelatedPerson, CodeableConcept>(
+    SearchParam<RelatedPerson, CodeableConcept>(
       name = "relationship",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.relationship",
@@ -186,7 +186,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val telecom: SearchParam<RelatedPerson, ContactPoint> =
-    SimpleSearchParam<RelatedPerson, ContactPoint>(
+    SearchParam<RelatedPerson, ContactPoint>(
       name = "telecom",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.telecom",

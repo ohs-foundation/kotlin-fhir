@@ -176,7 +176,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Task] resource type. */
 public object TaskSearchParams {
   public val authoredOn: SearchParam<Task, DateTime> =
-    SimpleSearchParam<Task, DateTime>(
+    SearchParam<Task, DateTime>(
       name = "authored-on",
       type = SearchParamType.fromCode("date"),
       expression = "Task.authoredOn",
@@ -184,7 +184,7 @@ public object TaskSearchParams {
     )
 
   public val basedOn: SearchParam<Task, Reference> =
-    SimpleSearchParam<Task, Reference>(
+    SearchParam<Task, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.basedOn",
@@ -340,7 +340,7 @@ public object TaskSearchParams {
     )
 
   public val businessStatus: SearchParam<Task, CodeableConcept> =
-    SimpleSearchParam<Task, CodeableConcept>(
+    SearchParam<Task, CodeableConcept>(
       name = "business-status",
       type = SearchParamType.fromCode("token"),
       expression = "Task.businessStatus",
@@ -348,7 +348,7 @@ public object TaskSearchParams {
     )
 
   public val code: SearchParam<Task, CodeableConcept> =
-    SimpleSearchParam<Task, CodeableConcept>(
+    SearchParam<Task, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "Task.code",
@@ -356,7 +356,7 @@ public object TaskSearchParams {
     )
 
   public val encounter: SearchParam<Task, Reference> =
-    SimpleSearchParam<Task, Reference>(
+    SearchParam<Task, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.encounter",
@@ -365,7 +365,7 @@ public object TaskSearchParams {
     )
 
   public val focus: SearchParam<Task, Reference> =
-    SimpleSearchParam<Task, Reference>(
+    SearchParam<Task, Reference>(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.focus",
@@ -521,7 +521,7 @@ public object TaskSearchParams {
     )
 
   public val groupIdentifier: SearchParam<Task, Identifier> =
-    SimpleSearchParam<Task, Identifier>(
+    SearchParam<Task, Identifier>(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Task.groupIdentifier",
@@ -529,7 +529,7 @@ public object TaskSearchParams {
     )
 
   public val identifier: SearchParam<Task, Identifier> =
-    SimpleSearchParam<Task, Identifier>(
+    SearchParam<Task, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Task.identifier",
@@ -537,7 +537,7 @@ public object TaskSearchParams {
     )
 
   public val intent: SearchParam<Task, Any> =
-    SimpleSearchParam<Task, Any>(
+    SearchParam<Task, Any>(
       name = "intent",
       type = SearchParamType.fromCode("token"),
       expression = "Task.intent",
@@ -545,7 +545,7 @@ public object TaskSearchParams {
     )
 
   public val modified: SearchParam<Task, DateTime> =
-    SimpleSearchParam<Task, DateTime>(
+    SearchParam<Task, DateTime>(
       name = "modified",
       type = SearchParamType.fromCode("date"),
       expression = "Task.lastModified",
@@ -553,7 +553,7 @@ public object TaskSearchParams {
     )
 
   public val owner: SearchParam<Task, Reference> =
-    SimpleSearchParam<Task, Reference>(
+    SearchParam<Task, Reference>(
       name = "owner",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.owner",
@@ -572,7 +572,7 @@ public object TaskSearchParams {
     )
 
   public val partOf: SearchParam<Task, Reference> =
-    SimpleSearchParam<Task, Reference>(
+    SearchParam<Task, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.partOf",
@@ -581,7 +581,7 @@ public object TaskSearchParams {
     )
 
   public val patient: SearchParam<Task, Reference> =
-    SimpleSearchParam<Task, Reference>(
+    SearchParam<Task, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.for.where(resolve() is Patient)",
@@ -594,7 +594,7 @@ public object TaskSearchParams {
     )
 
   public val performer: SearchParam<Task, CodeableConcept> =
-    SimpleSearchParam<Task, CodeableConcept>(
+    SearchParam<Task, CodeableConcept>(
       name = "performer",
       type = SearchParamType.fromCode("token"),
       expression = "Task.performerType",
@@ -602,7 +602,7 @@ public object TaskSearchParams {
     )
 
   public val period: SearchParam<Task, Period> =
-    SimpleSearchParam<Task, Period>(
+    SearchParam<Task, Period>(
       name = "period",
       type = SearchParamType.fromCode("date"),
       expression = "Task.executionPeriod",
@@ -610,7 +610,7 @@ public object TaskSearchParams {
     )
 
   public val priority: SearchParam<Task, Any> =
-    SimpleSearchParam<Task, Any>(
+    SearchParam<Task, Any>(
       name = "priority",
       type = SearchParamType.fromCode("token"),
       expression = "Task.priority",
@@ -618,7 +618,7 @@ public object TaskSearchParams {
     )
 
   public val requester: SearchParam<Task, Reference> =
-    SimpleSearchParam<Task, Reference>(
+    SearchParam<Task, Reference>(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.requester",
@@ -635,7 +635,7 @@ public object TaskSearchParams {
     )
 
   public val status: SearchParam<Task, Any> =
-    SimpleSearchParam<Task, Any>(
+    SearchParam<Task, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Task.status",
@@ -643,7 +643,7 @@ public object TaskSearchParams {
     )
 
   public val subject: SearchParam<Task, Reference> =
-    SimpleSearchParam<Task, Reference>(
+    SearchParam<Task, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Task.for",

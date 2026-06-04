@@ -187,7 +187,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [DetectedIssue] resource type. */
 public object DetectedIssueSearchParams {
   public val author: SearchParam<DetectedIssue, Reference> =
-    SimpleSearchParam<DetectedIssue, Reference>(
+    SearchParam<DetectedIssue, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "DetectedIssue.author",
@@ -203,7 +203,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val category: SearchParam<DetectedIssue, CodeableConcept> =
-    SimpleSearchParam<DetectedIssue, CodeableConcept>(
+    SearchParam<DetectedIssue, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "DetectedIssue.category",
@@ -211,7 +211,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val code: SearchParam<DetectedIssue, CodeableConcept> =
-    SimpleSearchParam<DetectedIssue, CodeableConcept>(
+    SearchParam<DetectedIssue, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "DetectedIssue.code",
@@ -219,7 +219,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val identified: SearchParam<DetectedIssue, Any> =
-    SimpleSearchParam<DetectedIssue, Any>(
+    SearchParam<DetectedIssue, Any>(
       name = "identified",
       type = SearchParamType.fromCode("date"),
       expression = "DetectedIssue.identified.ofType(dateTime)",
@@ -227,7 +227,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val identifier: SearchParam<DetectedIssue, Identifier> =
-    SimpleSearchParam<DetectedIssue, Identifier>(
+    SearchParam<DetectedIssue, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DetectedIssue.identifier",
@@ -235,7 +235,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val implicated: SearchParam<DetectedIssue, Reference> =
-    SimpleSearchParam<DetectedIssue, Reference>(
+    SearchParam<DetectedIssue, Reference>(
       name = "implicated",
       type = SearchParamType.fromCode("reference"),
       expression = "DetectedIssue.implicated",
@@ -404,7 +404,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val patient: SearchParam<DetectedIssue, Reference> =
-    SimpleSearchParam<DetectedIssue, Reference>(
+    SearchParam<DetectedIssue, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DetectedIssue.subject.where(resolve() is Patient)",
@@ -417,7 +417,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val status: SearchParam<DetectedIssue, Any> =
-    SimpleSearchParam<DetectedIssue, Any>(
+    SearchParam<DetectedIssue, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "DetectedIssue.status",
@@ -425,7 +425,7 @@ public object DetectedIssueSearchParams {
     )
 
   public val subject: SearchParam<DetectedIssue, Reference> =
-    SimpleSearchParam<DetectedIssue, Reference>(
+    SearchParam<DetectedIssue, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "DetectedIssue.subject",

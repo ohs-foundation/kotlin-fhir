@@ -33,7 +33,7 @@ import kotlin.collections.List
 /** Search parameters for the [Slot] resource type. */
 public object SlotSearchParams {
   public val appointmentType: SearchParam<Slot, CodeableConcept> =
-    SimpleSearchParam<Slot, CodeableConcept>(
+    SearchParam<Slot, CodeableConcept>(
       name = "appointment-type",
       type = SearchParamType.fromCode("token"),
       expression = "Slot.appointmentType",
@@ -41,7 +41,7 @@ public object SlotSearchParams {
     )
 
   public val identifier: SearchParam<Slot, Identifier> =
-    SimpleSearchParam<Slot, Identifier>(
+    SearchParam<Slot, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Slot.identifier",
@@ -49,7 +49,7 @@ public object SlotSearchParams {
     )
 
   public val schedule: SearchParam<Slot, Reference> =
-    SimpleSearchParam<Slot, Reference>(
+    SearchParam<Slot, Reference>(
       name = "schedule",
       type = SearchParamType.fromCode("reference"),
       expression = "Slot.schedule",
@@ -58,7 +58,7 @@ public object SlotSearchParams {
     )
 
   public val serviceCategory: SearchParam<Slot, CodeableConcept> =
-    SimpleSearchParam<Slot, CodeableConcept>(
+    SearchParam<Slot, CodeableConcept>(
       name = "service-category",
       type = SearchParamType.fromCode("token"),
       expression = "Slot.serviceCategory",
@@ -66,7 +66,7 @@ public object SlotSearchParams {
     )
 
   public val serviceType: SearchParam<Slot, CodeableConcept> =
-    SimpleSearchParam<Slot, CodeableConcept>(
+    SearchParam<Slot, CodeableConcept>(
       name = "service-type",
       type = SearchParamType.fromCode("token"),
       expression = "Slot.serviceType.concept",
@@ -74,7 +74,7 @@ public object SlotSearchParams {
     )
 
   public val serviceTypeReference: SearchParam<Slot, Reference> =
-    SimpleSearchParam<Slot, Reference>(
+    SearchParam<Slot, Reference>(
       name = "service-type-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "Slot.serviceType.reference",
@@ -83,7 +83,7 @@ public object SlotSearchParams {
     )
 
   public val specialty: SearchParam<Slot, CodeableConcept> =
-    SimpleSearchParam<Slot, CodeableConcept>(
+    SearchParam<Slot, CodeableConcept>(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
       expression = "Slot.specialty",
@@ -91,7 +91,7 @@ public object SlotSearchParams {
     )
 
   public val start: SearchParam<Slot, Instant> =
-    SimpleSearchParam<Slot, Instant>(
+    SearchParam<Slot, Instant>(
       name = "start",
       type = SearchParamType.fromCode("date"),
       expression = "Slot.start",
@@ -99,7 +99,7 @@ public object SlotSearchParams {
     )
 
   public val status: SearchParam<Slot, Any> =
-    SimpleSearchParam<Slot, Any>(
+    SearchParam<Slot, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Slot.status",

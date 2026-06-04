@@ -29,7 +29,7 @@ import kotlin.collections.List
 /** Search parameters for the [MedicinalProductIndication] resource type. */
 public object MedicinalProductIndicationSearchParams {
   public val subject: SearchParam<MedicinalProductIndication, Reference> =
-    SimpleSearchParam<MedicinalProductIndication, Reference>(
+    SearchParam<MedicinalProductIndication, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicinalProductIndication.subject",

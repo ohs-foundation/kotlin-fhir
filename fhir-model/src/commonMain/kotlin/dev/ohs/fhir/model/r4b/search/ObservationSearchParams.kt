@@ -172,7 +172,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Observation] resource type. */
 public object ObservationSearchParams {
   public val aminoAcidChange: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "amino-acid-change",
       type = SearchParamType.fromCode("string"),
       expression =
@@ -181,7 +181,7 @@ public object ObservationSearchParams {
     )
 
   public val basedOn: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.basedOn",
@@ -198,7 +198,7 @@ public object ObservationSearchParams {
     )
 
   public val category: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.category",
@@ -206,7 +206,7 @@ public object ObservationSearchParams {
     )
 
   public val code: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.code",
@@ -214,7 +214,7 @@ public object ObservationSearchParams {
     )
 
   public val codeValueConcept: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "code-value-concept",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
@@ -222,7 +222,7 @@ public object ObservationSearchParams {
     )
 
   public val codeValueDate: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "code-value-date",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
@@ -230,7 +230,7 @@ public object ObservationSearchParams {
     )
 
   public val codeValueQuantity: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "code-value-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
@@ -238,7 +238,7 @@ public object ObservationSearchParams {
     )
 
   public val codeValueString: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "code-value-string",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation",
@@ -246,7 +246,7 @@ public object ObservationSearchParams {
     )
 
   public val comboCode: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "combo-code",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.code",
@@ -254,7 +254,7 @@ public object ObservationSearchParams {
     )
 
   public val comboCodeValueConcept: SearchParam<Observation, Observation.Component> =
-    SimpleSearchParam<Observation, Observation.Component>(
+    SearchParam<Observation, Observation.Component>(
       name = "combo-code-value-concept",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation.component",
@@ -262,7 +262,7 @@ public object ObservationSearchParams {
     )
 
   public val comboCodeValueQuantity: SearchParam<Observation, Observation.Component> =
-    SimpleSearchParam<Observation, Observation.Component>(
+    SearchParam<Observation, Observation.Component>(
       name = "combo-code-value-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation.component",
@@ -270,7 +270,7 @@ public object ObservationSearchParams {
     )
 
   public val comboDataAbsentReason: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "combo-data-absent-reason",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.dataAbsentReason",
@@ -278,7 +278,7 @@ public object ObservationSearchParams {
     )
 
   public val comboValueConcept: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "combo-value-concept",
       type = SearchParamType.fromCode("token"),
       expression = "(Observation.value as CodeableConcept)",
@@ -288,7 +288,7 @@ public object ObservationSearchParams {
     )
 
   public val comboValueQuantity: SearchParam<Observation, Quantity> =
-    SimpleSearchParam<Observation, Quantity>(
+    SearchParam<Observation, Quantity>(
       name = "combo-value-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(Observation.value as Quantity)",
@@ -298,7 +298,7 @@ public object ObservationSearchParams {
     )
 
   public val componentCode: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "component-code",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.component.code",
@@ -306,7 +306,7 @@ public object ObservationSearchParams {
     )
 
   public val componentCodeValueConcept: SearchParam<Observation, Observation.Component> =
-    SimpleSearchParam<Observation, Observation.Component>(
+    SearchParam<Observation, Observation.Component>(
       name = "component-code-value-concept",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation.component",
@@ -314,7 +314,7 @@ public object ObservationSearchParams {
     )
 
   public val componentCodeValueQuantity: SearchParam<Observation, Observation.Component> =
-    SimpleSearchParam<Observation, Observation.Component>(
+    SearchParam<Observation, Observation.Component>(
       name = "component-code-value-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Observation.component",
@@ -322,7 +322,7 @@ public object ObservationSearchParams {
     )
 
   public val componentDataAbsentReason: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "component-data-absent-reason",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.component.dataAbsentReason",
@@ -330,7 +330,7 @@ public object ObservationSearchParams {
     )
 
   public val componentValueConcept: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "component-value-concept",
       type = SearchParamType.fromCode("token"),
       expression = "(Observation.component.value as CodeableConcept)",
@@ -342,7 +342,7 @@ public object ObservationSearchParams {
     )
 
   public val componentValueQuantity: SearchParam<Observation, Quantity> =
-    SimpleSearchParam<Observation, Quantity>(
+    SearchParam<Observation, Quantity>(
       name = "component-value-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(Observation.component.value as Quantity)",
@@ -354,7 +354,7 @@ public object ObservationSearchParams {
     )
 
   public val dataAbsentReason: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "data-absent-reason",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.dataAbsentReason",
@@ -362,7 +362,7 @@ public object ObservationSearchParams {
     )
 
   public val date: SearchParam<Observation, Observation.Effective> =
-    SimpleSearchParam<Observation, Observation.Effective>(
+    SearchParam<Observation, Observation.Effective>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Observation.effective",
@@ -370,7 +370,7 @@ public object ObservationSearchParams {
     )
 
   public val derivedFrom: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.derivedFrom",
@@ -387,7 +387,7 @@ public object ObservationSearchParams {
     )
 
   public val device: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.device",
@@ -396,7 +396,7 @@ public object ObservationSearchParams {
     )
 
   public val dnaVariant: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "dna-variant",
       type = SearchParamType.fromCode("string"),
       expression =
@@ -405,7 +405,7 @@ public object ObservationSearchParams {
     )
 
   public val encounter: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.encounter",
@@ -414,7 +414,7 @@ public object ObservationSearchParams {
     )
 
   public val focus: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.focus",
@@ -565,7 +565,7 @@ public object ObservationSearchParams {
     )
 
   public val geneAminoAcidChange: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "gene-amino-acid-change",
       type = SearchParamType.fromCode("string"),
       expression =
@@ -574,7 +574,7 @@ public object ObservationSearchParams {
     )
 
   public val geneDnavariant: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "gene-dnavariant",
       type = SearchParamType.fromCode("string"),
       expression =
@@ -583,7 +583,7 @@ public object ObservationSearchParams {
     )
 
   public val geneIdentifier: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "gene-identifier",
       type = SearchParamType.fromCode("token"),
       expression =
@@ -592,7 +592,7 @@ public object ObservationSearchParams {
     )
 
   public val hasMember: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "has-member",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.hasMember",
@@ -601,7 +601,7 @@ public object ObservationSearchParams {
     )
 
   public val identifier: SearchParam<Observation, Identifier> =
-    SimpleSearchParam<Observation, Identifier>(
+    SearchParam<Observation, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.identifier",
@@ -609,7 +609,7 @@ public object ObservationSearchParams {
     )
 
   public val method: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "method",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.method",
@@ -617,7 +617,7 @@ public object ObservationSearchParams {
     )
 
   public val partOf: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.partOf",
@@ -634,7 +634,7 @@ public object ObservationSearchParams {
     )
 
   public val patient: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.subject.where(resolve() is Patient)",
@@ -647,7 +647,7 @@ public object ObservationSearchParams {
     )
 
   public val performer: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.performer",
@@ -664,7 +664,7 @@ public object ObservationSearchParams {
     )
 
   public val specimen: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "specimen",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.specimen",
@@ -673,7 +673,7 @@ public object ObservationSearchParams {
     )
 
   public val status: SearchParam<Observation, Any> =
-    SimpleSearchParam<Observation, Any>(
+    SearchParam<Observation, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Observation.status",
@@ -681,7 +681,7 @@ public object ObservationSearchParams {
     )
 
   public val subject: SearchParam<Observation, Reference> =
-    SimpleSearchParam<Observation, Reference>(
+    SearchParam<Observation, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Observation.subject",
@@ -701,7 +701,7 @@ public object ObservationSearchParams {
     )
 
   public val valueConcept: SearchParam<Observation, CodeableConcept> =
-    SimpleSearchParam<Observation, CodeableConcept>(
+    SearchParam<Observation, CodeableConcept>(
       name = "value-concept",
       type = SearchParamType.fromCode("token"),
       expression = "(Observation.value as CodeableConcept)",
@@ -711,7 +711,7 @@ public object ObservationSearchParams {
     )
 
   public val valueDate: SearchParam<Observation, DateTime> =
-    SimpleSearchParam<Observation, DateTime>(
+    SearchParam<Observation, DateTime>(
       name = "value-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Observation.value as dateTime)",
@@ -721,7 +721,7 @@ public object ObservationSearchParams {
     )
 
   public val valueQuantity: SearchParam<Observation, Quantity> =
-    SimpleSearchParam<Observation, Quantity>(
+    SearchParam<Observation, Quantity>(
       name = "value-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(Observation.value as Quantity)",
@@ -731,7 +731,7 @@ public object ObservationSearchParams {
     )
 
   public val valueString: SearchParam<Observation, String> =
-    SimpleSearchParam<Observation, String>(
+    SearchParam<Observation, String>(
       name = "value-string",
       type = SearchParamType.fromCode("string"),
       expression = "(Observation.value as string)",

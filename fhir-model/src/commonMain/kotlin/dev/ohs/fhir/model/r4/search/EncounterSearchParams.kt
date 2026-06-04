@@ -48,7 +48,7 @@ import kotlin.collections.List
 /** Search parameters for the [Encounter] resource type. */
 public object EncounterSearchParams {
   public val account: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "account",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.account",
@@ -57,7 +57,7 @@ public object EncounterSearchParams {
     )
 
   public val appointment: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "appointment",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.appointment",
@@ -66,7 +66,7 @@ public object EncounterSearchParams {
     )
 
   public val basedOn: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.basedOn",
@@ -75,7 +75,7 @@ public object EncounterSearchParams {
     )
 
   public val `class`: SearchParam<Encounter, Coding> =
-    SimpleSearchParam<Encounter, Coding>(
+    SearchParam<Encounter, Coding>(
       name = "class",
       type = SearchParamType.fromCode("token"),
       expression = "Encounter.class",
@@ -83,7 +83,7 @@ public object EncounterSearchParams {
     )
 
   public val date: SearchParam<Encounter, Period> =
-    SimpleSearchParam<Encounter, Period>(
+    SearchParam<Encounter, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Encounter.period",
@@ -91,7 +91,7 @@ public object EncounterSearchParams {
     )
 
   public val diagnosis: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "diagnosis",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.diagnosis.condition",
@@ -100,7 +100,7 @@ public object EncounterSearchParams {
     )
 
   public val episodeOfCare: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "episode-of-care",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.episodeOfCare",
@@ -109,7 +109,7 @@ public object EncounterSearchParams {
     )
 
   public val identifier: SearchParam<Encounter, Identifier> =
-    SimpleSearchParam<Encounter, Identifier>(
+    SearchParam<Encounter, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Encounter.identifier",
@@ -117,7 +117,7 @@ public object EncounterSearchParams {
     )
 
   public val length: SearchParam<Encounter, Duration> =
-    SimpleSearchParam<Encounter, Duration>(
+    SearchParam<Encounter, Duration>(
       name = "length",
       type = SearchParamType.fromCode("quantity"),
       expression = "Encounter.length",
@@ -125,7 +125,7 @@ public object EncounterSearchParams {
     )
 
   public val location: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.location.location",
@@ -134,7 +134,7 @@ public object EncounterSearchParams {
     )
 
   public val locationPeriod: SearchParam<Encounter, Period> =
-    SimpleSearchParam<Encounter, Period>(
+    SearchParam<Encounter, Period>(
       name = "location-period",
       type = SearchParamType.fromCode("date"),
       expression = "Encounter.location.period",
@@ -142,7 +142,7 @@ public object EncounterSearchParams {
     )
 
   public val partOf: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.partOf",
@@ -151,7 +151,7 @@ public object EncounterSearchParams {
     )
 
   public val participant: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "participant",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.participant.individual",
@@ -160,7 +160,7 @@ public object EncounterSearchParams {
     )
 
   public val participantType: SearchParam<Encounter, CodeableConcept> =
-    SimpleSearchParam<Encounter, CodeableConcept>(
+    SearchParam<Encounter, CodeableConcept>(
       name = "participant-type",
       type = SearchParamType.fromCode("token"),
       expression = "Encounter.participant.type",
@@ -168,7 +168,7 @@ public object EncounterSearchParams {
     )
 
   public val patient: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.subject.where(resolve() is Patient)",
@@ -181,7 +181,7 @@ public object EncounterSearchParams {
     )
 
   public val practitioner: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.participant.individual.where(resolve() is Practitioner)",
@@ -194,7 +194,7 @@ public object EncounterSearchParams {
     )
 
   public val reasonCode: SearchParam<Encounter, CodeableConcept> =
-    SimpleSearchParam<Encounter, CodeableConcept>(
+    SearchParam<Encounter, CodeableConcept>(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
       expression = "Encounter.reasonCode",
@@ -202,7 +202,7 @@ public object EncounterSearchParams {
     )
 
   public val reasonReference: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.reasonReference",
@@ -217,7 +217,7 @@ public object EncounterSearchParams {
     )
 
   public val serviceProvider: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "service-provider",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.serviceProvider",
@@ -226,7 +226,7 @@ public object EncounterSearchParams {
     )
 
   public val specialArrangement: SearchParam<Encounter, CodeableConcept> =
-    SimpleSearchParam<Encounter, CodeableConcept>(
+    SearchParam<Encounter, CodeableConcept>(
       name = "special-arrangement",
       type = SearchParamType.fromCode("token"),
       expression = "Encounter.hospitalization.specialArrangement",
@@ -234,7 +234,7 @@ public object EncounterSearchParams {
     )
 
   public val status: SearchParam<Encounter, Any> =
-    SimpleSearchParam<Encounter, Any>(
+    SearchParam<Encounter, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Encounter.status",
@@ -242,7 +242,7 @@ public object EncounterSearchParams {
     )
 
   public val subject: SearchParam<Encounter, Reference> =
-    SimpleSearchParam<Encounter, Reference>(
+    SearchParam<Encounter, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Encounter.subject",
@@ -251,7 +251,7 @@ public object EncounterSearchParams {
     )
 
   public val type: SearchParam<Encounter, CodeableConcept> =
-    SimpleSearchParam<Encounter, CodeableConcept>(
+    SearchParam<Encounter, CodeableConcept>(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Encounter.type",

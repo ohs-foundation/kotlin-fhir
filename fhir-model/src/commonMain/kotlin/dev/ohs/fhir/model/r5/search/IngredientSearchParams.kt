@@ -35,7 +35,7 @@ import kotlin.collections.List
 /** Search parameters for the [Ingredient] resource type. */
 public object IngredientSearchParams {
   public val `for`: SearchParam<Ingredient, Reference> =
-    SimpleSearchParam<Ingredient, Reference>(
+    SearchParam<Ingredient, Reference>(
       name = "for",
       type = SearchParamType.fromCode("reference"),
       expression = "Ingredient.for",
@@ -49,7 +49,7 @@ public object IngredientSearchParams {
     )
 
   public val function: SearchParam<Ingredient, CodeableConcept> =
-    SimpleSearchParam<Ingredient, CodeableConcept>(
+    SearchParam<Ingredient, CodeableConcept>(
       name = "function",
       type = SearchParamType.fromCode("token"),
       expression = "Ingredient.function",
@@ -57,7 +57,7 @@ public object IngredientSearchParams {
     )
 
   public val identifier: SearchParam<Ingredient, Identifier> =
-    SimpleSearchParam<Ingredient, Identifier>(
+    SearchParam<Ingredient, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Ingredient.identifier",
@@ -65,7 +65,7 @@ public object IngredientSearchParams {
     )
 
   public val manufacturer: SearchParam<Ingredient, Reference> =
-    SimpleSearchParam<Ingredient, Reference>(
+    SearchParam<Ingredient, Reference>(
       name = "manufacturer",
       type = SearchParamType.fromCode("reference"),
       expression = "Ingredient.manufacturer.manufacturer",
@@ -74,7 +74,7 @@ public object IngredientSearchParams {
     )
 
   public val role: SearchParam<Ingredient, CodeableConcept> =
-    SimpleSearchParam<Ingredient, CodeableConcept>(
+    SearchParam<Ingredient, CodeableConcept>(
       name = "role",
       type = SearchParamType.fromCode("token"),
       expression = "Ingredient.role",
@@ -82,7 +82,7 @@ public object IngredientSearchParams {
     )
 
   public val status: SearchParam<Ingredient, Any> =
-    SimpleSearchParam<Ingredient, Any>(
+    SearchParam<Ingredient, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Ingredient.status",
@@ -90,7 +90,7 @@ public object IngredientSearchParams {
     )
 
   public val strengthConcentrationQuantity: SearchParam<Ingredient, Any> =
-    SimpleSearchParam<Ingredient, Any>(
+    SearchParam<Ingredient, Any>(
       name = "strength-concentration-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "Ingredient.substance.strength.concentration.ofType(Quantity)",
@@ -98,7 +98,7 @@ public object IngredientSearchParams {
     )
 
   public val strengthConcentrationRatio: SearchParam<Ingredient, Any> =
-    SimpleSearchParam<Ingredient, Any>(
+    SearchParam<Ingredient, Any>(
       name = "strength-concentration-ratio",
       type = SearchParamType.fromCode("composite"),
       expression = "Ingredient.substance.strength.concentration.ofType(Ratio)",
@@ -106,7 +106,7 @@ public object IngredientSearchParams {
     )
 
   public val strengthPresentationQuantity: SearchParam<Ingredient, Any> =
-    SimpleSearchParam<Ingredient, Any>(
+    SearchParam<Ingredient, Any>(
       name = "strength-presentation-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "Ingredient.substance.strength.presentation.ofType(Quantity)",
@@ -114,7 +114,7 @@ public object IngredientSearchParams {
     )
 
   public val strengthPresentationRatio: SearchParam<Ingredient, Any> =
-    SimpleSearchParam<Ingredient, Any>(
+    SearchParam<Ingredient, Any>(
       name = "strength-presentation-ratio",
       type = SearchParamType.fromCode("composite"),
       expression = "Ingredient.substance.strength.presentation.ofType(Ratio)",
@@ -122,7 +122,7 @@ public object IngredientSearchParams {
     )
 
   public val substance: SearchParam<Ingredient, Reference> =
-    SimpleSearchParam<Ingredient, Reference>(
+    SearchParam<Ingredient, Reference>(
       name = "substance",
       type = SearchParamType.fromCode("reference"),
       expression = "Ingredient.substance.code.reference",
@@ -131,7 +131,7 @@ public object IngredientSearchParams {
     )
 
   public val substanceCode: SearchParam<Ingredient, CodeableConcept> =
-    SimpleSearchParam<Ingredient, CodeableConcept>(
+    SearchParam<Ingredient, CodeableConcept>(
       name = "substance-code",
       type = SearchParamType.fromCode("token"),
       expression = "Ingredient.substance.code.concept",
@@ -139,7 +139,7 @@ public object IngredientSearchParams {
     )
 
   public val substanceDefinition: SearchParam<Ingredient, Reference> =
-    SimpleSearchParam<Ingredient, Reference>(
+    SearchParam<Ingredient, Reference>(
       name = "substance-definition",
       type = SearchParamType.fromCode("reference"),
       expression = "Ingredient.substance.code.reference",

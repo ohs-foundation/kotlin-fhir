@@ -60,7 +60,7 @@ import kotlin.collections.List
 /** Search parameters for the [CarePlan] resource type. */
 public object CarePlanSearchParams {
   public val activityReference: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "activity-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.activity.plannedActivityReference",
@@ -82,7 +82,7 @@ public object CarePlanSearchParams {
     )
 
   public val basedOn: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.basedOn",
@@ -97,7 +97,7 @@ public object CarePlanSearchParams {
     )
 
   public val careTeam: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "care-team",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.careTeam",
@@ -106,7 +106,7 @@ public object CarePlanSearchParams {
     )
 
   public val category: SearchParam<CarePlan, CodeableConcept> =
-    SimpleSearchParam<CarePlan, CodeableConcept>(
+    SearchParam<CarePlan, CodeableConcept>(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "CarePlan.category",
@@ -114,7 +114,7 @@ public object CarePlanSearchParams {
     )
 
   public val condition: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "condition",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.addresses.reference",
@@ -123,7 +123,7 @@ public object CarePlanSearchParams {
     )
 
   public val custodian: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "custodian",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.custodian",
@@ -141,7 +141,7 @@ public object CarePlanSearchParams {
     )
 
   public val date: SearchParam<CarePlan, Period> =
-    SimpleSearchParam<CarePlan, Period>(
+    SearchParam<CarePlan, Period>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "CarePlan.period",
@@ -149,7 +149,7 @@ public object CarePlanSearchParams {
     )
 
   public val encounter: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.encounter",
@@ -158,7 +158,7 @@ public object CarePlanSearchParams {
     )
 
   public val goal: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "goal",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.goal",
@@ -167,7 +167,7 @@ public object CarePlanSearchParams {
     )
 
   public val identifier: SearchParam<CarePlan, Identifier> =
-    SimpleSearchParam<CarePlan, Identifier>(
+    SearchParam<CarePlan, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "CarePlan.identifier",
@@ -175,7 +175,7 @@ public object CarePlanSearchParams {
     )
 
   public val instantiatesCanonical: SearchParam<CarePlan, Canonical> =
-    SimpleSearchParam<CarePlan, Canonical>(
+    SearchParam<CarePlan, Canonical>(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.instantiatesCanonical",
@@ -191,7 +191,7 @@ public object CarePlanSearchParams {
     )
 
   public val instantiatesUri: SearchParam<CarePlan, Uri> =
-    SimpleSearchParam<CarePlan, Uri>(
+    SearchParam<CarePlan, Uri>(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "CarePlan.instantiatesUri",
@@ -199,7 +199,7 @@ public object CarePlanSearchParams {
     )
 
   public val intent: SearchParam<CarePlan, Any> =
-    SimpleSearchParam<CarePlan, Any>(
+    SearchParam<CarePlan, Any>(
       name = "intent",
       type = SearchParamType.fromCode("token"),
       expression = "CarePlan.intent",
@@ -207,7 +207,7 @@ public object CarePlanSearchParams {
     )
 
   public val partOf: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "part-of",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.partOf",
@@ -216,7 +216,7 @@ public object CarePlanSearchParams {
     )
 
   public val patient: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.subject.where(resolve() is Patient)",
@@ -229,7 +229,7 @@ public object CarePlanSearchParams {
     )
 
   public val replaces: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "replaces",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.replaces",
@@ -238,7 +238,7 @@ public object CarePlanSearchParams {
     )
 
   public val status: SearchParam<CarePlan, Any> =
-    SimpleSearchParam<CarePlan, Any>(
+    SearchParam<CarePlan, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "CarePlan.status",
@@ -246,7 +246,7 @@ public object CarePlanSearchParams {
     )
 
   public val subject: SearchParam<CarePlan, Reference> =
-    SimpleSearchParam<CarePlan, Reference>(
+    SearchParam<CarePlan, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "CarePlan.subject",

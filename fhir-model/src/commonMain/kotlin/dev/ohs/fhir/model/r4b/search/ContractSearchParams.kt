@@ -170,7 +170,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Contract] resource type. */
 public object ContractSearchParams {
   public val authority: SearchParam<Contract, Reference> =
-    SimpleSearchParam<Contract, Reference>(
+    SearchParam<Contract, Reference>(
       name = "authority",
       type = SearchParamType.fromCode("reference"),
       expression = "Contract.authority",
@@ -179,7 +179,7 @@ public object ContractSearchParams {
     )
 
   public val domain: SearchParam<Contract, Reference> =
-    SimpleSearchParam<Contract, Reference>(
+    SearchParam<Contract, Reference>(
       name = "domain",
       type = SearchParamType.fromCode("reference"),
       expression = "Contract.domain",
@@ -188,7 +188,7 @@ public object ContractSearchParams {
     )
 
   public val identifier: SearchParam<Contract, Identifier> =
-    SimpleSearchParam<Contract, Identifier>(
+    SearchParam<Contract, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Contract.identifier",
@@ -196,7 +196,7 @@ public object ContractSearchParams {
     )
 
   public val instantiates: SearchParam<Contract, Uri> =
-    SimpleSearchParam<Contract, Uri>(
+    SearchParam<Contract, Uri>(
       name = "instantiates",
       type = SearchParamType.fromCode("uri"),
       expression = "Contract.instantiatesUri",
@@ -204,7 +204,7 @@ public object ContractSearchParams {
     )
 
   public val issued: SearchParam<Contract, DateTime> =
-    SimpleSearchParam<Contract, DateTime>(
+    SearchParam<Contract, DateTime>(
       name = "issued",
       type = SearchParamType.fromCode("date"),
       expression = "Contract.issued",
@@ -212,7 +212,7 @@ public object ContractSearchParams {
     )
 
   public val patient: SearchParam<Contract, Reference> =
-    SimpleSearchParam<Contract, Reference>(
+    SearchParam<Contract, Reference>(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Contract.subject.where(resolve() is Patient)",
@@ -223,7 +223,7 @@ public object ContractSearchParams {
     )
 
   public val signer: SearchParam<Contract, Reference> =
-    SimpleSearchParam<Contract, Reference>(
+    SearchParam<Contract, Reference>(
       name = "signer",
       type = SearchParamType.fromCode("reference"),
       expression = "Contract.signer.party",
@@ -239,7 +239,7 @@ public object ContractSearchParams {
     )
 
   public val status: SearchParam<Contract, Any> =
-    SimpleSearchParam<Contract, Any>(
+    SearchParam<Contract, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Contract.status",
@@ -247,7 +247,7 @@ public object ContractSearchParams {
     )
 
   public val subject: SearchParam<Contract, Reference> =
-    SimpleSearchParam<Contract, Reference>(
+    SearchParam<Contract, Reference>(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Contract.subject",
@@ -398,7 +398,7 @@ public object ContractSearchParams {
     )
 
   public val url: SearchParam<Contract, Uri> =
-    SimpleSearchParam<Contract, Uri>(
+    SearchParam<Contract, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "Contract.url",

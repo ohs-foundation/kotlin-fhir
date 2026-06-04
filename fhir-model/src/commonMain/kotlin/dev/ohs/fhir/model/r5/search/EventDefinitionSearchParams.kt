@@ -194,7 +194,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [EventDefinition] resource type. */
 public object EventDefinitionSearchParams {
   public val composedOf: SearchParam<EventDefinition, Canonical> =
-    SimpleSearchParam<EventDefinition, Canonical>(
+    SearchParam<EventDefinition, Canonical>(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
       expression = "EventDefinition.relatedArtifact.where(type='composed-of').resource",
@@ -367,7 +367,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val context: SearchParam<EventDefinition, Any> =
-    SimpleSearchParam<EventDefinition, Any>(
+    SearchParam<EventDefinition, Any>(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(EventDefinition.useContext.value.ofType(CodeableConcept))",
@@ -375,7 +375,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val contextQuantity: SearchParam<EventDefinition, Any> =
-    SimpleSearchParam<EventDefinition, Any>(
+    SearchParam<EventDefinition, Any>(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(EventDefinition.useContext.value.ofType(Quantity))",
@@ -383,7 +383,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val contextType: SearchParam<EventDefinition, Coding> =
-    SimpleSearchParam<EventDefinition, Coding>(
+    SearchParam<EventDefinition, Coding>(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "EventDefinition.useContext.code",
@@ -391,7 +391,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<EventDefinition, UsageContext> =
-    SimpleSearchParam<EventDefinition, UsageContext>(
+    SearchParam<EventDefinition, UsageContext>(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "EventDefinition.useContext",
@@ -399,7 +399,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val contextTypeValue: SearchParam<EventDefinition, UsageContext> =
-    SimpleSearchParam<EventDefinition, UsageContext>(
+    SearchParam<EventDefinition, UsageContext>(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "EventDefinition.useContext",
@@ -407,7 +407,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val date: SearchParam<EventDefinition, DateTime> =
-    SimpleSearchParam<EventDefinition, DateTime>(
+    SearchParam<EventDefinition, DateTime>(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "EventDefinition.date",
@@ -415,7 +415,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val dependsOn: SearchParam<EventDefinition, Canonical> =
-    SimpleSearchParam<EventDefinition, Canonical>(
+    SearchParam<EventDefinition, Canonical>(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
       expression = "EventDefinition.relatedArtifact.where(type='depends-on').resource",
@@ -588,7 +588,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val derivedFrom: SearchParam<EventDefinition, Canonical> =
-    SimpleSearchParam<EventDefinition, Canonical>(
+    SearchParam<EventDefinition, Canonical>(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "EventDefinition.relatedArtifact.where(type='derived-from').resource",
@@ -761,7 +761,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val description: SearchParam<EventDefinition, Markdown> =
-    SimpleSearchParam<EventDefinition, Markdown>(
+    SearchParam<EventDefinition, Markdown>(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "EventDefinition.description",
@@ -769,7 +769,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val effective: SearchParam<EventDefinition, Period> =
-    SimpleSearchParam<EventDefinition, Period>(
+    SearchParam<EventDefinition, Period>(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "EventDefinition.effectivePeriod",
@@ -777,7 +777,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<EventDefinition, Identifier> =
-    SimpleSearchParam<EventDefinition, Identifier>(
+    SearchParam<EventDefinition, Identifier>(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "EventDefinition.identifier",
@@ -785,7 +785,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val jurisdiction: SearchParam<EventDefinition, CodeableConcept> =
-    SimpleSearchParam<EventDefinition, CodeableConcept>(
+    SearchParam<EventDefinition, CodeableConcept>(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "EventDefinition.jurisdiction",
@@ -793,7 +793,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val name: SearchParam<EventDefinition, String> =
-    SimpleSearchParam<EventDefinition, String>(
+    SearchParam<EventDefinition, String>(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "EventDefinition.name",
@@ -801,7 +801,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val predecessor: SearchParam<EventDefinition, Canonical> =
-    SimpleSearchParam<EventDefinition, Canonical>(
+    SearchParam<EventDefinition, Canonical>(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "EventDefinition.relatedArtifact.where(type='predecessor').resource",
@@ -974,7 +974,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val publisher: SearchParam<EventDefinition, String> =
-    SimpleSearchParam<EventDefinition, String>(
+    SearchParam<EventDefinition, String>(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "EventDefinition.publisher",
@@ -982,7 +982,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val status: SearchParam<EventDefinition, Any> =
-    SimpleSearchParam<EventDefinition, Any>(
+    SearchParam<EventDefinition, Any>(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "EventDefinition.status",
@@ -990,7 +990,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val successor: SearchParam<EventDefinition, Canonical> =
-    SimpleSearchParam<EventDefinition, Canonical>(
+    SearchParam<EventDefinition, Canonical>(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
       expression = "EventDefinition.relatedArtifact.where(type='successor').resource",
@@ -1163,7 +1163,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val title: SearchParam<EventDefinition, String> =
-    SimpleSearchParam<EventDefinition, String>(
+    SearchParam<EventDefinition, String>(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "EventDefinition.title",
@@ -1171,7 +1171,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val topic: SearchParam<EventDefinition, CodeableConcept> =
-    SimpleSearchParam<EventDefinition, CodeableConcept>(
+    SearchParam<EventDefinition, CodeableConcept>(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "EventDefinition.topic",
@@ -1179,7 +1179,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val url: SearchParam<EventDefinition, Uri> =
-    SimpleSearchParam<EventDefinition, Uri>(
+    SearchParam<EventDefinition, Uri>(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "EventDefinition.url",
@@ -1187,7 +1187,7 @@ public object EventDefinitionSearchParams {
     )
 
   public val version: SearchParam<EventDefinition, String> =
-    SimpleSearchParam<EventDefinition, String>(
+    SearchParam<EventDefinition, String>(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "EventDefinition.version",

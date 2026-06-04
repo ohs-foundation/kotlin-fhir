@@ -171,7 +171,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Linkage] resource type. */
 public object LinkageSearchParams {
   public val author: SearchParam<Linkage, Reference> =
-    SimpleSearchParam<Linkage, Reference>(
+    SearchParam<Linkage, Reference>(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "Linkage.author",
@@ -180,7 +180,7 @@ public object LinkageSearchParams {
     )
 
   public val item: SearchParam<Linkage, Reference> =
-    SimpleSearchParam<Linkage, Reference>(
+    SearchParam<Linkage, Reference>(
       name = "item",
       type = SearchParamType.fromCode("reference"),
       expression = "Linkage.item.resource",
@@ -336,7 +336,7 @@ public object LinkageSearchParams {
     )
 
   public val source: SearchParam<Linkage, Reference> =
-    SimpleSearchParam<Linkage, Reference>(
+    SearchParam<Linkage, Reference>(
       name = "source",
       type = SearchParamType.fromCode("reference"),
       expression = "Linkage.item.resource",

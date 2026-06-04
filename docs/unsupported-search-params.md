@@ -1,31 +1,29 @@
 # Unsupported FHIRPath patterns in search parameters
 
-For expressions outside the supported patterns (see [Supported FHIRPath patterns](../README.md#supported-fhirpath-patterns) in the README), the generator still emits the search parameter with correct metadata (`name`, `type`, `expression`, `target`) but its `extract()` returns `emptyList()` and the type parameter is `Any`. Downstream apps that need to support these search parameters can read the `expression` string and evaluate it with a FHIRPath engine.
+Each search parameter exposes an `extract()` function that pulls its value out of a resource. For example, `PatientSearchParams.birthdate.extract(patient)` returns the patient's birth date.
 
-There are 206 such unsupported search parameters across R4 / R4B / R5, in the following categories.
+These `extract()` bodies are generated from each parameter's FHIRPath expression as native Kotlin, rather than invoking a FHIRPath engine at runtime, for efficiency.
 
-**Could these be supported later?** Most are coverage gaps in the codegen's FHIRPath translation rather than fundamental limits — `.ofType(...)`, `.extension('url')` lookups, composite components, prefix-less unions, and most of the *Other* syntactic forms could be translated with more resolver work. Two categories are different in kind and are listed for visibility rather than as pending work: **Empty FHIRPath** parameters carry no expression to translate (they are FHIR-internal parameters like `_id` / `_content`, resolved by the server rather than by value extraction), and **Boolean logic** expressions describe a match condition rather than a path to a value. This reflects technical feasibility only, not a committed roadmap.
+Some expressions aren't supported yet. For those parameters, `extract()` returns `emptyList()` and the type parameter is `Any`; the rest of the metadata (`name`, `type`, `expression`, `target`) is still populated, so callers can read the `expression` string and evaluate it with a FHIRPath engine instead.
+
+This page lists the 206 such parameters across R4 / R4B / R5, grouped by the FHIRPath pattern involved. See [Supported FHIRPath patterns](../README.md#supported-fhirpath-patterns) in the README for the patterns that *are* supported.
 
 ## Contents
 
-- [`.ofType(Type)` choice narrowing](#oftype-type-choice-narrowing) — 118
-- [Empty FHIRPath expression](#empty-fhirpath-expression) — 28
-- [`.extension('url')` access](#extension-url-access) — 20
-- [Composite search parameters with no component path](#composite-search-parameters-with-no-component-path) — 13
-- [Boolean logic (`and`, `or`)](#boolean-logic-and-or) — 5
-- [Multi-resource union without a resource prefix](#multi-resource-union-without-a-resource-prefix) — 3
-- [`where(...)` predicates other than `field='value'` and `resolve() is Type`](#where-predicates-other-than-fieldvalue-and-resolve-is-type) — 3
-- [Other patterns (parens, indexed access, bare paths)](#other-patterns-parens-indexed-access-bare-paths) — 16
+- [`.ofType(Type)` choice narrowing](#oftype-type-choice-narrowing) (118)
+- [Empty FHIRPath expression](#empty-fhirpath-expression) (28)
+- [`.extension('url')` access](#extension-url-access) (20)
+- [Composite search parameters with no component path](#composite-search-parameters-with-no-component-path) (13)
+- [Boolean logic](#boolean-logic) (5)
+- [Multi-resource union without a resource prefix](#multi-resource-union-without-a-resource-prefix) (3)
+- [Other `where(...)` conditions](#other-where-conditions) (3)
+- [Other patterns (parens, indexed access, bare paths)](#other-patterns-parens-indexed-access-bare-paths) (16)
 
 ## `.ofType(Type)` choice narrowing
 
-FHIRPath's `.ofType(Type)` narrows a choice (`[x]`) element to one of its types — e.g. `Observation.value.ofType(Quantity)` selects the `Quantity` arm of `value[x]`. The codegen recognizes the semantically equivalent type-cast forms `(X.path as Type)` and `X.path.as(Type)` and turns them into a typed `extract()`, but it does not recognize the `.ofType(...)` spelling, so these fall through to the unsupported stub.
-
-**Feasibility:** Could be supported. `.ofType(Type)` means the same thing as the `as`-cast the codegen already handles; teaching the resolver to accept this syntax would make these work.
+`.ofType(Type)` selects the given type from a choice (`[x]`) element. For example, `Observation.value.ofType(Quantity)` returns `Observation.value` only when it's a `Quantity`.
 
 **Total:** 118 (R4: 0, R4B: 0, R5: 118)
-
-> Note: the three `QuestionnaireResponse.item-subject` search parameters across R4 / R4B / R5 also use `.ofType(Reference)`, but their `where(...)` predicate is itself unsupported and is the more specific gap. They are listed in [`where(...)` predicates](#where-predicates-other-than-fieldvalue-and-resolve-is-type) instead, so this category is currently R5-only.
 
 | Version | Resource                     | Param name                        | Type        | Target                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Expression                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Source JSON                                                       | Canonical URL                                                                    |
 |:--------|:-----------------------------|:----------------------------------|:------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------|:---------------------------------------------------------------------------------|
@@ -150,9 +148,7 @@ FHIRPath's `.ofType(Type)` narrows a choice (`[x]`) element to one of its types 
 
 ## Empty FHIRPath expression
 
-These search parameters have an empty `expression` field in the source `SearchParameter-*.json`, so there is no FHIRPath for the codegen to translate — it builds `extract()` by walking an expression, and here there is none. Most are FHIR-internal special parameters (`_id`, `_content`, `_filter`, `_query`, `_text`, `_has`, `_list`, `_type`) defined on `Resource` / `DomainResource`.
-
-**Feasibility:** Not a fit for value extraction — listed for visibility. These are handled by the server / search engine rather than by pulling a value out of the resource (e.g. `_id` matches on `Resource.id`, `_content` is a full-text search, `_has` does reverse-chaining). There is nothing for the generated `extract()` to return.
+These parameters have no `expression` in the source `SearchParameter-*.json`, so there's nothing to translate. Most are FHIR-internal parameters (`_content`, `_filter`, `_has`, `_list`, `_query`, `_text`, `_type`) defined on `Resource` / `DomainResource`.
 
 **Total:** 28 (R4: 6, R4B: 10, R5: 12)
 
@@ -189,9 +185,7 @@ These search parameters have an empty `expression` field in the source `SearchPa
 
 ## `.extension('url')` access
 
-These search parameters select a specific extension by its canonical URL — e.g. `Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')` — and some R5 expressions then read its `.value`. The codegen walks named properties (`Patient.name`, `Patient.birthDate`, …) but doesn't implement `.extension('url')`, which is a filter that picks an entry out of the `extension` list by URL rather than a named property, so these fall through to the unsupported stub.
-
-**Feasibility:** Could be supported. `.extension('url')` is a filter over the `extension` list (and the trailing `.value` reads the chosen extension's value); both are implementable with more resolver work.
+These search parameters select a specific extension by its canonical URL. For example, `Patient.extension('http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName')`.
 
 **Total:** 20 (R4: 9, R4B: 9, R5: 2)
 
@@ -220,11 +214,7 @@ These search parameters select a specific extension by its canonical URL — e.g
 
 ## Composite search parameters with no component path
 
-A composite search parameter matches on two or more values *together* — e.g. `Observation`'s `code-value-quantity` matches when a `code` and a `value-quantity` occur in the same `Observation.component`. Its top-level `expression` in the SearchParameter JSON is just the bare resource name (e.g. `Observation`); the real definition lives in the resource's `component` array, where each entry references another named search parameter (here `code` and `value-quantity`) plus the sub-path that scopes them.
-
-Supporting these would mean following those `component` references to the parameters they name, then emitting code that extracts each component's value and pairs them as a correlated tuple. The codegen currently translates only a single element's `expression` into a single value list — it does not resolve cross-parameter `component` references or produce tuples — so composites fall through to the unsupported stub.
-
-**Feasibility:** Could be supported, but more involved than the other gaps: it requires resolving cross-parameter `component` references and emitting correlated tuples rather than a single value list.
+A composite search parameter combines two or more other parameters. For example, `Observation`'s `code-value-quantity` combines `code` and `value-quantity` from the same `Observation.component`.
 
 **Total:** 13 (R4: 4, R4B: 4, R5: 5)
 
@@ -244,13 +234,9 @@ Supporting these would mean following those `component` references to the parame
 | R5      | `Observation` | `code-value-quantity` | `composite` | _(none)_ | `Observation` | `SearchParameter-Observation-code-value-quantity.json` | `http://hl7.org/fhir/SearchParameter/Observation-code-value-quantity` |
 | R5      | `Observation` | `code-value-string`   | `composite` | _(none)_ | `Observation` | `SearchParameter-Observation-code-value-string.json`   | `http://hl7.org/fhir/SearchParameter/Observation-code-value-string`   |
 
-## Boolean logic (`and`, `or`)
+## Boolean logic
 
-The codegen only translates FHIRPath expressions that *navigate to a value* (property paths, type casts, simple `where(...)` filters) into a typed `extract()` body. An expression joined by the boolean operators `and` / `or` describes a *condition*, not a path to a value — there is nothing for `extract()` to return — so the resolver can't translate it and falls back to the unsupported stub.
-
-In FHIR core, only the `Patient` / `Person` / `Practitioner` `deceased` token parameters use this pattern (`Resource.deceased.exists() and Resource.deceased != false`).
-
-**Feasibility:** Not a fit for value extraction in general — a boolean condition has no value to index — so it's listed for visibility. The single real-world case (`deceased`) could be special-cased if it proves worth it, but the general `and`/`or` form is not a value path.
+Expressions using boolean logic (`and`/`or`, `.exists()`, or comparisons like `=`/`!=`) aren't supported. Example: `Resource.deceased.exists() and Resource.deceased != false`.
 
 **Total:** 5 (R4: 1, R4B: 1, R5: 3)
 
@@ -264,9 +250,7 @@ In FHIR core, only the `Patient` / `Person` / `Practitioner` `deceased` token pa
 
 ## Multi-resource union without a resource prefix
 
-These expressions are pipe-unions (`A | B | ...`) where no branch begins with the search parameter's own resource name — e.g. `name | alias` for `InsurancePlan.name`. For a multi-resource expression the codegen slices out the branch that starts with the parameter's resource name (`InsurancePlan.…`) and translates that branch; when no branch carries the prefix, the slicer finds nothing to resolve and falls through to the unsupported stub.
-
-**Feasibility:** Could be supported. When no branch is resource-qualified, the branches are relative to the parameter's own resource, so the slicer could prepend the resource name (`InsurancePlan.name`, `InsurancePlan.alias`) and resolve them.
+Union expressions (`A | B | ...`) aren't supported unless one of the parts starts with the parameter's resource. Example: `InsurancePlan`'s `name` parameter has expression `name | alias`, and neither `name` nor `alias` starts with `InsurancePlan.`.
 
 **Total:** 3 (R4: 1, R4B: 1, R5: 1)
 
@@ -276,15 +260,9 @@ These expressions are pipe-unions (`A | B | ...`) where no branch begins with th
 | R4B     | `InsurancePlan`    | `name`     | `string` | _(none)_ | `name \| alias`                                                                                                                                                                               | `SearchParameter-InsurancePlan-name.json`     | `http://hl7.org/fhir/SearchParameter/InsurancePlan-name`     |
 | R5      | `EvidenceVariable` | `topic`    | `token`  | _(none)_ | `ActivityDefinition.topic \| CodeSystem.topic \| ConceptMap.topic \| EventDefinition.topic \| Library.topic \| Measure.topic \| NamingSystem.topic \| PlanDefinition.topic \| ValueSet.topic` | `SearchParameter-MetadataResource-topic.json` | `http://hl7.org/fhir/SearchParameter/MetadataResource-topic` |
 
-## `where(...)` predicates other than `field='value'` and `resolve() is Type`
+## Other `where(...)` conditions
 
-The codegen handles two `where(...)` predicate shapes — `where(<field>='<string>')` and `where(resolve() is <Type>)`. Anything else inside the parentheses falls through to the unsupported stub. Across R4 / R4B / R5 core search params, only one parameter hits this gap: `QuestionnaireResponse.item-subject`, which uses an extension-presence check inside `where(...)`.
-
-R4 spells this `hasExtension('<url>')`; R4B and R5 spell it `extension('<url>').exists()`. Both forms have the same intent: keep `item`s that carry the canonical `questionnaireresponse-isSubject` extension. Adding support would require parsing function-call predicates plus a way to look up extensions by canonical URL (see also [`.extension('url')` access](#extension-url-access)).
-
-These same expressions also have an unsupported `.ofType(Reference)` post-`where(...)` tail (see also [`.ofType(Type)` choice narrowing](#oftype-type-choice-narrowing)). Either gap on its own is enough to make the parameter unsupported — fixing only one would not be sufficient.
-
-**Feasibility:** Could be supported, but needs two additions together — parsing function-call predicates inside `where(...)` and extension-by-URL lookup — plus the `.ofType(...)` support noted above, since all three appear in the same expression.
+`where(...)` supports two conditions: `where(<field>='<value>')` and `where(resolve() is <Type>)`. Anything else isn't supported. Example: `QuestionnaireResponse`'s `item-subject` parameter uses `where(hasExtension('<url>'))` (R4) or `where(extension('<url>').exists())` (R4B and R5) to check for an extension.
 
 **Total:** 3 (R4: 1, R4B: 1, R5: 1)
 
@@ -296,9 +274,11 @@ These same expressions also have an unsupported `.ofType(Reference)` post-`where
 
 ## Other patterns (parens, indexed access, bare paths)
 
-A small set of expressions whose syntactic shape the resolver doesn't recognize, so they fall through to the unsupported stub. Each uses a form the resolver can't walk into a value path: leading parentheses (`(Citation.classification.type)`), indexed access (`Bundle.entry[0].resource`), or a bare path missing the resource prefix (`id` for `Resource._id`, `requestedPeriod` for `Appointment.requested-period`).
+Three shapes aren't supported:
 
-**Feasibility:** Mostly could be supported — stripping the leading parentheses, handling `[0]` indexing, and prepending the resource prefix to bare paths are each local resolver fixes. A few (e.g. deep indexed access into `Bundle.entry`) are lower value and may not be worth it.
+1. Leading parentheses, like `(Citation.classification.type)`.
+2. Indexed access with `[N]`, like `Bundle.entry[0].resource`.
+3. Bare paths that don't start with the resource name, like `id` (for `Resource`'s `_id` parameter) or `requestedPeriod` (for `Appointment`'s `requested-period` parameter).
 
 **Total:** 16 (R4: 4, R4B: 4, R5: 8)
 

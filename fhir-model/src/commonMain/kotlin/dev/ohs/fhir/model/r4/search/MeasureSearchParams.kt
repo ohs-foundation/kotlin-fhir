@@ -182,7 +182,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Measure] resource type. */
 public object MeasureSearchParams {
   public val composedOf: SearchParam<Measure, Canonical> =
-    SearchParam<Measure, Canonical>(
+    SearchParam(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
       expression = "Measure.relatedArtifact.where(type='composed-of').resource",
@@ -342,7 +342,7 @@ public object MeasureSearchParams {
     )
 
   public val context: SearchParam<Measure, CodeableConcept> =
-    SearchParam<Measure, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(Measure.useContext.value as CodeableConcept)",
@@ -354,7 +354,7 @@ public object MeasureSearchParams {
     )
 
   public val contextQuantity: SearchParam<Measure, Quantity> =
-    SearchParam<Measure, Quantity>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(Measure.useContext.value as Quantity)",
@@ -364,7 +364,7 @@ public object MeasureSearchParams {
     )
 
   public val contextType: SearchParam<Measure, Coding> =
-    SearchParam<Measure, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "Measure.useContext.code",
@@ -372,7 +372,7 @@ public object MeasureSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<Measure, UsageContext> =
-    SearchParam<Measure, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Measure.useContext",
@@ -380,7 +380,7 @@ public object MeasureSearchParams {
     )
 
   public val contextTypeValue: SearchParam<Measure, UsageContext> =
-    SearchParam<Measure, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "Measure.useContext",
@@ -388,7 +388,7 @@ public object MeasureSearchParams {
     )
 
   public val date: SearchParam<Measure, DateTime> =
-    SearchParam<Measure, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Measure.date",
@@ -396,7 +396,7 @@ public object MeasureSearchParams {
     )
 
   public val dependsOn: SearchParam<Measure, Canonical> =
-    SearchParam<Measure, Canonical>(
+    SearchParam(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
       expression = "Measure.relatedArtifact.where(type='depends-on').resource",
@@ -556,7 +556,7 @@ public object MeasureSearchParams {
     )
 
   public val derivedFrom: SearchParam<Measure, Canonical> =
-    SearchParam<Measure, Canonical>(
+    SearchParam(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "Measure.relatedArtifact.where(type='derived-from').resource",
@@ -716,7 +716,7 @@ public object MeasureSearchParams {
     )
 
   public val description: SearchParam<Measure, Markdown> =
-    SearchParam<Measure, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "Measure.description",
@@ -724,7 +724,7 @@ public object MeasureSearchParams {
     )
 
   public val effective: SearchParam<Measure, Period> =
-    SearchParam<Measure, Period>(
+    SearchParam(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "Measure.effectivePeriod",
@@ -732,7 +732,7 @@ public object MeasureSearchParams {
     )
 
   public val identifier: SearchParam<Measure, Identifier> =
-    SearchParam<Measure, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Measure.identifier",
@@ -740,7 +740,7 @@ public object MeasureSearchParams {
     )
 
   public val jurisdiction: SearchParam<Measure, CodeableConcept> =
-    SearchParam<Measure, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "Measure.jurisdiction",
@@ -748,7 +748,7 @@ public object MeasureSearchParams {
     )
 
   public val name: SearchParam<Measure, String> =
-    SearchParam<Measure, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Measure.name",
@@ -756,7 +756,7 @@ public object MeasureSearchParams {
     )
 
   public val predecessor: SearchParam<Measure, Canonical> =
-    SearchParam<Measure, Canonical>(
+    SearchParam(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "Measure.relatedArtifact.where(type='predecessor').resource",
@@ -916,7 +916,7 @@ public object MeasureSearchParams {
     )
 
   public val publisher: SearchParam<Measure, String> =
-    SearchParam<Measure, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "Measure.publisher",
@@ -924,7 +924,7 @@ public object MeasureSearchParams {
     )
 
   public val status: SearchParam<Measure, Any> =
-    SearchParam<Measure, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Measure.status",
@@ -932,7 +932,7 @@ public object MeasureSearchParams {
     )
 
   public val successor: SearchParam<Measure, Canonical> =
-    SearchParam<Measure, Canonical>(
+    SearchParam(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
       expression = "Measure.relatedArtifact.where(type='successor').resource",
@@ -1092,7 +1092,7 @@ public object MeasureSearchParams {
     )
 
   public val title: SearchParam<Measure, String> =
-    SearchParam<Measure, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "Measure.title",
@@ -1100,7 +1100,7 @@ public object MeasureSearchParams {
     )
 
   public val topic: SearchParam<Measure, CodeableConcept> =
-    SearchParam<Measure, CodeableConcept>(
+    SearchParam(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "Measure.topic",
@@ -1108,7 +1108,7 @@ public object MeasureSearchParams {
     )
 
   public val url: SearchParam<Measure, Uri> =
-    SearchParam<Measure, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "Measure.url",
@@ -1116,7 +1116,7 @@ public object MeasureSearchParams {
     )
 
   public val version: SearchParam<Measure, String> =
-    SearchParam<Measure, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "Measure.version",

@@ -36,7 +36,7 @@ import kotlin.collections.List
 /** Search parameters for the [AllergyIntolerance] resource type. */
 public object AllergyIntoleranceSearchParams {
   public val asserter: SearchParam<AllergyIntolerance, Reference> =
-    SearchParam<AllergyIntolerance, Reference>(
+    SearchParam(
       name = "asserter",
       type = SearchParamType.fromCode("reference"),
       expression = "AllergyIntolerance.asserter",
@@ -46,7 +46,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val category: SearchParam<AllergyIntolerance, Any> =
-    SearchParam<AllergyIntolerance, Any>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.category",
@@ -54,7 +54,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val clinicalStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
-    SearchParam<AllergyIntolerance, CodeableConcept>(
+    SearchParam(
       name = "clinical-status",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.clinicalStatus",
@@ -62,7 +62,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val code: SearchParam<AllergyIntolerance, CodeableConcept> =
-    SearchParam<AllergyIntolerance, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.code",
@@ -70,7 +70,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val criticality: SearchParam<AllergyIntolerance, Any> =
-    SearchParam<AllergyIntolerance, Any>(
+    SearchParam(
       name = "criticality",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.criticality",
@@ -78,7 +78,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val date: SearchParam<AllergyIntolerance, DateTime> =
-    SearchParam<AllergyIntolerance, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "AllergyIntolerance.recordedDate",
@@ -86,7 +86,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val identifier: SearchParam<AllergyIntolerance, Identifier> =
-    SearchParam<AllergyIntolerance, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.identifier",
@@ -94,7 +94,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val lastDate: SearchParam<AllergyIntolerance, DateTime> =
-    SearchParam<AllergyIntolerance, DateTime>(
+    SearchParam(
       name = "last-date",
       type = SearchParamType.fromCode("date"),
       expression = "AllergyIntolerance.lastOccurrence",
@@ -102,7 +102,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val manifestation: SearchParam<AllergyIntolerance, CodeableConcept> =
-    SearchParam<AllergyIntolerance, CodeableConcept>(
+    SearchParam(
       name = "manifestation",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.reaction.manifestation",
@@ -110,7 +110,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val onset: SearchParam<AllergyIntolerance, DateTime> =
-    SearchParam<AllergyIntolerance, DateTime>(
+    SearchParam(
       name = "onset",
       type = SearchParamType.fromCode("date"),
       expression = "AllergyIntolerance.reaction.onset",
@@ -118,7 +118,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val patient: SearchParam<AllergyIntolerance, Reference> =
-    SearchParam<AllergyIntolerance, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "AllergyIntolerance.patient",
@@ -127,7 +127,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val recorder: SearchParam<AllergyIntolerance, Reference> =
-    SearchParam<AllergyIntolerance, Reference>(
+    SearchParam(
       name = "recorder",
       type = SearchParamType.fromCode("reference"),
       expression = "AllergyIntolerance.recorder",
@@ -137,7 +137,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val route: SearchParam<AllergyIntolerance, CodeableConcept> =
-    SearchParam<AllergyIntolerance, CodeableConcept>(
+    SearchParam(
       name = "route",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.reaction.exposureRoute",
@@ -145,7 +145,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val severity: SearchParam<AllergyIntolerance, Any> =
-    SearchParam<AllergyIntolerance, Any>(
+    SearchParam(
       name = "severity",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.reaction.severity",
@@ -153,7 +153,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val type: SearchParam<AllergyIntolerance, Any> =
-    SearchParam<AllergyIntolerance, Any>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.type",
@@ -161,7 +161,7 @@ public object AllergyIntoleranceSearchParams {
     )
 
   public val verificationStatus: SearchParam<AllergyIntolerance, CodeableConcept> =
-    SearchParam<AllergyIntolerance, CodeableConcept>(
+    SearchParam(
       name = "verification-status",
       type = SearchParamType.fromCode("token"),
       expression = "AllergyIntolerance.verificationStatus",

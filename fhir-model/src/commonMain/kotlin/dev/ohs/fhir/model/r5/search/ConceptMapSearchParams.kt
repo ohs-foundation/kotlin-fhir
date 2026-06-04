@@ -194,7 +194,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [ConceptMap] resource type. */
 public object ConceptMapSearchParams {
   public val context: SearchParam<ConceptMap, Any> =
-    SearchParam<ConceptMap, Any>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(ConceptMap.useContext.value.ofType(CodeableConcept))",
@@ -202,7 +202,7 @@ public object ConceptMapSearchParams {
     )
 
   public val contextQuantity: SearchParam<ConceptMap, Any> =
-    SearchParam<ConceptMap, Any>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(ConceptMap.useContext.value.ofType(Quantity))",
@@ -210,7 +210,7 @@ public object ConceptMapSearchParams {
     )
 
   public val contextType: SearchParam<ConceptMap, Coding> =
-    SearchParam<ConceptMap, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.useContext.code",
@@ -218,7 +218,7 @@ public object ConceptMapSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<ConceptMap, UsageContext> =
-    SearchParam<ConceptMap, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "ConceptMap.useContext",
@@ -226,7 +226,7 @@ public object ConceptMapSearchParams {
     )
 
   public val contextTypeValue: SearchParam<ConceptMap, UsageContext> =
-    SearchParam<ConceptMap, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "ConceptMap.useContext",
@@ -234,7 +234,7 @@ public object ConceptMapSearchParams {
     )
 
   public val date: SearchParam<ConceptMap, DateTime> =
-    SearchParam<ConceptMap, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ConceptMap.date",
@@ -242,7 +242,7 @@ public object ConceptMapSearchParams {
     )
 
   public val derivedFrom: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "ConceptMap.relatedArtifact.where(type='derived-from').resource",
@@ -415,7 +415,7 @@ public object ConceptMapSearchParams {
     )
 
   public val description: SearchParam<ConceptMap, Markdown> =
-    SearchParam<ConceptMap, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "ConceptMap.description",
@@ -423,7 +423,7 @@ public object ConceptMapSearchParams {
     )
 
   public val effective: SearchParam<ConceptMap, Period> =
-    SearchParam<ConceptMap, Period>(
+    SearchParam(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "ConceptMap.effectivePeriod",
@@ -431,7 +431,7 @@ public object ConceptMapSearchParams {
     )
 
   public val identifier: SearchParam<ConceptMap, Identifier> =
-    SearchParam<ConceptMap, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.identifier",
@@ -439,7 +439,7 @@ public object ConceptMapSearchParams {
     )
 
   public val jurisdiction: SearchParam<ConceptMap, CodeableConcept> =
-    SearchParam<ConceptMap, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.jurisdiction",
@@ -447,7 +447,7 @@ public object ConceptMapSearchParams {
     )
 
   public val mappingProperty: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "mapping-property",
       type = SearchParamType.fromCode("uri"),
       expression = "ConceptMap.property.uri",
@@ -455,7 +455,7 @@ public object ConceptMapSearchParams {
     )
 
   public val name: SearchParam<ConceptMap, String> =
-    SearchParam<ConceptMap, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "ConceptMap.name",
@@ -463,7 +463,7 @@ public object ConceptMapSearchParams {
     )
 
   public val otherMap: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "other-map",
       type = SearchParamType.fromCode("reference"),
       expression = "ConceptMap.group.unmapped.otherMap",
@@ -474,7 +474,7 @@ public object ConceptMapSearchParams {
     )
 
   public val predecessor: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "ConceptMap.relatedArtifact.where(type='predecessor').resource",
@@ -647,7 +647,7 @@ public object ConceptMapSearchParams {
     )
 
   public val publisher: SearchParam<ConceptMap, String> =
-    SearchParam<ConceptMap, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "ConceptMap.publisher",
@@ -655,7 +655,7 @@ public object ConceptMapSearchParams {
     )
 
   public val sourceCode: SearchParam<ConceptMap, Any> =
-    SearchParam<ConceptMap, Any>(
+    SearchParam(
       name = "source-code",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.group.element.code",
@@ -663,7 +663,7 @@ public object ConceptMapSearchParams {
     )
 
   public val sourceGroupSystem: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "source-group-system",
       type = SearchParamType.fromCode("reference"),
       expression = "ConceptMap.group.source",
@@ -672,7 +672,7 @@ public object ConceptMapSearchParams {
     )
 
   public val sourceScope: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "source-scope",
       type = SearchParamType.fromCode("reference"),
       expression = "(ConceptMap.sourceScope as canonical)",
@@ -683,7 +683,7 @@ public object ConceptMapSearchParams {
     )
 
   public val sourceScopeUri: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "source-scope-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "(ConceptMap.sourceScope as uri)",
@@ -693,7 +693,7 @@ public object ConceptMapSearchParams {
     )
 
   public val status: SearchParam<ConceptMap, Any> =
-    SearchParam<ConceptMap, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.status",
@@ -701,7 +701,7 @@ public object ConceptMapSearchParams {
     )
 
   public val targetCode: SearchParam<ConceptMap, Any> =
-    SearchParam<ConceptMap, Any>(
+    SearchParam(
       name = "target-code",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.group.element.target.code",
@@ -711,7 +711,7 @@ public object ConceptMapSearchParams {
     )
 
   public val targetGroupSystem: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "target-group-system",
       type = SearchParamType.fromCode("reference"),
       expression = "ConceptMap.group.target",
@@ -720,7 +720,7 @@ public object ConceptMapSearchParams {
     )
 
   public val targetScope: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "target-scope",
       type = SearchParamType.fromCode("reference"),
       expression = "(ConceptMap.targetScope as canonical)",
@@ -731,7 +731,7 @@ public object ConceptMapSearchParams {
     )
 
   public val targetScopeUri: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "target-scope-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "(ConceptMap.targetScope as uri)",
@@ -741,7 +741,7 @@ public object ConceptMapSearchParams {
     )
 
   public val title: SearchParam<ConceptMap, String> =
-    SearchParam<ConceptMap, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "ConceptMap.title",
@@ -749,7 +749,7 @@ public object ConceptMapSearchParams {
     )
 
   public val topic: SearchParam<ConceptMap, CodeableConcept> =
-    SearchParam<ConceptMap, CodeableConcept>(
+    SearchParam(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.topic",
@@ -757,7 +757,7 @@ public object ConceptMapSearchParams {
     )
 
   public val url: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "ConceptMap.url",
@@ -765,7 +765,7 @@ public object ConceptMapSearchParams {
     )
 
   public val version: SearchParam<ConceptMap, String> =
-    SearchParam<ConceptMap, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.version",

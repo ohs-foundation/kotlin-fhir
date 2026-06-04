@@ -41,7 +41,7 @@ import kotlin.collections.List
 /** Search parameters for the [Flag] resource type. */
 public object FlagSearchParams {
   public val author: SearchParam<Flag, Reference> =
-    SearchParam<Flag, Reference>(
+    SearchParam(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "Flag.author",
@@ -57,7 +57,7 @@ public object FlagSearchParams {
     )
 
   public val date: SearchParam<Flag, Period> =
-    SearchParam<Flag, Period>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Flag.period",
@@ -65,7 +65,7 @@ public object FlagSearchParams {
     )
 
   public val encounter: SearchParam<Flag, Reference> =
-    SearchParam<Flag, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Flag.encounter",
@@ -74,7 +74,7 @@ public object FlagSearchParams {
     )
 
   public val identifier: SearchParam<Flag, Identifier> =
-    SearchParam<Flag, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Flag.identifier",
@@ -82,7 +82,7 @@ public object FlagSearchParams {
     )
 
   public val patient: SearchParam<Flag, Reference> =
-    SearchParam<Flag, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Flag.subject.where(resolve() is Patient)",
@@ -95,7 +95,7 @@ public object FlagSearchParams {
     )
 
   public val subject: SearchParam<Flag, Reference> =
-    SearchParam<Flag, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Flag.subject",

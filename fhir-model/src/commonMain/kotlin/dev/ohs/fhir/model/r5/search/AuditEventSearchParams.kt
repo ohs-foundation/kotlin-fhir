@@ -189,7 +189,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [AuditEvent] resource type. */
 public object AuditEventSearchParams {
   public val action: SearchParam<AuditEvent, Any> =
-    SearchParam<AuditEvent, Any>(
+    SearchParam(
       name = "action",
       type = SearchParamType.fromCode("token"),
       expression = "AuditEvent.action",
@@ -197,7 +197,7 @@ public object AuditEventSearchParams {
     )
 
   public val agent: SearchParam<AuditEvent, Reference> =
-    SearchParam<AuditEvent, Reference>(
+    SearchParam(
       name = "agent",
       type = SearchParamType.fromCode("reference"),
       expression = "AuditEvent.agent.who",
@@ -215,7 +215,7 @@ public object AuditEventSearchParams {
     )
 
   public val agentRole: SearchParam<AuditEvent, CodeableConcept> =
-    SearchParam<AuditEvent, CodeableConcept>(
+    SearchParam(
       name = "agent-role",
       type = SearchParamType.fromCode("token"),
       expression = "AuditEvent.agent.role",
@@ -223,7 +223,7 @@ public object AuditEventSearchParams {
     )
 
   public val basedOn: SearchParam<AuditEvent, Reference> =
-    SearchParam<AuditEvent, Reference>(
+    SearchParam(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "AuditEvent.basedOn",
@@ -241,7 +241,7 @@ public object AuditEventSearchParams {
     )
 
   public val category: SearchParam<AuditEvent, CodeableConcept> =
-    SearchParam<AuditEvent, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "AuditEvent.category",
@@ -249,7 +249,7 @@ public object AuditEventSearchParams {
     )
 
   public val code: SearchParam<AuditEvent, CodeableConcept> =
-    SearchParam<AuditEvent, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "AuditEvent.code",
@@ -257,7 +257,7 @@ public object AuditEventSearchParams {
     )
 
   public val date: SearchParam<AuditEvent, Instant> =
-    SearchParam<AuditEvent, Instant>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "AuditEvent.recorded",
@@ -265,7 +265,7 @@ public object AuditEventSearchParams {
     )
 
   public val encounter: SearchParam<AuditEvent, Reference> =
-    SearchParam<AuditEvent, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "AuditEvent.encounter",
@@ -274,7 +274,7 @@ public object AuditEventSearchParams {
     )
 
   public val entity: SearchParam<AuditEvent, Reference> =
-    SearchParam<AuditEvent, Reference>(
+    SearchParam(
       name = "entity",
       type = SearchParamType.fromCode("reference"),
       expression = "AuditEvent.entity.what",
@@ -443,7 +443,7 @@ public object AuditEventSearchParams {
     )
 
   public val entityRole: SearchParam<AuditEvent, CodeableConcept> =
-    SearchParam<AuditEvent, CodeableConcept>(
+    SearchParam(
       name = "entity-role",
       type = SearchParamType.fromCode("token"),
       expression = "AuditEvent.entity.role",
@@ -451,7 +451,7 @@ public object AuditEventSearchParams {
     )
 
   public val outcome: SearchParam<AuditEvent, Coding> =
-    SearchParam<AuditEvent, Coding>(
+    SearchParam(
       name = "outcome",
       type = SearchParamType.fromCode("token"),
       expression = "AuditEvent.outcome.code",
@@ -459,7 +459,7 @@ public object AuditEventSearchParams {
     )
 
   public val patient: SearchParam<AuditEvent, Reference> =
-    SearchParam<AuditEvent, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "AuditEvent.patient",
@@ -468,7 +468,7 @@ public object AuditEventSearchParams {
     )
 
   public val policy: SearchParam<AuditEvent, Uri> =
-    SearchParam<AuditEvent, Uri>(
+    SearchParam(
       name = "policy",
       type = SearchParamType.fromCode("uri"),
       expression = "AuditEvent.agent.policy",
@@ -476,7 +476,7 @@ public object AuditEventSearchParams {
     )
 
   public val purpose: SearchParam<AuditEvent, CodeableConcept> =
-    SearchParam<AuditEvent, CodeableConcept>(
+    SearchParam(
       name = "purpose",
       type = SearchParamType.fromCode("token"),
       expression = "AuditEvent.authorization",
@@ -484,7 +484,7 @@ public object AuditEventSearchParams {
     )
 
   public val source: SearchParam<AuditEvent, Reference> =
-    SearchParam<AuditEvent, Reference>(
+    SearchParam(
       name = "source",
       type = SearchParamType.fromCode("reference"),
       expression = "AuditEvent.source.observer",

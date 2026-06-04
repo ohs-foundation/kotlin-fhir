@@ -30,7 +30,7 @@ import kotlin.collections.List
 /** Search parameters for the [MedicinalProductInteraction] resource type. */
 public object MedicinalProductInteractionSearchParams {
   public val subject: SearchParam<MedicinalProductInteraction, Reference> =
-    SearchParam<MedicinalProductInteraction, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicinalProductInteraction.subject",

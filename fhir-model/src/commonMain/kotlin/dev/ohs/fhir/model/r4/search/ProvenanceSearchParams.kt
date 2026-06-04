@@ -175,7 +175,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Provenance] resource type. */
 public object ProvenanceSearchParams {
   public val agent: SearchParam<Provenance, Reference> =
-    SearchParam<Provenance, Reference>(
+    SearchParam(
       name = "agent",
       type = SearchParamType.fromCode("reference"),
       expression = "Provenance.agent.who",
@@ -192,7 +192,7 @@ public object ProvenanceSearchParams {
     )
 
   public val agentRole: SearchParam<Provenance, CodeableConcept> =
-    SearchParam<Provenance, CodeableConcept>(
+    SearchParam(
       name = "agent-role",
       type = SearchParamType.fromCode("token"),
       expression = "Provenance.agent.role",
@@ -200,7 +200,7 @@ public object ProvenanceSearchParams {
     )
 
   public val agentType: SearchParam<Provenance, CodeableConcept> =
-    SearchParam<Provenance, CodeableConcept>(
+    SearchParam(
       name = "agent-type",
       type = SearchParamType.fromCode("token"),
       expression = "Provenance.agent.type",
@@ -208,7 +208,7 @@ public object ProvenanceSearchParams {
     )
 
   public val entity: SearchParam<Provenance, Reference> =
-    SearchParam<Provenance, Reference>(
+    SearchParam(
       name = "entity",
       type = SearchParamType.fromCode("reference"),
       expression = "Provenance.entity.what",
@@ -364,7 +364,7 @@ public object ProvenanceSearchParams {
     )
 
   public val location: SearchParam<Provenance, Reference> =
-    SearchParam<Provenance, Reference>(
+    SearchParam(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Provenance.location",
@@ -373,7 +373,7 @@ public object ProvenanceSearchParams {
     )
 
   public val patient: SearchParam<Provenance, Reference> =
-    SearchParam<Provenance, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Provenance.target.where(resolve() is Patient)",
@@ -384,7 +384,7 @@ public object ProvenanceSearchParams {
     )
 
   public val recorded: SearchParam<Provenance, Instant> =
-    SearchParam<Provenance, Instant>(
+    SearchParam(
       name = "recorded",
       type = SearchParamType.fromCode("date"),
       expression = "Provenance.recorded",
@@ -392,7 +392,7 @@ public object ProvenanceSearchParams {
     )
 
   public val signatureType: SearchParam<Provenance, Coding> =
-    SearchParam<Provenance, Coding>(
+    SearchParam(
       name = "signature-type",
       type = SearchParamType.fromCode("token"),
       expression = "Provenance.signature.type",
@@ -400,7 +400,7 @@ public object ProvenanceSearchParams {
     )
 
   public val target: SearchParam<Provenance, Reference> =
-    SearchParam<Provenance, Reference>(
+    SearchParam(
       name = "target",
       type = SearchParamType.fromCode("reference"),
       expression = "Provenance.target",
@@ -556,7 +556,7 @@ public object ProvenanceSearchParams {
     )
 
   public val `when`: SearchParam<Provenance, DateTime> =
-    SearchParam<Provenance, DateTime>(
+    SearchParam(
       name = "when",
       type = SearchParamType.fromCode("date"),
       expression = "(Provenance.occurred as dateTime)",

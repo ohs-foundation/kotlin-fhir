@@ -187,7 +187,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Appointment] resource type. */
 public object AppointmentSearchParams {
   public val actor: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "actor",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.participant.actor",
@@ -207,7 +207,7 @@ public object AppointmentSearchParams {
     )
 
   public val appointmentType: SearchParam<Appointment, CodeableConcept> =
-    SearchParam<Appointment, CodeableConcept>(
+    SearchParam(
       name = "appointment-type",
       type = SearchParamType.fromCode("token"),
       expression = "Appointment.appointmentType",
@@ -215,7 +215,7 @@ public object AppointmentSearchParams {
     )
 
   public val basedOn: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.basedOn",
@@ -230,7 +230,7 @@ public object AppointmentSearchParams {
     )
 
   public val date: SearchParam<Appointment, Any> =
-    SearchParam<Appointment, Any>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression =
@@ -239,7 +239,7 @@ public object AppointmentSearchParams {
     )
 
   public val group: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "group",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.participant.actor.where(resolve() is Group)",
@@ -252,7 +252,7 @@ public object AppointmentSearchParams {
     )
 
   public val identifier: SearchParam<Appointment, Identifier> =
-    SearchParam<Appointment, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Appointment.identifier",
@@ -260,7 +260,7 @@ public object AppointmentSearchParams {
     )
 
   public val location: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.participant.actor.where(resolve() is Location)",
@@ -273,7 +273,7 @@ public object AppointmentSearchParams {
     )
 
   public val partStatus: SearchParam<Appointment, Any> =
-    SearchParam<Appointment, Any>(
+    SearchParam(
       name = "part-status",
       type = SearchParamType.fromCode("token"),
       expression = "Appointment.participant.status",
@@ -281,7 +281,7 @@ public object AppointmentSearchParams {
     )
 
   public val patient: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.participant.actor.where(resolve() is Patient)",
@@ -294,7 +294,7 @@ public object AppointmentSearchParams {
     )
 
   public val practitioner: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "practitioner",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.participant.actor.where(resolve() is Practitioner)",
@@ -307,7 +307,7 @@ public object AppointmentSearchParams {
     )
 
   public val reasonCode: SearchParam<Appointment, CodeableConcept> =
-    SearchParam<Appointment, CodeableConcept>(
+    SearchParam(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
       expression = "Appointment.reason.concept",
@@ -315,7 +315,7 @@ public object AppointmentSearchParams {
     )
 
   public val reasonReference: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.reason.reference",
@@ -330,7 +330,7 @@ public object AppointmentSearchParams {
     )
 
   public val requestedPeriod: SearchParam<Appointment, Any> =
-    SearchParam<Appointment, Any>(
+    SearchParam(
       name = "requested-period",
       type = SearchParamType.fromCode("date"),
       expression = "requestedPeriod",
@@ -338,7 +338,7 @@ public object AppointmentSearchParams {
     )
 
   public val serviceCategory: SearchParam<Appointment, CodeableConcept> =
-    SearchParam<Appointment, CodeableConcept>(
+    SearchParam(
       name = "service-category",
       type = SearchParamType.fromCode("token"),
       expression = "Appointment.serviceCategory",
@@ -346,7 +346,7 @@ public object AppointmentSearchParams {
     )
 
   public val serviceType: SearchParam<Appointment, CodeableConcept> =
-    SearchParam<Appointment, CodeableConcept>(
+    SearchParam(
       name = "service-type",
       type = SearchParamType.fromCode("token"),
       expression = "Appointment.serviceType.concept",
@@ -354,7 +354,7 @@ public object AppointmentSearchParams {
     )
 
   public val serviceTypeReference: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "service-type-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.serviceType.reference",
@@ -363,7 +363,7 @@ public object AppointmentSearchParams {
     )
 
   public val slot: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "slot",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.slot",
@@ -372,7 +372,7 @@ public object AppointmentSearchParams {
     )
 
   public val specialty: SearchParam<Appointment, CodeableConcept> =
-    SearchParam<Appointment, CodeableConcept>(
+    SearchParam(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
       expression = "Appointment.specialty",
@@ -380,7 +380,7 @@ public object AppointmentSearchParams {
     )
 
   public val status: SearchParam<Appointment, Any> =
-    SearchParam<Appointment, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Appointment.status",
@@ -388,7 +388,7 @@ public object AppointmentSearchParams {
     )
 
   public val subject: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.subject",
@@ -397,7 +397,7 @@ public object AppointmentSearchParams {
     )
 
   public val supportingInfo: SearchParam<Appointment, Reference> =
-    SearchParam<Appointment, Reference>(
+    SearchParam(
       name = "supporting-info",
       type = SearchParamType.fromCode("reference"),
       expression = "Appointment.supportingInformation",

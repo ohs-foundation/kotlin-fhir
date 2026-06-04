@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [RiskEvidenceSynthesis] resource type. */
 public object RiskEvidenceSynthesisSearchParams {
   public val context: SearchParam<RiskEvidenceSynthesis, CodeableConcept> =
-    SearchParam<RiskEvidenceSynthesis, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(RiskEvidenceSynthesis.useContext.value as CodeableConcept)",
@@ -49,7 +49,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val contextQuantity: SearchParam<RiskEvidenceSynthesis, Quantity> =
-    SearchParam<RiskEvidenceSynthesis, Quantity>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(RiskEvidenceSynthesis.useContext.value as Quantity)",
@@ -59,7 +59,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val contextType: SearchParam<RiskEvidenceSynthesis, Coding> =
-    SearchParam<RiskEvidenceSynthesis, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "RiskEvidenceSynthesis.useContext.code",
@@ -67,7 +67,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<RiskEvidenceSynthesis, UsageContext> =
-    SearchParam<RiskEvidenceSynthesis, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "RiskEvidenceSynthesis.useContext",
@@ -75,7 +75,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val contextTypeValue: SearchParam<RiskEvidenceSynthesis, UsageContext> =
-    SearchParam<RiskEvidenceSynthesis, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "RiskEvidenceSynthesis.useContext",
@@ -83,7 +83,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val date: SearchParam<RiskEvidenceSynthesis, DateTime> =
-    SearchParam<RiskEvidenceSynthesis, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "RiskEvidenceSynthesis.date",
@@ -91,7 +91,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val description: SearchParam<RiskEvidenceSynthesis, Markdown> =
-    SearchParam<RiskEvidenceSynthesis, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "RiskEvidenceSynthesis.description",
@@ -99,7 +99,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val effective: SearchParam<RiskEvidenceSynthesis, Period> =
-    SearchParam<RiskEvidenceSynthesis, Period>(
+    SearchParam(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "RiskEvidenceSynthesis.effectivePeriod",
@@ -107,7 +107,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val identifier: SearchParam<RiskEvidenceSynthesis, Identifier> =
-    SearchParam<RiskEvidenceSynthesis, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "RiskEvidenceSynthesis.identifier",
@@ -115,7 +115,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val jurisdiction: SearchParam<RiskEvidenceSynthesis, CodeableConcept> =
-    SearchParam<RiskEvidenceSynthesis, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "RiskEvidenceSynthesis.jurisdiction",
@@ -123,7 +123,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val name: SearchParam<RiskEvidenceSynthesis, String> =
-    SearchParam<RiskEvidenceSynthesis, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "RiskEvidenceSynthesis.name",
@@ -131,7 +131,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val publisher: SearchParam<RiskEvidenceSynthesis, String> =
-    SearchParam<RiskEvidenceSynthesis, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "RiskEvidenceSynthesis.publisher",
@@ -139,7 +139,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val status: SearchParam<RiskEvidenceSynthesis, Any> =
-    SearchParam<RiskEvidenceSynthesis, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "RiskEvidenceSynthesis.status",
@@ -147,7 +147,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val title: SearchParam<RiskEvidenceSynthesis, String> =
-    SearchParam<RiskEvidenceSynthesis, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "RiskEvidenceSynthesis.title",
@@ -155,7 +155,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val url: SearchParam<RiskEvidenceSynthesis, Uri> =
-    SearchParam<RiskEvidenceSynthesis, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "RiskEvidenceSynthesis.url",
@@ -163,7 +163,7 @@ public object RiskEvidenceSynthesisSearchParams {
     )
 
   public val version: SearchParam<RiskEvidenceSynthesis, String> =
-    SearchParam<RiskEvidenceSynthesis, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "RiskEvidenceSynthesis.version",

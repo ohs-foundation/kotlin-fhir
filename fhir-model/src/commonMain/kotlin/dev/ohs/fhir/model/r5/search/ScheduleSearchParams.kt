@@ -40,7 +40,7 @@ import kotlin.collections.List
 /** Search parameters for the [Schedule] resource type. */
 public object ScheduleSearchParams {
   public val active: SearchParam<Schedule, Boolean> =
-    SearchParam<Schedule, Boolean>(
+    SearchParam(
       name = "active",
       type = SearchParamType.fromCode("token"),
       expression = "Schedule.active",
@@ -48,7 +48,7 @@ public object ScheduleSearchParams {
     )
 
   public val actor: SearchParam<Schedule, Reference> =
-    SearchParam<Schedule, Reference>(
+    SearchParam(
       name = "actor",
       type = SearchParamType.fromCode("reference"),
       expression = "Schedule.actor",
@@ -67,7 +67,7 @@ public object ScheduleSearchParams {
     )
 
   public val date: SearchParam<Schedule, Period> =
-    SearchParam<Schedule, Period>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Schedule.planningHorizon",
@@ -75,7 +75,7 @@ public object ScheduleSearchParams {
     )
 
   public val identifier: SearchParam<Schedule, Identifier> =
-    SearchParam<Schedule, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Schedule.identifier",
@@ -83,7 +83,7 @@ public object ScheduleSearchParams {
     )
 
   public val name: SearchParam<Schedule, String> =
-    SearchParam<Schedule, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Schedule.name",
@@ -91,7 +91,7 @@ public object ScheduleSearchParams {
     )
 
   public val serviceCategory: SearchParam<Schedule, CodeableConcept> =
-    SearchParam<Schedule, CodeableConcept>(
+    SearchParam(
       name = "service-category",
       type = SearchParamType.fromCode("token"),
       expression = "Schedule.serviceCategory",
@@ -99,7 +99,7 @@ public object ScheduleSearchParams {
     )
 
   public val serviceType: SearchParam<Schedule, CodeableConcept> =
-    SearchParam<Schedule, CodeableConcept>(
+    SearchParam(
       name = "service-type",
       type = SearchParamType.fromCode("token"),
       expression = "Schedule.serviceType.concept",
@@ -107,7 +107,7 @@ public object ScheduleSearchParams {
     )
 
   public val serviceTypeReference: SearchParam<Schedule, Reference> =
-    SearchParam<Schedule, Reference>(
+    SearchParam(
       name = "service-type-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "Schedule.serviceType.reference",
@@ -116,7 +116,7 @@ public object ScheduleSearchParams {
     )
 
   public val specialty: SearchParam<Schedule, CodeableConcept> =
-    SearchParam<Schedule, CodeableConcept>(
+    SearchParam(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
       expression = "Schedule.specialty",

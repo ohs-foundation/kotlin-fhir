@@ -187,7 +187,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [VerificationResult] resource type. */
 public object VerificationResultSearchParams {
   public val attestationMethod: SearchParam<VerificationResult, CodeableConcept> =
-    SearchParam<VerificationResult, CodeableConcept>(
+    SearchParam(
       name = "attestation-method",
       type = SearchParamType.fromCode("token"),
       expression = "VerificationResult.attestation.communicationMethod",
@@ -195,7 +195,7 @@ public object VerificationResultSearchParams {
     )
 
   public val attestationOnbehalfof: SearchParam<VerificationResult, Reference> =
-    SearchParam<VerificationResult, Reference>(
+    SearchParam(
       name = "attestation-onbehalfof",
       type = SearchParamType.fromCode("reference"),
       expression = "VerificationResult.attestation.onBehalfOf",
@@ -204,7 +204,7 @@ public object VerificationResultSearchParams {
     )
 
   public val attestationWho: SearchParam<VerificationResult, Reference> =
-    SearchParam<VerificationResult, Reference>(
+    SearchParam(
       name = "attestation-who",
       type = SearchParamType.fromCode("reference"),
       expression = "VerificationResult.attestation.who",
@@ -213,7 +213,7 @@ public object VerificationResultSearchParams {
     )
 
   public val primarysourceDate: SearchParam<VerificationResult, DateTime> =
-    SearchParam<VerificationResult, DateTime>(
+    SearchParam(
       name = "primarysource-date",
       type = SearchParamType.fromCode("date"),
       expression = "VerificationResult.primarySource.validationDate",
@@ -221,7 +221,7 @@ public object VerificationResultSearchParams {
     )
 
   public val primarysourceType: SearchParam<VerificationResult, CodeableConcept> =
-    SearchParam<VerificationResult, CodeableConcept>(
+    SearchParam(
       name = "primarysource-type",
       type = SearchParamType.fromCode("token"),
       expression = "VerificationResult.primarySource.type",
@@ -229,7 +229,7 @@ public object VerificationResultSearchParams {
     )
 
   public val primarysourceWho: SearchParam<VerificationResult, Reference> =
-    SearchParam<VerificationResult, Reference>(
+    SearchParam(
       name = "primarysource-who",
       type = SearchParamType.fromCode("reference"),
       expression = "VerificationResult.primarySource.who",
@@ -238,7 +238,7 @@ public object VerificationResultSearchParams {
     )
 
   public val status: SearchParam<VerificationResult, Any> =
-    SearchParam<VerificationResult, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "VerificationResult.status",
@@ -246,7 +246,7 @@ public object VerificationResultSearchParams {
     )
 
   public val statusDate: SearchParam<VerificationResult, DateTime> =
-    SearchParam<VerificationResult, DateTime>(
+    SearchParam(
       name = "status-date",
       type = SearchParamType.fromCode("date"),
       expression = "VerificationResult.statusDate",
@@ -254,7 +254,7 @@ public object VerificationResultSearchParams {
     )
 
   public val target: SearchParam<VerificationResult, Reference> =
-    SearchParam<VerificationResult, Reference>(
+    SearchParam(
       name = "target",
       type = SearchParamType.fromCode("reference"),
       expression = "VerificationResult.target",
@@ -423,7 +423,7 @@ public object VerificationResultSearchParams {
     )
 
   public val validatorOrganization: SearchParam<VerificationResult, Reference> =
-    SearchParam<VerificationResult, Reference>(
+    SearchParam(
       name = "validator-organization",
       type = SearchParamType.fromCode("reference"),
       expression = "VerificationResult.validator.organization",

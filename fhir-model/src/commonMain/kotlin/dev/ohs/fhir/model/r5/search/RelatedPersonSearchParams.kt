@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [RelatedPerson] resource type. */
 public object RelatedPersonSearchParams {
   public val active: SearchParam<RelatedPerson, Boolean> =
-    SearchParam<RelatedPerson, Boolean>(
+    SearchParam(
       name = "active",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.active",
@@ -45,7 +45,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val address: SearchParam<RelatedPerson, Address> =
-    SearchParam<RelatedPerson, Address>(
+    SearchParam(
       name = "address",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address",
@@ -53,7 +53,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressCity: SearchParam<RelatedPerson, String> =
-    SearchParam<RelatedPerson, String>(
+    SearchParam(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address.city",
@@ -61,7 +61,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressCountry: SearchParam<RelatedPerson, String> =
-    SearchParam<RelatedPerson, String>(
+    SearchParam(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address.country",
@@ -69,7 +69,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressPostalcode: SearchParam<RelatedPerson, String> =
-    SearchParam<RelatedPerson, String>(
+    SearchParam(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address.postalCode",
@@ -77,7 +77,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressState: SearchParam<RelatedPerson, String> =
-    SearchParam<RelatedPerson, String>(
+    SearchParam(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.address.state",
@@ -85,7 +85,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val addressUse: SearchParam<RelatedPerson, Any> =
-    SearchParam<RelatedPerson, Any>(
+    SearchParam(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.address.use",
@@ -93,7 +93,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val birthdate: SearchParam<RelatedPerson, Date> =
-    SearchParam<RelatedPerson, Date>(
+    SearchParam(
       name = "birthdate",
       type = SearchParamType.fromCode("date"),
       expression = "RelatedPerson.birthDate",
@@ -101,7 +101,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val email: SearchParam<RelatedPerson, ContactPoint> =
-    SearchParam<RelatedPerson, ContactPoint>(
+    SearchParam(
       name = "email",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.telecom.where(system='email')",
@@ -111,7 +111,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val family: SearchParam<RelatedPerson, String> =
-    SearchParam<RelatedPerson, String>(
+    SearchParam(
       name = "family",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.name.family",
@@ -119,7 +119,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val gender: SearchParam<RelatedPerson, Any> =
-    SearchParam<RelatedPerson, Any>(
+    SearchParam(
       name = "gender",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.gender",
@@ -127,7 +127,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val given: SearchParam<RelatedPerson, String> =
-    SearchParam<RelatedPerson, String>(
+    SearchParam(
       name = "given",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.name.given",
@@ -135,7 +135,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val identifier: SearchParam<RelatedPerson, Identifier> =
-    SearchParam<RelatedPerson, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.identifier",
@@ -143,7 +143,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val name: SearchParam<RelatedPerson, HumanName> =
-    SearchParam<RelatedPerson, HumanName>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.name",
@@ -151,7 +151,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val patient: SearchParam<RelatedPerson, Reference> =
-    SearchParam<RelatedPerson, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "RelatedPerson.patient",
@@ -160,7 +160,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val phone: SearchParam<RelatedPerson, ContactPoint> =
-    SearchParam<RelatedPerson, ContactPoint>(
+    SearchParam(
       name = "phone",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.telecom.where(system='phone')",
@@ -170,7 +170,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val phonetic: SearchParam<RelatedPerson, HumanName> =
-    SearchParam<RelatedPerson, HumanName>(
+    SearchParam(
       name = "phonetic",
       type = SearchParamType.fromCode("string"),
       expression = "RelatedPerson.name",
@@ -178,7 +178,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val relationship: SearchParam<RelatedPerson, CodeableConcept> =
-    SearchParam<RelatedPerson, CodeableConcept>(
+    SearchParam(
       name = "relationship",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.relationship",
@@ -186,7 +186,7 @@ public object RelatedPersonSearchParams {
     )
 
   public val telecom: SearchParam<RelatedPerson, ContactPoint> =
-    SearchParam<RelatedPerson, ContactPoint>(
+    SearchParam(
       name = "telecom",
       type = SearchParamType.fromCode("token"),
       expression = "RelatedPerson.telecom",

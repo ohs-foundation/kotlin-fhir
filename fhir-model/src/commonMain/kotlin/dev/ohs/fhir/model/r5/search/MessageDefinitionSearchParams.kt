@@ -38,7 +38,7 @@ import kotlin.collections.List
 /** Search parameters for the [MessageDefinition] resource type. */
 public object MessageDefinitionSearchParams {
   public val category: SearchParam<MessageDefinition, Any> =
-    SearchParam<MessageDefinition, Any>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "MessageDefinition.category",
@@ -46,7 +46,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val context: SearchParam<MessageDefinition, Any> =
-    SearchParam<MessageDefinition, Any>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(MessageDefinition.useContext.value.ofType(CodeableConcept))",
@@ -54,7 +54,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val contextQuantity: SearchParam<MessageDefinition, Any> =
-    SearchParam<MessageDefinition, Any>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(MessageDefinition.useContext.value.ofType(Quantity))",
@@ -62,7 +62,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val contextType: SearchParam<MessageDefinition, Coding> =
-    SearchParam<MessageDefinition, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "MessageDefinition.useContext.code",
@@ -70,7 +70,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<MessageDefinition, UsageContext> =
-    SearchParam<MessageDefinition, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "MessageDefinition.useContext",
@@ -78,7 +78,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val contextTypeValue: SearchParam<MessageDefinition, UsageContext> =
-    SearchParam<MessageDefinition, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "MessageDefinition.useContext",
@@ -86,7 +86,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val date: SearchParam<MessageDefinition, DateTime> =
-    SearchParam<MessageDefinition, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "MessageDefinition.date",
@@ -94,7 +94,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val description: SearchParam<MessageDefinition, Markdown> =
-    SearchParam<MessageDefinition, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "MessageDefinition.description",
@@ -102,7 +102,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val event: SearchParam<MessageDefinition, Any> =
-    SearchParam<MessageDefinition, Any>(
+    SearchParam(
       name = "event",
       type = SearchParamType.fromCode("token"),
       expression = "MessageDefinition.event.ofType(Coding)",
@@ -110,7 +110,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val focus: SearchParam<MessageDefinition, Any> =
-    SearchParam<MessageDefinition, Any>(
+    SearchParam(
       name = "focus",
       type = SearchParamType.fromCode("token"),
       expression = "MessageDefinition.focus.code",
@@ -118,7 +118,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<MessageDefinition, Identifier> =
-    SearchParam<MessageDefinition, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MessageDefinition.identifier",
@@ -126,7 +126,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val jurisdiction: SearchParam<MessageDefinition, CodeableConcept> =
-    SearchParam<MessageDefinition, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "MessageDefinition.jurisdiction",
@@ -134,7 +134,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val name: SearchParam<MessageDefinition, String> =
-    SearchParam<MessageDefinition, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "MessageDefinition.name",
@@ -142,7 +142,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val parent: SearchParam<MessageDefinition, Canonical> =
-    SearchParam<MessageDefinition, Canonical>(
+    SearchParam(
       name = "parent",
       type = SearchParamType.fromCode("reference"),
       expression = "MessageDefinition.parent",
@@ -151,7 +151,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val publisher: SearchParam<MessageDefinition, String> =
-    SearchParam<MessageDefinition, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "MessageDefinition.publisher",
@@ -159,7 +159,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val status: SearchParam<MessageDefinition, Any> =
-    SearchParam<MessageDefinition, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "MessageDefinition.status",
@@ -167,7 +167,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val title: SearchParam<MessageDefinition, String> =
-    SearchParam<MessageDefinition, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "MessageDefinition.title",
@@ -175,7 +175,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val url: SearchParam<MessageDefinition, Uri> =
-    SearchParam<MessageDefinition, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "MessageDefinition.url",
@@ -183,7 +183,7 @@ public object MessageDefinitionSearchParams {
     )
 
   public val version: SearchParam<MessageDefinition, String> =
-    SearchParam<MessageDefinition, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "MessageDefinition.version",

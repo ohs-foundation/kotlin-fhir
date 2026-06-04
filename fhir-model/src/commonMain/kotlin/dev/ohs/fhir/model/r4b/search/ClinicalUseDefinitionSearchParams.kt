@@ -38,7 +38,7 @@ import kotlin.collections.List
 /** Search parameters for the [ClinicalUseDefinition] resource type. */
 public object ClinicalUseDefinitionSearchParams {
   public val contraindication: SearchParam<ClinicalUseDefinition, CodeableReference> =
-    SearchParam<ClinicalUseDefinition, CodeableReference>(
+    SearchParam(
       name = "contraindication",
       type = SearchParamType.fromCode("token"),
       expression = "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure",
@@ -46,7 +46,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val contraindicationReference: SearchParam<ClinicalUseDefinition, CodeableReference> =
-    SearchParam<ClinicalUseDefinition, CodeableReference>(
+    SearchParam(
       name = "contraindication-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalUseDefinition.contraindication.diseaseSymptomProcedure",
@@ -54,7 +54,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val effect: SearchParam<ClinicalUseDefinition, CodeableReference> =
-    SearchParam<ClinicalUseDefinition, CodeableReference>(
+    SearchParam(
       name = "effect",
       type = SearchParamType.fromCode("token"),
       expression = "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect",
@@ -62,7 +62,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val effectReference: SearchParam<ClinicalUseDefinition, CodeableReference> =
-    SearchParam<ClinicalUseDefinition, CodeableReference>(
+    SearchParam(
       name = "effect-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalUseDefinition.undesirableEffect.symptomConditionEffect",
@@ -70,7 +70,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<ClinicalUseDefinition, Identifier> =
-    SearchParam<ClinicalUseDefinition, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ClinicalUseDefinition.identifier",
@@ -78,7 +78,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val indication: SearchParam<ClinicalUseDefinition, CodeableReference> =
-    SearchParam<ClinicalUseDefinition, CodeableReference>(
+    SearchParam(
       name = "indication",
       type = SearchParamType.fromCode("token"),
       expression = "ClinicalUseDefinition.indication.diseaseSymptomProcedure",
@@ -86,7 +86,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val indicationReference: SearchParam<ClinicalUseDefinition, CodeableReference> =
-    SearchParam<ClinicalUseDefinition, CodeableReference>(
+    SearchParam(
       name = "indication-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalUseDefinition.indication.diseaseSymptomProcedure",
@@ -94,7 +94,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val interaction: SearchParam<ClinicalUseDefinition, CodeableConcept> =
-    SearchParam<ClinicalUseDefinition, CodeableConcept>(
+    SearchParam(
       name = "interaction",
       type = SearchParamType.fromCode("token"),
       expression = "ClinicalUseDefinition.interaction.type",
@@ -102,7 +102,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val product: SearchParam<ClinicalUseDefinition, Reference> =
-    SearchParam<ClinicalUseDefinition, Reference>(
+    SearchParam(
       name = "product",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalUseDefinition.subject.where(resolve() is MedicinalProductDefinition)",
@@ -115,7 +115,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val subject: SearchParam<ClinicalUseDefinition, Reference> =
-    SearchParam<ClinicalUseDefinition, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ClinicalUseDefinition.subject",
@@ -133,7 +133,7 @@ public object ClinicalUseDefinitionSearchParams {
     )
 
   public val type: SearchParam<ClinicalUseDefinition, Any> =
-    SearchParam<ClinicalUseDefinition, Any>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "ClinicalUseDefinition.type",

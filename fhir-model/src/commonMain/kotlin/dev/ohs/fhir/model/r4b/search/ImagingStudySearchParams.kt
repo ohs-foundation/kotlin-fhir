@@ -48,7 +48,7 @@ import kotlin.collections.List
 /** Search parameters for the [ImagingStudy] resource type. */
 public object ImagingStudySearchParams {
   public val basedon: SearchParam<ImagingStudy, Reference> =
-    SearchParam<ImagingStudy, Reference>(
+    SearchParam(
       name = "basedon",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.basedOn",
@@ -64,7 +64,7 @@ public object ImagingStudySearchParams {
     )
 
   public val bodysite: SearchParam<ImagingStudy, Coding> =
-    SearchParam<ImagingStudy, Coding>(
+    SearchParam(
       name = "bodysite",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingStudy.series.bodySite",
@@ -72,7 +72,7 @@ public object ImagingStudySearchParams {
     )
 
   public val dicomClass: SearchParam<ImagingStudy, Coding> =
-    SearchParam<ImagingStudy, Coding>(
+    SearchParam(
       name = "dicom-class",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingStudy.series.instance.sopClass",
@@ -80,7 +80,7 @@ public object ImagingStudySearchParams {
     )
 
   public val encounter: SearchParam<ImagingStudy, Reference> =
-    SearchParam<ImagingStudy, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.encounter",
@@ -89,7 +89,7 @@ public object ImagingStudySearchParams {
     )
 
   public val endpoint: SearchParam<ImagingStudy, Reference> =
-    SearchParam<ImagingStudy, Reference>(
+    SearchParam(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.endpoint",
@@ -98,7 +98,7 @@ public object ImagingStudySearchParams {
     )
 
   public val identifier: SearchParam<ImagingStudy, Identifier> =
-    SearchParam<ImagingStudy, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingStudy.identifier",
@@ -106,7 +106,7 @@ public object ImagingStudySearchParams {
     )
 
   public val instance: SearchParam<ImagingStudy, Id> =
-    SearchParam<ImagingStudy, Id>(
+    SearchParam(
       name = "instance",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingStudy.series.instance.uid",
@@ -114,7 +114,7 @@ public object ImagingStudySearchParams {
     )
 
   public val interpreter: SearchParam<ImagingStudy, Reference> =
-    SearchParam<ImagingStudy, Reference>(
+    SearchParam(
       name = "interpreter",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.interpreter",
@@ -123,7 +123,7 @@ public object ImagingStudySearchParams {
     )
 
   public val modality: SearchParam<ImagingStudy, Coding> =
-    SearchParam<ImagingStudy, Coding>(
+    SearchParam(
       name = "modality",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingStudy.series.modality",
@@ -131,7 +131,7 @@ public object ImagingStudySearchParams {
     )
 
   public val patient: SearchParam<ImagingStudy, Reference> =
-    SearchParam<ImagingStudy, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.subject.where(resolve() is Patient)",
@@ -144,7 +144,7 @@ public object ImagingStudySearchParams {
     )
 
   public val performer: SearchParam<ImagingStudy, Reference> =
-    SearchParam<ImagingStudy, Reference>(
+    SearchParam(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.series.performer.actor",
@@ -162,7 +162,7 @@ public object ImagingStudySearchParams {
     )
 
   public val reason: SearchParam<ImagingStudy, CodeableConcept> =
-    SearchParam<ImagingStudy, CodeableConcept>(
+    SearchParam(
       name = "reason",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingStudy.reasonCode",
@@ -170,7 +170,7 @@ public object ImagingStudySearchParams {
     )
 
   public val referrer: SearchParam<ImagingStudy, Reference> =
-    SearchParam<ImagingStudy, Reference>(
+    SearchParam(
       name = "referrer",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.referrer",
@@ -179,7 +179,7 @@ public object ImagingStudySearchParams {
     )
 
   public val series: SearchParam<ImagingStudy, Id> =
-    SearchParam<ImagingStudy, Id>(
+    SearchParam(
       name = "series",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingStudy.series.uid",
@@ -187,7 +187,7 @@ public object ImagingStudySearchParams {
     )
 
   public val started: SearchParam<ImagingStudy, DateTime> =
-    SearchParam<ImagingStudy, DateTime>(
+    SearchParam(
       name = "started",
       type = SearchParamType.fromCode("date"),
       expression = "ImagingStudy.started",
@@ -195,7 +195,7 @@ public object ImagingStudySearchParams {
     )
 
   public val status: SearchParam<ImagingStudy, Any> =
-    SearchParam<ImagingStudy, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingStudy.status",
@@ -203,7 +203,7 @@ public object ImagingStudySearchParams {
     )
 
   public val subject: SearchParam<ImagingStudy, Reference> =
-    SearchParam<ImagingStudy, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingStudy.subject",

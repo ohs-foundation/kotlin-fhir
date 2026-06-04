@@ -50,7 +50,7 @@ import kotlin.collections.List
 /** Search parameters for the [ImagingSelection] resource type. */
 public object ImagingSelectionSearchParams {
   public val basedOn: SearchParam<ImagingSelection, Reference> =
-    SearchParam<ImagingSelection, Reference>(
+    SearchParam(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.basedOn",
@@ -66,7 +66,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val bodySite: SearchParam<ImagingSelection, CodeableConcept> =
-    SearchParam<ImagingSelection, CodeableConcept>(
+    SearchParam(
       name = "body-site",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.bodySite.concept",
@@ -74,7 +74,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val bodyStructure: SearchParam<ImagingSelection, Reference> =
-    SearchParam<ImagingSelection, Reference>(
+    SearchParam(
       name = "body-structure",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.bodySite.reference",
@@ -83,7 +83,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val code: SearchParam<ImagingSelection, Any> =
-    SearchParam<ImagingSelection, Any>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.status",
@@ -91,7 +91,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val derivedFrom: SearchParam<ImagingSelection, Reference> =
-    SearchParam<ImagingSelection, Reference>(
+    SearchParam(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.derivedFrom",
@@ -100,7 +100,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val identifier: SearchParam<ImagingSelection, Identifier> =
-    SearchParam<ImagingSelection, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.identifier",
@@ -108,7 +108,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val issued: SearchParam<ImagingSelection, Instant> =
-    SearchParam<ImagingSelection, Instant>(
+    SearchParam(
       name = "issued",
       type = SearchParamType.fromCode("date"),
       expression = "ImagingSelection.issued",
@@ -116,7 +116,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val patient: SearchParam<ImagingSelection, Reference> =
-    SearchParam<ImagingSelection, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.subject.where(resolve() is Patient)",
@@ -129,7 +129,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val status: SearchParam<ImagingSelection, Any> =
-    SearchParam<ImagingSelection, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.status",
@@ -137,7 +137,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val studyUid: SearchParam<ImagingSelection, Id> =
-    SearchParam<ImagingSelection, Id>(
+    SearchParam(
       name = "study-uid",
       type = SearchParamType.fromCode("token"),
       expression = "ImagingSelection.studyUid",
@@ -145,7 +145,7 @@ public object ImagingSelectionSearchParams {
     )
 
   public val subject: SearchParam<ImagingSelection, Reference> =
-    SearchParam<ImagingSelection, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "ImagingSelection.subject",

@@ -29,7 +29,7 @@ import kotlin.collections.List
 /** Search parameters for the [MedicinalProduct] resource type. */
 public object MedicinalProductSearchParams {
   public val identifier: SearchParam<MedicinalProduct, Identifier> =
-    SearchParam<MedicinalProduct, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProduct.identifier",
@@ -37,7 +37,7 @@ public object MedicinalProductSearchParams {
     )
 
   public val name: SearchParam<MedicinalProduct, String> =
-    SearchParam<MedicinalProduct, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "MedicinalProduct.name.productName",
@@ -45,7 +45,7 @@ public object MedicinalProductSearchParams {
     )
 
   public val nameLanguage: SearchParam<MedicinalProduct, CodeableConcept> =
-    SearchParam<MedicinalProduct, CodeableConcept>(
+    SearchParam(
       name = "name-language",
       type = SearchParamType.fromCode("token"),
       expression = "MedicinalProduct.name.countryLanguage.language",

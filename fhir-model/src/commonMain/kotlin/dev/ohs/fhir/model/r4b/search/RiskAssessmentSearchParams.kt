@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [RiskAssessment] resource type. */
 public object RiskAssessmentSearchParams {
   public val condition: SearchParam<RiskAssessment, Reference> =
-    SearchParam<RiskAssessment, Reference>(
+    SearchParam(
       name = "condition",
       type = SearchParamType.fromCode("reference"),
       expression = "RiskAssessment.condition",
@@ -46,7 +46,7 @@ public object RiskAssessmentSearchParams {
     )
 
   public val date: SearchParam<RiskAssessment, DateTime> =
-    SearchParam<RiskAssessment, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "(RiskAssessment.occurrence as dateTime)",
@@ -56,7 +56,7 @@ public object RiskAssessmentSearchParams {
     )
 
   public val encounter: SearchParam<RiskAssessment, Reference> =
-    SearchParam<RiskAssessment, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "RiskAssessment.encounter",
@@ -65,7 +65,7 @@ public object RiskAssessmentSearchParams {
     )
 
   public val identifier: SearchParam<RiskAssessment, Identifier> =
-    SearchParam<RiskAssessment, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "RiskAssessment.identifier",
@@ -73,7 +73,7 @@ public object RiskAssessmentSearchParams {
     )
 
   public val method: SearchParam<RiskAssessment, CodeableConcept> =
-    SearchParam<RiskAssessment, CodeableConcept>(
+    SearchParam(
       name = "method",
       type = SearchParamType.fromCode("token"),
       expression = "RiskAssessment.method",
@@ -81,7 +81,7 @@ public object RiskAssessmentSearchParams {
     )
 
   public val patient: SearchParam<RiskAssessment, Reference> =
-    SearchParam<RiskAssessment, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "RiskAssessment.subject.where(resolve() is Patient)",
@@ -94,7 +94,7 @@ public object RiskAssessmentSearchParams {
     )
 
   public val performer: SearchParam<RiskAssessment, Reference> =
-    SearchParam<RiskAssessment, Reference>(
+    SearchParam(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "RiskAssessment.performer",
@@ -103,7 +103,7 @@ public object RiskAssessmentSearchParams {
     )
 
   public val probability: SearchParam<RiskAssessment, RiskAssessment.Prediction.Probability> =
-    SearchParam<RiskAssessment, RiskAssessment.Prediction.Probability>(
+    SearchParam(
       name = "probability",
       type = SearchParamType.fromCode("number"),
       expression = "RiskAssessment.prediction.probability",
@@ -111,7 +111,7 @@ public object RiskAssessmentSearchParams {
     )
 
   public val risk: SearchParam<RiskAssessment, CodeableConcept> =
-    SearchParam<RiskAssessment, CodeableConcept>(
+    SearchParam(
       name = "risk",
       type = SearchParamType.fromCode("token"),
       expression = "RiskAssessment.prediction.qualitativeRisk",
@@ -119,7 +119,7 @@ public object RiskAssessmentSearchParams {
     )
 
   public val subject: SearchParam<RiskAssessment, Reference> =
-    SearchParam<RiskAssessment, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "RiskAssessment.subject",

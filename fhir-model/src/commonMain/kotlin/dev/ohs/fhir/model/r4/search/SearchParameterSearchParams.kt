@@ -36,7 +36,7 @@ import kotlin.collections.List
 /** Search parameters for the [SearchParameter] resource type. */
 public object SearchParameterSearchParams {
   public val base: SearchParam<SearchParameter, Any> =
-    SearchParam<SearchParameter, Any>(
+    SearchParam(
       name = "base",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.base",
@@ -44,7 +44,7 @@ public object SearchParameterSearchParams {
     )
 
   public val code: SearchParam<SearchParameter, Any> =
-    SearchParam<SearchParameter, Any>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.code",
@@ -52,7 +52,7 @@ public object SearchParameterSearchParams {
     )
 
   public val component: SearchParam<SearchParameter, Canonical> =
-    SearchParam<SearchParameter, Canonical>(
+    SearchParam(
       name = "component",
       type = SearchParamType.fromCode("reference"),
       expression = "SearchParameter.component.definition",
@@ -61,7 +61,7 @@ public object SearchParameterSearchParams {
     )
 
   public val context: SearchParam<SearchParameter, CodeableConcept> =
-    SearchParam<SearchParameter, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(SearchParameter.useContext.value as CodeableConcept)",
@@ -73,7 +73,7 @@ public object SearchParameterSearchParams {
     )
 
   public val contextQuantity: SearchParam<SearchParameter, Quantity> =
-    SearchParam<SearchParameter, Quantity>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(SearchParameter.useContext.value as Quantity)",
@@ -83,7 +83,7 @@ public object SearchParameterSearchParams {
     )
 
   public val contextType: SearchParam<SearchParameter, Coding> =
-    SearchParam<SearchParameter, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.useContext.code",
@@ -91,7 +91,7 @@ public object SearchParameterSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<SearchParameter, UsageContext> =
-    SearchParam<SearchParameter, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "SearchParameter.useContext",
@@ -99,7 +99,7 @@ public object SearchParameterSearchParams {
     )
 
   public val contextTypeValue: SearchParam<SearchParameter, UsageContext> =
-    SearchParam<SearchParameter, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "SearchParameter.useContext",
@@ -107,7 +107,7 @@ public object SearchParameterSearchParams {
     )
 
   public val date: SearchParam<SearchParameter, DateTime> =
-    SearchParam<SearchParameter, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "SearchParameter.date",
@@ -115,7 +115,7 @@ public object SearchParameterSearchParams {
     )
 
   public val derivedFrom: SearchParam<SearchParameter, Canonical> =
-    SearchParam<SearchParameter, Canonical>(
+    SearchParam(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "SearchParameter.derivedFrom",
@@ -124,7 +124,7 @@ public object SearchParameterSearchParams {
     )
 
   public val description: SearchParam<SearchParameter, Markdown> =
-    SearchParam<SearchParameter, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "SearchParameter.description",
@@ -132,7 +132,7 @@ public object SearchParameterSearchParams {
     )
 
   public val jurisdiction: SearchParam<SearchParameter, CodeableConcept> =
-    SearchParam<SearchParameter, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.jurisdiction",
@@ -140,7 +140,7 @@ public object SearchParameterSearchParams {
     )
 
   public val name: SearchParam<SearchParameter, String> =
-    SearchParam<SearchParameter, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "SearchParameter.name",
@@ -148,7 +148,7 @@ public object SearchParameterSearchParams {
     )
 
   public val publisher: SearchParam<SearchParameter, String> =
-    SearchParam<SearchParameter, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "SearchParameter.publisher",
@@ -156,7 +156,7 @@ public object SearchParameterSearchParams {
     )
 
   public val status: SearchParam<SearchParameter, Any> =
-    SearchParam<SearchParameter, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.status",
@@ -164,7 +164,7 @@ public object SearchParameterSearchParams {
     )
 
   public val target: SearchParam<SearchParameter, Any> =
-    SearchParam<SearchParameter, Any>(
+    SearchParam(
       name = "target",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.target",
@@ -172,7 +172,7 @@ public object SearchParameterSearchParams {
     )
 
   public val type: SearchParam<SearchParameter, Any> =
-    SearchParam<SearchParameter, Any>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.type",
@@ -180,7 +180,7 @@ public object SearchParameterSearchParams {
     )
 
   public val url: SearchParam<SearchParameter, Uri> =
-    SearchParam<SearchParameter, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "SearchParameter.url",
@@ -188,7 +188,7 @@ public object SearchParameterSearchParams {
     )
 
   public val version: SearchParam<SearchParameter, String> =
-    SearchParam<SearchParameter, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "SearchParameter.version",

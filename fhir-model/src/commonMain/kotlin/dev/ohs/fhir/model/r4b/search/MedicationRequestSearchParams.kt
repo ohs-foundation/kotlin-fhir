@@ -41,7 +41,7 @@ import kotlin.collections.List
 /** Search parameters for the [MedicationRequest] resource type. */
 public object MedicationRequestSearchParams {
   public val authoredon: SearchParam<MedicationRequest, DateTime> =
-    SearchParam<MedicationRequest, DateTime>(
+    SearchParam(
       name = "authoredon",
       type = SearchParamType.fromCode("date"),
       expression = "MedicationRequest.authoredOn",
@@ -49,7 +49,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val category: SearchParam<MedicationRequest, CodeableConcept> =
-    SearchParam<MedicationRequest, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationRequest.category",
@@ -57,7 +57,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val code: SearchParam<MedicationRequest, CodeableConcept> =
-    SearchParam<MedicationRequest, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "(MedicationRequest.medication as CodeableConcept)",
@@ -67,7 +67,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val date: SearchParam<MedicationRequest, DateTime> =
-    SearchParam<MedicationRequest, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "MedicationRequest.dosageInstruction.timing.event",
@@ -77,7 +77,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val encounter: SearchParam<MedicationRequest, Reference> =
-    SearchParam<MedicationRequest, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.encounter",
@@ -86,7 +86,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val identifier: SearchParam<MedicationRequest, Identifier> =
-    SearchParam<MedicationRequest, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationRequest.identifier",
@@ -94,7 +94,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val intendedDispenser: SearchParam<MedicationRequest, Reference> =
-    SearchParam<MedicationRequest, Reference>(
+    SearchParam(
       name = "intended-dispenser",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.dispenseRequest.performer",
@@ -103,7 +103,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val intendedPerformer: SearchParam<MedicationRequest, Reference> =
-    SearchParam<MedicationRequest, Reference>(
+    SearchParam(
       name = "intended-performer",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.performer",
@@ -121,7 +121,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val intendedPerformertype: SearchParam<MedicationRequest, CodeableConcept> =
-    SearchParam<MedicationRequest, CodeableConcept>(
+    SearchParam(
       name = "intended-performertype",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationRequest.performerType",
@@ -129,7 +129,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val intent: SearchParam<MedicationRequest, Any> =
-    SearchParam<MedicationRequest, Any>(
+    SearchParam(
       name = "intent",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationRequest.intent",
@@ -137,7 +137,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val medication: SearchParam<MedicationRequest, Reference> =
-    SearchParam<MedicationRequest, Reference>(
+    SearchParam(
       name = "medication",
       type = SearchParamType.fromCode("reference"),
       expression = "(MedicationRequest.medication as Reference)",
@@ -148,7 +148,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val patient: SearchParam<MedicationRequest, Reference> =
-    SearchParam<MedicationRequest, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.subject.where(resolve() is Patient)",
@@ -161,7 +161,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val priority: SearchParam<MedicationRequest, Any> =
-    SearchParam<MedicationRequest, Any>(
+    SearchParam(
       name = "priority",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationRequest.priority",
@@ -169,7 +169,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val requester: SearchParam<MedicationRequest, Reference> =
-    SearchParam<MedicationRequest, Reference>(
+    SearchParam(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.requester",
@@ -186,7 +186,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val status: SearchParam<MedicationRequest, Any> =
-    SearchParam<MedicationRequest, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationRequest.status",
@@ -194,7 +194,7 @@ public object MedicationRequestSearchParams {
     )
 
   public val subject: SearchParam<MedicationRequest, Reference> =
-    SearchParam<MedicationRequest, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationRequest.subject",

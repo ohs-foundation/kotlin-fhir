@@ -40,7 +40,7 @@ import kotlin.collections.List
 /** Search parameters for the [Invoice] resource type. */
 public object InvoiceSearchParams {
   public val account: SearchParam<Invoice, Reference> =
-    SearchParam<Invoice, Reference>(
+    SearchParam(
       name = "account",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.account",
@@ -49,7 +49,7 @@ public object InvoiceSearchParams {
     )
 
   public val date: SearchParam<Invoice, DateTime> =
-    SearchParam<Invoice, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Invoice.date",
@@ -57,7 +57,7 @@ public object InvoiceSearchParams {
     )
 
   public val identifier: SearchParam<Invoice, Identifier> =
-    SearchParam<Invoice, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Invoice.identifier",
@@ -65,7 +65,7 @@ public object InvoiceSearchParams {
     )
 
   public val issuer: SearchParam<Invoice, Reference> =
-    SearchParam<Invoice, Reference>(
+    SearchParam(
       name = "issuer",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.issuer",
@@ -74,7 +74,7 @@ public object InvoiceSearchParams {
     )
 
   public val participant: SearchParam<Invoice, Reference> =
-    SearchParam<Invoice, Reference>(
+    SearchParam(
       name = "participant",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.participant.actor",
@@ -91,7 +91,7 @@ public object InvoiceSearchParams {
     )
 
   public val participantRole: SearchParam<Invoice, CodeableConcept> =
-    SearchParam<Invoice, CodeableConcept>(
+    SearchParam(
       name = "participant-role",
       type = SearchParamType.fromCode("token"),
       expression = "Invoice.participant.role",
@@ -99,7 +99,7 @@ public object InvoiceSearchParams {
     )
 
   public val patient: SearchParam<Invoice, Reference> =
-    SearchParam<Invoice, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.subject.where(resolve() is Patient)",
@@ -112,7 +112,7 @@ public object InvoiceSearchParams {
     )
 
   public val recipient: SearchParam<Invoice, Reference> =
-    SearchParam<Invoice, Reference>(
+    SearchParam(
       name = "recipient",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.recipient",
@@ -121,7 +121,7 @@ public object InvoiceSearchParams {
     )
 
   public val status: SearchParam<Invoice, Any> =
-    SearchParam<Invoice, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Invoice.status",
@@ -129,7 +129,7 @@ public object InvoiceSearchParams {
     )
 
   public val subject: SearchParam<Invoice, Reference> =
-    SearchParam<Invoice, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Invoice.subject",
@@ -138,7 +138,7 @@ public object InvoiceSearchParams {
     )
 
   public val totalgross: SearchParam<Invoice, Money> =
-    SearchParam<Invoice, Money>(
+    SearchParam(
       name = "totalgross",
       type = SearchParamType.fromCode("quantity"),
       expression = "Invoice.totalGross",
@@ -146,7 +146,7 @@ public object InvoiceSearchParams {
     )
 
   public val totalnet: SearchParam<Invoice, Money> =
-    SearchParam<Invoice, Money>(
+    SearchParam(
       name = "totalnet",
       type = SearchParamType.fromCode("quantity"),
       expression = "Invoice.totalNet",
@@ -154,7 +154,7 @@ public object InvoiceSearchParams {
     )
 
   public val type: SearchParam<Invoice, CodeableConcept> =
-    SearchParam<Invoice, CodeableConcept>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Invoice.type",

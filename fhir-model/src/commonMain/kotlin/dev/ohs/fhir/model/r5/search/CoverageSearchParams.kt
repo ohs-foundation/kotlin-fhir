@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [Coverage] resource type. */
 public object CoverageSearchParams {
   public val beneficiary: SearchParam<Coverage, Reference> =
-    SearchParam<Coverage, Reference>(
+    SearchParam(
       name = "beneficiary",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.beneficiary",
@@ -43,7 +43,7 @@ public object CoverageSearchParams {
     )
 
   public val classType: SearchParam<Coverage, CodeableConcept> =
-    SearchParam<Coverage, CodeableConcept>(
+    SearchParam(
       name = "class-type",
       type = SearchParamType.fromCode("token"),
       expression = "Coverage.class.type",
@@ -51,7 +51,7 @@ public object CoverageSearchParams {
     )
 
   public val classValue: SearchParam<Coverage, Identifier> =
-    SearchParam<Coverage, Identifier>(
+    SearchParam(
       name = "class-value",
       type = SearchParamType.fromCode("token"),
       expression = "Coverage.class.value",
@@ -59,7 +59,7 @@ public object CoverageSearchParams {
     )
 
   public val dependent: SearchParam<Coverage, String> =
-    SearchParam<Coverage, String>(
+    SearchParam(
       name = "dependent",
       type = SearchParamType.fromCode("string"),
       expression = "Coverage.dependent",
@@ -67,7 +67,7 @@ public object CoverageSearchParams {
     )
 
   public val identifier: SearchParam<Coverage, Identifier> =
-    SearchParam<Coverage, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Coverage.identifier",
@@ -75,7 +75,7 @@ public object CoverageSearchParams {
     )
 
   public val insurer: SearchParam<Coverage, Reference> =
-    SearchParam<Coverage, Reference>(
+    SearchParam(
       name = "insurer",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.insurer",
@@ -84,7 +84,7 @@ public object CoverageSearchParams {
     )
 
   public val patient: SearchParam<Coverage, Reference> =
-    SearchParam<Coverage, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.beneficiary",
@@ -93,7 +93,7 @@ public object CoverageSearchParams {
     )
 
   public val paymentbyParty: SearchParam<Coverage, Reference> =
-    SearchParam<Coverage, Reference>(
+    SearchParam(
       name = "paymentby-party",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.paymentBy.party",
@@ -102,7 +102,7 @@ public object CoverageSearchParams {
     )
 
   public val policyHolder: SearchParam<Coverage, Reference> =
-    SearchParam<Coverage, Reference>(
+    SearchParam(
       name = "policy-holder",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.policyHolder",
@@ -111,7 +111,7 @@ public object CoverageSearchParams {
     )
 
   public val status: SearchParam<Coverage, Any> =
-    SearchParam<Coverage, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Coverage.status",
@@ -119,7 +119,7 @@ public object CoverageSearchParams {
     )
 
   public val subscriber: SearchParam<Coverage, Reference> =
-    SearchParam<Coverage, Reference>(
+    SearchParam(
       name = "subscriber",
       type = SearchParamType.fromCode("reference"),
       expression = "Coverage.subscriber",
@@ -128,7 +128,7 @@ public object CoverageSearchParams {
     )
 
   public val subscriberid: SearchParam<Coverage, Identifier> =
-    SearchParam<Coverage, Identifier>(
+    SearchParam(
       name = "subscriberid",
       type = SearchParamType.fromCode("token"),
       expression = "Coverage.subscriberId",
@@ -136,7 +136,7 @@ public object CoverageSearchParams {
     )
 
   public val type: SearchParam<Coverage, CodeableConcept> =
-    SearchParam<Coverage, CodeableConcept>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Coverage.type",

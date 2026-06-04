@@ -40,7 +40,7 @@ import kotlin.collections.List
 /** Search parameters for the [MedicationAdministration] resource type. */
 public object MedicationAdministrationSearchParams {
   public val code: SearchParam<MedicationAdministration, CodeableConcept> =
-    SearchParam<MedicationAdministration, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "(MedicationAdministration.medication as CodeableConcept)",
@@ -52,7 +52,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val context: SearchParam<MedicationAdministration, Reference> =
-    SearchParam<MedicationAdministration, Reference>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationAdministration.context",
@@ -61,7 +61,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val device: SearchParam<MedicationAdministration, Reference> =
-    SearchParam<MedicationAdministration, Reference>(
+    SearchParam(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationAdministration.device",
@@ -71,7 +71,7 @@ public object MedicationAdministrationSearchParams {
 
   public val effectiveTime:
     SearchParam<MedicationAdministration, MedicationAdministration.Effective> =
-    SearchParam<MedicationAdministration, MedicationAdministration.Effective>(
+    SearchParam(
       name = "effective-time",
       type = SearchParamType.fromCode("date"),
       expression = "MedicationAdministration.effective",
@@ -79,7 +79,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val identifier: SearchParam<MedicationAdministration, Identifier> =
-    SearchParam<MedicationAdministration, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationAdministration.identifier",
@@ -87,7 +87,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val medication: SearchParam<MedicationAdministration, Reference> =
-    SearchParam<MedicationAdministration, Reference>(
+    SearchParam(
       name = "medication",
       type = SearchParamType.fromCode("reference"),
       expression = "(MedicationAdministration.medication as Reference)",
@@ -100,7 +100,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val patient: SearchParam<MedicationAdministration, Reference> =
-    SearchParam<MedicationAdministration, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationAdministration.subject.where(resolve() is Patient)",
@@ -113,7 +113,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val performer: SearchParam<MedicationAdministration, Reference> =
-    SearchParam<MedicationAdministration, Reference>(
+    SearchParam(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationAdministration.performer.actor",
@@ -129,7 +129,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val reasonGiven: SearchParam<MedicationAdministration, CodeableConcept> =
-    SearchParam<MedicationAdministration, CodeableConcept>(
+    SearchParam(
       name = "reason-given",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationAdministration.reasonCode",
@@ -137,7 +137,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val reasonNotGiven: SearchParam<MedicationAdministration, CodeableConcept> =
-    SearchParam<MedicationAdministration, CodeableConcept>(
+    SearchParam(
       name = "reason-not-given",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationAdministration.statusReason",
@@ -145,7 +145,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val request: SearchParam<MedicationAdministration, Reference> =
-    SearchParam<MedicationAdministration, Reference>(
+    SearchParam(
       name = "request",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationAdministration.request",
@@ -154,7 +154,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val status: SearchParam<MedicationAdministration, Any> =
-    SearchParam<MedicationAdministration, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "MedicationAdministration.status",
@@ -162,7 +162,7 @@ public object MedicationAdministrationSearchParams {
     )
 
   public val subject: SearchParam<MedicationAdministration, Reference> =
-    SearchParam<MedicationAdministration, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "MedicationAdministration.subject",

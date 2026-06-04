@@ -174,7 +174,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Basic] resource type. */
 public object BasicSearchParams {
   public val author: SearchParam<Basic, Reference> =
-    SearchParam<Basic, Reference>(
+    SearchParam(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "Basic.author",
@@ -190,7 +190,7 @@ public object BasicSearchParams {
     )
 
   public val code: SearchParam<Basic, CodeableConcept> =
-    SearchParam<Basic, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "Basic.code",
@@ -198,7 +198,7 @@ public object BasicSearchParams {
     )
 
   public val created: SearchParam<Basic, Date> =
-    SearchParam<Basic, Date>(
+    SearchParam(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "Basic.created",
@@ -206,7 +206,7 @@ public object BasicSearchParams {
     )
 
   public val identifier: SearchParam<Basic, Identifier> =
-    SearchParam<Basic, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Basic.identifier",
@@ -214,7 +214,7 @@ public object BasicSearchParams {
     )
 
   public val patient: SearchParam<Basic, Reference> =
-    SearchParam<Basic, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Basic.subject.where(resolve() is Patient)",
@@ -227,7 +227,7 @@ public object BasicSearchParams {
     )
 
   public val subject: SearchParam<Basic, Reference> =
-    SearchParam<Basic, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Basic.subject",

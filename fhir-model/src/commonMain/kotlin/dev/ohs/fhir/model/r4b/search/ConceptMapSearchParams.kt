@@ -38,7 +38,7 @@ import kotlin.collections.List
 /** Search parameters for the [ConceptMap] resource type. */
 public object ConceptMapSearchParams {
   public val context: SearchParam<ConceptMap, CodeableConcept> =
-    SearchParam<ConceptMap, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(ConceptMap.useContext.value as CodeableConcept)",
@@ -50,7 +50,7 @@ public object ConceptMapSearchParams {
     )
 
   public val contextQuantity: SearchParam<ConceptMap, Quantity> =
-    SearchParam<ConceptMap, Quantity>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(ConceptMap.useContext.value as Quantity)",
@@ -60,7 +60,7 @@ public object ConceptMapSearchParams {
     )
 
   public val contextType: SearchParam<ConceptMap, Coding> =
-    SearchParam<ConceptMap, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.useContext.code",
@@ -68,7 +68,7 @@ public object ConceptMapSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<ConceptMap, UsageContext> =
-    SearchParam<ConceptMap, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "ConceptMap.useContext",
@@ -76,7 +76,7 @@ public object ConceptMapSearchParams {
     )
 
   public val contextTypeValue: SearchParam<ConceptMap, UsageContext> =
-    SearchParam<ConceptMap, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "ConceptMap.useContext",
@@ -84,7 +84,7 @@ public object ConceptMapSearchParams {
     )
 
   public val date: SearchParam<ConceptMap, DateTime> =
-    SearchParam<ConceptMap, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ConceptMap.date",
@@ -92,7 +92,7 @@ public object ConceptMapSearchParams {
     )
 
   public val dependson: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "dependson",
       type = SearchParamType.fromCode("uri"),
       expression = "ConceptMap.group.element.target.dependsOn.property",
@@ -106,7 +106,7 @@ public object ConceptMapSearchParams {
     )
 
   public val description: SearchParam<ConceptMap, Markdown> =
-    SearchParam<ConceptMap, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "ConceptMap.description",
@@ -114,7 +114,7 @@ public object ConceptMapSearchParams {
     )
 
   public val identifier: SearchParam<ConceptMap, Identifier> =
-    SearchParam<ConceptMap, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.identifier",
@@ -122,7 +122,7 @@ public object ConceptMapSearchParams {
     )
 
   public val jurisdiction: SearchParam<ConceptMap, CodeableConcept> =
-    SearchParam<ConceptMap, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.jurisdiction",
@@ -130,7 +130,7 @@ public object ConceptMapSearchParams {
     )
 
   public val name: SearchParam<ConceptMap, String> =
-    SearchParam<ConceptMap, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "ConceptMap.name",
@@ -138,7 +138,7 @@ public object ConceptMapSearchParams {
     )
 
   public val other: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "other",
       type = SearchParamType.fromCode("reference"),
       expression = "ConceptMap.group.unmapped.url",
@@ -147,7 +147,7 @@ public object ConceptMapSearchParams {
     )
 
   public val product: SearchParam<ConceptMap, Any> =
-    SearchParam<ConceptMap, Any>(
+    SearchParam(
       name = "product",
       type = SearchParamType.fromCode("uri"),
       expression = "ConceptMap.group.element.target.product.property",
@@ -155,7 +155,7 @@ public object ConceptMapSearchParams {
     )
 
   public val publisher: SearchParam<ConceptMap, String> =
-    SearchParam<ConceptMap, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "ConceptMap.publisher",
@@ -163,7 +163,7 @@ public object ConceptMapSearchParams {
     )
 
   public val source: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "source",
       type = SearchParamType.fromCode("reference"),
       expression = "(ConceptMap.source as canonical)",
@@ -174,7 +174,7 @@ public object ConceptMapSearchParams {
     )
 
   public val sourceCode: SearchParam<ConceptMap, Any> =
-    SearchParam<ConceptMap, Any>(
+    SearchParam(
       name = "source-code",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.group.element.code",
@@ -182,7 +182,7 @@ public object ConceptMapSearchParams {
     )
 
   public val sourceSystem: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "source-system",
       type = SearchParamType.fromCode("uri"),
       expression = "ConceptMap.group.source",
@@ -190,7 +190,7 @@ public object ConceptMapSearchParams {
     )
 
   public val sourceUri: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "source-uri",
       type = SearchParamType.fromCode("reference"),
       expression = "(ConceptMap.source as uri)",
@@ -199,7 +199,7 @@ public object ConceptMapSearchParams {
     )
 
   public val status: SearchParam<ConceptMap, Any> =
-    SearchParam<ConceptMap, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.status",
@@ -207,7 +207,7 @@ public object ConceptMapSearchParams {
     )
 
   public val target: SearchParam<ConceptMap, Canonical> =
-    SearchParam<ConceptMap, Canonical>(
+    SearchParam(
       name = "target",
       type = SearchParamType.fromCode("reference"),
       expression = "(ConceptMap.target as canonical)",
@@ -218,7 +218,7 @@ public object ConceptMapSearchParams {
     )
 
   public val targetCode: SearchParam<ConceptMap, Any> =
-    SearchParam<ConceptMap, Any>(
+    SearchParam(
       name = "target-code",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.group.element.target.code",
@@ -228,7 +228,7 @@ public object ConceptMapSearchParams {
     )
 
   public val targetSystem: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "target-system",
       type = SearchParamType.fromCode("uri"),
       expression = "ConceptMap.group.target",
@@ -236,7 +236,7 @@ public object ConceptMapSearchParams {
     )
 
   public val targetUri: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "target-uri",
       type = SearchParamType.fromCode("reference"),
       expression = "(ConceptMap.target as uri)",
@@ -245,7 +245,7 @@ public object ConceptMapSearchParams {
     )
 
   public val title: SearchParam<ConceptMap, String> =
-    SearchParam<ConceptMap, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "ConceptMap.title",
@@ -253,7 +253,7 @@ public object ConceptMapSearchParams {
     )
 
   public val url: SearchParam<ConceptMap, Uri> =
-    SearchParam<ConceptMap, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "ConceptMap.url",
@@ -261,7 +261,7 @@ public object ConceptMapSearchParams {
     )
 
   public val version: SearchParam<ConceptMap, String> =
-    SearchParam<ConceptMap, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "ConceptMap.version",

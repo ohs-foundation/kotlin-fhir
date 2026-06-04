@@ -28,7 +28,7 @@ import kotlin.collections.List
 /** Search parameters for the [SpecimenDefinition] resource type. */
 public object SpecimenDefinitionSearchParams {
   public val container: SearchParam<SpecimenDefinition, CodeableConcept> =
-    SearchParam<SpecimenDefinition, CodeableConcept>(
+    SearchParam(
       name = "container",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.typeTested.container.type",
@@ -38,7 +38,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<SpecimenDefinition, Identifier> =
-    SearchParam<SpecimenDefinition, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.identifier",
@@ -46,7 +46,7 @@ public object SpecimenDefinitionSearchParams {
     )
 
   public val type: SearchParam<SpecimenDefinition, CodeableConcept> =
-    SearchParam<SpecimenDefinition, CodeableConcept>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "SpecimenDefinition.typeCollected",

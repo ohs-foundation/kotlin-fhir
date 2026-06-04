@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [SubscriptionTopic] resource type. */
 public object SubscriptionTopicSearchParams {
   public val date: SearchParam<SubscriptionTopic, DateTime> =
-    SearchParam<SubscriptionTopic, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "SubscriptionTopic.date",
@@ -40,7 +40,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val derivedOrSelf: SearchParam<SubscriptionTopic, Uri> =
-    SearchParam<SubscriptionTopic, Uri>(
+    SearchParam(
       name = "derived-or-self",
       type = SearchParamType.fromCode("uri"),
       expression = "SubscriptionTopic.url",
@@ -48,7 +48,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val identifier: SearchParam<SubscriptionTopic, Identifier> =
-    SearchParam<SubscriptionTopic, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "SubscriptionTopic.identifier",
@@ -56,7 +56,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val resource: SearchParam<SubscriptionTopic, Uri> =
-    SearchParam<SubscriptionTopic, Uri>(
+    SearchParam(
       name = "resource",
       type = SearchParamType.fromCode("uri"),
       expression = "SubscriptionTopic.resourceTrigger.resource",
@@ -64,7 +64,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val status: SearchParam<SubscriptionTopic, Any> =
-    SearchParam<SubscriptionTopic, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "SubscriptionTopic.status",
@@ -72,7 +72,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val title: SearchParam<SubscriptionTopic, String> =
-    SearchParam<SubscriptionTopic, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "SubscriptionTopic.title",
@@ -80,7 +80,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val triggerDescription: SearchParam<SubscriptionTopic, Markdown> =
-    SearchParam<SubscriptionTopic, Markdown>(
+    SearchParam(
       name = "trigger-description",
       type = SearchParamType.fromCode("string"),
       expression = "SubscriptionTopic.resourceTrigger.description",
@@ -88,7 +88,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val url: SearchParam<SubscriptionTopic, Uri> =
-    SearchParam<SubscriptionTopic, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "SubscriptionTopic.url",
@@ -96,7 +96,7 @@ public object SubscriptionTopicSearchParams {
     )
 
   public val version: SearchParam<SubscriptionTopic, String> =
-    SearchParam<SubscriptionTopic, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "SubscriptionTopic.version",

@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [EvidenceReport] resource type. */
 public object EvidenceReportSearchParams {
   public val context: SearchParam<EvidenceReport, CodeableConcept> =
-    SearchParam<EvidenceReport, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(EvidenceReport.useContext.value as CodeableConcept)",
@@ -46,7 +46,7 @@ public object EvidenceReportSearchParams {
     )
 
   public val contextQuantity: SearchParam<EvidenceReport, Quantity> =
-    SearchParam<EvidenceReport, Quantity>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(EvidenceReport.useContext.value as Quantity)",
@@ -56,7 +56,7 @@ public object EvidenceReportSearchParams {
     )
 
   public val contextType: SearchParam<EvidenceReport, Coding> =
-    SearchParam<EvidenceReport, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "EvidenceReport.useContext.code",
@@ -64,7 +64,7 @@ public object EvidenceReportSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<EvidenceReport, UsageContext> =
-    SearchParam<EvidenceReport, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "EvidenceReport.useContext",
@@ -72,7 +72,7 @@ public object EvidenceReportSearchParams {
     )
 
   public val contextTypeValue: SearchParam<EvidenceReport, UsageContext> =
-    SearchParam<EvidenceReport, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "EvidenceReport.useContext",
@@ -80,7 +80,7 @@ public object EvidenceReportSearchParams {
     )
 
   public val identifier: SearchParam<EvidenceReport, Identifier> =
-    SearchParam<EvidenceReport, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "EvidenceReport.identifier",
@@ -88,7 +88,7 @@ public object EvidenceReportSearchParams {
     )
 
   public val publisher: SearchParam<EvidenceReport, String> =
-    SearchParam<EvidenceReport, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "EvidenceReport.publisher",
@@ -96,7 +96,7 @@ public object EvidenceReportSearchParams {
     )
 
   public val status: SearchParam<EvidenceReport, Any> =
-    SearchParam<EvidenceReport, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "EvidenceReport.status",
@@ -104,7 +104,7 @@ public object EvidenceReportSearchParams {
     )
 
   public val url: SearchParam<EvidenceReport, Uri> =
-    SearchParam<EvidenceReport, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "EvidenceReport.url",

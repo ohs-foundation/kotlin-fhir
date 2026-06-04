@@ -41,7 +41,7 @@ import kotlin.collections.List
 /** Search parameters for the [Goal] resource type. */
 public object GoalSearchParams {
   public val achievementStatus: SearchParam<Goal, CodeableConcept> =
-    SearchParam<Goal, CodeableConcept>(
+    SearchParam(
       name = "achievement-status",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.achievementStatus",
@@ -49,7 +49,7 @@ public object GoalSearchParams {
     )
 
   public val addresses: SearchParam<Goal, Reference> =
-    SearchParam<Goal, Reference>(
+    SearchParam(
       name = "addresses",
       type = SearchParamType.fromCode("reference"),
       expression = "Goal.addresses",
@@ -68,7 +68,7 @@ public object GoalSearchParams {
     )
 
   public val category: SearchParam<Goal, CodeableConcept> =
-    SearchParam<Goal, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.category",
@@ -76,7 +76,7 @@ public object GoalSearchParams {
     )
 
   public val description: SearchParam<Goal, CodeableConcept> =
-    SearchParam<Goal, CodeableConcept>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.description",
@@ -84,7 +84,7 @@ public object GoalSearchParams {
     )
 
   public val identifier: SearchParam<Goal, Identifier> =
-    SearchParam<Goal, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.identifier",
@@ -92,7 +92,7 @@ public object GoalSearchParams {
     )
 
   public val lifecycleStatus: SearchParam<Goal, Any> =
-    SearchParam<Goal, Any>(
+    SearchParam(
       name = "lifecycle-status",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.lifecycleStatus",
@@ -100,7 +100,7 @@ public object GoalSearchParams {
     )
 
   public val patient: SearchParam<Goal, Reference> =
-    SearchParam<Goal, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Goal.subject.where(resolve() is Patient)",
@@ -113,7 +113,7 @@ public object GoalSearchParams {
     )
 
   public val startDate: SearchParam<Goal, Any> =
-    SearchParam<Goal, Any>(
+    SearchParam(
       name = "start-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Goal.start.ofType(date))",
@@ -121,7 +121,7 @@ public object GoalSearchParams {
     )
 
   public val subject: SearchParam<Goal, Reference> =
-    SearchParam<Goal, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Goal.subject",
@@ -130,7 +130,7 @@ public object GoalSearchParams {
     )
 
   public val targetDate: SearchParam<Goal, Any> =
-    SearchParam<Goal, Any>(
+    SearchParam(
       name = "target-date",
       type = SearchParamType.fromCode("date"),
       expression = "(Goal.target.due.ofType(date))",
@@ -138,7 +138,7 @@ public object GoalSearchParams {
     )
 
   public val targetMeasure: SearchParam<Goal, CodeableConcept> =
-    SearchParam<Goal, CodeableConcept>(
+    SearchParam(
       name = "target-measure",
       type = SearchParamType.fromCode("token"),
       expression = "Goal.target.measure",

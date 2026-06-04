@@ -38,7 +38,7 @@ import kotlin.collections.List
 /** Search parameters for the [CapabilityStatement] resource type. */
 public object CapabilityStatementSearchParams {
   public val context: SearchParam<CapabilityStatement, Any> =
-    SearchParam<CapabilityStatement, Any>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(CapabilityStatement.useContext.value.ofType(CodeableConcept))",
@@ -46,7 +46,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val contextQuantity: SearchParam<CapabilityStatement, Any> =
-    SearchParam<CapabilityStatement, Any>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(CapabilityStatement.useContext.value.ofType(Quantity))",
@@ -54,7 +54,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val contextType: SearchParam<CapabilityStatement, Coding> =
-    SearchParam<CapabilityStatement, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.useContext.code",
@@ -62,7 +62,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<CapabilityStatement, UsageContext> =
-    SearchParam<CapabilityStatement, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "CapabilityStatement.useContext",
@@ -70,7 +70,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val contextTypeValue: SearchParam<CapabilityStatement, UsageContext> =
-    SearchParam<CapabilityStatement, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "CapabilityStatement.useContext",
@@ -78,7 +78,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val date: SearchParam<CapabilityStatement, DateTime> =
-    SearchParam<CapabilityStatement, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "CapabilityStatement.date",
@@ -86,7 +86,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val description: SearchParam<CapabilityStatement, Markdown> =
-    SearchParam<CapabilityStatement, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "CapabilityStatement.description",
@@ -94,7 +94,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val fhirversion: SearchParam<CapabilityStatement, Any> =
-    SearchParam<CapabilityStatement, Any>(
+    SearchParam(
       name = "fhirversion",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.fhirVersion",
@@ -102,7 +102,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val format: SearchParam<CapabilityStatement, Any> =
-    SearchParam<CapabilityStatement, Any>(
+    SearchParam(
       name = "format",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.format",
@@ -110,7 +110,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val guide: SearchParam<CapabilityStatement, Canonical> =
-    SearchParam<CapabilityStatement, Canonical>(
+    SearchParam(
       name = "guide",
       type = SearchParamType.fromCode("reference"),
       expression = "CapabilityStatement.implementationGuide",
@@ -119,7 +119,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val identifier: SearchParam<CapabilityStatement, Identifier> =
-    SearchParam<CapabilityStatement, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.identifier",
@@ -127,7 +127,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val jurisdiction: SearchParam<CapabilityStatement, CodeableConcept> =
-    SearchParam<CapabilityStatement, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.jurisdiction",
@@ -135,7 +135,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val mode: SearchParam<CapabilityStatement, Any> =
-    SearchParam<CapabilityStatement, Any>(
+    SearchParam(
       name = "mode",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.rest.mode",
@@ -143,7 +143,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val name: SearchParam<CapabilityStatement, String> =
-    SearchParam<CapabilityStatement, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "CapabilityStatement.name",
@@ -151,7 +151,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val publisher: SearchParam<CapabilityStatement, String> =
-    SearchParam<CapabilityStatement, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "CapabilityStatement.publisher",
@@ -159,7 +159,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val resource: SearchParam<CapabilityStatement, Any> =
-    SearchParam<CapabilityStatement, Any>(
+    SearchParam(
       name = "resource",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.rest.resource.type",
@@ -167,7 +167,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val resourceProfile: SearchParam<CapabilityStatement, Canonical> =
-    SearchParam<CapabilityStatement, Canonical>(
+    SearchParam(
       name = "resource-profile",
       type = SearchParamType.fromCode("reference"),
       expression = "CapabilityStatement.rest.resource.profile",
@@ -176,7 +176,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val securityService: SearchParam<CapabilityStatement, CodeableConcept> =
-    SearchParam<CapabilityStatement, CodeableConcept>(
+    SearchParam(
       name = "security-service",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.rest.security.service",
@@ -184,7 +184,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val software: SearchParam<CapabilityStatement, String> =
-    SearchParam<CapabilityStatement, String>(
+    SearchParam(
       name = "software",
       type = SearchParamType.fromCode("string"),
       expression = "CapabilityStatement.software.name",
@@ -192,7 +192,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val status: SearchParam<CapabilityStatement, Any> =
-    SearchParam<CapabilityStatement, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.status",
@@ -200,7 +200,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val supportedProfile: SearchParam<CapabilityStatement, Canonical> =
-    SearchParam<CapabilityStatement, Canonical>(
+    SearchParam(
       name = "supported-profile",
       type = SearchParamType.fromCode("reference"),
       expression = "CapabilityStatement.rest.resource.supportedProfile",
@@ -211,7 +211,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val title: SearchParam<CapabilityStatement, String> =
-    SearchParam<CapabilityStatement, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "CapabilityStatement.title",
@@ -219,7 +219,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val url: SearchParam<CapabilityStatement, Uri> =
-    SearchParam<CapabilityStatement, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "CapabilityStatement.url",
@@ -227,7 +227,7 @@ public object CapabilityStatementSearchParams {
     )
 
   public val version: SearchParam<CapabilityStatement, String> =
-    SearchParam<CapabilityStatement, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "CapabilityStatement.version",

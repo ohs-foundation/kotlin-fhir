@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [Evidence] resource type. */
 public object EvidenceSearchParams {
   public val context: SearchParam<Evidence, Any> =
-    SearchParam<Evidence, Any>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(Evidence.useContext.value.ofType(CodeableConcept))",
@@ -42,7 +42,7 @@ public object EvidenceSearchParams {
     )
 
   public val contextQuantity: SearchParam<Evidence, Any> =
-    SearchParam<Evidence, Any>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(Evidence.useContext.value.ofType(Quantity))",
@@ -50,7 +50,7 @@ public object EvidenceSearchParams {
     )
 
   public val contextType: SearchParam<Evidence, Coding> =
-    SearchParam<Evidence, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "Evidence.useContext.code",
@@ -58,7 +58,7 @@ public object EvidenceSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<Evidence, UsageContext> =
-    SearchParam<Evidence, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Evidence.useContext",
@@ -66,7 +66,7 @@ public object EvidenceSearchParams {
     )
 
   public val contextTypeValue: SearchParam<Evidence, UsageContext> =
-    SearchParam<Evidence, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "Evidence.useContext",
@@ -74,7 +74,7 @@ public object EvidenceSearchParams {
     )
 
   public val date: SearchParam<Evidence, DateTime> =
-    SearchParam<Evidence, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Evidence.date",
@@ -82,7 +82,7 @@ public object EvidenceSearchParams {
     )
 
   public val description: SearchParam<Evidence, Markdown> =
-    SearchParam<Evidence, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "Evidence.description",
@@ -90,7 +90,7 @@ public object EvidenceSearchParams {
     )
 
   public val identifier: SearchParam<Evidence, Identifier> =
-    SearchParam<Evidence, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Evidence.identifier",
@@ -98,7 +98,7 @@ public object EvidenceSearchParams {
     )
 
   public val publisher: SearchParam<Evidence, String> =
-    SearchParam<Evidence, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "Evidence.publisher",
@@ -106,7 +106,7 @@ public object EvidenceSearchParams {
     )
 
   public val status: SearchParam<Evidence, Any> =
-    SearchParam<Evidence, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Evidence.status",
@@ -114,7 +114,7 @@ public object EvidenceSearchParams {
     )
 
   public val title: SearchParam<Evidence, String> =
-    SearchParam<Evidence, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "Evidence.title",
@@ -122,7 +122,7 @@ public object EvidenceSearchParams {
     )
 
   public val url: SearchParam<Evidence, Uri> =
-    SearchParam<Evidence, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "Evidence.url",
@@ -130,7 +130,7 @@ public object EvidenceSearchParams {
     )
 
   public val version: SearchParam<Evidence, String> =
-    SearchParam<Evidence, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "Evidence.version",

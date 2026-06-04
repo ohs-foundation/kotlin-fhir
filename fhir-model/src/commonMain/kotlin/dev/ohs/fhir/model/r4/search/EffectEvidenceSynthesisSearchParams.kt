@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [EffectEvidenceSynthesis] resource type. */
 public object EffectEvidenceSynthesisSearchParams {
   public val context: SearchParam<EffectEvidenceSynthesis, CodeableConcept> =
-    SearchParam<EffectEvidenceSynthesis, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(EffectEvidenceSynthesis.useContext.value as CodeableConcept)",
@@ -49,7 +49,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val contextQuantity: SearchParam<EffectEvidenceSynthesis, Quantity> =
-    SearchParam<EffectEvidenceSynthesis, Quantity>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(EffectEvidenceSynthesis.useContext.value as Quantity)",
@@ -59,7 +59,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val contextType: SearchParam<EffectEvidenceSynthesis, Coding> =
-    SearchParam<EffectEvidenceSynthesis, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "EffectEvidenceSynthesis.useContext.code",
@@ -67,7 +67,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<EffectEvidenceSynthesis, UsageContext> =
-    SearchParam<EffectEvidenceSynthesis, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "EffectEvidenceSynthesis.useContext",
@@ -75,7 +75,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val contextTypeValue: SearchParam<EffectEvidenceSynthesis, UsageContext> =
-    SearchParam<EffectEvidenceSynthesis, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "EffectEvidenceSynthesis.useContext",
@@ -83,7 +83,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val date: SearchParam<EffectEvidenceSynthesis, DateTime> =
-    SearchParam<EffectEvidenceSynthesis, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "EffectEvidenceSynthesis.date",
@@ -91,7 +91,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val description: SearchParam<EffectEvidenceSynthesis, Markdown> =
-    SearchParam<EffectEvidenceSynthesis, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "EffectEvidenceSynthesis.description",
@@ -99,7 +99,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val effective: SearchParam<EffectEvidenceSynthesis, Period> =
-    SearchParam<EffectEvidenceSynthesis, Period>(
+    SearchParam(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "EffectEvidenceSynthesis.effectivePeriod",
@@ -107,7 +107,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val identifier: SearchParam<EffectEvidenceSynthesis, Identifier> =
-    SearchParam<EffectEvidenceSynthesis, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "EffectEvidenceSynthesis.identifier",
@@ -115,7 +115,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val jurisdiction: SearchParam<EffectEvidenceSynthesis, CodeableConcept> =
-    SearchParam<EffectEvidenceSynthesis, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "EffectEvidenceSynthesis.jurisdiction",
@@ -123,7 +123,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val name: SearchParam<EffectEvidenceSynthesis, String> =
-    SearchParam<EffectEvidenceSynthesis, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "EffectEvidenceSynthesis.name",
@@ -131,7 +131,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val publisher: SearchParam<EffectEvidenceSynthesis, String> =
-    SearchParam<EffectEvidenceSynthesis, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "EffectEvidenceSynthesis.publisher",
@@ -139,7 +139,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val status: SearchParam<EffectEvidenceSynthesis, Any> =
-    SearchParam<EffectEvidenceSynthesis, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "EffectEvidenceSynthesis.status",
@@ -147,7 +147,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val title: SearchParam<EffectEvidenceSynthesis, String> =
-    SearchParam<EffectEvidenceSynthesis, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "EffectEvidenceSynthesis.title",
@@ -155,7 +155,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val url: SearchParam<EffectEvidenceSynthesis, Uri> =
-    SearchParam<EffectEvidenceSynthesis, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "EffectEvidenceSynthesis.url",
@@ -163,7 +163,7 @@ public object EffectEvidenceSynthesisSearchParams {
     )
 
   public val version: SearchParam<EffectEvidenceSynthesis, String> =
-    SearchParam<EffectEvidenceSynthesis, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "EffectEvidenceSynthesis.version",

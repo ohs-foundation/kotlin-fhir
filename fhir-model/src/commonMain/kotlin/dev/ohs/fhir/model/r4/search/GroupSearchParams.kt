@@ -39,7 +39,7 @@ import kotlin.collections.List
 /** Search parameters for the [Group] resource type. */
 public object GroupSearchParams {
   public val `actual`: SearchParam<Group, Boolean> =
-    SearchParam<Group, Boolean>(
+    SearchParam(
       name = "actual",
       type = SearchParamType.fromCode("token"),
       expression = "Group.actual",
@@ -47,7 +47,7 @@ public object GroupSearchParams {
     )
 
   public val characteristic: SearchParam<Group, CodeableConcept> =
-    SearchParam<Group, CodeableConcept>(
+    SearchParam(
       name = "characteristic",
       type = SearchParamType.fromCode("token"),
       expression = "Group.characteristic.code",
@@ -55,7 +55,7 @@ public object GroupSearchParams {
     )
 
   public val characteristicValue: SearchParam<Group, Group.Characteristic> =
-    SearchParam<Group, Group.Characteristic>(
+    SearchParam(
       name = "characteristic-value",
       type = SearchParamType.fromCode("composite"),
       expression = "Group.characteristic",
@@ -63,7 +63,7 @@ public object GroupSearchParams {
     )
 
   public val code: SearchParam<Group, CodeableConcept> =
-    SearchParam<Group, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "Group.code",
@@ -71,7 +71,7 @@ public object GroupSearchParams {
     )
 
   public val exclude: SearchParam<Group, Boolean> =
-    SearchParam<Group, Boolean>(
+    SearchParam(
       name = "exclude",
       type = SearchParamType.fromCode("token"),
       expression = "Group.characteristic.exclude",
@@ -79,7 +79,7 @@ public object GroupSearchParams {
     )
 
   public val identifier: SearchParam<Group, Identifier> =
-    SearchParam<Group, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Group.identifier",
@@ -87,7 +87,7 @@ public object GroupSearchParams {
     )
 
   public val managingEntity: SearchParam<Group, Reference> =
-    SearchParam<Group, Reference>(
+    SearchParam(
       name = "managing-entity",
       type = SearchParamType.fromCode("reference"),
       expression = "Group.managingEntity",
@@ -102,7 +102,7 @@ public object GroupSearchParams {
     )
 
   public val member: SearchParam<Group, Reference> =
-    SearchParam<Group, Reference>(
+    SearchParam(
       name = "member",
       type = SearchParamType.fromCode("reference"),
       expression = "Group.member.entity",
@@ -120,7 +120,7 @@ public object GroupSearchParams {
     )
 
   public val type: SearchParam<Group, Any> =
-    SearchParam<Group, Any>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Group.type",
@@ -128,7 +128,7 @@ public object GroupSearchParams {
     )
 
   public val `value`: SearchParam<Group, CodeableConcept> =
-    SearchParam<Group, CodeableConcept>(
+    SearchParam(
       name = "value",
       type = SearchParamType.fromCode("token"),
       expression = "(Group.characteristic.value as CodeableConcept)",

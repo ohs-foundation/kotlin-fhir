@@ -30,7 +30,7 @@ import kotlin.collections.List
 /** Search parameters for the [ManufacturedItemDefinition] resource type. */
 public object ManufacturedItemDefinitionSearchParams {
   public val doseForm: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
-    SearchParam<ManufacturedItemDefinition, CodeableConcept>(
+    SearchParam(
       name = "dose-form",
       type = SearchParamType.fromCode("token"),
       expression = "ManufacturedItemDefinition.manufacturedDoseForm",
@@ -38,7 +38,7 @@ public object ManufacturedItemDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<ManufacturedItemDefinition, Identifier> =
-    SearchParam<ManufacturedItemDefinition, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ManufacturedItemDefinition.identifier",
@@ -46,7 +46,7 @@ public object ManufacturedItemDefinitionSearchParams {
     )
 
   public val ingredient: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
-    SearchParam<ManufacturedItemDefinition, CodeableConcept>(
+    SearchParam(
       name = "ingredient",
       type = SearchParamType.fromCode("token"),
       expression = "ManufacturedItemDefinition.ingredient",
@@ -54,7 +54,7 @@ public object ManufacturedItemDefinitionSearchParams {
     )
 
   public val name: SearchParam<ManufacturedItemDefinition, String> =
-    SearchParam<ManufacturedItemDefinition, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("token"),
       expression = "ManufacturedItemDefinition.name",
@@ -62,7 +62,7 @@ public object ManufacturedItemDefinitionSearchParams {
     )
 
   public val status: SearchParam<ManufacturedItemDefinition, Any> =
-    SearchParam<ManufacturedItemDefinition, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ManufacturedItemDefinition.status",

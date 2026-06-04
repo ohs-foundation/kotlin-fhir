@@ -35,7 +35,7 @@ import kotlin.collections.List
 /** Search parameters for the [CompartmentDefinition] resource type. */
 public object CompartmentDefinitionSearchParams {
   public val code: SearchParam<CompartmentDefinition, Any> =
-    SearchParam<CompartmentDefinition, Any>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "CompartmentDefinition.code",
@@ -43,7 +43,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val context: SearchParam<CompartmentDefinition, CodeableConcept> =
-    SearchParam<CompartmentDefinition, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(CompartmentDefinition.useContext.value as CodeableConcept)",
@@ -55,7 +55,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val contextQuantity: SearchParam<CompartmentDefinition, Quantity> =
-    SearchParam<CompartmentDefinition, Quantity>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(CompartmentDefinition.useContext.value as Quantity)",
@@ -65,7 +65,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val contextType: SearchParam<CompartmentDefinition, Coding> =
-    SearchParam<CompartmentDefinition, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "CompartmentDefinition.useContext.code",
@@ -73,7 +73,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<CompartmentDefinition, UsageContext> =
-    SearchParam<CompartmentDefinition, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "CompartmentDefinition.useContext",
@@ -81,7 +81,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val contextTypeValue: SearchParam<CompartmentDefinition, UsageContext> =
-    SearchParam<CompartmentDefinition, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "CompartmentDefinition.useContext",
@@ -89,7 +89,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val date: SearchParam<CompartmentDefinition, DateTime> =
-    SearchParam<CompartmentDefinition, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "CompartmentDefinition.date",
@@ -97,7 +97,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val description: SearchParam<CompartmentDefinition, Markdown> =
-    SearchParam<CompartmentDefinition, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "CompartmentDefinition.description",
@@ -105,7 +105,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val name: SearchParam<CompartmentDefinition, String> =
-    SearchParam<CompartmentDefinition, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "CompartmentDefinition.name",
@@ -113,7 +113,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val publisher: SearchParam<CompartmentDefinition, String> =
-    SearchParam<CompartmentDefinition, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "CompartmentDefinition.publisher",
@@ -121,7 +121,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val resource: SearchParam<CompartmentDefinition, Any> =
-    SearchParam<CompartmentDefinition, Any>(
+    SearchParam(
       name = "resource",
       type = SearchParamType.fromCode("token"),
       expression = "CompartmentDefinition.resource.code",
@@ -129,7 +129,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val status: SearchParam<CompartmentDefinition, Any> =
-    SearchParam<CompartmentDefinition, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "CompartmentDefinition.status",
@@ -137,7 +137,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val url: SearchParam<CompartmentDefinition, Uri> =
-    SearchParam<CompartmentDefinition, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "CompartmentDefinition.url",
@@ -145,7 +145,7 @@ public object CompartmentDefinitionSearchParams {
     )
 
   public val version: SearchParam<CompartmentDefinition, String> =
-    SearchParam<CompartmentDefinition, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "CompartmentDefinition.version",

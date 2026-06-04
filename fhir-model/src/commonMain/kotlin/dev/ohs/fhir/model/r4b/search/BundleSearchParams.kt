@@ -29,7 +29,7 @@ import kotlin.collections.List
 /** Search parameters for the [Bundle] resource type. */
 public object BundleSearchParams {
   public val composition: SearchParam<Bundle, Any> =
-    SearchParam<Bundle, Any>(
+    SearchParam(
       name = "composition",
       type = SearchParamType.fromCode("reference"),
       expression = "Bundle.entry[0].resource",
@@ -37,7 +37,7 @@ public object BundleSearchParams {
     )
 
   public val identifier: SearchParam<Bundle, Identifier> =
-    SearchParam<Bundle, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Bundle.identifier",
@@ -45,7 +45,7 @@ public object BundleSearchParams {
     )
 
   public val message: SearchParam<Bundle, Any> =
-    SearchParam<Bundle, Any>(
+    SearchParam(
       name = "message",
       type = SearchParamType.fromCode("reference"),
       expression = "Bundle.entry[0].resource",
@@ -53,7 +53,7 @@ public object BundleSearchParams {
     )
 
   public val timestamp: SearchParam<Bundle, Instant> =
-    SearchParam<Bundle, Instant>(
+    SearchParam(
       name = "timestamp",
       type = SearchParamType.fromCode("date"),
       expression = "Bundle.timestamp",
@@ -61,7 +61,7 @@ public object BundleSearchParams {
     )
 
   public val type: SearchParam<Bundle, Any> =
-    SearchParam<Bundle, Any>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Bundle.type",

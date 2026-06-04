@@ -39,7 +39,7 @@ import kotlin.collections.List
 /** Search parameters for the [Account] resource type. */
 public object AccountSearchParams {
   public val identifier: SearchParam<Account, Identifier> =
-    SearchParam<Account, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Account.identifier",
@@ -47,7 +47,7 @@ public object AccountSearchParams {
     )
 
   public val name: SearchParam<Account, String> =
-    SearchParam<Account, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Account.name",
@@ -55,7 +55,7 @@ public object AccountSearchParams {
     )
 
   public val owner: SearchParam<Account, Reference> =
-    SearchParam<Account, Reference>(
+    SearchParam(
       name = "owner",
       type = SearchParamType.fromCode("reference"),
       expression = "Account.owner",
@@ -64,7 +64,7 @@ public object AccountSearchParams {
     )
 
   public val patient: SearchParam<Account, Reference> =
-    SearchParam<Account, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Account.subject.where(resolve() is Patient)",
@@ -75,7 +75,7 @@ public object AccountSearchParams {
     )
 
   public val period: SearchParam<Account, Period> =
-    SearchParam<Account, Period>(
+    SearchParam(
       name = "period",
       type = SearchParamType.fromCode("date"),
       expression = "Account.servicePeriod",
@@ -83,7 +83,7 @@ public object AccountSearchParams {
     )
 
   public val status: SearchParam<Account, Any> =
-    SearchParam<Account, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Account.status",
@@ -91,7 +91,7 @@ public object AccountSearchParams {
     )
 
   public val subject: SearchParam<Account, Reference> =
-    SearchParam<Account, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Account.subject",
@@ -109,7 +109,7 @@ public object AccountSearchParams {
     )
 
   public val type: SearchParam<Account, CodeableConcept> =
-    SearchParam<Account, CodeableConcept>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Account.type",

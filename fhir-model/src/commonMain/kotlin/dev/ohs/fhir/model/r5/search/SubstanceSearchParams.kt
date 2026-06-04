@@ -33,7 +33,7 @@ import kotlin.collections.List
 /** Search parameters for the [Substance] resource type. */
 public object SubstanceSearchParams {
   public val category: SearchParam<Substance, CodeableConcept> =
-    SearchParam<Substance, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "Substance.category",
@@ -41,7 +41,7 @@ public object SubstanceSearchParams {
     )
 
   public val code: SearchParam<Substance, CodeableConcept> =
-    SearchParam<Substance, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "Substance.code.concept",
@@ -49,7 +49,7 @@ public object SubstanceSearchParams {
     )
 
   public val codeReference: SearchParam<Substance, Reference> =
-    SearchParam<Substance, Reference>(
+    SearchParam(
       name = "code-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "Substance.code.reference",
@@ -58,7 +58,7 @@ public object SubstanceSearchParams {
     )
 
   public val expiry: SearchParam<Substance, DateTime> =
-    SearchParam<Substance, DateTime>(
+    SearchParam(
       name = "expiry",
       type = SearchParamType.fromCode("date"),
       expression = "Substance.expiry",
@@ -66,7 +66,7 @@ public object SubstanceSearchParams {
     )
 
   public val identifier: SearchParam<Substance, Identifier> =
-    SearchParam<Substance, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Substance.identifier",
@@ -74,7 +74,7 @@ public object SubstanceSearchParams {
     )
 
   public val quantity: SearchParam<Substance, Quantity> =
-    SearchParam<Substance, Quantity>(
+    SearchParam(
       name = "quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "Substance.quantity",
@@ -82,7 +82,7 @@ public object SubstanceSearchParams {
     )
 
   public val status: SearchParam<Substance, Any> =
-    SearchParam<Substance, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Substance.status",
@@ -90,7 +90,7 @@ public object SubstanceSearchParams {
     )
 
   public val substanceReference: SearchParam<Substance, Any> =
-    SearchParam<Substance, Any>(
+    SearchParam(
       name = "substance-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "(Substance.ingredient.substance.ofType(Reference))",

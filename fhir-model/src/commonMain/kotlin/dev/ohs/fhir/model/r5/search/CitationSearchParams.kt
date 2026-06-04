@@ -36,7 +36,7 @@ import kotlin.collections.List
 /** Search parameters for the [Citation] resource type. */
 public object CitationSearchParams {
   public val classification: SearchParam<Citation, Citation.Classification> =
-    SearchParam<Citation, Citation.Classification>(
+    SearchParam(
       name = "classification",
       type = SearchParamType.fromCode("composite"),
       expression = "Citation.classification",
@@ -44,7 +44,7 @@ public object CitationSearchParams {
     )
 
   public val classificationType: SearchParam<Citation, Any> =
-    SearchParam<Citation, Any>(
+    SearchParam(
       name = "classification-type",
       type = SearchParamType.fromCode("token"),
       expression = "(Citation.classification.type)",
@@ -52,7 +52,7 @@ public object CitationSearchParams {
     )
 
   public val classifier: SearchParam<Citation, Any> =
-    SearchParam<Citation, Any>(
+    SearchParam(
       name = "classifier",
       type = SearchParamType.fromCode("token"),
       expression = "(Citation.classification.classifier)",
@@ -60,7 +60,7 @@ public object CitationSearchParams {
     )
 
   public val context: SearchParam<Citation, Any> =
-    SearchParam<Citation, Any>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(Citation.useContext.value.ofType(CodeableConcept))",
@@ -68,7 +68,7 @@ public object CitationSearchParams {
     )
 
   public val contextQuantity: SearchParam<Citation, Any> =
-    SearchParam<Citation, Any>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(Citation.useContext.value.ofType(Quantity))",
@@ -76,7 +76,7 @@ public object CitationSearchParams {
     )
 
   public val contextType: SearchParam<Citation, Coding> =
-    SearchParam<Citation, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "Citation.useContext.code",
@@ -84,7 +84,7 @@ public object CitationSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<Citation, UsageContext> =
-    SearchParam<Citation, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "Citation.useContext",
@@ -92,7 +92,7 @@ public object CitationSearchParams {
     )
 
   public val contextTypeValue: SearchParam<Citation, UsageContext> =
-    SearchParam<Citation, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "Citation.useContext",
@@ -100,7 +100,7 @@ public object CitationSearchParams {
     )
 
   public val date: SearchParam<Citation, DateTime> =
-    SearchParam<Citation, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Citation.date",
@@ -108,7 +108,7 @@ public object CitationSearchParams {
     )
 
   public val description: SearchParam<Citation, Markdown> =
-    SearchParam<Citation, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "Citation.description",
@@ -116,7 +116,7 @@ public object CitationSearchParams {
     )
 
   public val effective: SearchParam<Citation, Period> =
-    SearchParam<Citation, Period>(
+    SearchParam(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "Citation.effectivePeriod",
@@ -124,7 +124,7 @@ public object CitationSearchParams {
     )
 
   public val identifier: SearchParam<Citation, Identifier> =
-    SearchParam<Citation, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Citation.identifier",
@@ -132,7 +132,7 @@ public object CitationSearchParams {
     )
 
   public val jurisdiction: SearchParam<Citation, CodeableConcept> =
-    SearchParam<Citation, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "Citation.jurisdiction",
@@ -140,7 +140,7 @@ public object CitationSearchParams {
     )
 
   public val name: SearchParam<Citation, String> =
-    SearchParam<Citation, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Citation.name",
@@ -148,7 +148,7 @@ public object CitationSearchParams {
     )
 
   public val publisher: SearchParam<Citation, String> =
-    SearchParam<Citation, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "Citation.publisher",
@@ -156,7 +156,7 @@ public object CitationSearchParams {
     )
 
   public val status: SearchParam<Citation, Any> =
-    SearchParam<Citation, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Citation.status",
@@ -164,7 +164,7 @@ public object CitationSearchParams {
     )
 
   public val title: SearchParam<Citation, String> =
-    SearchParam<Citation, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "Citation.title",
@@ -172,7 +172,7 @@ public object CitationSearchParams {
     )
 
   public val url: SearchParam<Citation, Uri> =
-    SearchParam<Citation, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "Citation.url",
@@ -180,7 +180,7 @@ public object CitationSearchParams {
     )
 
   public val version: SearchParam<Citation, String> =
-    SearchParam<Citation, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "Citation.version",

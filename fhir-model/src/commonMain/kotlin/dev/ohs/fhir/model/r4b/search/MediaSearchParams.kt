@@ -44,7 +44,7 @@ import kotlin.collections.List
 /** Search parameters for the [Media] resource type. */
 public object MediaSearchParams {
   public val basedOn: SearchParam<Media, Reference> =
-    SearchParam<Media, Reference>(
+    SearchParam(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.basedOn",
@@ -53,7 +53,7 @@ public object MediaSearchParams {
     )
 
   public val created: SearchParam<Media, Media.Created> =
-    SearchParam<Media, Media.Created>(
+    SearchParam(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "Media.created",
@@ -61,7 +61,7 @@ public object MediaSearchParams {
     )
 
   public val device: SearchParam<Media, Reference> =
-    SearchParam<Media, Reference>(
+    SearchParam(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.device",
@@ -70,7 +70,7 @@ public object MediaSearchParams {
     )
 
   public val encounter: SearchParam<Media, Reference> =
-    SearchParam<Media, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.encounter",
@@ -79,7 +79,7 @@ public object MediaSearchParams {
     )
 
   public val identifier: SearchParam<Media, Identifier> =
-    SearchParam<Media, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Media.identifier",
@@ -87,7 +87,7 @@ public object MediaSearchParams {
     )
 
   public val modality: SearchParam<Media, CodeableConcept> =
-    SearchParam<Media, CodeableConcept>(
+    SearchParam(
       name = "modality",
       type = SearchParamType.fromCode("token"),
       expression = "Media.modality",
@@ -95,7 +95,7 @@ public object MediaSearchParams {
     )
 
   public val `operator`: SearchParam<Media, Reference> =
-    SearchParam<Media, Reference>(
+    SearchParam(
       name = "operator",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.operator",
@@ -113,7 +113,7 @@ public object MediaSearchParams {
     )
 
   public val patient: SearchParam<Media, Reference> =
-    SearchParam<Media, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.subject.where(resolve() is Patient)",
@@ -126,7 +126,7 @@ public object MediaSearchParams {
     )
 
   public val site: SearchParam<Media, CodeableConcept> =
-    SearchParam<Media, CodeableConcept>(
+    SearchParam(
       name = "site",
       type = SearchParamType.fromCode("token"),
       expression = "Media.bodySite",
@@ -134,7 +134,7 @@ public object MediaSearchParams {
     )
 
   public val status: SearchParam<Media, Any> =
-    SearchParam<Media, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Media.status",
@@ -142,7 +142,7 @@ public object MediaSearchParams {
     )
 
   public val subject: SearchParam<Media, Reference> =
-    SearchParam<Media, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Media.subject",
@@ -160,7 +160,7 @@ public object MediaSearchParams {
     )
 
   public val type: SearchParam<Media, CodeableConcept> =
-    SearchParam<Media, CodeableConcept>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Media.type",
@@ -168,7 +168,7 @@ public object MediaSearchParams {
     )
 
   public val view: SearchParam<Media, CodeableConcept> =
-    SearchParam<Media, CodeableConcept>(
+    SearchParam(
       name = "view",
       type = SearchParamType.fromCode("token"),
       expression = "Media.view",

@@ -28,7 +28,7 @@ import kotlin.collections.List
 /** Search parameters for the [ArtifactAssessment] resource type. */
 public object ArtifactAssessmentSearchParams {
   public val date: SearchParam<ArtifactAssessment, DateTime> =
-    SearchParam<ArtifactAssessment, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ArtifactAssessment.date",
@@ -36,7 +36,7 @@ public object ArtifactAssessmentSearchParams {
     )
 
   public val identifier: SearchParam<ArtifactAssessment, Identifier> =
-    SearchParam<ArtifactAssessment, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ArtifactAssessment.identifier",

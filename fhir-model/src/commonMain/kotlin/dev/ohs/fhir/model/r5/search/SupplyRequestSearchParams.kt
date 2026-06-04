@@ -40,7 +40,7 @@ import kotlin.collections.List
 /** Search parameters for the [SupplyRequest] resource type. */
 public object SupplyRequestSearchParams {
   public val category: SearchParam<SupplyRequest, CodeableConcept> =
-    SearchParam<SupplyRequest, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "SupplyRequest.category",
@@ -48,7 +48,7 @@ public object SupplyRequestSearchParams {
     )
 
   public val date: SearchParam<SupplyRequest, DateTime> =
-    SearchParam<SupplyRequest, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "SupplyRequest.authoredOn",
@@ -56,7 +56,7 @@ public object SupplyRequestSearchParams {
     )
 
   public val identifier: SearchParam<SupplyRequest, Identifier> =
-    SearchParam<SupplyRequest, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "SupplyRequest.identifier",
@@ -64,7 +64,7 @@ public object SupplyRequestSearchParams {
     )
 
   public val patient: SearchParam<SupplyRequest, Reference> =
-    SearchParam<SupplyRequest, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "SupplyRequest.deliverFor",
@@ -73,7 +73,7 @@ public object SupplyRequestSearchParams {
     )
 
   public val requester: SearchParam<SupplyRequest, Reference> =
-    SearchParam<SupplyRequest, Reference>(
+    SearchParam(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
       expression = "SupplyRequest.requester",
@@ -91,7 +91,7 @@ public object SupplyRequestSearchParams {
     )
 
   public val status: SearchParam<SupplyRequest, Any> =
-    SearchParam<SupplyRequest, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "SupplyRequest.status",
@@ -99,7 +99,7 @@ public object SupplyRequestSearchParams {
     )
 
   public val subject: SearchParam<SupplyRequest, Reference> =
-    SearchParam<SupplyRequest, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "SupplyRequest.deliverTo",
@@ -108,7 +108,7 @@ public object SupplyRequestSearchParams {
     )
 
   public val supplier: SearchParam<SupplyRequest, Reference> =
-    SearchParam<SupplyRequest, Reference>(
+    SearchParam(
       name = "supplier",
       type = SearchParamType.fromCode("reference"),
       expression = "SupplyRequest.supplier",

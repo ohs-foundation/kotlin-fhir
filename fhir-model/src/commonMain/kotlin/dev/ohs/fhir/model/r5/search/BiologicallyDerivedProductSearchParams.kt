@@ -33,7 +33,7 @@ import kotlin.collections.List
 /** Search parameters for the [BiologicallyDerivedProduct] resource type. */
 public object BiologicallyDerivedProductSearchParams {
   public val biologicalSourceEvent: SearchParam<BiologicallyDerivedProduct, Identifier> =
-    SearchParam<BiologicallyDerivedProduct, Identifier>(
+    SearchParam(
       name = "biological-source-event",
       type = SearchParamType.fromCode("token"),
       expression = "BiologicallyDerivedProduct.biologicalSourceEvent",
@@ -41,7 +41,7 @@ public object BiologicallyDerivedProductSearchParams {
     )
 
   public val code: SearchParam<BiologicallyDerivedProduct, CodeableConcept> =
-    SearchParam<BiologicallyDerivedProduct, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "BiologicallyDerivedProduct.productCode",
@@ -49,7 +49,7 @@ public object BiologicallyDerivedProductSearchParams {
     )
 
   public val collector: SearchParam<BiologicallyDerivedProduct, Reference> =
-    SearchParam<BiologicallyDerivedProduct, Reference>(
+    SearchParam(
       name = "collector",
       type = SearchParamType.fromCode("reference"),
       expression = "BiologicallyDerivedProduct.collection.collector",
@@ -58,7 +58,7 @@ public object BiologicallyDerivedProductSearchParams {
     )
 
   public val identifier: SearchParam<BiologicallyDerivedProduct, Identifier> =
-    SearchParam<BiologicallyDerivedProduct, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "BiologicallyDerivedProduct.identifier",
@@ -66,7 +66,7 @@ public object BiologicallyDerivedProductSearchParams {
     )
 
   public val productCategory: SearchParam<BiologicallyDerivedProduct, Coding> =
-    SearchParam<BiologicallyDerivedProduct, Coding>(
+    SearchParam(
       name = "product-category",
       type = SearchParamType.fromCode("token"),
       expression = "BiologicallyDerivedProduct.productCategory",
@@ -74,7 +74,7 @@ public object BiologicallyDerivedProductSearchParams {
     )
 
   public val productStatus: SearchParam<BiologicallyDerivedProduct, Coding> =
-    SearchParam<BiologicallyDerivedProduct, Coding>(
+    SearchParam(
       name = "product-status",
       type = SearchParamType.fromCode("token"),
       expression = "BiologicallyDerivedProduct.productStatus",
@@ -82,7 +82,7 @@ public object BiologicallyDerivedProductSearchParams {
     )
 
   public val request: SearchParam<BiologicallyDerivedProduct, Reference> =
-    SearchParam<BiologicallyDerivedProduct, Reference>(
+    SearchParam(
       name = "request",
       type = SearchParamType.fromCode("reference"),
       expression = "BiologicallyDerivedProduct.request",
@@ -91,7 +91,7 @@ public object BiologicallyDerivedProductSearchParams {
     )
 
   public val serialNumber: SearchParam<BiologicallyDerivedProduct, Identifier> =
-    SearchParam<BiologicallyDerivedProduct, Identifier>(
+    SearchParam(
       name = "serial-number",
       type = SearchParamType.fromCode("token"),
       expression = "BiologicallyDerivedProduct.identifier",

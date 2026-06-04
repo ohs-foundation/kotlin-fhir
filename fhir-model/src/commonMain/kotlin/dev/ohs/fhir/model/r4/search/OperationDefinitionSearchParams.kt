@@ -38,7 +38,7 @@ import kotlin.collections.List
 /** Search parameters for the [OperationDefinition] resource type. */
 public object OperationDefinitionSearchParams {
   public val base: SearchParam<OperationDefinition, Canonical> =
-    SearchParam<OperationDefinition, Canonical>(
+    SearchParam(
       name = "base",
       type = SearchParamType.fromCode("reference"),
       expression = "OperationDefinition.base",
@@ -47,7 +47,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val code: SearchParam<OperationDefinition, Any> =
-    SearchParam<OperationDefinition, Any>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "OperationDefinition.code",
@@ -55,7 +55,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val context: SearchParam<OperationDefinition, CodeableConcept> =
-    SearchParam<OperationDefinition, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(OperationDefinition.useContext.value as CodeableConcept)",
@@ -67,7 +67,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val contextQuantity: SearchParam<OperationDefinition, Quantity> =
-    SearchParam<OperationDefinition, Quantity>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(OperationDefinition.useContext.value as Quantity)",
@@ -77,7 +77,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val contextType: SearchParam<OperationDefinition, Coding> =
-    SearchParam<OperationDefinition, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "OperationDefinition.useContext.code",
@@ -85,7 +85,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<OperationDefinition, UsageContext> =
-    SearchParam<OperationDefinition, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "OperationDefinition.useContext",
@@ -93,7 +93,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val contextTypeValue: SearchParam<OperationDefinition, UsageContext> =
-    SearchParam<OperationDefinition, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "OperationDefinition.useContext",
@@ -101,7 +101,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val date: SearchParam<OperationDefinition, DateTime> =
-    SearchParam<OperationDefinition, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "OperationDefinition.date",
@@ -109,7 +109,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val description: SearchParam<OperationDefinition, Markdown> =
-    SearchParam<OperationDefinition, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "OperationDefinition.description",
@@ -117,7 +117,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val inputProfile: SearchParam<OperationDefinition, Canonical> =
-    SearchParam<OperationDefinition, Canonical>(
+    SearchParam(
       name = "input-profile",
       type = SearchParamType.fromCode("reference"),
       expression = "OperationDefinition.inputProfile",
@@ -126,7 +126,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val instance: SearchParam<OperationDefinition, Boolean> =
-    SearchParam<OperationDefinition, Boolean>(
+    SearchParam(
       name = "instance",
       type = SearchParamType.fromCode("token"),
       expression = "OperationDefinition.instance",
@@ -134,7 +134,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val jurisdiction: SearchParam<OperationDefinition, CodeableConcept> =
-    SearchParam<OperationDefinition, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "OperationDefinition.jurisdiction",
@@ -142,7 +142,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val kind: SearchParam<OperationDefinition, Any> =
-    SearchParam<OperationDefinition, Any>(
+    SearchParam(
       name = "kind",
       type = SearchParamType.fromCode("token"),
       expression = "OperationDefinition.kind",
@@ -150,7 +150,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val name: SearchParam<OperationDefinition, String> =
-    SearchParam<OperationDefinition, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "OperationDefinition.name",
@@ -158,7 +158,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val outputProfile: SearchParam<OperationDefinition, Canonical> =
-    SearchParam<OperationDefinition, Canonical>(
+    SearchParam(
       name = "output-profile",
       type = SearchParamType.fromCode("reference"),
       expression = "OperationDefinition.outputProfile",
@@ -167,7 +167,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val publisher: SearchParam<OperationDefinition, String> =
-    SearchParam<OperationDefinition, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "OperationDefinition.publisher",
@@ -175,7 +175,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val status: SearchParam<OperationDefinition, Any> =
-    SearchParam<OperationDefinition, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "OperationDefinition.status",
@@ -183,7 +183,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val system: SearchParam<OperationDefinition, Boolean> =
-    SearchParam<OperationDefinition, Boolean>(
+    SearchParam(
       name = "system",
       type = SearchParamType.fromCode("token"),
       expression = "OperationDefinition.system",
@@ -191,7 +191,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val title: SearchParam<OperationDefinition, String> =
-    SearchParam<OperationDefinition, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "OperationDefinition.title",
@@ -199,7 +199,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val type: SearchParam<OperationDefinition, Boolean> =
-    SearchParam<OperationDefinition, Boolean>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "OperationDefinition.type",
@@ -207,7 +207,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val url: SearchParam<OperationDefinition, Uri> =
-    SearchParam<OperationDefinition, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "OperationDefinition.url",
@@ -215,7 +215,7 @@ public object OperationDefinitionSearchParams {
     )
 
   public val version: SearchParam<OperationDefinition, String> =
-    SearchParam<OperationDefinition, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "OperationDefinition.version",

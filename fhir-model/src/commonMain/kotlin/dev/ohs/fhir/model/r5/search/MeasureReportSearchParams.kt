@@ -189,7 +189,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [MeasureReport] resource type. */
 public object MeasureReportSearchParams {
   public val date: SearchParam<MeasureReport, DateTime> =
-    SearchParam<MeasureReport, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "MeasureReport.date",
@@ -197,7 +197,7 @@ public object MeasureReportSearchParams {
     )
 
   public val evaluatedResource: SearchParam<MeasureReport, Reference> =
-    SearchParam<MeasureReport, Reference>(
+    SearchParam(
       name = "evaluated-resource",
       type = SearchParamType.fromCode("reference"),
       expression = "MeasureReport.evaluatedResource",
@@ -366,7 +366,7 @@ public object MeasureReportSearchParams {
     )
 
   public val identifier: SearchParam<MeasureReport, Identifier> =
-    SearchParam<MeasureReport, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MeasureReport.identifier",
@@ -374,7 +374,7 @@ public object MeasureReportSearchParams {
     )
 
   public val location: SearchParam<MeasureReport, Reference> =
-    SearchParam<MeasureReport, Reference>(
+    SearchParam(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "MeasureReport.location",
@@ -383,7 +383,7 @@ public object MeasureReportSearchParams {
     )
 
   public val measure: SearchParam<MeasureReport, Canonical> =
-    SearchParam<MeasureReport, Canonical>(
+    SearchParam(
       name = "measure",
       type = SearchParamType.fromCode("reference"),
       expression = "MeasureReport.measure",
@@ -392,7 +392,7 @@ public object MeasureReportSearchParams {
     )
 
   public val patient: SearchParam<MeasureReport, Reference> =
-    SearchParam<MeasureReport, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "MeasureReport.subject.where(resolve() is Patient)",
@@ -405,7 +405,7 @@ public object MeasureReportSearchParams {
     )
 
   public val period: SearchParam<MeasureReport, Period> =
-    SearchParam<MeasureReport, Period>(
+    SearchParam(
       name = "period",
       type = SearchParamType.fromCode("date"),
       expression = "MeasureReport.period",
@@ -413,7 +413,7 @@ public object MeasureReportSearchParams {
     )
 
   public val reporter: SearchParam<MeasureReport, Reference> =
-    SearchParam<MeasureReport, Reference>(
+    SearchParam(
       name = "reporter",
       type = SearchParamType.fromCode("reference"),
       expression = "MeasureReport.reporter",
@@ -423,7 +423,7 @@ public object MeasureReportSearchParams {
     )
 
   public val status: SearchParam<MeasureReport, Any> =
-    SearchParam<MeasureReport, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "MeasureReport.status",
@@ -431,7 +431,7 @@ public object MeasureReportSearchParams {
     )
 
   public val subject: SearchParam<MeasureReport, Reference> =
-    SearchParam<MeasureReport, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "MeasureReport.subject",

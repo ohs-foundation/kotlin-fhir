@@ -186,7 +186,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [GenomicStudy] resource type. */
 public object GenomicStudySearchParams {
   public val focus: SearchParam<GenomicStudy, Reference> =
-    SearchParam<GenomicStudy, Reference>(
+    SearchParam(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
       expression = "GenomicStudy.analysis.focus",
@@ -355,7 +355,7 @@ public object GenomicStudySearchParams {
     )
 
   public val identifier: SearchParam<GenomicStudy, Identifier> =
-    SearchParam<GenomicStudy, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "GenomicStudy.identifier",
@@ -363,7 +363,7 @@ public object GenomicStudySearchParams {
     )
 
   public val patient: SearchParam<GenomicStudy, Reference> =
-    SearchParam<GenomicStudy, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "GenomicStudy.subject.where(resolve() is Patient)",
@@ -376,7 +376,7 @@ public object GenomicStudySearchParams {
     )
 
   public val status: SearchParam<GenomicStudy, Any> =
-    SearchParam<GenomicStudy, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "GenomicStudy.status",
@@ -384,7 +384,7 @@ public object GenomicStudySearchParams {
     )
 
   public val subject: SearchParam<GenomicStudy, Reference> =
-    SearchParam<GenomicStudy, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "GenomicStudy.subject",

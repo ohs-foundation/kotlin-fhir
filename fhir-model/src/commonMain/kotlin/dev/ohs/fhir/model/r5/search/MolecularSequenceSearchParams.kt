@@ -186,7 +186,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [MolecularSequence] resource type. */
 public object MolecularSequenceSearchParams {
   public val focus: SearchParam<MolecularSequence, Reference> =
-    SearchParam<MolecularSequence, Reference>(
+    SearchParam(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
       expression = "MolecularSequence.focus",
@@ -355,7 +355,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val identifier: SearchParam<MolecularSequence, Identifier> =
-    SearchParam<MolecularSequence, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "MolecularSequence.identifier",
@@ -363,7 +363,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val patient: SearchParam<MolecularSequence, Reference> =
-    SearchParam<MolecularSequence, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "MolecularSequence.subject.where(resolve() is Patient)",
@@ -376,7 +376,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val subject: SearchParam<MolecularSequence, Reference> =
-    SearchParam<MolecularSequence, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "MolecularSequence.subject",
@@ -392,7 +392,7 @@ public object MolecularSequenceSearchParams {
     )
 
   public val type: SearchParam<MolecularSequence, Any> =
-    SearchParam<MolecularSequence, Any>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "MolecularSequence.type",

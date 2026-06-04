@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [HealthcareService] resource type. */
 public object HealthcareServiceSearchParams {
   public val active: SearchParam<HealthcareService, Boolean> =
-    SearchParam<HealthcareService, Boolean>(
+    SearchParam(
       name = "active",
       type = SearchParamType.fromCode("token"),
       expression = "HealthcareService.active",
@@ -42,7 +42,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val characteristic: SearchParam<HealthcareService, CodeableConcept> =
-    SearchParam<HealthcareService, CodeableConcept>(
+    SearchParam(
       name = "characteristic",
       type = SearchParamType.fromCode("token"),
       expression = "HealthcareService.characteristic",
@@ -50,7 +50,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val coverageArea: SearchParam<HealthcareService, Reference> =
-    SearchParam<HealthcareService, Reference>(
+    SearchParam(
       name = "coverage-area",
       type = SearchParamType.fromCode("reference"),
       expression = "HealthcareService.coverageArea",
@@ -59,7 +59,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val endpoint: SearchParam<HealthcareService, Reference> =
-    SearchParam<HealthcareService, Reference>(
+    SearchParam(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "HealthcareService.endpoint",
@@ -68,7 +68,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val identifier: SearchParam<HealthcareService, Identifier> =
-    SearchParam<HealthcareService, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "HealthcareService.identifier",
@@ -76,7 +76,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val location: SearchParam<HealthcareService, Reference> =
-    SearchParam<HealthcareService, Reference>(
+    SearchParam(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "HealthcareService.location",
@@ -85,7 +85,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val name: SearchParam<HealthcareService, String> =
-    SearchParam<HealthcareService, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "HealthcareService.name",
@@ -93,7 +93,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val organization: SearchParam<HealthcareService, Reference> =
-    SearchParam<HealthcareService, Reference>(
+    SearchParam(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "HealthcareService.providedBy",
@@ -102,7 +102,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val program: SearchParam<HealthcareService, CodeableConcept> =
-    SearchParam<HealthcareService, CodeableConcept>(
+    SearchParam(
       name = "program",
       type = SearchParamType.fromCode("token"),
       expression = "HealthcareService.program",
@@ -110,7 +110,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val serviceCategory: SearchParam<HealthcareService, CodeableConcept> =
-    SearchParam<HealthcareService, CodeableConcept>(
+    SearchParam(
       name = "service-category",
       type = SearchParamType.fromCode("token"),
       expression = "HealthcareService.category",
@@ -118,7 +118,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val serviceType: SearchParam<HealthcareService, CodeableConcept> =
-    SearchParam<HealthcareService, CodeableConcept>(
+    SearchParam(
       name = "service-type",
       type = SearchParamType.fromCode("token"),
       expression = "HealthcareService.type",
@@ -126,7 +126,7 @@ public object HealthcareServiceSearchParams {
     )
 
   public val specialty: SearchParam<HealthcareService, CodeableConcept> =
-    SearchParam<HealthcareService, CodeableConcept>(
+    SearchParam(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
       expression = "HealthcareService.specialty",

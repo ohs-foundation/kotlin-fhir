@@ -29,7 +29,7 @@ import kotlin.collections.List
 /** Search parameters for the [NutritionProduct] resource type. */
 public object NutritionProductSearchParams {
   public val code: SearchParam<NutritionProduct, CodeableConcept> =
-    SearchParam<NutritionProduct, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionProduct.code",
@@ -37,7 +37,7 @@ public object NutritionProductSearchParams {
     )
 
   public val identifier: SearchParam<NutritionProduct, Identifier> =
-    SearchParam<NutritionProduct, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionProduct.instance.identifier",
@@ -45,7 +45,7 @@ public object NutritionProductSearchParams {
     )
 
   public val lotNumber: SearchParam<NutritionProduct, String> =
-    SearchParam<NutritionProduct, String>(
+    SearchParam(
       name = "lot-number",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionProduct.instance.lotNumber",
@@ -53,7 +53,7 @@ public object NutritionProductSearchParams {
     )
 
   public val serialNumber: SearchParam<NutritionProduct, Identifier> =
-    SearchParam<NutritionProduct, Identifier>(
+    SearchParam(
       name = "serial-number",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionProduct.instance.identifier",
@@ -61,7 +61,7 @@ public object NutritionProductSearchParams {
     )
 
   public val status: SearchParam<NutritionProduct, CodeableConcept> =
-    SearchParam<NutritionProduct, CodeableConcept>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionProduct.category",

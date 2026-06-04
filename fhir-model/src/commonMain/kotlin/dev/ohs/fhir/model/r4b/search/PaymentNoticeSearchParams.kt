@@ -170,7 +170,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [PaymentNotice] resource type. */
 public object PaymentNoticeSearchParams {
   public val created: SearchParam<PaymentNotice, DateTime> =
-    SearchParam<PaymentNotice, DateTime>(
+    SearchParam(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "PaymentNotice.created",
@@ -178,7 +178,7 @@ public object PaymentNoticeSearchParams {
     )
 
   public val identifier: SearchParam<PaymentNotice, Identifier> =
-    SearchParam<PaymentNotice, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "PaymentNotice.identifier",
@@ -186,7 +186,7 @@ public object PaymentNoticeSearchParams {
     )
 
   public val paymentStatus: SearchParam<PaymentNotice, CodeableConcept> =
-    SearchParam<PaymentNotice, CodeableConcept>(
+    SearchParam(
       name = "payment-status",
       type = SearchParamType.fromCode("token"),
       expression = "PaymentNotice.paymentStatus",
@@ -194,7 +194,7 @@ public object PaymentNoticeSearchParams {
     )
 
   public val provider: SearchParam<PaymentNotice, Reference> =
-    SearchParam<PaymentNotice, Reference>(
+    SearchParam(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
       expression = "PaymentNotice.provider",
@@ -203,7 +203,7 @@ public object PaymentNoticeSearchParams {
     )
 
   public val request: SearchParam<PaymentNotice, Reference> =
-    SearchParam<PaymentNotice, Reference>(
+    SearchParam(
       name = "request",
       type = SearchParamType.fromCode("reference"),
       expression = "PaymentNotice.request",
@@ -354,7 +354,7 @@ public object PaymentNoticeSearchParams {
     )
 
   public val response: SearchParam<PaymentNotice, Reference> =
-    SearchParam<PaymentNotice, Reference>(
+    SearchParam(
       name = "response",
       type = SearchParamType.fromCode("reference"),
       expression = "PaymentNotice.response",
@@ -505,7 +505,7 @@ public object PaymentNoticeSearchParams {
     )
 
   public val status: SearchParam<PaymentNotice, Any> =
-    SearchParam<PaymentNotice, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "PaymentNotice.status",

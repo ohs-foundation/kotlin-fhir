@@ -182,7 +182,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [EvidenceVariable] resource type. */
 public object EvidenceVariableSearchParams {
   public val composedOf: SearchParam<EvidenceVariable, Canonical> =
-    SearchParam<EvidenceVariable, Canonical>(
+    SearchParam(
       name = "composed-of",
       type = SearchParamType.fromCode("reference"),
       expression = "EvidenceVariable.relatedArtifact.where(type='composed-of').resource",
@@ -342,7 +342,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val context: SearchParam<EvidenceVariable, CodeableConcept> =
-    SearchParam<EvidenceVariable, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(EvidenceVariable.useContext.value as CodeableConcept)",
@@ -354,7 +354,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val contextQuantity: SearchParam<EvidenceVariable, Quantity> =
-    SearchParam<EvidenceVariable, Quantity>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(EvidenceVariable.useContext.value as Quantity)",
@@ -364,7 +364,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val contextType: SearchParam<EvidenceVariable, Coding> =
-    SearchParam<EvidenceVariable, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "EvidenceVariable.useContext.code",
@@ -372,7 +372,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<EvidenceVariable, UsageContext> =
-    SearchParam<EvidenceVariable, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "EvidenceVariable.useContext",
@@ -380,7 +380,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val contextTypeValue: SearchParam<EvidenceVariable, UsageContext> =
-    SearchParam<EvidenceVariable, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "EvidenceVariable.useContext",
@@ -388,7 +388,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val date: SearchParam<EvidenceVariable, DateTime> =
-    SearchParam<EvidenceVariable, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "EvidenceVariable.date",
@@ -396,7 +396,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val dependsOn: SearchParam<EvidenceVariable, Canonical> =
-    SearchParam<EvidenceVariable, Canonical>(
+    SearchParam(
       name = "depends-on",
       type = SearchParamType.fromCode("reference"),
       expression = "EvidenceVariable.relatedArtifact.where(type='depends-on').resource",
@@ -556,7 +556,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val derivedFrom: SearchParam<EvidenceVariable, Canonical> =
-    SearchParam<EvidenceVariable, Canonical>(
+    SearchParam(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "EvidenceVariable.relatedArtifact.where(type='derived-from').resource",
@@ -716,7 +716,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val description: SearchParam<EvidenceVariable, Markdown> =
-    SearchParam<EvidenceVariable, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "EvidenceVariable.description",
@@ -724,7 +724,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val effective: SearchParam<EvidenceVariable, Period> =
-    SearchParam<EvidenceVariable, Period>(
+    SearchParam(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "EvidenceVariable.effectivePeriod",
@@ -732,7 +732,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val identifier: SearchParam<EvidenceVariable, Identifier> =
-    SearchParam<EvidenceVariable, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "EvidenceVariable.identifier",
@@ -740,7 +740,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val jurisdiction: SearchParam<EvidenceVariable, CodeableConcept> =
-    SearchParam<EvidenceVariable, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "EvidenceVariable.jurisdiction",
@@ -748,7 +748,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val name: SearchParam<EvidenceVariable, String> =
-    SearchParam<EvidenceVariable, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "EvidenceVariable.name",
@@ -756,7 +756,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val predecessor: SearchParam<EvidenceVariable, Canonical> =
-    SearchParam<EvidenceVariable, Canonical>(
+    SearchParam(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "EvidenceVariable.relatedArtifact.where(type='predecessor').resource",
@@ -916,7 +916,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val publisher: SearchParam<EvidenceVariable, String> =
-    SearchParam<EvidenceVariable, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "EvidenceVariable.publisher",
@@ -924,7 +924,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val status: SearchParam<EvidenceVariable, Any> =
-    SearchParam<EvidenceVariable, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "EvidenceVariable.status",
@@ -932,7 +932,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val successor: SearchParam<EvidenceVariable, Canonical> =
-    SearchParam<EvidenceVariable, Canonical>(
+    SearchParam(
       name = "successor",
       type = SearchParamType.fromCode("reference"),
       expression = "EvidenceVariable.relatedArtifact.where(type='successor').resource",
@@ -1092,7 +1092,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val title: SearchParam<EvidenceVariable, String> =
-    SearchParam<EvidenceVariable, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "EvidenceVariable.title",
@@ -1100,7 +1100,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val topic: SearchParam<EvidenceVariable, CodeableConcept> =
-    SearchParam<EvidenceVariable, CodeableConcept>(
+    SearchParam(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "EvidenceVariable.topic",
@@ -1108,7 +1108,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val url: SearchParam<EvidenceVariable, Uri> =
-    SearchParam<EvidenceVariable, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "EvidenceVariable.url",
@@ -1116,7 +1116,7 @@ public object EvidenceVariableSearchParams {
     )
 
   public val version: SearchParam<EvidenceVariable, String> =
-    SearchParam<EvidenceVariable, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "EvidenceVariable.version",

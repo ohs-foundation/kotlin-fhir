@@ -172,7 +172,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [R4bList] resource type. */
 public object ListSearchParams {
   public val code: SearchParam<R4bList, CodeableConcept> =
-    SearchParam<R4bList, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "List.code",
@@ -180,7 +180,7 @@ public object ListSearchParams {
     )
 
   public val date: SearchParam<R4bList, DateTime> =
-    SearchParam<R4bList, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "List.date",
@@ -188,7 +188,7 @@ public object ListSearchParams {
     )
 
   public val emptyReason: SearchParam<R4bList, CodeableConcept> =
-    SearchParam<R4bList, CodeableConcept>(
+    SearchParam(
       name = "empty-reason",
       type = SearchParamType.fromCode("token"),
       expression = "List.emptyReason",
@@ -196,7 +196,7 @@ public object ListSearchParams {
     )
 
   public val encounter: SearchParam<R4bList, Reference> =
-    SearchParam<R4bList, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "List.encounter",
@@ -205,7 +205,7 @@ public object ListSearchParams {
     )
 
   public val identifier: SearchParam<R4bList, Identifier> =
-    SearchParam<R4bList, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "List.identifier",
@@ -213,7 +213,7 @@ public object ListSearchParams {
     )
 
   public val item: SearchParam<R4bList, Reference> =
-    SearchParam<R4bList, Reference>(
+    SearchParam(
       name = "item",
       type = SearchParamType.fromCode("reference"),
       expression = "List.entry.item",
@@ -364,7 +364,7 @@ public object ListSearchParams {
     )
 
   public val notes: SearchParam<R4bList, Markdown> =
-    SearchParam<R4bList, Markdown>(
+    SearchParam(
       name = "notes",
       type = SearchParamType.fromCode("string"),
       expression = "List.note.text",
@@ -372,7 +372,7 @@ public object ListSearchParams {
     )
 
   public val patient: SearchParam<R4bList, Reference> =
-    SearchParam<R4bList, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "List.subject.where(resolve() is Patient)",
@@ -385,7 +385,7 @@ public object ListSearchParams {
     )
 
   public val source: SearchParam<R4bList, Reference> =
-    SearchParam<R4bList, Reference>(
+    SearchParam(
       name = "source",
       type = SearchParamType.fromCode("reference"),
       expression = "List.source",
@@ -394,7 +394,7 @@ public object ListSearchParams {
     )
 
   public val status: SearchParam<R4bList, Any> =
-    SearchParam<R4bList, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "List.status",
@@ -402,7 +402,7 @@ public object ListSearchParams {
     )
 
   public val subject: SearchParam<R4bList, Reference> =
-    SearchParam<R4bList, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "List.subject",
@@ -411,7 +411,7 @@ public object ListSearchParams {
     )
 
   public val title: SearchParam<R4bList, String> =
-    SearchParam<R4bList, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "List.title",

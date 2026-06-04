@@ -33,7 +33,7 @@ import kotlin.collections.List
 /** Search parameters for the [TestReport] resource type. */
 public object TestReportSearchParams {
   public val identifier: SearchParam<TestReport, Identifier> =
-    SearchParam<TestReport, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "TestReport.identifier",
@@ -41,7 +41,7 @@ public object TestReportSearchParams {
     )
 
   public val issued: SearchParam<TestReport, DateTime> =
-    SearchParam<TestReport, DateTime>(
+    SearchParam(
       name = "issued",
       type = SearchParamType.fromCode("date"),
       expression = "TestReport.issued",
@@ -49,7 +49,7 @@ public object TestReportSearchParams {
     )
 
   public val participant: SearchParam<TestReport, Uri> =
-    SearchParam<TestReport, Uri>(
+    SearchParam(
       name = "participant",
       type = SearchParamType.fromCode("uri"),
       expression = "TestReport.participant.uri",
@@ -57,7 +57,7 @@ public object TestReportSearchParams {
     )
 
   public val result: SearchParam<TestReport, Any> =
-    SearchParam<TestReport, Any>(
+    SearchParam(
       name = "result",
       type = SearchParamType.fromCode("token"),
       expression = "TestReport.result",
@@ -65,7 +65,7 @@ public object TestReportSearchParams {
     )
 
   public val status: SearchParam<TestReport, Any> =
-    SearchParam<TestReport, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "TestReport.status",
@@ -73,7 +73,7 @@ public object TestReportSearchParams {
     )
 
   public val tester: SearchParam<TestReport, String> =
-    SearchParam<TestReport, String>(
+    SearchParam(
       name = "tester",
       type = SearchParamType.fromCode("string"),
       expression = "TestReport.tester",
@@ -81,7 +81,7 @@ public object TestReportSearchParams {
     )
 
   public val testscript: SearchParam<TestReport, Canonical> =
-    SearchParam<TestReport, Canonical>(
+    SearchParam(
       name = "testscript",
       type = SearchParamType.fromCode("reference"),
       expression = "TestReport.testScript",

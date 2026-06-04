@@ -39,7 +39,7 @@ import kotlin.collections.List
 /** Search parameters for the [NutritionOrder] resource type. */
 public object NutritionOrderSearchParams {
   public val additive: SearchParam<NutritionOrder, CodeableConcept> =
-    SearchParam<NutritionOrder, CodeableConcept>(
+    SearchParam(
       name = "additive",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.enteralFormula.additiveType",
@@ -47,7 +47,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val datetime: SearchParam<NutritionOrder, DateTime> =
-    SearchParam<NutritionOrder, DateTime>(
+    SearchParam(
       name = "datetime",
       type = SearchParamType.fromCode("date"),
       expression = "NutritionOrder.dateTime",
@@ -55,7 +55,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val encounter: SearchParam<NutritionOrder, Reference> =
-    SearchParam<NutritionOrder, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.encounter",
@@ -64,7 +64,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val formula: SearchParam<NutritionOrder, CodeableConcept> =
-    SearchParam<NutritionOrder, CodeableConcept>(
+    SearchParam(
       name = "formula",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.enteralFormula.baseFormulaType",
@@ -72,7 +72,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val identifier: SearchParam<NutritionOrder, Identifier> =
-    SearchParam<NutritionOrder, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.identifier",
@@ -80,7 +80,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val instantiatesCanonical: SearchParam<NutritionOrder, Canonical> =
-    SearchParam<NutritionOrder, Canonical>(
+    SearchParam(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.instantiatesCanonical",
@@ -89,7 +89,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val instantiatesUri: SearchParam<NutritionOrder, Uri> =
-    SearchParam<NutritionOrder, Uri>(
+    SearchParam(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "NutritionOrder.instantiatesUri",
@@ -97,7 +97,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val oraldiet: SearchParam<NutritionOrder, CodeableConcept> =
-    SearchParam<NutritionOrder, CodeableConcept>(
+    SearchParam(
       name = "oraldiet",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.oralDiet.type",
@@ -105,7 +105,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val patient: SearchParam<NutritionOrder, Reference> =
-    SearchParam<NutritionOrder, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.patient",
@@ -114,7 +114,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val provider: SearchParam<NutritionOrder, Reference> =
-    SearchParam<NutritionOrder, Reference>(
+    SearchParam(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionOrder.orderer",
@@ -123,7 +123,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val status: SearchParam<NutritionOrder, Any> =
-    SearchParam<NutritionOrder, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.status",
@@ -131,7 +131,7 @@ public object NutritionOrderSearchParams {
     )
 
   public val supplement: SearchParam<NutritionOrder, CodeableConcept> =
-    SearchParam<NutritionOrder, CodeableConcept>(
+    SearchParam(
       name = "supplement",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionOrder.supplement.type",

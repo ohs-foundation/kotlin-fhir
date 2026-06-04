@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [NutritionIntake] resource type. */
 public object NutritionIntakeSearchParams {
   public val code: SearchParam<NutritionIntake, CodeableConcept> =
-    SearchParam<NutritionIntake, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionIntake.code",
@@ -45,7 +45,7 @@ public object NutritionIntakeSearchParams {
     )
 
   public val date: SearchParam<NutritionIntake, Any> =
-    SearchParam<NutritionIntake, Any>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "NutritionIntake.occurrence.ofType(dateTime)",
@@ -53,7 +53,7 @@ public object NutritionIntakeSearchParams {
     )
 
   public val encounter: SearchParam<NutritionIntake, Reference> =
-    SearchParam<NutritionIntake, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionIntake.encounter",
@@ -62,7 +62,7 @@ public object NutritionIntakeSearchParams {
     )
 
   public val identifier: SearchParam<NutritionIntake, Identifier> =
-    SearchParam<NutritionIntake, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionIntake.identifier",
@@ -70,7 +70,7 @@ public object NutritionIntakeSearchParams {
     )
 
   public val nutrition: SearchParam<NutritionIntake, CodeableConcept> =
-    SearchParam<NutritionIntake, CodeableConcept>(
+    SearchParam(
       name = "nutrition",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionIntake.consumedItem.nutritionProduct.concept",
@@ -80,7 +80,7 @@ public object NutritionIntakeSearchParams {
     )
 
   public val patient: SearchParam<NutritionIntake, Reference> =
-    SearchParam<NutritionIntake, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionIntake.subject.where(resolve() is Patient)",
@@ -93,7 +93,7 @@ public object NutritionIntakeSearchParams {
     )
 
   public val source: SearchParam<NutritionIntake, Reference> =
-    SearchParam<NutritionIntake, Reference>(
+    SearchParam(
       name = "source",
       type = SearchParamType.fromCode("reference"),
       expression = "(NutritionIntake.reported as Reference)",
@@ -111,7 +111,7 @@ public object NutritionIntakeSearchParams {
     )
 
   public val status: SearchParam<NutritionIntake, Any> =
-    SearchParam<NutritionIntake, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionIntake.status",
@@ -119,7 +119,7 @@ public object NutritionIntakeSearchParams {
     )
 
   public val subject: SearchParam<NutritionIntake, Reference> =
-    SearchParam<NutritionIntake, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "NutritionIntake.subject",

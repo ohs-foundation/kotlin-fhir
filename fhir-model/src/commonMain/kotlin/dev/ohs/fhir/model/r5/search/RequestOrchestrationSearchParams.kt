@@ -190,7 +190,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [RequestOrchestration] resource type. */
 public object RequestOrchestrationSearchParams {
   public val author: SearchParam<RequestOrchestration, Reference> =
-    SearchParam<RequestOrchestration, Reference>(
+    SearchParam(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestOrchestration.author",
@@ -199,7 +199,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val authored: SearchParam<RequestOrchestration, DateTime> =
-    SearchParam<RequestOrchestration, DateTime>(
+    SearchParam(
       name = "authored",
       type = SearchParamType.fromCode("date"),
       expression = "RequestOrchestration.authoredOn",
@@ -207,7 +207,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val basedOn: SearchParam<RequestOrchestration, Reference> =
-    SearchParam<RequestOrchestration, Reference>(
+    SearchParam(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestOrchestration.basedOn",
@@ -376,7 +376,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val code: SearchParam<RequestOrchestration, CodeableConcept> =
-    SearchParam<RequestOrchestration, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "RequestOrchestration.code",
@@ -384,7 +384,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val encounter: SearchParam<RequestOrchestration, Reference> =
-    SearchParam<RequestOrchestration, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestOrchestration.encounter",
@@ -393,7 +393,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val groupIdentifier: SearchParam<RequestOrchestration, Identifier> =
-    SearchParam<RequestOrchestration, Identifier>(
+    SearchParam(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
       expression = "RequestOrchestration.groupIdentifier",
@@ -401,7 +401,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val identifier: SearchParam<RequestOrchestration, Identifier> =
-    SearchParam<RequestOrchestration, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "RequestOrchestration.identifier",
@@ -409,7 +409,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val instantiatesCanonical: SearchParam<RequestOrchestration, Canonical> =
-    SearchParam<RequestOrchestration, Canonical>(
+    SearchParam(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestOrchestration.instantiatesCanonical",
@@ -458,7 +458,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val instantiatesUri: SearchParam<RequestOrchestration, Uri> =
-    SearchParam<RequestOrchestration, Uri>(
+    SearchParam(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "RequestOrchestration.instantiatesUri",
@@ -466,7 +466,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val intent: SearchParam<RequestOrchestration, Any> =
-    SearchParam<RequestOrchestration, Any>(
+    SearchParam(
       name = "intent",
       type = SearchParamType.fromCode("token"),
       expression = "RequestOrchestration.intent",
@@ -474,7 +474,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val participant: SearchParam<RequestOrchestration, Any> =
-    SearchParam<RequestOrchestration, Any>(
+    SearchParam(
       name = "participant",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestOrchestration.action.participant.actor.ofType(Reference)",
@@ -498,7 +498,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val patient: SearchParam<RequestOrchestration, Reference> =
-    SearchParam<RequestOrchestration, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestOrchestration.subject.where(resolve() is Patient)",
@@ -511,7 +511,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val priority: SearchParam<RequestOrchestration, Any> =
-    SearchParam<RequestOrchestration, Any>(
+    SearchParam(
       name = "priority",
       type = SearchParamType.fromCode("token"),
       expression = "RequestOrchestration.priority",
@@ -519,7 +519,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val status: SearchParam<RequestOrchestration, Any> =
-    SearchParam<RequestOrchestration, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "RequestOrchestration.status",
@@ -527,7 +527,7 @@ public object RequestOrchestrationSearchParams {
     )
 
   public val subject: SearchParam<RequestOrchestration, Reference> =
-    SearchParam<RequestOrchestration, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestOrchestration.subject",

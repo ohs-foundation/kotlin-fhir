@@ -31,7 +31,7 @@ import kotlin.collections.List
 /** Search parameters for the [Resource] resource type. */
 public object ResourceSearchParams {
   public val _content: SearchParam<Resource, Any> =
-    SearchParam<Resource, Any>(
+    SearchParam(
       name = "_content",
       type = SearchParamType.fromCode("string"),
       expression = "",
@@ -39,7 +39,7 @@ public object ResourceSearchParams {
     )
 
   public val _filter: SearchParam<Resource, Any> =
-    SearchParam<Resource, Any>(
+    SearchParam(
       name = "_filter",
       type = SearchParamType.fromCode("special"),
       expression = "",
@@ -47,7 +47,7 @@ public object ResourceSearchParams {
     )
 
   public val _has: SearchParam<Resource, Any> =
-    SearchParam<Resource, Any>(
+    SearchParam(
       name = "_has",
       type = SearchParamType.fromCode("string"),
       expression = "",
@@ -55,7 +55,7 @@ public object ResourceSearchParams {
     )
 
   public val _id: SearchParam<Resource, Any> =
-    SearchParam<Resource, Any>(
+    SearchParam(
       name = "_id",
       type = SearchParamType.fromCode("token"),
       expression = "id",
@@ -63,7 +63,7 @@ public object ResourceSearchParams {
     )
 
   public val _lastUpdated: SearchParam<Resource, Instant> =
-    SearchParam<Resource, Instant>(
+    SearchParam(
       name = "_lastUpdated",
       type = SearchParamType.fromCode("date"),
       expression = "Resource.meta.lastUpdated",
@@ -71,7 +71,7 @@ public object ResourceSearchParams {
     )
 
   public val _list: SearchParam<Resource, Any> =
-    SearchParam<Resource, Any>(
+    SearchParam(
       name = "_list",
       type = SearchParamType.fromCode("string"),
       expression = "",
@@ -79,7 +79,7 @@ public object ResourceSearchParams {
     )
 
   public val _profile: SearchParam<Resource, Canonical> =
-    SearchParam<Resource, Canonical>(
+    SearchParam(
       name = "_profile",
       type = SearchParamType.fromCode("uri"),
       expression = "Resource.meta.profile",
@@ -87,7 +87,7 @@ public object ResourceSearchParams {
     )
 
   public val _query: SearchParam<Resource, Any> =
-    SearchParam<Resource, Any>(
+    SearchParam(
       name = "_query",
       type = SearchParamType.fromCode("token"),
       expression = "",
@@ -95,7 +95,7 @@ public object ResourceSearchParams {
     )
 
   public val _security: SearchParam<Resource, Coding> =
-    SearchParam<Resource, Coding>(
+    SearchParam(
       name = "_security",
       type = SearchParamType.fromCode("token"),
       expression = "Resource.meta.security",
@@ -103,7 +103,7 @@ public object ResourceSearchParams {
     )
 
   public val _source: SearchParam<Resource, Uri> =
-    SearchParam<Resource, Uri>(
+    SearchParam(
       name = "_source",
       type = SearchParamType.fromCode("uri"),
       expression = "Resource.meta.source",
@@ -111,7 +111,7 @@ public object ResourceSearchParams {
     )
 
   public val _tag: SearchParam<Resource, Coding> =
-    SearchParam<Resource, Coding>(
+    SearchParam(
       name = "_tag",
       type = SearchParamType.fromCode("token"),
       expression = "Resource.meta.tag",
@@ -119,7 +119,7 @@ public object ResourceSearchParams {
     )
 
   public val _text: SearchParam<Resource, Any> =
-    SearchParam<Resource, Any>(
+    SearchParam(
       name = "_text",
       type = SearchParamType.fromCode("string"),
       expression = "",
@@ -127,7 +127,7 @@ public object ResourceSearchParams {
     )
 
   public val _type: SearchParam<Resource, Any> =
-    SearchParam<Resource, Any>(
+    SearchParam(
       name = "_type",
       type = SearchParamType.fromCode("token"),
       expression = "",

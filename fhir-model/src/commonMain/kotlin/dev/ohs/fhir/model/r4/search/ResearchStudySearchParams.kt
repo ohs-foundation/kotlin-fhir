@@ -37,7 +37,7 @@ import kotlin.collections.List
 /** Search parameters for the [ResearchStudy] resource type. */
 public object ResearchStudySearchParams {
   public val category: SearchParam<ResearchStudy, CodeableConcept> =
-    SearchParam<ResearchStudy, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchStudy.category",
@@ -45,7 +45,7 @@ public object ResearchStudySearchParams {
     )
 
   public val date: SearchParam<ResearchStudy, Period> =
-    SearchParam<ResearchStudy, Period>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ResearchStudy.period",
@@ -53,7 +53,7 @@ public object ResearchStudySearchParams {
     )
 
   public val focus: SearchParam<ResearchStudy, CodeableConcept> =
-    SearchParam<ResearchStudy, CodeableConcept>(
+    SearchParam(
       name = "focus",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchStudy.focus",
@@ -61,7 +61,7 @@ public object ResearchStudySearchParams {
     )
 
   public val identifier: SearchParam<ResearchStudy, Identifier> =
-    SearchParam<ResearchStudy, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchStudy.identifier",
@@ -69,7 +69,7 @@ public object ResearchStudySearchParams {
     )
 
   public val keyword: SearchParam<ResearchStudy, CodeableConcept> =
-    SearchParam<ResearchStudy, CodeableConcept>(
+    SearchParam(
       name = "keyword",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchStudy.keyword",
@@ -77,7 +77,7 @@ public object ResearchStudySearchParams {
     )
 
   public val location: SearchParam<ResearchStudy, CodeableConcept> =
-    SearchParam<ResearchStudy, CodeableConcept>(
+    SearchParam(
       name = "location",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchStudy.location",
@@ -85,7 +85,7 @@ public object ResearchStudySearchParams {
     )
 
   public val partof: SearchParam<ResearchStudy, Reference> =
-    SearchParam<ResearchStudy, Reference>(
+    SearchParam(
       name = "partof",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchStudy.partOf",
@@ -94,7 +94,7 @@ public object ResearchStudySearchParams {
     )
 
   public val principalinvestigator: SearchParam<ResearchStudy, Reference> =
-    SearchParam<ResearchStudy, Reference>(
+    SearchParam(
       name = "principalinvestigator",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchStudy.principalInvestigator",
@@ -103,7 +103,7 @@ public object ResearchStudySearchParams {
     )
 
   public val protocol: SearchParam<ResearchStudy, Reference> =
-    SearchParam<ResearchStudy, Reference>(
+    SearchParam(
       name = "protocol",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchStudy.protocol",
@@ -112,7 +112,7 @@ public object ResearchStudySearchParams {
     )
 
   public val site: SearchParam<ResearchStudy, Reference> =
-    SearchParam<ResearchStudy, Reference>(
+    SearchParam(
       name = "site",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchStudy.site",
@@ -121,7 +121,7 @@ public object ResearchStudySearchParams {
     )
 
   public val sponsor: SearchParam<ResearchStudy, Reference> =
-    SearchParam<ResearchStudy, Reference>(
+    SearchParam(
       name = "sponsor",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchStudy.sponsor",
@@ -130,7 +130,7 @@ public object ResearchStudySearchParams {
     )
 
   public val status: SearchParam<ResearchStudy, Any> =
-    SearchParam<ResearchStudy, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchStudy.status",
@@ -138,7 +138,7 @@ public object ResearchStudySearchParams {
     )
 
   public val title: SearchParam<ResearchStudy, String> =
-    SearchParam<ResearchStudy, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "ResearchStudy.title",

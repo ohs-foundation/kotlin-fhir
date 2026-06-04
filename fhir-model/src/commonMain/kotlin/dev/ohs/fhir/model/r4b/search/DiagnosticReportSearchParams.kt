@@ -51,7 +51,7 @@ import kotlin.collections.List
 /** Search parameters for the [DiagnosticReport] resource type. */
 public object DiagnosticReportSearchParams {
   public val assessedCondition: SearchParam<DiagnosticReport, Any> =
-    SearchParam<DiagnosticReport, Any>(
+    SearchParam(
       name = "assessed-condition",
       type = SearchParamType.fromCode("reference"),
       expression =
@@ -60,7 +60,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val basedOn: SearchParam<DiagnosticReport, Reference> =
-    SearchParam<DiagnosticReport, Reference>(
+    SearchParam(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "DiagnosticReport.basedOn",
@@ -76,7 +76,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val category: SearchParam<DiagnosticReport, CodeableConcept> =
-    SearchParam<DiagnosticReport, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "DiagnosticReport.category",
@@ -84,7 +84,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val code: SearchParam<DiagnosticReport, CodeableConcept> =
-    SearchParam<DiagnosticReport, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "DiagnosticReport.code",
@@ -92,7 +92,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val conclusion: SearchParam<DiagnosticReport, CodeableConcept> =
-    SearchParam<DiagnosticReport, CodeableConcept>(
+    SearchParam(
       name = "conclusion",
       type = SearchParamType.fromCode("token"),
       expression = "DiagnosticReport.conclusionCode",
@@ -100,7 +100,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val date: SearchParam<DiagnosticReport, DiagnosticReport.Effective> =
-    SearchParam<DiagnosticReport, DiagnosticReport.Effective>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "DiagnosticReport.effective",
@@ -108,7 +108,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val encounter: SearchParam<DiagnosticReport, Reference> =
-    SearchParam<DiagnosticReport, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "DiagnosticReport.encounter",
@@ -117,7 +117,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val identifier: SearchParam<DiagnosticReport, Identifier> =
-    SearchParam<DiagnosticReport, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DiagnosticReport.identifier",
@@ -125,7 +125,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val issued: SearchParam<DiagnosticReport, Instant> =
-    SearchParam<DiagnosticReport, Instant>(
+    SearchParam(
       name = "issued",
       type = SearchParamType.fromCode("date"),
       expression = "DiagnosticReport.issued",
@@ -133,7 +133,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val media: SearchParam<DiagnosticReport, Reference> =
-    SearchParam<DiagnosticReport, Reference>(
+    SearchParam(
       name = "media",
       type = SearchParamType.fromCode("reference"),
       expression = "DiagnosticReport.media.link",
@@ -142,7 +142,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val patient: SearchParam<DiagnosticReport, Reference> =
-    SearchParam<DiagnosticReport, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DiagnosticReport.subject.where(resolve() is Patient)",
@@ -155,7 +155,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val performer: SearchParam<DiagnosticReport, Reference> =
-    SearchParam<DiagnosticReport, Reference>(
+    SearchParam(
       name = "performer",
       type = SearchParamType.fromCode("reference"),
       expression = "DiagnosticReport.performer",
@@ -165,7 +165,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val result: SearchParam<DiagnosticReport, Reference> =
-    SearchParam<DiagnosticReport, Reference>(
+    SearchParam(
       name = "result",
       type = SearchParamType.fromCode("reference"),
       expression = "DiagnosticReport.result",
@@ -174,7 +174,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val resultsInterpreter: SearchParam<DiagnosticReport, Reference> =
-    SearchParam<DiagnosticReport, Reference>(
+    SearchParam(
       name = "results-interpreter",
       type = SearchParamType.fromCode("reference"),
       expression = "DiagnosticReport.resultsInterpreter",
@@ -184,7 +184,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val specimen: SearchParam<DiagnosticReport, Reference> =
-    SearchParam<DiagnosticReport, Reference>(
+    SearchParam(
       name = "specimen",
       type = SearchParamType.fromCode("reference"),
       expression = "DiagnosticReport.specimen",
@@ -193,7 +193,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val status: SearchParam<DiagnosticReport, Any> =
-    SearchParam<DiagnosticReport, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "DiagnosticReport.status",
@@ -201,7 +201,7 @@ public object DiagnosticReportSearchParams {
     )
 
   public val subject: SearchParam<DiagnosticReport, Reference> =
-    SearchParam<DiagnosticReport, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "DiagnosticReport.subject",

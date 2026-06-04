@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [EncounterHistory] resource type. */
 public object EncounterHistorySearchParams {
   public val encounter: SearchParam<EncounterHistory, Reference> =
-    SearchParam<EncounterHistory, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "EncounterHistory.encounter",
@@ -41,7 +41,7 @@ public object EncounterHistorySearchParams {
     )
 
   public val identifier: SearchParam<EncounterHistory, Identifier> =
-    SearchParam<EncounterHistory, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "EncounterHistory.identifier",
@@ -49,7 +49,7 @@ public object EncounterHistorySearchParams {
     )
 
   public val patient: SearchParam<EncounterHistory, Reference> =
-    SearchParam<EncounterHistory, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "EncounterHistory.subject.where(resolve() is Patient)",
@@ -62,7 +62,7 @@ public object EncounterHistorySearchParams {
     )
 
   public val status: SearchParam<EncounterHistory, Any> =
-    SearchParam<EncounterHistory, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "EncounterHistory.status",
@@ -70,7 +70,7 @@ public object EncounterHistorySearchParams {
     )
 
   public val subject: SearchParam<EncounterHistory, Reference> =
-    SearchParam<EncounterHistory, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "EncounterHistory.subject",

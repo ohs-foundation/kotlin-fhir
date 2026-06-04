@@ -174,7 +174,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [ImmunizationRecommendation] resource type. */
 public object ImmunizationRecommendationSearchParams {
   public val date: SearchParam<ImmunizationRecommendation, DateTime> =
-    SearchParam<ImmunizationRecommendation, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ImmunizationRecommendation.date",
@@ -182,7 +182,7 @@ public object ImmunizationRecommendationSearchParams {
     )
 
   public val identifier: SearchParam<ImmunizationRecommendation, Identifier> =
-    SearchParam<ImmunizationRecommendation, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ImmunizationRecommendation.identifier",
@@ -190,7 +190,7 @@ public object ImmunizationRecommendationSearchParams {
     )
 
   public val information: SearchParam<ImmunizationRecommendation, Reference> =
-    SearchParam<ImmunizationRecommendation, Reference>(
+    SearchParam(
       name = "information",
       type = SearchParamType.fromCode("reference"),
       expression = "ImmunizationRecommendation.recommendation.supportingPatientInformation",
@@ -348,7 +348,7 @@ public object ImmunizationRecommendationSearchParams {
     )
 
   public val patient: SearchParam<ImmunizationRecommendation, Reference> =
-    SearchParam<ImmunizationRecommendation, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ImmunizationRecommendation.patient",
@@ -357,7 +357,7 @@ public object ImmunizationRecommendationSearchParams {
     )
 
   public val status: SearchParam<ImmunizationRecommendation, CodeableConcept> =
-    SearchParam<ImmunizationRecommendation, CodeableConcept>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ImmunizationRecommendation.recommendation.forecastStatus",
@@ -365,7 +365,7 @@ public object ImmunizationRecommendationSearchParams {
     )
 
   public val support: SearchParam<ImmunizationRecommendation, Reference> =
-    SearchParam<ImmunizationRecommendation, Reference>(
+    SearchParam(
       name = "support",
       type = SearchParamType.fromCode("reference"),
       expression = "ImmunizationRecommendation.recommendation.supportingImmunization",
@@ -374,7 +374,7 @@ public object ImmunizationRecommendationSearchParams {
     )
 
   public val targetDisease: SearchParam<ImmunizationRecommendation, CodeableConcept> =
-    SearchParam<ImmunizationRecommendation, CodeableConcept>(
+    SearchParam(
       name = "target-disease",
       type = SearchParamType.fromCode("token"),
       expression = "ImmunizationRecommendation.recommendation.targetDisease",
@@ -382,7 +382,7 @@ public object ImmunizationRecommendationSearchParams {
     )
 
   public val vaccineType: SearchParam<ImmunizationRecommendation, CodeableConcept> =
-    SearchParam<ImmunizationRecommendation, CodeableConcept>(
+    SearchParam(
       name = "vaccine-type",
       type = SearchParamType.fromCode("token"),
       expression = "ImmunizationRecommendation.recommendation.vaccineCode",

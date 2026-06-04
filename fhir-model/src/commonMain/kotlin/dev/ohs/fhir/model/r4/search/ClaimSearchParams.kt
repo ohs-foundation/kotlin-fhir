@@ -39,7 +39,7 @@ import kotlin.collections.List
 /** Search parameters for the [Claim] resource type. */
 public object ClaimSearchParams {
   public val careTeam: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "care-team",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.careTeam.provider",
@@ -48,7 +48,7 @@ public object ClaimSearchParams {
     )
 
   public val created: SearchParam<Claim, DateTime> =
-    SearchParam<Claim, DateTime>(
+    SearchParam(
       name = "created",
       type = SearchParamType.fromCode("date"),
       expression = "Claim.created",
@@ -56,7 +56,7 @@ public object ClaimSearchParams {
     )
 
   public val detailUdi: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "detail-udi",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.item.detail.udi",
@@ -65,7 +65,7 @@ public object ClaimSearchParams {
     )
 
   public val encounter: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.item.encounter",
@@ -74,7 +74,7 @@ public object ClaimSearchParams {
     )
 
   public val enterer: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "enterer",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.enterer",
@@ -83,7 +83,7 @@ public object ClaimSearchParams {
     )
 
   public val facility: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "facility",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.facility",
@@ -92,7 +92,7 @@ public object ClaimSearchParams {
     )
 
   public val identifier: SearchParam<Claim, Identifier> =
-    SearchParam<Claim, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Claim.identifier",
@@ -100,7 +100,7 @@ public object ClaimSearchParams {
     )
 
   public val insurer: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "insurer",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.insurer",
@@ -109,7 +109,7 @@ public object ClaimSearchParams {
     )
 
   public val itemUdi: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "item-udi",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.item.udi",
@@ -118,7 +118,7 @@ public object ClaimSearchParams {
     )
 
   public val patient: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.patient",
@@ -127,7 +127,7 @@ public object ClaimSearchParams {
     )
 
   public val payee: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "payee",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.payee.party",
@@ -143,7 +143,7 @@ public object ClaimSearchParams {
     )
 
   public val priority: SearchParam<Claim, CodeableConcept> =
-    SearchParam<Claim, CodeableConcept>(
+    SearchParam(
       name = "priority",
       type = SearchParamType.fromCode("token"),
       expression = "Claim.priority",
@@ -151,7 +151,7 @@ public object ClaimSearchParams {
     )
 
   public val procedureUdi: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "procedure-udi",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.procedure.udi",
@@ -160,7 +160,7 @@ public object ClaimSearchParams {
     )
 
   public val provider: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "provider",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.provider",
@@ -169,7 +169,7 @@ public object ClaimSearchParams {
     )
 
   public val status: SearchParam<Claim, Any> =
-    SearchParam<Claim, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Claim.status",
@@ -177,7 +177,7 @@ public object ClaimSearchParams {
     )
 
   public val subdetailUdi: SearchParam<Claim, Reference> =
-    SearchParam<Claim, Reference>(
+    SearchParam(
       name = "subdetail-udi",
       type = SearchParamType.fromCode("reference"),
       expression = "Claim.item.detail.subDetail.udi",
@@ -188,7 +188,7 @@ public object ClaimSearchParams {
     )
 
   public val use: SearchParam<Claim, Any> =
-    SearchParam<Claim, Any>(
+    SearchParam(
       name = "use",
       type = SearchParamType.fromCode("token"),
       expression = "Claim.use",

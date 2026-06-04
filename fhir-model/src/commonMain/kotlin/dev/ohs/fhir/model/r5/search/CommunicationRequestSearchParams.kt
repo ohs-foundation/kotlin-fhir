@@ -188,7 +188,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [CommunicationRequest] resource type. */
 public object CommunicationRequestSearchParams {
   public val authored: SearchParam<CommunicationRequest, DateTime> =
-    SearchParam<CommunicationRequest, DateTime>(
+    SearchParam(
       name = "authored",
       type = SearchParamType.fromCode("date"),
       expression = "CommunicationRequest.authoredOn",
@@ -196,7 +196,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val basedOn: SearchParam<CommunicationRequest, Reference> =
-    SearchParam<CommunicationRequest, Reference>(
+    SearchParam(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.basedOn",
@@ -365,7 +365,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val category: SearchParam<CommunicationRequest, CodeableConcept> =
-    SearchParam<CommunicationRequest, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "CommunicationRequest.category",
@@ -373,7 +373,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val encounter: SearchParam<CommunicationRequest, Reference> =
-    SearchParam<CommunicationRequest, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.encounter",
@@ -382,7 +382,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val groupIdentifier: SearchParam<CommunicationRequest, Identifier> =
-    SearchParam<CommunicationRequest, Identifier>(
+    SearchParam(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
       expression = "CommunicationRequest.groupIdentifier",
@@ -390,7 +390,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val identifier: SearchParam<CommunicationRequest, Identifier> =
-    SearchParam<CommunicationRequest, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "CommunicationRequest.identifier",
@@ -398,7 +398,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val informationProvider: SearchParam<CommunicationRequest, Reference> =
-    SearchParam<CommunicationRequest, Reference>(
+    SearchParam(
       name = "information-provider",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.informationProvider",
@@ -417,7 +417,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val medium: SearchParam<CommunicationRequest, CodeableConcept> =
-    SearchParam<CommunicationRequest, CodeableConcept>(
+    SearchParam(
       name = "medium",
       type = SearchParamType.fromCode("token"),
       expression = "CommunicationRequest.medium",
@@ -425,7 +425,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val occurrence: SearchParam<CommunicationRequest, Any> =
-    SearchParam<CommunicationRequest, Any>(
+    SearchParam(
       name = "occurrence",
       type = SearchParamType.fromCode("date"),
       expression = "CommunicationRequest.occurrence.ofType(dateTime)",
@@ -433,7 +433,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val patient: SearchParam<CommunicationRequest, Reference> =
-    SearchParam<CommunicationRequest, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.subject.where(resolve() is Patient)",
@@ -446,7 +446,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val priority: SearchParam<CommunicationRequest, Any> =
-    SearchParam<CommunicationRequest, Any>(
+    SearchParam(
       name = "priority",
       type = SearchParamType.fromCode("token"),
       expression = "CommunicationRequest.priority",
@@ -454,7 +454,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val recipient: SearchParam<CommunicationRequest, Reference> =
-    SearchParam<CommunicationRequest, Reference>(
+    SearchParam(
       name = "recipient",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.recipient",
@@ -475,7 +475,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val replaces: SearchParam<CommunicationRequest, Reference> =
-    SearchParam<CommunicationRequest, Reference>(
+    SearchParam(
       name = "replaces",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.replaces",
@@ -484,7 +484,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val requester: SearchParam<CommunicationRequest, Reference> =
-    SearchParam<CommunicationRequest, Reference>(
+    SearchParam(
       name = "requester",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.requester",
@@ -501,7 +501,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val status: SearchParam<CommunicationRequest, Any> =
-    SearchParam<CommunicationRequest, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "CommunicationRequest.status",
@@ -509,7 +509,7 @@ public object CommunicationRequestSearchParams {
     )
 
   public val subject: SearchParam<CommunicationRequest, Reference> =
-    SearchParam<CommunicationRequest, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "CommunicationRequest.subject",

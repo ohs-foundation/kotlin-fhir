@@ -30,7 +30,7 @@ import kotlin.collections.List
 /** Search parameters for the [EnrollmentRequest] resource type. */
 public object EnrollmentRequestSearchParams {
   public val identifier: SearchParam<EnrollmentRequest, Identifier> =
-    SearchParam<EnrollmentRequest, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "EnrollmentRequest.identifier",
@@ -38,7 +38,7 @@ public object EnrollmentRequestSearchParams {
     )
 
   public val patient: SearchParam<EnrollmentRequest, Reference> =
-    SearchParam<EnrollmentRequest, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "EnrollmentRequest.candidate",
@@ -47,7 +47,7 @@ public object EnrollmentRequestSearchParams {
     )
 
   public val status: SearchParam<EnrollmentRequest, Any> =
-    SearchParam<EnrollmentRequest, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "EnrollmentRequest.status",
@@ -55,7 +55,7 @@ public object EnrollmentRequestSearchParams {
     )
 
   public val subject: SearchParam<EnrollmentRequest, Reference> =
-    SearchParam<EnrollmentRequest, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "EnrollmentRequest.candidate",

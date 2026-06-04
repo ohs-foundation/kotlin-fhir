@@ -36,7 +36,7 @@ import kotlin.collections.List
 /** Search parameters for the [OrganizationAffiliation] resource type. */
 public object OrganizationAffiliationSearchParams {
   public val active: SearchParam<OrganizationAffiliation, Boolean> =
-    SearchParam<OrganizationAffiliation, Boolean>(
+    SearchParam(
       name = "active",
       type = SearchParamType.fromCode("token"),
       expression = "OrganizationAffiliation.active",
@@ -44,7 +44,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val date: SearchParam<OrganizationAffiliation, Period> =
-    SearchParam<OrganizationAffiliation, Period>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "OrganizationAffiliation.period",
@@ -52,7 +52,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val email: SearchParam<OrganizationAffiliation, ContactPoint> =
-    SearchParam<OrganizationAffiliation, ContactPoint>(
+    SearchParam(
       name = "email",
       type = SearchParamType.fromCode("token"),
       expression = "OrganizationAffiliation.contact.telecom.where(system='email')",
@@ -62,7 +62,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val endpoint: SearchParam<OrganizationAffiliation, Reference> =
-    SearchParam<OrganizationAffiliation, Reference>(
+    SearchParam(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "OrganizationAffiliation.endpoint",
@@ -71,7 +71,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val identifier: SearchParam<OrganizationAffiliation, Identifier> =
-    SearchParam<OrganizationAffiliation, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "OrganizationAffiliation.identifier",
@@ -79,7 +79,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val location: SearchParam<OrganizationAffiliation, Reference> =
-    SearchParam<OrganizationAffiliation, Reference>(
+    SearchParam(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "OrganizationAffiliation.location",
@@ -88,7 +88,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val network: SearchParam<OrganizationAffiliation, Reference> =
-    SearchParam<OrganizationAffiliation, Reference>(
+    SearchParam(
       name = "network",
       type = SearchParamType.fromCode("reference"),
       expression = "OrganizationAffiliation.network",
@@ -97,7 +97,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val participatingOrganization: SearchParam<OrganizationAffiliation, Reference> =
-    SearchParam<OrganizationAffiliation, Reference>(
+    SearchParam(
       name = "participating-organization",
       type = SearchParamType.fromCode("reference"),
       expression = "OrganizationAffiliation.participatingOrganization",
@@ -106,7 +106,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val phone: SearchParam<OrganizationAffiliation, ContactPoint> =
-    SearchParam<OrganizationAffiliation, ContactPoint>(
+    SearchParam(
       name = "phone",
       type = SearchParamType.fromCode("token"),
       expression = "OrganizationAffiliation.contact.telecom.where(system='phone')",
@@ -116,7 +116,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val primaryOrganization: SearchParam<OrganizationAffiliation, Reference> =
-    SearchParam<OrganizationAffiliation, Reference>(
+    SearchParam(
       name = "primary-organization",
       type = SearchParamType.fromCode("reference"),
       expression = "OrganizationAffiliation.organization",
@@ -125,7 +125,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val role: SearchParam<OrganizationAffiliation, CodeableConcept> =
-    SearchParam<OrganizationAffiliation, CodeableConcept>(
+    SearchParam(
       name = "role",
       type = SearchParamType.fromCode("token"),
       expression = "OrganizationAffiliation.code",
@@ -133,7 +133,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val service: SearchParam<OrganizationAffiliation, Reference> =
-    SearchParam<OrganizationAffiliation, Reference>(
+    SearchParam(
       name = "service",
       type = SearchParamType.fromCode("reference"),
       expression = "OrganizationAffiliation.healthcareService",
@@ -142,7 +142,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val specialty: SearchParam<OrganizationAffiliation, CodeableConcept> =
-    SearchParam<OrganizationAffiliation, CodeableConcept>(
+    SearchParam(
       name = "specialty",
       type = SearchParamType.fromCode("token"),
       expression = "OrganizationAffiliation.specialty",
@@ -150,7 +150,7 @@ public object OrganizationAffiliationSearchParams {
     )
 
   public val telecom: SearchParam<OrganizationAffiliation, ContactPoint> =
-    SearchParam<OrganizationAffiliation, ContactPoint>(
+    SearchParam(
       name = "telecom",
       type = SearchParamType.fromCode("token"),
       expression = "OrganizationAffiliation.contact.telecom",

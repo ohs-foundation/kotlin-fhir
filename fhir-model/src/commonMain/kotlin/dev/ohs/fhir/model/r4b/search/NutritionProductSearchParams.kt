@@ -28,7 +28,7 @@ import kotlin.collections.List
 /** Search parameters for the [NutritionProduct] resource type. */
 public object NutritionProductSearchParams {
   public val identifier: SearchParam<NutritionProduct, Identifier> =
-    SearchParam<NutritionProduct, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionProduct.instance.identifier",
@@ -36,7 +36,7 @@ public object NutritionProductSearchParams {
     )
 
   public val status: SearchParam<NutritionProduct, Any> =
-    SearchParam<NutritionProduct, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "NutritionProduct.status",

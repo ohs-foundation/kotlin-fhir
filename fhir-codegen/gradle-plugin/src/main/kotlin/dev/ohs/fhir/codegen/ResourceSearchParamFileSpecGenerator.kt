@@ -152,7 +152,7 @@ object ResourceSearchParamFileSpecGenerator {
 
     val initializer =
       CodeBlock.builder()
-        .add("%T(\n", parameterizedSearchParam)
+        .add("%T(\n", searchParamClassName)
         .indent()
         .add("name = %S,\n", searchParam.code)
         .add("type = %T.fromCode(%S),\n", searchParamTypeClassName, searchParam.type)

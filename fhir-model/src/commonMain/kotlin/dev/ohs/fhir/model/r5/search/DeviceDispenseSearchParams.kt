@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [DeviceDispense] resource type. */
 public object DeviceDispenseSearchParams {
   public val code: SearchParam<DeviceDispense, CodeableConcept> =
-    SearchParam<DeviceDispense, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceDispense.device.concept",
@@ -40,7 +40,7 @@ public object DeviceDispenseSearchParams {
     )
 
   public val identifier: SearchParam<DeviceDispense, Identifier> =
-    SearchParam<DeviceDispense, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceDispense.identifier",
@@ -48,7 +48,7 @@ public object DeviceDispenseSearchParams {
     )
 
   public val patient: SearchParam<DeviceDispense, Reference> =
-    SearchParam<DeviceDispense, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceDispense.subject.where(resolve() is Patient)",
@@ -61,7 +61,7 @@ public object DeviceDispenseSearchParams {
     )
 
   public val status: SearchParam<DeviceDispense, Any> =
-    SearchParam<DeviceDispense, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "DeviceDispense.status",
@@ -69,7 +69,7 @@ public object DeviceDispenseSearchParams {
     )
 
   public val subject: SearchParam<DeviceDispense, Reference> =
-    SearchParam<DeviceDispense, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "DeviceDispense.subject",

@@ -192,7 +192,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Consent] resource type. */
 public object ConsentSearchParams {
   public val action: SearchParam<Consent, CodeableConcept> =
-    SearchParam<Consent, CodeableConcept>(
+    SearchParam(
       name = "action",
       type = SearchParamType.fromCode("token"),
       expression = "Consent.provision.action",
@@ -200,7 +200,7 @@ public object ConsentSearchParams {
     )
 
   public val actor: SearchParam<Consent, Reference> =
-    SearchParam<Consent, Reference>(
+    SearchParam(
       name = "actor",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.provision.actor.reference",
@@ -221,7 +221,7 @@ public object ConsentSearchParams {
     )
 
   public val category: SearchParam<Consent, CodeableConcept> =
-    SearchParam<Consent, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "Consent.category",
@@ -229,7 +229,7 @@ public object ConsentSearchParams {
     )
 
   public val controller: SearchParam<Consent, Reference> =
-    SearchParam<Consent, Reference>(
+    SearchParam(
       name = "controller",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.controller",
@@ -239,7 +239,7 @@ public object ConsentSearchParams {
     )
 
   public val `data`: SearchParam<Consent, Reference> =
-    SearchParam<Consent, Reference>(
+    SearchParam(
       name = "data",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.provision.data.reference",
@@ -408,7 +408,7 @@ public object ConsentSearchParams {
     )
 
   public val date: SearchParam<Consent, Date> =
-    SearchParam<Consent, Date>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Consent.date",
@@ -416,7 +416,7 @@ public object ConsentSearchParams {
     )
 
   public val grantee: SearchParam<Consent, Reference> =
-    SearchParam<Consent, Reference>(
+    SearchParam(
       name = "grantee",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.grantee",
@@ -434,7 +434,7 @@ public object ConsentSearchParams {
     )
 
   public val identifier: SearchParam<Consent, Identifier> =
-    SearchParam<Consent, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Consent.identifier",
@@ -442,7 +442,7 @@ public object ConsentSearchParams {
     )
 
   public val manager: SearchParam<Consent, Reference> =
-    SearchParam<Consent, Reference>(
+    SearchParam(
       name = "manager",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.manager",
@@ -452,7 +452,7 @@ public object ConsentSearchParams {
     )
 
   public val patient: SearchParam<Consent, Reference> =
-    SearchParam<Consent, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.subject.where(resolve() is Patient)",
@@ -465,7 +465,7 @@ public object ConsentSearchParams {
     )
 
   public val period: SearchParam<Consent, Period> =
-    SearchParam<Consent, Period>(
+    SearchParam(
       name = "period",
       type = SearchParamType.fromCode("date"),
       expression = "Consent.provision.period",
@@ -473,7 +473,7 @@ public object ConsentSearchParams {
     )
 
   public val purpose: SearchParam<Consent, Coding> =
-    SearchParam<Consent, Coding>(
+    SearchParam(
       name = "purpose",
       type = SearchParamType.fromCode("token"),
       expression = "Consent.provision.purpose",
@@ -481,7 +481,7 @@ public object ConsentSearchParams {
     )
 
   public val securityLabel: SearchParam<Consent, Coding> =
-    SearchParam<Consent, Coding>(
+    SearchParam(
       name = "security-label",
       type = SearchParamType.fromCode("token"),
       expression = "Consent.provision.securityLabel",
@@ -489,7 +489,7 @@ public object ConsentSearchParams {
     )
 
   public val sourceReference: SearchParam<Consent, Reference> =
-    SearchParam<Consent, Reference>(
+    SearchParam(
       name = "source-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.sourceReference",
@@ -504,7 +504,7 @@ public object ConsentSearchParams {
     )
 
   public val status: SearchParam<Consent, Any> =
-    SearchParam<Consent, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Consent.status",
@@ -512,7 +512,7 @@ public object ConsentSearchParams {
     )
 
   public val subject: SearchParam<Consent, Reference> =
-    SearchParam<Consent, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Consent.subject",
@@ -521,7 +521,7 @@ public object ConsentSearchParams {
     )
 
   public val verified: SearchParam<Consent, Boolean> =
-    SearchParam<Consent, Boolean>(
+    SearchParam(
       name = "verified",
       type = SearchParamType.fromCode("token"),
       expression = "Consent.verification.verified",
@@ -529,7 +529,7 @@ public object ConsentSearchParams {
     )
 
   public val verifiedDate: SearchParam<Consent, DateTime> =
-    SearchParam<Consent, DateTime>(
+    SearchParam(
       name = "verified-date",
       type = SearchParamType.fromCode("date"),
       expression = "Consent.verification.verificationDate",

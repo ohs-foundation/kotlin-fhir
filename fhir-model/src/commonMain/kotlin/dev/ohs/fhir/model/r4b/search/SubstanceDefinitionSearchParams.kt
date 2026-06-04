@@ -29,7 +29,7 @@ import kotlin.collections.List
 /** Search parameters for the [SubstanceDefinition] resource type. */
 public object SubstanceDefinitionSearchParams {
   public val classification: SearchParam<SubstanceDefinition, CodeableConcept> =
-    SearchParam<SubstanceDefinition, CodeableConcept>(
+    SearchParam(
       name = "classification",
       type = SearchParamType.fromCode("token"),
       expression = "SubstanceDefinition.classification",
@@ -37,7 +37,7 @@ public object SubstanceDefinitionSearchParams {
     )
 
   public val code: SearchParam<SubstanceDefinition, CodeableConcept> =
-    SearchParam<SubstanceDefinition, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "SubstanceDefinition.code.code",
@@ -45,7 +45,7 @@ public object SubstanceDefinitionSearchParams {
     )
 
   public val domain: SearchParam<SubstanceDefinition, CodeableConcept> =
-    SearchParam<SubstanceDefinition, CodeableConcept>(
+    SearchParam(
       name = "domain",
       type = SearchParamType.fromCode("token"),
       expression = "SubstanceDefinition.domain",
@@ -53,7 +53,7 @@ public object SubstanceDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<SubstanceDefinition, Identifier> =
-    SearchParam<SubstanceDefinition, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "SubstanceDefinition.identifier",
@@ -61,7 +61,7 @@ public object SubstanceDefinitionSearchParams {
     )
 
   public val name: SearchParam<SubstanceDefinition, String> =
-    SearchParam<SubstanceDefinition, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "SubstanceDefinition.name.name",

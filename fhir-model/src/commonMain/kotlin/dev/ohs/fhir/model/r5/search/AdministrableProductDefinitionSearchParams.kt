@@ -33,7 +33,7 @@ import kotlin.collections.List
 /** Search parameters for the [AdministrableProductDefinition] resource type. */
 public object AdministrableProductDefinitionSearchParams {
   public val device: SearchParam<AdministrableProductDefinition, Reference> =
-    SearchParam<AdministrableProductDefinition, Reference>(
+    SearchParam(
       name = "device",
       type = SearchParamType.fromCode("reference"),
       expression = "AdministrableProductDefinition.device",
@@ -42,7 +42,7 @@ public object AdministrableProductDefinitionSearchParams {
     )
 
   public val doseForm: SearchParam<AdministrableProductDefinition, CodeableConcept> =
-    SearchParam<AdministrableProductDefinition, CodeableConcept>(
+    SearchParam(
       name = "dose-form",
       type = SearchParamType.fromCode("token"),
       expression = "AdministrableProductDefinition.administrableDoseForm",
@@ -50,7 +50,7 @@ public object AdministrableProductDefinitionSearchParams {
     )
 
   public val formOf: SearchParam<AdministrableProductDefinition, Reference> =
-    SearchParam<AdministrableProductDefinition, Reference>(
+    SearchParam(
       name = "form-of",
       type = SearchParamType.fromCode("reference"),
       expression = "AdministrableProductDefinition.formOf",
@@ -59,7 +59,7 @@ public object AdministrableProductDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<AdministrableProductDefinition, Identifier> =
-    SearchParam<AdministrableProductDefinition, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "AdministrableProductDefinition.identifier",
@@ -67,7 +67,7 @@ public object AdministrableProductDefinitionSearchParams {
     )
 
   public val ingredient: SearchParam<AdministrableProductDefinition, CodeableConcept> =
-    SearchParam<AdministrableProductDefinition, CodeableConcept>(
+    SearchParam(
       name = "ingredient",
       type = SearchParamType.fromCode("token"),
       expression = "AdministrableProductDefinition.ingredient",
@@ -75,7 +75,7 @@ public object AdministrableProductDefinitionSearchParams {
     )
 
   public val manufacturedItem: SearchParam<AdministrableProductDefinition, Reference> =
-    SearchParam<AdministrableProductDefinition, Reference>(
+    SearchParam(
       name = "manufactured-item",
       type = SearchParamType.fromCode("reference"),
       expression = "AdministrableProductDefinition.producedFrom",
@@ -84,7 +84,7 @@ public object AdministrableProductDefinitionSearchParams {
     )
 
   public val route: SearchParam<AdministrableProductDefinition, CodeableConcept> =
-    SearchParam<AdministrableProductDefinition, CodeableConcept>(
+    SearchParam(
       name = "route",
       type = SearchParamType.fromCode("token"),
       expression = "AdministrableProductDefinition.routeOfAdministration.code",
@@ -92,7 +92,7 @@ public object AdministrableProductDefinitionSearchParams {
     )
 
   public val status: SearchParam<AdministrableProductDefinition, Any> =
-    SearchParam<AdministrableProductDefinition, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "AdministrableProductDefinition.status",
@@ -100,7 +100,7 @@ public object AdministrableProductDefinitionSearchParams {
     )
 
   public val targetSpecies: SearchParam<AdministrableProductDefinition, CodeableConcept> =
-    SearchParam<AdministrableProductDefinition, CodeableConcept>(
+    SearchParam(
       name = "target-species",
       type = SearchParamType.fromCode("token"),
       expression = "AdministrableProductDefinition.routeOfAdministration.targetSpecies.code",

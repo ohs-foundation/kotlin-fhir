@@ -28,7 +28,7 @@ import kotlin.collections.List
 /** Search parameters for the [Transport] resource type. */
 public object TransportSearchParams {
   public val identifier: SearchParam<Transport, Identifier> =
-    SearchParam<Transport, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Transport.identifier",
@@ -36,7 +36,7 @@ public object TransportSearchParams {
     )
 
   public val status: SearchParam<Transport, Any> =
-    SearchParam<Transport, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Transport.status",

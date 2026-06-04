@@ -32,7 +32,7 @@ import kotlin.collections.List
 /** Search parameters for the [ResearchSubject] resource type. */
 public object ResearchSubjectSearchParams {
   public val date: SearchParam<ResearchSubject, Period> =
-    SearchParam<ResearchSubject, Period>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ResearchSubject.period",
@@ -40,7 +40,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val identifier: SearchParam<ResearchSubject, Identifier> =
-    SearchParam<ResearchSubject, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchSubject.identifier",
@@ -48,7 +48,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val individual: SearchParam<ResearchSubject, Reference> =
-    SearchParam<ResearchSubject, Reference>(
+    SearchParam(
       name = "individual",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchSubject.individual",
@@ -57,7 +57,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val patient: SearchParam<ResearchSubject, Reference> =
-    SearchParam<ResearchSubject, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchSubject.individual",
@@ -66,7 +66,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val status: SearchParam<ResearchSubject, Any> =
-    SearchParam<ResearchSubject, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ResearchSubject.status",
@@ -74,7 +74,7 @@ public object ResearchSubjectSearchParams {
     )
 
   public val study: SearchParam<ResearchSubject, Reference> =
-    SearchParam<ResearchSubject, Reference>(
+    SearchParam(
       name = "study",
       type = SearchParamType.fromCode("reference"),
       expression = "ResearchSubject.study",

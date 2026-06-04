@@ -194,7 +194,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [ValueSet] resource type. */
 public object ValueSetSearchParams {
   public val code: SearchParam<ValueSet, Any> =
-    SearchParam<ValueSet, Any>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "ValueSet.expansion.contains.code",
@@ -204,7 +204,7 @@ public object ValueSetSearchParams {
     )
 
   public val context: SearchParam<ValueSet, Any> =
-    SearchParam<ValueSet, Any>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(ValueSet.useContext.value.ofType(CodeableConcept))",
@@ -212,7 +212,7 @@ public object ValueSetSearchParams {
     )
 
   public val contextQuantity: SearchParam<ValueSet, Any> =
-    SearchParam<ValueSet, Any>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(ValueSet.useContext.value.ofType(Quantity))",
@@ -220,7 +220,7 @@ public object ValueSetSearchParams {
     )
 
   public val contextType: SearchParam<ValueSet, Coding> =
-    SearchParam<ValueSet, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "ValueSet.useContext.code",
@@ -228,7 +228,7 @@ public object ValueSetSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<ValueSet, UsageContext> =
-    SearchParam<ValueSet, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "ValueSet.useContext",
@@ -236,7 +236,7 @@ public object ValueSetSearchParams {
     )
 
   public val contextTypeValue: SearchParam<ValueSet, UsageContext> =
-    SearchParam<ValueSet, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "ValueSet.useContext",
@@ -244,7 +244,7 @@ public object ValueSetSearchParams {
     )
 
   public val date: SearchParam<ValueSet, DateTime> =
-    SearchParam<ValueSet, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "ValueSet.date",
@@ -252,7 +252,7 @@ public object ValueSetSearchParams {
     )
 
   public val derivedFrom: SearchParam<ValueSet, Canonical> =
-    SearchParam<ValueSet, Canonical>(
+    SearchParam(
       name = "derived-from",
       type = SearchParamType.fromCode("reference"),
       expression = "ValueSet.relatedArtifact.where(type='derived-from').resource",
@@ -425,7 +425,7 @@ public object ValueSetSearchParams {
     )
 
   public val description: SearchParam<ValueSet, Markdown> =
-    SearchParam<ValueSet, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "ValueSet.description",
@@ -433,7 +433,7 @@ public object ValueSetSearchParams {
     )
 
   public val effective: SearchParam<ValueSet, Period> =
-    SearchParam<ValueSet, Period>(
+    SearchParam(
       name = "effective",
       type = SearchParamType.fromCode("date"),
       expression = "ValueSet.effectivePeriod",
@@ -441,7 +441,7 @@ public object ValueSetSearchParams {
     )
 
   public val expansion: SearchParam<ValueSet, Uri> =
-    SearchParam<ValueSet, Uri>(
+    SearchParam(
       name = "expansion",
       type = SearchParamType.fromCode("uri"),
       expression = "ValueSet.expansion.identifier",
@@ -449,7 +449,7 @@ public object ValueSetSearchParams {
     )
 
   public val identifier: SearchParam<ValueSet, Identifier> =
-    SearchParam<ValueSet, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ValueSet.identifier",
@@ -457,7 +457,7 @@ public object ValueSetSearchParams {
     )
 
   public val jurisdiction: SearchParam<ValueSet, CodeableConcept> =
-    SearchParam<ValueSet, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "ValueSet.jurisdiction",
@@ -465,7 +465,7 @@ public object ValueSetSearchParams {
     )
 
   public val name: SearchParam<ValueSet, String> =
-    SearchParam<ValueSet, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "ValueSet.name",
@@ -473,7 +473,7 @@ public object ValueSetSearchParams {
     )
 
   public val predecessor: SearchParam<ValueSet, Canonical> =
-    SearchParam<ValueSet, Canonical>(
+    SearchParam(
       name = "predecessor",
       type = SearchParamType.fromCode("reference"),
       expression = "ValueSet.relatedArtifact.where(type='predecessor').resource",
@@ -646,7 +646,7 @@ public object ValueSetSearchParams {
     )
 
   public val publisher: SearchParam<ValueSet, String> =
-    SearchParam<ValueSet, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "ValueSet.publisher",
@@ -654,7 +654,7 @@ public object ValueSetSearchParams {
     )
 
   public val reference: SearchParam<ValueSet, Uri> =
-    SearchParam<ValueSet, Uri>(
+    SearchParam(
       name = "reference",
       type = SearchParamType.fromCode("uri"),
       expression = "ValueSet.compose.include.system",
@@ -664,7 +664,7 @@ public object ValueSetSearchParams {
     )
 
   public val status: SearchParam<ValueSet, Any> =
-    SearchParam<ValueSet, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "ValueSet.status",
@@ -672,7 +672,7 @@ public object ValueSetSearchParams {
     )
 
   public val title: SearchParam<ValueSet, String> =
-    SearchParam<ValueSet, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "ValueSet.title",
@@ -680,7 +680,7 @@ public object ValueSetSearchParams {
     )
 
   public val topic: SearchParam<ValueSet, CodeableConcept> =
-    SearchParam<ValueSet, CodeableConcept>(
+    SearchParam(
       name = "topic",
       type = SearchParamType.fromCode("token"),
       expression = "ValueSet.topic",
@@ -688,7 +688,7 @@ public object ValueSetSearchParams {
     )
 
   public val url: SearchParam<ValueSet, Uri> =
-    SearchParam<ValueSet, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "ValueSet.url",
@@ -696,7 +696,7 @@ public object ValueSetSearchParams {
     )
 
   public val version: SearchParam<ValueSet, String> =
-    SearchParam<ValueSet, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "ValueSet.version",

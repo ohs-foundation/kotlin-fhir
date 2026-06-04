@@ -40,7 +40,7 @@ import kotlin.collections.List
 /** Search parameters for the [RequestGroup] resource type. */
 public object RequestGroupSearchParams {
   public val author: SearchParam<RequestGroup, Reference> =
-    SearchParam<RequestGroup, Reference>(
+    SearchParam(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestGroup.author",
@@ -49,7 +49,7 @@ public object RequestGroupSearchParams {
     )
 
   public val authored: SearchParam<RequestGroup, DateTime> =
-    SearchParam<RequestGroup, DateTime>(
+    SearchParam(
       name = "authored",
       type = SearchParamType.fromCode("date"),
       expression = "RequestGroup.authoredOn",
@@ -57,7 +57,7 @@ public object RequestGroupSearchParams {
     )
 
   public val code: SearchParam<RequestGroup, CodeableConcept> =
-    SearchParam<RequestGroup, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "RequestGroup.code",
@@ -65,7 +65,7 @@ public object RequestGroupSearchParams {
     )
 
   public val encounter: SearchParam<RequestGroup, Reference> =
-    SearchParam<RequestGroup, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestGroup.encounter",
@@ -74,7 +74,7 @@ public object RequestGroupSearchParams {
     )
 
   public val groupIdentifier: SearchParam<RequestGroup, Identifier> =
-    SearchParam<RequestGroup, Identifier>(
+    SearchParam(
       name = "group-identifier",
       type = SearchParamType.fromCode("token"),
       expression = "RequestGroup.groupIdentifier",
@@ -82,7 +82,7 @@ public object RequestGroupSearchParams {
     )
 
   public val identifier: SearchParam<RequestGroup, Identifier> =
-    SearchParam<RequestGroup, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "RequestGroup.identifier",
@@ -90,7 +90,7 @@ public object RequestGroupSearchParams {
     )
 
   public val instantiatesCanonical: SearchParam<RequestGroup, Canonical> =
-    SearchParam<RequestGroup, Canonical>(
+    SearchParam(
       name = "instantiates-canonical",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestGroup.instantiatesCanonical",
@@ -98,7 +98,7 @@ public object RequestGroupSearchParams {
     )
 
   public val instantiatesUri: SearchParam<RequestGroup, Uri> =
-    SearchParam<RequestGroup, Uri>(
+    SearchParam(
       name = "instantiates-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "RequestGroup.instantiatesUri",
@@ -106,7 +106,7 @@ public object RequestGroupSearchParams {
     )
 
   public val intent: SearchParam<RequestGroup, Any> =
-    SearchParam<RequestGroup, Any>(
+    SearchParam(
       name = "intent",
       type = SearchParamType.fromCode("token"),
       expression = "RequestGroup.intent",
@@ -114,7 +114,7 @@ public object RequestGroupSearchParams {
     )
 
   public val participant: SearchParam<RequestGroup, Reference> =
-    SearchParam<RequestGroup, Reference>(
+    SearchParam(
       name = "participant",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestGroup.action.participant",
@@ -130,7 +130,7 @@ public object RequestGroupSearchParams {
     )
 
   public val patient: SearchParam<RequestGroup, Reference> =
-    SearchParam<RequestGroup, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestGroup.subject.where(resolve() is Patient)",
@@ -143,7 +143,7 @@ public object RequestGroupSearchParams {
     )
 
   public val priority: SearchParam<RequestGroup, Any> =
-    SearchParam<RequestGroup, Any>(
+    SearchParam(
       name = "priority",
       type = SearchParamType.fromCode("token"),
       expression = "RequestGroup.priority",
@@ -151,7 +151,7 @@ public object RequestGroupSearchParams {
     )
 
   public val status: SearchParam<RequestGroup, Any> =
-    SearchParam<RequestGroup, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "RequestGroup.status",
@@ -159,7 +159,7 @@ public object RequestGroupSearchParams {
     )
 
   public val subject: SearchParam<RequestGroup, Reference> =
-    SearchParam<RequestGroup, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "RequestGroup.subject",

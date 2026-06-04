@@ -193,7 +193,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [TestScript] resource type. */
 public object TestScriptSearchParams {
   public val context: SearchParam<TestScript, Any> =
-    SearchParam<TestScript, Any>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(TestScript.useContext.value.ofType(CodeableConcept))",
@@ -201,7 +201,7 @@ public object TestScriptSearchParams {
     )
 
   public val contextQuantity: SearchParam<TestScript, Any> =
-    SearchParam<TestScript, Any>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(TestScript.useContext.value.ofType(Quantity))",
@@ -209,7 +209,7 @@ public object TestScriptSearchParams {
     )
 
   public val contextType: SearchParam<TestScript, Coding> =
-    SearchParam<TestScript, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "TestScript.useContext.code",
@@ -217,7 +217,7 @@ public object TestScriptSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<TestScript, UsageContext> =
-    SearchParam<TestScript, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "TestScript.useContext",
@@ -225,7 +225,7 @@ public object TestScriptSearchParams {
     )
 
   public val contextTypeValue: SearchParam<TestScript, UsageContext> =
-    SearchParam<TestScript, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "TestScript.useContext",
@@ -233,7 +233,7 @@ public object TestScriptSearchParams {
     )
 
   public val date: SearchParam<TestScript, DateTime> =
-    SearchParam<TestScript, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "TestScript.date",
@@ -241,7 +241,7 @@ public object TestScriptSearchParams {
     )
 
   public val description: SearchParam<TestScript, Markdown> =
-    SearchParam<TestScript, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "TestScript.description",
@@ -249,7 +249,7 @@ public object TestScriptSearchParams {
     )
 
   public val identifier: SearchParam<TestScript, Identifier> =
-    SearchParam<TestScript, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "TestScript.identifier",
@@ -257,7 +257,7 @@ public object TestScriptSearchParams {
     )
 
   public val jurisdiction: SearchParam<TestScript, CodeableConcept> =
-    SearchParam<TestScript, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "TestScript.jurisdiction",
@@ -265,7 +265,7 @@ public object TestScriptSearchParams {
     )
 
   public val name: SearchParam<TestScript, String> =
-    SearchParam<TestScript, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "TestScript.name",
@@ -273,7 +273,7 @@ public object TestScriptSearchParams {
     )
 
   public val publisher: SearchParam<TestScript, String> =
-    SearchParam<TestScript, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "TestScript.publisher",
@@ -281,7 +281,7 @@ public object TestScriptSearchParams {
     )
 
   public val scopeArtifact: SearchParam<TestScript, Canonical> =
-    SearchParam<TestScript, Canonical>(
+    SearchParam(
       name = "scope-artifact",
       type = SearchParamType.fromCode("reference"),
       expression = "TestScript.scope.artifact",
@@ -450,7 +450,7 @@ public object TestScriptSearchParams {
     )
 
   public val scopeArtifactConformance: SearchParam<TestScript, TestScript.Scope> =
-    SearchParam<TestScript, TestScript.Scope>(
+    SearchParam(
       name = "scope-artifact-conformance",
       type = SearchParamType.fromCode("composite"),
       expression = "TestScript.scope",
@@ -458,7 +458,7 @@ public object TestScriptSearchParams {
     )
 
   public val scopeArtifactPhase: SearchParam<TestScript, TestScript.Scope> =
-    SearchParam<TestScript, TestScript.Scope>(
+    SearchParam(
       name = "scope-artifact-phase",
       type = SearchParamType.fromCode("composite"),
       expression = "TestScript.scope",
@@ -466,7 +466,7 @@ public object TestScriptSearchParams {
     )
 
   public val status: SearchParam<TestScript, Any> =
-    SearchParam<TestScript, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "TestScript.status",
@@ -474,7 +474,7 @@ public object TestScriptSearchParams {
     )
 
   public val testscriptCapability: SearchParam<TestScript, String> =
-    SearchParam<TestScript, String>(
+    SearchParam(
       name = "testscript-capability",
       type = SearchParamType.fromCode("string"),
       expression = "TestScript.metadata.capability.description",
@@ -484,7 +484,7 @@ public object TestScriptSearchParams {
     )
 
   public val title: SearchParam<TestScript, String> =
-    SearchParam<TestScript, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "TestScript.title",
@@ -492,7 +492,7 @@ public object TestScriptSearchParams {
     )
 
   public val url: SearchParam<TestScript, Uri> =
-    SearchParam<TestScript, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "TestScript.url",
@@ -500,7 +500,7 @@ public object TestScriptSearchParams {
     )
 
   public val version: SearchParam<TestScript, String> =
-    SearchParam<TestScript, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "TestScript.version",

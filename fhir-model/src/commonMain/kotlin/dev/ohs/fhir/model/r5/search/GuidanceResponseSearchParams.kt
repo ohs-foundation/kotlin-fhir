@@ -31,7 +31,7 @@ import kotlin.collections.List
 /** Search parameters for the [GuidanceResponse] resource type. */
 public object GuidanceResponseSearchParams {
   public val identifier: SearchParam<GuidanceResponse, Identifier> =
-    SearchParam<GuidanceResponse, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "GuidanceResponse.identifier",
@@ -39,7 +39,7 @@ public object GuidanceResponseSearchParams {
     )
 
   public val patient: SearchParam<GuidanceResponse, Reference> =
-    SearchParam<GuidanceResponse, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "GuidanceResponse.subject.where(resolve() is Patient)",
@@ -52,7 +52,7 @@ public object GuidanceResponseSearchParams {
     )
 
   public val request: SearchParam<GuidanceResponse, Identifier> =
-    SearchParam<GuidanceResponse, Identifier>(
+    SearchParam(
       name = "request",
       type = SearchParamType.fromCode("token"),
       expression = "GuidanceResponse.requestIdentifier",
@@ -60,7 +60,7 @@ public object GuidanceResponseSearchParams {
     )
 
   public val status: SearchParam<GuidanceResponse, Any> =
-    SearchParam<GuidanceResponse, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "GuidanceResponse.status",
@@ -68,7 +68,7 @@ public object GuidanceResponseSearchParams {
     )
 
   public val subject: SearchParam<GuidanceResponse, Reference> =
-    SearchParam<GuidanceResponse, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "GuidanceResponse.subject",

@@ -35,7 +35,7 @@ import kotlin.collections.List
 /** Search parameters for the [Location] resource type. */
 public object LocationSearchParams {
   public val address: SearchParam<Location, Address> =
-    SearchParam<Location, Address>(
+    SearchParam(
       name = "address",
       type = SearchParamType.fromCode("string"),
       expression = "Location.address",
@@ -43,7 +43,7 @@ public object LocationSearchParams {
     )
 
   public val addressCity: SearchParam<Location, String> =
-    SearchParam<Location, String>(
+    SearchParam(
       name = "address-city",
       type = SearchParamType.fromCode("string"),
       expression = "Location.address.city",
@@ -51,7 +51,7 @@ public object LocationSearchParams {
     )
 
   public val addressCountry: SearchParam<Location, String> =
-    SearchParam<Location, String>(
+    SearchParam(
       name = "address-country",
       type = SearchParamType.fromCode("string"),
       expression = "Location.address.country",
@@ -59,7 +59,7 @@ public object LocationSearchParams {
     )
 
   public val addressPostalcode: SearchParam<Location, String> =
-    SearchParam<Location, String>(
+    SearchParam(
       name = "address-postalcode",
       type = SearchParamType.fromCode("string"),
       expression = "Location.address.postalCode",
@@ -67,7 +67,7 @@ public object LocationSearchParams {
     )
 
   public val addressState: SearchParam<Location, String> =
-    SearchParam<Location, String>(
+    SearchParam(
       name = "address-state",
       type = SearchParamType.fromCode("string"),
       expression = "Location.address.state",
@@ -75,7 +75,7 @@ public object LocationSearchParams {
     )
 
   public val addressUse: SearchParam<Location, Any> =
-    SearchParam<Location, Any>(
+    SearchParam(
       name = "address-use",
       type = SearchParamType.fromCode("token"),
       expression = "Location.address.use",
@@ -83,7 +83,7 @@ public object LocationSearchParams {
     )
 
   public val endpoint: SearchParam<Location, Reference> =
-    SearchParam<Location, Reference>(
+    SearchParam(
       name = "endpoint",
       type = SearchParamType.fromCode("reference"),
       expression = "Location.endpoint",
@@ -92,7 +92,7 @@ public object LocationSearchParams {
     )
 
   public val identifier: SearchParam<Location, Identifier> =
-    SearchParam<Location, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Location.identifier",
@@ -100,7 +100,7 @@ public object LocationSearchParams {
     )
 
   public val name: SearchParam<Location, String> =
-    SearchParam<Location, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "Location.name",
@@ -108,7 +108,7 @@ public object LocationSearchParams {
     )
 
   public val near: SearchParam<Location, Location.Position> =
-    SearchParam<Location, Location.Position>(
+    SearchParam(
       name = "near",
       type = SearchParamType.fromCode("special"),
       expression = "Location.position",
@@ -116,7 +116,7 @@ public object LocationSearchParams {
     )
 
   public val operationalStatus: SearchParam<Location, Coding> =
-    SearchParam<Location, Coding>(
+    SearchParam(
       name = "operational-status",
       type = SearchParamType.fromCode("token"),
       expression = "Location.operationalStatus",
@@ -124,7 +124,7 @@ public object LocationSearchParams {
     )
 
   public val organization: SearchParam<Location, Reference> =
-    SearchParam<Location, Reference>(
+    SearchParam(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "Location.managingOrganization",
@@ -133,7 +133,7 @@ public object LocationSearchParams {
     )
 
   public val partof: SearchParam<Location, Reference> =
-    SearchParam<Location, Reference>(
+    SearchParam(
       name = "partof",
       type = SearchParamType.fromCode("reference"),
       expression = "Location.partOf",
@@ -142,7 +142,7 @@ public object LocationSearchParams {
     )
 
   public val status: SearchParam<Location, Any> =
-    SearchParam<Location, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Location.status",
@@ -150,7 +150,7 @@ public object LocationSearchParams {
     )
 
   public val type: SearchParam<Location, CodeableConcept> =
-    SearchParam<Location, CodeableConcept>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Location.type",

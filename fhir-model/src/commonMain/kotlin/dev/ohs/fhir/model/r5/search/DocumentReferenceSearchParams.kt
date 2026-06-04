@@ -193,7 +193,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [DocumentReference] resource type. */
 public object DocumentReferenceSearchParams {
   public val attester: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "attester",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.attester.party",
@@ -209,7 +209,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val author: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.author",
@@ -227,7 +227,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val basedOn: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "based-on",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.basedOn",
@@ -254,7 +254,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val bodysite: SearchParam<DocumentReference, CodeableConcept> =
-    SearchParam<DocumentReference, CodeableConcept>(
+    SearchParam(
       name = "bodysite",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.bodySite.concept",
@@ -262,7 +262,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val bodysiteReference: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "bodysite-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.bodySite.reference",
@@ -271,7 +271,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val category: SearchParam<DocumentReference, CodeableConcept> =
-    SearchParam<DocumentReference, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.category",
@@ -279,7 +279,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val contenttype: SearchParam<DocumentReference, Any> =
-    SearchParam<DocumentReference, Any>(
+    SearchParam(
       name = "contenttype",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.content.attachment.contentType",
@@ -289,7 +289,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val context: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.context",
@@ -298,7 +298,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val creation: SearchParam<DocumentReference, DateTime> =
-    SearchParam<DocumentReference, DateTime>(
+    SearchParam(
       name = "creation",
       type = SearchParamType.fromCode("date"),
       expression = "DocumentReference.content.attachment.creation",
@@ -306,7 +306,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val custodian: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "custodian",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.custodian",
@@ -315,7 +315,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val date: SearchParam<DocumentReference, Instant> =
-    SearchParam<DocumentReference, Instant>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "DocumentReference.date",
@@ -323,7 +323,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val description: SearchParam<DocumentReference, Markdown> =
-    SearchParam<DocumentReference, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "DocumentReference.description",
@@ -331,7 +331,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val docStatus: SearchParam<DocumentReference, Any> =
-    SearchParam<DocumentReference, Any>(
+    SearchParam(
       name = "doc-status",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.docStatus",
@@ -339,7 +339,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val eventCode: SearchParam<DocumentReference, CodeableConcept> =
-    SearchParam<DocumentReference, CodeableConcept>(
+    SearchParam(
       name = "event-code",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.event.concept",
@@ -347,7 +347,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val eventReference: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "event-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.event.reference",
@@ -516,7 +516,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val facility: SearchParam<DocumentReference, CodeableConcept> =
-    SearchParam<DocumentReference, CodeableConcept>(
+    SearchParam(
       name = "facility",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.facilityType",
@@ -524,7 +524,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val formatCanonical: SearchParam<DocumentReference, Any> =
-    SearchParam<DocumentReference, Any>(
+    SearchParam(
       name = "format-canonical",
       type = SearchParamType.fromCode("reference"),
       expression = "(DocumentReference.content.profile.value.ofType(canonical))",
@@ -573,7 +573,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val formatCode: SearchParam<DocumentReference, Any> =
-    SearchParam<DocumentReference, Any>(
+    SearchParam(
       name = "format-code",
       type = SearchParamType.fromCode("token"),
       expression = "(DocumentReference.content.profile.value.ofType(Coding))",
@@ -581,7 +581,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val formatUri: SearchParam<DocumentReference, Any> =
-    SearchParam<DocumentReference, Any>(
+    SearchParam(
       name = "format-uri",
       type = SearchParamType.fromCode("uri"),
       expression = "(DocumentReference.content.profile.value.ofType(uri))",
@@ -589,7 +589,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val identifier: SearchParam<DocumentReference, Identifier> =
-    SearchParam<DocumentReference, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.identifier",
@@ -597,7 +597,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val language: SearchParam<DocumentReference, Any> =
-    SearchParam<DocumentReference, Any>(
+    SearchParam(
       name = "language",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.content.attachment.language",
@@ -605,7 +605,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val location: SearchParam<DocumentReference, Url> =
-    SearchParam<DocumentReference, Url>(
+    SearchParam(
       name = "location",
       type = SearchParamType.fromCode("uri"),
       expression = "DocumentReference.content.attachment.url",
@@ -613,7 +613,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val modality: SearchParam<DocumentReference, CodeableConcept> =
-    SearchParam<DocumentReference, CodeableConcept>(
+    SearchParam(
       name = "modality",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.modality",
@@ -621,7 +621,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val patient: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.subject.where(resolve() is Patient)",
@@ -634,7 +634,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val period: SearchParam<DocumentReference, Period> =
-    SearchParam<DocumentReference, Period>(
+    SearchParam(
       name = "period",
       type = SearchParamType.fromCode("date"),
       expression = "DocumentReference.period",
@@ -642,7 +642,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val relatesto: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "relatesto",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.relatesTo.target",
@@ -651,7 +651,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val relation: SearchParam<DocumentReference, CodeableConcept> =
-    SearchParam<DocumentReference, CodeableConcept>(
+    SearchParam(
       name = "relation",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.relatesTo.code",
@@ -659,7 +659,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val relationship: SearchParam<DocumentReference, DocumentReference.RelatesTo> =
-    SearchParam<DocumentReference, DocumentReference.RelatesTo>(
+    SearchParam(
       name = "relationship",
       type = SearchParamType.fromCode("composite"),
       expression = "DocumentReference.relatesTo",
@@ -667,7 +667,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val securityLabel: SearchParam<DocumentReference, CodeableConcept> =
-    SearchParam<DocumentReference, CodeableConcept>(
+    SearchParam(
       name = "security-label",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.securityLabel",
@@ -675,7 +675,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val setting: SearchParam<DocumentReference, CodeableConcept> =
-    SearchParam<DocumentReference, CodeableConcept>(
+    SearchParam(
       name = "setting",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.practiceSetting",
@@ -683,7 +683,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val status: SearchParam<DocumentReference, Any> =
-    SearchParam<DocumentReference, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.status",
@@ -691,7 +691,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val subject: SearchParam<DocumentReference, Reference> =
-    SearchParam<DocumentReference, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "DocumentReference.subject",
@@ -860,7 +860,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val type: SearchParam<DocumentReference, CodeableConcept> =
-    SearchParam<DocumentReference, CodeableConcept>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "DocumentReference.type",
@@ -868,7 +868,7 @@ public object DocumentReferenceSearchParams {
     )
 
   public val version: SearchParam<DocumentReference, String> =
-    SearchParam<DocumentReference, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("string"),
       expression = "DocumentReference.version",

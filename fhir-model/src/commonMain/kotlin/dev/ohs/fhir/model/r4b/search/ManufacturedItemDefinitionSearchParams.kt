@@ -28,7 +28,7 @@ import kotlin.collections.List
 /** Search parameters for the [ManufacturedItemDefinition] resource type. */
 public object ManufacturedItemDefinitionSearchParams {
   public val doseForm: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
-    SearchParam<ManufacturedItemDefinition, CodeableConcept>(
+    SearchParam(
       name = "dose-form",
       type = SearchParamType.fromCode("token"),
       expression = "ManufacturedItemDefinition.manufacturedDoseForm",
@@ -36,7 +36,7 @@ public object ManufacturedItemDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<ManufacturedItemDefinition, Identifier> =
-    SearchParam<ManufacturedItemDefinition, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "ManufacturedItemDefinition.identifier",
@@ -44,7 +44,7 @@ public object ManufacturedItemDefinitionSearchParams {
     )
 
   public val ingredient: SearchParam<ManufacturedItemDefinition, CodeableConcept> =
-    SearchParam<ManufacturedItemDefinition, CodeableConcept>(
+    SearchParam(
       name = "ingredient",
       type = SearchParamType.fromCode("token"),
       expression = "ManufacturedItemDefinition.ingredient",

@@ -187,7 +187,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [MessageHeader] resource type. */
 public object MessageHeaderSearchParams {
   public val author: SearchParam<MessageHeader, Reference> =
-    SearchParam<MessageHeader, Reference>(
+    SearchParam(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "MessageHeader.author",
@@ -197,7 +197,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val code: SearchParam<MessageHeader, Any> =
-    SearchParam<MessageHeader, Any>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "MessageHeader.response.code",
@@ -205,7 +205,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val destination: SearchParam<MessageHeader, String> =
-    SearchParam<MessageHeader, String>(
+    SearchParam(
       name = "destination",
       type = SearchParamType.fromCode("string"),
       expression = "MessageHeader.destination.name",
@@ -213,7 +213,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val event: SearchParam<MessageHeader, Any> =
-    SearchParam<MessageHeader, Any>(
+    SearchParam(
       name = "event",
       type = SearchParamType.fromCode("token"),
       expression = "MessageHeader.event.ofType(Coding)",
@@ -221,7 +221,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val focus: SearchParam<MessageHeader, Reference> =
-    SearchParam<MessageHeader, Reference>(
+    SearchParam(
       name = "focus",
       type = SearchParamType.fromCode("reference"),
       expression = "MessageHeader.focus",
@@ -390,7 +390,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val `receiver`: SearchParam<MessageHeader, Reference> =
-    SearchParam<MessageHeader, Reference>(
+    SearchParam(
       name = "receiver",
       type = SearchParamType.fromCode("reference"),
       expression = "MessageHeader.destination.receiver",
@@ -399,7 +399,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val responseId: SearchParam<MessageHeader, Identifier> =
-    SearchParam<MessageHeader, Identifier>(
+    SearchParam(
       name = "response-id",
       type = SearchParamType.fromCode("token"),
       expression = "MessageHeader.response.identifier",
@@ -407,7 +407,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val responsible: SearchParam<MessageHeader, Reference> =
-    SearchParam<MessageHeader, Reference>(
+    SearchParam(
       name = "responsible",
       type = SearchParamType.fromCode("reference"),
       expression = "MessageHeader.responsible",
@@ -416,7 +416,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val sender: SearchParam<MessageHeader, Reference> =
-    SearchParam<MessageHeader, Reference>(
+    SearchParam(
       name = "sender",
       type = SearchParamType.fromCode("reference"),
       expression = "MessageHeader.sender",
@@ -426,7 +426,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val source: SearchParam<MessageHeader, String> =
-    SearchParam<MessageHeader, String>(
+    SearchParam(
       name = "source",
       type = SearchParamType.fromCode("string"),
       expression = "MessageHeader.source.name",
@@ -434,7 +434,7 @@ public object MessageHeaderSearchParams {
     )
 
   public val target: SearchParam<MessageHeader, Reference> =
-    SearchParam<MessageHeader, Reference>(
+    SearchParam(
       name = "target",
       type = SearchParamType.fromCode("reference"),
       expression = "MessageHeader.destination.target",

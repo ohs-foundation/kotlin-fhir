@@ -45,7 +45,7 @@ import kotlin.collections.List
 /** Search parameters for the [AdverseEvent] resource type. */
 public object AdverseEventSearchParams {
   public val actuality: SearchParam<AdverseEvent, Any> =
-    SearchParam<AdverseEvent, Any>(
+    SearchParam(
       name = "actuality",
       type = SearchParamType.fromCode("token"),
       expression = "AdverseEvent.actuality",
@@ -53,7 +53,7 @@ public object AdverseEventSearchParams {
     )
 
   public val category: SearchParam<AdverseEvent, CodeableConcept> =
-    SearchParam<AdverseEvent, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "AdverseEvent.category",
@@ -61,7 +61,7 @@ public object AdverseEventSearchParams {
     )
 
   public val date: SearchParam<AdverseEvent, DateTime> =
-    SearchParam<AdverseEvent, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "AdverseEvent.date",
@@ -69,7 +69,7 @@ public object AdverseEventSearchParams {
     )
 
   public val event: SearchParam<AdverseEvent, CodeableConcept> =
-    SearchParam<AdverseEvent, CodeableConcept>(
+    SearchParam(
       name = "event",
       type = SearchParamType.fromCode("token"),
       expression = "AdverseEvent.event",
@@ -77,7 +77,7 @@ public object AdverseEventSearchParams {
     )
 
   public val location: SearchParam<AdverseEvent, Reference> =
-    SearchParam<AdverseEvent, Reference>(
+    SearchParam(
       name = "location",
       type = SearchParamType.fromCode("reference"),
       expression = "AdverseEvent.location",
@@ -86,7 +86,7 @@ public object AdverseEventSearchParams {
     )
 
   public val recorder: SearchParam<AdverseEvent, Reference> =
-    SearchParam<AdverseEvent, Reference>(
+    SearchParam(
       name = "recorder",
       type = SearchParamType.fromCode("reference"),
       expression = "AdverseEvent.recorder",
@@ -96,7 +96,7 @@ public object AdverseEventSearchParams {
     )
 
   public val resultingcondition: SearchParam<AdverseEvent, Reference> =
-    SearchParam<AdverseEvent, Reference>(
+    SearchParam(
       name = "resultingcondition",
       type = SearchParamType.fromCode("reference"),
       expression = "AdverseEvent.resultingCondition",
@@ -105,7 +105,7 @@ public object AdverseEventSearchParams {
     )
 
   public val seriousness: SearchParam<AdverseEvent, CodeableConcept> =
-    SearchParam<AdverseEvent, CodeableConcept>(
+    SearchParam(
       name = "seriousness",
       type = SearchParamType.fromCode("token"),
       expression = "AdverseEvent.seriousness",
@@ -113,7 +113,7 @@ public object AdverseEventSearchParams {
     )
 
   public val severity: SearchParam<AdverseEvent, CodeableConcept> =
-    SearchParam<AdverseEvent, CodeableConcept>(
+    SearchParam(
       name = "severity",
       type = SearchParamType.fromCode("token"),
       expression = "AdverseEvent.severity",
@@ -121,7 +121,7 @@ public object AdverseEventSearchParams {
     )
 
   public val study: SearchParam<AdverseEvent, Reference> =
-    SearchParam<AdverseEvent, Reference>(
+    SearchParam(
       name = "study",
       type = SearchParamType.fromCode("reference"),
       expression = "AdverseEvent.study",
@@ -130,7 +130,7 @@ public object AdverseEventSearchParams {
     )
 
   public val subject: SearchParam<AdverseEvent, Reference> =
-    SearchParam<AdverseEvent, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "AdverseEvent.subject",
@@ -139,7 +139,7 @@ public object AdverseEventSearchParams {
     )
 
   public val substance: SearchParam<AdverseEvent, Reference> =
-    SearchParam<AdverseEvent, Reference>(
+    SearchParam(
       name = "substance",
       type = SearchParamType.fromCode("reference"),
       expression = "AdverseEvent.suspectEntity.instance",

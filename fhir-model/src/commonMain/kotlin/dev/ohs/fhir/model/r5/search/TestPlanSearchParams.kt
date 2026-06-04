@@ -187,7 +187,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [TestPlan] resource type. */
 public object TestPlanSearchParams {
   public val identifier: SearchParam<TestPlan, Identifier> =
-    SearchParam<TestPlan, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "TestPlan.identifier",
@@ -195,7 +195,7 @@ public object TestPlanSearchParams {
     )
 
   public val scope: SearchParam<TestPlan, Reference> =
-    SearchParam<TestPlan, Reference>(
+    SearchParam(
       name = "scope",
       type = SearchParamType.fromCode("reference"),
       expression = "TestPlan.scope",
@@ -364,7 +364,7 @@ public object TestPlanSearchParams {
     )
 
   public val status: SearchParam<TestPlan, Any> =
-    SearchParam<TestPlan, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "TestPlan.status",
@@ -372,7 +372,7 @@ public object TestPlanSearchParams {
     )
 
   public val url: SearchParam<TestPlan, Uri> =
-    SearchParam<TestPlan, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "TestPlan.url",

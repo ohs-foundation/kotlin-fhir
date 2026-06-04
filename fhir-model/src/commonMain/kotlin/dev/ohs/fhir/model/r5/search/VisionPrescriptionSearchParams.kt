@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [VisionPrescription] resource type. */
 public object VisionPrescriptionSearchParams {
   public val datewritten: SearchParam<VisionPrescription, DateTime> =
-    SearchParam<VisionPrescription, DateTime>(
+    SearchParam(
       name = "datewritten",
       type = SearchParamType.fromCode("date"),
       expression = "VisionPrescription.dateWritten",
@@ -42,7 +42,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val encounter: SearchParam<VisionPrescription, Reference> =
-    SearchParam<VisionPrescription, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "VisionPrescription.encounter",
@@ -51,7 +51,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val identifier: SearchParam<VisionPrescription, Identifier> =
-    SearchParam<VisionPrescription, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "VisionPrescription.identifier",
@@ -59,7 +59,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val patient: SearchParam<VisionPrescription, Reference> =
-    SearchParam<VisionPrescription, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "VisionPrescription.patient",
@@ -68,7 +68,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val prescriber: SearchParam<VisionPrescription, Reference> =
-    SearchParam<VisionPrescription, Reference>(
+    SearchParam(
       name = "prescriber",
       type = SearchParamType.fromCode("reference"),
       expression = "VisionPrescription.prescriber",
@@ -77,7 +77,7 @@ public object VisionPrescriptionSearchParams {
     )
 
   public val status: SearchParam<VisionPrescription, Any> =
-    SearchParam<VisionPrescription, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "VisionPrescription.status",

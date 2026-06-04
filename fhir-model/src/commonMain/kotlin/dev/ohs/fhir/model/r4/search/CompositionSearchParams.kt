@@ -177,7 +177,7 @@ import kotlin.collections.List as CollectionsList
 /** Search parameters for the [Composition] resource type. */
 public object CompositionSearchParams {
   public val attester: SearchParam<Composition, Reference> =
-    SearchParam<Composition, Reference>(
+    SearchParam(
       name = "attester",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.attester.party",
@@ -193,7 +193,7 @@ public object CompositionSearchParams {
     )
 
   public val author: SearchParam<Composition, Reference> =
-    SearchParam<Composition, Reference>(
+    SearchParam(
       name = "author",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.author",
@@ -210,7 +210,7 @@ public object CompositionSearchParams {
     )
 
   public val category: SearchParam<Composition, CodeableConcept> =
-    SearchParam<Composition, CodeableConcept>(
+    SearchParam(
       name = "category",
       type = SearchParamType.fromCode("token"),
       expression = "Composition.category",
@@ -218,7 +218,7 @@ public object CompositionSearchParams {
     )
 
   public val confidentiality: SearchParam<Composition, Any> =
-    SearchParam<Composition, Any>(
+    SearchParam(
       name = "confidentiality",
       type = SearchParamType.fromCode("token"),
       expression = "Composition.confidentiality",
@@ -226,7 +226,7 @@ public object CompositionSearchParams {
     )
 
   public val context: SearchParam<Composition, CodeableConcept> =
-    SearchParam<Composition, CodeableConcept>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "Composition.event.code",
@@ -234,7 +234,7 @@ public object CompositionSearchParams {
     )
 
   public val date: SearchParam<Composition, DateTime> =
-    SearchParam<Composition, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "Composition.date",
@@ -242,7 +242,7 @@ public object CompositionSearchParams {
     )
 
   public val encounter: SearchParam<Composition, Reference> =
-    SearchParam<Composition, Reference>(
+    SearchParam(
       name = "encounter",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.encounter",
@@ -251,7 +251,7 @@ public object CompositionSearchParams {
     )
 
   public val entry: SearchParam<Composition, Reference> =
-    SearchParam<Composition, Reference>(
+    SearchParam(
       name = "entry",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.section.entry",
@@ -407,7 +407,7 @@ public object CompositionSearchParams {
     )
 
   public val identifier: SearchParam<Composition, Identifier> =
-    SearchParam<Composition, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Composition.identifier",
@@ -415,7 +415,7 @@ public object CompositionSearchParams {
     )
 
   public val patient: SearchParam<Composition, Reference> =
-    SearchParam<Composition, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.subject.where(resolve() is Patient)",
@@ -428,7 +428,7 @@ public object CompositionSearchParams {
     )
 
   public val period: SearchParam<Composition, Period> =
-    SearchParam<Composition, Period>(
+    SearchParam(
       name = "period",
       type = SearchParamType.fromCode("date"),
       expression = "Composition.event.period",
@@ -436,7 +436,7 @@ public object CompositionSearchParams {
     )
 
   public val relatedId: SearchParam<Composition, Identifier> =
-    SearchParam<Composition, Identifier>(
+    SearchParam(
       name = "related-id",
       type = SearchParamType.fromCode("token"),
       expression = "(Composition.relatesTo.target as Identifier)",
@@ -448,7 +448,7 @@ public object CompositionSearchParams {
     )
 
   public val relatedRef: SearchParam<Composition, Reference> =
-    SearchParam<Composition, Reference>(
+    SearchParam(
       name = "related-ref",
       type = SearchParamType.fromCode("reference"),
       expression = "(Composition.relatesTo.target as Reference)",
@@ -461,7 +461,7 @@ public object CompositionSearchParams {
     )
 
   public val section: SearchParam<Composition, CodeableConcept> =
-    SearchParam<Composition, CodeableConcept>(
+    SearchParam(
       name = "section",
       type = SearchParamType.fromCode("token"),
       expression = "Composition.section.code",
@@ -469,7 +469,7 @@ public object CompositionSearchParams {
     )
 
   public val status: SearchParam<Composition, Any> =
-    SearchParam<Composition, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Composition.status",
@@ -477,7 +477,7 @@ public object CompositionSearchParams {
     )
 
   public val subject: SearchParam<Composition, Reference> =
-    SearchParam<Composition, Reference>(
+    SearchParam(
       name = "subject",
       type = SearchParamType.fromCode("reference"),
       expression = "Composition.subject",
@@ -633,7 +633,7 @@ public object CompositionSearchParams {
     )
 
   public val title: SearchParam<Composition, String> =
-    SearchParam<Composition, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "Composition.title",
@@ -641,7 +641,7 @@ public object CompositionSearchParams {
     )
 
   public val type: SearchParam<Composition, CodeableConcept> =
-    SearchParam<Composition, CodeableConcept>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "Composition.type",

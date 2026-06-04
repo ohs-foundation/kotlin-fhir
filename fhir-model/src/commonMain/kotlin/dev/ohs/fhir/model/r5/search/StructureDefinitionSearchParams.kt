@@ -38,7 +38,7 @@ import kotlin.collections.List
 /** Search parameters for the [StructureDefinition] resource type. */
 public object StructureDefinitionSearchParams {
   public val `abstract`: SearchParam<StructureDefinition, Boolean> =
-    SearchParam<StructureDefinition, Boolean>(
+    SearchParam(
       name = "abstract",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.abstract",
@@ -46,7 +46,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val base: SearchParam<StructureDefinition, Canonical> =
-    SearchParam<StructureDefinition, Canonical>(
+    SearchParam(
       name = "base",
       type = SearchParamType.fromCode("reference"),
       expression = "StructureDefinition.baseDefinition",
@@ -55,7 +55,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val basePath: SearchParam<StructureDefinition, String> =
-    SearchParam<StructureDefinition, String>(
+    SearchParam(
       name = "base-path",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.snapshot.element.base.path",
@@ -65,7 +65,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val context: SearchParam<StructureDefinition, Any> =
-    SearchParam<StructureDefinition, Any>(
+    SearchParam(
       name = "context",
       type = SearchParamType.fromCode("token"),
       expression = "(StructureDefinition.useContext.value.ofType(CodeableConcept))",
@@ -73,7 +73,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val contextQuantity: SearchParam<StructureDefinition, Any> =
-    SearchParam<StructureDefinition, Any>(
+    SearchParam(
       name = "context-quantity",
       type = SearchParamType.fromCode("quantity"),
       expression = "(StructureDefinition.useContext.value.ofType(Quantity))",
@@ -81,7 +81,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val contextType: SearchParam<StructureDefinition, Coding> =
-    SearchParam<StructureDefinition, Coding>(
+    SearchParam(
       name = "context-type",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.useContext.code",
@@ -89,7 +89,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val contextTypeQuantity: SearchParam<StructureDefinition, UsageContext> =
-    SearchParam<StructureDefinition, UsageContext>(
+    SearchParam(
       name = "context-type-quantity",
       type = SearchParamType.fromCode("composite"),
       expression = "StructureDefinition.useContext",
@@ -97,7 +97,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val contextTypeValue: SearchParam<StructureDefinition, UsageContext> =
-    SearchParam<StructureDefinition, UsageContext>(
+    SearchParam(
       name = "context-type-value",
       type = SearchParamType.fromCode("composite"),
       expression = "StructureDefinition.useContext",
@@ -105,7 +105,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val date: SearchParam<StructureDefinition, DateTime> =
-    SearchParam<StructureDefinition, DateTime>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "StructureDefinition.date",
@@ -113,7 +113,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val derivation: SearchParam<StructureDefinition, Any> =
-    SearchParam<StructureDefinition, Any>(
+    SearchParam(
       name = "derivation",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.derivation",
@@ -121,7 +121,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val description: SearchParam<StructureDefinition, Markdown> =
-    SearchParam<StructureDefinition, Markdown>(
+    SearchParam(
       name = "description",
       type = SearchParamType.fromCode("string"),
       expression = "StructureDefinition.description",
@@ -129,7 +129,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val experimental: SearchParam<StructureDefinition, Boolean> =
-    SearchParam<StructureDefinition, Boolean>(
+    SearchParam(
       name = "experimental",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.experimental",
@@ -137,7 +137,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val extContext: SearchParam<StructureDefinition, StructureDefinition.Context> =
-    SearchParam<StructureDefinition, StructureDefinition.Context>(
+    SearchParam(
       name = "ext-context",
       type = SearchParamType.fromCode("composite"),
       expression = "StructureDefinition.context",
@@ -145,7 +145,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val extContextExpression: SearchParam<StructureDefinition, String> =
-    SearchParam<StructureDefinition, String>(
+    SearchParam(
       name = "ext-context-expression",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.context.expression",
@@ -153,7 +153,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val extContextType: SearchParam<StructureDefinition, Any> =
-    SearchParam<StructureDefinition, Any>(
+    SearchParam(
       name = "ext-context-type",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.context.type",
@@ -161,7 +161,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val identifier: SearchParam<StructureDefinition, Identifier> =
-    SearchParam<StructureDefinition, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.identifier",
@@ -169,7 +169,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val jurisdiction: SearchParam<StructureDefinition, CodeableConcept> =
-    SearchParam<StructureDefinition, CodeableConcept>(
+    SearchParam(
       name = "jurisdiction",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.jurisdiction",
@@ -177,7 +177,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val keyword: SearchParam<StructureDefinition, Coding> =
-    SearchParam<StructureDefinition, Coding>(
+    SearchParam(
       name = "keyword",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.keyword",
@@ -185,7 +185,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val kind: SearchParam<StructureDefinition, Any> =
-    SearchParam<StructureDefinition, Any>(
+    SearchParam(
       name = "kind",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.kind",
@@ -193,7 +193,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val name: SearchParam<StructureDefinition, String> =
-    SearchParam<StructureDefinition, String>(
+    SearchParam(
       name = "name",
       type = SearchParamType.fromCode("string"),
       expression = "StructureDefinition.name",
@@ -201,7 +201,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val path: SearchParam<StructureDefinition, String> =
-    SearchParam<StructureDefinition, String>(
+    SearchParam(
       name = "path",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.snapshot.element.path",
@@ -209,7 +209,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val publisher: SearchParam<StructureDefinition, String> =
-    SearchParam<StructureDefinition, String>(
+    SearchParam(
       name = "publisher",
       type = SearchParamType.fromCode("string"),
       expression = "StructureDefinition.publisher",
@@ -217,7 +217,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val status: SearchParam<StructureDefinition, Any> =
-    SearchParam<StructureDefinition, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.status",
@@ -225,7 +225,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val title: SearchParam<StructureDefinition, String> =
-    SearchParam<StructureDefinition, String>(
+    SearchParam(
       name = "title",
       type = SearchParamType.fromCode("string"),
       expression = "StructureDefinition.title",
@@ -233,7 +233,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val type: SearchParam<StructureDefinition, Uri> =
-    SearchParam<StructureDefinition, Uri>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("uri"),
       expression = "StructureDefinition.type",
@@ -241,7 +241,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val url: SearchParam<StructureDefinition, Uri> =
-    SearchParam<StructureDefinition, Uri>(
+    SearchParam(
       name = "url",
       type = SearchParamType.fromCode("uri"),
       expression = "StructureDefinition.url",
@@ -249,7 +249,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val valueset: SearchParam<StructureDefinition, Canonical> =
-    SearchParam<StructureDefinition, Canonical>(
+    SearchParam(
       name = "valueset",
       type = SearchParamType.fromCode("reference"),
       expression = "StructureDefinition.snapshot.element.binding.valueSet",
@@ -262,7 +262,7 @@ public object StructureDefinitionSearchParams {
     )
 
   public val version: SearchParam<StructureDefinition, String> =
-    SearchParam<StructureDefinition, String>(
+    SearchParam(
       name = "version",
       type = SearchParamType.fromCode("token"),
       expression = "StructureDefinition.version",

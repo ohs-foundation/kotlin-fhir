@@ -39,7 +39,7 @@ import kotlin.collections.List
 /** Search parameters for the [EpisodeOfCare] resource type. */
 public object EpisodeOfCareSearchParams {
   public val careManager: SearchParam<EpisodeOfCare, Reference> =
-    SearchParam<EpisodeOfCare, Reference>(
+    SearchParam(
       name = "care-manager",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.careManager.where(resolve() is Practitioner)",
@@ -52,7 +52,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val date: SearchParam<EpisodeOfCare, Period> =
-    SearchParam<EpisodeOfCare, Period>(
+    SearchParam(
       name = "date",
       type = SearchParamType.fromCode("date"),
       expression = "EpisodeOfCare.period",
@@ -60,7 +60,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val diagnosisCode: SearchParam<EpisodeOfCare, CodeableConcept> =
-    SearchParam<EpisodeOfCare, CodeableConcept>(
+    SearchParam(
       name = "diagnosis-code",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.diagnosis.condition.concept",
@@ -70,7 +70,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val diagnosisReference: SearchParam<EpisodeOfCare, Reference> =
-    SearchParam<EpisodeOfCare, Reference>(
+    SearchParam(
       name = "diagnosis-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.diagnosis.condition.reference",
@@ -81,7 +81,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val identifier: SearchParam<EpisodeOfCare, Identifier> =
-    SearchParam<EpisodeOfCare, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.identifier",
@@ -89,7 +89,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val incomingReferral: SearchParam<EpisodeOfCare, Reference> =
-    SearchParam<EpisodeOfCare, Reference>(
+    SearchParam(
       name = "incoming-referral",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.referralRequest",
@@ -98,7 +98,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val organization: SearchParam<EpisodeOfCare, Reference> =
-    SearchParam<EpisodeOfCare, Reference>(
+    SearchParam(
       name = "organization",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.managingOrganization",
@@ -107,7 +107,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val patient: SearchParam<EpisodeOfCare, Reference> =
-    SearchParam<EpisodeOfCare, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.patient",
@@ -116,7 +116,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val reasonCode: SearchParam<EpisodeOfCare, CodeableConcept> =
-    SearchParam<EpisodeOfCare, CodeableConcept>(
+    SearchParam(
       name = "reason-code",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.reason.value.concept",
@@ -124,7 +124,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val reasonReference: SearchParam<EpisodeOfCare, Reference> =
-    SearchParam<EpisodeOfCare, Reference>(
+    SearchParam(
       name = "reason-reference",
       type = SearchParamType.fromCode("reference"),
       expression = "EpisodeOfCare.reason.value.reference",
@@ -134,7 +134,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val status: SearchParam<EpisodeOfCare, Any> =
-    SearchParam<EpisodeOfCare, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.status",
@@ -142,7 +142,7 @@ public object EpisodeOfCareSearchParams {
     )
 
   public val type: SearchParam<EpisodeOfCare, CodeableConcept> =
-    SearchParam<EpisodeOfCare, CodeableConcept>(
+    SearchParam(
       name = "type",
       type = SearchParamType.fromCode("token"),
       expression = "EpisodeOfCare.type",

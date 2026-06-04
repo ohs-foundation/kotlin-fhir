@@ -34,7 +34,7 @@ import kotlin.collections.List
 /** Search parameters for the [Medication] resource type. */
 public object MedicationSearchParams {
   public val code: SearchParam<Medication, CodeableConcept> =
-    SearchParam<Medication, CodeableConcept>(
+    SearchParam(
       name = "code",
       type = SearchParamType.fromCode("token"),
       expression = "Medication.code",
@@ -42,7 +42,7 @@ public object MedicationSearchParams {
     )
 
   public val expirationDate: SearchParam<Medication, DateTime> =
-    SearchParam<Medication, DateTime>(
+    SearchParam(
       name = "expiration-date",
       type = SearchParamType.fromCode("date"),
       expression = "Medication.batch.expirationDate",
@@ -50,7 +50,7 @@ public object MedicationSearchParams {
     )
 
   public val form: SearchParam<Medication, Any> =
-    SearchParam<Medication, Any>(
+    SearchParam(
       name = "form",
       type = SearchParamType.fromCode("token"),
       expression = "",
@@ -58,7 +58,7 @@ public object MedicationSearchParams {
     )
 
   public val identifier: SearchParam<Medication, Identifier> =
-    SearchParam<Medication, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "Medication.identifier",
@@ -66,7 +66,7 @@ public object MedicationSearchParams {
     )
 
   public val ingredient: SearchParam<Medication, Reference> =
-    SearchParam<Medication, Reference>(
+    SearchParam(
       name = "ingredient",
       type = SearchParamType.fromCode("reference"),
       expression = "Medication.ingredient.item.reference",
@@ -75,7 +75,7 @@ public object MedicationSearchParams {
     )
 
   public val ingredientCode: SearchParam<Medication, CodeableConcept> =
-    SearchParam<Medication, CodeableConcept>(
+    SearchParam(
       name = "ingredient-code",
       type = SearchParamType.fromCode("token"),
       expression = "Medication.ingredient.item.concept",
@@ -83,7 +83,7 @@ public object MedicationSearchParams {
     )
 
   public val lotNumber: SearchParam<Medication, String> =
-    SearchParam<Medication, String>(
+    SearchParam(
       name = "lot-number",
       type = SearchParamType.fromCode("token"),
       expression = "Medication.batch.lotNumber",
@@ -91,7 +91,7 @@ public object MedicationSearchParams {
     )
 
   public val marketingauthorizationholder: SearchParam<Medication, Reference> =
-    SearchParam<Medication, Reference>(
+    SearchParam(
       name = "marketingauthorizationholder",
       type = SearchParamType.fromCode("reference"),
       expression = "Medication.marketingAuthorizationHolder",
@@ -100,7 +100,7 @@ public object MedicationSearchParams {
     )
 
   public val serialNumber: SearchParam<Medication, Identifier> =
-    SearchParam<Medication, Identifier>(
+    SearchParam(
       name = "serial-number",
       type = SearchParamType.fromCode("token"),
       expression = "Medication.identifier",
@@ -108,7 +108,7 @@ public object MedicationSearchParams {
     )
 
   public val status: SearchParam<Medication, Any> =
-    SearchParam<Medication, Any>(
+    SearchParam(
       name = "status",
       type = SearchParamType.fromCode("token"),
       expression = "Medication.status",

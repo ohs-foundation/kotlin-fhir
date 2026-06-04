@@ -30,7 +30,7 @@ import kotlin.collections.List
 /** Search parameters for the [BodyStructure] resource type. */
 public object BodyStructureSearchParams {
   public val identifier: SearchParam<BodyStructure, Identifier> =
-    SearchParam<BodyStructure, Identifier>(
+    SearchParam(
       name = "identifier",
       type = SearchParamType.fromCode("token"),
       expression = "BodyStructure.identifier",
@@ -38,7 +38,7 @@ public object BodyStructureSearchParams {
     )
 
   public val location: SearchParam<BodyStructure, CodeableConcept> =
-    SearchParam<BodyStructure, CodeableConcept>(
+    SearchParam(
       name = "location",
       type = SearchParamType.fromCode("token"),
       expression = "BodyStructure.location",
@@ -46,7 +46,7 @@ public object BodyStructureSearchParams {
     )
 
   public val morphology: SearchParam<BodyStructure, CodeableConcept> =
-    SearchParam<BodyStructure, CodeableConcept>(
+    SearchParam(
       name = "morphology",
       type = SearchParamType.fromCode("token"),
       expression = "BodyStructure.morphology",
@@ -54,7 +54,7 @@ public object BodyStructureSearchParams {
     )
 
   public val patient: SearchParam<BodyStructure, Reference> =
-    SearchParam<BodyStructure, Reference>(
+    SearchParam(
       name = "patient",
       type = SearchParamType.fromCode("reference"),
       expression = "BodyStructure.patient",

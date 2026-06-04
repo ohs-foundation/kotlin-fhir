@@ -37,7 +37,7 @@ import kotlin.reflect.KClass
  * The `SearchParam<R, T>` interface carries the metadata about a FHIR search parameter (name, type,
  * expression, target) and the typed `extract` function that pulls values of type `T` out of a
  * resource of type `R`. `SimpleSearchParam<R, T>` is the only implementation: it stores the
- * metadata and an `extractor` lambda. Per-resource container objects (e.g., `PatientSearchParam`)
+ * metadata and an `extractor` lambda. Per-resource container objects (e.g., `PatientSearchParams`)
  * expose one `val` per search parameter, each holding a `SimpleSearchParam` instance.
  */
 object SearchParamFileSpecGenerator {

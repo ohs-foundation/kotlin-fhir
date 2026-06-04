@@ -234,7 +234,7 @@ A `SearchParam<R, T>` sealed interface is generated in the `search` subpackage o
 | `target`     | `List<KClass<out Resource>>` | Target resource types for reference search parameters.                            |
 | `extract`    | `(resource: R) -> List<T>`   | Pulls the values of type `T` out of a resource of type `R` for this search param. |
 
-The interface has a single implementation, `SimpleSearchParam<R, T>`, which stores the metadata plus an `extractor` lambda. For each resource type that has search parameters, a `{Resource}SearchParam` container `object` is generated, exposing one `val` per search parameter (each a `SimpleSearchParam`) plus an `ALL` list. Using `val`s backed by one shared class — rather than a class per parameter — keeps the generated output to a single file per resource. For example, `PatientSearchParam` looks like:
+The interface has a single implementation, `SimpleSearchParam<R, T>`, which stores the metadata plus an `extractor` lambda. For each resource type that has search parameters, a `{Resource}SearchParams` container `object` is generated, exposing one `val` per search parameter (each a `SimpleSearchParam`) plus an `ALL` list. Using `val`s backed by one shared class — rather than a class per parameter — keeps the generated output to a single file per resource. For example, `PatientSearchParams` looks like:
 
 ```kotlin
 sealed interface SearchParam<in R : Resource, out T> {
@@ -255,7 +255,7 @@ class SimpleSearchParam<R : Resource, T>(
   override fun extract(resource: R): List<T> = extractor(resource)
 }
 
-object PatientSearchParam {
+object PatientSearchParams {
   val Birthdate: SearchParam<Patient, Date> =
     SimpleSearchParam(
       name = "birthdate",
@@ -278,8 +278,8 @@ object PatientSearchParam {
 }
 
 // Usage:
-PatientSearchParam.Birthdate.extract(patient)              // type-safe: List<Date>
-PatientSearchParam.ALL.forEach { it.extract(patient) }     // iterate all for indexing
+PatientSearchParams.Birthdate.extract(patient)              // type-safe: List<Date>
+PatientSearchParams.ALL.forEach { it.extract(patient) }     // iterate all for indexing
 ```
 
 #### Supported FHIRPath patterns
@@ -721,7 +721,7 @@ executed:
 4. Search parameter test:
    - Loads the source `SearchParameter-*.json` files as ground truth.
    - For each concrete resource across R4, R4B, and R5, uses JVM reflection on the
-     generated `{Resource}SearchParam` container object and its `ALL` property
+     generated `{Resource}SearchParams` container object and its `ALL` property
      to verify:
      - Count: `ALL` contains exactly one entry per search parameter defined for the resource.
      - Name: each entry's `name` matches the `code` from the JSON definition.

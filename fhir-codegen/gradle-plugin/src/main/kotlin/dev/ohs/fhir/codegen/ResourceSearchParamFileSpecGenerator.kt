@@ -37,8 +37,8 @@ import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
 /**
  * Generates per-resource search parameter container objects.
  *
- * For each resource type (e.g. Patient), produces a `{Resource}SearchParam` plain `object` exposing
- * one `val` per search parameter. Each `val` is a [SearchParam]`<Resource, T>` backed by a
+ * For each resource type (e.g. Patient), produces a `{Resource}SearchParams` plain `object`
+ * exposing one `val` per search parameter. Each `val` is a [SearchParam]`<Resource, T>` backed by a
  * `SimpleSearchParam` instance: metadata plus an `extractor` lambda. The container also exposes an
  * `ALL` list of every search parameter for that resource. This keeps the generated output to one
  * file (and a handful of `val`s) per resource rather than a class file per search parameter.
@@ -54,7 +54,7 @@ import dev.ohs.fhir.codegen.searchparam.parseSearchParamExpression
 object ResourceSearchParamFileSpecGenerator {
 
   /**
-   * Generates a `{Resource}SearchParam.kt` file for the given resource type.
+   * Generates a `{Resource}SearchParams.kt` file for the given resource type.
    *
    * @param packageName The package name for the generated file.
    * @param resourceName The resource type name (e.g., "Patient").
@@ -73,7 +73,7 @@ object ResourceSearchParamFileSpecGenerator {
     val simpleSearchParamClassName = ClassName(searchPackageName, "SimpleSearchParam")
     val searchParamTypeClassName = ClassName("$packageName.terminologies", "SearchParamType")
     val resourceClassName = ClassName(packageName, resourceName)
-    val containerObjectName = "${resourceName}SearchParam"
+    val containerObjectName = "${resourceName}SearchParams"
 
     val resolver = FhirPathExpressionResolver(elementsByType)
     val dedupedParams = searchParams.distinctBy { it.code }.sortedBy { it.code }

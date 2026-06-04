@@ -96,7 +96,7 @@ class SearchParamTest :
             // Load the per-resource search param container object
             val searchParamClass =
               try {
-                Class.forName("${testSuite.modelPackage}.search.${resourceName}SearchParam").kotlin
+                Class.forName("${testSuite.modelPackage}.search.${resourceName}SearchParams").kotlin
               } catch (_: ClassNotFoundException) {
                 null
               }
@@ -135,7 +135,7 @@ class SearchParamTest :
                 val actual =
                   searchParamsByName[expected.code]
                     ?: error(
-                      "Missing search param ${expected.code} on ${resourceName}SearchParam. Available: ${searchParamsByName.keys}"
+                      "Missing search param ${expected.code} on ${resourceName}SearchParams. Available: ${searchParamsByName.keys}"
                     )
 
                 // Verify it implements SearchParam

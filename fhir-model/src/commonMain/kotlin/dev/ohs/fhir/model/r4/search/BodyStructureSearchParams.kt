@@ -1,0 +1,67 @@
+/*
+ * Copyright 2026 Open Health Stack Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+
+package dev.ohs.fhir.model.r4.search
+
+import dev.ohs.fhir.model.r4.BodyStructure
+import dev.ohs.fhir.model.r4.CodeableConcept
+import dev.ohs.fhir.model.r4.Identifier
+import dev.ohs.fhir.model.r4.Reference
+import dev.ohs.fhir.model.r4.terminologies.SearchParamType
+import kotlin.Suppress
+import kotlin.collections.List
+
+/** Search parameters for the [BodyStructure] resource type. */
+public object BodyStructureSearchParams {
+  public val Identifier: SearchParam<BodyStructure, Identifier> =
+    SimpleSearchParam<BodyStructure, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Location: SearchParam<BodyStructure, CodeableConcept> =
+    SimpleSearchParam<BodyStructure, CodeableConcept>(
+      name = "location",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.location",
+      extractor = { resource -> listOfNotNull(resource.location) },
+    )
+
+  public val Morphology: SearchParam<BodyStructure, CodeableConcept> =
+    SimpleSearchParam<BodyStructure, CodeableConcept>(
+      name = "morphology",
+      type = SearchParamType.fromCode("token"),
+      expression = "BodyStructure.morphology",
+      extractor = { resource -> listOfNotNull(resource.morphology) },
+    )
+
+  public val Patient: SearchParam<BodyStructure, Reference> =
+    SimpleSearchParam<BodyStructure, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "BodyStructure.patient",
+      target = listOf(dev.ohs.fhir.model.r4.Patient::class),
+      extractor = { resource -> listOf(resource.patient) },
+    )
+
+  /** All search parameters for the BodyStructure resource type. */
+  public val ALL: List<SearchParam<BodyStructure, *>> =
+    listOf(Identifier, Location, Morphology, Patient)
+}

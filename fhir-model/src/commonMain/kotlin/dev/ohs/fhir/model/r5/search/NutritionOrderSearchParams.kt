@@ -1,0 +1,162 @@
+/*
+ * Copyright 2026 Open Health Stack Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+
+package dev.ohs.fhir.model.r5.search
+
+import dev.ohs.fhir.model.r5.CodeableConcept
+import dev.ohs.fhir.model.r5.DateTime
+import dev.ohs.fhir.model.r5.Group
+import dev.ohs.fhir.model.r5.Identifier
+import dev.ohs.fhir.model.r5.NutritionOrder
+import dev.ohs.fhir.model.r5.Practitioner
+import dev.ohs.fhir.model.r5.PractitionerRole
+import dev.ohs.fhir.model.r5.Reference
+import dev.ohs.fhir.model.r5.terminologies.SearchParamType
+import kotlin.Any
+import kotlin.Suppress
+import kotlin.collections.List
+
+/** Search parameters for the [NutritionOrder] resource type. */
+public object NutritionOrderSearchParams {
+  public val Additive: SearchParam<NutritionOrder, CodeableConcept> =
+    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+      name = "additive",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.enteralFormula.additive.type.concept",
+      extractor = { resource ->
+        (resource.enteralFormula?.additive ?: emptyList())
+          .mapNotNull { it.type }
+          .mapNotNull { it.concept }
+      },
+    )
+
+  public val Datetime: SearchParam<NutritionOrder, DateTime> =
+    SimpleSearchParam<NutritionOrder, DateTime>(
+      name = "datetime",
+      type = SearchParamType.fromCode("date"),
+      expression = "NutritionOrder.dateTime",
+      extractor = { resource -> listOf(resource.dateTime) },
+    )
+
+  public val Encounter: SearchParam<NutritionOrder, Reference> =
+    SimpleSearchParam<NutritionOrder, Reference>(
+      name = "encounter",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NutritionOrder.encounter",
+      target = listOf(dev.ohs.fhir.model.r5.Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.encounter) },
+    )
+
+  public val Formula: SearchParam<NutritionOrder, CodeableConcept> =
+    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+      name = "formula",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.enteralFormula.baseFormulaType.concept",
+      extractor = { resource -> listOfNotNull(resource.enteralFormula?.baseFormulaType?.concept) },
+    )
+
+  public val GroupIdentifier: SearchParam<NutritionOrder, Identifier> =
+    SimpleSearchParam<NutritionOrder, Identifier>(
+      name = "group-identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.groupIdentifier",
+      extractor = { resource -> listOfNotNull(resource.groupIdentifier) },
+    )
+
+  public val Identifier: SearchParam<NutritionOrder, Identifier> =
+    SimpleSearchParam<NutritionOrder, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Oraldiet: SearchParam<NutritionOrder, CodeableConcept> =
+    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+      name = "oraldiet",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.oralDiet.type",
+      extractor = { resource -> resource.oralDiet?.type ?: emptyList() },
+    )
+
+  public val Patient: SearchParam<NutritionOrder, Reference> =
+    SimpleSearchParam<NutritionOrder, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NutritionOrder.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource ->
+        listOf(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Provider: SearchParam<NutritionOrder, Reference> =
+    SimpleSearchParam<NutritionOrder, Reference>(
+      name = "provider",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NutritionOrder.orderer",
+      target = listOf(PractitionerRole::class, Practitioner::class),
+      extractor = { resource -> listOfNotNull(resource.orderer) },
+    )
+
+  public val Status: SearchParam<NutritionOrder, Any> =
+    SimpleSearchParam<NutritionOrder, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<NutritionOrder, Reference> =
+    SimpleSearchParam<NutritionOrder, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "NutritionOrder.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r5.Patient::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
+  public val Supplement: SearchParam<NutritionOrder, CodeableConcept> =
+    SimpleSearchParam<NutritionOrder, CodeableConcept>(
+      name = "supplement",
+      type = SearchParamType.fromCode("token"),
+      expression = "NutritionOrder.supplement.type.concept",
+      extractor = { resource ->
+        resource.supplement.mapNotNull { it.type }.mapNotNull { it.concept }
+      },
+    )
+
+  /** All search parameters for the NutritionOrder resource type. */
+  public val ALL: List<SearchParam<NutritionOrder, *>> =
+    listOf(
+      Additive,
+      Datetime,
+      Encounter,
+      Formula,
+      GroupIdentifier,
+      Identifier,
+      Oraldiet,
+      Patient,
+      Provider,
+      Status,
+      Subject,
+      Supplement,
+    )
+}

@@ -20,7 +20,7 @@ import dev.ohs.fhir.model.r4.ContactPoint
 import dev.ohs.fhir.model.r4.Enumeration
 import dev.ohs.fhir.model.r4.Patient
 import dev.ohs.fhir.model.r4.String as FhirString
-import dev.ohs.fhir.model.r4.search.PatientSearchParam
+import dev.ohs.fhir.model.r4.search.PatientSearchParams
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
@@ -48,7 +48,9 @@ class SearchParamAllUsageTest :
       // telecom by system (FHIRPath: Patient.telecom.where(system='email')), a computation
       // that has no equivalent direct field on Patient.
       val index: List<Pair<String, Any?>> =
-        PatientSearchParam.ALL.flatMap { sp -> sp.extract(alice).map { value -> sp.name to value } }
+        PatientSearchParams.ALL.flatMap { sp ->
+          sp.extract(alice).map { value -> sp.name to value }
+        }
 
       // ---------- SEARCH TIME ----------
       // /Patient?email=alice@example.com the server filters the index by both the

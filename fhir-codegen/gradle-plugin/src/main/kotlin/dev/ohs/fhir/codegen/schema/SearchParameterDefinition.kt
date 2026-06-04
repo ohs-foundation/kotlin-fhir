@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * Minimal representation of a FHIR SearchParameter resource definition, used during code generation
- * to produce typed search parameters in the per-resource `{Resource}SearchParam` containers.
+ * to produce typed search parameters in the per-resource `{Resource}SearchParams` containers.
  *
  * @property code The parameter name used in search URLs (e.g., "name", "birthdate").
  * @property base The resource type(s) this search parameter applies to (e.g., ["Patient"]).

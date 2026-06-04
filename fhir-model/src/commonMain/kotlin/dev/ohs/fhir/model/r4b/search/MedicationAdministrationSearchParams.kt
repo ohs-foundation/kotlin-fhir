@@ -1,0 +1,187 @@
+/*
+ * Copyright 2026 Open Health Stack Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@file:Suppress("RedundantVisibilityModifier", "PropertyName")
+
+package dev.ohs.fhir.model.r4b.search
+
+import dev.ohs.fhir.model.r4b.CodeableConcept
+import dev.ohs.fhir.model.r4b.Encounter
+import dev.ohs.fhir.model.r4b.EpisodeOfCare
+import dev.ohs.fhir.model.r4b.Group
+import dev.ohs.fhir.model.r4b.Identifier
+import dev.ohs.fhir.model.r4b.MedicationAdministration
+import dev.ohs.fhir.model.r4b.MedicationRequest
+import dev.ohs.fhir.model.r4b.Practitioner
+import dev.ohs.fhir.model.r4b.PractitionerRole
+import dev.ohs.fhir.model.r4b.Reference
+import dev.ohs.fhir.model.r4b.RelatedPerson
+import dev.ohs.fhir.model.r4b.terminologies.SearchParamType
+import kotlin.Any
+import kotlin.Suppress
+import kotlin.collections.List
+
+/** Search parameters for the [MedicationAdministration] resource type. */
+public object MedicationAdministrationSearchParams {
+  public val Code: SearchParam<MedicationAdministration, CodeableConcept> =
+    SimpleSearchParam<MedicationAdministration, CodeableConcept>(
+      name = "code",
+      type = SearchParamType.fromCode("token"),
+      expression = "(MedicationAdministration.medication as CodeableConcept)",
+      extractor = { resource ->
+        listOfNotNull(
+          (resource.medication as? MedicationAdministration.Medication.CodeableConcept)?.value
+        )
+      },
+    )
+
+  public val Context: SearchParam<MedicationAdministration, Reference> =
+    SimpleSearchParam<MedicationAdministration, Reference>(
+      name = "context",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationAdministration.context",
+      target = listOf(EpisodeOfCare::class, Encounter::class),
+      extractor = { resource -> listOfNotNull(resource.context) },
+    )
+
+  public val Device: SearchParam<MedicationAdministration, Reference> =
+    SimpleSearchParam<MedicationAdministration, Reference>(
+      name = "device",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationAdministration.device",
+      target = listOf(dev.ohs.fhir.model.r4b.Device::class),
+      extractor = { resource -> resource.device },
+    )
+
+  public val EffectiveTime:
+    SearchParam<MedicationAdministration, MedicationAdministration.Effective> =
+    SimpleSearchParam<MedicationAdministration, MedicationAdministration.Effective>(
+      name = "effective-time",
+      type = SearchParamType.fromCode("date"),
+      expression = "MedicationAdministration.effective",
+      extractor = { resource -> listOf(resource.effective) },
+    )
+
+  public val Identifier: SearchParam<MedicationAdministration, Identifier> =
+    SimpleSearchParam<MedicationAdministration, Identifier>(
+      name = "identifier",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicationAdministration.identifier",
+      extractor = { resource -> resource.identifier },
+    )
+
+  public val Medication: SearchParam<MedicationAdministration, Reference> =
+    SimpleSearchParam<MedicationAdministration, Reference>(
+      name = "medication",
+      type = SearchParamType.fromCode("reference"),
+      expression = "(MedicationAdministration.medication as Reference)",
+      target = listOf(dev.ohs.fhir.model.r4b.Medication::class),
+      extractor = { resource ->
+        listOfNotNull(
+          (resource.medication as? MedicationAdministration.Medication.Reference)?.value
+        )
+      },
+    )
+
+  public val Patient: SearchParam<MedicationAdministration, Reference> =
+    SimpleSearchParam<MedicationAdministration, Reference>(
+      name = "patient",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationAdministration.subject.where(resolve() is Patient)",
+      target = listOf(dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource ->
+        listOf(resource.subject).filter {
+          it.reference?.value?.toString()?.contains("Patient/") == true
+        }
+      },
+    )
+
+  public val Performer: SearchParam<MedicationAdministration, Reference> =
+    SimpleSearchParam<MedicationAdministration, Reference>(
+      name = "performer",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationAdministration.performer.actor",
+      target =
+        listOf(
+          Practitioner::class,
+          dev.ohs.fhir.model.r4b.Device::class,
+          dev.ohs.fhir.model.r4b.Patient::class,
+          PractitionerRole::class,
+          RelatedPerson::class,
+        ),
+      extractor = { resource -> resource.performer.map { it.actor } },
+    )
+
+  public val ReasonGiven: SearchParam<MedicationAdministration, CodeableConcept> =
+    SimpleSearchParam<MedicationAdministration, CodeableConcept>(
+      name = "reason-given",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicationAdministration.reasonCode",
+      extractor = { resource -> resource.reasonCode },
+    )
+
+  public val ReasonNotGiven: SearchParam<MedicationAdministration, CodeableConcept> =
+    SimpleSearchParam<MedicationAdministration, CodeableConcept>(
+      name = "reason-not-given",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicationAdministration.statusReason",
+      extractor = { resource -> resource.statusReason },
+    )
+
+  public val Request: SearchParam<MedicationAdministration, Reference> =
+    SimpleSearchParam<MedicationAdministration, Reference>(
+      name = "request",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationAdministration.request",
+      target = listOf(MedicationRequest::class),
+      extractor = { resource -> listOfNotNull(resource.request) },
+    )
+
+  public val Status: SearchParam<MedicationAdministration, Any> =
+    SimpleSearchParam<MedicationAdministration, Any>(
+      name = "status",
+      type = SearchParamType.fromCode("token"),
+      expression = "MedicationAdministration.status",
+      extractor = { resource -> listOf(resource.status) },
+    )
+
+  public val Subject: SearchParam<MedicationAdministration, Reference> =
+    SimpleSearchParam<MedicationAdministration, Reference>(
+      name = "subject",
+      type = SearchParamType.fromCode("reference"),
+      expression = "MedicationAdministration.subject",
+      target = listOf(Group::class, dev.ohs.fhir.model.r4b.Patient::class),
+      extractor = { resource -> listOf(resource.subject) },
+    )
+
+  /** All search parameters for the MedicationAdministration resource type. */
+  public val ALL: List<SearchParam<MedicationAdministration, *>> =
+    listOf(
+      Code,
+      Context,
+      Device,
+      EffectiveTime,
+      Identifier,
+      Medication,
+      Patient,
+      Performer,
+      ReasonGiven,
+      ReasonNotGiven,
+      Request,
+      Status,
+      Subject,
+    )
+}

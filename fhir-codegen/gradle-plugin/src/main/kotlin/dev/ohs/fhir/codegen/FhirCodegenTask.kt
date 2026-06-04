@@ -193,6 +193,7 @@ abstract class FhirCodegenTask : DefaultTask() {
         .groupBy({ it.first }, { it.second })
 
     SearchParamFileSpecGenerator.generate(packageName).writeTo(outputDir)
+    SearchParamExtensionsFileSpecGenerator.generate(packageName).writeTo(outputDir)
 
     // Element lookup used to resolve FHIRPath expressions to Kotlin property access.
     val elementsByType =
